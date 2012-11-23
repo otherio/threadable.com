@@ -62,5 +62,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 Api = Test::Api
 
 Before do
+  Rails.application.routes.default_url_options[:host] = 'example.com'
   Test::Api.reset!
 end

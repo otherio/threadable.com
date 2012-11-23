@@ -40,6 +40,7 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before do
+    Rails.application.routes.default_url_options[:host] = 'example.com'
     Test::Api.reset!
   end
 

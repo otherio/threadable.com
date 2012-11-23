@@ -3,26 +3,26 @@ Given /^my email address is "(.*?)"$/ do |email|
 end
 
 Given /^there is a project called "(.*?)"$/ do |project_name|
-  Api::Project.create({
+  Api::Projects.create({
     name: project_name
   })
 end
 
 Given /^there is a task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  Api::Project.find(project_name).tasks.create({
+  Api::Projects.find(project_name).tasks.create({
     name: task_name,
     project_name: project_name,
   })
 end
 
 When /^I am added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  user = Api::User.find(@email_address)
-  Api::Project.find(project_name).tasks.find(task_name).doers.add(user)
+  user = Api::Users.find(@email_address)
+  Api::Projects.find(project_name).tasks.find(task_name).doers.add(user)
 end
 
 When /^I am added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  user = Api::User.find(@email_address)
-  Api::Project.find(project_name).tasks.find(task_name).followers.add(user)
+  user = Api::Users.find(@email_address)
+  Api::Projects.find(project_name).tasks.find(task_name).followers.add(user)
 end
 
 When /^I open that email$/ do
@@ -51,7 +51,11 @@ end
 When /^I click the "(.*?)" link within the email$/ do |link_content|
   # TODO html arse the email body
   # follow link
-  pending # express the regexp above with the code you wish you had
+  doc = Nokogiri.XML(@email.body)
+  link = doc.css('a').find{|link| link.text.include? link_content }
+  link.should_not be_nil
+  link[:href].should be_present
+  visit link[:href]
 end
 
 Then /^I should be on the join page$/ do

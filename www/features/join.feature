@@ -29,7 +29,7 @@ Feature: Joining
     Then I should get an email say I was added as a follower to the task "arrange a work night" for the project "BofA rebranding"
     When I open that email
     Then I should see "arrange a work night" within the email
-    When I click the "do this task" link within the email
+    When I click the "follow this task" link within the email
     Then I should be on the join page
     And I should see "please give us a password"
     When I enter "foo" into the password field

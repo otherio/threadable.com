@@ -1,14 +1,8 @@
-class Test::Api::User
-
-  include Virtus
-
-  attribute :name, String
-  attribute :email, String
-  attribute :password, String
+class Test::Api::Users
 
   def self.create attributes
     @users ||= []
-    user = new(attributes)
+    user = User.new(attributes)
     @users << user
     user
   end
