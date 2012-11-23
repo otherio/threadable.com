@@ -38,8 +38,23 @@ class Test::Api::Task
   end
 
   class Doers < CollectionOfUsers
+    def add user
+      Test::Api::Emails.send({
+        to: user.email,
+        body: "you are totally a doer bro\n #{task.name} #{task.project_name}",
+      })
+      super user
+    end
   end
+
   class Followers < CollectionOfUsers
+    def add user
+      Test::Api::Emails.send({
+        to: user.email,
+        body: "you are totally a follower yo!\n #{task.name} #{task.project_name}",
+      })
+      super user
+    end
   end
 
 end

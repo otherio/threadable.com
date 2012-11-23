@@ -61,3 +61,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 # Stub the api
 Api = Test::Api
 
+Before do
+  Test::Api.reset!
+end

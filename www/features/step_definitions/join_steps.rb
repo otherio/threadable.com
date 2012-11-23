@@ -1,5 +1,5 @@
 Given /^my email address is "(.*?)"$/ do |email|
-  @email = email
+  @email_address = email
 end
 
 Given /^there is a project called "(.*?)"$/ do |project_name|
@@ -16,28 +16,41 @@ Given /^there is a task "(.*?)" for the project "(.*?)"$/ do |task_name, project
 end
 
 When /^I am added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  user = Api::User.find(@email)
+  user = Api::User.find(@email_address)
   Api::Project.find(project_name).tasks.find(task_name).doers.add(user)
 end
 
 When /^I am added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  user = Api::User.find(@email)
+  user = Api::User.find(@email_address)
   Api::Project.find(project_name).tasks.find(task_name).followers.add(user)
 end
 
-Then /^I should get an email sent to "(.*?)"$/ do |arg1|
-  pending
-end
-
 When /^I open that email$/ do
-  pending # express the regexp above with the code you wish you had
+  Api::Emails.emails.length.should == 1
+  @email = Api::Emails.emails.last
 end
 
-Then /^I should see "(.*?)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then /^I should get an email say I was added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |arg1, arg2|
+  Api::Emails.emails.length.should == 1
+  email = Api::Emails.emails.last
+  email.to.should == @email_address
+  email.body.should include 'you are totally a doer bro'
 end
 
-When /^I click the "(.*?)" link$/ do |arg1|
+Then /^I should get an email say I was added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |arg1, arg2|
+  Api::Emails.emails.length.should == 1
+  email = Api::Emails.emails.last
+  email.to.should == @email_address
+  email.body.should include 'you are totally a follower yo!'
+end
+
+Then /^I should see "(.*?)" within the email$/ do |content|
+  @email.body.should include content
+end
+
+When /^I click the "(.*?)" link within the email$/ do |link_content|
+  # TODO html arse the email body
+  # follow link
   pending # express the regexp above with the code you wish you had
 end
 
