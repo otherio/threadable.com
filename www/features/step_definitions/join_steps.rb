@@ -10,13 +10,19 @@ end
 
 Given /^there is a task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
   Api::Project.find(project_name).tasks.create({
+    name: task_name,
     project_name: project_name,
-    task_name: task_name,
   })
 end
 
 When /^I am added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  Api::Project.find(project_name).tasks.find(task_name).add_doer(@email)
+  user = Api::User.find(@email)
+  Api::Project.find(project_name).tasks.find(task_name).doers.add(user)
+end
+
+When /^I am added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
+  user = Api::User.find(@email)
+  Api::Project.find(project_name).tasks.find(task_name).followers.add(user)
 end
 
 Then /^I should get an email sent to "(.*?)"$/ do |arg1|
@@ -48,10 +54,6 @@ When /^I press join$/ do
 end
 
 Then /^I should be a doer of this task$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I am added as a follower to a task$/ do
   pending # express the regexp above with the code you wish you had
 end
 

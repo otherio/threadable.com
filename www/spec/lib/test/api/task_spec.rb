@@ -23,6 +23,13 @@ describe Test::Api::Task do
       'dont be lazy'
     ]
 
+    tasks.find('do the cooking by the book').name.should == 'do the cooking by the book'
+    tasks.find('dont be lazy').name.should == 'dont be lazy'
+
+
+    tasks.add_doer('jared@yourface.com')
+
+
   end
 
 end

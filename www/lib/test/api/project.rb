@@ -30,7 +30,7 @@ class Test::Api::Project
       @tasks << Test::Api::Task.new(attributes)
     end
 
-    def self.find name
+    def find name
       @tasks.find{|task| task.name == name }
     end
 

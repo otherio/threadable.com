@@ -25,7 +25,7 @@ Feature: Joining
     Given my email address is "test@example.com"
     And there is a project called "BofA rebranding"
     And there is a task "arrange a work night" for the project "BofA rebranding"
-    When I am added as a follower to a task
+    When I am added as a follower to the task "arrange a work night" for the project "BofA rebranding"
     Then I should get an email sent to "test@example.com"
     When I open that email
     Then I should see "arrange a work night"
