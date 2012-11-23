@@ -17,6 +17,10 @@ gem "bootstrap-sass", ">= 2.0.4.0"
 
 group :test, :development do
   gem 'debugger'
-  gem 'cucumber-rails'
   gem 'rspec-rails'
+end
+
+group :test do
+  gem 'cucumber-rails'
+  gem 'nyan-cat-formatter'
 end
