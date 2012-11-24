@@ -24,7 +24,7 @@ describe ProjectsController do
   # Project. As you add validations to Project, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    { "name" => "A Project", "slug" => "foo" }
+    { "name" => "A Project" }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -39,6 +39,11 @@ describe ProjectsController do
       project = Project.create! valid_attributes
       get :index, {}, valid_session
       assigns(:projects).should eq([project])
+    end
+
+    it "skips trackable" do
+      get :index, {}, valid_session
+      controller.request.env['devise.skip_trackable'].should be_true
     end
   end
 
