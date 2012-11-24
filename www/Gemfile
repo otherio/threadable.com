@@ -23,4 +23,5 @@ end
 group :test do
   gem 'cucumber-rails'
   gem 'nyan-cat-formatter'
+  gem 'capybara'
 end

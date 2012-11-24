@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'capybara/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -37,8 +38,11 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before do
-    Rails.application.routes.default_url_options[:host] = 'example.com'
+    # Rails.application.routes.default_url_options[:host] = 'example.com'
     Test::Api.reset!
   end
+
+  config.include CapybaraEnvironment, :type => :request
+  config.include CapybaraEnvironment, :type => :acceptance
 
 end
