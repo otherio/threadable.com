@@ -9,6 +9,18 @@ module Model
       "Api::#{name.pluralize}".constantize
     end
 
+    def create! attributes
+      new(attributes).save
+    end
+
+    def count
+      api_class.count
+    end
+
+    def last
+      new api_class.last
+    end
+
   end
 
   include ActiveModel::Conversion
@@ -17,6 +29,10 @@ module Model
 
   def persisted?
     id.present?
+  end
+
+  def new_record?
+    !persisted?
   end
 
   def to_param
@@ -33,8 +49,17 @@ module Model
     self
   end
 
+  def update_attributes attributes
+    self.attributes = attributes
+    save
+  end
+
+  def destroy
+    self.class.api_class.destroy(id)
+  end
+
   def == other
-    !self.id.nil? && self.id == other.id
+    !self.id.nil? && other.class == self.class && self.id == other.id
   end
 
 end

@@ -8,6 +8,18 @@ module Test::Api::Resources
     @all = []
   end
 
+  def count
+    @all.size
+  end
+
+  def last
+    @all.last
+  end
+
+  def destroy id
+    @all.reject!{|member| member[:id] == id }
+  end
+
   def create attributes
     attributes[:id] = all.length
     all << attributes
