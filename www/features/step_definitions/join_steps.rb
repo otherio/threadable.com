@@ -3,20 +3,18 @@ Given /^my email address is "(.*?)"$/ do |email|
 end
 
 Given /^there is a project called "(.*?)"$/ do |project_name|
-  Project.new({
-    name: project_name
-  }).save
+  Project.create!(name: project_name)
 end
 
 Given /^there is a task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  Project.find_by_name(project_name).tasks.create({
+  Project.find_by_name(project_name).tasks.create!({
     name: task_name,
   })
 end
 
 When /^I am added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
   user = User.find_by_email(@email_address)
-  Project.find_by_name(project_name).tasks.find(task_name).doers.add(user)
+  Project.find_by_name(project_name).tasks.find_by_name(task_name).doers.add(user)
 end
 
 When /^I am added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
