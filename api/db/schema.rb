@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123234848) do
+ActiveRecord::Schema.define(:version => 20121124004436) do
 
   create_table "project_memberships", :force => true do |t|
     t.integer  "project_id"
@@ -34,9 +34,13 @@ ActiveRecord::Schema.define(:version => 20121123234848) do
     t.string   "name"
     t.boolean  "done"
     t.datetime "due_at"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.string   "slug",       :default => "slug", :null => false
+    t.integer  "project_id"
   end
+
+  add_index "tasks", ["slug"], :name => "index_tasks_on_slug", :unique => true
 
   create_table "users", :force => true do |t|
     t.text     "email"
