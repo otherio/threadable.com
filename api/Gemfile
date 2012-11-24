@@ -42,4 +42,8 @@ gem 'authlogic'
 
 group :test do
   gem 'nyan-cat-formatter'
+  gem 'shoulda-matchers'
 end
+
+gem 'database_cleaner'
+gem 'stringex'  # for url slugs
