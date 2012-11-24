@@ -3,7 +3,9 @@ module Test::Api::Projects
   extend Test::Api::Resources
 
   def self.create attributes
-    attributes[:slug] ||= attributes[:name].gsub(' ','-').downcase
+    if attributes[:slug].empty?
+      attributes[:slug] = attributes[:name].gsub(' ','-').downcase
+    end
     super attributes
   end
 

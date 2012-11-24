@@ -1,6 +1,6 @@
 Www::Application.routes.draw do
 
-  root :to => "home#index"
+  get "/", :to => "home#index", :as => 'root'
 
   resources :projects, :path => '/' do
     resources :tasks do
