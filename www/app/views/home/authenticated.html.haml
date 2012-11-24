@@ -1,0 +1,9 @@
+%h1 Multify
+
+%h4 Projects
+%ul
+  - @projects.each do |project|
+    %li
+      = link_to project.name, project_url(project.slug)
+
+= link_to 'New Project', new_project_url

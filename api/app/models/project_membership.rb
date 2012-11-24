@@ -1,7 +1,8 @@
 class ProjectMembership < ActiveRecord::Base
-  attr_accessible :project_id, :user_id
 
-  has_one :user
-  has_one :project
+  attr_accessible :user, :project, :project_id, :user_id
+
+  belongs_to :user
+  belongs_to :project
 
 end

@@ -9,7 +9,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :name, :password, :password_confirmation, :remember_me
 
-  has_and_belongs_to_many :projects
+  has_many :project_memberships
+  has_many :projects, :through => :project_memberships
 
   # make sure the user has an auth token
   before_save :ensure_authentication_token

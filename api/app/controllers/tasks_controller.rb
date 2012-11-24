@@ -1,11 +1,17 @@
 class TasksController < ApplicationController
+
+  before_filter :find, :only => [:show, :update, :destroy]
+
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.scoped
+
+    @tasks = Project.find(params[:project_id]).tasks if params[:project_id]
+
+    @tasks = @tasks.where(slug: params[:slug]) if params[:slug]
 
     respond_to do |format|
-      format.html # index.html.erb
       format.json { render json: @tasks }
     end
   end
@@ -16,25 +22,8 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
       format.json { render json: @task }
     end
-  end
-
-  # GET /tasks/new
-  # GET /tasks/new.json
-  def new
-    @task = Task.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @task }
-    end
-  end
-
-  # GET /tasks/1/edit
-  def edit
-    @task = Task.find(params[:id])
   end
 
   # POST /tasks
@@ -44,10 +33,8 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
         format.json { render json: @task, status: :created, location: @task }
       else
-        format.html { render action: "new" }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -56,14 +43,10 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
-    @task = Task.find(params[:id])
-
     respond_to do |format|
       if @task.update_attributes(params[:task])
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render json: @task, status: :ok, location: @task }
       else
-        format.html { render action: "edit" }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -72,12 +55,17 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    @task = Task.find(params[:id])
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url }
       format.json { head :no_content }
     end
   end
+
+  private
+
+  def find
+    @task = Task.find(params[:id])
+  end
+
 end

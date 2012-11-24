@@ -1,0 +1,9 @@
+# A sample Gemfile
+source "https://rubygems.org"
+
+gem 'rspec'
+gem 'nokogiri'
+gem 'xpath'
+gem 'capybara'
+gem 'childprocess'
+gem 'debugger'

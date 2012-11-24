@@ -13,11 +13,11 @@
     %tr
       %td= task.name
       %td= task.done
-      %td= task.due_date
-      %td= link_to 'Show', project_task_path(@project, task)
-      %td= link_to 'Edit', edit_project_task_path(@project, task)
-      %td= link_to 'Destroy', project_task_path(@project, task), method: :delete, data: { confirm: 'Are you sure?' }
+      %td= task.due_at
+      %td= link_to 'Show', project_task_path(@project.slug, task.slug)
+      %td= link_to 'Edit', edit_project_task_path(@project.slug, task.slug)
+      %td= link_to 'Destroy', project_task_path(@project.slug, task.slug), method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 
-= link_to 'New Task', new_project_task_path(@project)
+= link_to 'New Task', new_project_task_path(@project.slug)

@@ -1,11 +1,14 @@
 class TasksController < ApplicationController
 
+  require_authentication!
+
   before_filter :find_project
+  before_filter :find_task, :only => [:show, :edit, :update, :delete]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = @project.tasks.all
+    @tasks = @project.tasks.find
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,8 +19,6 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @task = @project.tasks.find_by_slug(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @task }
@@ -37,7 +38,6 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    @task = @project.tasks.find_by_slug(params[:id])
   end
 
   # POST /tasks
@@ -47,7 +47,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to project_task_url(@task.project, @task), notice: 'Task was successfully created.' }
+        format.html { redirect_to project_task_url(@task.project.slug, @task.slug), notice: 'Task was successfully created.' }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }
@@ -59,11 +59,9 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
-    @task = @project.tasks.find_by_slug(params[:id])
-
     respond_to do |format|
-      if @task.update_attributes(params[:task])
-        format.html { redirect_to project_task_url(@task.project, @task), notice: 'Task was successfully updated.' }
+      if @task.update(params[:task]).save
+        format.html { redirect_to project_task_url(@task.project.slug, @task.slug), notice: 'Task was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -75,7 +73,6 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    @task = @project.tasks.find_by_slug(params[:id])
     @task.destroy
 
     respond_to do |format|
@@ -87,7 +84,16 @@ class TasksController < ApplicationController
   private
 
   def find_project
-    @project = Project.find_by_slug(params[:project_id])
+    @project = Multify::Project.find(slug: params[:project_id]).first
+  end
+
+  def find_task
+    @task = @project.tasks.find(slug: params[:id]).first
+    return true unless @task.nil?
+    respond_to do |format|
+      format.html { redirect_to project_tasks_url(@task.project) }
+      format.json { render nothing: true, status: :not_found }
+    end
   end
 
 end

@@ -7,9 +7,9 @@
   %b Done:
   = @task.done
 %p
-  %b Due date:
-  = @task.due_date
+  %b Due At:
+  = @task.due_at
 
-= link_to 'Edit', edit_project_task_path(@task.project, @task)
+= link_to 'Edit', edit_project_task_path(@task.project.slug, @task.slug)
 \|
-= link_to 'Back', project_tasks_path(@task.project)
+= link_to 'Back', project_tasks_path(@task.project.slug)

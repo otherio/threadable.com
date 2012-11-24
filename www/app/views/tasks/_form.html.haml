@@ -1,4 +1,5 @@
-= form_for @task, :as => :task, :url => @task.new_record? ? project_tasks_path(@project, @task) : project_task_path(@project, @task) do |f|
+- url = @task.new_record? ? project_tasks_path(@project.slug) : project_task_path(@project.slug, @task.slug)
+= form_for @task, :as => :task, :url => url do |f|
   - if @task.errors.any?
     #error_explanation
       %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
@@ -14,6 +15,6 @@
     = f.check_box :done
   .field
     = f.label :due_date
-    = f.datetime_select :due_date
+    = f.datetime_select :due_at
   .actions
     = f.submit 'Save'

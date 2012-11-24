@@ -7,4 +7,18 @@ class ApplicationController < ActionController::Base
   def skip_trackable
     request.env['devise.skip_trackable'] = true
   end
+
+
+  rescue_from 'ActiveModel::MassAssignmentSecurity::Error' do |exception|
+    respond_to do |format|
+      format.json { render json: {errors: [exception.message]}, status: :bad_request }
+    end
+  end
+
+  rescue_from 'ActiveRecord::RecordNotFound' do |exception|
+    respond_to do |format|
+      format.json { render nothing: true, status: :not_found }
+    end
+  end
+
 end

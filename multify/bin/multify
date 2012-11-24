@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'irb'
+require 'bundler'
+
+Bundler.require
+
+IRB.start
+
+
+
