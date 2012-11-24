@@ -62,5 +62,9 @@ module MultifyApi
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    # devise wants this for deployment on heroku
+    # (don't access db or load models while precompiling assets)
+    config.assets.initialize_on_precompile = false
   end
 end

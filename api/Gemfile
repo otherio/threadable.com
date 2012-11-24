@@ -47,3 +47,4 @@ end
 
 gem 'database_cleaner'
 gem 'stringex'  # for url slugs
+gem 'devise'

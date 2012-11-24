@@ -1,4 +1,6 @@
 MultifyApi::Application.routes.draw do
+  devise_for :users
+
   resources :tasks
 
 
@@ -7,7 +9,9 @@ MultifyApi::Application.routes.draw do
 
   resources :users
 
-
+  # devise wants this, but probably not forever.
+  root :to => "home#index"
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
