@@ -1,17 +1,23 @@
 class Task
 
-  include Virtus
+  include Model
 
   attribute :id, Integer
   attribute :name, String
-  attribute :project_name, String
+  attribute :slug, String
+  attribute :project_id, Integer
 
   def to_param
-    id
+    slug
   end
 
   def project
-    @project_name ||= Api::Projects.find(project_name)
+    @project ||= Api::Projects.find_by_id(project_id)
+  end
+
+  def project= project
+    @project = project
+    self.project_id = project.id
   end
 
   def doers
@@ -21,8 +27,5 @@ class Task
   def followers
     @followers ||= Followers.new(self)
   end
-
-
-
 
 end

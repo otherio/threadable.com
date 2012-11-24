@@ -57,10 +57,6 @@ ActionController::Base.allow_rescue = false
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-
-# Stub the api
-Api = Test::Api
-
 Before do
   Rails.application.routes.default_url_options[:host] = 'example.com'
   Test::Api.reset!

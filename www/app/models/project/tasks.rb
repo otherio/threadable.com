@@ -1,8 +1,4 @@
-class Project::Tasks
-
-  def get
-    @tasks
-  end
+class Project::Tasks < Struct.new(:project)
 
   def create attributes
     @tasks ||= []
@@ -11,7 +7,12 @@ class Project::Tasks
   end
 
   def find name
+    @tasks ||= []
     @tasks.find{|task| task.name == name }
+  end
+
+  def new attributes
+    Task.new(attributes.merge(project: project))
   end
 
 end

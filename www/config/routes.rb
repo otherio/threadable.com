@@ -1,5 +1,7 @@
 Www::Application.routes.draw do
 
+  root :to => "home#index"
+
   resources :projects, :path => '/' do
     resources :tasks do
       member do
@@ -10,5 +12,5 @@ Www::Application.routes.draw do
     end
   end
 
-  root :to => "home#index"
+
 end

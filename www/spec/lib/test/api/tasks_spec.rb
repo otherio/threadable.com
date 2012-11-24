@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Test::Api::Task do
+describe Test::Api::Tasks do
 
   it "should persist projects in memory" do
 

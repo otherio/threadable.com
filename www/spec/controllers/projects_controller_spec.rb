@@ -24,7 +24,10 @@ describe ProjectsController do
   # Project. As you add validations to Project, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    { "name" => "MyString" }
+    {
+      "name" => "Bake a Cake",
+      "slug" => "bake-a-cake",
+    }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -34,13 +37,13 @@ describe ProjectsController do
     {}
   end
 
-  describe "GET index" do
-    it "assigns all projects as @projects" do
-      project = Project.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:projects).should eq([project])
-    end
-  end
+  # describe "GET index" do
+  #   it "assigns all projects as @projects" do
+  #     project = Project.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     assigns(:projects).should eq([project])
+  #   end
+  # end
 
   describe "GET show" do
     it "assigns the requested project as @project" do
