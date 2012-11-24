@@ -1,8 +1,11 @@
 class TasksController < ApplicationController
+
+  before_filter :find_project
+
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = @project.tasks.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +16,7 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @task = Task.find_by_slug(params[:project_id], params[:id])
+    @task = @project.tasks.find_by_slug(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +27,7 @@ class TasksController < ApplicationController
   # GET /tasks/new
   # GET /tasks/new.json
   def new
-    @task = Task.new
+    @task = @project.tasks.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,14 +37,13 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    @task = Task.find_by_slug(params[:project_id], params[:id])
+    @task = @project.tasks.find_by_slug(params[:id])
   end
 
   # POST /tasks
   # POST /tasks.json
   def create
-    params[:task][:project_id] = params[:project_id]
-    @task = Task.new(params[:task])
+    @task = @project.tasks.new(params[:task])
 
     respond_to do |format|
       if @task.save
@@ -57,7 +59,7 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
-    @task = Task.find_by_slug(params[:project_id], params[:id])
+    @task = @project.tasks.find_by_slug(params[:id])
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
@@ -73,7 +75,7 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    @task = Task.find_by_slug(params[:project_id], params[:id])
+    @task = @project.tasks.find_by_slug(params[:id])
     @task.destroy
 
     respond_to do |format|
@@ -81,4 +83,11 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+  def find_project
+    @project = Project.find_by_slug(params[:project_id])
+  end
+
 end

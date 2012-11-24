@@ -12,7 +12,8 @@ module Model
     end
 
     def create! attributes
-      new(attributes).save or raise Invalid
+      member = new(attributes)
+      member.save or raise Invalid, member.errors.full_messages
     end
 
     def all

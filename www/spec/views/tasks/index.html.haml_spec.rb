@@ -2,14 +2,17 @@ require 'spec_helper'
 
 describe "tasks/index" do
   before(:each) do
+    project = assign(:project, Project.create!(:name => "Name"))
     assign(:tasks, [
-      stub_model(Task,
+      Task.create!(
         :name => "Name",
-        :done => false
+        :done => false,
+        :project => project,
       ),
-      stub_model(Task,
+      Task.create!(
         :name => "Name",
-        :done => false
+        :done => false,
+        :project => project,
       )
     ])
   end

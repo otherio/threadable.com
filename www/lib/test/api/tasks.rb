@@ -2,6 +2,14 @@ module Test::Api::Tasks
 
   extend Test::Api::Resources
 
+  def self.all project_id=nil
+    @all ||= []
+    if project_id.present?
+      return @all.find_all{|task| task[:project_id] == project_id.to_i }
+    end
+    @all
+  end
+
   def self.create attributes
     if attributes[:slug].blank?
       attributes[:slug] = attributes[:name].gsub(' ','-').downcase

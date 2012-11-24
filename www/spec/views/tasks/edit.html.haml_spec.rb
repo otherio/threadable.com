@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe "tasks/edit" do
   before(:each) do
-    @task = assign(:task, stub_model(Task,
+    project = assign(:project, Project.create!(:name => "Name"))
+    @task = assign(:task, Task.create!(
       :name => "MyString",
-      :done => false
+      :done => false,
+      :project => project,
     ))
   end
 
@@ -12,7 +14,7 @@ describe "tasks/edit" do
     render
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form", :action => tasks_path(@task), :method => "post" do
+    assert_select "form", :action => project_tasks_path(@task.project, @task), :method => "post" do
       assert_select "input#task_name", :name => "task[name]"
       assert_select "input#task_done", :name => "task[done]"
     end

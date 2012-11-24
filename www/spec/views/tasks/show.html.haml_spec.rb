@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe "tasks/show" do
   before(:each) do
-    @task = assign(:task, stub_model(Task,
+
+    assign(:task, Task.create!(
       :name => "Name",
-      :done => false
+      :done => false,
+      :project => Project.create!(:name => "Name"),
     ))
   end
 

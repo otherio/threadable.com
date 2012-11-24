@@ -26,7 +26,6 @@ describe TasksController do
   def valid_attributes
     {
       "name" => "Cook a Duck",
-      "project_id" => project.id,
     }
   end
 
@@ -43,31 +42,31 @@ describe TasksController do
 
   describe "GET index" do
     it "assigns all tasks as @tasks" do
-      task = Task.create! valid_attributes
-      get :index, {:project_id => project.id}, valid_session
+      task = project.tasks.create! valid_attributes
+      get :index, {:project_id => project.to_param}, valid_session
       assigns(:tasks).should eq([task])
     end
   end
 
   describe "GET show" do
     it "assigns the requested task as @task" do
-      task = Task.create! valid_attributes
-      get :show, {:project_id => project.id, :id => task.to_param}, valid_session
+      task = project.tasks.create! valid_attributes
+      get :show, {:project_id => project.to_param, :id => task.to_param}, valid_session
       assigns(:task).should eq(task)
     end
   end
 
   describe "GET new" do
     it "assigns a new task as @task" do
-      get :new, {:project_id => project.id}, valid_session
+      get :new, {:project_id => project.to_param}, valid_session
       assigns(:task).should be_a_new(Task)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested task as @task" do
-      task = Task.create! valid_attributes
-      get :edit, {:project_id => project.id, :id => task.to_param}, valid_session
+      task = project.tasks.create! valid_attributes
+      get :edit, {:project_id => project.to_param, :id => task.to_param}, valid_session
       assigns(:task).should eq(task)
     end
   end
@@ -76,18 +75,18 @@ describe TasksController do
     describe "with valid params" do
       it "creates a new Task" do
         expect {
-          post :create, {:project_id => project.id, :task => valid_attributes}, valid_session
+          post :create, {:project_id => project.to_param, :task => valid_attributes}, valid_session
         }.to change(Task, :count).by(1)
       end
 
       it "assigns a newly created task as @task" do
-        post :create, {:project_id => project.id, :task => valid_attributes}, valid_session
+        post :create, {:project_id => project.to_param, :task => valid_attributes}, valid_session
         assigns(:task).should be_a(Task)
         assigns(:task).should be_persisted
       end
 
       it "redirects to the created task" do
-        post :create, {:project_id => project.id, :task => valid_attributes}, valid_session
+        post :create, {:project_id => project.to_param, :task => valid_attributes}, valid_session
         response.should redirect_to project_task_url(project, Task.last)
       end
     end
@@ -97,7 +96,7 @@ describe TasksController do
         # Trigger the behavior that occurs when invalid params are submitted
         Task.any_instance.stub(:save).and_return(false)
         post :create, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :task => {"name" => ""}
         }, valid_session
         assigns(:task).should be_a_new(Task)
@@ -107,7 +106,7 @@ describe TasksController do
         # Trigger the behavior that occurs when invalid params are submitted
         Task.any_instance.stub(:save).and_return(false)
         post :create, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :task => {"name" => ""}
         }, valid_session
         response.should render_template("new")
@@ -118,23 +117,23 @@ describe TasksController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested task" do
-        task = Task.create! valid_attributes
+        task = project.tasks.create! valid_attributes
         # Assuming there are no other tasks in the database, this
         # specifies that the Task created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Task.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
         put :update, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :id => task.to_param,
           :task => { "name" => "MyString" },
         }, valid_session
       end
 
       it "assigns the requested task as @task" do
-        task = Task.create! valid_attributes
+        task = project.tasks.create! valid_attributes
         put :update, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :id => task.to_param,
           :task => valid_attributes
         }, valid_session
@@ -142,9 +141,9 @@ describe TasksController do
       end
 
       it "redirects to the task" do
-        task = Task.create! valid_attributes
+        task = project.tasks.create! valid_attributes
         put :update, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :id => task.to_param,
           :task => valid_attributes
         }, valid_session
@@ -154,11 +153,11 @@ describe TasksController do
 
     describe "with invalid params" do
       it "assigns the task as @task" do
-        task = Task.create! valid_attributes
+        task = project.tasks.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Task.any_instance.stub(:save).and_return(false)
         put :update, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :id => task.to_param,
           :task => { "name" => "invalid value" }
         }, valid_session
@@ -166,11 +165,11 @@ describe TasksController do
       end
 
       it "re-renders the 'edit' template" do
-        task = Task.create! valid_attributes
+        task = project.tasks.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Task.any_instance.stub(:save).and_return(false)
         put :update, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :id => task.to_param,
           :task => { "name" => "invalid value" }
         }, valid_session
@@ -181,19 +180,19 @@ describe TasksController do
 
   describe "DELETE destroy" do
     it "destroys the requested task" do
-      task = Task.create! valid_attributes
+      task = project.tasks.create! valid_attributes
       expect {
         delete :destroy, {
-          :project_id => project.id,
+          :project_id => project.to_param,
           :id => task.to_param
         }, valid_session
       }.to change(Task, :count).by(-1)
     end
 
     it "redirects to the tasks list" do
-      task = Task.create! valid_attributes
+      task = project.tasks.create! valid_attributes
       delete :destroy, {
-        :project_id => project.id,
+        :project_id => project.to_param,
         :id => task.to_param
       }, valid_session
       response.should redirect_to(project_tasks_url(project))

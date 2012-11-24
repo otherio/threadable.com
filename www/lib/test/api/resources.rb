@@ -9,15 +9,15 @@ module Test::Api::Resources
   end
 
   def count
-    @all.size
+    all.size
   end
 
   def last
-    @all.last
+    all.last
   end
 
   def destroy id
-    @all.reject!{|member| member[:id] == id }
+    all.reject!{|member| member[:id] == id }
   end
 
   def create attributes

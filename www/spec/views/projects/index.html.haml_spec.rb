@@ -3,11 +3,11 @@ require 'spec_helper'
 describe "projects/index" do
   before(:each) do
     assign(:projects, [
-      stub_model(Project,
+      Project.create!(
         :name => "Name",
         :description => "MyText"
       ),
-      stub_model(Project,
+      Project.create!(
         :name => "Name",
         :description => "MyText"
       )

@@ -4,10 +4,12 @@ class Project::Tasks
     @project = project
   end
 
-  def create attributes
-    task = new(attributes)
-    task.save
-    task
+  def create! attributes
+    Task.create!(attributes.merge(project: @project))
+  end
+
+  def all
+    Task.all(@project.id)
   end
 
   def find_by_id id
@@ -22,7 +24,7 @@ class Project::Tasks
     Task.find_by_slug(@project.id, slug)
   end
 
-  def new attributes
+  def new attributes={}
     Task.new(attributes.merge(project: @project))
   end
 

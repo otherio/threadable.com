@@ -2,6 +2,10 @@ class Task
 
   include Model
 
+  def self.all project_id
+    Api::Tasks.all(project_id).map{|t| new(t) }
+  end
+
   def self.find_by_id *args
     attributes = Api::Tasks.find_by_id(*args)
     attributes.nil? ? nil : new(attributes)
@@ -21,6 +25,8 @@ class Task
   attribute :name, String
   attribute :slug, String
   attribute :project_id, Integer
+  attribute :done, Boolean
+  attribute :due_date, Date
 
   validates :name, :project_id, :presence => true
 

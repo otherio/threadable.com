@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "projects/show" do
   before(:each) do
-    @project = assign(:project, stub_model(Project,
+    assign(:project, Project.create!(
       :name => "Name",
       :description => "MyText"
     ))
