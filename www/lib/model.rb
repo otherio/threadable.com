@@ -2,6 +2,8 @@ module Model
 
   extend ActiveSupport::Concern
 
+  Invalid = Class.new(StandardError)
+
   module ClassMethods
     include ActiveModel::Naming
 
@@ -10,7 +12,11 @@ module Model
     end
 
     def create! attributes
-      new(attributes).save
+      new(attributes).save or raise Invalid
+    end
+
+    def all
+      api_class.all.map{|attributes| new(attributes) }
     end
 
     def count
@@ -40,6 +46,7 @@ module Model
   end
 
   def save
+    return false unless valid?
     attributes = if persisted?
       self.class.api_class.update(as_json)
     else
@@ -61,5 +68,8 @@ module Model
   def == other
     !self.id.nil? && other.class == self.class && self.id == other.id
   end
+  alias_method :eql?, :==
+
+
 
 end

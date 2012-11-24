@@ -3,21 +3,26 @@ class Task
   include Model
 
   def self.find_by_id *args
-    new Api::Tasks.find_by_id(*args)
+    attributes = Api::Tasks.find_by_id(*args)
+    attributes.nil? ? nil : new(attributes)
   end
 
   def self.find_by_name *args
-    new Api::Tasks.find_by_name(*args)
+    attributes = Api::Tasks.find_by_name(*args)
+    attributes.nil? ? nil : new(attributes)
   end
 
   def self.find_by_slug *args
-    new Api::Tasks.find_by_slug(*args)
+    attributes = Api::Tasks.find_by_slug(*args)
+    attributes.nil? ? nil : new(attributes)
   end
 
   attribute :id, Integer
   attribute :name, String
   attribute :slug, String
   attribute :project_id, Integer
+
+  validates :name, :project_id, :presence => true
 
   def to_param
     slug
