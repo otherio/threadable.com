@@ -1,15 +1,13 @@
 class Test::Api::Users
 
-  def self.create attributes
-    @users ||= []
-    user = User.new(attributes)
-    @users << user
-    user
+  extend Test::Api::Resources
+
+  def self.find_by_id id
+    all.find{|member| member[:id] == id }
   end
 
-  def self.find email
-    @users ||= []
-    @users.find{|user| user.email == email } || create(email: email)
+  def self.find_by_email email
+    all.find{|member| member[:email] == email } || create(email: email)
   end
 
 end

@@ -2,6 +2,18 @@ class Task
 
   include Model
 
+  def self.find_by_id *args
+    new Api::Tasks.find_by_id(*args)
+  end
+
+  def self.find_by_name *args
+    new Api::Tasks.find_by_name(*args)
+  end
+
+  def self.find_by_slug *args
+    new Api::Tasks.find_by_slug(*args)
+  end
+
   attribute :id, Integer
   attribute :name, String
   attribute :slug, String
@@ -12,7 +24,7 @@ class Task
   end
 
   def project
-    @project ||= Api::Projects.find_by_id(project_id)
+    @project ||= Project.find_by_id(project_id)
   end
 
   def project= project

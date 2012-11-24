@@ -3,43 +3,42 @@ Given /^my email address is "(.*?)"$/ do |email|
 end
 
 Given /^there is a project called "(.*?)"$/ do |project_name|
-  Api::Projects.create({
+  Project.new({
     name: project_name
-  })
+  }).save
 end
 
 Given /^there is a task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  Api::Projects.find(project_name).tasks.create({
+  Project.find_by_name(project_name).tasks.create({
     name: task_name,
-    project_name: project_name,
   })
 end
 
 When /^I am added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  user = Api::Users.find(@email_address)
-  Api::Projects.find(project_name).tasks.find(task_name).doers.add(user)
+  user = User.find_by_email(@email_address)
+  Project.find_by_name(project_name).tasks.find(task_name).doers.add(user)
 end
 
 When /^I am added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |task_name, project_name|
-  user = Api::Users.find(@email_address)
-  Api::Projects.find(project_name).tasks.find(task_name).followers.add(user)
+  user = User.find_by_email(@email_address)
+  Project.find_by_name(project_name).tasks.find_by_name(task_name).followers.add(user)
 end
 
 When /^I open that email$/ do
-  Api::Emails.emails.length.should == 1
-  @email = Api::Emails.emails.last
+  Test::Api::Emails.emails.length.should == 1
+  @email = Test::Api::Emails.emails.last
 end
 
 Then /^I should get an email say I was added as a doer to the task "(.*?)" for the project "(.*?)"$/ do |arg1, arg2|
-  Api::Emails.emails.length.should == 1
-  email = Api::Emails.emails.last
+  Test::Api::Emails.emails.length.should == 1
+  email = Test::Api::Emails.emails.last
   email.to.should == @email_address
   email.body.should include 'you are totally a doer bro'
 end
 
 Then /^I should get an email say I was added as a follower to the task "(.*?)" for the project "(.*?)"$/ do |arg1, arg2|
-  Api::Emails.emails.length.should == 1
-  email = Api::Emails.emails.last
+  Test::Api::Emails.emails.length.should == 1
+  email = Test::Api::Emails.emails.last
   email.to.should == @email_address
   email.body.should include 'you are totally a follower yo!'
 end
