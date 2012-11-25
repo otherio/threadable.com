@@ -14,21 +14,19 @@ describe SessionsController do
       @request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user,pw)
 
       xhr :post, :create
-      response.response_code.should == 401
+      response.status.should == 401
     end
 
     it "receives an auth token on success" do
       user = @user.email
-      pw = 'password'
+      pw = 'password'      # don't use user.password since it should get deleted in the model
       @request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user,pw)
 
-      # I don't think this HTTP Basic thing is right.  I think it'd be better to change
-      # whatever it is that Warden is expecting and supply that.
-      
-      # don't use user.password since it should get deleted in the model
       xhr :post, :create
-      response.response_code.should == 200
-      # check for auth token here
+      response.status.should == 200
+      result = ActiveSupport::JSON.decode(response.body)
+      result['user']['email'].should == user
+      result['authentication_token'].should be_present
     end
   end
 end
