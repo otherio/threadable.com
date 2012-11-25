@@ -12,7 +12,6 @@ class SessionsController < Devise::SessionsController
     # if we want redirects later...
     #return render :json => {:success => true, :redirect => stored_location_for(scope) || after_sign_in_path_for(resource), :user => current_user }
     return render :json => {:success => true, :user => current_user, :authentication_token => current_user.authentication_token }
-
   end
 
   def failure
