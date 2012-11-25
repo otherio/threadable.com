@@ -1,5 +1,7 @@
 class Multify::User < Multify::Resource
 
+  extend Multify::Resource::WithSlug
+
   class << self
     def authenticate params
       Integer( client.collection['authenticate'].post(params) )
@@ -8,9 +10,10 @@ class Multify::User < Multify::Resource
     end
   end
 
-  assignable_attributes :name, :email, :password
+  assignable_attributes :name, :slug, :email, :password
 
   attribute :name,       String
+  attribute :slug,       String
   attribute :email,      String
   attribute :password,   String
   attribute :created_at, Time
@@ -22,7 +25,7 @@ class Multify::User < Multify::Resource
 
   def assignable_attributes
     super.reject do |key, value|
-      key == :password && value.nil?
+      [:password, :slugt].include?(key) && (value.nil? || value == "")
     end
   end
 

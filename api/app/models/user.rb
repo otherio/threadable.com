@@ -7,11 +7,13 @@ class User < ActiveRecord::Base
          :token_authenticatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :name, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :name, :slug, :password, :password_confirmation, :remember_me
 
   has_many :project_memberships
   has_many :projects, :through => :project_memberships
 
   # make sure the user has an auth token
   before_save :ensure_authentication_token
+
+  acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
 end

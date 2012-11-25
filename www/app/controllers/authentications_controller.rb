@@ -1,5 +1,8 @@
 class AuthenticationsController < ApplicationController
 
+  def new
+  end
+
   def create
     id = Multify::User.authenticate(
       email: params[:authentication][:email],
@@ -7,7 +10,7 @@ class AuthenticationsController < ApplicationController
     )
 
     if id.present?
-      session[:current_user_id] = id
+      login(id)
     else
       flash[:error] = 'Login Failed'
     end

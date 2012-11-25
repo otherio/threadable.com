@@ -25,4 +25,15 @@ class ApplicationController < ActionController::Base
   end
   helper_method :authenticated?
 
+
+  def login user_id
+    session[:current_user_id] = user_id
+  end
+
+  rescue_from 'RecordNotFound' do |exception|
+    respond_to do |format|
+      format.json { render nothing: true, status: :not_found }
+    end
+  end
+
 end

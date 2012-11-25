@@ -12,4 +12,10 @@ class Multify::Resource::HasMany
     @model.new(@options.merge(attributes))
   end
 
+  def create attributes={}
+    member = new(attributes)
+    member.save
+    member
+  end
+
 end

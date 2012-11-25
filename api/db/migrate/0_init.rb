@@ -2,8 +2,9 @@ class Init < ActiveRecord::Migration
   def change
 
     create_table :users do |t|
-      t.text :email
       t.text :name
+      t.string :slug, default: 'slug', null: false
+      t.text :email
 
       ## Database authenticatable
       t.string :encrypted_password, :null => false, :default => ""
@@ -38,7 +39,7 @@ class Init < ActiveRecord::Migration
 
       t.timestamps
     end
-
+    add_index :users, :slug, unique: true
     add_index :users, :email,                :unique => true
     add_index :users, :reset_password_token, :unique => true
 

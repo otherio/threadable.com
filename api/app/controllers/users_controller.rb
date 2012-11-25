@@ -22,6 +22,7 @@ class UsersController < ApplicationController
   def index
     @users = User.scoped
 
+    @users = @users.where(:slug => params[:slug])         if params[:slug]
     @users = @users.where(:email => params[:email])       if params[:email]
     @users = @users.where(:password => params[:password]) if params[:password]
 
@@ -34,7 +35,11 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     respond_to do |format|
-      format.json { render json: @user }
+      if @user.present?
+        format.json { render json: @user }
+      else
+        format.json { render nothing: true, status: :not_found }
+      end
     end
   end
 

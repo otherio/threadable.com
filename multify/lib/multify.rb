@@ -13,6 +13,12 @@ module Multify
       @host = URI.parse(host)
     end
 
+    def reset!
+      Task.all.each(&:delete)
+      Project.all.each(&:delete)
+      User.all.each(&:delete)
+    end
+
   end
 
 end

@@ -11,6 +11,8 @@ class ProjectsController < ApplicationController
 
     @projects = @projects.where(slug: params[:slug]) if params[:slug]
 
+    @projects = @projects.where(name: params[:name]) if params[:name]
+
     respond_to do |format|
       format.json { render json: @projects }
     end

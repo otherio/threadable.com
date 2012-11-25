@@ -32,20 +32,14 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = current_user.projects.new(params[:project])
-    @project.save or respond_to do |format|
-      format.json { render json: @project.errors, status: :unprocessable_entity }
-      format.html { render action: "new" }
-    end
-
-    # @membership = @project.memberships.new(user: current_user)
-    # @membership.save or respond_to do |format|
-    #   format.json { render json: @membership.errors, status: :unprocessable_entity }
-    #   format.html { render action: "new" }
-    # end
-
     respond_to do |format|
-      format.html { redirect_to project_url(@project.slug), notice: 'Project was successfully created.' }
-      format.json { render json: @project, status: :created, location: @project }
+      if @project.save
+        format.html { redirect_to project_url(@project.slug), notice: 'Project was successfully created.' }
+        format.json { render json: @project, status: :created, location: @project }
+      else
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.html { render action: "new" }
+      end
     end
   end
 
@@ -78,6 +72,7 @@ class ProjectsController < ApplicationController
 
   def find
     @project = current_user.projects.find(slug: params[:id]).first
+    @project.present? or raise 'RecordNotFound'
   end
 
 end

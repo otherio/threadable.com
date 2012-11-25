@@ -44,7 +44,7 @@ class Multify::Resource::Client
   rescue RestClient::ResourceNotFound
     [false, nil]
   ensure
-    p response
+    # p "API RESPONSE: #{response}"
   end
 
   def deserialize json

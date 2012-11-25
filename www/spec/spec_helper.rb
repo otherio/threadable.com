@@ -39,7 +39,7 @@ RSpec.configure do |config|
 
   config.before do
     # Rails.application.routes.default_url_options[:host] = 'example.com'
-    Test::Api.reset!
+    # Test::Api.reset!
   end
 
   config.include CapybaraEnvironment, :type => :request
