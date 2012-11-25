@@ -33,7 +33,7 @@ describe SessionsController do
       user = @user.email
       token = @user.authentication_token
 
-      xhr :post, :create, :user => user, :auth_token => "this is a bad token"
+      xhr :post, :create, :auth_token => "this is a bad token"
       response.status.should == 401
     end
 
@@ -41,7 +41,7 @@ describe SessionsController do
       user = @user.email
       token = @user.authentication_token
 
-      xhr :post, :create, :user => user, :auth_token => token
+      xhr :post, :create, :auth_token => token
       response.status.should == 200
       result = ActiveSupport::JSON.decode(response.body)
       result['user']['email'].should == user
