@@ -5,4 +5,6 @@ class ProjectMembership < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
+  scope :read_only, where('project_memberships.read_only = 1')
+
 end

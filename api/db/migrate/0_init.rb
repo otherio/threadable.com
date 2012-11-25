@@ -63,6 +63,9 @@ class Init < ActiveRecord::Migration
     create_table :project_memberships do |t|
       t.integer :project_id
       t.integer :user_id
+      t.boolean :can_write
+      t.boolean :gets_email
+      t.boolean :moderator
       t.timestamps
     end
 
