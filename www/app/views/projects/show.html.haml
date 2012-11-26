@@ -7,6 +7,8 @@
   %b Description:
   = @project.description
 
+= @project.slug
+
 = link_to 'Tasks', project_tasks_path(@project.slug)
 \|
 = link_to 'Edit', edit_project_path(@project.slug)

@@ -45,8 +45,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        login(@user.id)
-        format.html { redirect_to user_url(@user.slug), notice: 'User was successfully created.' }
+        authenticate(@user.email, params[:user][:password])
+        format.html { redirect_to root_url, notice: "Hi #{@user.name}, Welcome to Multify" }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }

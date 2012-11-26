@@ -34,7 +34,7 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.new(params[:project])
     respond_to do |format|
       if @project.save
-        format.html { redirect_to project_url(@project.slug), notice: 'Project was successfully created.' }
+        format.html { redirect_to project_url(@project.slug), notice: "Project #{@project.name} was successfully created." }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.json { render json: @project.errors, status: :unprocessable_entity }

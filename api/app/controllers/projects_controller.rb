@@ -14,6 +14,8 @@ class ProjectsController < ApplicationController
   def index
     @projects = current_user.projects
 
+    @projects = @projects.where(:slug => params[:slug]) if params[:slug].present?
+
     respond_to do |format|
       format.json { render json: @projects }
     end

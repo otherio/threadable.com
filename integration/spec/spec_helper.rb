@@ -9,6 +9,18 @@ require 'multify'
 # in spec/support/ and its subdirectories.
 Dir[File.join(File.expand_path('..',__FILE__), "support/**/*.rb")].each {|f| require f}
 
+
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.ignore_hidden_elements = true
+Capybara.default_driver         = :selenium
+Capybara.javascript_driver      = :selenium
+Capybara.default_selector       = :css
+Capybara.default_wait_time      = 5
+Capybara.app_host               = 'http://0.0.0.0:3001'
+
 RSpec.configure do |config|
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
@@ -18,8 +30,9 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
   config.include ServersSupport
+
   config.before :all do
-    Multify::Servers.start!
+    # Multify::Servers.start!
   end
 
 end

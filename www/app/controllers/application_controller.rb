@@ -27,9 +27,16 @@ class ApplicationController < ActionController::Base
   end
   helper_method :authenticated?
 
-  def authenticate authentication_token, user
+  def authenticate email, password
+    authentication_token, user = Multify.authenticate(
+      email,
+      password
+    )
     session[:authentication_token] = authentication_token
-    session[:current_user_id] = user
+    session[:current_user_id] = user.id
+    user
+  rescue RestClient::ResourceNotFound
+    false
   end
 
   def setup_multify_authentication_token
