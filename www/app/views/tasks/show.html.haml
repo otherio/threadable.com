@@ -1,3 +1,5 @@
+WTFPANDA!
+
 %p#notice= notice
 
 %p
@@ -15,4 +17,10 @@
 = link_to 'Back', project_tasks_path(@task.project.slug)
 
 
-- form_tag :url =>
+%h3 Add A Doer
+= form_for Struct.new(:email).new, :as => :doer, :url => new_project_task_path, :method => :put do |f|
+  .field
+    = f.label :Email
+    = f.text_field :email
+  .actions
+    = f.submit 'Save'
