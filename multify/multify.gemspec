@@ -21,5 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'json'
   gem.add_runtime_dependency 'virtus'
 
-  # gem.add_development_dependency "rake"
+  gem.add_development_dependency "debugger"
+  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "nyan-cat-formatter"
 end

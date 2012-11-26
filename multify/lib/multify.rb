@@ -2,6 +2,7 @@ require 'multify/version'
 require 'rest-client'
 require 'json'
 require 'virtus'
+require 'base64'
 
 module Multify
 

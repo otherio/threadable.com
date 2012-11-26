@@ -99,6 +99,11 @@ class Multify::Resource
     self.class.client.delete(id).first
   end
 
+  def == other
+    !id.nil? && self.class == other.class && id == other.id
+  end
+  alias_method :eql?, :==
+
 end
 
 require "multify/resource/client"
