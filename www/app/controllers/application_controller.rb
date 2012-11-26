@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   private
 
+  before_filter :setup_multify_authentication_token
+
   def self.require_authentication! options={}
     before_filter :require_authentication!, options
   end
@@ -25,9 +27,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :authenticated?
 
+  def authenticate authentication_token, user
+    session[:authentication_token] = authentication_token
+    session[:current_user_id] = user
+  end
 
-  def login user_id
-    session[:current_user_id] = user_id
+  def setup_multify_authentication_token
+    Multify.authentication_token = session[:authentication_token]
   end
 
   rescue_from 'RecordNotFound' do |exception|

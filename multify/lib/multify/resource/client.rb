@@ -15,31 +15,41 @@ class Multify::Resource::Client
 
   def find params={}
     make_request do
-      collection.get(default_params.merge(params: params))
+      collection.get(
+        params: default_params.merge(params)
+      )
     end
   end
 
   def create data={}
     make_request do
-      collection.post(default_params.merge(singular_name => data))
+      collection.post(
+        default_params.merge(singular_name => data)
+      )
     end
   end
 
   def read id, params={}
     make_request do
-      member(id).get(default_params.merge(params: params))
+      member(id).get(
+        params: default_params.merge(params)
+      )
     end
   end
 
   def update id, data={}
     make_request do
-      member(id).put(default_params.merge(singular_name => data))
+      member(id).put(
+        default_params.merge(singular_name => data)
+      )
     end
   end
 
   def delete id
     make_request do
-      member(id).delete(default_params)
+      member(id).delete(
+        params: default_params
+      )
     end
   end
 

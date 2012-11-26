@@ -4,18 +4,17 @@ class AuthenticationsController < ApplicationController
   end
 
   def create
-    id = Multify::User.authenticate(
-      email: params[:authentication][:email],
-      password: params[:authentication][:password]
-    )
-
-    if id.present?
-      login(id)
-    else
+    begin
+      authentication_token, user = Multify.authenticate(
+        params[:authentication][:email],
+        params[:authentication][:password]
+      )
+      authenticate(authentication_token, user.id)
+    rescue RestClient::ResourceNotFound
       flash[:error] = 'Login Failed'
+    ensure
+      redirect_to root_url
     end
-
-    redirect_to root_url
   end
 
   def destroy

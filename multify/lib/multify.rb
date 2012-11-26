@@ -24,7 +24,10 @@ module Multify
       })
       response = JSON.parse(response)
       self.authentication_token = response["authentication_token"]
-      return Multify::User.new(response["user"])
+      return [
+        self.authentication_token,
+        Multify::User.new(response["user"]),
+      ]
     end
 
     def authenticated?
