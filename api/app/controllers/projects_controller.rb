@@ -23,11 +23,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1.json
   def show
     respond_to do |format|
-      if @project.present?
-        format.json { render json: @project }
-      else
-        format.json { render nothing: true, status: :not_found }
-      end
+      format.json { render json: @project }
     end
   end
 
@@ -63,11 +59,16 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @project.destroy
+    if @project.project_memberships.where(:user_id => current_user.id).first.moderator
+      @project.destroy
 
-    respond_to do |format|
-      format.html { redirect_to projects_url }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.json { render json: @project, status: :ok }
+      end
+    else
+      respond_to do |format|
+        format.json { render nothing: true, status: :forbidden }
+      end
     end
   end
 
@@ -75,6 +76,12 @@ class ProjectsController < ApplicationController
 
   def find
     @project = current_user.projects.where('projects.id = ? or projects.slug = ?', params[:id], params[:id]).first
+
+    if ! @project.present?
+      respond_to do |format|
+        format.json { render nothing: true, status: :not_found }
+      end
+    end
   end
 
 end
