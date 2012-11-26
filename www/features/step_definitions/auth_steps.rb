@@ -1,12 +1,13 @@
 Given /^I am logged in as:$/ do |table|
   user = table.hashes.first
   user = Multify::User.create(user)
-  step %{I login as "#{user.email}"}
+  step %{I log in as "#{user.email}" with the password "#{user.password}"}
 end
 
-When /^I login as "([^"]+)"$/ do |email|
+When /^I log in as "([^"]+)" with the password "([^"]+)"$/ do |email, password|
   visit root_path
-  fill_in 'Email', :with => email
+  fill_in 'Email',    :with => email
+  fill_in 'Password', :with => password
   click_on 'Login'
 end
 

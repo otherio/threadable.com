@@ -14,23 +14,33 @@ class Multify::Resource::Client
   end
 
   def find params={}
-    make_request{ collection.get(params: params) }
+    make_request do
+      collection.get(default_params.merge(params: params))
+    end
   end
 
   def create data={}
-    make_request{ collection.post(singular_name => data) }
+    make_request do
+      collection.post(default_params.merge(singular_name => data))
+    end
   end
 
   def read id, params={}
-    make_request{ member(id).get(params: params) }
+    make_request do
+      member(id).get(default_params.merge(params: params))
+    end
   end
 
   def update id, data={}
-    make_request{ member(id).put(singular_name => data) }
+    make_request do
+      member(id).put(default_params.merge(singular_name => data))
+    end
   end
 
   def delete id
-    make_request{ member(id).delete }
+    make_request do
+      member(id).delete(default_params)
+    end
   end
 
   def make_request
@@ -49,6 +59,10 @@ class Multify::Resource::Client
 
   def deserialize json
     JSON.parse(json)
+  end
+
+  def default_params
+    {:authentication_token => Multify.authentication_token}
   end
 
 end
