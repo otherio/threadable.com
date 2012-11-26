@@ -88,12 +88,15 @@ describe ProjectsController do
     end
   end
 
-  # describe "GET new" do
-  #   it "assigns a new project as @project" do
-  #     get :new, {}, valid_session
-  #     assigns(:project).should be_a_new(Project)
-  #   end
-  # end
+  describe "GET new" do
+    it "saves a new project for the current user" do
+      new_project = FactoryGirl.build(:project)
+      xhr :post, :create, project: new_project.attributes.slice('name', 'description')
+      response.should be_success
+      Project.last.name.should eq(new_project.name)
+      Project.last.members[0].should eq(user)
+    end
+  end
 
   # describe "GET edit" do
   #   it "assigns the requested project as @project" do
