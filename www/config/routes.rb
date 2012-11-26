@@ -2,17 +2,21 @@ Www::Application.routes.draw do
 
   get "/", :to => "home#index", :as => 'root'
 
-
   resource :authentication, :only => [:create, :destroy]
 
   get "/join", :to => "users#new", :as => 'join'
-  resources :users
+  resources :users, :except => :new
 
   resources :projects, :path => '/' do
-    resources :tasks do
-      resources :doers
-      resources :followers
-      resources :comments
+    with_options :only => [:index, :create, :destroy] do |o|
+
+      o.resources :members, :controller => 'projects/members'
+
+      resources :tasks, :controller => 'projects/tasks' do
+        o.resources :doers,     :controller => 'projects/tasks/doers'
+        o.resources :followers, :controller => 'projects/tasks/followers'
+        o.resources :comments,  :controller => 'projects/tasks/comments'
+      end
     end
   end
 

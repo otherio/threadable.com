@@ -1,0 +1,17 @@
+%h1 Listing project_task_doers
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @project_task_doers.each do |project_task_doer|
+    %tr
+      %td= link_to 'Show', project_task_doer
+      %td= link_to 'Edit', edit_project_task_doer_path(project_task_doer)
+      %td= link_to 'Destroy', project_task_doer, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Doer', new_project_task_doer_path
