@@ -2,21 +2,6 @@ class UsersController < ApplicationController
 
   before_filter :find, :only => [:show, :update, :destroy]
 
-
-  # POST /users/authenticate
-  # POST /users/authenticate.json
-  def authenticate
-    @user = User.find_by_email(params[:email])
-    # ignoring params[:password] for now
-    respond_to do |format|
-      if @user.present?
-        format.json { render text: @user.id, status: :ok }
-      else
-        format.json { render nothing: true, status: :not_found }
-      end
-    end
-  end
-
   # GET /users
   # GET /users.json
   def index
