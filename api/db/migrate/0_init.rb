@@ -3,7 +3,7 @@ class Init < ActiveRecord::Migration
 
     create_table :users do |t|
       t.text :name
-      t.string :slug, default: 'slug', null: false
+      t.string :slug, null: false
       t.text :email
 
       ## Database authenticatable
@@ -45,7 +45,7 @@ class Init < ActiveRecord::Migration
 
     create_table :projects do |t|
       t.string :name
-      t.string :slug, default: 'slug', null: false
+      t.string :slug, null: false
       t.text   :description
       t.timestamps
     end
@@ -53,7 +53,7 @@ class Init < ActiveRecord::Migration
 
     create_table :tasks do |t|
       t.string   :name
-      t.string   :slug, default: 'slug', null: false
+      t.string   :slug, null: false
       t.boolean  :done
       t.datetime :due_at
       t.integer  :project_id
@@ -64,9 +64,9 @@ class Init < ActiveRecord::Migration
     create_table :project_memberships do |t|
       t.integer :project_id
       t.integer :user_id
-      t.boolean :can_write
-      t.boolean :gets_email
-      t.boolean :moderator
+      t.boolean :can_write, default: true
+      t.boolean :gets_email, default: true
+      t.boolean :moderator, default: false
       t.timestamps
     end
 

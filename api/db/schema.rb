@@ -16,40 +16,40 @@ ActiveRecord::Schema.define(:version => 0) do
   create_table "project_memberships", :force => true do |t|
     t.integer  "project_id"
     t.integer  "user_id"
-    t.boolean  "can_write"
-    t.boolean  "gets_email"
-    t.boolean  "moderator"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.boolean  "can_write",  :default => true
+    t.boolean  "gets_email", :default => true
+    t.boolean  "moderator",  :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "projects", :force => true do |t|
     t.string   "name"
-    t.string   "slug",        :default => "slug", :null => false
+    t.string   "slug",        :null => false
     t.text     "description"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "projects", ["slug"], :name => "index_projects_on_slug", :unique => true
 
   create_table "tasks", :force => true do |t|
     t.string   "name"
-    t.string   "slug",       :default => "slug", :null => false
+    t.string   "slug",       :null => false
     t.boolean  "done"
     t.datetime "due_at"
     t.integer  "project_id"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "tasks", ["slug"], :name => "index_tasks_on_slug", :unique => true
 
   create_table "users", :force => true do |t|
     t.text     "name"
-    t.string   "slug",                   :default => "slug", :null => false
+    t.string   "slug",                                   :null => false
     t.text     "email"
-    t.string   "encrypted_password",     :default => "",     :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -63,8 +63,8 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "authentication_token"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
