@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @current_user ||= Multify::User.find(id: current_user_id) if current_user_id.present?
+  rescue Multify::Resource::NotFound
+    session.clear
   end
   helper_method :current_user
 
