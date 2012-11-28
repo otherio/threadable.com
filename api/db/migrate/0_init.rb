@@ -51,6 +51,15 @@ class Init < ActiveRecord::Migration
     end
     add_index :projects, :slug, unique: true
 
+    create_table :project_memberships do |t|
+      t.integer :project_id
+      t.integer :user_id
+      t.boolean :can_write, default: true
+      t.boolean :gets_email, default: true
+      t.boolean :moderator, default: false
+      t.timestamps
+    end
+
     create_table :tasks do |t|
       t.string   :name
       t.string   :slug, null: false
@@ -61,14 +70,17 @@ class Init < ActiveRecord::Migration
     end
     add_index :tasks, :slug, unique: true
 
-    create_table :project_memberships do |t|
-      t.integer :project_id
+    create_table :task_doers do |t|
       t.integer :user_id
-      t.boolean :can_write, default: true
-      t.boolean :gets_email, default: true
-      t.boolean :moderator, default: false
-      t.timestamps
+      t.integer :task_id
     end
+    add_index :task_doers, [:user_id, :task_id], unique: true
+
+    create_table :task_followers do |t|
+      t.integer :user_id
+      t.integer :task_id
+    end
+    add_index :task_followers, [:user_id, :task_id], unique: true
 
   end
 end
