@@ -1,7 +1,8 @@
-Multify.logged_in = false;
+Multify.logged_in = Multify.session.authentication_token;
 
 Multify.logout = function(){
-  Multify.session.delete('authentication_token');
+  delete Multify.session.authentication_token;
+  Multify.session.save();
 };
 
 Multify.login = function(email, password){
@@ -10,10 +11,9 @@ Multify.login = function(email, password){
   request.done(function(response){
     Multify.logged_in = true;
 
-    Multify.session.update({
-      user_id: response.user.id,
-      authentication_token: response.authentication_token
-    });
+    Multify.session.user_id = response.user.id;
+    Multify.session.authentication_token = response.authentication_token;
+    Multify.session.save();
 
     Multify.user = response.user;
 
