@@ -1,5 +1,8 @@
 MultifyApi::Application.routes.draw do
 
+  # for devise/ajax login
+  devise_for :users, :controllers => {:sessions => 'sessions'}
+
   # resources :projects do
   #   resources :tasks do
   #     resources :doers
@@ -7,6 +10,8 @@ MultifyApi::Application.routes.draw do
   #   end
   #   resources :members
   # end`
+
+
 
   resources :projects
 
@@ -20,8 +25,5 @@ MultifyApi::Application.routes.draw do
 
   # devise wants this, but probably not forever.
   root :to => "home#index"
-
-  # for devise/ajax login
-  devise_for :users, :controllers => {:sessions => 'sessions'}
 
 end

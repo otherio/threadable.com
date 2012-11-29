@@ -66,5 +66,9 @@ module MultifyApi
     # devise wants this for deployment on heroku
     # (don't access db or load models while precompiling assets)
     config.assets.initialize_on_precompile = false
+
+    require 'method_override'
+    config.middleware.insert_before ActionDispatch::Static, MethodOverride
+    config.middleware.insert_before MethodOverride, Rack::JSONP
   end
 end
