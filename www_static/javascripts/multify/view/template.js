@@ -7,4 +7,3 @@ Multify.View.Template = function(name, value){
 Multify.View.Template.prototype.render = function(data) {
   return Mustache.render(this.value, data);
 };
-

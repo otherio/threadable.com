@@ -1,1 +1,11 @@
 {{#render}}page_header{{/render}}
+
+
+{{^logged_in}}
+{{#render}}login_form{{/render}}
+{{/logged_in}}
+
+{{#logged_in}}
+
+
+{{/logged_in}}

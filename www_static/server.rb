@@ -28,7 +28,8 @@ class Server < Sinatra::Base
     def javascript
       javascript = sprockets_environment.find_asset("application.js").to_s
 
-      views = settings.views.find do |path|
+      templates = []
+      settings.views.find do |path|
         next unless path.file?
         extname = path.extname
         name = path.relative_path_from(settings.views).to_s[/(.*)#{Regexp.escape(extname)}$/,1]
@@ -40,8 +41,10 @@ class Server < Sinatra::Base
         else
           value
         end
-        javascript << "new Multify.View.Template(#{name.to_json}, #{value.to_json});\n"
+        templates << "new Multify.View.Template(#{name.to_json}, #{value.to_json});"
       end
+
+      javascript << templates.join("\n")
 
       javascript
     end
