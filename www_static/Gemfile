@@ -4,6 +4,7 @@ gem "sinatra"
 gem "compass"
 gem "haml"
 gem "sprockets"
+gem "json"
 
 gem "shotgun"
 gem "debugger"

@@ -1,12 +1,10 @@
 !!!
 %html
   %head
-    %link{rel:"stylesheet", href:"/application.css"}
-    %script{src:"/application.js", type:"text/javascript"}
+    %style= stylesheet
+    %script{type:"text/javascript"}= javascript
   %body
-    %h1 Hello World
 
-    %form.login
-      %input{name:'email', type:'email', placeholder:'email'}
-      %input{name:'password', type:'password', placeholder:'password'}
-      %input{name:'login',type:'submit'}
+
+
+
