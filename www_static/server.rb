@@ -14,7 +14,7 @@ class Server < Sinatra::Base
   # set :templates,     ROOT + 'javascripts'
 
   get '/' do
-    haml :application
+    haml :application, layout: false
   end
 
   helpers do
