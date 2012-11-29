@@ -31,9 +31,5 @@ Multify.init = function(){
 
 Multify.ready(function(){
   console.log('Multify ready');
-  if (Multify.logged_in){
-    $('body').html('<h1>Welcome back '+Multify.current_user.name+'</h1>');
-  }else{
-    $('body').html(Multify.View.render('login_form', {email:''}));
-  }
+  $('body').html( Multify.View.render('layout') );
 });
