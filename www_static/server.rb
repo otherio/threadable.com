@@ -1,46 +1,59 @@
 require 'rubygems'
 require 'bundler'
 Bundler.require
+require 'pathname'
 
 class Server < Sinatra::Base
 
-  set :views,         './views'
-  set :public_folder, './public'
-  set :css_folder,    './stylesheets'
-  set :js_folder,     './javascripts'
-  set :css_load_paths, ->{
-    Compass.configuration.sass_load_paths + [settings.css_folder]
-  }
+  ROOT = Pathname.new File.expand_path('../',__FILE__)
+
+  set :views,         ROOT + 'views'
+  set :public_folder, ROOT + 'public'
+  set :stylesheets,   ROOT + 'stylesheets'
+  set :javascripts,   ROOT + 'javascripts'
+  # set :templates,     ROOT + 'javascripts'
 
   get '/' do
     haml :application
   end
 
-  get '/application.js' do
-    js :application
-  end
-
-  get '/application.css' do
-    sass :application
-  end
-
   helpers do
 
-    def sass name
-      content_type 'text/css'
-      sass = File.read(File.join(settings.css_folder, "#{name}.sass"))
-      Sass::Engine.new(sass, :load_paths => settings.css_load_paths).to_css
+    def stylesheet
+      load_paths = Compass.configuration.sass_load_paths + [settings.stylesheets]
+      sass = File.read(settings.stylesheets + "application.sass")
+      Sass::Engine.new(sass, :load_paths => load_paths).to_css
     end
 
-    def js name
-      content_type 'application/javascript'
-      sprockets_environment.find_asset("#{name}.js").to_s
+    def javascript
+      javascript = sprockets_environment.find_asset("application.js").to_s
+
+      views = settings.views.find do |path|
+        next unless path.file? &&  path.to_s =~ /\.mustache$/
+        name = path.relative_path_from(settings.views).to_s[/(.*)\.mustache$/,1]
+        javascript << "new Multify.View.Template(#{name.to_json}, #{path.read.to_json});\n"
+      end
+
+      javascript
     end
+
+
+
+    # def sass name
+    #   content_type 'text/css'
+    #   sass = File.read(File.join(settings.css_folder, "#{name}.sass"))
+    #   Sass::Engine.new(sass, :load_paths => settings.css_load_paths).to_css
+    # end
+
+    # def js name
+    #   content_type 'application/javascript'
+    #   sprockets_environment.find_asset("#{name}.js").to_s
+    # end
 
     def sprockets_environment
       @sprockets_environment ||= begin
         environment = Sprockets::Environment.new(Dir.pwd)
-        environment.append_path settings.js_folder
+        environment.append_path settings.javascripts
         environment
       end
     end
