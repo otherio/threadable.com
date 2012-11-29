@@ -29,9 +29,18 @@ class Server < Sinatra::Base
       javascript = sprockets_environment.find_asset("application.js").to_s
 
       views = settings.views.find do |path|
-        next unless path.file? &&  path.to_s =~ /\.mustache$/
-        name = path.relative_path_from(settings.views).to_s[/(.*)\.mustache$/,1]
-        javascript << "new Multify.View.Template(#{name.to_json}, #{path.read.to_json});\n"
+        next unless path.file?
+        extname = path.extname
+        name = path.relative_path_from(settings.views).to_s[/(.*)#{Regexp.escape(extname)}$/,1]
+        next if name == 'application'
+        value = path.read
+        value = case extname
+        when '.haml'
+          Haml::Engine.new(value).to_html
+        else
+          value
+        end
+        javascript << "new Multify.View.Template(#{name.to_json}, #{value.to_json});\n"
       end
 
       javascript
