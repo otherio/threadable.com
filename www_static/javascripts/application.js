@@ -13,3 +13,12 @@
 setTimeout(function(){
   Multify.init();
 });
+
+
+$(document).on('submit', '.login_form', function(event){
+  event.preventDefault();
+  var form = $(this),
+    email = form.find('input[name=email]').val(),
+    password = form.find('input[name=password]').val();
+  Multify.login(email, password);
+})
