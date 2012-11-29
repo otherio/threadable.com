@@ -1,5 +1,7 @@
-Multify.Session = {
+Multify.session = {
   name: 'session',
+
+  // TODO we dont need this wrapper
   data: function(){
     return this._data || this.read();
   },
