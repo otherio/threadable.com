@@ -38,6 +38,7 @@ Multify.loadCurrentUser = function(){
       Multify.current_user = user;
     })
     .fail(function(){
+      alert('failed to find user '+Multify.current_user_id);
       // Multify.logout();
     })
   ;
