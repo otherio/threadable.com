@@ -10,4 +10,6 @@
 
 
 
-Multify.init();
+setTimeout(function(){
+  Multify.init();
+});

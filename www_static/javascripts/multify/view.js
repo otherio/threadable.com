@@ -2,6 +2,8 @@ Multify.View  = {
   templates: {},
 
   render: function(name, data) {
-    return this.templates[name].render(data);
+    var template = this.templates[name];
+    if (typeof template === 'undefined') throw new Error('template '+name+' undefined');
+    return template.render(data);
   }
 };
