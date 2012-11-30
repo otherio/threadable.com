@@ -31,5 +31,5 @@ Multify.init = function(){
 
 Multify.ready(function(){
   console.log('Multify ready');
-  $('body').html( Multify.View.render('layout') );
+  $('body').html( View.render('layout') );
 });
