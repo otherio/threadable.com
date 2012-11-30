@@ -1,40 +1,33 @@
 Component = function(name, block){
-  if (arguments.length === 0) return (this === window) ? new Component : this;
-  // if (this === window) return new Component('use new Component');
-  var self = Component.store[name] || (Component.store[name] = new Component);
-  self.name = name;
-  if (block) block.apply(self);
-  return self;
+  if (this instanceof Component){
+    var self = Component.store[name] || (Component.store[name] = this);
+    self.name = name;
+    if (block) block.call(self, self);
+  }else{
+    var self = Component.store[name]
+    if (self && block) block.call(self, self);
+    return self;
+  }
 };
 
 Component.store = {};
 
-// Component.uuid = (function(){
-//   var uuid = 0;
-//   return function(){ return uuid += 1; }
-// })();
-
-Component.prototype.render = function(){
-
+Component.prototype.render = function(options){
+  options || (options = {});
 
   if (this.init && !this.init.run){
     this.init.run = true;
     this.init();
   }
 
-  var args = [].slice.call(arguments, 0);
-  args.unshift(this.name)
+  if (this.before_render) this.before_render(options);
 
-  var html = $(View.render.apply(View, args));
+  var element = $(View.render(this.name, options));
+  element.data('options',options);
 
-  console.log('Render Component:', this.name, html);
+  if (this.after_render) this.after_render(element, options);
 
-  // var uuid = Component.uuid();
-
-  // html = html.replace(/^\s*<\w+ /, function(s,n){
-  //   return n === 0 ? s+'data-component_uuid="'+uuid+'" ' : s;
-  // });
-  return html;
+  return element;
 };
 
 

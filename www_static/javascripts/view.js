@@ -48,19 +48,17 @@ View.helper({
 
   render_template: function () {
     return function (text, render) {
-      var args = View.renderTextToArguments(text);
-      if (args === null) return "<b>I have no idea how to render"+text+"</b>";
-      return View.render.apply(View, args);
+      var v = View.renderTextToArguments(text);
+      if (v === null) return "<b>I have no idea how to render"+text+"</b>";
+      return View.render(v.name, v.options);
     };
   },
 
   render_component: function(){
     return function (text, render) {
-      var args = View.renderTextToArguments(text);
-      if (args === null) return "<b>I have no idea how to render"+text+"</b>";
-      var name = args.shift();
-      var component = Component(name);
-      return component.render.apply(component, args);
+      var c = View.renderTextToArguments(text);
+      if (c === null) return "<b>I have no idea how to render"+text+"</b>";
+      return Component(c.name).render(v.options);
     };
   },
 
@@ -69,12 +67,9 @@ View.helper({
 View.renderTextToArguments = function(text){
   var matches = text.match(/^(.+?)(\(.*\))?$/);
   if (matches === null) return false;
-  var name = matches[1], args = matches[2];
-  args = args ?
-    eval('['+args.slice(1,-1)+']') :
-    [];
-  args.unshift(name);
-  return args;
+  var name = matches[1], options = matches[2];
+  options = eval(options);
+  return {name:name, options:options}
 };
 
 
