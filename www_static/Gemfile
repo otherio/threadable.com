@@ -8,3 +8,6 @@ gem "json"
 
 gem "shotgun"
 gem "debugger"
+
+
+gem "chunky_png"
