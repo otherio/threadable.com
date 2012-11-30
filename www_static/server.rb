@@ -32,6 +32,7 @@ class Server < Sinatra::Base
       settings.views.find do |path|
         next unless path.file?
         extname = path.extname
+        next if extname.empty?
         name = path.relative_path_from(settings.views).to_s[/(.*)#{Regexp.escape(extname)}$/,1]
         next if name == 'application'
         value = path.read
@@ -41,6 +42,7 @@ class Server < Sinatra::Base
         else
           value
         end
+
         templates << "new View.Template(#{name.to_json}, #{value.to_json});"
       end
 

@@ -25,7 +25,7 @@ Component.prototype.render = function(options){
 
   this.trigger('before_render', options);
 
-  var element = $(View.render(this.name, options));
+  var element = $(View.render('components/'+this.name, options));
   element.data('options',options);
 
   this.trigger('after_render', element, options);
