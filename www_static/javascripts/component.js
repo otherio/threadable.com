@@ -15,7 +15,7 @@ Component.store = {};
 // })();
 
 Component.prototype.render = function(){
-  console.log('rendering', this, arguments);
+
 
   if (this.init && !this.init.run){
     this.init.run = true;
@@ -24,7 +24,10 @@ Component.prototype.render = function(){
 
   var args = [].slice.call(arguments, 0);
   args.unshift(this.name)
-  var html = View.render.apply(View, args);
+
+  var html = $(View.render.apply(View, args));
+
+  console.log('Render Component:', this.name, html);
 
   // var uuid = Component.uuid();
 
