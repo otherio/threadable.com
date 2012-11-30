@@ -1,5 +1,7 @@
 //= require "uri"
+//= require "s"
 //= require "jquery"
+//= require "jquery-s"
 //= require "jquery-cookie"
 //= require "mustache"
 //= require "view"

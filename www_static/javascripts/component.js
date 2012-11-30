@@ -17,6 +17,9 @@ Component.store = {};
 Component.prototype.render = function(){
   console.log('rendering', this, arguments);
 
+  this.init();
+  this.init = $.noop;
+
   var args = [].slice.call(arguments, 0);
   args.unshift(this.name)
   var html = View.render.apply(View, args);
@@ -27,4 +30,9 @@ Component.prototype.render = function(){
   //   return n === 0 ? s+'data-component_uuid="'+uuid+'" ' : s;
   // });
   return html;
+};
+
+
+Component.prototype.s = function(){
+  return S('.'+this.name);
 };
