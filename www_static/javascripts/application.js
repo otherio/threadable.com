@@ -2,26 +2,41 @@
 //= require "jquery"
 //= require "jquery-s"
 //= require "jquery-cookie"
-//= require "underscore"
-//= require "backbone"
+//= require "handlebars"
+//= require "ember"
 //= require "multify"
-//= require "models/user"
 //= require "multify/session"
 //= require "multify/authentication"
-//= require "multify/router"
 
 
+var App = Ember.Application.create();
 
-$(function(){
-
-  Multify.router = new Multify.Router;
-
-  Backbone.history.start({
-    pushState: true,
-    root: '/'
-  });
-
+App.ApplicationController = Ember.Controller.extend();
+App.ApplicationView = Ember.View.extend({
+  templateName: 'application'
 });
+
+App.Router = Ember.Router.extend({
+  root: Ember.Route.extend({
+    index: Ember.Route.extend({
+      route: '/'
+    })
+  })
+})
+
+App.initialize();
+
+
+// $(function(){
+
+//   Multify.router = new Multify.Router;
+
+//   Backbone.history.start({
+//     pushState: true,
+//     root: '/'
+//   });
+
+// });
 
 
 
