@@ -1,7 +1,9 @@
 .page_header
-  %h3 Multify
+  .left
+    %h3 Multify
 
-  {{#current_user}}
-  %a.logout{href:""} Logout
-  Hey {{name}}
-  {{/current_user}}
+  .right
+    {{#current_user}}
+    %a.logout{href:""} Logout
+    Hey {{name}}
+    {{/current_user}}

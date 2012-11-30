@@ -1,7 +1,5 @@
 new Component('page_header', function(self){
 
-  console.log('init', self, arguments);
-
   self.s()
     ('a.logout')
       .click(function(a, event){
@@ -11,23 +9,25 @@ new Component('page_header', function(self){
     .end
   .end;
 
-  // Multify.on('login logout', function(){
-  //   self.s().get().each(function(){
-  //     $(this).data
-  //   });
+  Multify.on('login logout', function(){
+    self.s().get().each(function(){
+      var
+        element = $(this),
+        options = element.data('options');
+      element.replaceWith(self.render(options));
+    });
+  });
+
+  // self.on('before_render', function(options){
   // });
 
-  self.on('before_render', function(options){
-    console.log('before_render', self, arguments);
-  });
+  // self.on('after_render', function(element){
 
-  self.on('after_render', function(element){
-    console.log('after_render', self, arguments);
+  //   var color = colors.shift();
+  //   element.css({'background-color': color });
+  //   element.click(function(){ console.log('color', color); });
+  // });
 
-    console.log(element);
-    element.css({'background-color': colors.shift() });
-  });
-
-  var colors = 'red green blue purple'.split(' ');
+  // var colors = 'red green blue purple'.split(' ');
 
 });

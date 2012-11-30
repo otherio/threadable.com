@@ -12,6 +12,7 @@ Events = {
   },
 
   trigger: function(event){
+    console.log('Event Triggered:', event);
     args = [].slice.call(arguments, 1);
     args.push(event);
     this._events || (this._events = {});

@@ -1,18 +1,16 @@
 Multify = {};
 
+$.extend(Multify, Events);
+
 Multify.host = 'http://0.0.0.0:3000';
 
-Multify.is_ready = false;
 Multify.ready = function(callback){
-  if (callback){
-    if (this.is_ready){ setTimeout(callback); return this; }
-    $(this).bind('ready', callback);
-  }else{
-    if (this.is_ready) return this;
-    this.is_ready = true;
-    $(this).trigger('ready');
+  if (callback) return this.on('ready', callback);
+  this.ready = function(callback){
+    if (callback) setTimeout(callback);
+    return this;
   }
-  return this;
+  return this.trigger('ready');
 };
 
 Multify.init = function(){
