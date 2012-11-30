@@ -13,7 +13,7 @@ class Server < Sinatra::Base
   set :javascripts,   ROOT + 'javascripts'
   # set :templates,     ROOT + 'javascripts'
 
-  get '/' do
+  get '*' do
     haml :application, layout: false
   end
 
@@ -28,25 +28,25 @@ class Server < Sinatra::Base
     def javascript
       javascript = sprockets_environment.find_asset("application.js").to_s
 
-      templates = []
-      settings.views.find do |path|
-        next unless path.file?
-        extname = path.extname
-        next if extname.empty?
-        name = path.relative_path_from(settings.views).to_s[/(.*)#{Regexp.escape(extname)}$/,1]
-        next if name == 'application'
-        value = path.read
-        value = case extname
-        when '.haml'
-          Haml::Engine.new(value).to_html
-        else
-          value
-        end
+      # templates = []
+      # settings.views.find do |path|
+      #   next unless path.file?
+      #   extname = path.extname
+      #   next if extname.empty?
+      #   name = path.relative_path_from(settings.views).to_s[/(.*)#{Regexp.escape(extname)}$/,1]
+      #   next if name == 'application'
+      #   value = path.read
+      #   value = case extname
+      #   when '.haml'
+      #     Haml::Engine.new(value).to_html
+      #   else
+      #     value
+      #   end
 
-        templates << "new View.Template(#{name.to_json}, #{value.to_json});"
-      end
+      #   templates << "new View.Template(#{name.to_json}, #{value.to_json});"
+      # end
 
-      javascript << templates.join("\n")
+      # javascript << templates.join("\n")
 
       javascript
     end

@@ -74,9 +74,9 @@ Multify.request = function(method, path, params){
 
 });
 
-View.helper(function(){
-  return {
-    logged_in: Multify.logged_in,
-    current_user: Multify.current_user
-  };
-});
+// View.helper(function(){
+//   return {
+//     logged_in: Multify.logged_in,
+//     current_user: Multify.current_user
+//   };
+// });

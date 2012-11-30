@@ -1,6 +1,6 @@
 Multify = {};
 
-$.extend(Multify, Events);
+$.extend(Multify, Backbone.Events);
 
 Multify.host = 'http://0.0.0.0:3000';
 
@@ -35,3 +35,6 @@ Multify.ready(function(){
   View.render_page();
 });
 
+Multify.Models = {};
+Multify.Collections = {};
+Multify.Views = {};
