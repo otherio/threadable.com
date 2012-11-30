@@ -1,10 +1,14 @@
 Multify.logged_in = !!Multify.session.authentication_token;
 Multify.current_user_id = Multify.session.user_id;
+Multify.current_user = null;
 
 Multify.logout = function(){
+  Multify.logged_in = false;
   Multify.current_user_id = null;
+  Multify.current_user = null;
   delete Multify.session.authentication_token;
   Multify.session.save();
+  Multify.trigger('logout');
 };
 
 Multify.login = function(email, password){
@@ -13,14 +17,13 @@ Multify.login = function(email, password){
   request.done(function(response){
     Multify.logged_in = true;
     Multify.current_user_id = response.user.id;
+    Multify.current_user = response.user;
 
     Multify.session.user_id = response.user.id;
     Multify.session.authentication_token = response.authentication_token;
     Multify.session.save();
-
-    // Multify.current_user(response.user;
-
     Multify.authentication_token = response.authentication_token;
+    Multify.trigger('login');
     console.log('Login succeeded', response);
   });
 
@@ -59,7 +62,7 @@ Multify.request = function(method, path, params){
   return $.ajax({
     url: url.toString(),
     dataType: "jsonp",
-    timeout: 1000,
+    timeout: 2000,
   })
 };
 

@@ -1,4 +1,0 @@
-new Component('layout', function(){
-
-
-});

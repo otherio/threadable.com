@@ -12,6 +12,7 @@
 //= require "multify/session"
 //= require "multify/authentication"
 
+//= require "layout"
 //= require_tree "./components"
 
 
