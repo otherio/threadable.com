@@ -8,12 +8,11 @@ View = {
 
   renderComponents: function(element){
     element || (element = document.body);
-    $(element).find('.component').each(function(){
+    $(element).find('[component]:not([rendered])').each(function(){
       var
         element = $(this),
         data = element.data(),
-        name = data.name;
-      delete data.name;
+        name = element.attr('component');
       element.replaceWith(Component(name).render(data));
     });
   },
