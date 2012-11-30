@@ -17,6 +17,8 @@ Multify.init = function(){
 
   if (Multify.logged_in){
     Multify.trigger('login');
+  }else{
+    Multify.trigger('logout');
   }
 
   if (Multify.logged_in && !Multify.current_user){

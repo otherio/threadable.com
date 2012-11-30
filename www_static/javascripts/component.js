@@ -27,6 +27,7 @@ Component.prototype.render = function(options){
 
   var element = $(View.render('components/'+this.name, options));
   element.data('options',options);
+  element.attr('component', this.name)
 
   this.trigger('after_render', element, options);
 
@@ -37,3 +38,10 @@ Component.prototype.render = function(options){
 Component.prototype.s = function(){
   return S('.'+this.name);
 };
+
+
+// $.fn.rerender = function(){
+//   $(this).each(function(){
+//     var component_name =
+//   })
+// };
