@@ -4,8 +4,9 @@ Component = function(name, block){
     self.name = name;
     if (block) self.on('init', block);
   }else{
-    var self = Component.store[name]
-    if (self && block) self.on('init', block);
+    var self = Component.store[name];
+    if (!self) throw new Error('Component '+name+' is not defined.');
+    if (block) self.on('init', block);
     return self;
   }
 };
