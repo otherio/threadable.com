@@ -5,4 +5,4 @@ require 'bundler'
 Bundler.require
 
 require File.expand_path('../../lib/compiler',__FILE__)
-Compiler.new
+Compiler.compile_all!
