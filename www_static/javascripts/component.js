@@ -17,8 +17,10 @@ Component.store = {};
 Component.prototype.render = function(){
   console.log('rendering', this, arguments);
 
-  this.init();
-  this.init = $.noop;
+  if (this.init && !this.init.run){
+    this.init.run = true;
+    this.init();
+  }
 
   var args = [].slice.call(arguments, 0);
   args.unshift(this.name)
