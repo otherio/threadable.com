@@ -10,4 +10,14 @@ new Component('login_form', function(self){
     })
   .end;
 
+  // Multify.on('login logout', function(event){
+
+  //   if (Multify.logged_in){
+  //     self.s().get().hide();
+  //   }else{
+  //     self.s().get().show();
+  //   }
+
+  // });
+
 });

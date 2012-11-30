@@ -15,6 +15,10 @@ Multify.ready = function(callback){
 
 Multify.init = function(){
 
+  if (Multify.logged_in){
+    Multify.trigger('login');
+  }
+
   if (Multify.logged_in && !Multify.current_user){
     Multify.loadCurrentUser().success(function(){ Multify.ready(); });
   }else{
@@ -22,9 +26,6 @@ Multify.init = function(){
   }
 
 };
-
-
-
 
 
 Multify.ready(function(){
