@@ -29,20 +29,35 @@ View = {
 
 View.helper({
 
-  render: function () {
+  render_template: function () {
     return function (text, render) {
-      var matches = text.match(/^(.+?)(\(.*\))?$/);
-      if (matches){
-        var view = matches[1], data = matches[2];
-        data = eval(data);
-        return render(View.render(view, data));
-      }else{
-        return "<b>I have no idea how to render"+text+"</b>";
-      }
-    }
-  }
+      var args = View.renderTextToArguments(text);
+      if (args === null) return "<b>I have no idea how to render"+text+"</b>";
+      return View.render.apply(View, args);
+    };
+  },
+
+  render_component: function(){
+    return function (text, render) {
+      var args = View.renderTextToArguments(text);
+      if (args === null) return "<b>I have no idea how to render"+text+"</b>";
+      var name = args.shift();
+      var component = Component(name);
+      return component.render.apply(component, args);
+    };
+  },
 
 });
 
+View.renderTextToArguments = function(text){
+  var matches = text.match(/^(.+?)(\(.*\))?$/);
+  if (matches === null) return false;
+  var name = matches[1], args = matches[2];
+  args = args ?
+    eval('['+args.slice(1,-1)+']') :
+    [];
+  args.unshift(name);
+  return args;
+};
 
 

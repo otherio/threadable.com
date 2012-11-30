@@ -4,9 +4,12 @@
 //= require "mustache"
 //= require "view"
 //= require "view/template"
+//= require "component"
 //= require "multify"
 //= require "multify/session"
 //= require "multify/authentication"
+
+//= require_tree "./components"
 
 
 
