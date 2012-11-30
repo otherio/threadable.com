@@ -22,7 +22,8 @@ class Server < Sinatra::Base
     def stylesheet
       load_paths = Compass.configuration.sass_load_paths + [settings.stylesheets]
       sass = File.read(settings.stylesheets + "application.sass")
-      Sass::Engine.new(sass, :load_paths => load_paths).to_css
+      css = Sass::Engine.new(sass, :load_paths => load_paths).to_css
+      "\n#{css}\n"
     end
 
     def javascript
@@ -48,7 +49,7 @@ class Server < Sinatra::Base
 
       # javascript << templates.join("\n")
 
-      javascript
+      "\n#{javascript}\n"
     end
 
 
