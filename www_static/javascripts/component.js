@@ -2,30 +2,32 @@ Component = function(name, block){
   if (this instanceof Component){
     var self = Component.store[name] || (Component.store[name] = this);
     self.name = name;
-    if (block) block.call(self, self);
+    if (block) self.on('init', block);
   }else{
     var self = Component.store[name]
-    if (self && block) block.call(self, self);
+    if (self && block) self.on('init', block);
     return self;
   }
 };
 
 Component.store = {};
 
+$.extend(Component.prototype, Events);
+
 Component.prototype.render = function(options){
   options || (options = {});
 
-  if (this.init && !this.init.run){
-    this.init.run = true;
-    this.init();
+  if (!this.initialized){
+    this.initialized = true;
+    this.trigger('init', this);
   }
 
-  if (this.before_render) this.before_render(options);
+  this.trigger('before_render', options);
 
   var element = $(View.render(this.name, options));
   element.data('options',options);
 
-  if (this.after_render) this.after_render(element, options);
+  this.trigger('after_render', element, options);
 
   return element;
 };

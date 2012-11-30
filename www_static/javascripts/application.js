@@ -4,6 +4,7 @@
 //= require "jquery-s"
 //= require "jquery-cookie"
 //= require "mustache"
+//= require "events"
 //= require "view"
 //= require "view/template"
 //= require "component"
