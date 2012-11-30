@@ -41,7 +41,7 @@ class Server < Sinatra::Base
         else
           value
         end
-        templates << "new Multify.View.Template(#{name.to_json}, #{value.to_json});"
+        templates << "new View.Template(#{name.to_json}, #{value.to_json});"
       end
 
       javascript << templates.join("\n")
