@@ -4,58 +4,59 @@
     %link{:media => "screen", :rel => "stylesheet", :type => "text/css", href:'/application.css'}
     %script{type:"text/javascript", src:"/application.js"}
   %body
+    #page
 
-    -# %script{:type => "text/x-handlebars", :'data-template-name' => "application"}
-    -#   %h1 Hello
+      -# %script{:type => "text/x-handlebars", :'data-template-name' => "application"}
+      -#   %h1 Hello
 
-    .navbar.navbar-fixed-top
-      .navbar-inner
+      .navbar.navbar-fixed-top
+        .navbar-inner
 
-        %a.brand{href:""} Multify
+          %a.brand{href:""} Multify
 
 
-        .pull-right
-          %ul.nav
-            %li.dropdown
-              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-                Dropdown
-                %b.caret
-              %ul.dropdown-menu
-                %li
-                  %a{:href => "#"} Action
-                %li
-                  %a{:href => "#"} Another action
-                %li
-                  %a{:href => "#"} Something else here
-                %li.divider
-                %li.nav-header Nav header
-                %li
-                  %a{:href => "#"} Separated link
-                %li
-                  %a{:href => "#"} One more separated link
+          .pull-right
+            %ul.nav
+              %li.dropdown
+                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                  Dropdown
+                  %b.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{:href => "#"} Action
+                  %li
+                    %a{:href => "#"} Another action
+                  %li
+                    %a{:href => "#"} Something else here
+                  %li.divider
+                  %li.nav-header Nav header
+                  %li
+                    %a{:href => "#"} Separated link
+                  %li
+                    %a{:href => "#"} One more separated link
 
+              %li
+                %a.login{href:""} Login
+
+      .left_panel
+        .projects.well
+          %ul.nav.nav-list
+            %li.nav-header Projects
+            %li.active
+              %a{:href => "#/projects/occupy"} Occupy
             %li
-              %a.login{href:""} Login
-
-    .left_panel
-      .projects.well
-        %ul.nav.nav-list
-          %li.nav-header Projects
-          %li.active
-            %a{:href => "#/projects/occupy"} Occupy
-          %li
-            %a{:href => "#/projects/build-a-house"} Building A House
-          %li
-            %a{:href => "#/projects/buy-a-cat"} Buy A Cat
-
-      .feed.well
-        %ul.nav.nav-list
-          %li.nav-header Feed
-          - 10.times do |n|
+              %a{:href => "#/projects/build-a-house"} Building A House
             %li
-              Feed Item ##{n}
+              %a{:href => "#/projects/buy-a-cat"} Buy A Cat
+
+        .feed.well
+          %ul.nav.nav-list
+            %li.nav-header Feed
+            - 25.times do |n|
+              %li
+                Feed Item ##{n}
 
 
 
-    .main_panel.well
-      hello word
+      .main_panel.well
+        hello word
