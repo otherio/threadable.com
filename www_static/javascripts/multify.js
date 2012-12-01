@@ -10,19 +10,19 @@ Multify.View = function(name, value){
 
 Multify.Router = Backbone.Router.extend({
 
-  routes: {
-    "help":                 "help",    // #help
-    "projects/:query":        "search",  // #search/kiwis
-    "projects/:query/p:page": "search"   // #search/kiwis/p7
-  },
+  // routes: {
+  //   "help":                 "help",    // #help
+  //   "projects/:query":        "search",  // #search/kiwis
+  //   "projects/:query/p:page": "search"   // #search/kiwis/p7
+  // },
 
-  help: function() {
-    ...
-  },
+  // help: function() {
+  //   ...
+  // },
 
-  search: function(query, page) {
-    ...
-  }
+  // search: function(query, page) {
+  //   ...
+  // }
 
 });
 
