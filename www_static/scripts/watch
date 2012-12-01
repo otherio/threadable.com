@@ -21,6 +21,7 @@ end
 
 compile!
 Listen.to(ROOT, :ignore => %r{^(public|scripts)/}, :force_polling => true) do |modified, added, removed|
+  system 'clear'
   puts(modified + added + removed)
   compile!
 end
