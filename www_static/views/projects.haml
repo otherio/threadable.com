@@ -1,0 +1,6 @@
+%ol.projects.nav.nav-list
+  <% _.each(projects, function(project){ %>
+  %li
+    %a{href:"/projects/<%= project.slug %>"} <%= project.name %>
+
+  <% }); %>

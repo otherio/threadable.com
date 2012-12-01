@@ -5,3 +5,8 @@
 //= require "bootstrap"
 
 //= require "multify"
+//= require "multify/templates"
+//= require "multify/router"
+//= require_tree "./multify/views"
+//= require "multify/user"
+//= require "multify/project"
