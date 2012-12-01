@@ -10,19 +10,18 @@ Multify.View = function(name, value){
 
 Multify.Router = Backbone.Router.extend({
 
-  // routes: {
-  //   "help":                 "help",    // #help
-  //   "projects/:query":        "search",  // #search/kiwis
-  //   "projects/:query/p:page": "search"   // #search/kiwis/p7
-  // },
+  routes: {
+    "":             "home",
+    "projects/:project_id": "project"
+  },
 
-  // help: function() {
-  //   ...
-  // },
+  home: function() {
+    console.log('HOME ROUTE', this, arguments);
+  },
 
-  // search: function(query, page) {
-  //   ...
-  // }
+  project: function(query, page) {
+    console.log('PROJECT ROUTE', this, arguments);
+  }
 
 });
 
@@ -35,4 +34,10 @@ TEMP_FAKE_PROJECTS = [
 
 $(function(){
   $('body').html(Multify.views.application({projects:TEMP_FAKE_PROJECTS}));
+
+  Multify.router = new Multify.Router;
+  Backbone.history.start({
+    pushState: true,
+    root: '/'
+  });
 });
