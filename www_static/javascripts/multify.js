@@ -1,12 +1,14 @@
-var App = Ember.Application.create();
+Multify = {};
 
-App.ApplicationController = Ember.Controller.extend();
+Multify.App = Ember.Application.create();
 
-App.ApplicationView = Ember.View.extend({
+Multify.ApplicationController = Ember.Controller.extend();
+
+Multify.ApplicationView = Ember.View.extend({
   templateName: 'application'
 });
 
-App.Router = Ember.Router.extend({
+Multify.Router = Ember.Router.extend({
   root: Ember.Route.extend({
     index: Ember.Route.extend({
       route: '/'
@@ -14,11 +16,41 @@ App.Router = Ember.Router.extend({
   })
 })
 
-App.initialize();
 
 
+Multify.Project = Ember.Object.extend({
+  name: null,
+  slug: null,
+  description: null
+});
 
-// Multify = {};
+
+projects = [
+  Multify.Project.create({name: 'Occupy'}),
+  Multify.Project.create({name: 'Eat Food'}),
+  Multify.Project.create({name: 'Die HAppy'})
+];
+
+Multify.Views = {};
+
+Multify.Views.Project = Ember.View.extend({
+  tagName: 'li',
+  classNames: ['project'],
+  templateName: 'project',
+});
+
+// projectController = Ember.Object.create({
+//   name: 'wtf pants'
+// });
+
+// Multify.Views.Project.create({
+//   controller: projectController
+// });
+
+
+Multify.App.initialize();
+
+
 
 // // $.extend(Multify, Backbone.Events);
 
