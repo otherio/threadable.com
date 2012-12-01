@@ -36,21 +36,21 @@
 
       .panels.horizontal-box
         .left
-          .vertical-box
+          .vertical-box.fill-container
+
             .projects.well
-              %div
-                %ul.nav.nav-list
-                  %li.nav-header Projects
-                  %li.active
-                    %a{:href => "#/projects/occupy"} Occupy
-                  %li
-                    %a{:href => "#/projects/build-a-house"} Building A House
-                  %li
-                    %a{:href => "#/projects/buy-a-cat"} Buy A Cat
+
+              %ul.nav.nav-list
+                %li.nav-header Projects
+                %li.active
+                  %a{:href => "#/projects/occupy"} Occupy
+                %li
+                  %a{:href => "#/projects/build-a-house"} Building A House
+                %li
+                  %a{:href => "#/projects/buy-a-cat"} Buy A Cat
 
             .feed.well
-              %div
-
+              .vertical-scroll-box
                 %ul.nav.nav-list
                   %li.nav-header Feed
                   - 25.times do |n|
@@ -60,9 +60,9 @@
 
 
         .main.well
-          %div
-            main panel
+
+          main panel
 
         .right.well
-          %div
-            right panel
+
+          right panel
