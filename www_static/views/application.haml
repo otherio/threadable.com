@@ -36,8 +36,12 @@
           %ul.nav.nav-list
             %li.nav-header Projects
             %li
-              %ol.projects
+              %ol.projects.nav.nav-list
+                <% _.each(projects, function(project){ %>
+                %li
+                  %a{href:"/projects/<%= project.slug %>"} <%= project.name %>
 
+                <% }); %>
 
         .feed.well
           .vertical-scroll-box
@@ -49,5 +53,4 @@
 
     .right.well
       right panel
-
 
