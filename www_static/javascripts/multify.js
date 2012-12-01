@@ -2,9 +2,9 @@ Multify = {};
 
 _.extend(Multify, Backbone.Events);
 
-Multify.views = {};
-Multify.View = function(name, value){
-  Multify.views[name] = _.template(value);
+Multify.templates = {};
+Multify.Template = function(name, value){
+  Multify.templates[name] = _.template(value);
 };
 
 
@@ -41,7 +41,7 @@ Multify.Views.Layout = Backbone.View.extend({
   },
 
   render: function(){
-    var html = Multify.views.application({projects:TEMP_FAKE_PROJECTS});
+    var html = Multify.templates.layout({projects:TEMP_FAKE_PROJECTS});
     this.$el.html(html);
   }
 });
