@@ -5,7 +5,7 @@ class Compiler
   ROOT        = Pathname.new File.expand_path('../../',__FILE__)
   PUBLIC      = ROOT + 'public'
   VIEWS       = ROOT + 'views'
-  HTML        = VIEWS + 'application.haml'
+  INDEX_HTML  = VIEWS + 'index.haml'
   STYLESHEETS = ROOT + 'stylesheets'
   JAVASCRIPTS = ROOT + 'javascripts'
 
@@ -18,7 +18,7 @@ class Compiler
 
   def self.compile_html!
     puts "compiling html"
-    haml = HTML.read
+    haml = INDEX_HTML.read
     html = Haml::Engine.new(haml).to_html
     PUBLIC.join('index.html').open('w'){|f| f.write(html) }
   end
