@@ -2,8 +2,8 @@
 %html
   %head
     %link{:media => "screen", :rel => "stylesheet", :type => "text/css", href:'/application.css'}
-    %script{type:"text/javascript", src:"/application.js"}
   %body
+
     #page
 
       .navbar.navbar-fixed-top
@@ -66,3 +66,15 @@
         .right.well
 
           right panel
+
+
+    %script{type:"text/javascript", src:"/application.js"}
+
+
+    - ::Compiler::VIEWS.find do |path|
+      - next unless path.file? && path.to_s =~ /\.haml$/
+      - next if path == ::Compiler::HTML
+      - name = path.relative_path_from(::Compiler::VIEWS).to_s[/(.+)\..+$/,1]
+      - html = Haml::Engine.new(path.read).to_html
+      %script{type:"text/x-handlebars", data: {'template-name' => name}}= html
+

@@ -4,7 +4,8 @@ require 'fileutils'
 class Compiler
   ROOT        = Pathname.new File.expand_path('../../',__FILE__)
   PUBLIC      = ROOT + 'public'
-  HTML        = ROOT + 'views/application.haml'
+  VIEWS       = ROOT + 'views'
+  HTML        = VIEWS + 'application.haml'
   STYLESHEETS = ROOT + 'stylesheets'
   JAVASCRIPTS = ROOT + 'javascripts'
 

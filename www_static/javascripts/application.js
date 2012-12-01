@@ -1,5 +1,5 @@
 //= require "jquery"
+//= require "handlebars"
+//= require "ember"
+//= require "multify"
 //= require "bootstrap"
-// //= require "handlebars"
-// //= require "ember"
-// //= require "multify"
