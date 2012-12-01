@@ -55,7 +55,7 @@ class Server < Sinatra::Base
          else
            value
          end
-         javascript << "new Multify.View(#{name.to_json}, #{value.to_json});"
+         javascript << "new Multify.Template(#{name.to_json}, #{value.to_json});"
        end
 
       PUBLIC.join('application.js').open('w'){|f| f.write(javascript) }
