@@ -32,8 +32,23 @@ TEMP_FAKE_PROJECTS = [
   {name:'pickup mustard'}
 ];
 
+
+Multify.Views = {};
+
+Multify.Views.Layout = Backbone.View.extend({
+  initialize: function(){
+    this.render();
+  },
+
+  render: function(){
+    var html = Multify.views.application({projects:TEMP_FAKE_PROJECTS});
+    this.$el.html(html);
+  }
+});
+
 $(function(){
-  $('body').html(Multify.views.application({projects:TEMP_FAKE_PROJECTS}));
+
+  Multify.layout = new Multify.Views.Layout({el: $('body')});
 
   Multify.router = new Multify.Router;
   Backbone.history.start({
