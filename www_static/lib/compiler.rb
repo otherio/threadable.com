@@ -34,6 +34,25 @@ class Compiler
   def self.compile_javascript!
     puts "compiling javascript"
     javascript = sprockets_environment.find_asset("application.js").to_s
+
+    VIEWS.find do |path|
+       next unless path.file?
+       next if path == INDEX_HTML
+       extname = path.extname
+       name = path.relative_path_from(VIEWS).to_s[/(.*)#{Regexp.escape(extname)}$/,1]
+
+       next if name[0] == '.'
+
+       value = path.read
+       value = case extname
+       when '.haml'
+         Haml::Engine.new(value).to_html
+       else
+         value
+       end
+       javascript << "new Multify.View(#{name.to_json}, #{value.to_json});"
+     end
+
     PUBLIC.join('application.js').open('w'){|f| f.write(javascript) }
   end
 
