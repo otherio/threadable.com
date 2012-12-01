@@ -1,8 +1,49 @@
-@import "compass/utilities"
+@import compass/utilities
+@import compass/css3
+
 @import "bootstrap"
 
 @import "layout"
 
+$nav_height: 40px
+$left_panel_width: 300px
 
 body
   background-color: orange
+  padding-top: $nav_height
+  padding-left: $left_panel_width
+
+.navbar .navbar-inner
+  padding-left: 20px
+  padding-right: 20px
+
+.left_panel
+  position: absolute
+  top: $nav_height
+  left: 0
+  bottom: 0
+  width: $left_panel_width
+  //   display: box
+  //   +box-orient(vertical)
+  //   +box-align(stretch)
+  //   +box-direction(reverse)
+
+  +experimental-value(display, box, -moz, -webkit, not -o, -ms, not -khtml, official)
+  +experimental(box-orient, vertical, -moz, -webkit, not -o, -ms, not -khtml, official)
+  //+experimental(box-align, stretch, -moz, -webkit, not -o, -ms, not -khtml, official)
+  //+experimental(box-direction, reverse, -moz, -webkit, not -o, -ms, not -khtml, official)
+  .well
+    //   +box-flex(1)
+    //+experimental(box-flex, 1, -moz, -webkit, not -o, -ms, not -khtml, official)
+    margin: 0
+    padding: 10px
+
+  .projects
+    +experimental(box-flex, 1, -moz, -webkit, not -o, -ms, not -khtml, official)
+
+  .feed
+    +experimental(box-flex, 20, -moz, -webkit, not -o, -ms, not -khtml, official)
+
+
+
+

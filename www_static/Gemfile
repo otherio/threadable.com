@@ -15,3 +15,6 @@ gem "chunky_png"
 
 gem 'rb-fsevent', '~> 0.9.1'
 gem "listen"
+
+
+gem 'hpricot'

@@ -17,6 +17,7 @@ GEM
     fssm (0.2.9)
     haml (3.1.7)
     hike (1.2.1)
+    hpricot (0.8.4)
     json (1.7.5)
     listen (0.6.0)
     multi_json (1.3.7)
@@ -44,6 +45,7 @@ DEPENDENCIES
   compass
   debugger
   haml
+  hpricot
   json
   listen
   rb-fsevent (~> 0.9.1)
