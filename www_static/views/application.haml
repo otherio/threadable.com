@@ -6,14 +6,10 @@
   %body
     #page
 
-      -# %script{:type => "text/x-handlebars", :'data-template-name' => "application"}
-      -#   %h1 Hello
-
       .navbar.navbar-fixed-top
         .navbar-inner
 
           %a.brand{href:""} Multify
-
 
           .pull-right
             %ul.nav
@@ -38,25 +34,35 @@
               %li
                 %a.login{href:""} Login
 
-      .left_panel
-        .projects.well
-          %ul.nav.nav-list
-            %li.nav-header Projects
-            %li.active
-              %a{:href => "#/projects/occupy"} Occupy
-            %li
-              %a{:href => "#/projects/build-a-house"} Building A House
-            %li
-              %a{:href => "#/projects/buy-a-cat"} Buy A Cat
+      .panels.horizontal-box
+        .left
+          .vertical-box
+            .projects
+              .well
+                %ul.nav.nav-list
+                  %li.nav-header Projects
+                  %li.active
+                    %a{:href => "#/projects/occupy"} Occupy
+                  %li
+                    %a{:href => "#/projects/build-a-house"} Building A House
+                  %li
+                    %a{:href => "#/projects/buy-a-cat"} Buy A Cat
 
-        .feed.well
-          %ul.nav.nav-list
-            %li.nav-header Feed
-            - 25.times do |n|
-              %li
-                Feed Item ##{n}
+            .feed
+              .well
+
+                %ul.nav.nav-list
+                  %li.nav-header Feed
+                  - 25.times do |n|
+                    %li
+                      Feed Item ##{n}
 
 
 
-      .main_panel.well
-        hello word
+        .main
+          .well
+            main panel
+
+        .right
+          .well
+            right panel
