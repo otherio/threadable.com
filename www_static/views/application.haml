@@ -1,80 +1,48 @@
-!!!
-%html
-  %head
-    %link{:media => "screen", :rel => "stylesheet", :type => "text/css", href:'/application.css'}
-  %body
+#page
+  .navbar.navbar-fixed-top
+    .navbar-inner
 
-    #page
+      %a.brand{href:""} Multify
 
-      .navbar.navbar-fixed-top
-        .navbar-inner
-
-          %a.brand{href:""} Multify
-
-          .pull-right
-            %ul.nav
-              %li.dropdown
-                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-                  Dropdown
-                  %b.caret
-                %ul.dropdown-menu
-                  %li
-                    %a{:href => "#"} Action
-                  %li
-                    %a{:href => "#"} Another action
-                  %li
-                    %a{:href => "#"} Something else here
-                  %li.divider
-                  %li.nav-header Nav header
-                  %li
-                    %a{:href => "#"} Separated link
-                  %li
-                    %a{:href => "#"} One more separated link
-
+      .pull-right
+        %ul.nav
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Dropdown
+              %b.caret
+            %ul.dropdown-menu
               %li
-                %a.login{href:""} Login
+                %a{:href => "#"} Action
+              %li
+                %a{:href => "#"} Another action
+              %li
+                %a{:href => "#"} Something else here
+              %li.divider
+              %li.nav-header Nav header
+              %li
+                %a{:href => "#"} Separated link
+              %li
+                %a{:href => "#"} One more separated link
 
-      .panels.horizontal-box
-        .left
-          .vertical-box.fill-container
+          %li
+            %a.login{href:""} Login
 
-            .projects.well
+  .panels.horizontal-box
+    .left
+      .vertical-box.fill-container
 
-              %ul.nav.nav-list
-                %li.nav-header Projects
-                %li.active
-                  %a{:href => "#/projects/occupy"} Occupy
-                %li
-                  %a{:href => "#/projects/build-a-house"} Building A House
-                %li
-                  %a{:href => "#/projects/buy-a-cat"} Buy A Cat
+        .projects.well
 
-            .feed.well
-              .vertical-scroll-box
-                %ul.nav.nav-list
-                  %li.nav-header Feed
-                  - 25.times do |n|
-                    %li
-                      Feed Item ##{n}
+          %ul.nav.nav-list
+            %li.nav-header Projects
 
+        .feed.well
+          .vertical-scroll-box
+            %ul.nav.nav-list
+              %li.nav-header Feed
 
+    .main.well
+      main panel
 
-        .main.well
-
-          main panel
-
-        .right.well
-
-          right panel
-
-
-    %script{type:"text/javascript", src:"/application.js"}
-
-
-    - ::Compiler::VIEWS.find do |path|
-      - next unless path.file? && path.to_s =~ /\.haml$/
-      - next if path == ::Compiler::HTML
-      - name = path.relative_path_from(::Compiler::VIEWS).to_s[/(.+)\..+$/,1]
-      - html = Haml::Engine.new(path.read).to_html
-      %script{type:"text/x-handlebars", data: {'template-name' => name}}= html
-
+    .right.well
+      right panel
