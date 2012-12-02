@@ -1,13 +1,7 @@
 Multify.Views.MainProjectList = Backbone.View.extend({
 
   initialize: function(){
-    var view = this;
-    view.options.projects || (this.options.projects = new Multify.Projects);
-
-    view.options.projects.on('all', function(){
-      view.render();
-    });
-
+    this.options.projects.on('all', this.render.bind(this));
   },
 
   render: function(){
