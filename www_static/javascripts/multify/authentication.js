@@ -56,6 +56,9 @@ Multify.authenticate = function(email, password){
 Multify.request = function(method, path, params){
   params || (params = {});
   params._method = method;
+  if (Multify.logged_in){
+    params.authentication_token = Multify.session.authentication_token
+  }
   url = new URI(Multify.host)
   url.path = path;
   url.params =  params;

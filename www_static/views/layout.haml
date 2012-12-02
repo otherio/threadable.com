@@ -7,10 +7,10 @@
       .pull-right
         %ul.nav
 
-          <% if (Multify.logged_in) { %>
+          <% if (logged_in) { %>
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-              <%= Multify.current_user.get('name') %>
+              <%= current_user.get('name') %>
               %b.caret
             %ul.dropdown-menu
               %li.nav-header Account
