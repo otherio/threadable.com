@@ -3,13 +3,15 @@ Multify.Views.Dashboard = Backbone.View.extend({
   className: 'dashboard',
 
   initialize: function(){
-    Multify.router.on("route:project", this.selectProject.bind(this));
+    Multify.router.on("route:project", function(project_slug, tab){
+      this.selectProject(project_slug);
+      if (tab) this.project_panel.selectTab(tab);
+    }.bind(this));
   },
 
   render: function(){
-
-
     var html = Multify.render('dashboard');
+
     this.$el.html(html);
 
     this.renderProjectsList();
@@ -20,11 +22,8 @@ Multify.Views.Dashboard = Backbone.View.extend({
 
 
   renderProjectsList: function(){
-    var
-      view = this;
-
-    this.main_project_list = new Multify.Views.MainProjectList({
-      el: view.$('.main-project-list'),
+    this.project_list = new Multify.Views.Dashboard.ProjectList({
+      el: this.$('.dashboard-project-list'),
       projects: this.options.current_user.projects
     });
 
@@ -33,9 +32,11 @@ Multify.Views.Dashboard = Backbone.View.extend({
 
   renderProjectsPanel: function(project){
     this.project_panel = new Multify.Views.Dashboard.ProjectPanel({
+      el: this.$('.dashboard-project-panel'),
       project: project
     });
-    this.$('.panels > .main').html(this.project_panel.render().el);
+
+    this.project_panel.render();
   },
 
   selectProject: function(project_slug){
@@ -43,9 +44,10 @@ Multify.Views.Dashboard = Backbone.View.extend({
     var project = this.options.current_user.projects.find(function(project){
       return project.get('slug') == project_slug;
     });
-    console.log('SELECTING PROJECT', project_slug, project);
+    // console.log('SELECTING PROJECT', project_slug, project);
     this.renderProjectsPanel(project);
-    this.main_project_list.setActiveLink();
-  }
+    this.project_list.setActiveLink();
+  },
+
 
 });
