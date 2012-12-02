@@ -7,10 +7,11 @@ Multify.Views.Layout = Backbone.View.extend({
     var html = Multify.templates.layout({projects:TEMP_FAKE_PROJECTS});
     this.$el.html(html);
 
-    this.projectsView = new Multify.Views.Projects({
-      el: this.$('.list-of-projects'),
+    this.mainProjectList = new Multify.Views.MainProjectList({
       projects: this.options.projects
     });
+
+    this.$('.main-project-list').replaceWith(this.mainProjectList.el);
 
   }
 });
