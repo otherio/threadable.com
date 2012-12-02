@@ -1,26 +1,38 @@
 Multify.Views.MainProjectList = Backbone.View.extend({
 
   initialize: function(){
-    this.render();
+    var view = this;
+    view.options.projects || (this.options.projects = new Multify.Projects);
+
+    view.options.projects.on('all', function(){
+      view.render();
+    });
+
   },
 
-  tagName: "ol",
-  className: "main-project-list nav nav-list",
-
   render: function(){
+    var view = this, html;
 
-    var view = this;
-
-    var html = Multify.templates.main_project_list({
-      projects: this.options.projects
+    html = Multify.templates.main_project_list({
+      projects: view.options.projects
     });
 
-    Multify.router.on("route:project", function(project_slug){
-      view.setActiveLink();
-    });
+    view.$el.html(html);
 
-    this.$el.html(html);
     view.setActiveLink();
+
+    view.$el.find('input').keydown(function(event){
+      if (event.which !== 13) return;
+      var
+        element = $(this),
+        project_name = element.val();
+
+      element.val('');
+
+      Multify.current_user.projects.create({
+        name: project_name
+      });
+    });
   },
 
   setActiveLink: function(){

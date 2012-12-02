@@ -35,8 +35,10 @@ Multify.login = function(email, password){
 }
 
 Multify.loadCurrentUser = function(){
-  // return Multify.User.find(Multify.session.user_id)
-  return Multify.get('/users/'+Multify.current_user_id)
+
+  var user = new Multify.User({id: Multify.current_user_id});
+
+  return user.fetch()
     .success(function(user){
       Multify.current_user = new Multify.User(user);
     })
@@ -49,33 +51,15 @@ Multify.loadCurrentUser = function(){
 
 
 Multify.authenticate = function(email, password){
-  return Multify.post('users/sign_in', {email: email, password: password});
+  return Multify.request('POST', 'users/sign_in', {
+    email: email,
+    password: password
+  });
 };
 
 
-Multify.request = function(method, path, params){
-  params || (params = {});
-  params._method = method;
-  if (Multify.logged_in){
-    params.authentication_token = Multify.session.authentication_token
-  }
-  url = new URI(Multify.host)
-  url.path = path;
-  url.params =  params;
-  return $.ajax({
-    url: url.toString(),
-    dataType: "jsonp",
-    timeout: 2000,
-  })
-};
 
-'GET PUT POST DELETE'.split(' ').forEach(function(method){
 
-  Multify[method.toLowerCase()] = function(path, params){
-    return Multify.request(method, path, params);
-  };
-
-});
 
 // View.helper(function(){
 //   return {

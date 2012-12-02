@@ -1,3 +1,14 @@
+Backbone.Model.prototype.path = function(){
+  return this.isNew() ?
+    this.constructor.path :
+    this.constructor.path+'/'+(this.param || this.id);
+};
+
+Backbone.Collection.prototype.path = function(){
+  return this.constructor.path;
+};
+
+
 Multify = {
   Views: {},
 };
@@ -17,12 +28,6 @@ Multify.ready = function(callback){
 };
 
 Multify.init = function(){
-
-  // if (Multify.logged_in){
-  //   Multify.trigger('login');
-  // }else{
-  //   Multify.trigger('logout');
-  // }
 
   if (Multify.logged_in && !Multify.current_user){
     Multify.loadCurrentUser().success(function(){ Multify.ready(); });
@@ -58,9 +63,15 @@ Multify.ready(function(){
     root: '/'
   });
 
+  Multify.router.on("route:project", function(project_slug){
+    Multify.layout.mainProjectList.setActiveLink();
+  });
+
+
   Multify.layout = new Multify.Views.Layout;
 
   Multify.layout.render();
 
 
 });
+
