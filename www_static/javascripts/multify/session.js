@@ -10,12 +10,19 @@
   };
 
   Session.prototype.save = function(){
-    var data = {};
+    var p, data = {};
     for (p in this)
       if (this.hasOwnProperty(p))
         data[p] = this[p];
     writeCookie(data);
-    return data;
+    return this;
+  };
+
+  Session.prototype.clear = function(){
+    for (var p in this)
+      if (this.hasOwnProperty(p))
+        delete this[p];
+    return this.save();
   };
 
   Multify.session = new Session().reload();

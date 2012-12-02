@@ -10,6 +10,10 @@ Multify.Router = Backbone.Router.extend({
   },
 
   project: function(query, page) {
+    if (!Multify.logged_in){
+      this.navigate('/', {trigger: true});
+      return;
+    }
     console.log('PROJECT ROUTE', this, arguments);
   }
 
