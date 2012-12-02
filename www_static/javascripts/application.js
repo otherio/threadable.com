@@ -14,3 +14,4 @@
 //= require_tree "./multify/views"
 //= require "multify/user"
 //= require "multify/project"
+//= require "multify/projects"

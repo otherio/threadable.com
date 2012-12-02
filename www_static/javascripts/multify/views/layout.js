@@ -1,15 +1,43 @@
 Multify.Views.Layout = Backbone.View.extend({
+
   initialize: function(){
     var view = this;
     Multify.on('logout', function(){ view.render(); });
     Multify.on('login', function(){ view.render(); });
-    this.render();
   },
 
   el: document.body,
 
   render: function(){
-    var html = Multify.templates.layout({projects:TEMP_FAKE_PROJECTS});
+
+    console.warn('RE RENDERING ENTIRE LAYOUT');
+
+    this.options = {};
+
+    if (Multify.logged_in){
+
+      this.options.projects = new Multify.Projects([
+        new Multify.Project({
+          name:'love steve',
+          slug:'love-steve'
+        }),
+        new Multify.Project({
+          name:'eat sally',
+          slug:'eat-sally'
+        }),
+        new Multify.Project({
+          name:'pickup mustard',
+          slug:'pickup-mustard'
+        })
+      ]);
+
+    }else{
+      this.options.projects = new Multify.Projects([]);
+    }
+
+
+    var html = Multify.templates.layout(this.options);
+
     this.$el.html(html);
 
     this.mainProjectList = new Multify.Views.MainProjectList({
@@ -24,5 +52,6 @@ Multify.Views.Layout = Backbone.View.extend({
       Multify.login('jared@change.org', 'password');
     });
 
+    return this;
   }
 });
