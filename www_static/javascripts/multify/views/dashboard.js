@@ -27,9 +27,6 @@ Multify.Views.Dashboard = Backbone.View.extend({
       this.project_list.render();
     }
 
-    // this.renderProjectsList();
-    // this.renderProjectsPanel();
-
     return this;
   },
 
@@ -41,12 +38,6 @@ Multify.Views.Dashboard = Backbone.View.extend({
     this.project_panel.render();
   },
 
-  // renderProjectsList: function(){
-
-
-  //   this.options.current_user.projects.fetch();
-  // },
-
   selectProject: function(project_slug, tab){
     if (!Multify.logged_in) return;
     var project = this.options.current_user.projects.find(function(project){
@@ -55,7 +46,9 @@ Multify.Views.Dashboard = Backbone.View.extend({
     console.log('SELECTING PROJECT', project_slug, project);
 
     if (project === undefined){
-      this.projects_fetch.done(function(){ this.selectProject(project_slug, tab); }.bind(this))
+      this.projects_fetch.done(function(){
+        this.selectProject(project_slug, tab);
+      }.bind(this))
       return false;
     }
     this.renderProjectsPanel(project);

@@ -3,10 +3,17 @@ Multify.Views.Dashboard.Tasks = Backbone.View.extend({
   className: 'dashboard-settings',
 
   initialize: function(){
-    this.options.project.tasks.on('all', this.render.bind(this));
+    this.options.tasks = this.options.project.tasks;
+    this.options.tasks.on('all', this.render.bind(this));
   },
 
   render: function(){
+
+    if (this.options.tasks.isEmpty()){
+      this.options.tasks.fetch();
+      return this
+    }
+
     var html = Multify.render('dashboard/tasks', this.options);
 
     this.$el.html(html);
