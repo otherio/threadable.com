@@ -1,18 +1,29 @@
-Multify = {};
-// Multify = Backbone.Model.extend({
-//   host: null,
-//   current_user_id: null,
-//   current_user: null,
-//   logged_in: null,
-// });
+Multify = {
 
-Multify.Views = {};
-
-_.extend(Multify, Backbone.Events);
+  current_user: null,
+  logged_in: null,
 
 
-Multify.host = 'http://0.0.0.0:3000';
+  get: function(attr) {
+    return this.attributes[attr];
+  },
 
+  set: function(attr, value){
+    var current_value = self[attr];
+    if (value !== current_value){
+      self[attr] = value;
+      this.trigger('change:'+attr, value, current_value);
+    }
+    return value;
+  },
+
+  Views: {},
+
+  host: 'http://0.0.0.0:3000'
+
+};
+
+$.extend(Multify, Backbone.Events);
 
 
 $(function(){
@@ -32,3 +43,11 @@ $(function(){
 
 });
 
+
+Multify.on('change:current_user', function(){
+  console.log('CURRENT USER CHANGES', this, arguments);
+});
+
+// Multify.set('current_user', 1)
+// Multify.set('current_user', 1)
+// Multify.set('current_user', 1)
