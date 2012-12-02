@@ -40,7 +40,13 @@ $(function(){
 
 Multify.ready(function(){
 
+
   Multify.router = new Multify.Router;
+
+  Multify.layout = new Multify.Views.Layout;
+
+  Multify.layout.render();
+
   Backbone.history.start({
     pushState: true,
     root: '/'
@@ -49,9 +55,7 @@ Multify.ready(function(){
 
 
 
-  Multify.layout = new Multify.Views.Layout;
 
-  Multify.layout.render();
 
 
 });
