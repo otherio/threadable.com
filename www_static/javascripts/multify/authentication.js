@@ -16,9 +16,10 @@ Multify.login = function(email, password){
 
       Multify.logged_in = true;
 
-      Multify.session.user = response.user;
-      Multify.session.authentication_token = response.authentication_token;
-      Multify.session.save();
+      Multify.session.update({
+        user: response.user,
+        authentication_token: response.authentication_token
+      });
 
       Multify.current_user = new Multify.User(response.user);
 

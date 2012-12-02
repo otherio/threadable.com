@@ -25,6 +25,12 @@
     return this.save();
   };
 
+  Session.prototype.update = function(params){
+    for (var p in params)
+      this[p] = params[p];
+    return this.save();
+  };
+
   Multify.session = new Session().reload();
 
   function readCookie(){
