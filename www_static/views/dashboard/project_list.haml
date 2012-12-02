@@ -2,7 +2,7 @@
   %ol.projects.nav.nav-list
     <% projects.each(function(project){ %>
     %li
-      <a href="/projects/<%= project.get('slug') %>"><%= project.get('name') || '&nbsp;' %></a>
+      <a href="/projects/<%= project.get('slug') %>/tasks"><%= project.get('name') %></a>
 
     <% }); %>
     %li

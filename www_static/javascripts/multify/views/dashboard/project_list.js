@@ -1,4 +1,4 @@
-Multify.Views.MainProjectList = Backbone.View.extend({
+Multify.Views.Dashboard.ProjectList = Backbone.View.extend({
 
   initialize: function(){
     this.options.projects.on('all', this.render.bind(this));
@@ -7,7 +7,7 @@ Multify.Views.MainProjectList = Backbone.View.extend({
   render: function(){
     var view = this, html;
 
-    html = Multify.render('main_project_list',{
+    html = Multify.render('dashboard/project_list',{
       projects: view.options.projects
     });
 

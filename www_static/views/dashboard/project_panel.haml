@@ -1,17 +1,23 @@
-.navbar.navbar-fixed-top
-  .navbar-inner
-    %ul.nav
-      %li
-        %a.tasks{href:""} Tasks
-      %li
-        %a.calendar{href:""} Calendar
-      %li
-        %a.people{href:""} People
-      %li
-        %a.threads{href:""} Threads
-      %li
-        %a.settings{href:""}
-          .icon-wrench
+%ul.nav.nav-tabs
+  %li
+    <a href="/projects/<%= slug %>/tasks">Tasks</a>
+  %li
+    <a href="/projects/<%= slug %>/calendar">Calendar</a>
+  %li
+    <a href="/projects/<%= slug %>/people">People</a>
+  %li
+    <a href="/projects/<%= slug %>/threads">Threads</a>
+  %li
+    <a href="/projects/<%= slug %>/settings"><i class="icon-wrench" /></a>
 
-%h2
-  <%= project.get('name') %>
+.tab-content
+  .tab-pane{name: 'tasks'}
+    %h2 Tasks
+  .tab-pane{name: 'calendar'}
+    %h2 Calendar
+  .tab-pane{name: 'people'}
+    %h2 People
+  .tab-pane{name: 'threads'}
+    %h2 Threads
+  .tab-pane{name: 'settings'}
+    %h2 Settings
