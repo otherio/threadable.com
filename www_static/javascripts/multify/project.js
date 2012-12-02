@@ -3,7 +3,8 @@ Multify.Project = Backbone.Model.extend({
   slug: null,
 
   initialize: function() {
-    this.tasks = new Multify.Tasks(this);
+    this.tasks = new Multify.Tasks;
+    this.tasks.project = this;
   }
 });
 

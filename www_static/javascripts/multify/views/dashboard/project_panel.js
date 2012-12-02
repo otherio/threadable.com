@@ -37,8 +37,7 @@ Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
       this[tab] = new Multify.Views.Dashboard[view]({
         el: content,
         project: this.options.project
-      });
-      this[tab].render();
+      }).render();
     }
 
     return this;
