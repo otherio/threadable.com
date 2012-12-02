@@ -1,3 +1,4 @@
 Multify.Project = Backbone.Model.extend({
-  name: null
+  name: null,
+  slug: null
 });

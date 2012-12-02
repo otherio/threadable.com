@@ -1,4 +1,3 @@
-
 Multify.Views.Projects = Backbone.View.extend({
   initialize: function(){
     this.render();
