@@ -22,9 +22,10 @@ Multify.Views.Layout = Backbone.View.extend({
 
     this.$el.html(html);
 
-    this.renderMainProjectsList();
-
-    // this.renderMainProjectsPanel();
+    if (Multify.logged_in){
+      this.renderMainProjectsList();
+      // this.renderMainProjectsPanel();
+    }
 
     this.$('a.logout').click(function(){ Multify.logout(); });
 
@@ -57,6 +58,7 @@ Multify.Views.Layout = Backbone.View.extend({
   },
 
   selectProject: function(project_slug){
+    if (!Multify.logged_in) return;
     var project = this.options.current_user.projects.find(function(project){
       return project.get('slug') == project_slug;
     });

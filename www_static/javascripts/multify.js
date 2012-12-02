@@ -2,11 +2,11 @@
 //= require "multify/backbone"
 //= require "multify/request"
 //= require "multify/session"
-//= require "multify/authentication"
 //= require "multify/templates"
 //= require "multify/router"
 //= require_tree "./multify/views"
 //= require "multify/user"
 //= require "multify/project"
 //= require "multify/projects"
+//= require "multify/authentication"
 
