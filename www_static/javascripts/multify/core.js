@@ -1,6 +1,12 @@
-Multify = {
-  Views: {},
-};
+Multify = {};
+// Multify = Backbone.Model.extend({
+//   host: null,
+//   current_user_id: null,
+//   current_user: null,
+//   logged_in: null,
+// });
+
+Multify.Views = {};
 
 _.extend(Multify, Backbone.Events);
 
@@ -27,18 +33,6 @@ Multify.init = function(){
 };
 
 
-$(document).on('click', 'a[href=""],a[href="#"]', function(event){
-  event.preventDefault();
-});
-
-$(document).on('click', 'a[href]', function(event){
-  var href = $(this).attr('href');
-  if (href[0] === '/'){
-    event.preventDefault();
-    Multify.router.navigate(href, {trigger: true});
-  }
-});
-
 
 $(function(){
   Multify.init();
@@ -52,9 +46,7 @@ Multify.ready(function(){
     root: '/'
   });
 
-  Multify.router.on("route:project", function(project_slug){
-    Multify.layout.mainProjectList.setActiveLink();
-  });
+
 
 
   Multify.layout = new Multify.Views.Layout;
