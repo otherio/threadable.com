@@ -1,4 +1,4 @@
-<% _.each(projects, function(project){ %>
+<% projects.each(function(project){ %>
 %li
   <a href="/projects/<%= project.get('slug') %>"><%= project.get('name') %></a>
 

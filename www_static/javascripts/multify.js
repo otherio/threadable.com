@@ -52,33 +52,15 @@ $(function(){
 
 Multify.ready(function(){
 
-
-
-
-  TEMP_FAKE_PROJECTS = [
-    new Multify.Project({
-      name:'love steve',
-      slug:'love-steve'
-    }),
-    new Multify.Project({
-      name:'eat sally',
-      slug:'eat-sally'
-    }),
-    new Multify.Project({
-      name:'pickup mustard',
-      slug:'pickup-mustard'
-    })
-  ];
-
-
   Multify.router = new Multify.Router;
   Backbone.history.start({
     pushState: true,
     root: '/'
   });
 
-  Multify.layout = new Multify.Views.Layout({
-    projects: TEMP_FAKE_PROJECTS
-  });
+  Multify.layout = new Multify.Views.Layout;
+
+  Multify.layout.render();
+
 
 });
