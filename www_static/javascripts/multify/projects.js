@@ -2,17 +2,9 @@ Multify.Projects = Backbone.Collection.extend({
 
   model: Multify.Project,
 
-  build: function(attributes){
-    return new Multify.Project(attributes);
-  },
-
-  create: function(attributes){
-    var
-      projects = this,
-      project  = projects.build(attributes);
-
-    return project.save().done(function(){
-      projects.add(project);
+  findBySlug: function(slug){
+    return this.find(function(project){
+      return project.get('slug') === slug;
     });
   }
 

@@ -23,14 +23,16 @@ Multify.Views.Dashboard.ProjectList = Backbone.View.extend({
 
       element.val('');
 
-      Multify.current_user.projects.create({
+      view.options.projects.create({
         name: project_name
       });
     });
   },
 
   setActiveLink: function(){
-    active = this.$el.find('a[href="'+location.pathname+'"]').parent();
+    var slug = location.pathname.match(/\/projects\/([^\/]+)(\/|$)/);
+    if (slug === null || !slug[1]) return;
+    active = this.$el.find('a[data-slug="'+slug[1]+'"]').parent();
     active.addClass('active').siblings().removeClass('active');
   }
 });

@@ -9,5 +9,7 @@
 //= require "multify/user"
 //= require "multify/project"
 //= require "multify/projects"
+//= require "multify/task"
+//= require "multify/tasks"
 //= require "multify/authentication"
 
