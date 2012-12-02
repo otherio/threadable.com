@@ -6,26 +6,23 @@
 
       .pull-right
         %ul.nav
+
+          <% if (Multify.logged_in) { %>
           %li.dropdown
-            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-              Dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+              <%= Multify.current_user.get('name') %>
               %b.caret
             %ul.dropdown-menu
+              %li.nav-header Account
               %li
-                %a{:href => "#"} Action
-              %li
-                %a{:href => "#"} Another action
-              %li
-                %a{:href => "#"} Something else here
+                %a{:href => ""} Profile
               %li.divider
-              %li.nav-header Nav header
               %li
-                %a{:href => "#"} Separated link
-              %li
-                %a{:href => "#"} One more separated link
-
+                %a.logout{:href => ""} Logout
+          <% } else { %>
           %li
             %a.login{href:""} Login
+          <% } %>
 
   .panels.horizontal-box
     .left

@@ -17,7 +17,7 @@ Multify.login = function(email, password){
   request.done(function(response){
     Multify.logged_in = true;
     Multify.current_user_id = response.user.id;
-    Multify.current_user = response.user;
+    Multify.current_user = new Multify.User(response.user);
 
     Multify.session.user_id = response.user.id;
     Multify.session.authentication_token = response.authentication_token;
@@ -38,7 +38,7 @@ Multify.loadCurrentUser = function(){
   // return Multify.User.find(Multify.session.user_id)
   return Multify.get('/users/'+Multify.current_user_id)
     .success(function(user){
-      Multify.current_user = user;
+      Multify.current_user = new Multify.User(user);
     })
     .fail(function(){
       console.error('failed to find user '+Multify.current_user_id);
