@@ -4,6 +4,9 @@ Multify.Views.Layout = Backbone.View.extend({
     var view = this;
     Multify.on('logout', function(){ view.render(); });
     Multify.on('login', function(){ view.render(); });
+    Multify.router.on("route:project", function(){
+      this.mainProjectList.setActiveLink()
+    }.bind(this));
   },
 
   el: document.body,
