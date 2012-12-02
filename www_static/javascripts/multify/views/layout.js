@@ -1,10 +1,10 @@
 Multify.Views.Layout = Backbone.View.extend({
 
   initialize: function(){
-    var view = this;
-    Multify.on('logout', function(){ view.render(); });
-    Multify.on('login', function(){ view.render(); });
-    Multify.router.on("route:project", this.selectProject.bind(this));
+    // var view = this;
+    // Multify.on('logout', function(){ view.render(); });
+    // Multify.on('login', function(){ view.render(); });
+    // Multify.router.on("route:project", this.selectProject.bind(this));
   },
 
   el: document.body,
@@ -22,10 +22,7 @@ Multify.Views.Layout = Backbone.View.extend({
 
     this.$el.html(html);
 
-    if (Multify.logged_in){
-      this.renderMainProjectsList();
-      // this.renderMainProjectsPanel();
-    }
+    this.renderPageContent();
 
     this.$('a.logout').click(function(){ Multify.logout(); });
 
@@ -36,34 +33,16 @@ Multify.Views.Layout = Backbone.View.extend({
     return this;
   },
 
+  renderPageContent: function(){
+    var $content = this.$('#page > .content');
 
-  renderMainProjectsList: function(){
-    var
-      view = this;
+    if (Multify.logged_in){
+      this.dashboard = new Multify.Views.Dashboard(this.options);
+      $content.html(this.dashboard.render().el);
+    }else{
+      $content.html(Multify.templates.splash());
+    }
 
-    this.main_project_list = new Multify.Views.MainProjectList({
-      el: view.$('.main-project-list'),
-      projects: this.options.current_user.projects
-    });
-
-    this.options.current_user.projects.fetch();
   },
 
-  renderMainProjectsPanel: function(project){
-    this.main_project_panel = new Multify.Views.MainProjectPanel({
-      project: project
-    });
-    this.main_project_panel.render();
-    this.$('.panels > .main').html(this.main_project_panel.el);
-  },
-
-  selectProject: function(project_slug){
-    if (!Multify.logged_in) return;
-    var project = this.options.current_user.projects.find(function(project){
-      return project.get('slug') == project_slug;
-    });
-    console.log('SELECTING PROJECT', project_slug, project);
-    this.renderMainProjectsPanel(project);
-    this.main_project_list.setActiveLink();
-  }
 });
