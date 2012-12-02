@@ -18,7 +18,7 @@ Multify.Views.Layout = Backbone.View.extend({
     this.options.logged_in = Multify.logged_in;
     this.options.current_user = Multify.current_user;
 
-    var html = Multify.templates.layout(this.options);
+    var html = Multify.render('layout', this.options);
 
     this.$el.html(html);
 
@@ -40,7 +40,7 @@ Multify.Views.Layout = Backbone.View.extend({
       this.dashboard = new Multify.Views.Dashboard(this.options);
       $content.html(this.dashboard.render().el);
     }else{
-      $content.html(Multify.templates.splash());
+      $content.html(Multify.render('splash'));
     }
 
   },

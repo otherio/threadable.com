@@ -7,7 +7,7 @@ Multify.Views.MainProjectList = Backbone.View.extend({
   render: function(){
     var view = this, html;
 
-    html = Multify.templates.main_project_list({
+    html = Multify.render('main_project_list',{
       projects: view.options.projects
     });
 

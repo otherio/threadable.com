@@ -1,6 +1,6 @@
-Multify.Views.MainProjectPanel = Backbone.View.extend({
+Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
 
-  className: 'main-project-panel',
+  className: 'dashboard-project-panel',
 
   initialize: function(){
     // this.options.project.on('all', this.render.bind(this));
@@ -10,7 +10,7 @@ Multify.Views.MainProjectPanel = Backbone.View.extend({
     if (!this.options.project) return this;
     var view = this, html;
 
-    html = Multify.templates.main_project_panel(this.options);
+    html = Multify.render('dashboard/project_panel',this.options);
 
     view.$el.html(html);
 
@@ -28,5 +28,6 @@ Multify.Views.MainProjectPanel = Backbone.View.extend({
     //     name: project_name
     //   });
     // });
+    return this;
   }
 });
