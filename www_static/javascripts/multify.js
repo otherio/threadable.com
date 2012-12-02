@@ -4,6 +4,7 @@
 //= require "multify/session"
 //= require "multify/templates"
 //= require "multify/router"
+//= require "multify/routes"
 //= require_tree "./multify/views"
 //= require "multify/user"
 //= require "multify/project"
