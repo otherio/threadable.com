@@ -3,13 +3,13 @@ Multify.Views.MainProjectPanel = Backbone.View.extend({
   className: 'main-project-panel',
 
   initialize: function(){
-    // this.options.projects.on('all', this.render.bind(this));
+    // this.options.project.on('all', this.render.bind(this));
   },
 
   render: function(){
     var view = this, html;
 
-    html = Multify.templates.main_project_panel();
+    html = Multify.templates.main_project_panel(this.options);
 
     view.$el.html(html);
 
