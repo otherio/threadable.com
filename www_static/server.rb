@@ -23,7 +23,7 @@ class Server < Sinatra::Base
   end
 
   get '*' do
-    haml :index, layout: false
+    haml :index, layout: false, :haml_options => {:escape_html => false}
   end
 
   helpers do

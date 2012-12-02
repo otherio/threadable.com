@@ -9,7 +9,7 @@ Multify.Views.Layout = Backbone.View.extend({
 
     this.projectsView = new Multify.Views.Projects({
       el: this.$('.list-of-projects'),
-      projects: TEMP_FAKE_PROJECTS
+      projects: this.options.projects
     });
 
   }
