@@ -14,37 +14,14 @@ Multify.Views.Layout = Backbone.View.extend({
 
     this.options = {};
 
-    if (Multify.logged_in){
-
-      this.options.projects = new Multify.Projects([
-        new Multify.Project({
-          name:'love steve',
-          slug:'love-steve'
-        }),
-        new Multify.Project({
-          name:'eat sally',
-          slug:'eat-sally'
-        }),
-        new Multify.Project({
-          name:'pickup mustard',
-          slug:'pickup-mustard'
-        })
-      ]);
-
-    }else{
-      this.options.projects = new Multify.Projects([]);
-    }
-
+    this.options.logged_in = Multify.logged_in;
+    this.options.current_user = Multify.current_user;
 
     var html = Multify.templates.layout(this.options);
 
     this.$el.html(html);
 
-    this.mainProjectList = new Multify.Views.MainProjectList({
-      projects: this.options.projects
-    });
-
-    this.$('.main-project-list').replaceWith(this.mainProjectList.el);
+    this.renderMainProjectsList();
 
     this.$('a.logout').click(function(){ Multify.logout(); });
 
@@ -53,5 +30,21 @@ Multify.Views.Layout = Backbone.View.extend({
     });
 
     return this;
+  },
+
+
+  renderMainProjectsList: function(){
+    var view = this;
+    Multify.Project.all(function(projects){
+
+      console.log(projects);
+
+      view.mainProjectList = new Multify.Views.MainProjectList({
+        projects: projects
+      });
+
+      view.$('.main-project-list').replaceWith(view.mainProjectList.el);
+    })
+
   }
 });
