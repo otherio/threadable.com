@@ -3,24 +3,5 @@ Multify.Project = Backbone.Model.extend({
   slug: null
 });
 
-
-Multify.Project.all = function(callback){
-
-  if (Multify.logged_in){
-
-    Multify.get('/projects')
-      .success(function(projects){
-        callback(new Multify.Projects(projects));
-      })
-      .fail(function(){
-        console.error('failed to load projects');
-      })
-    ;
-
-  }else{
-    setTimeout(function(projects){
-      callback(new Multify.Projects);
-    });
-  }
-
-}
+Multify.Project.modelName = 'project';
+Multify.Project.path = 'projects';

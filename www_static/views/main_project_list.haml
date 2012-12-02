@@ -1,5 +1,10 @@
-<% projects.each(function(project){ %>
-%li
-  <a href="/projects/<%= project.get('slug') %>"><%= project.get('name') %></a>
+.main-project-list
+  %ol.projects.nav.nav-list
+    <% projects.each(function(project){ %>
+    %li
+      <a href="/projects/<%= project.get('slug') %>"><%= project.get('name') || '&nbsp;' %></a>
 
-<% }); %>
+    <% }); %>
+    %li
+      %input{type:'text', placeholder: 'new project…'}
+

@@ -34,17 +34,14 @@ Multify.Views.Layout = Backbone.View.extend({
 
 
   renderMainProjectsList: function(){
-    var view = this;
-    Multify.Project.all(function(projects){
+    var
+      view = this;
 
-      console.log(projects);
+    this.mainProjectList = new Multify.Views.MainProjectList({
+      el: view.$('.main-project-list'),
+      projects: this.options.current_user.projects
+    });
 
-      view.mainProjectList = new Multify.Views.MainProjectList({
-        projects: projects
-      });
-
-      view.$('.main-project-list').replaceWith(view.mainProjectList.el);
-    })
-
+    this.options.current_user.projects.fetch();
   }
 });

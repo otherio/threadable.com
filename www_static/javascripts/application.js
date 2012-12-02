@@ -7,6 +7,7 @@
 //= require "bootstrap"
 
 //= require "multify"
+//= require "multify/request"
 //= require "multify/session"
 //= require "multify/authentication"
 //= require "multify/templates"
