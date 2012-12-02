@@ -1,12 +1,7 @@
-if (Multify.session.authentication_token){
-  Multify.logged_in = true;
-  Multify.current_user = new Multify.User(Multify.session.user);
-}
-
 Multify.logout = function(){
-  Multify.logged_in = false;
   Multify.session.clear();
-  Multify.trigger('logout');
+  Multify.set('current_user', null);
+  Multify.set('logged_in', false);
 };
 
 Multify.login = function(email, password){
@@ -14,16 +9,14 @@ Multify.login = function(email, password){
 
     .done(function(response){
 
-      Multify.logged_in = true;
-
       Multify.session.update({
         user: response.user,
         authentication_token: response.authentication_token
       });
 
-      Multify.current_user = new Multify.User(response.user);
+      Multify.set('current_user', new Multify.User(response.user));
+      Multify.set('logged_in', true);
 
-      Multify.trigger('login');
       console.log('Login succeeded', response);
     })
 
