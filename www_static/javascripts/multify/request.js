@@ -16,7 +16,7 @@ Multify.request = function(method, path, params, options){
     timeout: 2000,
   }, options);
 
-  console.log('REQUEST', options);
+  // console.log('REQUEST', options);
 
   return $.ajax(options);
 };
@@ -30,7 +30,7 @@ Backbone.sync = function(action, model, options) {
     params[model.constructor.modelName] = model.toJSON();
   }
 
-  console.log('SYNC', action, model, options);
+  // console.log('SYNC', action, model, options);
 
   return Multify.request(method, model.path(), params, {context: model})
     .done(options.success)

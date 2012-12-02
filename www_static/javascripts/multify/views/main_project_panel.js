@@ -7,6 +7,7 @@ Multify.Views.MainProjectPanel = Backbone.View.extend({
   },
 
   render: function(){
+    if (!this.options.project) return this;
     var view = this, html;
 
     html = Multify.templates.main_project_panel(this.options);

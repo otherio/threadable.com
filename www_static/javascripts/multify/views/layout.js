@@ -60,6 +60,7 @@ Multify.Views.Layout = Backbone.View.extend({
     var project = this.options.current_user.projects.find(function(project){
       return project.get('slug') == project_slug;
     });
+    console.log('SELECTING PROJECT', project_slug, project);
     this.renderMainProjectsPanel(project);
     this.main_project_list.setActiveLink();
   }
