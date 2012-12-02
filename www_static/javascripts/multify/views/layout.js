@@ -5,7 +5,7 @@ Multify.Views.Layout = Backbone.View.extend({
     Multify.on('logout', function(){ view.render(); });
     Multify.on('login', function(){ view.render(); });
     Multify.router.on("route:project", function(){
-      this.mainProjectList.setActiveLink()
+      this.main_project_list.setActiveLink()
     }.bind(this));
   },
 
@@ -26,6 +26,8 @@ Multify.Views.Layout = Backbone.View.extend({
 
     this.renderMainProjectsList();
 
+    this.renderMainProjectsPanel();
+
     this.$('a.logout').click(function(){ Multify.logout(); });
 
     this.$('a.login').click(function(){
@@ -40,11 +42,17 @@ Multify.Views.Layout = Backbone.View.extend({
     var
       view = this;
 
-    this.mainProjectList = new Multify.Views.MainProjectList({
+    this.main_project_list = new Multify.Views.MainProjectList({
       el: view.$('.main-project-list'),
       projects: this.options.current_user.projects
     });
 
     this.options.current_user.projects.fetch();
+  },
+
+  renderMainProjectsPanel: function(){
+    this.main_project_panel = new Multify.Views.MainProjectPanel();
+    this.main_project_panel.render();
+    this.$('.panels > .main').html(this.main_project_panel.el);
   }
 });

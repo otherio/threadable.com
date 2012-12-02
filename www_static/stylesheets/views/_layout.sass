@@ -1,0 +1,56 @@
+html
+  background-color: purple
+
+body
+  background-color: orange
+
+html, body
+  height: 100%
+  width: 100%
+
+#page
+  position: relative
+  // overflow: hidden
+  min-height: 600px
+  min-width: 800px
+  height: 100%
+  width: 100%
+  background-color: red
+
+.navbar .navbar-inner
+  padding-left: 20px
+  padding-right: 20px
+
+.panels
+  background-color: yellow
+  position: absolute
+  top: $nav_height
+  left: 0
+  bottom: 0
+  right: 0
+  width: 100%
+  > *
+    position: relative
+    // height: 100%
+
+
+  > .left
+    overflow: hidden
+    width: 300px
+    background-color: pink
+    > .vertical-box
+      > .projects
+
+      > .feed
+        +experimental(box-flex, 20)
+        > ul
+          height: 100%
+          overflow: auto
+
+
+  > .main
+    +experimental(box-flex, 1)
+
+
+  > .right
+    width: 300px
