@@ -9,7 +9,6 @@ Multify.User = Backbone.Model.extend({
 
   initialize: function() {
     this.projects = new Multify.Projects;
-    this.projects.user = this;
   }
 });
 

@@ -1,6 +1,10 @@
 Multify.Project = Backbone.Model.extend({
   name: null,
-  slug: null
+  slug: null,
+
+  initialize: function() {
+    this.tasks = new Multify.Tasks(this);
+  }
 });
 
 Multify.Project.modelName = 'project';
