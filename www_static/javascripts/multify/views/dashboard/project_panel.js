@@ -17,20 +17,6 @@ Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
 
     this.$el.html(html);
 
-    // view.setActiveLink();
-
-    // view.$el.find('input').keydown(function(event){
-    //   if (event.which !== 13) return;
-    //   var
-    //     element = $(this),
-    //     project_name = element.val();
-
-    //   element.val('');
-
-    //   Multify.current_user.projects.create({
-    //     name: project_name
-    //   });
-    // });
     return this;
   },
 
@@ -39,7 +25,7 @@ Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
       link = this.$('> .nav-tabs a[name="'+tab+'"]'),
       content = this.$('> .tab-content > .tab-pane[name="'+tab+'"]');
 
-    link.addClass('active').siblings().removeClass('active');
+    link.parent().addClass('active').siblings().removeClass('active');
     content.addClass('active').siblings().removeClass('active');
 
     return this;
