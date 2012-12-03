@@ -1,4 +1,4 @@
-Multify.Views.Layout = Backbone.View.extend({
+V('layout', {
 
   initialize: function(){
     // var view = this;
@@ -37,7 +37,7 @@ Multify.Views.Layout = Backbone.View.extend({
     var $content = this.$('#page > .content');
 
     if (Multify.logged_in){
-      this.dashboard = new Multify.Views.Dashboard(this.options);
+      this.dashboard = new V('dashboard', this.options);
       $content.html(this.dashboard.render().el);
     }else{
       $content.html(Multify.render('splash'));

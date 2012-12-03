@@ -1,4 +1,4 @@
-Multify.Views.Dashboard.Tasks = Backbone.View.extend({
+V('dashboard/tasks', {
 
   className: 'dashboard-settings',
 

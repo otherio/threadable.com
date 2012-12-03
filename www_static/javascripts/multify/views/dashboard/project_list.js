@@ -1,4 +1,4 @@
-Multify.Views.Dashboard.ProjectList = Backbone.View.extend({
+V('dashboard/project_list', {
 
   initialize: function(){
     this.options.projects.on('all', this.render.bind(this));
