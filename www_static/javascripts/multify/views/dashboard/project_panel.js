@@ -1,17 +1,9 @@
-Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
+V('dashboard/project_panel', {
 
   className: 'dashboard-project-panel',
 
   initialize: function(){
     // this.options.project.on('all', this.render.bind(this));
-  },
-
-  views: {
-    tasks: 'Tasks',
-    calendar: 'Calendar',
-    people: 'People',
-    threads: 'Threads',
-    settings: 'Settings'
   },
 
   render: function(){
@@ -26,7 +18,6 @@ Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
 
   selectTab: function(tab){
     var
-      view = this.views[tab],
       link = this.$('> .nav-tabs a[name="'+tab+'"]'),
       content = this.$('> .tab-content > .tab-pane[name="'+tab+'"]');
 
@@ -34,7 +25,7 @@ Multify.Views.Dashboard.ProjectPanel = Backbone.View.extend({
     content.addClass('active').siblings().removeClass('active');
 
     if (this[tab] === undefined){
-      this[tab] = new Multify.Views.Dashboard[view]({
+      this[tab] = new V('dashboard/'+tab, {
         el: content,
         project: this.options.project
       }).render();

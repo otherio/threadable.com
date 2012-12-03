@@ -1,4 +1,4 @@
-Multify.Views.Dashboard.Settings = Backbone.View.extend({
+V('dashboard/settings', {
 
   className: 'dashboard-settings',
 

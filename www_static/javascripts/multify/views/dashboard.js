@@ -1,4 +1,4 @@
-Multify.Views.Dashboard = Backbone.View.extend({
+V('dashboard', {
 
   className: 'dashboard',
 
@@ -16,7 +16,7 @@ Multify.Views.Dashboard = Backbone.View.extend({
 
     this.$el.html(html);
 
-    this.project_list = new Multify.Views.Dashboard.ProjectList({
+    this.project_list = new V('dashboard/project_list', {
       el: this.$('.dashboard-project-list'),
       projects: this.projects
     });
@@ -31,7 +31,7 @@ Multify.Views.Dashboard = Backbone.View.extend({
   },
 
   renderProjectsPanel: function(project){
-    this.project_panel = new Multify.Views.Dashboard.ProjectPanel({
+    this.project_panel = new V('dashboard/project_panel', {
       el: this.$('.dashboard-project-panel'),
       project: project
     });
