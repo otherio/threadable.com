@@ -18,7 +18,7 @@ V('layout', {
     this.options.logged_in = Multify.logged_in;
     this.options.current_user = Multify.current_user;
 
-    var html = Multify.render('layout', this.options);
+    var html = this.template(this.options);
 
     this.$el.html(html);
 
@@ -40,7 +40,7 @@ V('layout', {
       this.dashboard = new V('dashboard', this.options);
       $content.html(this.dashboard.render().el);
     }else{
-      $content.html(Multify.render('splash'));
+      $content.html(Multify.Template.render('splash'));
     }
 
   },

@@ -14,7 +14,7 @@ V('dashboard/tasks', {
       return this
     }
 
-    var html = Multify.render('dashboard/tasks', this.options);
+    var html = this.template(this.options);
 
     this.$el.html(html);
 

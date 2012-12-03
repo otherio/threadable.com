@@ -7,7 +7,7 @@ V('dashboard/project_panel', {
   },
 
   render: function(){
-    var html = Multify.render('dashboard/project_panel',{
+    var html = this.template({
       slug: this.options.project.get('slug')
     });
 
