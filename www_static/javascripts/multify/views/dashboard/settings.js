@@ -7,7 +7,7 @@ V('dashboard/settings', {
   },
 
   render: function(){
-    var html = Multify.render('dashboard/settings', this.options);
+    var html = this.template(this.options);
 
     this.$el.html(html);
 

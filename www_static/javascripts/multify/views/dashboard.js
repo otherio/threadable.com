@@ -12,7 +12,7 @@ V('dashboard', {
   },
 
   render: function(){
-    var html = Multify.render('dashboard');
+    var html = this.template();
 
     this.$el.html(html);
 

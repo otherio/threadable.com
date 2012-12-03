@@ -1,5 +1,8 @@
 //= require "multify/core"
+//= require "multify/helpers"
 //= require "multify/backbone"
+//= require "multify/view"
+//= require "multify/model"
 //= require "multify/request"
 //= require "multify/session"
 //= require "multify/templates"

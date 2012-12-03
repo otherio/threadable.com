@@ -1,9 +1,9 @@
-// Multify.templates = {};
+Multify.templates = {};
 Multify.Template = function(name, value){
   Multify.templates[name] = _.template(value);
 };
 
-Multify.render = function(template, options){
-  return Multify.templates[template](options);
+Multify.Template.render = function(name, options){
+  return Multify.templates[name](options);
 };
 

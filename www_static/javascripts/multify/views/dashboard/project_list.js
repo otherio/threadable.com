@@ -7,7 +7,7 @@ V('dashboard/project_list', {
   render: function(){
     var view = this, html;
 
-    html = Multify.render('dashboard/project_list',{
+    html = this.template({
       projects: view.options.projects
     });
 
