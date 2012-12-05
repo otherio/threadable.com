@@ -1,7 +1,5 @@
 
-
-jasmine.Ajax.useMock();
-
 beforeEach(function() {
+  jasmine.Ajax.useMock();
   clearAjaxRequests();
 });
