@@ -4994,26 +4994,22 @@ a.badge:hover {
 .well {
   margin: 0; }
 
-html {
-  background-color: purple; }
-
-body {
-  background-color: orange; }
-
 html, body {
   height: 100%;
   width: 100%; }
 
-#page {
+.main-region {
   position: relative;
   min-height: 600px;
   min-width: 800px;
   height: 100%;
-  width: 100%;
-  background-color: red; }
-  #page > .content {
-    background-color: green;
-    top: 40px; }
+  width: 100%; }
+  .main-region > div {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0; }
 
 .navbar .navbar-inner {
   padding-left: 20px;
