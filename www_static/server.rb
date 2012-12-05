@@ -23,10 +23,20 @@ class Server < Sinatra::Base
   end
 
   get '*' do
+    compile_stylesheet!
     haml :index, layout: false, :haml_options => {:escape_html => false}
   end
 
   helpers do
+
+    def compile_stylesheet!
+      puts "compiling stylesheet"
+      load_paths = Compass.configuration.sass_load_paths + [STYLESHEETS]
+      sass = File.read(STYLESHEETS + "application.sass")
+      css = Sass::Engine.new(sass, :load_paths => load_paths).to_css
+      STATIC.join('application.css').open('w'){|f| f.write(css) }
+    end
+
 
     def specs
       specs = []
