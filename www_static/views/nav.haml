@@ -1,4 +1,4 @@
-.navbar.navbar-fixed-top.navbar.inverse
+.navbar.navbar-fixed-top.navbar-inverse
   .navbar-inner
 
     %a.brand{href:""} Multify
@@ -6,7 +6,7 @@
     .pull-right
       %ul.nav
 
-        <% if (logged_in = false) { %>
+        <% if (loggedIn) { %>
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
             <%= current_user.get('name') %>
