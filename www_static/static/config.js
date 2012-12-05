@@ -3,6 +3,7 @@ requirejs.config({
     "text": "vendor/text",
     "jquery": "vendor/jquery",
     "jquery-cookie": "vendor/jquery-cookie",
+    "uri": "vendor/uri",
     "underscore": "vendor/underscore",
     "backbone": "vendor/backbone",
     "marionette": "vendor/backbone.marionette"
@@ -18,6 +19,9 @@ requirejs.config({
     },
     'jquery-cookie': {
       deps: ['jquery']
+    },
+    'uri': {
+      exports: 'URI'
     }
   }
 
