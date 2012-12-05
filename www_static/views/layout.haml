@@ -1,28 +1,5 @@
 #page
-  .navbar.navbar-fixed-top.navbar.inverse
-    .navbar-inner
 
-      %a.brand{href:""} Multify
-
-      .pull-right
-        %ul.nav
-
-          <% if (logged_in) { %>
-          %li.dropdown
-            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-              <%= current_user.get('name') %>
-              %b.caret
-            %ul.dropdown-menu
-              %li.nav-header Account
-              %li
-                %a{:href => ""} Profile
-              %li.divider
-              %li
-                %a.logout{:href => ""} Logout
-          <% } else { %>
-          %li
-            %a.login{href:""} Login
-          <% } %>
 
   .content.fill-container
 
