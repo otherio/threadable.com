@@ -33,20 +33,5 @@
 
   Multify.session = new Session().reload();
 
-  function readCookie(){
-    var cookie = $.cookie(cookieName);
-    if (cookie === null) return {};
-    try{
-      return JSON.parse(cookie);
-    }catch(e){
-      return {};
-    };
-  }
-
-  function writeCookie(data){
-    $.cookie(cookieName, JSON.stringify(data));
-    return this;
-  }
-
 }();
 

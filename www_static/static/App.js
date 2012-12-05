@@ -3,10 +3,14 @@ define(function(require){
   var
     _              = require('underscore'),
     $              = require('jquery'),
+    Backbone       = require('backbone'),
+    Multify        = require('multify'),
     Marionette     = require('marionette'),
     NavView        = require('views/NavView'),
     LoggedInLayout = require('views/LoggedInLayout'),
     LoggedOutView  = require('views/LoggedOutView');
+
+  Backbone.sync = Multify.sync;
 
   App = new Marionette.Application();
 
