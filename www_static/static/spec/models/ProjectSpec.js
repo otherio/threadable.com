@@ -1,8 +1,10 @@
 define(function(require) {
+  var Project = require('models/Project');
+
   describe('Project', function() {
 
     it("exists", function(){
-      expect(window.Project).toBeDefined();
+      expect(Project).toBeDefined();
     });
 
   });

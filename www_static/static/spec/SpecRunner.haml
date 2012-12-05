@@ -10,9 +10,13 @@
     %script{:src => "spec/helpers/SpecHelper.js"}
     %script{:src => "vendor/require.js"}
 
+    %script{:src => "vendor/underscore.js"}
+    %script{:src => "vendor/backbone.js"}
+    %script{:src => "vendor/jquery.js"}
+
     :javascript
 
-      require(#{(['vendor/jquery'] + specs).to_json}, function() {
+      require(#{specs.to_json}, function() {
 
           var jasmineEnv = jasmine.getEnv();
           jasmineEnv.updateInterval = 1000;
