@@ -8,7 +8,8 @@ define(function(require){
     Marionette     = require('marionette'),
     NavView        = require('views/NavView'),
     LoggedInLayout = require('views/LoggedInLayout'),
-    LoggedOutView  = require('views/LoggedOutView');
+    LoggedOutView  = require('views/LoggedOutView'),
+    session        = require('session');
 
   Backbone.sync = Multify.sync;
 
@@ -29,6 +30,7 @@ define(function(require){
     navView = new NavView({
       loggedIn: loggedIn,
     });
+
     App.navRegion.show(navView);
 
     var MainView = loggedIn ? LoggedInLayout : LoggedOutView;
