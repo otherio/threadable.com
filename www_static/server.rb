@@ -19,7 +19,12 @@ class Server < Sinatra::Base
   set :javascripts,   JAVASCRIPTS
 
   get "/spec" do
-    haml STATIC.join('spec/SpecRunner.haml').read, layout: false
+    haml STATIC.join('spec/SpecRunner.haml').read, layout: false, :haml_options => {:escape_html => false}
+  end
+
+  get "/templates/*" do |path|
+    path.sub!(/\.html/,'.haml')
+    haml VIEWS.join(path).read, layout: false, :haml_options => {:escape_html => false}
   end
 
   get '*' do

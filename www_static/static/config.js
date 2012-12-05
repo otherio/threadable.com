@@ -1,5 +1,6 @@
 requirejs.config({
   paths: {
+    "text": "vendor/text",
     "jquery": "vendor/jquery",
     "underscore": "vendor/underscore",
     "backbone": "vendor/backbone",

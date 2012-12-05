@@ -3,9 +3,8 @@ define(function(require){
   var
     _ = require('underscore'),
     $ = require('jquery'),
-    Marionette = require('marionette');
-
-  Multify = require('Multify');
+    Marionette = require('marionette'),
+    NavView = require('views/NavView');
 
   App = new Marionette.Application();
 
@@ -14,18 +13,19 @@ define(function(require){
     mainRegion: ".main-region"
   });
 
-  App.on("initialize:before", function(options){
-    console.log('before init', options);
-  });
-
   App.on("initialize:after", function(options){
     if (Backbone.history){
       Backbone.history.start();
     }
+
+    navView = new NavView();
+    App.navRegion.show(navView);
   });
 
   $(function(){
     App.start({});
   });
+
+  return App;
 
 });

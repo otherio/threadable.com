@@ -4,8 +4,6 @@ define(function(require){
 
   Multify.User = require('models/User');
 
-  return {
-    VERSION: '0.0.1',
-  };
+  return Multify;
 
 });
