@@ -6,6 +6,7 @@ requirejs.config({
     "uri": "vendor/uri",
     "underscore": "vendor/underscore",
     "backbone": "vendor/backbone",
+    "bootstrap": "vendor/bootstrap",
     "marionette": "vendor/backbone.marionette"
   },
 
@@ -22,6 +23,9 @@ requirejs.config({
     },
     'uri': {
       exports: 'URI'
+    },
+    'bootstrap': {
+      deps: ['jquery']
     }
   }
 

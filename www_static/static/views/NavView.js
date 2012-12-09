@@ -1,28 +1,20 @@
 define(function(require) {
+
   var
     Marionette = require('marionette'),
-    User = require('models/User'),
     template = require('text!templates/nav.html');
 
   return Marionette.ItemView.extend({
     template: _.template(template),
 
     modelEvents: {
-      "change": "render"
+      "change:currentUser": "render"
     },
 
     triggers: {
-      "click a.login": "login:clicked"
+      "click a.login":  "login:clicked",
+      "click a.logout": "logout:clicked"
     }
-
-    // templateHelpers: function() {
-    //   return this.options;
-    // },
-
-    // onRender: function(){
-
-    // }
-
 
   });
 });

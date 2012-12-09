@@ -11,14 +11,16 @@ define(function(require){
     initialize: function(){
       this.session.fetch();
       var user = this.session.get('user');
-      this.set('currentUser', user ? new User(user) : null);
+      this.set('currentUser', user ? new User(user) : undefined);
     },
 
     host: 'http://0.0.0.0:3000',
 
     session: session,
 
-    attributes: {},
+    attributes: {
+      currentUser: undefined
+    },
 
     get: function(attr) {
       return this.attributes[attr];
@@ -33,9 +35,14 @@ define(function(require){
       return value;
     },
 
+    toJSON: function(){
+      return _.clone(this.attributes);
+    },
+
     logout: function(){
       session.clear();
-      this.set('currentUser', null);
+      session.save();
+      this.set('currentUser', undefined);
       // Multify.trigger('logout');
     },
 
@@ -48,7 +55,7 @@ define(function(require){
             user: response.user,
             authentication_token: response.authentication_token
           });
-          debugger
+          session.save();
 
           Multify.set('currentUser', new User(response.user));
 

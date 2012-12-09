@@ -1,11 +1,15 @@
 define(function(require){
 
+  require('bootstrap');
+
   var
     _              = require('underscore'),
     $              = require('jquery'),
     Backbone       = require('backbone'),
     Marionette     = require('marionette'),
     Multify        = require('multify');
+
+
 
   App = new Marionette.Application();
 
@@ -14,8 +18,9 @@ define(function(require){
 
   App.views = {
     NavView:        require('views/NavView'),
-    LoggedInLayout: require('views/LoggedInLayout'),
-    LoggedOutView:  require('views/LoggedOutView')
+    MainView:        require('views/MainView'),
+    // LoggedInLayout: require('views/LoggedInLayout'),
+    // LoggedOutView:  require('views/LoggedOutView')
   };
 
   App.models = {
@@ -30,31 +35,39 @@ define(function(require){
   });
 
 
-  Multify.bind('change:currentUser', function(currentUser){
-    console.log('current users changed', arguments);
+  // Multify.bind('change:currentUser', function(currentUser){
+  //   console.log('current users changed', arguments);
 
-    App.navRegion.close();
-    App.mainRegion.close();
+  //   App.mainRegion.close();
 
-    if (currentUser){
-      App.navRegion.show(new App.views.NavView({model: currentUser}));
-      App.mainRegion.show(new App.views.LoggedInLayout({model: currentUser}));
-      App.navRegion.currentView.on('login:clicked', function(){
-        Multify.login('jared@change.org','password');
-      });
-    }else{
-      App.navRegion.close();
-      App.mainRegion.close();
-      App.navRegion.show(new App.views.NavView);
-      App.mainRegion.show(new App.views.LoggedOutView);
-    }
-  });
+
+  //   if (currentUser){
+  //     App.mainRegion.show(new App.views.LoggedInLayout({model: currentUser}));
+  //   }else{
+  //     App.mainRegion.show(new App.views.LoggedOutView);
+  //     App.navRegion.currentView.on('login:clicked', function(){
+  //       Multify.login('jared@change.org','password');
+  //     });
+  //   }
+  // });
 
 
   App.on("initialize:after", function(options){
     if (Backbone.history) Backbone.history.start();
 
     Multify.initialize();
+
+    App.navRegion.show(new App.views.NavView({model: App.Multify}));
+    App.mainRegion.show(new App.views.MainView({model: App.Multify}));
+
+    App.navRegion.currentView
+      .on('login:clicked', function(){
+        Multify.login('jared@change.org','password');
+      })
+      .on('logout:clicked', function(){
+        Multify.logout();
+      })
+    ;
 
   });
 
