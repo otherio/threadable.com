@@ -14,6 +14,10 @@ define(function(require) {
     triggers: {
       "click a.login":  "login:clicked",
       "click a.logout": "logout:clicked"
+    },
+
+    templateHelpers: {
+      loggedIn: function(){ return !!this.currentUser; }
     }
 
   });

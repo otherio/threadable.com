@@ -43,7 +43,6 @@ define(function(require){
       session.clear();
       session.save();
       this.set('currentUser', undefined);
-      // Multify.trigger('logout');
     },
 
     login: function(email, password){
@@ -58,14 +57,11 @@ define(function(require){
           session.save();
 
           Multify.set('currentUser', new User(response.user));
-
-          // Multify.trigger('login');
-          console.log('Login succeeded', response);
         })
 
         .fail(function(){
-          // Multify.trigger('logout');
           console.log('Login failed');
+          Multify.logout();
         })
       ;
     },

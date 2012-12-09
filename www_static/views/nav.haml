@@ -6,8 +6,7 @@
     .pull-right
       %ul.nav
 
-        <% console.info(currentUser) %>
-        <% if (currentUser !== undefined) { %>
+        <% if (loggedIn()) { %>
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
             <%= currentUser.get("name") %>

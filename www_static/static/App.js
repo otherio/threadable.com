@@ -17,10 +17,8 @@ define(function(require){
   Backbone.sync = Multify.sync;
 
   App.views = {
-    NavView:        require('views/NavView'),
-    MainView:        require('views/MainView'),
-    // LoggedInLayout: require('views/LoggedInLayout'),
-    // LoggedOutView:  require('views/LoggedOutView')
+    NavView:  require('views/NavView'),
+    MainView: require('views/MainView'),
   };
 
   App.models = {
@@ -33,24 +31,6 @@ define(function(require){
     navRegion: ".nav-region",
     mainRegion: ".main-region"
   });
-
-
-  // Multify.bind('change:currentUser', function(currentUser){
-  //   console.log('current users changed', arguments);
-
-  //   App.mainRegion.close();
-
-
-  //   if (currentUser){
-  //     App.mainRegion.show(new App.views.LoggedInLayout({model: currentUser}));
-  //   }else{
-  //     App.mainRegion.show(new App.views.LoggedOutView);
-  //     App.navRegion.currentView.on('login:clicked', function(){
-  //       Multify.login('jared@change.org','password');
-  //     });
-  //   }
-  // });
-
 
   App.on("initialize:after", function(options){
     if (Backbone.history) Backbone.history.start();
