@@ -3,7 +3,8 @@ define(function(require){
   var
     Backbone = require('backbone'),
     session  = require('Session');
-    URI      = require('uri');
+    URI      = require('uri'),
+    User     = require('models/User');
 
   var Multify = {
 
@@ -38,6 +39,7 @@ define(function(require){
             user: response.user,
             authentication_token: response.authentication_token
           });
+          debugger
 
           Multify.set('current_user', new User(response.user));
           Multify.set('logged_in', true);
@@ -68,8 +70,6 @@ define(function(require){
         timeout: 2000,
       }, options);
 
-      console.log('REQUEST', options,      jQuery.ajaxSettings.xhr);
-      debugger
       return $.ajax(options);
     },
 
@@ -81,8 +81,6 @@ define(function(require){
       if (action === 'create' || action === 'update'){
         params[model.constructor.modelName] = model.toJSON();
       }
-
-      // console.log('SYNC', action, model, options);
 
       return Multify.request(method, model.path(), params, {context: model})
         .done(options.success)
@@ -97,7 +95,7 @@ define(function(require){
   // private
 
   function authenticate(email, password){
-    return Multify.request('POST', 'users/sign_in', {
+    return Multify.request('POST', '/users/sign_in', {
       email: email,
       password: password
     });
