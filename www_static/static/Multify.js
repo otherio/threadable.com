@@ -2,13 +2,21 @@ define(function(require){
 
   var
     Backbone = require('backbone'),
-    session  = require('Session');
+    session  = require('session'),
     URI      = require('uri'),
     User     = require('models/User');
 
   var Multify = {
 
+    initialize: function(){
+      this.session.fetch();
+      var user = this.session.get('user');
+      this.set('currentUser', user ? new User(user) : null);
+    },
+
     host: 'http://0.0.0.0:3000',
+
+    session: session,
 
     attributes: {},
 
@@ -27,7 +35,8 @@ define(function(require){
 
     logout: function(){
       session.clear();
-      this.trigger('logout');
+      this.set('currentUser', null);
+      // Multify.trigger('logout');
     },
 
     login: function(email, password){
@@ -41,13 +50,14 @@ define(function(require){
           });
           debugger
 
-          Multify.set('current_user', new User(response.user));
-          Multify.set('logged_in', true);
+          Multify.set('currentUser', new User(response.user));
 
+          // Multify.trigger('login');
           console.log('Login succeeded', response);
         })
 
         .fail(function(){
+          // Multify.trigger('logout');
           console.log('Login failed');
         })
       ;

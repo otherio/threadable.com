@@ -4,37 +4,58 @@ define(function(require){
     _              = require('underscore'),
     $              = require('jquery'),
     Backbone       = require('backbone'),
-    Multify        = require('multify'),
     Marionette     = require('marionette'),
-    NavView        = require('views/NavView'),
-    LoggedInLayout = require('views/LoggedInLayout'),
-    LoggedOutView  = require('views/LoggedOutView'),
-    session        = require('session');
-
-  Backbone.sync = Multify.sync;
+    Multify        = require('multify');
 
   App = new Marionette.Application();
+
+  App.Multify = Multify;
+  Backbone.sync = Multify.sync;
+
+  App.views = {
+    NavView:        require('views/NavView'),
+    LoggedInLayout: require('views/LoggedInLayout'),
+    LoggedOutView:  require('views/LoggedOutView')
+  };
+
+  App.models = {
+    User:    require('models/User'),
+    Project: require('models/Project'),
+    Task:    require('models/Task')
+  };
 
   App.addRegions({
     navRegion: ".nav-region",
     mainRegion: ".main-region"
   });
 
-  var loggedIn = false;
+
+  Multify.bind('change:currentUser', function(currentUser){
+    console.log('current users changed', arguments);
+
+    App.navRegion.close();
+    App.mainRegion.close();
+
+    if (currentUser){
+      App.navRegion.show(new App.views.NavView({model: currentUser}));
+      App.mainRegion.show(new App.views.LoggedInLayout({model: currentUser}));
+      App.navRegion.currentView.on('login:clicked', function(){
+        Multify.login('jared@change.org','password');
+      });
+    }else{
+      App.navRegion.close();
+      App.mainRegion.close();
+      App.navRegion.show(new App.views.NavView);
+      App.mainRegion.show(new App.views.LoggedOutView);
+    }
+  });
+
 
   App.on("initialize:after", function(options){
-    if (Backbone.history){
-      Backbone.history.start();
-    }
+    if (Backbone.history) Backbone.history.start();
 
-    navView = new NavView({
-      loggedIn: loggedIn,
-    });
+    Multify.initialize();
 
-    App.navRegion.show(navView);
-
-    var MainView = loggedIn ? LoggedInLayout : LoggedOutView;
-    App.mainRegion.show(new MainView); // suck it Ian
   });
 
   $(function(){

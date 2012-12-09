@@ -14,5 +14,3 @@ Multify.User = Backbone.Model.extend({
 
 Multify.User.modelName = 'user';
 Multify.User.path = 'users';
-
-

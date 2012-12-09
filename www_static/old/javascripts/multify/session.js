@@ -34,4 +34,3 @@
   Multify.session = new Session().reload();
 
 }();
-

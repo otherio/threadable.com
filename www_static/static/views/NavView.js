@@ -7,9 +7,22 @@ define(function(require) {
   return Marionette.ItemView.extend({
     template: _.template(template),
 
-    templateHelpers: function() {
-      return this.options;
+    modelEvents: {
+      "change": "render"
+    },
+
+    triggers: {
+      "click a.login": "login:clicked"
     }
+
+    // templateHelpers: function() {
+    //   return this.options;
+    // },
+
+    // onRender: function(){
+
+    // }
+
 
   });
 });

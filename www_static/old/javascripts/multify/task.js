@@ -22,5 +22,3 @@ Multify.Task = Backbone.Model.extend({
 
 Multify.Task.modelName = 'task';
 Multify.Task.path = 'tasks';
-
-

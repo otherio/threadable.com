@@ -6,4 +6,3 @@ Multify.Template = function(name, value){
 Multify.Template.render = function(name, options){
   return Multify.templates[name](options);
 };
-

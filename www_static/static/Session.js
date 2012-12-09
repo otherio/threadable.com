@@ -17,7 +17,7 @@ define(function(require){
   });
 
   // note: singleton
-  return new Session;
+  return new Session();
 
   function readCookie(cookieName){
     var cookie = $.cookie(cookieName);
