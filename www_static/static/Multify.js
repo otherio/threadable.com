@@ -19,7 +19,7 @@ define(function(require){
     session: session,
 
     attributes: {
-      currentUser: undefined
+      currentUser: null
     },
 
     get: function(attr) {
@@ -70,9 +70,7 @@ define(function(require){
       params || (params = {});
       options || (options = {});
       params._method = method;
-      if (Multify.logged_in){
-        params.authentication_token = Multify.session.authentication_token
-      }
+      params.authentication_token = Multify.session.get('authentication_token');
       url = new URI(Multify.host);
       url.path = path;
       url.params = params;
@@ -95,7 +93,7 @@ define(function(require){
         params[model.constructor.modelName] = model.toJSON();
       }
 
-      return Multify.request(method, model.path(), params, {context: model})
+      return Multify.request(method, model.path, params, {context: model})
         .done(options.success)
         .fail(options.error)
     }

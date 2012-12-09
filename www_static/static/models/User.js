@@ -1,6 +1,8 @@
 define(function(require) {
 
-  var Backbone = require('backbone');
+  var
+    Backbone = require('backbone'),
+    Projects = require('models/Projects');
 
   return Backbone.Model.extend({
 
@@ -15,7 +17,7 @@ define(function(require) {
     updated_at: null,
 
     initialize: function() {
-      // this.projects = new Projects;
+      this.projects = new Projects;
     }
   });
 

@@ -4998,61 +4998,68 @@ html, body {
   height: 100%;
   width: 100%; }
 
-.main-region {
+body > .nav {
+  margin: 0; }
+body > .main {
   position: relative;
   min-height: 600px;
   min-width: 800px;
   height: 100%;
   width: 100%; }
-  .main-region > div {
-    position: absolute;
-    top: 40px;
-    left: 0;
-    right: 0;
-    bottom: 0; }
+  body > .main > div {
+    margin-top: 40px; }
 
 .navbar .navbar-inner {
   padding-left: 20px;
   padding-right: 20px; }
 
-.splash {
-  margin: 20px auto;
-  width: 600px; }
+body.logged-out > .main > .index {
+  padding-top: 20px; }
+  body.logged-out > .main > .index .splash {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 600px; }
 
-.dashboard .panels {
-  background-color: yellow;
+body.logged-out > .main > .join {
+  text-align: center; }
+
+body.logged-in > .main > .index {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
-  width: 100%; }
-  .dashboard .panels > * {
-    position: relative; }
-  .dashboard .panels > .left {
-    overflow: hidden;
-    width: 300px;
-    background-color: pink; }
-    .dashboard .panels > .left > .vertical-box > .feed {
-      -webkit-box-flex: 20;
-      -moz-box-flex: 20;
-      -ms-box-flex: 20;
-      -o-box-flex: 20;
-      box-flex: 20;
+  bottom: 0; }
+  body.logged-in > .main > .index > .panels {
+    background-color: yellow;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%; }
+    body.logged-in > .main > .index > .panels > * {
+      position: relative; }
+    body.logged-in > .main > .index > .panels > .left {
+      overflow: hidden;
+      width: 300px;
+      background-color: pink; }
+      body.logged-in > .main > .index > .panels > .left > .vertical-box > .feed {
+        -webkit-box-flex: 20;
+        -moz-box-flex: 20;
+        -ms-box-flex: 20;
+        -o-box-flex: 20;
+        box-flex: 20;
+        background-color: white; }
+        body.logged-in > .main > .index > .panels > .left > .vertical-box > .feed > ul {
+          height: 100%;
+          overflow: auto; }
+    body.logged-in > .main > .index > .panels > .main {
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+      -ms-box-flex: 1;
+      -o-box-flex: 1;
+      box-flex: 1;
       background-color: white; }
-      .dashboard .panels > .left > .vertical-box > .feed > ul {
-        height: 100%;
-        overflow: auto; }
-  .dashboard .panels > .main {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -ms-box-flex: 1;
-    -o-box-flex: 1;
-    box-flex: 1;
-    background-color: white; }
-  .dashboard .panels > .right {
-    width: 300px;
-    background-color: white; }
-
-.dashboard-project-panel > .nav-tabs {
-  margin: -20px -20px 0 -20px; }
+    body.logged-in > .main > .index > .panels > .extra {
+      width: 300px;
+      background-color: white; }

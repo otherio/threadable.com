@@ -1,12 +1,10 @@
 define(function(require) {
   var
     Marionette = require('marionette'),
-    User = require('models/User'),
-    template = require('text!templates/splash.html');
+    template = require('text!templates/logged_out/index.html');
 
   return Marionette.ItemView.extend({
     template: _.template(template),
-    className: 'nav'
-
+    className: 'index'
   });
 });

@@ -27,8 +27,8 @@ class Server < Sinatra::Base
     haml VIEWS.join(path).read, layout: false, :haml_options => {:escape_html => false}
   end
 
-  # get '*' do
-  get '/' do
+  get '*' do
+  # get '/' do
     compile_stylesheet!
     haml :index, layout: false, :haml_options => {:escape_html => false}
   end

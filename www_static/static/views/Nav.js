@@ -2,9 +2,21 @@ define(function(require) {
 
   var
     Marionette = require('marionette'),
+    Multify         = require('multify'),
     template = require('text!templates/nav.html');
 
   return Marionette.ItemView.extend({
+
+    initialize: function(){
+      this
+        .on('login:clicked', function(){
+          Multify.login('jared@change.org','password');
+        })
+        .on('logout:clicked', function(){
+          Multify.logout();
+        })
+      ;
+    },
 
     template: _.template(template),
 

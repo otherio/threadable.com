@@ -2,20 +2,19 @@ html, body
   height: 100%
   width: 100%
 
-.main-region
-  position: relative
-  // overflow: hidden
-  min-height: 600px
-  min-width: 800px
-  height: 100%
-  width: 100%
-  > div
-    position: absolute
-    top: $nav_height
-    left: 0
-    right: 0
-    bottom: 0
+body >
+  .nav
+    margin: 0
 
+  .main
+    position: relative
+    // overflow: hidden
+    min-height: 600px
+    min-width: 800px
+    height: 100%
+    width: 100%
+    > div
+      margin-top: $nav_height
 
 .navbar .navbar-inner
   padding-left: 20px

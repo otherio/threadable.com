@@ -1,13 +1,15 @@
 requirejs.config({
+  baseUrl: "/",
+
   paths: {
-    "text": "vendor/text",
-    "jquery": "vendor/jquery",
-    "jquery-cookie": "vendor/jquery-cookie",
-    "uri": "vendor/uri",
-    "underscore": "vendor/underscore",
-    "backbone": "vendor/backbone",
-    "bootstrap": "vendor/bootstrap",
-    "marionette": "vendor/backbone.marionette"
+    "text": "/vendor/text",
+    "jquery": "/vendor/jquery",
+    "jquery-cookie": "/vendor/jquery-cookie",
+    "uri": "/vendor/uri",
+    "underscore": "/vendor/underscore",
+    "backbone": "/vendor/backbone",
+    "bootstrap": "/vendor/bootstrap",
+    "marionette": "/vendor/backbone.marionette"
   },
 
   shim: {
