@@ -14,31 +14,18 @@ body.logged-in > .main > .index
     width: 100%
     > *
       position: relative
+      overflow: hidden
 
     > .left
       overflow: hidden
       width: 300px
       background-color: pink
       > .vertical-box
-        > .projects
+        @import "views/logged_in/index/projects"
+        @import "views/logged_in/index/feed"
 
-        > .feed
-          +experimental(box-flex, 20)
-          background-color: white
+    @import "views/logged_in/index/main"
 
-          > ul
-            height: 100%
-            overflow: auto
-
-
-    > .main
-      +experimental(box-flex, 1)
-      background-color: white
-
-
-    > .extra
-      width: 300px
-      background-color: white
 
 
 // @import "views/dashboard/project_panel"

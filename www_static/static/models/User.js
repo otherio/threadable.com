@@ -18,6 +18,7 @@ define(function(require) {
 
     initialize: function() {
       this.projects = new Projects;
+      this.feed = new Backbone.Collection;
     }
   });
 

@@ -2,24 +2,23 @@ define(function(require) {
   var
     Marionette = require('marionette'),
     projectsTemplate = require('text!templates/logged_in/index/projects.html'),
-    projectTemplte = require('text!templates/logged_in/index/projects/project.html'),
-    emptyTemplte = require('text!templates/logged_in/index/projects/empty.html');
+    projectTemplate = require('text!templates/logged_in/index/projects/project.html'),
+    emptyTemplate = require('text!templates/logged_in/index/projects/empty.html');
 
   var Project = Backbone.Marionette.ItemView.extend({
-    template: _.template(projectTemplte),
+    template: _.template(projectTemplate),
     tagName: 'li'
   });
 
 
   var Empty = Backbone.Marionette.ItemView.extend({
-    template: _.template(emptyTemplte),
+    template: _.template(emptyTemplate),
   });
 
   return Marionette.CollectionView.extend({
     itemView: Project,
     // template: _.template(projectsTemplate),
     tagName: 'ol',
-    // emptyView: Empty
-
+    emptyView: Empty
   });
 });

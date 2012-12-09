@@ -18,27 +18,27 @@ define(function(require){
     controller: {
       home: function(){
         console.log('ROUTE HANDLER: home', arguments);
-        view().show('home')
+        view().show({view:'home'})
       },
       project: function(projectSlug){
         console.log('ROUTE HANDLER: project', arguments);
-        view().show('project', {projectSlug: projectSlug});
+        view().show({view:'project', projectSlug: projectSlug});
       },
       projectTasks: function(projectSlug){
         console.log('ROUTE HANDLER: projectTasks', arguments);
-        view().show('projectTasks', {projectSlug: projectSlug});
+        view().show({view:'projectTasks', projectSlug: projectSlug});
       },
       projectTask: function(projectSlug, taskSlug){
         console.log('ROUTE HANDLER: projectTask', arguments);
-        view().show('projectTask', {projectSlug: projectSlug, taskSlug: taskSlug});
+        view().show({view:'projectTask', projectSlug: projectSlug, taskSlug: taskSlug});
       },
       tasks: function(){
         console.log('ROUTE HANDLER: tasks', arguments);
-        view().show('tasks')
+        view().show({view:'tasks'})
       },
       task: function(taskSlug){
         console.log('ROUTE HANDLER: task', arguments);
-        view().show('task', {taskSlug: taskSlug});
+        view().show({view:'task', taskSlug: taskSlug});
       },
 
       missing: function(path){
