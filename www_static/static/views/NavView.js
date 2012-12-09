@@ -5,6 +5,7 @@ define(function(require) {
     template = require('text!templates/nav.html');
 
   return Marionette.ItemView.extend({
+
     template: _.template(template),
 
     modelEvents: {
