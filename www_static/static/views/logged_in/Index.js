@@ -49,6 +49,7 @@ define(function(require) {
       this.feedRegion.currentView || this.feedRegion.show(new FeedView({collection: this.feed}));
 
       if (options.projectSlug){
+        options.model = this.projects.findBySlug(options.projectSlug);
         this.mainRegion.show(new MainView(options));
       }
 

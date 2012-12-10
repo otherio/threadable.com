@@ -6,7 +6,14 @@ define(function(require) {
 
   return Backbone.Collection.extend({
     model: Project,
-    path: '/projects'
+    path: '/projects',
+
+    findBySlug: function(slug){
+      return this.find(function(project){
+        return project.get('slug') === slug;
+      });
+    }
+
   });
 
 });
