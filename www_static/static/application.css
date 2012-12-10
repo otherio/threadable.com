@@ -5042,7 +5042,7 @@ body.logged-in > .main > .index {
       overflow: hidden; }
     body.logged-in > .main > .index > .panels > .left {
       overflow: hidden;
-      width: 300px;
+      width: 200px;
       background-color: pink; }
       body.logged-in > .main > .index > .panels > .left > .vertical-box > .feed {
         -webkit-box-flex: 20;

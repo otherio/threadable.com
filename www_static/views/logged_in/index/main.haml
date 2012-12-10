@@ -1,7 +1,10 @@
 %ul.tabs.nav.nav-tabs
-  %li.tasks.active
-    <a href="/projects/<%= slug %>/tasks">Tasks</a>
-  %li.people
-    <a href="/projects/<%= slug %>/tasks">People</a>
+  %li.tasks
+    <a href="/<%= slug %>/tasks">Tasks</a>
+  %li.members
+    <a href="/<%= slug %>/members">Members</a>
+
+  %li.pull-right
+    %h4 <%= slug %>
 
 .folders

@@ -36,17 +36,20 @@ define(function(require) {
       if (projects.length === 0) projects.fetch();
 
       // render the list of projects if it's not already rendered
-      layout.projects.currentView || layout.projects.show(new ProjectsView({collection: projects}));
+      if (!layout.projects.currentView){
+        layout.projects.show(new ProjectsView({
+          collection: projects,
+          selectedProject: options.projectSlug
+        }));
+      }else{
+        layout.projects.currentView.selectProject(options.projectSlug);
+      }
 
       // render the list of projects if it's not already rendered
       layout.feed.currentView || layout.feed.show(new FeedView({collection: feed}));
 
-      if (options.view.match(/^project/)){
-        project = projects.find(function(p){ return p.get('slug') === options.projectSlug; });
-        if (project){
-          options.model = project;
-          layout.main.show(new MainView(options));
-        }
+      if (options.projectSlug){
+        layout.main.show(new MainView(options));
       }
 
       // if (view === 'tasks'){

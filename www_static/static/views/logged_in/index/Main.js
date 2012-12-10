@@ -12,9 +12,30 @@ define(function(require) {
     className: 'main',
 
     regions:{
-      tabs:    '> .tabs',
-      folders: '> .folders'
+      // TODO change this to a region per tab content
+      // tabs:    '> .tabs',
+      // folders: '> .folders'
     },
+
+    initialize: function(){
+      if (!this.options.projectSlug)
+        throw new Error('projectSlug cannot be blank. '+this.options.projectSlug);
+    },
+
+    // onBeforeRender: function(){
+    //   var slug = this.options.projectSlug;
+    //   return this.model = this.projects.find(function(project){
+    //     return project.get('slug') === slug;
+    //   });
+    // },
+
+    serializeData: function(){
+      return {slug: this.options.projectSlug};
+    },
+
+    onRender: function(){
+      this.$('> .tabs > li.'+this.options.activeTab).addClass('active');
+    }
 
   });
 
