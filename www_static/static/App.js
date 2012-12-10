@@ -45,7 +45,7 @@ define(function(require){
     if (loggedIn){
       $('body').addClass('logged-in').removeClass('logged-out');
       App.router = new LoggedInRouter;
-      App.Multify.get('currentUser').projects.fetch()
+      App.Multify.get('currentUser').projects.fetch();
     }else{
       $('body').addClass('logged-out').removeClass('logged-in');
       App.router = new LoggedOutRouter;

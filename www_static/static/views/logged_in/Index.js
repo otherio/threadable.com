@@ -7,56 +7,55 @@ define(function(require) {
     MainView     = require('views/logged_in/index/main');
 
   return Marionette.Layout.extend({
-    template: _.template(template),
-
     className: 'index',
 
     regions:{
-      projects: '.panels > .left .projects',
-      feed:     '.panels > .left .feed',
-      main:     '.panels > .main',
+      projectsRegion: '.panels > .left .projects',
+      feedRegion:     '.panels > .left .feed',
+      mainRegion:     '.panels > .main',
+    },
+
+    initialize: function(){
+      this.currentUser = App.Multify.get('currentUser');
+      this.projects = this.currentUser.projects;
+      this.feed = this.currentUser.feed;
+    },
+
+    delayShow: function(options){
+      console.log('delaying show');
+      var show = function(){
+        this.projects.off('reset', show); // unbind
+        this.render().show(options); // rerender and show
+      }.bind(this);
+      this.projects.on('reset', show);
+      return this;
     },
 
     show: function(options){
+      if (!this.projects.loaded) return this.delayShow(options);
       console.log('rendering logged in index view', arguments);
 
-      var
-        layout = this,
-        currentUser = App.Multify.get('currentUser'),
-        projects = currentUser.projects,
-        feed = currentUser.feed,
-        // tasks = currentUser.tasks;
-        slug, project, projectView;
-
-      console.log('projects loaded?', !!projects.loaded);
-
-      if (projects.loaded){
-        render()
+      // render the list of projects if it's not already rendered
+      if (!this.projectsRegion.currentView){
+        this.projectsRegion.show(new ProjectsView({
+          projects: this.projects,
+          selectedProject: options.projectSlug
+        }));
       }else{
-        projects.on('reset', render)
+        this.projectsRegion.currentView.selectProject(options.projectSlug);
       }
 
-      function render(){
-        projects.off('reset', render)
-        // render the list of projects if it's not already rendered
-        if (!layout.projects.currentView){
-          layout.projects.show(new ProjectsView({
-            projects: projects,
-            selectedProject: options.projectSlug
-          }));
-        }else{
-          layout.projects.currentView.selectProject(options.projectSlug);
-        }
+      // render the list of projects if it's not already rendered
+      this.feedRegion.currentView || this.feedRegion.show(new FeedView({collection: this.feed}));
 
-        // render the list of projects if it's not already rendered
-        layout.feed.currentView || layout.feed.show(new FeedView({collection: feed}));
-
-        if (options.projectSlug){
-          layout.main.show(new MainView(options));
-        }
+      if (options.projectSlug){
+        this.mainRegion.show(new MainView(options));
       }
 
+    },
 
+    getTemplate: function(){
+      return this.projects.loaded ? _.template(template) : _.template("<h1>Loading...</h1>");
     }
 
   });
