@@ -94,6 +94,7 @@ define(function(require){
       }
 
       return Multify.request(method, model.path, params, {context: model})
+        .done(function(){ model.loaded = true; })
         .done(options.success)
         .fail(options.error)
     }

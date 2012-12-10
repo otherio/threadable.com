@@ -17,13 +17,8 @@ define(function(require) {
       main:     '.panels > .main',
     },
 
-
-    onRender: function(){
-
-    },
-
     show: function(options){
-      console.log('SHOWING', arguments);
+      console.log('rendering logged in index view', arguments);
 
       var
         layout = this,
@@ -33,57 +28,34 @@ define(function(require) {
         // tasks = currentUser.tasks;
         slug, project, projectView;
 
-      if (projects.length === 0) projects.fetch();
+      console.log('projects loaded?', !!projects.loaded);
 
-      // render the list of projects if it's not already rendered
-      if (!layout.projects.currentView){
-        layout.projects.show(new ProjectsView({
-          collection: projects,
-          selectedProject: options.projectSlug
-        }));
+      if (projects.loaded){
+        render()
       }else{
-        layout.projects.currentView.selectProject(options.projectSlug);
+        projects.on('reset', render)
       }
 
-      // render the list of projects if it's not already rendered
-      layout.feed.currentView || layout.feed.show(new FeedView({collection: feed}));
+      function render(){
+        projects.off('reset', render)
+        // render the list of projects if it's not already rendered
+        if (!layout.projects.currentView){
+          layout.projects.show(new ProjectsView({
+            projects: projects,
+            selectedProject: options.projectSlug
+          }));
+        }else{
+          layout.projects.currentView.selectProject(options.projectSlug);
+        }
 
-      if (options.projectSlug){
-        layout.main.show(new MainView(options));
+        // render the list of projects if it's not already rendered
+        layout.feed.currentView || layout.feed.show(new FeedView({collection: feed}));
+
+        if (options.projectSlug){
+          layout.main.show(new MainView(options));
+        }
       }
 
-      // if (view === 'tasks'){
-
-      //   // taskView = new TasksView({collection: tasks});
-      //   // layout.main.show(taskView);
-
-      //   return this;
-      // }
-
-      // if (view === 'task'){
-
-      // }
-
-      // if (view.match(/^project/)){
-      //   slug = options.projectSlug;
-      //   project = projects.find(function(p){ return p.get('slug') === slug; });
-      // }
-
-      // if (view === 'project'){
-      //   projectView = layout.main.currentView;
-      //   if (!projectView || projectView.model !== project){
-      //     projectView = new ProjectView({model: project});
-      //     layout.main.show(projectView);
-      //   }
-      // }
-
-      // if (view === 'projectTasks'){
-
-      // }
-
-      // if (view === 'projectTask'){
-
-      // }
 
     }
 

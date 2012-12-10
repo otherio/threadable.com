@@ -40,14 +40,16 @@ define(function(require){
 
     var loggedIn = !!currentUser;
 
-    if (loggedIn)
-      $('body').addClass('logged-in').removeClass('logged-out');
-    else
-      $('body').addClass('logged-out').removeClass('logged-in');
-
-
     if (Backbone.history) Backbone.history.handlers = [];
-    App.router = loggedIn ? new LoggedInRouter : new LoggedOutRouter;
+
+    if (loggedIn){
+      $('body').addClass('logged-in').removeClass('logged-out');
+      App.router = new LoggedInRouter;
+      App.Multify.get('currentUser').projects.fetch()
+    }else{
+      $('body').addClass('logged-out').removeClass('logged-in');
+      App.router = new LoggedOutRouter;
+    }
 
     if (Backbone.History.started)
       Backbone.history.loadUrl(location.pathname.slice(1));
