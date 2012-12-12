@@ -9,7 +9,8 @@ define(function(require){
     NavView        = require('views/NavView'),
     LoggedInLayout = require('views/LoggedInLayout'),
     LoggedOutView  = require('views/LoggedOutView'),
-    session        = require('session');
+    session        = require('session'),
+    User           = require('models/User');
 
   Backbone.sync = Multify.sync;
 
@@ -20,25 +21,36 @@ define(function(require){
     mainRegion: ".main-region"
   });
 
-  var loggedIn = false;
+
+  App.addInitializer(function() {
+    console.log('setting session event handler');
+    session.on('change reset', function(e) {
+      var user = session.get('user');
+      var cu = Multify.set('current_user', user ? new User(user) : undefined);
+      console.log('current user', cu);
+    });
+    session.fetch();
+  });
 
   App.on("initialize:after", function(options){
     if (Backbone.history){
       Backbone.history.start();
     }
 
-    navView = new NavView({
-      loggedIn: loggedIn,
-    });
+    navView = new NavView();
 
     App.navRegion.show(navView);
 
-    var MainView = loggedIn ? LoggedInLayout : LoggedOutView;
-    App.mainRegion.show(new MainView); // suck it Ian
+    var MainView = !!Multify.get('current_user') ? LoggedInLayout : LoggedOutView;
+    App.mainRegion.show(new MainView);
   });
 
   $(function(){
-    App.start({});
+    if(window.location.href.match(/\/spec\??/)) {
+      console.log('Would start(), but assuming testing')
+    } else {
+      App.start({});
+    }
   });
 
   return App;

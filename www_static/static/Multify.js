@@ -2,11 +2,10 @@ define(function(require){
 
   var
     Backbone = require('backbone'),
-    session  = require('Session');
-    URI      = require('uri'),
-    User     = require('models/User');
+    session  = require('Session'),
+    URI      = require('uri');
 
-  var Multify = {
+  var Multify = _.extend({}, Backbone.Events, {
 
     host: 'http://0.0.0.0:3000',
 
@@ -34,17 +33,11 @@ define(function(require){
       return authenticate(email, password)
 
         .done(function(response){
-
           session.set({
             user: response.user,
             authentication_token: response.authentication_token
           });
-          debugger
-
-          Multify.set('current_user', new User(response.user));
-          Multify.set('logged_in', true);
-
-          console.log('Login succeeded', response);
+          session.save();
         })
 
         .fail(function(){
@@ -86,9 +79,7 @@ define(function(require){
         .done(options.success)
         .fail(options.error)
     }
-  };
-
-  _.extend(Multify, Backbone.Events);
+  });
 
   return Multify;
 

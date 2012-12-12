@@ -39,20 +39,21 @@ define(function(require) {
 
     describe('#login', function() {
       it("it should xhr to the api server with the username and password", function(){
-        // for some reason, jasmine.Ajax isn't working here.
-        var fakeResponse = {};
+        // jasmine.Ajax doesn't do jsonp.  :(
+        //
+        // TODO: make this return success on the promise so that it's possble to test
+        //       the login process all the way through to session.save()
         var fakeDeferred = $.Deferred();
         spyOn($, 'ajax').andCallFake( function(params) {
           return fakeDeferred;
         });
 
-        xhr = Multify.login('foo@example.com', 'password');
+        var xhr = Multify.login('foo@example.com', 'password');
 
         expect($.ajax.mostRecentCall.args[0].url).toMatch(/\/users\/sign_in/);
         expect($.ajax.mostRecentCall.args[0].url).toMatch(/email=foo/);
         expect($.ajax.mostRecentCall.args[0].url).toMatch(/password=password/);
       });
     });
-
   });
 });
