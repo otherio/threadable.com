@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler'
+Bundler.require
+
+ROOT = File.expand_path('../../',__FILE__)
+require File.join(ROOT,'lib/compiler')
+
+p ROOT
+
+
+def compile!
+  begin
+    Compiler.compile_all!
+  rescue Exception => e
+    puts "ERROR!"
+    puts "#{e}\n#{e.backtrace*"\n"}"
+  end
+end
+
+compile!
+Listen.to(ROOT, :ignore => %r{^(public|scripts)/}, :force_polling => true) do |modified, added, removed|
+  system 'clear'
+  puts(modified + added + removed)
+  compile!
+end

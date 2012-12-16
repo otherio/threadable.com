@@ -1,4 +1,5 @@
 requirejs.config({
+
   baseUrl: "/",
 
   paths: {

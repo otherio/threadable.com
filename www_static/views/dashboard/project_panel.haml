@@ -1,0 +1,22 @@
+%ul.nav.nav-tabs
+  %li
+    <a name="tasks" href="/projects/<%= slug %>/tasks">Tasks</a>
+  %li
+    <a name="calendar" href="/projects/<%= slug %>/calendar">Calendar</a>
+  %li
+    <a name="people" href="/projects/<%= slug %>/people">People</a>
+  %li
+    <a name="threads" href="/projects/<%= slug %>/threads">Threads</a>
+  %li
+    <a name="settings" href="/projects/<%= slug %>/settings"><i class="icon-wrench" /></a>
+
+.tab-content
+  .tab-pane{name: 'tasks'}
+    %h2 Tasks
+  .tab-pane{name: 'calendar'}
+    %h2 Calendar
+  .tab-pane{name: 'people'}
+    %h2 People
+  .tab-pane{name: 'threads'}
+    %h2 Threads
+  .tab-pane{name: 'settings'}

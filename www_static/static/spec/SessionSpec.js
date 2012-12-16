@@ -1,7 +1,7 @@
 define(function(require) {
-  var session = require('session');
-  var Backbone = require('backbone');
-
+  var
+    session = require('session'),
+    Backbone = require('backbone');
 
   describe('session', function() {
 

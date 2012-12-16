@@ -6,7 +6,10 @@ define(function(require){
     URI      = require('uri'),
     User     = require('models/User');
 
-  var Multify = {
+  var Multify = _.extend({}, Backbone.Events, {
+
+    host: 'http://0.0.0.0:3000',
+    dataType: 'jsonp',
 
     initialize: function(){
       this.session.fetch();
@@ -49,7 +52,6 @@ define(function(require){
       return authenticate(email, password)
 
         .done(function(response){
-
           session.set({
             user: response.user,
             authentication_token: response.authentication_token
@@ -70,14 +72,16 @@ define(function(require){
       params || (params = {});
       options || (options = {});
       params._method = method;
-      params.authentication_token = Multify.session.get('authentication_token');
+      if (Multify.logged_in){
+        params.authentication_token = Multify.session.get('authentication_token');
+      }
       url = new URI(Multify.host);
       url.path = path;
       url.params = params;
 
       options = $.extend({}, {
         url: url.toString(),
-        dataType: "jsonp",
+        dataType: this.dataType,
         timeout: 2000,
       }, options);
 
@@ -98,9 +102,7 @@ define(function(require){
         .done(options.success)
         .fail(options.error)
     }
-  };
-
-  _.extend(Multify, Backbone.Events);
+  });
 
   return Multify;
 

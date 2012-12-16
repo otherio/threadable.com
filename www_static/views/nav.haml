@@ -6,10 +6,10 @@
     .pull-right
       %ul.nav
 
-        <% if (loggedIn()) { %>
+        <% if (loggedIn) { %>
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-            <%= currentUser.get("name") %>
+            <%= current_user.get('name') %>
             %b.caret
           %ul.dropdown-menu
             %li.nav-header Account

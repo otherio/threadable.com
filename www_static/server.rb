@@ -28,7 +28,6 @@ class Server < Sinatra::Base
   end
 
   get '*' do
-  # get '/' do
     compile_stylesheet!
     haml :index, layout: false, :haml_options => {:escape_html => false}
   end

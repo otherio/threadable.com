@@ -17,18 +17,6 @@ define(function(require){
   App.Multify = Multify;
   Backbone.sync = Multify.sync;
 
-  // App.views = {
-  //   NavView:  require('views/NavView'),
-  //   MainView: require('views/MainView'),
-  // };
-
-  App.models = {
-    User:    require('models/User'),
-    Project: require('models/Project'),
-    Task:    require('models/Task'),
-    Projects: require('models/Projects')
-  };
-
 
   App.addInitializer(function(){
     App.layout = new Layout().render();
@@ -60,23 +48,11 @@ define(function(require){
       Backbone.history.start({pushState: true});
   });
 
-
   $(function(){
-    App.start({});
-  });
-
-
-
-  // MISC (need to stick these some place)
-  $(document).on('click', 'a[href=""],a[href="#"]', function(event){
-    event.preventDefault();
-  });
-
-  $(document).on('click', 'a[href]', function(event){
-    var href = $(this).attr('href');
-    if (href[0] === '/'){
-      event.preventDefault();
-      App.router.navigate(href, {trigger: true});
+    if(window.location.href.match(/\/spec\??/)) {
+      console.log('Would start(), but assuming testing')
+    } else {
+      App.start({});
     }
   });
 
@@ -84,6 +60,7 @@ define(function(require){
 
 });
 
+// MISC (need to stick these some place)
 
 // for debugging
 function inspector(name){
@@ -91,3 +68,13 @@ function inspector(name){
     console.log(name, this, arguments);
   }
 }
+
+$(document).on('click', 'a[href=""],a[href="#"]', function(event){
+  event.preventDefault();
+});
+
+$(document).on('click', 'a[href]', function(event){
+  var href = $(this).attr('href');
+  if (href[0] === '/'){
+    event.preventDefault();
+    App.router.navigate(href, {trigger: true});

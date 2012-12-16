@@ -1,10 +1,12 @@
 define(function(require) {
   var
     App = require('App'),
-    NavView = require('views/NavView');
+    NavView = require('views/NavView'),
+    Multify = require('multify'),
+    session = require('session'),
+    User = require('models/User');
 
   describe('App', function() {
-
     it("exists", function(){
       expect(App).toBeDefined();
     });
@@ -28,6 +30,12 @@ define(function(require) {
       Backbone.history = jasmine.createSpyObj('Backbone.history', ['start']);
       App.trigger('initialize:after');
       expect(Backbone.history.start).toHaveBeenCalled();
+    });
+
+    it("sets the current user from the session", function() {
+      App.start({});
+      session.set('user', 'someguy');
+      expect(Multify.get('current_user')).toEqual(jasmine.any(User));
     });
 
   });

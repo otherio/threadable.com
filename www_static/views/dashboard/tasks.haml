@@ -1,0 +1,34 @@
+%h2
+  <%= project.get('name') %>
+
+
+%table.table.table-striped.table-hover.table-condensed.table-bordered
+  %thead
+    %tr
+      %th &nbsp;
+      %th Name
+      %th Completed
+      %th Due Date
+  %tbody
+
+    <% tasks.each(function(task){ %>
+    %tr
+      %td
+        %button.close{type:"button"}
+          %i.icon-remove
+      %td
+        <input type="text" value="<% task.get('name') %>"/>
+      %td
+
+      %td
+
+    <% }) %>
+    %tr
+      %td
+        %button.close{type:"button"}
+          %i.icon-remove
+      %td
+        <input class="new" type="text" value="" placeholder="new task…"/>
+      %td
+
+      %td
