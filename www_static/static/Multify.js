@@ -14,16 +14,14 @@ define(function(require){
     initialize: function(){
       this.session.fetch();
       var user = this.session.get('user');
-      this.set('currentUser', user ? new User(user) : undefined);
+      this.set('currentUser', user ? new User(user) : null);
     },
 
     host: 'http://0.0.0.0:3000',
 
     session: session,
 
-    attributes: {
-      currentUser: null
-    },
+    attributes: {},
 
     get: function(attr) {
       return this.attributes[attr];
@@ -45,7 +43,7 @@ define(function(require){
     logout: function(){
       session.clear();
       session.save();
-      this.set('currentUser', undefined);
+      this.set('currentUser', null);
     },
 
     login: function(email, password){
@@ -72,9 +70,7 @@ define(function(require){
       params || (params = {});
       options || (options = {});
       params._method = method;
-      if (Multify.logged_in){
-        params.authentication_token = Multify.session.get('authentication_token');
-      }
+      params.authentication_token = Multify.session.get('authentication_token');
       url = new URI(Multify.host);
       url.path = path;
       url.params = params;

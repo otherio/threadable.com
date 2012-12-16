@@ -6,7 +6,7 @@ define(function(require) {
 
   return Backbone.Model.extend({
 
-    url: '/tasks'
+    url: '/tasks',
     model_name: 'user',
 
     id: null,

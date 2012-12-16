@@ -29,8 +29,11 @@ define(function(require) {
       "click a.logout": "logout:clicked"
     },
 
-    templateHelpers: {
-      loggedIn: function(){ return !!this.currentUser; }
+    templateHelpers: function() {
+      return {
+        loggedIn: !!this.currentUser,
+        currentUser: this.currentUser
+      }
     }
 
   });

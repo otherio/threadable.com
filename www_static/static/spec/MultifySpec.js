@@ -1,7 +1,6 @@
 define(function(require) {
   var
     Multify = require('Multify'),
-    session = require('Session'),
     testResponses = require('spec/helpers/TestResponses');
 
   describe('Multify', function() {
@@ -30,18 +29,18 @@ define(function(require) {
 
     describe('#logout', function() {
       it("clears the session, and triggers logout", function(){
-        spyOn(session, 'clear');
-        spyOn(Multify, 'trigger');
+        spyOn(Multify.session, 'clear');
+        spyOn(Multify.session, 'save');
         Multify.logout();
-        expect(session.clear).toHaveBeenCalled();
-        expect(Multify.trigger).toHaveBeenCalledWith('logout');
+        expect(Multify.session.clear).toHaveBeenCalled();
+        expect(Multify.session.save).toHaveBeenCalled();
       });
     });
 
     describe('#login', function() {
       it("it should xhr to the api server with the username and password", function(){
 
-        spyOn(session, 'save');
+        spyOn(Multify.session, 'save');
         var xhr = Multify.login('jared@change.org', 'password');
         var request = mostRecentAjaxRequest();
 
@@ -51,7 +50,7 @@ define(function(require) {
         expect(request.url).toMatch(/email=jared/);
         expect(request.url).toMatch(/password=password/);
 
-        expect(session.save).toHaveBeenCalled();
+        expect(Multify.session.save).toHaveBeenCalled();
       });
     });
   });

@@ -8,7 +8,7 @@ define(function(require) {
 
   return Marionette.Layout.extend({
 
-    el: 'body',
+    el: '#body',
 
     template: _.template(template),
 

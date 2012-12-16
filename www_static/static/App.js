@@ -17,7 +17,6 @@ define(function(require){
   App.Multify = Multify;
   Backbone.sync = Multify.sync;
 
-
   App.addInitializer(function(){
     App.layout = new Layout().render();
     Multify.initialize();
@@ -31,21 +30,19 @@ define(function(require){
     if (Backbone.history) Backbone.history.handlers = [];
 
     if (loggedIn){
-      $('body').addClass('logged-in').removeClass('logged-out');
+      $('#body').addClass('logged-in').removeClass('logged-out');
       App.router = new LoggedInRouter;
-      setTimeout(function(){
-        // simulate a slow server to see loading state
-        App.Multify.get('currentUser').projects.fetch();
-      }, 500);
+      App.Multify.get('currentUser').projects.fetch();
     }else{
-      $('body').addClass('logged-out').removeClass('logged-in');
+      $('#body').addClass('logged-out').removeClass('logged-in');
       App.router = new LoggedOutRouter;
     }
 
-    if (Backbone.History.started)
+    if (Backbone.History.started){
       Backbone.history.loadUrl(location.pathname.slice(1));
-    else
+    }else{
       Backbone.history.start({pushState: true});
+    }
   });
 
   $(function(){
@@ -55,6 +52,21 @@ define(function(require){
       App.start({});
     }
   });
+
+  $(document).on('click', 'a[href=""],a[href="#"]', function(event){
+    event.preventDefault();
+  });
+
+  $(document).on('click', 'a[href]', function(event){
+    var href = $(this).attr('href');
+    if (href[0] === '/'){
+      event.preventDefault();
+      App.router.navigate(href, {trigger: true});
+    }
+  });
+
+
+
 
   return App;
 
@@ -69,12 +81,4 @@ function inspector(name){
   }
 }
 
-$(document).on('click', 'a[href=""],a[href="#"]', function(event){
-  event.preventDefault();
-});
 
-$(document).on('click', 'a[href]', function(event){
-  var href = $(this).attr('href');
-  if (href[0] === '/'){
-    event.preventDefault();
-    App.router.navigate(href, {trigger: true});
