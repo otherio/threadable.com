@@ -40,12 +40,22 @@ define(function(require) {
         view.render();
         expect(view.$el.text()).toContain('Login');
 
-        this.setCurrentUser({});
+        var user = new User({name: 'Jessy Pinker'});
+        this.setCurrentUser(user);
 
         view.render();
         expect(view.$el.text()).toContain('Logout');
 
       });
+
+      it("renders the name of the current user", function() {
+        var user = new User({name: 'Jessy Pinker'});
+        this.setCurrentUser(user);
+        view.render();
+        expect(view.$el.text()).toContain('Jessy Pinker');
+      });
+
+
 
     });
 

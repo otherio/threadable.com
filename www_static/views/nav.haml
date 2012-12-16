@@ -9,7 +9,7 @@
         <% if (loggedIn) { %>
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-            <%= name %>
+            <%= current_user.get('name') %>
             %b.caret
           %ul.dropdown-menu
             %li.nav-header Account
