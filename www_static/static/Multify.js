@@ -8,6 +8,7 @@ define(function(require){
   var Multify = _.extend({}, Backbone.Events, {
 
     host: 'http://0.0.0.0:3000',
+    dataType: 'jsonp',
 
     attributes: {},
 
@@ -59,7 +60,7 @@ define(function(require){
 
       options = $.extend({}, {
         url: url.toString(),
-        dataType: "jsonp",
+        dataType: this.dataType,
         timeout: 2000,
       }, options);
 

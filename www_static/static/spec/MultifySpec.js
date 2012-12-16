@@ -1,7 +1,8 @@
 define(function(require) {
   var
     Multify = require('Multify'),
-    session = require('Session');
+    session = require('Session'),
+    testResponses = require('spec/helpers/TestResponses');
 
   describe('Multify', function() {
 
@@ -39,20 +40,17 @@ define(function(require) {
 
     describe('#login', function() {
       it("it should xhr to the api server with the username and password", function(){
-        // jasmine.Ajax doesn't do jsonp.  :(
-        //
-        // TODO: make this return success on the promise so that it's possble to test
-        //       the login process all the way through to session.save()
-        var fakeDeferred = $.Deferred();
-        spyOn($, 'ajax').andCallFake( function(params) {
-          return fakeDeferred;
-        });
+        spyOn(session, 'save');
+        var xhr = Multify.login('jared@change.org', 'password');
+        var request = mostRecentAjaxRequest();
 
-        var xhr = Multify.login('foo@example.com', 'password');
+        request.response(testResponses.login.success);
 
-        expect($.ajax.mostRecentCall.args[0].url).toMatch(/\/users\/sign_in/);
-        expect($.ajax.mostRecentCall.args[0].url).toMatch(/email=foo/);
-        expect($.ajax.mostRecentCall.args[0].url).toMatch(/password=password/);
+        expect(request.url).toMatch(/\/users\/sign_in/);
+        expect(request.url).toMatch(/email=jared/);
+        expect(request.url).toMatch(/password=password/);
+
+        expect(session.save).toHaveBeenCalled();
       });
     });
   });
