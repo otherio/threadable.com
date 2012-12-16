@@ -1,8 +1,7 @@
 define(function(require) {
   var
     App = require('App'),
-    NavView = require('views/NavView'),
-    Multify = require('multify'),
+    multify = require('multify'),
     LoggedOutRouter = require('logged_out/Router'),
     LoggedInRouter  = require('logged_in/Router'),
     User = require('models/User');
@@ -21,17 +20,17 @@ define(function(require) {
       describe("and Backbone.history exists", function(){
 
         it("should set handlers to an empty array", function(){
-          Multify.set('currentUser', null);
+          multify.set('current_user', null);
           expect(Backbone.history.handlers).toEqual([])
         });
 
       });
 
-      describe("and Multify#user is set to a user", function(){
+      describe("and multify#user is set to a user", function(){
         it("should setup the logged in thing", function(){
           var user = new User;
           spyOn(user.projects, 'fetch')
-          Multify.set('currentUser', user);
+          multify.set('current_user', user);
           expect(Backbone.history.start).toHaveBeenCalled();
           expect(App.router).toEqual(jasmine.any(LoggedInRouter));
           expect($('#body')).toHaveClass('logged-in');
@@ -40,9 +39,9 @@ define(function(require) {
         });
       });
 
-      describe("and Multify#user is set to a null", function(){
+      describe("and multify#user is set to a null", function(){
         it("should do the logged out thing", function(){
-          Multify.set('currentUser', null);
+          multify.set('current_user', null);
           expect(Backbone.history.start).toHaveBeenCalled();
           expect(App.router).toEqual(jasmine.any(LoggedOutRouter));
           expect($('#body')).not.toHaveClass('logged-in');
@@ -50,7 +49,7 @@ define(function(require) {
         });
       });
 
-      describe("when Multify#user is set to a null", function(){
+      describe("when multify#user is set to a null", function(){
 
       });
 
@@ -65,7 +64,7 @@ define(function(require) {
     xit("sets the current user from the session", function() {
       // App.start({});
       // session.set('user', 'someguy');
-      // expect(Multify.get('current_user')).toEqual(jasmine.any(User));
+      // expect(multify.get('current_user')).toEqual(jasmine.any(User));
     });
 
 

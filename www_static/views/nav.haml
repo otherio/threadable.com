@@ -1,7 +1,7 @@
 .navbar.navbar-fixed-top.navbar-inverse
   .navbar-inner
 
-    %a.brand{href:"/"} Multify
+    %a.brand{href:"/"} multify
 
     .pull-right
       %ul.nav
@@ -9,7 +9,7 @@
         <% if (loggedIn) { %>
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-            <%= current_user.get('name') %>
+            <%= name %>
             %b.caret
           %ul.dropdown-menu
             %li.nav-header Account

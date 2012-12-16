@@ -1,13 +1,13 @@
 beforeEach(function() {
 
-  var Multify = require('Multify');
+  var multify = require('multify');
   // jasine.Ajax doesn't work with cross-domain ajax, so make it same-domain
-  Multify.host = location.protocol + '//' + location.host;
-  Multify.dataType = 'json';
-  Multify.attributes = {};
+  multify.host = location.protocol + '//' + location.host;
+  multify.dataType = 'json';
+  multify.attributes = {};
 
-  Multify.session.clear({silent:true});
-  Multify.session.save();
+  multify.session.clear({silent:true});
+  multify.session.save();
 
   Backbone.history = jasmine.createSpyObj('Backbone.history', [
     'start', 'loadUrl', 'route']);
@@ -17,6 +17,12 @@ beforeEach(function() {
   clearAjaxRequests();
 
   // spy on $.cookie() and return some plausible session value
+
+  this.setCurrentUser = function(current_user, options){
+    options || (options={})
+    if (typeof options.silent === 'undefined') options.silent = true;
+    multify.set('current_user', current_user, options);
+  }
 
 });
 

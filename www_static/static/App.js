@@ -7,32 +7,32 @@ define(function(require){
     $               = require('jquery'),
     Backbone        = require('backbone'),
     Marionette      = require('marionette'),
-    Multify         = require('multify'),
+    multify         = require('multify'),
     LoggedOutRouter = require('logged_out/Router'),
     LoggedInRouter  = require('logged_in/Router'),
     Layout          = require('views/Layout');
 
   App = new Marionette.Application();
 
-  App.Multify = Multify;
-  Backbone.sync = Multify.sync;
+  App.multify = multify;
+  Backbone.sync = multify.sync;
 
   App.addInitializer(function(){
     App.layout = new Layout().render();
-    Multify.initialize();
+    multify.initialize();
   });
 
-  Multify.on('change:currentUser', function(currentUser, previousUser){
+  multify.on('change:current_user', function(current_user, previousUser){
     console.log('resetting routes', arguments);
 
-    var loggedIn = !!currentUser;
+    var loggedIn = !!current_user;
 
     if (Backbone.history) Backbone.history.handlers = [];
 
     if (loggedIn){
       $('#body').addClass('logged-in').removeClass('logged-out');
       App.router = new LoggedInRouter;
-      App.Multify.get('currentUser').projects.fetch();
+      App.multify.get('current_user').projects.fetch();
     }else{
       $('#body').addClass('logged-out').removeClass('logged-in');
       App.router = new LoggedOutRouter;

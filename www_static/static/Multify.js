@@ -6,7 +6,7 @@ define(function(require){
     URI      = require('uri'),
     User     = require('models/User');
 
-  var Multify = _.extend({}, Backbone.Events, {
+  var multify = _.extend({}, Backbone.Events, {
 
     host: 'http://0.0.0.0:3000',
     dataType: 'jsonp',
@@ -14,7 +14,7 @@ define(function(require){
     initialize: function(){
       this.session.fetch();
       var user = this.session.get('user');
-      this.set('currentUser', user ? new User(user) : null);
+      this.set('current_user', user ? new User(user) : null);
     },
 
     host: 'http://0.0.0.0:3000',
@@ -27,11 +27,12 @@ define(function(require){
       return this.attributes[attr];
     },
 
-    set: function(attr, value){
+    set: function(attr, value, options){
       var current_value = this.attributes[attr];
       if (value !== current_value){
         this.attributes[attr] = value;
-        this.trigger('change:'+attr, value, current_value);
+        if (!options || !options.silent)
+          this.trigger('change:'+attr, value, current_value);
       }
       return value;
     },
@@ -43,7 +44,7 @@ define(function(require){
     logout: function(){
       session.clear();
       session.save();
-      this.set('currentUser', null);
+      this.set('current_user', null);
     },
 
     login: function(email, password){
@@ -56,12 +57,12 @@ define(function(require){
           });
           session.save();
 
-          Multify.set('currentUser', new User(response.user));
+          multify.set('current_user', new User(response.user));
         })
 
         .fail(function(){
           console.log('Login failed');
-          Multify.logout();
+          multify.logout();
         })
       ;
     },
@@ -70,8 +71,8 @@ define(function(require){
       params || (params = {});
       options || (options = {});
       params._method = method;
-      params.authentication_token = Multify.session.get('authentication_token');
-      url = new URI(Multify.host);
+      params.authentication_token = multify.session.get('authentication_token');
+      url = new URI(multify.host);
       url.path = path;
       url.params = params;
 
@@ -93,19 +94,19 @@ define(function(require){
         params[model.constructor.modelName] = model.toJSON();
       }
 
-      return Multify.request(method, model.path, params, {context: model})
+      return multify.request(method, model.path, params, {context: model})
         .done(function(){ model.loaded = true; })
         .done(options.success)
         .fail(options.error)
     }
   });
 
-  return Multify;
+  return multify;
 
   // private
 
   function authenticate(email, password){
-    return Multify.request('POST', '/users/sign_in', {
+    return multify.request('POST', '/users/sign_in', {
       email: email,
       password: password
     });

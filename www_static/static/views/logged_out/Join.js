@@ -2,7 +2,7 @@ define(function(require) {
 
   var
     Marionette = require('marionette'),
-    Multify         = require('multify'),
+    multify         = require('multify'),
     template = require('text!templates/logged_out/join.html');
 
   return Marionette.ItemView.extend({
@@ -10,10 +10,10 @@ define(function(require) {
     // initialize: function(){
     //   this
     //     .on('login:clicked', function(){
-    //       Multify.login('jared@change.org','password');
+    //       multify.login('jared@change.org','password');
     //     })
     //     .on('logout:clicked', function(){
-    //       Multify.logout();
+    //       multify.logout();
     //     })
     //   ;
     // },
@@ -22,7 +22,7 @@ define(function(require) {
     className: 'join'
 
     // modelEvents: {
-    //   "change:currentUser": "render"
+    //   "change:current_user": "render"
     // },
 
     // triggers: {
@@ -31,7 +31,7 @@ define(function(require) {
     // },
 
     // templateHelpers: {
-    //   loggedIn: function(){ return !!this.currentUser; }
+    //   loggedIn: function(){ return !!this.current_user; }
     // }
 
   });

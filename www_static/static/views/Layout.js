@@ -20,7 +20,7 @@ define(function(require) {
     },
 
     onRender: function(){
-      this.nav.show(new Nav({model: App.Multify}));
+      this.nav.show(new Nav({model: App.multify}));
     }
 
   });

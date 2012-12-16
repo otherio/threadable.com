@@ -16,9 +16,9 @@ define(function(require) {
     },
 
     initialize: function(){
-      this.currentUser = App.Multify.get('currentUser');
-      this.projects = this.currentUser.projects;
-      this.feed = this.currentUser.feed;
+      this.current_user = App.multify.get('current_user');
+      this.projects = this.current_user.projects;
+      this.feed = this.current_user.feed;
     },
 
     delayShow: function(options){
@@ -62,7 +62,7 @@ define(function(require) {
   });
 
   function getProjects(){
-    return App.Multify.get('currentUser').projects
+    return App.multify.get('current_user').projects
   }
 
 

@@ -1,38 +1,30 @@
 define(function(require) {
-
   var
     Marionette = require('marionette'),
-    Multify         = require('multify'),
-    template = require('text!templates/nav.html');
+    User = require('models/User'),
+    template = require('text!templates/nav.html'),
+    multify  = require('multify');
 
   return Marionette.ItemView.extend({
-
-    initialize: function(){
-      this
-        .on('login:clicked', function(){
-          Multify.login('jared@change.org','password');
-        })
-        .on('logout:clicked', function(){
-          Multify.logout();
-        })
-      ;
-    },
-
     template: _.template(template),
 
-    modelEvents: {
-      "change:currentUser": "render"
-    },
-
-    triggers: {
-      "click a.login":  "login:clicked",
-      "click a.logout": "logout:clicked"
+    initialize: function(){
+      multify.on('change:current_user', this.render.bind(this));
     },
 
     templateHelpers: function() {
       return {
-        loggedIn: !!this.currentUser,
-        currentUser: this.currentUser
+        loggedIn: !!multify.get('current_user'),
+        current_user: multify.get('current_user')
+      };
+    },
+
+    events: {
+      'click .login':  function(e) {
+        multify.login('jared@change.org', 'password');
+      },
+      'click .logout': function(e) {
+        multify.logout();
       }
     }
 

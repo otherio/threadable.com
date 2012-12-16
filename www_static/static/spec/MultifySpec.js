@@ -1,47 +1,47 @@
 define(function(require) {
   var
-    Multify = require('Multify'),
+    multify = require('multify'),
     testResponses = require('spec/helpers/TestResponses');
 
-  describe('Multify', function() {
+  describe('multify', function() {
 
     it("exists", function(){
-      expect(Multify).toBeDefined();
+      expect(multify).toBeDefined();
     });
 
     describe('#setget', function() {
       it("sets and gets", function() {
-        Multify.set('foo', 'bar');
-        expect(Multify.get('foo')).toEqual('bar');
-        expect(Multify.get('baz')).toBe(undefined);
+        multify.set('foo', 'bar');
+        expect(multify.get('foo')).toEqual('bar');
+        expect(multify.get('baz')).toBe(undefined);
       });
 
       it("triggers a change:attr event", function() {
-        expect(Multify.set('lol', 'poof')).toEqual('poof');
-        spyOn(Multify, 'trigger');
-        expect(Multify.set('lol', 'mom')).toEqual('mom');
-        expect(Multify.trigger).toHaveBeenCalledWith('change:lol', 'mom', 'poof');
-        Multify.trigger.reset();
-        expect(Multify.set('lol', 'mom')).toEqual('mom');
-        expect(Multify.trigger).not.toHaveBeenCalled();
+        expect(multify.set('lol', 'poof')).toEqual('poof');
+        spyOn(multify, 'trigger');
+        expect(multify.set('lol', 'mom')).toEqual('mom');
+        expect(multify.trigger).toHaveBeenCalledWith('change:lol', 'mom', 'poof');
+        multify.trigger.reset();
+        expect(multify.set('lol', 'mom')).toEqual('mom');
+        expect(multify.trigger).not.toHaveBeenCalled();
       });
     });
 
     describe('#logout', function() {
       it("clears the session, and triggers logout", function(){
-        spyOn(Multify.session, 'clear');
-        spyOn(Multify.session, 'save');
-        Multify.logout();
-        expect(Multify.session.clear).toHaveBeenCalled();
-        expect(Multify.session.save).toHaveBeenCalled();
+        spyOn(multify.session, 'clear');
+        spyOn(multify.session, 'save');
+        multify.logout();
+        expect(multify.session.clear).toHaveBeenCalled();
+        expect(multify.session.save).toHaveBeenCalled();
       });
     });
 
     describe('#login', function() {
       it("it should xhr to the api server with the username and password", function(){
 
-        spyOn(Multify.session, 'save');
-        var xhr = Multify.login('jared@change.org', 'password');
+        spyOn(multify.session, 'save');
+        var xhr = multify.login('jared@change.org', 'password');
         var request = mostRecentAjaxRequest();
 
         request.response(testResponses.login.success);
@@ -50,7 +50,7 @@ define(function(require) {
         expect(request.url).toMatch(/email=jared/);
         expect(request.url).toMatch(/password=password/);
 
-        expect(Multify.session.save).toHaveBeenCalled();
+        expect(multify.session.save).toHaveBeenCalled();
       });
     });
   });
