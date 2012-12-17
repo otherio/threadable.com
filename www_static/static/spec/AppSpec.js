@@ -29,7 +29,7 @@ define(function(require) {
       describe("and multify#user is set to a user", function(){
         it("should setup the logged in thing", function(){
           var user = new User;
-          spyOn(user.projects, 'fetch')
+          spyOn(user.projects, 'fetch');
           multify.set('current_user', user);
           expect(Backbone.history.start).toHaveBeenCalled();
           expect(App.router).toEqual(jasmine.any(LoggedInRouter));

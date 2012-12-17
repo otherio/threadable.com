@@ -22,7 +22,6 @@ define(function(require) {
     },
 
     delayShow: function(options){
-      console.log('delaying show');
       var show = function(){
         this.projects.off('reset', show); // unbind
         this.render().show(options); // rerender and show
@@ -33,26 +32,40 @@ define(function(require) {
 
     show: function(options){
       if (!this.projects.loaded) return this.delayShow(options);
-      console.log('rendering logged in index view', arguments);
 
       // render the list of projects if it's not already rendered
       if (!this.projectsRegion.currentView){
-        this.projectsRegion.show(new ProjectsView({
-          projects: this.projects,
-          selectedProject: options.projectSlug
-        }));
+        this.initializeProjectsRegion(options.projectSlug);
       }else{
         this.projectsRegion.currentView.selectProject(options.projectSlug);
       }
 
-      // render the list of projects if it's not already rendered
-      this.feedRegion.currentView || this.feedRegion.show(new FeedView({collection: this.feed}));
+      // render the list of feed items if it's not already rendered
+      this.feedRegion.currentView || this.initializeFeedRegion();
 
-      if (options.projectSlug){
-        options.model = this.projects.findBySlug(options.projectSlug);
-        this.mainRegion.show(new MainView(options));
-      }
+      if (options.projectSlug) this.initializeMainRegion(options);
+    },
 
+    initializeProjectsRegion: function(projectSlug){
+      var projectsView = new ProjectsView({
+        projects: this.projects,
+        selectedProject: projectSlug
+      })
+      this.projectsRegion.show(projectsView);
+      return this;
+    },
+
+    initializeFeedRegion: function(){
+      var feedView = new FeedView({collection: this.feed});
+      this.feedRegion.show(feedView);
+      return this;
+    },
+
+    initializeMainRegion: function(options){
+      options.model = this.projects.findBySlug(options.projectSlug);
+      var mainView = new MainView(options);
+      this.mainRegion.show(mainView);
+      return this;
     },
 
     getTemplate: function(){
@@ -64,7 +77,5 @@ define(function(require) {
   function getProjects(){
     return App.multify.get('current_user').projects
   }
-
-
 
 });
