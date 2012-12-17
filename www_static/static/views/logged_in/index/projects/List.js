@@ -26,17 +26,14 @@ define(function(require) {
       selectedProject || (selectedProject = this.options.selectedProject);
       this.options.selectedProject = selectedProject;
       if (!selectedProject) return this;
-      var view = this.children.find(function(v){ return v.model.get('slug') == selectedProject })
+      var view = this.children.find(function(v){ return v.model.get('slug') == selectedProject });
       if (!view) return this;
       view.$el.addClass('active').siblings().removeClass('active');
       return this;
     },
 
     onRender: function(){
-      console.log('rendering main projects list');
       this.selectProject();
     }
-
   });
-
 });
