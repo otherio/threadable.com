@@ -53,5 +53,67 @@ define(function(require) {
         expect(multify.session.save).toHaveBeenCalled();
       });
     });
+
+
+    describe("#request", function() {
+      it("should make an ajax request to the api server", function() {
+        var params, options, expectedReturnValue, returnValue;
+        params = {foo:'bar'};
+        options = {magic: true};
+        expectedReturnValue = 82;
+
+        spyOn($, "ajax").andReturn(expectedReturnValue);
+        spyOn(multify.session, "get").andReturn('5b96d907b5aa364e95');
+
+        returnValue = multify.request('get', 'users', params, options);
+
+        expect(returnValue).toEqual(expectedReturnValue)
+
+        expect($.ajax).toHaveBeenCalledWith({
+          url: 'http://0.0.0.0:9292/users?foo=bar&_method=get&authentication_token=5b96d907b5aa364e95',
+          dataType: 'json',
+          timeout: 2000,
+          magic: true
+        });
+      });
+
+
+    });
+
+    describe("#sync", function() {
+      it("should make the expected request", function() {
+        var model, options, fakeRequest;
+
+        model = {
+          path: '/fakemodel',
+          modelName: 'fakemodel',
+          toJSON: function(){
+            return {json:true};
+          }
+        };
+
+        options = {
+          success: function(){},
+          error: function(){}
+        };
+
+        fakeRequest = jasmine.createSpyObj('multify.request',['done','fail']);
+        fakeRequest.done.andReturn(fakeRequest);
+
+        spyOn(multify, "request").andReturn(fakeRequest);
+
+        multify.sync('create', model, options);
+
+        expect(multify.request).toHaveBeenCalledWith(
+          'POST', '/fakemodel',
+          { fakemodel : { json : true } },
+          { context : model }
+        );
+        expect(fakeRequest.done).toHaveBeenCalledWith(options.success);
+        expect(fakeRequest.fail).toHaveBeenCalledWith(options.error);
+      });
+
+    });
+
   });
 });

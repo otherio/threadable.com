@@ -89,7 +89,7 @@ define(function(require){
       var
         method = ({'create':'POST', 'read':'GET', 'update':'PUT', 'delete':'DELETE'})[action],
         params = {},
-        path;
+        path
 
       if (action === 'create' || action === 'update'){
         params[model.modelName] = model.toJSON();
