@@ -63,6 +63,11 @@ define(function(require) {
 
     initializeMainRegion: function(options){
       options.model = this.projects.findBySlug(options.projectSlug);
+      if (!options.model){
+        // this should probably be up in the controller
+        App.router.navigate("/", {trigger:true});
+        return;
+      }
       var mainView = new MainView(options);
       this.mainRegion.show(mainView);
       return this;

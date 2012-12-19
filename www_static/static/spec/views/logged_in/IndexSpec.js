@@ -162,9 +162,9 @@ define(function(require) {
     });
 
     describe("initializeMainRegion", function() {
+      var options;
       it("should make a new main view and show it", function() {
-        var
-        project = new Project,
+        var project = new Project;
         options = {
           projectSlug: 'love-a-duck',
           something: 'else'
@@ -180,6 +180,28 @@ define(function(require) {
         expect(mainView.model).toBe(project);
         expect(mainView.options.something).toBe('else');
       });
+
+      describe("when a project does not exist for that slug", function() {
+        beforeEach(function() {
+          options = {
+            projectSlug: 'love-two-ducks'
+          };
+          spyOn(index.projects, 'findBySlug').andReturn(undefined);
+        });
+        it("should redirect to /", function() {
+          spyOn(index.mainRegion, 'show');
+          App.router = jasmine.createSpyObj('App.router', ['navigate']);
+          // spyOn(App, 'router').andReturn(router);
+          index.initializeMainRegion(options);
+          expect(index.mainRegion.show).not.toHaveBeenCalled();
+          expect(App.router.navigate).toHaveBeenCalledWith("/", {trigger:true});
+        });
+        afterEach(function() {
+          delete App.router;
+        });
+      });
+
+
     });
 
     describe("#getTemplate", function() {
