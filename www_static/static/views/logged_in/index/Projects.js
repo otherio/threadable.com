@@ -40,7 +40,6 @@ define(function(require) {
           App.router.navigate('/'+project.get('slug'), {trigger:true});
         }
       });
-
     }
 
   });
