@@ -5,16 +5,8 @@ define(function(require) {
     Projects = require('models/Projects');
 
   return Backbone.Model.extend({
-
-    url: '/tasks',
-    model_name: 'user',
-
-    id: null,
-    name: null,
-    email: null,
-    slug: null,
-    created_at: null,
-    updated_at: null,
+    path: '/users',
+    modelName: 'user',
 
     initialize: function() {
       this.projects = new Projects;

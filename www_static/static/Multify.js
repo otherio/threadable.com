@@ -88,13 +88,15 @@ define(function(require){
     sync: function(action, model, options) {
       var
         method = ({'create':'POST', 'read':'GET', 'update':'PUT', 'delete':'DELETE'})[action],
-        params = {};
+        params = {},
+        path;
 
       if (action === 'create' || action === 'update'){
-        params[model.constructor.modelName] = model.toJSON();
+        params[model.modelName] = model.toJSON();
       }
+      path = model.path || '/'+pluralize(model.modelName);
 
-      return multify.request(method, model.path, params, {context: model})
+      return multify.request(method, path, params, {context: model})
         .done(function(){ model.loaded = true; })
         .done(options.success)
         .fail(options.error)
@@ -110,6 +112,10 @@ define(function(require){
       email: email,
       password: password
     });
+  }
+
+  function pluralize(string) {
+    return string+'s'; // make this awesome later
   }
 
 });
