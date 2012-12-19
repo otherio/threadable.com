@@ -23,8 +23,6 @@ define(function(require){
   });
 
   multify.on('change:current_user', function(current_user, previousUser){
-    console.log('resetting routes', arguments);
-
     var loggedIn = !!current_user;
 
     if (Backbone.history) Backbone.history.handlers = [];
