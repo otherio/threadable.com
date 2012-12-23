@@ -47,12 +47,12 @@ Scenario: common happy path
    Then I check "completed"
     And an email should be sent to "jared@example.com, slim@duckguy.org" saying the task "buy tons of wood" for the project "build a huge wooden duck" is complete
    Then I go to the project page
-    When I add "duckexpert@geocities.com" as a member of this project with the comment "Hi Noah! I'm working on the project 'Build a huge wooden duck.' As the world's foremost expert on massive wooden waterfowl, your feedback on this project would be invaluable. Please consider signing up and taking a look at what we're doing."
-      Given that I am "duckexpert@geocities.com"
-        Then I should see an email that says I have been added as a member of the project "build a huge wooden duck" with the comment "Hi Noah! I'm working on the project 'Build a huge wooden duck.' As the world's foremost expert on massive wooden waterfowl, your feedback on this project would be invaluable. Please consider signing up and taking a look at what we're doing."
-        When I click "sign up"
-        Then I should be on the claim your account page
-        When I fill in "password" with "1234"
-        And I fill in "name" with "Noah"
-        And I press "login"
-        Then I should be on the project page for "build a huge wooden duck"
+    And I add "duckexpert@geocities.com" as a member of this project with the comment "Hi Noah! I'm working on the project 'Build a huge wooden duck.' As the world's foremost expert on massive wooden waterfowl, your feedback on this project would be invaluable. Please consider signing up and taking a look at what we're doing."
+   Given that I am "Noah"
+         Then I should see an email that says I have been added as a member of the project "build a huge wooden duck" with the comment "Hi Noah! I'm working on the project 'Build a huge wooden duck.' As the world's foremost expert on massive wooden waterfowl, your feedback on this project would be invaluable. Please consider signing up and taking a look at what we're doing."
+         When I click "sign up"
+         Then I should be on the claim your account page
+         When I fill in "password" with "1234"
+          And I fill in "name" with "Noah"
+          And I press "login"
+         Then I should be on the project page for "build a huge wooden duck"
