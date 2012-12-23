@@ -48,4 +48,13 @@ Scenario: common happy path
     And an email should be sent to "jared@example.com, slim@duckguy.org" saying the task "buy tons of wood" for the project "build a huge wooden duck" is complete
     And I log out
 
+  Given I am a member of Multify
+     And I am member of the project "build a huge wooden duck"
+     And I am logged in
+     And I am on the project page for "build a huge wooden duck"
+    Then I should be able to add "duckexpert@geocities.com" as a member of this project
+    Then an email should be sent to "duckexpert@geocities.com"
+      And "duckexpert@geocities.com" should be able to join Multify
+      And "duckexpert@geocities.com" should be able to create or comment on tasks
+
 
