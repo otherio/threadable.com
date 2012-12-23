@@ -83,9 +83,9 @@ Given I am "Slim"
     And I press "login"
    Then I should be on the task page for "buy tons of wood" for the project "build a huge wooden duck"
     And I comment on that task "I bought the other ton. It's very heavy."
-    And an email should be sent to "jared@example.com, slim@duckguy.org" with the comment "I bought the other ton. It's very heavy."
+    And an email should be sent to "jared@example.com, slim@gmail.com" with the comment "I bought the other ton. It's very heavy."
    Then I check "completed"
-    And an email should be sent to "jared@example.com, slim@duckguy.org" saying the task "buy tons of wood" for the project "build a huge wooden duck" is complete
+    And an email should be sent to "jared@example.com, slim@gmail.com" saying the task "buy tons of wood" for the project "build a huge wooden duck" is complete
    
 Feature: Inviting a user to a project
   In order to invite a user to a whole project rather than as a doer on a specific task
