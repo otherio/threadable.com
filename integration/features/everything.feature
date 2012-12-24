@@ -1,39 +1,3 @@
-Feature: Account Creation
-  In order to join the site
-  As a non-member
-  I should be able to create an account
-Scenario: Account Creation
-  Given I am not a member
-   When I go to multify.com
-    And I join with the following information:
-      | name         | email             | password |
-      | Jared Grippe | jared@example.com | flower   |
-   Then I should be on the users page for "jared-grippe"
-    And I should be logged in as "Jared Grippe"
-
-Feature: Login
-  In order to log in
-  As a member of the site
-  I should be able to log in
-Scenario: Login
-Given that I am "Jared"
-       And I am not logged in
-      When I go to multify.com
-       And I login with the following information: 
-         | email             | password |
-         | jared@example.com | flower   |
-      Then I should be logged in as "Jared Grippe"
-
-Feature: Logout
-  In order to log out
-  As a member of the site
-  I should be able to log out
-Scenario: Logout
-Given that I am "Jared"
-       And I am logged in
-      When I logout
-      Then I should be logged out
-
 Feature: Project Creation
   In order to create a project
   As a member of the site
