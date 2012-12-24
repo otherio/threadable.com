@@ -13,9 +13,7 @@ MultifyApi::Application.routes.draw do
 
 
 
-  resources :projects
-
-  resources :tasks
+  resources :projects, :tasks
 
   resources :users do
     collection do
@@ -25,5 +23,13 @@ MultifyApi::Application.routes.draw do
 
   # devise wants this, but probably not forever.
   root :to => "home#index"
+
+  devise_scope :user do
+    match "users/register" => "registrations#create", :via => :post
+  end
+
+  #override the devise default
+  # this doesn't quite work.
+  #match "users" => "users#create", :via => :post
 
 end

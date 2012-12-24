@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :find, :only => [:show, :update, :destroy]
+  before_filter :authenticate_user!
 
   # GET /users
   # GET /users.json
@@ -69,5 +70,6 @@ class UsersController < ApplicationController
   def find
     @user = User.find_by_id(params[:id])
   end
-
 end
+
+

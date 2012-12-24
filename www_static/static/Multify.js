@@ -41,13 +41,15 @@ define(function(require){
       return _.clone(this.attributes);
     },
 
-    join: function(data){
-      return authenticate(multify.request('POST', '/users', {user:data}));
+    join: function(userInfo){
+      var newUser = new User(userInfo, {path: '/users/register'});
+      newUser.save();
+      //return authenticate(multify.request('POST', '/users/sign_in', userInfo));
     },
 
     login: function(email, password){
-      var data = {email: email, password: password}
-      return authenticate(multify.request('POST', '/users/sign_in', data));
+      var postData = {email: email, password: password}
+      return authenticate(multify.request('POST', '/users/sign_in', postData));
     },
 
     logout: function(){

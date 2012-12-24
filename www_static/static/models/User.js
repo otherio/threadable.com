@@ -8,9 +8,13 @@ define(function(require) {
     path: '/users',
     modelName: 'user',
 
-    initialize: function() {
+    initialize: function(params, options) {
       this.projects = new Projects;
       this.feed = new Backbone.Collection;
+
+      if(options && options.path) {
+        this.path = options.path;
+      }
     }
   });
 

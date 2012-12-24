@@ -10,7 +10,6 @@ Feature: User Accounts
       And I join with the following information:
         | name         | email             | password |
         | Jared Grippe | jared@example.com | flower   |
-     Then I should be on the users page for "jared-grippe"
       And I should be logged in as "Jared Grippe"
 
   Scenario: When I want to login with my existing account

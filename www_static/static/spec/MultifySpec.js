@@ -1,7 +1,9 @@
 define(function(require) {
   var
     multify = require('multify'),
-    testResponses = require('spec/helpers/TestResponses');
+    testResponses = require('spec/helpers/TestResponses'),
+    User = require('models/User');
+
 
   describe('multify', function() {
 
@@ -39,7 +41,6 @@ define(function(require) {
 
     describe('#login', function() {
       it("it should xhr to the api server with the username and password", function(){
-
         spyOn(multify.session, 'save');
         var xhr = multify.login('jared@change.org', 'password');
         var request = mostRecentAjaxRequest();
@@ -54,6 +55,29 @@ define(function(require) {
       });
     });
 
+    describe("#join", function() {
+      it("sends username, password, and email to the user create api", function() {
+        var
+          saveSpy = spyOn(User.prototype, 'save'),
+          userSpy = spyOn(User.prototype, 'initialize').andCallThrough(),
+          params = {
+            'name': 'foo',
+            'email': 'foo@foo.foo',
+            'password': 'passfoo'
+          };
+
+        multify.join(params);
+        expect(userSpy).toHaveBeenCalledWith(params, {'path': '/users/register'})
+        expect(saveSpy).toHaveBeenCalled();
+      });
+
+      it("logs the user in after registering", function() {
+        // this is a placeholder so we remember where we left off.
+        // jsonp is a pain in the ass.
+        expect("not working").toBeFalsy();
+      });
+
+    });
 
     describe("#request", function() {
       it("should make an ajax request to the api server", function() {
@@ -70,7 +94,7 @@ define(function(require) {
         expect(returnValue).toEqual(expectedReturnValue)
 
         expect($.ajax).toHaveBeenCalledWith({
-          url: 'http://0.0.0.0:9292/users?foo=bar&_method=get&authentication_token=5b96d907b5aa364e95',
+          url: 'http://' + location.host + '/users?foo=bar&_method=get&authentication_token=5b96d907b5aa364e95',
           dataType: 'json',
           timeout: 2000,
           magic: true

@@ -30,7 +30,7 @@ define(function(require) {
     //   "click a.logout": "logout:clicked"
     // },
     events: {
-      "submit form":  function(event) {
+      "click input[type=submit]":  function(event) {
         event.preventDefault();
         var data = {};
         data.name     = this.$('input[name=name]').val();
