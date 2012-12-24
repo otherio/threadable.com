@@ -41,33 +41,23 @@ define(function(require){
       return _.clone(this.attributes);
     },
 
+    join: function(data){
+      return authenticate(multify.request('POST', '/users', {user:data}));
+    },
+
+    login: function(email, password){
+      var data = {email: email, password: password}
+      return authenticate(multify.request('POST', '/users/sign_in', data));
+    },
+
     logout: function(){
       session.clear();
       session.save();
       this.set('current_user', null);
     },
 
-    login: function(email, password){
-      return authenticate(email, password)
-
-        .done(function(response){
-          session.set({
-            user: response.user,
-            authentication_token: response.authentication_token
-          });
-          session.save();
-
-          multify.set('current_user', new User(response.user));
-        })
-
-        .fail(function(){
-          console.log('Login failed');
-          multify.logout();
-        })
-      ;
-    },
-
     request: function(method, path, params, options){
+      if (path.slice(0,1) === '/') path = path.slice(1);
       params || (params = {});
       options || (options = {});
       params._method = method;
@@ -107,11 +97,23 @@ define(function(require){
 
   // private
 
-  function authenticate(email, password){
-    return multify.request('POST', '/users/sign_in', {
-      email: email,
-      password: password
-    });
+  function authenticate(request){
+    return request
+      .done(function(response){
+        session.set({
+          user: response.user,
+          authentication_token: response.authentication_token
+        });
+        session.save();
+
+        multify.set('current_user', new User(response.user));
+      })
+
+      .fail(function(){
+        console.log('Login failed');
+        multify.logout();
+      })
+    ;
   }
 
   function pluralize(string) {

@@ -1,2 +1,11 @@
-%form
-  %h1 join form here
+.index.splash.hero-unit
+  %h1 Join multify!
+  %p It's pretty cool
+
+  %form
+    %p
+      %input{type: "text", name: "name",     placeholder: "Name"}
+      %input{type: "text", name: "email",    placeholder: "Email"}
+      %input{type: "text", name: "password", placeholder: "Password"}
+
+    %input.btn.btn-primary.btn-large{type:"submit", value: "Join"}

@@ -19,16 +19,26 @@ define(function(require) {
     // },
 
     template: _.template(template),
-    className: 'join'
+    className: 'join',
 
     // modelEvents: {
     //   "change:current_user": "render"
     // },
 
     // triggers: {
-    //   "click a.login":  "login:clicked",
+    //   "submit form":  "login:clicked",
     //   "click a.logout": "logout:clicked"
     // },
+    events: {
+      "submit form":  function(event) {
+        event.preventDefault();
+        var data = {};
+        data.name     = this.$('input[name=name]').val();
+        data.email    = this.$('input[name=email]').val();
+        data.password = this.$('input[name=password]').val();
+        multify.join(data);
+      }
+    }
 
     // templateHelpers: {
     //   loggedIn: function(){ return !!this.current_user; }

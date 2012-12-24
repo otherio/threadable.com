@@ -1,4 +1,6 @@
+$:.unshift File.expand_path('../../../lib', __FILE__)
 require 'capybara/cucumber'
+require 'patches/capybara'
 require 'debugger'
 
 Capybara.register_driver :selenium do |app|
