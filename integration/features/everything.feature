@@ -19,36 +19,8 @@ Given that I am "Jared"
        And I create a task called "buy tons of wood"
        Then a task called "buy tons of wood" should be created in the project "build a huge wooden duck"
 
-Feature: Adding doers to tasks
-  In order to assign tasks to others
-  As a member of a project
-  I should be able to assign doers to tasks
-Scenario: Adding doers to tasks
-Given that I am "Jared"
-       And I am logged in
-       And I am on the task page for "buy tons of wood"
-      When I click on "Add doer"
-       And I enter "sfslim@gmail.com" in the email field
-       And I enter the comment "We need lots of wood to build this duck. lets get some. How about you, Slim?"
-      Then "slim" should be added as a member of the project "build a huge wooden duck"
-       And "slim" should be added as a doer for the task "buy tons of wood"
-       And an email should be sent to "slim@gmail.com" with the comment "We need lots of wood to build this duck. lets get some. How about you, Slim?"
 
-Feature: Claiming accounts
-  In order to accept an invitation
-  As a non-member
-  I should be able to join the site by responding to an email invitation
-Scenario: Claiming an account via an email invitation
-Given that I am "slim"
-       And I open my email
-      Then I should see an email that says I have been added as a doer to the task "buy tons of wood" for the project "build a huge wooden duck" with the comment "We need lots of wood to build this duck. lets get some. How about you, Slim?"
-      When I click "Sign up"
-      Then I should be on the claim your account page
-      When I fill in "password" with "duckie"
-       And I fill in "name" with "slim"
-       And I click "login"
-      Then I should be on the task page for "buy 2 tons of wood" for the project "build a huge wooden duck"
-
+  
 Feature: Emailing comments
   In order to communicate about a task
   As a doer of that task
@@ -58,14 +30,7 @@ Given that I am "Slim"
       When I add a comment to the task "buy tons of wood" that reads "Ok. But I can only afford to buy 1 ton right now."
       Then an email should be sent to "jared@example.com" with the comment "Ok. But I can only afford to buy 1 ton right now."
 
-Feature: Doers adding doers to tasks
-  In order to have multiple doers for a given task
-  As a doer
-  I want to be able to add other doers to tasks
-Scenario: Add a doer to a task
-Given that I am "Slim"
-      When I add "ian@sonic.net" as a doer to the task "buy 2 tons of wood" with the comment "Ian, I'm working on the project 'build a huge wooden duck'. When we last spoke, you said that you'd be willing to buy some wood for us. I bought the first ton, could you sign up and buy the rest?"
-      Then an email should be sent to "ian@sonic.net" with the comment "Ian, I'm working on the project 'build a huge wooden duck'. When we last spoke, you said that you'd be willing to buy some wood for us. I bought the first ton, could you sign up and buy the rest?"
+
 Given that I am "Ian"
        And I open my email
       Then I should see an email that says I have been added as a doer to the task "buy tons of wood" for the project "build a huge wooden duck" with the comment "Ian, I'm working on the project 'build a huge wooden duck'. When we last spoke, you said that you'd be willing to buy some wood for us. I bought the first ton, could you sign up and buy the rest?"
