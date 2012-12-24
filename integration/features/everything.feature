@@ -145,3 +145,11 @@ Given that I am "Noah"
        And I fill in "name" with "Noah"
        And I press "login"
       Then I should be on the project page for "build a huge wooden duck"
+
+
+Feature: Minimum password length
+  In order to ensure that I select minimally secure passwords
+  As a non-member
+  I want to be required to enter a password that is at least 8 characters in length
+Scenario: Checking the length of a password
+INCOMPLETE 
