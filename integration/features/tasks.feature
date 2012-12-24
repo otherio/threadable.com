@@ -21,4 +21,4 @@ Scenario: I want to add a registered user as a doer for a task
   And an email should be sent to "raindrift@sonic.net" with the comment "You said that you'd be willing to buy some wood for us. I donated 1/2 ton, could buy the rest?"
   And a message should be displayed informing me that "Ian" has been added to the task and that an invitation email has been sent
 
-  RECHECK THIS WHOLE THING -- EDITED RADICALLY AT END OF DAY WHEN DISTRACTED
+  #RECHECK THIS WHOLE THING -- EDITED RADICALLY AT END OF DAY WHEN DISTRACTED
