@@ -1,2 +1,2 @@
-require './server'
-run Server
+require './multify_front'
+run MultifyFront
