@@ -9,7 +9,7 @@ Feature: User Accounts
      When I go to multify.com
       And I join with the following information:
         | name         | email             | password |
-        | Jared Grippe | jared@example.com | flower   |
+        | Jared Grippe | fake@email.addr   | flower   |
       And I should be logged in as "Jared Grippe"
 
   Scenario: When I want to login with my existing account
@@ -21,7 +21,7 @@ Feature: User Accounts
      When I go to multify.com
       And I login with the following information:
         | email             | password |
-        | jared@example.com | flower   |
+        | fake@email.addr   | flower   |
      Then I should be logged in as "Jared Grippe"
 
   Scenario: When I want to logout
