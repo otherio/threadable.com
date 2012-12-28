@@ -41,10 +41,11 @@ define(function(require){
       return _.clone(this.attributes);
     },
 
-    join: function(userInfo){
+    join: function(userInfo, options){
       var newUser = new User(userInfo, {path: '/users/register'});
-      newUser.save();
-      //return authenticate(multify.request('POST', '/users/sign_in', userInfo));
+      newUser.save()
+        .success(options?options.success:null)
+        .fail(options?options.fail:null);
     },
 
     login: function(email, password){

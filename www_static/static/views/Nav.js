@@ -9,7 +9,7 @@ define(function(require) {
     template: _.template(template),
 
     initialize: function(){
-      multify.on('change:current_user', this.render.bind(this));
+      multify.on('change:current_user', _.bind(this.render, this));
     },
 
     templateHelpers: function() {
@@ -27,6 +27,5 @@ define(function(require) {
         multify.logout();
       }
     }
-
   });
 });

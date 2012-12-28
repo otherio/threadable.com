@@ -56,25 +56,36 @@ define(function(require) {
     });
 
     describe("#join", function() {
-      it("sends username, password, and email to the user create api", function() {
-        var
-          saveSpy = spyOn(User.prototype, 'save'),
-          userSpy = spyOn(User.prototype, 'initialize').andCallThrough(),
-          params = {
-            'name': 'foo',
-            'email': 'foo@foo.foo',
-            'password': 'passfoo'
-          };
+      var saveSpy, userSpy, params, successSpy, failSpy;
 
-        multify.join(params);
+      beforeEach(function() {
+        saveSpy = spyOn(User.prototype, 'save').andCallThrough();
+        userSpy = spyOn(User.prototype, 'initialize').andCallThrough();
+        successSpy = jasmine.createSpy();
+        failSpy = jasmine.createSpy();
+
+        params = {
+          'name': 'Foo Guyerson',
+          'email': 'foo@foo.foo',
+          'password': 'passfoo'
+        };
+
+        multify.join(params, {success: successSpy, fail: failSpy});
+      });
+
+      it("sends username, password, and email to the user create api", function() {
         expect(userSpy).toHaveBeenCalledWith(params, {'path': '/users/register'})
         expect(saveSpy).toHaveBeenCalled();
       });
 
-      it("logs the user in after registering", function() {
-        // this is a placeholder so we remember where we left off.
-        // jsonp is a pain in the ass.
-        expect("not working").toBeFalsy();
+      it("calls the success function after registering successfully", function() {
+        mostRecentAjaxRequest().response(testResponses.register.success);
+        expect(successSpy).toHaveBeenCalled();
+      });
+
+      it("calls the fail function after failing", function() {
+        mostRecentAjaxRequest().response(testResponses.register.fail);
+        expect(failSpy).toHaveBeenCalled();
       });
 
     });

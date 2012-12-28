@@ -1,5 +1,4 @@
 define(function(require) {
-
   var
     Marionette = require('marionette'),
     multify         = require('multify'),
@@ -24,25 +23,27 @@ define(function(require) {
     // modelEvents: {
     //   "change:current_user": "render"
     // },
-
     // triggers: {
     //   "submit form":  "login:clicked",
     //   "click a.logout": "logout:clicked"
     // },
-    events: {
-      "click input[type=submit]":  function(event) {
-        event.preventDefault();
-        var data = {};
-        data.name     = this.$('input[name=name]').val();
-        data.email    = this.$('input[name=email]').val();
-        data.password = this.$('input[name=password]').val();
-        multify.join(data);
-      }
-    }
-
     // templateHelpers: {
     //   loggedIn: function(){ return !!this.current_user; }
     // }
 
+    events: {
+      "click input[type=submit]": function(e) { this.joinButton(e); }
+    },
+
+    joinButton: function(event) {
+      event.preventDefault();
+      var userInfo = {};
+      userInfo.name     = this.$('input[name=name]').val();
+      userInfo.email    = this.$('input[name=email]').val();
+      userInfo.password = this.$('input[name=password]').val();
+      multify.join(userInfo, {
+        success: function() { multify.login(userInfo.email, userInfo.password); }
+      });
+    }
   });
 });
