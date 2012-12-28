@@ -34,7 +34,6 @@ module Rack
         end
 
         location += params.to_query
-        puts "location " + location
         headers['Location'] = location
       end
 
