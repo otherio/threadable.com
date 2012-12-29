@@ -38,13 +38,13 @@ define(function(require) {
 
       it("renders the login status correctly", function() {
         view.render();
-        expect(view.$el.text()).toContain('Login');
+        expect(view.$el.text()).toContain('Sign in');
 
         var user = new User({name: 'Jessy Pinker'});
         this.setCurrentUser(user);
 
         view.render();
-        expect(view.$el.text()).toContain('Logout');
+        expect(view.$el.text()).toContain('Sign out');
 
       });
 
@@ -54,17 +54,17 @@ define(function(require) {
         view.render();
         expect(view.$el.text()).toContain('Jessy Pinker');
       });
-
-
-
     });
 
     describe("login", function() {
       it("logs you in", function() {
         spyOn(multify, 'login').andCallThrough();
         view.render();
-        view.$('.login').click();
-        expect(multify.login).toHaveBeenCalled();
+        view.$('#login-menu').click();
+        view.$('form.login input[name=email]').val('jared@change.org');
+        view.$('form.login input[name=password]').val('password');
+        view.$('form.login input[type=submit]').click();
+        expect(multify.login).toHaveBeenCalledWith('jared@change.org', 'password');
       });
     });
   });

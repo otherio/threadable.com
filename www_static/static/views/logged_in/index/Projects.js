@@ -13,7 +13,6 @@ define(function(require) {
     },
 
     onRender: function(){
-      console.log('rendering main projects');
       this.list.show(new ListView({collection: this.options.projects}))
       this.selectProject(this.options.selectedProject);
       this.$('form').on('submit', this.createNewProject.bind(this));

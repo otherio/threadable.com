@@ -28,7 +28,6 @@ Feature: User Accounts
     In order to log out
     As a member of the site
     I should be able to log out
-    Given that I am "Jared"
-       And I am logged in
+    Given that I am logged in as "fake@email.addr" with password "flower"
       When I logout
       Then I should be logged out

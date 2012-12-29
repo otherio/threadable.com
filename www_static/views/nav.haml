@@ -3,23 +3,29 @@
 
     %a.brand{href:"/"} multify
 
-    .pull-right
-      %ul.nav
+    %ul.nav.pull-right
 
-        <% if (loggedIn) { %>
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-            <%= current_user.get('name') %>
-            %i.icon-wrench.icon-white
-            %b.caret
-          %ul.dropdown-menu
-            %li.nav-header Account
-            %li
-              %a{:href => ""} Profile
-            %li.divider
-            %li
-              %a.logout{:href => ""} Logout
-        <% } else { %>
-        %li
-          %a.login{href:""} Login
-        <% } %>
+      <% if (loggedIn) { %>
+      %li.dropdown
+        %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+          <%= current_user.get('name') %>
+          %i.icon-wrench.icon-white
+          %b.caret
+        %ul.dropdown-menu
+          %li.nav-header Account
+          %li
+            %a{:href => ""} Profile
+          %li.divider
+          %li
+            %a.logout{:href => ""} Sign out
+      <% } else { %>
+      %li.dropdown
+        %a.dropdown-toggle#login-menu{"data-toggle" => "dropdown", :href => ""}
+          Sign in
+          %b.caret
+        %ul.dropdown-menu
+          %form.login
+            %input{type: "text", name: "email",    placeholder: "Email"}
+            %input{type: "text", name: "password", placeholder: "Password"}
+            %input.btn.btn-primary.login-submit{type:"submit", value: "Sign in"}
+      <% } %>

@@ -20,8 +20,9 @@ define(function(require) {
     },
 
     events: {
-      'click .login':  function(e) {
-        multify.login('jared@change.org', 'password');
+      'click .login-submit':  function(e) {
+        e.preventDefault();
+        multify.login(this.$('form.login input[name=email]').val(), this.$('form.login input[name=password]').val());
       },
       'click .logout': function(e) {
         multify.logout();

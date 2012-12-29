@@ -27,26 +27,41 @@ Then /^I should be logged in as "(.*?)"$/ do |name|
 end
 
 Given /^that I am "(.*?)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+  # TODO: clear cookies or whatever
 end
 
 Given /^I am not logged in$/ do
-  pending # express the regexp above with the code you wish you had
+  visit '/'
+  page.should have_content('Sign in')
 end
 
 When /^I login with the following information:$/ do |table|
-  # table is a Cucumber::Ast::Table
-  pending # express the regexp above with the code you wish you had
+  info = table.hashes.first
+
+  visit '/'
+  click_link 'Sign in'
+  fill_in 'Email',    :with => email
+  fill_in 'Password', :with => info['password']
+  click_button 'Sign in'
 end
 
-Given /^I am logged in$/ do
-  pending # express the regexp above with the code you wish you had
+Given /^that I am logged in as "(.*?)" with password "(.*?)"$/ do |fake_email, password|
+  # TODO: replace this with something that makes the api call directly
+  # to make the tests faster
+  visit '/'
+  if page.has_content?("Sign in")
+    click_link 'Sign in'
+    fill_in 'Email',    :with => email
+    fill_in 'Password', :with => password
+    click_button 'Sign in'
+  end
 end
 
 When /^I logout$/ do
-  pending # express the regexp above with the code you wish you had
+  click_on 'account-menu'
+  click_on 'Sign out'
 end
 
 Then /^I should be logged out$/ do
-  pending # express the regexp above with the code you wish you had
+  page.should have_content("Sign in")
 end
