@@ -25,7 +25,11 @@
           %b.caret
         %ul.dropdown-menu
           %form.login
-            %input{type: "text", name: "email",    placeholder: "Email"}
-            %input{type: "text", name: "password", placeholder: "Password"}
-            %input.btn.btn-primary.login-submit{type:"submit", value: "Sign in"}
+            %fieldset.textbox
+              %label.username
+                %input{type: "text", name: "email", placeholder: "Email"}
+              %label.password
+                %input{type: "password", name: "password", placeholder: "Password"}
+            %fieldset.submit
+              %input.btn.pull-right.login-submit{type:"submit", value: "Sign in"}
       <% } %>
