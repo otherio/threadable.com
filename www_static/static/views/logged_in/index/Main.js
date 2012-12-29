@@ -2,8 +2,8 @@ define(function(require) {
   var
     Marionette   = require('marionette'),
     Backbone     = require('backbone'),
-    Tasks        = require('views/logged_in/index/Tasks'),
-    Members      = require('views/logged_in/index/Members'),
+    TasksView        = require('views/logged_in/index/Tasks'),
+    MembersView      = require('views/logged_in/index/Members'),
     template     = require('text!templates/logged_in/index/main.html');
 
   return Marionette.Layout.extend({
@@ -21,8 +21,17 @@ define(function(require) {
     },
 
     tabViews: {
-      'tasks': Tasks,
-      'members': Members
+      'tasks': function() {
+        // TODO: this should happen:
+        // make sure to require tasks
+        // var tasks = new Tasks({project: model.id});
+        // tasks.fetch();
+        // return new TasksView({collection: tasks});
+        return new TasksView();
+      },
+      'members': function() {
+        return new MembersView();
+      }
     },
 
     onRender: function(){
@@ -33,7 +42,7 @@ define(function(require) {
       e.preventDefault();
       e.stopPropagation();
       var tab = $(e.target).attr('name');
-      this.tabContent.show(new this.tabViews[tab]({model: this.model}));
+      this.tabContent.show(this.tabViews[tab]());
       this.$('> .tabs > li').removeClass('active');
       this.$('> .tabs > li.'+tab).addClass('active');
       Backbone.history.navigate($(e.target).attr('href'));

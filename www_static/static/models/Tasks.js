@@ -1,0 +1,20 @@
+define(function(require) {
+
+  var
+    Backbone = require('backbone'),
+    Task  = require('models/Task');
+
+  return Backbone.Collection.extend({
+    model: Task,
+    path: '/tasks',
+
+    findBySlug: function(slug){
+      return this.find(function(task){
+        return task.get('slug') === slug;
+      });
+    }
+
+  });
+
+});
+
