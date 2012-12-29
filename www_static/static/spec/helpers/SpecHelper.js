@@ -10,7 +10,7 @@ beforeEach(function() {
   multify.session.save();
 
   Backbone.history = jasmine.createSpyObj('Backbone.history', [
-    'start', 'loadUrl', 'route']);
+    'start', 'loadUrl', 'route', 'navigate']);
   Backbone.history.handlers = ['some', 'handlers'];
 
   jasmine.Ajax.useMock();

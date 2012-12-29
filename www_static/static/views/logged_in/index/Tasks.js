@@ -2,23 +2,23 @@ define(function(require) {
   var
     Marionette = require('marionette'),
     tasksTemplate = require('text!templates/logged_in/index/tasks.html'),
-    taskTemplte = require('text!templates/logged_in/index/tasks/task.html'),
-    emptyTemplte = require('text!templates/logged_in/index/tasks/empty.html');
+    taskTemplate = require('text!templates/logged_in/index/tasks/task.html'),
+    emptyTemplate = require('text!templates/logged_in/index/tasks/empty.html');
 
-  var task = Backbone.Marionette.ItemView.extend({
-    template: _.template(taskTemplte),
+  var TaskView = Backbone.Marionette.ItemView.extend({
+    template: _.template(taskTemplate),
     tagName: 'li'
   });
 
-  var Empty = Backbone.Marionette.ItemView.extend({
-    template: _.template(emptyTemplte),
+  var EmptyView = Backbone.Marionette.ItemView.extend({
+    template: _.template(emptyTemplate),
   });
 
   return Marionette.CollectionView.extend({
-    itemView: task,
-    // template: _.template(tasksTemplate),
+    itemView: TaskView,
+    template: _.template(tasksTemplate),
     tagName: 'ol',
-    emptyView: Empty
+    emptyView: EmptyView
 
   });
 });
