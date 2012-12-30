@@ -13,7 +13,6 @@ define(function(require) {
     it("finds by slug", function() {
       var tasks = new Tasks([], {project_id: 1});
       tasks.fetch();
-      debugger
       mostRecentAjaxRequest().response(testResponses.tasks.success);
       expect(tasks.findBySlug('project-1')).toEqual(jasmine.any(Task));
     });
