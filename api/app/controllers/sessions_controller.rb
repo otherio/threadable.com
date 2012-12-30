@@ -10,6 +10,13 @@ class SessionsController < Devise::SessionsController
     sign_in_and_redirect(resource_name, resource)
   end
 
+  def failure
+    render :json => {
+      :success => false,
+      :errors => ["Login failed."]
+    }, :status => 401
+  end
+
   private
 
   def sign_in_and_redirect(resource_or_scope, resource=nil)
@@ -23,13 +30,6 @@ class SessionsController < Devise::SessionsController
       :user => current_user,
       :authentication_token => current_user.authentication_token
     }
-  end
-
-  def failure
-    render :json => {
-      :success => false,
-      :errors => ["Login failed."]
-    }, :status => 401
   end
 
 end

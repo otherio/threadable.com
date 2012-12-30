@@ -1,7 +1,7 @@
 MultifyApi::Application.routes.draw do
 
 
-  scope 'gitapi' do
+  scope 'api' do
 
     # for devise/ajax login
     devise_for :users, :controllers => {:sessions => 'sessions'}

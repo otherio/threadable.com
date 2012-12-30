@@ -64,8 +64,8 @@ gem "sprockets"
 gem "json"
 
 #gem "shotgun"
-
-gem "chunky_png"
-gem 'rb-fsevent', '~> 0.9.1'
-gem "listen"
-gem 'hpricot'
+group :development do
+  gem "chunky_png"
+  gem 'rb-fsevent', '~> 0.9.1'
+  gem "listen"
+end
