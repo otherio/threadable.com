@@ -3,7 +3,11 @@ require 'bundler'
 Bundler.require
 require 'pathname'
 
-class MultifyFront < Sinatra::Base
+module Multify
+  module Www; end
+end
+
+class Multify::Www::Server < Sinatra::Base
 
   ROOT = Pathname.new File.expand_path('../',__FILE__)
   STATIC      = ROOT + 'static'

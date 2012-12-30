@@ -36,7 +36,7 @@ MultifyApi::Application.routes.draw do
     #match "users" => "users#create", :via => :post
   end
 
-  require Rails.root.join('../www_static/multify_front')
-  match '/' => MultifyFront, :anchor => false
+  require Rails.root.join('../www/server')
+  match '/' => Multify::Www::Server, :anchor => false
 
 end
