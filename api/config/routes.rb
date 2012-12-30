@@ -1,8 +1,7 @@
 MultifyApi::Application.routes.draw do
 
-  require '../www_static/multify_front'
 
-  namespace 'api' do
+  scope 'gitapi' do
 
     # for devise/ajax login
     devise_for :users, :controllers => {:sessions => 'sessions'}
@@ -37,6 +36,7 @@ MultifyApi::Application.routes.draw do
     #match "users" => "users#create", :via => :post
   end
 
+  require Rails.root.join('../www_static/multify_front')
   match '/' => MultifyFront, :anchor => false
 
 end
