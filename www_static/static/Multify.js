@@ -10,14 +10,13 @@ define(function(require){
 
     host: 'http://0.0.0.0:3000',
     dataType: 'jsonp',
+    apiPrefix: 'api/',
 
     initialize: function(){
       this.session.fetch();
       var user = this.session.get('user');
       this.set('current_user', user ? new User(user) : null);
     },
-
-    host: 'http://0.0.0.0:3000',
 
     session: session,
 
@@ -66,7 +65,7 @@ define(function(require){
       params._method = method;
       params.authentication_token = multify.session.get('authentication_token');
       url = new URI(multify.host);
-      url.path = path;
+      url.path = this.apiPrefix + path;
       url.params = params;
 
       options = $.extend({}, {

@@ -3,7 +3,7 @@ require 'bundler'
 Bundler.require
 require 'pathname'
 
-class Server < Sinatra::Base
+class MultifyFront < Sinatra::Base
 
   ROOT = Pathname.new File.expand_path('../',__FILE__)
   STATIC      = ROOT + 'static'
@@ -54,4 +54,3 @@ class Server < Sinatra::Base
   end
 
 end
-

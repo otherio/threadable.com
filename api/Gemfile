@@ -55,3 +55,17 @@ end
 gem 'database_cleaner'
 gem 'stringex'  # for url slugs
 gem 'devise'
+
+# from the sinatra app's gemfile
+gem "sinatra", :require => "sinatra/base"
+gem "compass"
+gem "haml"
+gem "sprockets"
+gem "json"
+
+#gem "shotgun"
+group :development do
+  gem "chunky_png"
+  gem 'rb-fsevent', '~> 0.9.1'
+  gem "listen"
+end

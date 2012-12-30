@@ -12,7 +12,7 @@ Capybara.default_driver         = :selenium
 Capybara.javascript_driver      = :selenium
 Capybara.default_selector       = :css
 Capybara.default_wait_time      = 5
-Capybara.app_host               = 'http://localhost:9292'
+Capybara.app_host               = 'http://localhost:3000'
 
 # World(Test::Paths)
 
