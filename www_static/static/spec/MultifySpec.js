@@ -105,7 +105,7 @@ define(function(require) {
         expect(returnValue).toEqual(expectedReturnValue)
 
         expect($.ajax).toHaveBeenCalledWith({
-          url: 'http://' + location.host + '/users?foo=bar&_method=get&authentication_token=5b96d907b5aa364e95',
+          url: 'http://' + location.host + '/api/users?foo=bar&_method=get&authentication_token=5b96d907b5aa364e95',
           dataType: 'json',
           timeout: 2000,
           magic: true
