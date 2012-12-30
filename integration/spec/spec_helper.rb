@@ -19,7 +19,7 @@ Capybara.default_driver         = :selenium
 Capybara.javascript_driver      = :selenium
 Capybara.default_selector       = :css
 Capybara.default_wait_time      = 5
-Capybara.app_host               = 'http://0.0.0.0:3001'
+Capybara.app_host               = 'http://0.0.0.0:3000'
 
 RSpec.configure do |config|
   # Run specs in random order to surface order dependencies. If you find an
