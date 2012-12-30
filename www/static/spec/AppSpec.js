@@ -1,7 +1,7 @@
 define(function(require) {
   var
     App = require('App'),
-    multify = require('multify'),
+    multify = require('Multify'),
     LoggedOutRouter = require('logged_out/Router'),
     LoggedInRouter  = require('logged_in/Router'),
     User = require('models/User');

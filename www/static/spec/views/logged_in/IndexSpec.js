@@ -4,9 +4,9 @@ define(function(require) {
     Index        = require('views/logged_in/Index'),
     User         = require('models/User'),
     Project      = require('models/Project'),
-    ProjectsView = require('views/logged_in/index/projects'),
-    FeedView     = require('views/logged_in/index/feed'),
-    MainView     = require('views/logged_in/index/main');
+    ProjectsView = require('views/logged_in/index/Projects'),
+    FeedView     = require('views/logged_in/index/Feed'),
+    MainView     = require('views/logged_in/index/Main');
 
   describe("logged in index view", function(){
     var index, user;

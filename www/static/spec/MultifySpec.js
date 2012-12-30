@@ -1,6 +1,6 @@
 define(function(require) {
   var
-    multify = require('multify'),
+    multify = require('Multify'),
     testResponses = require('spec/helpers/TestResponses'),
     User = require('models/User');
 

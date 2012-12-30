@@ -2,7 +2,7 @@ define(function(require) {
   var
     Marionette = require('marionette'),
     template = require('text!templates/logged_in/index/projects.html'),
-    ListView = require('views/logged_in/index/projects/list'),
+    ListView = require('views/logged_in/index/projects/List'),
     Project  = require('models/Project');
 
   return Backbone.Marionette.Layout.extend({

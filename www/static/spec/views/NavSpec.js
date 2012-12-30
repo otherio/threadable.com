@@ -3,7 +3,7 @@ define(function(require) {
 
     Nav  = require('views/Nav'),
     template = require('text!templates/nav.html'),
-    multify  = require('multify'),
+    multify  = require('Multify'),
     User     = require('models/User');
 
   describe('Nav', function() {

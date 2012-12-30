@@ -1,7 +1,7 @@
 define(function(require){
 
   var Marionette = require('marionette');
-  var IndexView = require('views/logged_in/index');
+  var IndexView = require('views/logged_in/Index');
 
   return Marionette.AppRouter.extend({
 

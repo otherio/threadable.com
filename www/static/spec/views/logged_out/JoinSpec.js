@@ -1,7 +1,7 @@
 define(function(require) {
   var
     Join    = require('views/logged_out/Join'),
-    multify = require('multify'),
+    multify = require('Multify'),
     testResponses = require('spec/helpers/TestResponses');
 
   describe("join form", function() {

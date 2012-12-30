@@ -2,14 +2,13 @@ define(function(require){
 
   var
     Backbone = require('backbone'),
-    session  = require('session'),
+    session  = require('Session'),
     URI      = require('uri'),
     User     = require('models/User');
 
   var multify = _.extend({}, Backbone.Events, {
 
-    host: 'http://0.0.0.0:3000',
-    dataType: 'jsonp',
+
     apiPrefix: 'api/',
 
     initialize: function(){
@@ -62,15 +61,15 @@ define(function(require){
       if (path.slice(0,1) === '/') path = path.slice(1);
       params || (params = {});
       options || (options = {});
-      params._method = method;
       params.authentication_token = multify.session.get('authentication_token');
-      url = new URI(multify.host);
-      url.path = this.apiPrefix + path;
+      url = new URI(location.origin);
+      url.path = multify.apiPrefix + path;
       url.params = params;
 
       options = $.extend({}, {
+        type: method,
         url: url.toString(),
-        dataType: this.dataType,
+        dataType: 'json',
         timeout: 2000,
       }, options);
 

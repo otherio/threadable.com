@@ -7,7 +7,7 @@ define(function(require){
     $               = require('jquery'),
     Backbone        = require('backbone'),
     Marionette      = require('marionette'),
-    multify         = require('multify'),
+    multify         = require('Multify'),
     LoggedOutRouter = require('logged_out/Router'),
     LoggedInRouter  = require('logged_in/Router'),
     Layout          = require('views/Layout');

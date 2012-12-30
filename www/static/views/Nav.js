@@ -3,7 +3,7 @@ define(function(require) {
     Marionette = require('marionette'),
     User = require('models/User'),
     template = require('text!templates/nav.html'),
-    multify  = require('multify');
+    multify  = require('Multify');
 
   return Marionette.ItemView.extend({
     template: _.template(template),

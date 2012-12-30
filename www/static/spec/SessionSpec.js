@@ -1,6 +1,6 @@
 define(function(require) {
   var
-    session = require('session'),
+    session = require('Session'),
     Backbone = require('backbone');
 
   describe('session', function() {

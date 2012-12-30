@@ -1,6 +1,6 @@
 beforeEach(function() {
 
-  var multify = require('multify');
+  var multify = require('Multify');
   // jasine.Ajax doesn't work with cross-domain ajax, so make it same-domain
   multify.host = location.protocol + '//' + location.host;
   multify.dataType = 'json';

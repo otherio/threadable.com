@@ -2,9 +2,9 @@ define(function(require) {
   var
     Marionette   = require('marionette'),
     template     = require('text!templates/logged_in/index.html'),
-    ProjectsView = require('views/logged_in/index/projects'),
-    FeedView     = require('views/logged_in/index/feed'),
-    MainView     = require('views/logged_in/index/main');
+    ProjectsView = require('views/logged_in/index/Projects'),
+    FeedView     = require('views/logged_in/index/Feed'),
+    MainView     = require('views/logged_in/index/Main');
 
   return Marionette.Layout.extend({
     className: 'index',

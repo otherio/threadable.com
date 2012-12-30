@@ -1,7 +1,7 @@
 define(function(require) {
   var
     Marionette = require('marionette'),
-    multify         = require('multify'),
+    multify         = require('Multify'),
     template = require('text!templates/logged_out/join.html');
 
   return Marionette.ItemView.extend({
