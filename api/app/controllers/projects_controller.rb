@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_filter :find, :only => [:show, :update, :destroy]
+  before_filter :find, :only => [:show, :update, :destroy, :tasks]
   before_filter :authenticate_user!
 
   # def authenticate
@@ -71,6 +71,14 @@ class ProjectsController < ApplicationController
       respond_to do |format|
         format.json { render nothing: true, status: :forbidden }
       end
+    end
+  end
+
+  def tasks
+    @tasks = @project.tasks
+
+    respond_to do |format|
+      format.json { render json: @tasks }
     end
   end
 

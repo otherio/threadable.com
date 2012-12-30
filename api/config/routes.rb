@@ -16,7 +16,12 @@ MultifyApi::Application.routes.draw do
 
 
 
-    resources :projects, :tasks
+    resources :projects do
+      member do
+        get :tasks
+      end
+    end
+    resources :tasks
 
     resources :users do
       collection do

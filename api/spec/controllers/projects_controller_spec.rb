@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ProjectsController do
   let(:user){ FactoryGirl.create(:user) }
   let(:project) { FactoryGirl.create(:project) }
-  
+
   before(:each) do
     sign_in(user)
     project.members << user
@@ -92,6 +92,23 @@ describe ProjectsController do
       xhr :delete, :destroy, id: project.id
       response.should be_success
       expect { Project.find(id) }.to raise_exception(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe "GET tasks" do
+    it "sends tasks for the specified project" do
+      task = FactoryGirl.create(:task)
+      task.project.members << user
+
+      xhr :get, :tasks, id: task.project.id
+      result = JSON.parse(response.body)
+      result[0]['name'].should == task.name
+      result.length.should == 1
+    end
+
+    it "skips trackable" do
+      get :index
+      controller.request.env['devise.skip_trackable'].should be_true
     end
   end
 end
