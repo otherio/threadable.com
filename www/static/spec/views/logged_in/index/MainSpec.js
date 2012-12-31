@@ -1,12 +1,12 @@
 define(function(require) {
   var
     Backbone = require('backbone'),
+    Tasks = require('models/Tasks'),
     Main = require('views/logged_in/index/Main'),
     TasksView = require('views/logged_in/index/Tasks'),
     MembersView = require('views/logged_in/index/Members'),
     testResponses = require('spec/helpers/TestResponses'),
-    Projects = require('models/Projects'),
-    Tasks = require('models/Tasks');
+    Projects = require('models/Projects');
 
   describe("Main View", function() {
     var view;
@@ -20,11 +20,11 @@ define(function(require) {
       view.render();
     });
 
-    describe("tasks view", function() {
-      beforeEach(function() {
-        spyOn(Tasks.prototype, 'fetch');
-      });
+    it("gets a model", function() {
+      expect(view.model).toBeDefined();
+    });
 
+    describe("tasks view", function() {
       it("defaults to the tasks view", function() {
         expect(view.tabContent.show).toHaveBeenCalledWith(jasmine.any(TasksView));
       });
@@ -34,7 +34,7 @@ define(function(require) {
       });
 
       it("fetches the tasks collection", function() {
-        expect(Tasks.prototype.fetch).toHaveBeenCalled();
+        expect(mostRecentAjaxRequest().url).toMatch(/projects\/\d+\/tasks/);
       });
     });
 
@@ -47,7 +47,6 @@ define(function(require) {
         expect(view.$('.tabs > li.members')).toHaveClass('active');
       });
     });
-
 
     it("navigates to the proper url when the members tab is clicked", function() {
       expect(Backbone.history.navigate).toHaveBeenCalledWith('/project-1/tasks');

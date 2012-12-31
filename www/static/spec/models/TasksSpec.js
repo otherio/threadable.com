@@ -11,10 +11,20 @@ define(function(require) {
     });
 
     it("finds by slug", function() {
-      var tasks = new Tasks([], {project_id: 1});
+      var tasks = new Tasks();
       tasks.fetch();
       mostRecentAjaxRequest().response(testResponses.tasks.success);
-      expect(tasks.findBySlug('project-1')).toEqual(jasmine.any(Task));
+      expect(tasks.findBySlug('do-the-thing')).toEqual(jasmine.any(Task));
+    });
+
+    it("requests from the tasks path by default", function() {
+      var tasks = new Tasks();
+      expect(tasks.path).toEqual('/tasks');
+    });
+
+    it("requests from the project's tasks when a project is specified", function() {
+      var tasks = new Tasks([], {project: {id: 1}});
+      expect(tasks.path).toEqual('/projects/1/tasks');
     });
 
   });

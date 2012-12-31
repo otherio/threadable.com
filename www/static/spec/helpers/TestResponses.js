@@ -16,7 +16,7 @@ define(function(require) {
     tasks: {
       success: {
         status: 200,
-        responseText: ''
+        responseText: '[{"created_at":"2012-12-29T05:22:42Z","done":null,"due_at":null,"id":5,"name":"do the thing","project_id":29,"slug":"do-the-thing","updated_at":"2012-12-29T05:22:42Z"}]'
       }
     },
     register: {
