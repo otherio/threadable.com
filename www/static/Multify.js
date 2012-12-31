@@ -52,6 +52,7 @@ define(function(require){
     },
 
     logout: function(){
+      multify.request('DELETE', '/users/sign_out');
       session.clear();
       session.save();
       this.set('current_user', null);
