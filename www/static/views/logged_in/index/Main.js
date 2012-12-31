@@ -28,9 +28,9 @@ define(function(require) {
         return new TasksView({collection: tasks});
       },
 
-      'members': _.bind(function() {
+      'members': function() {
         return new MembersView();
-      }, this)
+      }
     },
 
     onRender: function(){
