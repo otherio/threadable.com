@@ -5,7 +5,7 @@ Feature: Projects and Tasks
     In order to create a project
     As a member of the site
     I should be able to create a project
-    Given that I am logged in as "fake@email.addr" with password "flower"
+    Given that I am logged in
      When I create a project called "build a huge wooden duck"
      Then the project called "build a huge wooden duck" should be created
 
@@ -13,26 +13,27 @@ Feature: Projects and Tasks
     In order to create a task
     As a member of a project
     I should be able to create a task
-    Given that I am logged in as "fake@email.addr" with password "flower"
+    Given that I am logged in
       And I am on the page for the project "build a huge wooden duck"
       And I create a task called "buy tons of wood"
      Then a task called "buy tons of wood" should be created in the project "build a huge wooden duck"
 
+  @wip
   Scenario: I want to complete a task
     As a member of a project
     I should be able to complete a task
-    Given that I am logged in as "fake@email.addr" with password "flower"
+    Given that I am logged in
       And I am on the page for the project "build a huge wooden duck"
       And I create a task called "haul wood into car"
       And I click completed on the task "haul wood into car"
      Then the task "haul wood into car" should be marked as complete
 
+  @wip
   Scenario: I want to add a registered user as a doer for a task
     In order to add a registered user as a doer for a task
     As a member of a project
     I should be able to add an registered user as a doer for a task
-    Given that I am logged in as "fake@email.addr" with password "flower"
-      And I am logged in
+    Given that I am logged in
       And I am a member of the project "build a huge wooden duck"
       And I am on the task page for "Buy a ton of wood"
       And I enter the comment "Ian, you said that you'd be willing to buy some wood for us. I donated 1/2 ton, could buy the rest?"

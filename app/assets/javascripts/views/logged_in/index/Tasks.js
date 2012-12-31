@@ -1,6 +1,7 @@
 define(function(require) {
   var
     Marionette = require('marionette'),
+    Task = require('models/Task'),
     tasksTemplate = require('text!logged_in/index/tasks.html'),
     taskTemplate = require('text!logged_in/index/tasks/task.html'),
     emptyTemplate = require('text!logged_in/index/tasks/empty.html');
@@ -22,13 +23,30 @@ define(function(require) {
 
   var EmptyView = Backbone.Marionette.ItemView.extend({
     template: _.template(emptyTemplate),
+    tagName: 'li'
   });
 
-  return Marionette.CollectionView.extend({
+  return Marionette.CompositeView.extend({
     itemView: TaskView,
     template: _.template(tasksTemplate),
-    tagName: 'ul',
-    emptyView: EmptyView
+    itemViewContainer: 'ul',
+    emptyView: EmptyView,
 
+    events: {
+      'submit form.new-task': 'createTask'
+    },
+
+    createTask: function(e) {
+      e.preventDefault();
+      var
+        element = $(e.currentTarget).find('input'),
+        taskName = element.val();
+
+      if(! taskName) { return; }
+      var task = new Task({name: taskName, project_id: this.model.id});
+      this.collection.add(task);
+      task.save();
+      element.val('');
+    }
   });
 });

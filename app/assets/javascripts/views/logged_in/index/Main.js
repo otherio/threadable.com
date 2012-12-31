@@ -25,7 +25,7 @@ define(function(require) {
       'tasks': function() {
         var tasks = new Tasks([], {project: this.model});
         tasks.fetch();
-        return new TasksView({collection: tasks});
+        return new TasksView({model: this.model, collection: tasks});
       },
 
       'members': function() {

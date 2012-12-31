@@ -3,7 +3,8 @@ define(function(require) {
   var Backbone = require('backbone');
 
   return Backbone.Model.extend({
-    url: '/tasks'
+    path: '/tasks',
+    modelName: 'task'
   });
 
 });
