@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ProjectsController do
-  let(:user){ FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:project) { FactoryGirl.create(:project) }
 
   before(:each) do

@@ -5,9 +5,8 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.scoped
-
-    @tasks = Project.find(params[:project_id]).tasks if params[:project_id]
+    # this doesn't scale.  we might not even need it.
+    @tasks = current_user.projects.includes(:tasks).map(&:tasks).flatten
 
     @tasks = @tasks.where(slug: params[:slug]) if params[:slug]
 
@@ -19,8 +18,6 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @task = Task.find(params[:id])
-
     respond_to do |format|
       format.json { render json: @task }
     end
@@ -29,6 +26,12 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
+    if params[:task][:project_id] && ! Project.find(params[:task][:project_id]).project_memberships.where(:user_id => current_user.id).first
+      return respond_to do |format|
+        format.json { render nothing: true, status: :not_found }
+      end
+    end
+
     @task = Task.new(params[:task])
 
     respond_to do |format|
@@ -43,6 +46,12 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
+    if params[:task][:project_id] && ! Project.find(params[:task][:project_id]).project_memberships.where(:user_id => current_user.id).first
+      return respond_to do |format|
+        format.json { render nothing: true, status: :not_found }
+      end
+    end
+
     respond_to do |format|
       if @task.update_attributes(params[:task])
         format.json { render json: @task, status: :ok, location: @task }
@@ -65,7 +74,20 @@ class TasksController < ApplicationController
   private
 
   def find
-    @task = Task.find(params[:id])
+    @task = Task.where('tasks.id = ? or tasks.slug = ?', params[:id], params[:id]).first
+
+    if ! @task.present?
+      return respond_to do |format|
+        format.json { render nothing: true, status: :not_found }
+      end
+    end
+
+    if ! @task.project.project_memberships.where(:user_id => current_user.id).first
+      return respond_to do |format|
+        format.json { render nothing: true, status: :not_found }
+      end
+    end
+
   end
 
 end
