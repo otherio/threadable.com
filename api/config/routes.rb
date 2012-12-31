@@ -29,9 +29,6 @@ MultifyApi::Application.routes.draw do
       end
     end
 
-    # devise wants this, but probably not forever.
-    root :to => "home#index"
-
     devise_scope :user do
       match "users/register" => "registrations#create", :via => :post
     end
