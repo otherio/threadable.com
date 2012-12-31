@@ -69,5 +69,6 @@ module MultifyApi
 
 
     config.assets.paths << Rails.root + 'app/assets/templates'
+    config.assets.precompile += ['require.js', 'config.js']
   end
 end
