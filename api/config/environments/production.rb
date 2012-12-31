@@ -1,4 +1,9 @@
 MultifyApi::Application.configure do
+  # this is until we actually deploy something
+  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
+    [u, p] == ['multify', 'frobozz horse battery staple']
+  end
+
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
