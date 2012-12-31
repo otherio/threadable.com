@@ -1,7 +1,7 @@
 class WwwController < ApplicationController
 
   def index
-    render nothing: true, layout: true
+    render nothing: true, layout: 'application'
   end
 
   SPECS = Rails.root.join('app/assets/javascripts/spec')
