@@ -108,7 +108,6 @@ define(function(require) {
           type: 'get',
           url: 'http://' + location.host + '/api/users?foo=bar&authentication_token=5b96d907b5aa364e95',
           dataType: 'json',
-          timeout: 2000,
           magic: true
         });
       });

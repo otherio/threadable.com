@@ -2,7 +2,7 @@ define(function(require) {
   var
 
     Nav  = require('views/Nav'),
-    template = require('text!templates/nav.html'),
+    template = require('text!nav.html'),
     multify  = require('Multify'),
     User     = require('models/User');
 
