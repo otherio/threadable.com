@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'rubygems'
-require 'bundler'
-Bundler.require
-
-require File.expand_path('../../lib/compiler',__FILE__)
-Compiler.compile_all!

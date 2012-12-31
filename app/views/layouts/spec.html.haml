@@ -1,0 +1,43 @@
+!!!
+%html
+  %head
+    %title Jasmine Spec Runner
+    %link{:href => "jasmine-1.3.1/jasmine_favicon.png", :rel => "shortcut icon", :type => "image/png"}/
+    = stylesheet_link_tag "jasmine-1.3.1/jasmine.css"
+
+    = javascript_include_tag "jasmine-1.3.1/jasmine.js"
+    = javascript_include_tag "jasmine-1.3.1/jasmine-html.js"
+    = javascript_include_tag "jasmine-jquery.js"
+    = javascript_include_tag "mock-ajax.js"
+    = javascript_include_tag "spec/helpers/SpecHelper.js"
+
+    = javascript_include_tag "require.js", data:{ main: 'App' }
+    = javascript_include_tag "config.js"
+
+
+
+    :javascript
+
+      require(#{@specs.to_json}, function() {
+
+          var jasmineEnv = jasmine.getEnv();
+          jasmineEnv.updateInterval = 1000;
+
+          var htmlReporter = new jasmine.HtmlReporter();
+
+          jasmineEnv.addReporter(htmlReporter);
+
+          jasmineEnv.specFilter = function(spec) {
+              return htmlReporter.specFilter(spec);
+          };
+
+          var currentWindowOnload = window.onload;
+
+          $(document).ready(function() {
+            jasmineEnv.execute();
+          });
+
+      });
+    %body
+
+      #body
