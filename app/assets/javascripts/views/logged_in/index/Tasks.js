@@ -8,7 +8,7 @@ define(function(require) {
 
   var TaskView = Backbone.Marionette.ItemView.extend({
     template: _.template(taskTemplate),
-    tagName: 'li',
+    tagName: 'tr',
 
     initialize: function() {
       this.model.on('change', this.render);
@@ -23,13 +23,13 @@ define(function(require) {
 
   var EmptyView = Backbone.Marionette.ItemView.extend({
     template: _.template(emptyTemplate),
-    tagName: 'li'
+    tagName: 'tr'
   });
 
   return Marionette.CompositeView.extend({
     itemView: TaskView,
     template: _.template(tasksTemplate),
-    itemViewContainer: 'ul',
+    itemViewContainer: 'tbody',
     emptyView: EmptyView,
 
     events: {
