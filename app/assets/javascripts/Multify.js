@@ -87,6 +87,10 @@ define(function(require){
       }
       path = model.path || '/'+pluralize(model.modelName);
 
+      if ((action === 'update' || action === 'delete') && model.id) {
+        path = path + '/' + model.id;
+      }
+
       return multify.request(method, path, params, {context: model})
         .done(function(){ model.loaded = true; })
         .done(options.success)

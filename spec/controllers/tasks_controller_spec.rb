@@ -72,6 +72,12 @@ describe TasksController do
       Task.find(task.id)['name'].should == "shiny new name"
     end
 
+    it "changes status to done" do
+      xhr :put, :update, id: task.id, task: {done: true}
+      response.should be_success
+      Task.find(task.id)['done'].should be_true
+    end
+
     it "returns not found if attempting to edit when not a member of the task's project" do
       other_task = FactoryGirl.create(:task)
       xhr :put, :update, id: other_task.id, task: {name: "shiny new name"}

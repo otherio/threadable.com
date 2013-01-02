@@ -16,10 +16,17 @@ body >
     padding-top: 3px
     > div
       margin-top: $nav_height
-      .taskStatus
+      .task-status
         color: gainsboro
         &:hover
           color: gold
+          cursor: pointer
+    .done
+      text-decoration: line-through
+      .task-status
+        color: gold
+        &:hover
+          cursor: default
 
 .navbar .navbar-inner
   padding-left: 20px

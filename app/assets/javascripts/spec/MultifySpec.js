@@ -116,12 +116,13 @@ define(function(require) {
     });
 
     describe("#sync", function() {
-      it("should make the expected request", function() {
-        var model, options, fakeRequest;
+      var model, options, fakeRequest;
 
+      beforeEach(function() {
         model = {
           path: '/fakemodel',
           modelName: 'fakemodel',
+          id: 1,
           toJSON: function(){
             return {json:true};
           }
@@ -134,13 +135,26 @@ define(function(require) {
 
         fakeRequest = jasmine.createSpyObj('multify.request',['done','fail']);
         fakeRequest.done.andReturn(fakeRequest);
-
         spyOn(multify, "request").andReturn(fakeRequest);
+      });
 
+      it("should make the expected request", function() {
         multify.sync('create', model, options);
 
         expect(multify.request).toHaveBeenCalledWith(
           'POST', '/fakemodel',
+          { fakemodel : { json : true } },
+          { context : model }
+        );
+        expect(fakeRequest.done).toHaveBeenCalledWith(options.success);
+        expect(fakeRequest.fail).toHaveBeenCalledWith(options.error);
+      });
+
+      it("appends the model id for update and delete", function() {
+        multify.sync('update', model, options);
+
+        expect(multify.request).toHaveBeenCalledWith(
+          'PUT', '/fakemodel/1',
           { fakemodel : { json : true } },
           { context : model }
         );

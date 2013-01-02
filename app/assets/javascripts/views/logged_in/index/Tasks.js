@@ -14,10 +14,19 @@ define(function(require) {
       this.model.on('change', this.render);
     },
 
+    events: {
+      'click td.task-status': 'onClickDone'
+    },
+
     onRender: function() {
       if(this.model.get('done')) {
         this.$el.addClass('done');
       }
+    },
+
+    onClickDone: function(e) {
+      this.model.set('done', 1);
+      this.model.save();
     }
   });
 

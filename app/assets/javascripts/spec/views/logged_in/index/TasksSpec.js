@@ -30,6 +30,17 @@ define(function(require) {
         tasks.first().set('done', true); // assumes row render is bound to row model change event
         expect(view.$('tr:first-child')).toHaveClass('done');
       });
+
+      it("has a complete button", function() {
+        expect(view.$('tr:first-child > td.task-status').length).toBeGreaterThan(0);
+      });
+
+      it("marks the task done when the complete button is pushed", function() {
+        clearAjaxRequests();
+        view.$('tr:first-child > td.task-status').click();
+        expect(view.$('tr:first-child')).toHaveClass('done');
+        expect(mostRecentAjaxRequest().method).toEqual('PUT');
+      });
     });
 
     describe("Main view", function() {
