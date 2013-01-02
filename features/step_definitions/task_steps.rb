@@ -35,3 +35,11 @@ end
 Then /^a task called "(.*?)" should be created in the project "(.*?)"$/ do |project_name, task_name|
   page.should have_content(task_name)
 end
+
+Given /^I click completed on the task "(.*?)"$/ do |task_name|
+  find(:xpath, "/html/body[@id='body']/div[@class='main']/div[@class='index']/div[@class='undernav container-fluid']/div[@class='panels row-fluid']/div[@class='main span9']/div[@class='main']/div[@class='tabContent']/div/table[@class='table table-striped table-bordered table-hover']/tbody/tr[2]/td[@class='task-status']").click
+end
+
+Then /^the task "(.*?)" should be marked as complete$/ do |arg1|
+  page.should have_css('tr.done')
+end

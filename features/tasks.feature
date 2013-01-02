@@ -18,7 +18,6 @@ Feature: Projects and Tasks
       And I create a task called "buy tons of wood"
      Then a task called "buy tons of wood" should be created in the project "build a huge wooden duck"
 
-  @wip
   Scenario: I want to complete a task
     As a member of a project
     I should be able to complete a task
