@@ -23,12 +23,12 @@ define(function(require) {
       });
 
       it("renders unfinished tasks without the done style", function() {
-        expect(view.$('li:first-child')).not.toHaveClass('done');
+        expect(view.$('tr:first-child')).not.toHaveClass('done');
       });
 
       it("renders finished tasks with the done style", function() {
         tasks.first().set('done', true); // assumes row render is bound to row model change event
-        expect(view.$('li:first-child')).toHaveClass('done');
+        expect(view.$('tr:first-child')).toHaveClass('done');
       });
     });
 
