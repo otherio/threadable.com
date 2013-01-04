@@ -37,9 +37,21 @@ Then /^a task called "(.*?)" should be created in the project "(.*?)"$/ do |proj
 end
 
 Given /^I click completed on the task "(.*?)"$/ do |task_name|
-  find(:xpath, "/html/body[@id='body']/div[@class='main']/div[@class='index']/div[@class='undernav container-fluid']/div[@class='panels row-fluid']/div[@class='main span9']/div[@class='main']/div[@class='tabContent']/div/table[@class='table table-striped table-bordered table-hover']/tbody/tr[2]/td[@class='task-status']").click
+  find(:xpath, "//*[contains(text(),'" + task_name + "')]/..").find(:css, 'td.task-status').click
 end
 
-Then /^the task "(.*?)" should be marked as complete$/ do |arg1|
-  page.should have_css('tr.done')
+Then /^the task "(.*?)" should be marked as complete$/ do |task_name|
+  find(:css, '.done').text.should eq(task_name)
+end
+
+Given /^I click the "(.*?)" button$/ do |button|
+  click_on(button)
+end
+
+Then /^the task "(.*?)" should no longer be visible$/ do |task|
+  page.should_not have_content(task)
+end
+
+Then /^the task "(.*?)" should be visible$/ do |task|
+  page.should have_content(task)
 end

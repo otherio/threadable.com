@@ -43,7 +43,7 @@ define(function(require) {
       });
     });
 
-    describe("Main view", function() {
+    describe("Main Tasks CompositeView", function() {
       it("presents a new task form", function() {
         expect(view.$('input[placeholder="New Task"]').length).toEqual(1);
       });
@@ -74,7 +74,27 @@ define(function(require) {
         it("sets the project", function() {
           expect(tasks.last().get('project_id')).toBeDefined();
         });
+      });
 
+      describe("filtering controls", function() {
+        it("toggles completed task display", function() {
+          tasks.first().set('done', true);
+          view.$('.done-toggle[data-show="unfinished"]').click();
+          expect(view.$('.done').length).toEqual(0);
+          view.$('.done-toggle[data-show="all"]').click();
+          expect(view.$('.done').length).toEqual(1);
+        });
+
+        it("defaults to all", function() {
+          expect(view.$('.done-toggle[data-show="all"]')).toHaveClass('active');
+        });
+
+        it("hides completed tasks immediately", function() {
+          view.$('.done-toggle[data-show="unfinished"]').click();
+          expect(view.$('.task-status').length).toEqual(1);  // there's a task showing (from TestResponses)
+          view.$('td.task-status').click();  // click the done button
+          expect(view.$('.task-status').length).toEqual(0);  // no tasks showing
+        });
       });
     });
   });

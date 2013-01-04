@@ -1,6 +1,11 @@
 Feature: Projects and Tasks
  I should be able to create tasks, delete tasks, add myself as a doer for a task, add others as doers for a task, remove others as doers for a task, mark tasks as completed, and mark tasks as uncompleted.
 
+  Scenario: what the fuck
+    in order to run these fucking tests on ian's machine
+    do some bullshit that should not be necessary
+    Given that I am logged in
+
   Scenario: I want to create a project
     In order to create a project
     As a member of the site
@@ -27,6 +32,15 @@ Feature: Projects and Tasks
       And I click completed on the task "haul wood into car"
      Then the task "haul wood into car" should be marked as complete
 
+  Scenario: I want to hide completed tasks
+    In order to better view what is left to do
+    I should be able to hide completed tasks from view
+    Given that I am logged in
+      And I am on the page for the project "build a huge wooden duck"
+      And I click the "Unfinished" button
+      Then the task "haul wood into car" should no longer be visible
+      And the task "buy tons of wood" should be visible
+
   @wip
   Scenario: I want to add a registered user as a doer for a task
     In order to add a registered user as a doer for a task
@@ -34,7 +48,7 @@ Feature: Projects and Tasks
     I should be able to add an registered user as a doer for a task
     Given that I am logged in
       And I am a member of the project "build a huge wooden duck"
-      And I am on the task page for "Buy a ton of wood"
+      And I am on the task page for "buy tons of wood"
       And I enter the comment "Ian, you said that you'd be willing to buy some wood for us. I donated 1/2 ton, could buy the rest?"
      When I click on "Add Doer"
       And I enter "Ian" in the name field
