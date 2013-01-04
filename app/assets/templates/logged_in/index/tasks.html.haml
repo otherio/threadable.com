@@ -1,3 +1,9 @@
+%form.new-task
+  .input-prepend
+    %span.add-on
+      %i.icon-edit
+    %input.span11.input-xxlarge.new-task{type: 'text', placeholder: 'New Task'}
+
 .btn-group.pull-right{'data-toggle' => 'buttons-radio'}
   %button.btn.btn-mini.done-toggle{"data-show" => "unfinished"}
     Unfinished
@@ -8,8 +14,3 @@
   %tbody
 
 
-%form.new-task
-  .input-prepend
-    %span.add-on
-      %i.icon-edit
-    %input.span11.input-xxlarge{type: 'text', placeholder: 'New Task'}

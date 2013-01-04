@@ -54,7 +54,7 @@ define(function(require) {
           expect(tasks.length).toEqual(1);
           spyOn(Task.prototype, 'save');
 
-          $inputElement = view.$('input[placeholder="New Task"]');
+          $inputElement = view.$('input.new-task');
           $inputElement.val('this is a task');
           $inputElement.parent().submit();
         });
@@ -75,6 +75,7 @@ define(function(require) {
           expect(tasks.last().get('project_id')).toBeDefined();
         });
       });
+
 
       describe("filtering controls", function() {
         it("toggles completed task display", function() {

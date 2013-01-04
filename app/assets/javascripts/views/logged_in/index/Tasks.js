@@ -84,10 +84,10 @@ define(function(require) {
     onRender: function() {
       var taskFilter = multify.get('taskFilter');
       if(taskFilter == 'unfinished') {
-        $(this.el).find('.done-toggle[data-show="unfinished"]').addClass('active');
+        this.$el.find('.done-toggle[data-show="unfinished"]').addClass('active');
       } else {
         // the default
-        $(this.el).find('.done-toggle[data-show="all"]').addClass('active');
+        this.$el.find('.done-toggle[data-show="all"]').addClass('active');
       }
     }
   });
