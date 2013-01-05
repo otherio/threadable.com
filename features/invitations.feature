@@ -3,6 +3,7 @@ Feature: Invitations
  adding them as doers for a task, or adding them as followers of a task. The people I invite should be able
  to use those invitations to claim their accounts and become registered users.
 
+@wip
 Scenario: I want to add an unregistered user as a member of a project
  In order to add an unregistered user as a member of a project
  As a member of that project
@@ -21,6 +22,8 @@ Scenario: I want to add an unregistered user as a member of a project
     And an email should be sent to "sfslim@gmail.com" with the comment "Hey Slim — We're trying to build a huge wooden duck. I seem to recall you have some experience doing this. Care to lend a hand?"
     And a message should be displayed informing me that "Slim" has been added to the project and that an invitation email has been sent
 
+
+@wip
 Scenario: I want to claim an account via a project member invitation
  In order to claim an account via a project member invitation
  As an unregistered user
@@ -43,6 +46,7 @@ Scenario: I want to claim an account via a project member invitation
     And an email should be sent to "Slim" notifying me that my account has been created and welcoming me to the site
     And an email should be sent to "Jared" notifying him that "Slim" has accepted the invitation he sent to "sfslim@gmail.com" for the project "build a huge wooden duck"
 
+@wip
 Scenario: I want to add an unregistered user as a doer for a task
  In order to add an unregistered user as a doer for a task
  As a member of a project
@@ -64,6 +68,7 @@ Scenario: I want to add an unregistered user as a doer for a task
     And an email should be sent to "slim@gmail.com" with the comment "Do you have any wood left over in storage?"
     And a message should be displayed informing me that "Slim" has been added to the task and that an invitation email has been sent
 
+@wip
 Scenario: I want to claim an account via a task doer invitation
  In order to claim an account via a task doer invitation
  As an unregistered user
@@ -86,6 +91,7 @@ Scenario: I want to claim an account via a task doer invitation
     And an email should be sent to "Slim" notifying me that my account has been created and welcoming me to the site
     And an email should be sent to "Jared" notifying him that "SFSlim" has accepted the invitation he sent to "sfslim@gmail.com" for the task "buy tons of wood" on the project "build a huge wooden duck"
 
+@wip
 Scenario: I want to add an unregistered user as a follower of a task
  In order to add an unregistered user as a follower of a task
  As a member of a project
