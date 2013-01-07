@@ -9,3 +9,8 @@ get '/' do
   haml :index
 end
 
+get '/clickconvo' do
+  haml :clickconvo
+end
+
+
