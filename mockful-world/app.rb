@@ -23,6 +23,10 @@ get '/user/:user_name/dashboard' do
   haml :user_dashboard
 end
 
+get '/styles.css' do
+  sass :styles
+end
+
 get '/user' do
   redirect '/user/' + session[:user].user_name
 end
@@ -85,10 +89,10 @@ post '/register' do
   u.user_name =   params[:user_name]
   u.password =    params[:password]
   u.email =       params[:email]
-  
+
   if u.save
     flash("User created")
-    session[:user] = User.authenticate( params["user_name"], 
+    session[:user] = User.authenticate( params["user_name"],
                                         params["password"])
     redirect '/user/' << session[:user].user_name.to_s << "/dashboard"
   else

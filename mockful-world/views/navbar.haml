@@ -15,15 +15,15 @@
 
             %li.dropdown
               %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
-                #{@user.user_name}
+                Nicole Aptekar
                 %i.icon-cogs
               %ul.dropdown-menu
                 %li.nav-header Account
                 %li
-                  %a{:href => "/user/" << @user.user_name.to_s << "/dashboard"} Profile
+                  %a{:href => "/"} Profile
                 %li.divider
                 %li
-                  %a.logout{:href => "/logout" } Sign out
+                  %a.logout{:href => "/" } Sign out
 
           -else
             %a{:href => '/login'} Login
