@@ -11,19 +11,14 @@
           %li
             %a{:href => '/'}Calendar
         %ul.nav.pull-right
-          -if logged_in?
-
-            %li.dropdown
-              %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
-                Nicole Aptekar
-                %i.icon-cogs
-              %ul.dropdown-menu
-                %li.nav-header Account
-                %li
-                  %a{:href => "/"} Profile
-                %li.divider
-                %li
-                  %a.logout{:href => "/" } Sign out
-
-          -else
-            %a{:href => '/login'} Login
+          %li.dropdown
+            %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+              Nicole Aptekar
+              %i.icon-cogs
+            %ul.dropdown-menu
+              %li.nav-header Account
+              %li
+                %a{:href => "/"} Profile
+              %li.divider
+              %li
+                %a.logout{:href => "/" } Sign out

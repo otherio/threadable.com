@@ -1,16 +1,34 @@
-.container-fluid
-  .row-fluid
-    .left.span5
-      %div= haml :tasks
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %title multify-mock
+    %meta{:name => "description", :content => ""}
+    %meta{:name => "author", :content => ""}
+    %link{href: '/stylesheet.css', media: "all", rel: "stylesheet", type: "text/css"}
+    %link{href: '/bootstrap.css', media: "all", rel: "stylesheet", type: "text/css"}
+    %link{href: '/font-awesome.min.css', media: "all", rel: "stylesheet", type: "text/css"}
+  %body
 
-    .right.span7
-      %div.vertical-line
-        %div= haml :conversations
-%br
-%br
-%br
-%br
+    %div= haml :navbar
 
-%hr
+    .container-fluid
+      .row-fluid
+        .left.span5
+          %div.vertical-line
+            %div= haml :tasks
 
-%div= haml :footer
+        .right.span7
+          %div.vertical-line
+            %div= haml :conversations
+    %br
+    %br
+    %br
+    %br
+
+    %hr
+
+    %div= haml :footer
+
+    %script{ :type => "text/javascript", :src =>"/js/bootstrap.min.js"}
+    %script{ :type => "text/javascript", :src =>"/js/jquery.js"}
