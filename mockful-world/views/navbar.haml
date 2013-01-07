@@ -1,0 +1,29 @@
+.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
+    .container-fluid
+      %a.brand{:href => '/'} DDI @ Charcade
+      .nav-collapse
+        %ul.nav
+          %li
+            %a{:href => '/'}Work
+          %li
+            %a{:href => '/'}Members
+          %li
+            %a{:href => '/'}Calendar
+        %ul.nav.pull-right
+          -if logged_in?
+
+            %li.dropdown
+              %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+                #{@user.user_name}
+                %i.icon-cogs
+              %ul.dropdown-menu
+                %li.nav-header Account
+                %li
+                  %a{:href => "/user/" << @user.user_name.to_s << "/dashboard"} Profile
+                %li.divider
+                %li
+                  %a.logout{:href => "/logout" } Sign out
+
+          -else
+            %a{:href => '/login'} Login
