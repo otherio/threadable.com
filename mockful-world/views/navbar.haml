@@ -1,24 +1,22 @@
 .navbar.navbar-fixed-top.navbar-inverse
   .navbar-inner
-    .container-fluid
-      %a.brand{:href => '/'} DDI @ Charcade
-      .nav-collapse
-        %ul.nav
+    %a.brand{:href => '/'} DDI @ Charcade
+    %ul.nav
+      %li
+        %a{:href => '/'}Work
+      %li
+        %a{:href => '/'}Members
+      %li
+        %a{:href => '/'}Calendar
+    %ul.nav.pull-right
+      %li.dropdown
+        %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+          Nicole Aptekar
+          %i.icon-cogs
+        %ul.dropdown-menu
+          %li.nav-header Account
           %li
-            %a{:href => '/'}Work
+            %a{:href => "/"} Profile
+          %li.divider
           %li
-            %a{:href => '/'}Members
-          %li
-            %a{:href => '/'}Calendar
-        %ul.nav.pull-right
-          %li.dropdown
-            %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
-              Nicole Aptekar
-              %i.icon-cogs
-            %ul.dropdown-menu
-              %li.nav-header Account
-              %li
-                %a{:href => "/"} Profile
-              %li.divider
-              %li
-                %a.logout{:href => "/" } Sign out
+            %a.logout{:href => "/" } Sign out
