@@ -8,20 +8,17 @@
     %link{href: '/stylesheet.css', media: "all", rel: "stylesheet", type: "text/css"}
     %link{href: '/bootstrap.css', media: "all", rel: "stylesheet", type: "text/css"}
     %link{href: '/font-awesome.min.css', media: "all", rel: "stylesheet", type: "text/css"}
+
   %body
 
     %div= haml :navbar
 
     %div= yield
 
-    %br
-    %br
-    %br
-    %br
-
-    %hr
-
     %div= haml :footer
+
+    .project-selector
+      Projects
 
     %script{ :type => "text/javascript", :src =>"/js/jquery.js"}
     %script{ :type => "text/javascript", :src =>"/js/bootstrap.min.js"}

@@ -1,6 +1,30 @@
 %blockquote
-  %p.lead
+  %p.lead.task-title
+    %i.icon-ok.unfinished-check
     Pull DDI out of storage
+
+  .container-fluid.move-side
+    .row-fluid
+      %div= haml :taskdetail
+
+    .row-fluid
+      %hr.narrow
+      %div.message-controls
+        %a.control-link.text-info
+          %i.icon-edit
+          add message
+
+        &#183;
+
+        %a.control-link.text-info
+          %i.icon-camera
+          add photos/videos/docs
+
+      %div
+        .pokey-top
+          %p
+        %input.has-pokey.span12
+
 %div
   %table.table.table-condensed.table-hover.message-table
     %tr.read-message
@@ -49,8 +73,7 @@
 
 
       %td.message-nowrap
-        tl;dr Saturday Jan 5th, noon-?, American Steel, Ardent shop cleanup and DDI p...
-
+        Hey guys --- if there can be some division ahead of time as to folks designated in place "A" (shop) versus place "B" (storage) that may be useful.
 
       %td.date-cell.message-nowrap
         %div.pull-right

@@ -1,6 +1,8 @@
 body
   padding-top: 40px
   padding-bottom: 40px
+  // this is for the little projects side control thinger
+  padding-left: 10px
 
 .sidebar-nav
   padding: 9px 0
@@ -23,6 +25,7 @@ body
 
 .vertical-line
   border-left: 1px solid #E5E5E5
+  height: 100%
 
 .top-header
   margin: 0 0 10px
@@ -32,6 +35,11 @@ body
   height: 24px
   border-radius: 2px
 
+.face-image-small
+  width: 18px
+  height: 18px
+  border-radius: 2px
+
 .name-cell
   width: 90px
 
@@ -39,8 +47,7 @@ body
   width: 120px
 
 .read-message
-  background-color: #f8f8f8
-
+  background-color: #ececec
 
 .message-table
   width: 100%
@@ -51,3 +58,67 @@ body
   white-space: nowrap
   text-overflow: ellipsis
   table-layout: fixed
+
+.project-selector
+  font-size: 1.15em
+  position: fixed
+  left: -30px
+  top: 180px
+  -webkit-transform: rotate(-90deg)
+  -moz-transform: rotate(-90deg)
+  background-color: rgb(200,255,150)
+  border-radius: 0px 0px 7px 7px
+  padding: 5px 10px 5px 10px
+  border: 2px
+  border-top: 0
+  border-style: solid
+  border-color: white
+  color: black
+
+.control-link
+  font-size: 0.85em
+  #color: #bebebe
+
+.message-controls
+  width: 250px
+//  margin-left: 7px
+
+.block
+  display: block
+
+p.lead.task-title
+  margin-bottom: 0
+
+.move-side
+  margin-left: 7px
+
+.pokey-top
+  margin-left: 15px
+  width: 0
+  height: 0
+  border-left: 8px solid transparent
+  border-right: 8px solid transparent
+
+  border-bottom: 8px solid gainsboro
+
+.pokey-top p
+  position: relative
+  left: -8px
+  top: 2px
+
+  z-index: 2000
+  width: 0
+  height: 0
+  border-left: 8px solid transparent
+  border-right: 8px solid transparent
+
+  border-bottom: 9px solid white
+
+.has-pokey, .has-pokey:focus
+  border-color: gainsboro
+  border-style: solid
+
+.narrow
+  margin-top: 5px
+  margin-bottom: 5px
+
