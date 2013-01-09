@@ -20,70 +20,175 @@
           %i.icon-camera
           add photos/videos/docs
 
+      / %div
+      /   .pokey-top
+      /     %p
+      /   %input.has-pokey.span12
+
+%hr.narrow
+
+.container-fluid.messages
+  .row-fluid
+    .conversation-event
+      %span.conversation-event-person
+        Ed Hunsinger
+      created this task from
+      %a
+        %i.icon-comments-alt
+        Introducing the Charcade
+      %span.pull-right
+        12/14/12
+
+  .row-fluid
+    .span12.quotation
+      %img.face-image{ :src => "/img/edface.jpeg", :alt => "edrabbit@edrabbit.com" }
+      %strong
+        Ed Hunsinger
+      described this task...
+      %span.pull-right
+        12/14/12
+      .message-text
+        %p
+          Sounds like we are either going to repair DDI and run it at BM one more time, or we're going to continue with our previously stated decision to destroy it. Either way this means pulling it out of storage.
+        %p
+          Let's go to Alameda with a truck (who can bring theirs? or should I rent one?), pull DDI out of storage and take it over to American Steel where we can take stock of what we have, what condition it's in, and a quick guess at what needs to be done to put it back in a working state. We may find that it's all fucked and there's no way we could do "one last run", or we could find that there's very little to do, or it may be that it's a decent amount of work but doable. My money's on the latter but I'd rather know earlier than later. Plus I haven't inhaled playa dust since July.
+      .message-controls.pull-right
+        %a.control-link.text-info.pull-right
+          %i.icon-reply
+          reply
+  .row-fluid
+    .conversation-event
+      %span.conversation-event-person
+        Ed Hunsinger
+      Scheduled an event for this task
+      %a
+        %i.icon-calendar
+        January 5, 2013
+      %span.pull-right
+        12/14/12
+  .row-fluid
+    .span12.quotation
+      %img.face-image{ :src => "/img/reedface.jpeg", :alt => "reed@iarson.com" }
+      %strong
+        Reed Kennedy
+      replied...
+      %span.pull-right
+        12/14/12
+      .message-text
+        %p
+          Excellent. I'm there.
+        %p
+          Might be worth poking the main list too.
+      .message-controls.pull-right
+        %a.control-link.text-info.pull-right
+          %i.icon-reply
+          reply
+  .row-fluid
+    .conversation-event
+      %i.icon-bolt
+      %span.conversation-event-person
+        Reed Kennedy
+      added himself as a doer
+      %span.pull-right
+        12/14/12
+  .row-fluid
+    .conversation-event
+      %i.icon-bolt
+      %span.conversation-event-person
+        Ian Baker
+      added himself as a doer
+      %span.pull-right
+        12/14/12
+
+  %hr.narrow
+  .row-fluid
+    .span1.new-message
+      %img.face-image-message{ :src => "/img/nicoleface.jpeg", :alt => "nicole@iarson.com" }
+    .span11
+      %div.message-controls
+        %a.control-link.text-info
+          %i.icon-edit
+          add message
+
+        &#183;
+
+        %a.control-link.text-info
+          %i.icon-camera
+          add photos/videos/docs
+
       %div
         .pokey-top
           %p
-        %input.has-pokey.span12
-
-%div
-  %table.table.table-condensed.table-hover.message-table
-    %tr.read-message
-      %td.face-image
-        %div
-          %img.face-image{ :src => "/img/edface.jpeg", :alt => "edrabbit@edrabbit.com" }
-
-      %td.name-cell.message-nowrap
-        %strong
-          Ed Hunsinger
+        %input.has-pokey.span11
 
 
-      %td.message-nowrap
-        tl;dr Saturday Jan 5th, noon-?, American Steel, Ardent shop cleanup and DDI p...
+
+/ %br
+/ %br
+/ %br
 
 
-      %td.date-cell.message-nowrap
-        %div.pull-right
-          %span{:title=>"Fri, Jan 4, 2013 at 1:38 PM", :alt=>"Fri, Jan 4, 2013 at 1:38 PM"}
-          Jan 4 (4 days ago)
-    %tr.read-message
-      %td.face-image
-        %div
-          %img.face-image{ :src => "/img/richface.jpeg", :alt => "syzygryd@richard.fromm.name" }
 
-      %td.name-cell.message-nowrap
-        %strong
-          Rich Fromm
+/ %div
 
+/   %table.table.table-condensed.table-hover.message-table
+/     %tr.read-message
+/       %td.face-image
+/         %div
+/           %img.face-image{ :src => "/img/edface.jpeg", :alt => "edrabbit@edrabbit.com" }
 
-      %td.message-nowrap
-        Alas, my ass is currently in a hospital bed in Oakland (2nd time in 3 weeks -- I'm not happy about that), so heavy shit lifting is not likely on my near term horizon.
-
-      %td.date-cell.message-nowrap
-        %div.pull-right
-          %span{:title=>"Fri, Jan 4, 2013 at 1:38 PM", :alt=>"Fri, Jan 4, 2013 at 1:38 PM"}
-          Jan 4 (4 days ago)
-    %tr.read-message
-      %td.face-image
-        %div
-          %img.face-image{ :src => "/img/moface.jpeg", :alt => "m.khodadoust@gmail.com" }
-
-      %td.name-cell.message-nowrap
-        %strong
-          Mojgan
+/       %td.name-cell.message-nowrap
+/         %strong
+/           Ed Hunsinger
 
 
-      %td.message-nowrap
-        Hey guys --- if there can be some division ahead of time as to folks designated in place "A" (shop) versus place "B" (storage) that may be useful.
+/       %td.message-nowrap
+/         tl;dr Saturday Jan 5th, noon-?, American Steel, Ardent shop cleanup and DDI p...
 
-      %td.date-cell.message-nowrap
-        %div.pull-right
-          %span{:title=>"Fri, Jan 4, 2013 at 1:38 PM", :alt=>"Fri, Jan 4, 2013 at 1:38 PM"}
-          Jan 4 (4 days ago)
-    %tr
-      %td
-      %td
-      %td
-      %td
+
+/       %td.date-cell.message-nowrap
+/         %div.pull-right
+/           %span{:title=>"Fri, Jan 4, 2013 at 1:38 PM", :alt=>"Fri, Jan 4, 2013 at 1:38 PM"}
+/           Jan 4 (4 days ago)
+/     %tr.read-message
+/       %td.face-image
+/         %div
+/           %img.face-image{ :src => "/img/richface.jpeg", :alt => "syzygryd@richard.fromm.name" }
+
+/       %td.name-cell.message-nowrap
+/         %strong
+/           Rich Fromm
+
+
+/       %td.message-nowrap
+/         Alas, my ass is currently in a hospital bed in Oakland (2nd time in 3 weeks -- I'm not happy about that), so heavy shit lifting is not likely on my near term horizon.
+
+/       %td.date-cell.message-nowrap
+/         %div.pull-right
+/           %span{:title=>"Fri, Jan 4, 2013 at 1:38 PM", :alt=>"Fri, Jan 4, 2013 at 1:38 PM"}
+/           Jan 4 (4 days ago)
+/     %tr.read-message
+/       %td.face-image
+/         %div
+/           %img.face-image{ :src => "/img/moface.jpeg", :alt => "m.khodadoust@gmail.com" }
+
+/       %td.name-cell.message-nowrap
+/         %strong
+/           Mojgan
+
+
+/       %td.message-nowrap
+/         Hey guys --- if there can be some division ahead of time as to folks designated in place "A" (shop) versus place "B" (storage) that may be useful.
+
+/       %td.date-cell.message-nowrap
+/         %div.pull-right
+/           %span{:title=>"Fri, Jan 4, 2013 at 1:38 PM", :alt=>"Fri, Jan 4, 2013 at 1:38 PM"}
+/           Jan 4 (4 days ago)
+/     %tr
+/       %td
+/       %td
+/       %td
+/       %td
 
 
 
