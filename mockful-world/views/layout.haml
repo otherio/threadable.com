@@ -12,15 +12,8 @@
 
     %div= haml :navbar
 
-    .container-fluid
-      .row-fluid
-        .left.span5
-          %div.vertical-line
-            %div= haml :tasks
+    %div= yield
 
-        .right.span7
-          %div.vertical-line
-            %div= haml :conversations
     %br
     %br
     %br
