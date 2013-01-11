@@ -13,4 +13,8 @@ get '/clickconvo' do
   haml :clickconvo
 end
 
+get '/public' do
+  haml :public
+end
+
 
