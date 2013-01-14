@@ -1,8 +1,17 @@
+@import "compass"
+
+
 body
-  padding-top: 40px
-  padding-bottom: 40px
-  // this is for the little projects side control thinger
-  // padding-left: 10px
+
+
+#page
+  margin: 40px auto 0
+  width: 1024px
+
+.navbar-content
+  margin: 0 auto
+  width: 1024px
+
 
 .sidebar-nav
   padding: 9px 0
@@ -200,3 +209,97 @@ h2.herotop
 
 .fundbox
   background-color: green
+
+.btn, .lead
+  small
+    font-size: 65%
+
+.public-project
+  > .navbar
+    margin-bottom: 0
+  > .header
+    padding: 20px
+    background-image: url(/img/ddihero.jpeg)
+    border-bottom: 1px solid black
+    &, a
+      color: whitesmoke
+      text-shadow: black 0 0 2px
+
+  > .campaign
+    position: relative
+    padding: 20px
+    > .background
+      position: absolute
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+      width: 100%
+      height: 100%
+      overflow: hidden
+      z-index: -1
+      background-color: black
+      img
+        width: 100%
+    > .content
+      background: rgba(255,255,255,0.85)
+      padding: 20px
+      +clearfix
+      > .video
+        float: left
+        width: 50%
+        iframe
+          width: 472
+          height: 265
+          background-color: black
+      > .ask
+        float: left
+        width: 50%
+        > .content
+          padding-left: 20px
+          > .stats
+            +clearfix
+            > *
+              float: left
+              width: 33.33%
+              text-align: left
+              > *
+                padding-left: 20px
+          > .actions
+            text-align: center
+            margin: 60px 0
+            > *:first-child
+              margin-right: 20px
+  > .story
+    position: relative
+    padding: 20px
+    color: whitesmoke
+    text-shadow: rgba(0, 0, 0, 0.88) 0px 0px 13px
+    &:hover
+      cursor: pointer
+      .body
+        text-decoration: underline
+    > .background
+      position: absolute
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+      width: 100%
+      height: 100%
+      overflow: hidden
+      z-index: -1
+      background-color: black
+      img
+        width: 100%
+
+    > .content
+      .date,
+        margin: 0
+      h1
+        margin-top: 0
+
+
+
+
+

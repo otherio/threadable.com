@@ -10,10 +10,10 @@
     %link{href: '/stylesheet.css', media: "all", rel: "stylesheet", type: "text/css"}
 
   %body
-
-    %div= yield
-
-    %div= haml :footer
+    #page
+      %div= yield
+      = haml :footer
 
     %script{ :type => "text/javascript", :src =>"/js/jquery.js"}
     %script{ :type => "text/javascript", :src =>"/js/bootstrap.min.js"}
+

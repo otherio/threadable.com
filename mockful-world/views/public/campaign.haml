@@ -1,0 +1,33 @@
+.campaign
+  .background
+    %img{src:"http://blog.burningman.com/wp-content/uploads/2011/02/image005.jpg"}
+  .content
+    .video
+      %iframe{:src=>"http://player.vimeo.com/video/14930254", :width=>"472", :height=>"265", :frameborder=>"0"}
+      %h4
+        SYZYGRYD is a 2.5 ton musical instrument that breathes fire. And you already know how to play it.
+    .ask
+      .content
+        .stats
+          .money
+            - need = rand(9000) + 999
+            %h1.amount $ #{need - rand(1000)}
+            %h3 of $ #{need}
+          .backers
+            %h1.amount #{rand(1000)}
+            %h3 Backers
+          .time
+            %h1.amount #{rand(100)}
+            %h3 Hours left
+
+        .actions
+
+          %a.btn.btn-large.btn-primary.give-money
+            %div Give Money!
+            %small $1 minimum pledge
+          %a.btn.btn-large.btn-primary.give-stuff
+            %div Give Stuff!
+            %small check our wish list
+
+        %p.notice
+          %small This project will only get funding if it raises the minimum amount of money/stuff.

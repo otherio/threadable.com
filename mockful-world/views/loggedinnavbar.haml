@@ -1,33 +1,34 @@
 .navbar.navbar-fixed-top.navbar-inverse
   .navbar-inner
-    %a.brand{:href => '/'} DDI @ Charcade
-    %ul.nav
-      %li
-        %a{:href => '/'}Work
-      %li
-        %a{:href => '/'}Members
-      %li
-        %a{:href => '/'}Calendar
-    %ul.nav.pull-right
-      %li.dropdown
-        %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
-          Projects
-        %ul.dropdown-menu
-          %li
-            %a{:href => "/"} DDI @ Charcade
-          %li
-            %a{:href => "/" } Occupy the fridge
-      %li.dropdown
-        %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
-          Nicole Aptekar
-          %i.icon-cogs
-        %ul.dropdown-menu
-          %li.nav-header Account
-          %li
-            %a{:href => "/"} Profile
-          %li.divider
-          %li
-            %a.logout{:href => "/" } Sign out
+    .navbar-content
+      %a.brand{:href => '/'} DDI @ Charcade
+      %ul.nav
+        %li
+          %a{:href => '/'}Work
+        %li
+          %a{:href => '/'}Members
+        %li
+          %a{:href => '/'}Calendar
+      %ul.nav.pull-right
+        %li.dropdown
+          %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+            Projects
+          %ul.dropdown-menu
+            %li
+              %a{:href => "/"} DDI @ Charcade
+            %li
+              %a{:href => "/" } Occupy the fridge
+        %li.dropdown
+          %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+            Nicole Aptekar
+            %i.icon-cogs
+          %ul.dropdown-menu
+            %li.nav-header Account
+            %li
+              %a{:href => "/"} Profile
+            %li.divider
+            %li
+              %a.logout{:href => "/" } Sign out
 
-/ .project-selector
-/   Projects
+  / .project-selector
+  /   Projects

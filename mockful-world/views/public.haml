@@ -1,12 +1,22 @@
-%div= haml :loggedoutnavbar
-.ddihero
-  %h1.herotop
-    SYZYGRYD
-  %h2.herotop.pull-right
-    About • Stories • Needs • Get Involved
-.container-fluid
-  .row-fluid
-    %div= haml :campaign
-  %hr
-  .row-fluid
-    %div= haml :stories
+= haml :loggedoutnavbar
+
+.public-project
+
+  .header
+    %h1 SYZYGRYD
+
+    .links.pull-right
+      %a{href:"/public/about"} About
+      •
+      %a{href:"/public/stories"} Stories
+      •
+      %a{href:"/public/needs"} Needs
+      •
+      %a{href:"/public/get-involved"} Get Involved
+
+
+  = haml :"public/campaign"
+  = haml :"public/story1"
+
+
+
