@@ -29,9 +29,12 @@ get '/public' do
   haml :public
 end
 
-
 get '/styleguide' do
   haml :styleguide
+end
+
+get '/stories/new' do
+  haml :"stories/new"
 end
 
 

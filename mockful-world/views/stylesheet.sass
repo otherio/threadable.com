@@ -1,12 +1,35 @@
 @import "compass"
 
+$default-margin: 20px
 
 body
 
-
 #page
+  margin: 40px 0
+
+.column
   margin: 40px auto 0
   width: 1024px
+
+
+// The Media Box base style
+.media-box
+  +pie-clearfix
+  zoom: 1
+
+  > *:first-child
+    float: left
+    display: block
+    margin-right: $default-margin / 2
+    &.right
+      float: right
+      margin-right: 0
+      margin-left: $default-margin / 2
+  > .content
+    display: table-cell
+    vertical-align: top
+    width: 9999em
+    zoom: 1
 
 .navbar-content
   margin: 0 auto
@@ -302,5 +325,33 @@ h2.herotop
 
 
 
+.stories-new
+  .main-left, .main-right
+    padding: 10px 0
+  .main-left
+    border-right: 1px solid rgb(238, 238, 238)
+
+  .sharable-media
+    position: relative
+    margin-top: 20px
+    margin: 0
+    overflow-y: scroll
+    height: 400px
+    +pie-clearfix
+    > *
+      padding: 10px
+      border: 1px solid darkgrey
+      background-color: rgb(243, 243, 243)
+      +border-radius(5px)
+      cursor: move
+      &.text
+        blockquote
+          margin: 0
+      &.image
+        > img
+          width: 100%
+      &.video
+        > img
+          width: 100%
 
 

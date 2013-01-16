@@ -1,0 +1,90 @@
+= haml :loggedinnavbar
+
+.stories-new
+  .container-fluid
+    .row-fluid
+      .span7.main-left
+        .row-fluid
+          .span6
+            .lead Write A Story
+          .span6
+            .pull-right
+              %select.selectpicker
+                %option Project Update
+                %option Profile a Friend
+                %option My Experience Today
+                %option Fun
+                %option Other
+
+        .row-fluid
+          .span2
+            %p
+              1. tip
+            %p
+              2. this is another tip about how to write your story
+          .span10
+            this is the story editing place
+
+
+      .span5.main-right
+        .lead Media
+
+        .filters
+          .row-fluid
+            .span6
+              .input-prepend
+                %span.add-on
+                  %i.icon-search
+                %input{type:"text"}
+            .span6
+              %label
+                .pull-right
+                  %strong Sort:
+                  .btn-group{'data-toggle' => "buttons-radio"}
+                    %button.btn.btn-info.btn-small Magic!
+                    %button.btn.btn-info.btn-small Date
+
+        %hr
+
+        .sharable-media
+          - 20.times do
+            - type = %w{text image video}.sample.to_sym
+            .grid-element{class: type}
+              - case type
+              - when :text
+                %span Sounds like we are either going to repair DDI and run it at BM one more time, or we're going to continue with our previously stated decision to…
+              - when :image
+                %img{src: "http://www.dolandirectional.com/images/sce/dirty_pipe_welding_w.jpg"}
+              - when :video
+                %img{src: "http://photos.appleinsider.com/12.09.11-YouTube-2.png"}
+              .media-box
+                %a{href:""}
+                  %img{alt: "edrabbit@edrabbit.com", class: "face-image", src: "/img/edface.jpeg"}
+                %small.content
+                  %div
+                    %a{href:""}
+                      %i.icon-comments-alt
+                      Introducing the Charcade
+                  %div
+                    %i.icon-bullhorn
+                    %span 45
+                    \|
+                    4 days ago
+
+        :javascript
+          !function(){
+            var sharable_media;
+            function resizeSharableMedia(){
+              sharable_media = sharable_media || $('.sharable-media');
+              console.log(sharable_media.width() / 200)
+              sharable_media.BlocksIt({
+                numOfCol: Math.floor(sharable_media.width() / 200),
+                offsetX: 8,
+                offsetY: 8,
+                blockElement: '.grid-element'
+              });
+            }
+
+            $(document).ready(resizeSharableMedia);
+            $(window).load(resizeSharableMedia).resize(resizeSharableMedia);
+          }();

@@ -6,14 +6,22 @@
     %meta{:name => "description", :content => ""}
     %meta{:name => "author", :content => ""}
     %link{href: '/bootstrap.css', media: "all", rel: "stylesheet", type: "text/css"}
+    %link{href: '/bootstrap-select.css', media: "all", rel: "stylesheet", type: "text/css"}
     %link{href: '/font-awesome.min.css', media: "all", rel: "stylesheet", type: "text/css"}
     %link{href: '/stylesheet.css', media: "all", rel: "stylesheet", type: "text/css"}
+    %script{ :type => "text/javascript", :src =>"/js/jquery.js"}
+    %script{ :type => "text/javascript", :src =>"/js/bootstrap.min.js"}
+    %script{ :type => "text/javascript", :src =>"/js/bootstrap-select.js"}
+    %script{ :type => "text/javascript", :src =>"/js/blocksit.js"}
 
   %body
     #page
       %div= yield
       = haml :footer
 
-    %script{ :type => "text/javascript", :src =>"/js/jquery.js"}
-    %script{ :type => "text/javascript", :src =>"/js/bootstrap.min.js"}
 
+    :javascript
+      $(function(){
+        $('.selectpicker').selectpicker();
+        $('.bootstrap-select').find('button').addClass('btn-small btn-info')
+      });

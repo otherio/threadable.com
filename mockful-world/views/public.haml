@@ -1,23 +1,23 @@
 = haml :loggedoutnavbar
 
-.public-project
+.column
+  .public-project
+    .header
+      %h1 SYZYGRYD
 
-  .header
-    %h1 SYZYGRYD
-
-    .links.pull-right
-      %a{href:"/public/about"} About
-      •
-      %a{href:"/public/stories"} Stories
-      •
-      %a{href:"/public/needs"} Needs
-      •
-      %a{href:"/public/get-involved"} Get Involved
+      .links.pull-right
+        %a{href:"/public/about"} About
+        •
+        %a{href:"/public/stories"} Stories
+        •
+        %a{href:"/public/needs"} Needs
+        •
+        %a{href:"/public/get-involved"} Get Involved
 
 
-  = haml :"public/campaign"
-  = haml :"public/story1"
-  = haml :"public/story2"
+    = haml :"public/campaign"
+    = haml :"public/story1"
+    = haml :"public/story2"
 
 
 
