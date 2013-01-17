@@ -3,7 +3,7 @@
 .stories-new
   .container-fluid
     .row-fluid
-      .span7.main-left
+      .span6.main-left
         .row-fluid
           .span6
             .lead Write A Story
@@ -17,17 +17,44 @@
                 %option Other
 
         .row-fluid
-          .span2
+          .span12.edited-content.selected-box
             %p
-              1. tip
+              1. Start your update strong! Be excited, and pull people in.
+              %br
+              %br
+              %br
+              %br
+
+        .row-fluid
+          .span12.edited-content
             %p
               2. this is another tip about how to write your story
-          .span10
-            this is the story editing place
+              %br
+              %br
+              %br
+              %br
+
+        .row-fluid
+          .span12.edited-content
+            %p
+              3. Now's a great time to drop in an image
+              %br
+              %br
+              %br
+              %br
+
+        .row-fluid
+          .span12.edited-content
+            %p
+              4. Be sure to state a call to action, if you've got one.
+              %br
+              %br
+              %br
+              %br
 
 
-      .span5.main-right
-        .lead Media
+      .span6.main-right.vertical-line
+        %p.lead Project Content
 
         .filters
           .row-fluid
@@ -41,10 +68,10 @@
                 .pull-right
                   %strong Sort:
                   .btn-group{'data-toggle' => "buttons-radio"}
-                    %button.btn.btn-info.btn-small Magic!
-                    %button.btn.btn-info.btn-small Date
+                    %button.btn.btn-info.btn-mini Magic!
+                    %button.btn.btn-info.btn-mini Date
 
-        %hr
+        %hr.narrow
 
         .sharable-media
           - 20.times do
@@ -52,7 +79,9 @@
             .grid-element{class: type}
               - case type
               - when :text
-                %span Sounds like we are either going to repair DDI and run it at BM one more time, or we're going to continue with our previously stated decision to…
+                %span.snippet
+                  %i.icon-quote-left.pull-left.icon-2x.icon-muted
+                  Sounds like we are either going to repair DDI and run it at BM one more time, or we're going to continue with our previously stated decision to…
               - when :image
                 %img{src: "http://www.dolandirectional.com/images/sce/dirty_pipe_welding_w.jpg"}
               - when :video
@@ -76,15 +105,20 @@
             var sharable_media;
             function resizeSharableMedia(){
               sharable_media = sharable_media || $('.sharable-media');
-              console.log(sharable_media.width() / 200)
-              sharable_media.BlocksIt({
-                numOfCol: Math.floor(sharable_media.width() / 200),
-                offsetX: 8,
-                offsetY: 8,
-                blockElement: '.grid-element'
+              console.log(sharable_media.width() / 200);
+              // sharable_media.BlocksIt({
+              //   numOfCol: Math.floor(sharable_media.width() / 200),
+              //   offsetX: 8,
+              //   offsetY: 8,
+              //   blockElement: '.grid-element'
+              // });
+              $('.sharable-media').freetile({
+                animate: true,
+                elementDelay: 0.5
               });
             }
 
             $(document).ready(resizeSharableMedia);
-            $(window).load(resizeSharableMedia).resize(resizeSharableMedia);
+            $(window).load(resizeSharableMedia)
+            //.resize(resizeSharableMedia);
           }();

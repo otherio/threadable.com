@@ -326,10 +326,22 @@ h2.herotop
 
 
 .stories-new
+  background-image: url(/img/cream_dust.png)
+
   .main-left, .main-right
-    padding: 10px 0
+    // padding: 10px 0
   .main-left
-    border-right: 1px solid rgb(238, 238, 238)
+  .main-right
+
+  .edited-content
+    > *
+      padding: 5px
+      margin: 0 4px 8px 4px
+      border: 1px solid lightgrey
+      cursor: text
+
+  .story-type
+    margin-top: 5px
 
   .sharable-media
     position: relative
@@ -339,18 +351,29 @@ h2.herotop
     height: 400px
     +pie-clearfix
     > *
-      padding: 10px
+      padding: 0
+      margin: 0 4px 8px 4px
       border: 1px solid darkgrey
-      background-color: rgb(243, 243, 243)
-      +border-radius(5px)
       cursor: move
+      box-shadow: 1px 1px 3px 0px #cccccc
+      .media-box
+        padding: 2px
+        line-height: 14px
+        background-color: rgb(243, 243, 243)
+
       &.text
+        .snippet
+          padding: 5px
+          display: inline-block
+        width: 300px // 310
         blockquote
           margin: 0
       &.image
+        width: 145px // 155
         > img
           width: 100%
       &.video
+        width: 300px
         > img
           width: 100%
 
