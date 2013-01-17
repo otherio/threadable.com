@@ -111,7 +111,7 @@
         .sharable-media
           - 20.times do
             - type = %w{text image video}.sample.to_sym
-            .grid-element{class: type}
+            .grid-element.draggable{class: type}
               - case type
               - when :text
                 %span.snippet
@@ -158,4 +158,5 @@
             $(window).load(resizeSharableMedia);
             //.resize(resizeSharableMedia);
             $("[rel='tooltip']").tooltip();
+            $( ".draggable" ).draggable({ opacity: 0.8, helper: "clone" });
           }();
