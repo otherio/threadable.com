@@ -3,7 +3,7 @@
 .stories-new
   .container-fluid
     .row-fluid
-      .span6.main-left
+      .span7.main-left
         .row-fluid
           .span6
             .lead Write A Story
@@ -15,45 +15,80 @@
                 %option My Experience Today
                 %option Fun
                 %option Other
-
         .row-fluid
-          .span12.edited-content.selected-box
-            %p
-              1. Start your update strong! Be excited, and pull people in.
-              %br
-              %br
-              %br
-              %br
-
+          .span12.bigbox-editcontrols
+            %button.btn.btn-mini.pull-right{"rel"=>"tooltip", "title"=>"upload an image", :href => ""}
+              %i.icon-camera
+            %button.btn.btn-mini.pull-right{"rel"=>"tooltip", "title"=>"link", :href => ""}
+              %i.icon-link
+            %button.btn.btn-mini.pull-right{"rel"=>"tooltip", "title"=>"italic", :href => ""}
+              %i.icon-italic
+            %button.btn.btn-mini.pull-right{"rel"=>"tooltip", "title"=>"bold", :href => ""}
+              %i.icon-bold
         .row-fluid
-          .span12.edited-content
-            %p
-              2. this is another tip about how to write your story
-              %br
-              %br
-              %br
-              %br
+          .span12.bigbox-editable
 
-        .row-fluid
-          .span12.edited-content
-            %p
-              3. Now's a great time to drop in an image
-              %br
-              %br
-              %br
-              %br
+            .row-fluid
+              .span12.unedited-content.selected-box
+                %small
+                  .alert.alert-info
+                    %i.icon-info-sign.text-info
+                    Start your update strong! Be excited, and pull people in.
+                    %button{"type"=>"button", "class"=>"close", "data-dismiss"=>"alert"}
+                      %i.icon-remove
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
 
-        .row-fluid
-          .span12.edited-content
-            %p
-              4. Be sure to state a call to action, if you've got one.
-              %br
-              %br
-              %br
-              %br
+                %small
+                  .alert.alert-info
+                    %i.icon-info-sign.text-info
+                    This is another tip about how to write your story.
+                    %button{"type"=>"button", "class"=>"close", "data-dismiss"=>"alert"}
+                      %i.icon-remove
+
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
+
+                %small
+                  .alert.alert-info
+                    %i.icon-info-sign.text-info
+                    Now's a great time to drop in an image
+                    %button{"type"=>"button", "class"=>"close", "data-dismiss"=>"alert"}
+                      %i.icon-remove
+
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
+                %br
+
+                %small
+                  .alert.alert-info
+                    %i.icon-info-sign.text-info
+                    Be sure to state a call to action, if you've got one.
+                    %button{"type"=>"button", "class"=>"close", "data-dismiss"=>"alert"}
+                      %i.icon-remove
+
+                %br
+                %br
+                %br
+                %br
 
 
-      .span6.main-right.vertical-line
+      .span5.main-right.vertical-line
         %p.lead Project Content
 
         .filters
@@ -118,7 +153,9 @@
               });
             }
 
+
             $(document).ready(resizeSharableMedia);
-            $(window).load(resizeSharableMedia)
+            $(window).load(resizeSharableMedia);
             //.resize(resizeSharableMedia);
+            $("[rel='tooltip']").tooltip();
           }();
