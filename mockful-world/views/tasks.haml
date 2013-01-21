@@ -1,40 +1,52 @@
-%blockquote.top-header
-  %p
-    Tasks
-    %i.icon-ok-sign
+%div
+  %blockquote.top-header
+    .pull-right
+      .btn-group{'data-toggle' => "buttons-radio"}
+        %button.btn.btn-mini.active My Tasks
+        %button.btn.btn-mini All Tasks
+    %p
+      Tasks
+      %i.icon-ok-sign
+
 %p.muted.task-heading
   Unfinished
 %table.table.table-condensed.table-hover
   %tbody
-    %tr
-      %td.unfinished-check
-        %i.icon-ok
-      %td.span10
-        Pull DDI out of storage
-      %td.span2
-        %span.label.label-info
-          2 new
-    %tr
-      %td.unfinished-check
-        %i.icon-ok
-      %td
-        Test Pads
-      %td
-    %tr
-      %td.unfinished-check
-        %i.icon-ok
-      %td
-        Inventory Proxsuits
-      %td
-        %span.label.label-info
-          1 new
-%p.muted.task-heading
+    - message_list.each do |task, new_messages, thread_length, date, senders, finished, is_task|
+      - if finished == 0 && is_task == 1
+        %tr
+          %td.unfinished-check
+            %i.icon-ok
+          %td.span10
+            - if new_messages > 0
+              %a{href: "/tasks/layup-body-carbon"}
+                = task
+            - else
+              = task
+          %td
+            - if new_messages > 0
+              %span.label.label-info.pull-right
+                = new_messages
+                new
+
+%div.muted.task-heading
   Finished
+  %span.pull-right
+    .btn-group{'data-toggle' => "buttons-radio"}
+      %button.btn.btn-mini.active Recent
+      %button.btn.btn-mini All
 %table.table.table-condensed.table-hover
   %tbody
-    %tr.done
-      %td.finished-check
-        %i.icon-ok
-      %td.span10
-        Send Charcade form to Toronto people
-      %td.span2
+    - message_list.each do |task, new_messages, thread_length, date, senders, finished, is_task|
+      - if finished == 1 && is_task == 1
+        %tr.done
+          %td.finished-check
+            %i.icon-ok
+          %td.span10
+            = task
+          %td
+            - if new_messages > 0
+              %span.label.label-info.pull-right
+                = new_messages
+                new
+

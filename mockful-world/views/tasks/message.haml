@@ -1,0 +1,30 @@
+.row-fluid
+  .span12.quotation
+    %img.face-image{ :src => locals[:face] }
+    %strong
+      = locals[:sender]
+    - if locals[:first_message]
+      described this task...
+    - else
+      replied...
+    %span.pull-right
+      = locals[:date]
+    .message-text
+      - if locals[:body_file]
+        = haml locals[:body_file].to_sym
+      - else
+        = locals[:body]
+      .message-controls.pull-left
+        %a.control-link.text-info
+          %i.icon-bullhorn
+          shareworthy
+          - if locals[:shareworthy]
+            = "(#{locals[:shareworthy]})"
+        &#183;
+        %a.control-link.text-info
+          %i.icon-book
+          knowledge
+      .message-controls.pull-right
+        %a.control-link.text-info.pull-right
+          %i.icon-reply
+          reply

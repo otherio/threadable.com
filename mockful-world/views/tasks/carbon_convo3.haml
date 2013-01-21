@@ -1,0 +1,114 @@
+%blockquote
+  %p.lead.task-title
+    %i.icon-ok.unfinished-check
+    Layup body carbon
+
+  .container-fluid.move-side
+    .row-fluid
+      .doers.span12
+        %div
+          %i.icon-bolt
+          doers:
+          %img.face-image-small{ :src => "/img/edface.jpeg", :alt => "edrabbit@edrabbit.com" }
+          %img.face-image-small{ :src => "/img/reedface.jpeg", :alt => "reed@iarson.com" }
+          %img.face-image-small{ :src => "/img/ianface.jpeg", :alt => "ian@sonic.net" }
+
+          %a.control-link.muted.pull-right
+            4 muted
+
+        %a.control-link.text-info
+          %i.icon-plus
+          sign me up
+        &#183;
+        %a.control-link.text-info
+          %i.icon-user
+          add others
+        &#183;
+        %a.control-link.text-info
+          %i.icon-calendar
+          schedule event
+        &#183;
+        %a.control-link.text-info
+          %i.icon-ok
+          this is done
+
+        %a.control-link.text-info.pull-right
+          %i.icon-remove
+          mute conversation
+
+    .row-fluid
+      %hr.narrow
+      %div.message-controls
+        %a.control-link.text-info
+          %i.icon-edit
+          add message
+
+        &#183;
+
+        %a.control-link.text-info
+          %i.icon-camera
+          add photos/videos/docs
+
+-# = this is the conversation
+
+
+%hr.narrow
+
+.container-fluid.messages
+  = haml :"tasks/conversation_event", locals: {sender: 'You', type: 'new_task_from_conversation', conversation_name: 'How are we going to build the body?', date: '12/14/12'}
+
+  = haml :"tasks/message", locals: {face: '/img/edface.jpeg', sender: 'Alice Nielson', first_message: true, date: '12/14/2012', body_file: 'tasks/text/alice_start'}
+
+  = haml :"tasks/conversation_event", locals: {sender: 'Tom Canver', type: 'calendar', date: '12/14/12'}
+
+  = haml :"tasks/message", locals: {face: '/img/reedface.jpeg', sender: 'Tom Canver', first_message: false, date: '12/14/2012', body_file: 'tasks/text/tom_response'}
+
+  = haml :"tasks/conversation_event", locals: {sender: 'Tom Canver', type: 'new_task', task_name: 'get epoxy', date: '12/14/12'}
+
+  = haml :"tasks/conversation_event", locals: {sender: 'Tom Canver', type: 'new_task', task_name: 'get release agent', date: '12/14/12'}
+
+  = haml :"tasks/conversation_event", locals: {sender: 'Tom Canver', type: 'new_task', task_name: 'get carbon and fiberglass', date: '12/14/12'}
+
+  = haml :"tasks/conversation_event", locals: {sender: 'Tom Canver', type: 'add_doer', date: '12/14/12'}
+
+  = haml :"tasks/message", locals: {face: '/img/reedface.jpeg', sender: 'Yan Hzu', first_message: false, date: '12/15/2012', body_file: 'tasks/text/yan_response'}
+
+  = haml :"tasks/conversation_event", locals: {sender: 'Yan Hzu', type: 'add_doer', date: '12/15/12'}
+
+  = haml :"tasks/conversation_event", locals: {type: 'linked_task_done', task_name: 'get release agent', date: '12/17/12'}
+
+  = haml :"tasks/message", locals: {face: '/img/reedface.jpeg', sender: 'Tom Canver', first_message: false, date: '12/18/2012', body_file: 'tasks/text/tom_response_2'}
+
+  = haml :"tasks/message", locals: {face: '/img/reedface.jpeg', sender: 'Alice Nielson', first_message: false, date: '12/18/2012', body_file: 'tasks/text/alice_response'}
+
+  = haml :"tasks/conversation_event", locals: {type: 'invite_person', sender: 'Alice Nielson', invitee: 'Andy Lee Smith', date: '12/18/12'}
+
+  = haml :"tasks/message", locals: {face: '/img/reedface.jpeg', sender: 'Andy Lee Smith', first_message: false, date: '12/19/2012', body_file: 'tasks/text/andy_response'}
+
+  -# = this is the facebook style postbox
+
+
+
+  .row-fluid
+    .span1.new-message
+      %img.face-image-message{ :src => "/img/nicoleface.jpeg", :alt => "nicole@iarson.com" }
+    .span11
+      %div.message-controls
+        %a.control-link.text-info
+          %i.icon-edit
+          add message
+
+        &#183;
+
+        %a.control-link.text-info
+          %i.icon-camera
+          add photos/videos/docs
+
+        %a.control-link.text-info.pull-right
+          %i.icon-ok
+          this is done
+
+      %div
+        .pokey-top
+          %p
+        %input.has-pokey.span12{:placeholder => " Add your voice..."}

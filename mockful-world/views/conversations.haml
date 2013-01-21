@@ -4,49 +4,24 @@
     %i.icon-envelope-alt.top-icon
 %table.table.table-condensed.table-hover
   %tbody
-    %tr
-      %td.b.span4
-        Ed, Mo ..
-        %strong
-          Simon
-        (6)
-      %td.span7
-        %strong
-          Pull DDI out of storage
-      %td.span1
-        %strong.pull-right
-          1/5/13
-    %tr
-      %td.span4
-        Ian
-      %td.span7
-        Test Pads
-      %td.span1
-        .pull-right
-          1/2/13
-    %tr
-      %td.span4
-        Ian, Reed
-      %td.span7
-        Send Charcade form to Toronto people
-      %td.span1
-        %div.pull-right
-          12/27/12
-    %tr
-      %td.span4
-        %strong
-          Morley, Reed
-      %td.span7
-        %strong
-          Inventory Prox Suits
-      %td.span1
-        %strong.pull-right
-          12/26/12
-    %tr
-      %td.span4
-        Info .. Morley, Ed (40)
-      %td.span7
-        Introducing The Charcade!
-      %td.span1
-        %div.pull-right
-          12/24/12
+    - message_list.each do |task, new_messages, thread_length, date, senders, finished, is_task|
+      %tr
+        %td.b.span4
+          = senders
+          - if thread_length > 1
+            = "(#{thread_length})"
+        %td.span7
+          - if new_messages > 0
+            %strong
+              %a{href: "/tasks/layup-body-carbon"}
+                = task
+          - else
+            = task
+        %td.span1
+          - if new_messages > 0
+            %strong.pull-right
+              = date
+          - else
+            .pull-right
+              = date
+
