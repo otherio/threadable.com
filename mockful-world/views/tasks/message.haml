@@ -19,7 +19,7 @@
           %i.icon-bullhorn
           shareworthy
           - if locals[:shareworthy]
-            = "(#{locals[:shareworthy]})"
+            = %(<span class="label label-info">#{locals[:shareworthy]}</span>)
         &#183;
         %a.control-link.text-info
           %i.icon-book

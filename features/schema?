@@ -1,0 +1,46 @@
+users
+• id                Integer
+• slug              String
+
+projects
+• id                Integer
+• slug              String
+
+project_memberships
+• project_id        Integer
+• user_id           Integer
+
+conversations
+• id                Integer
+• project_id        Integer
+• slug              String
+
+muted_conversations
+• user_id           Integer
+• conversation_id   Integer
+
+messages
+• id                Integer
+• conversation_id   Integer
+• message_id        String
+• parent_message_id Integer
+• children          String (serialized array)
+• subject           String
+• reply             Boolean
+• body              Blob
+
+tasks
+• id                Integer
+• project_id        Integer
+• conversation_id   Integer
+• complete          Boolean
+
+task_doers
+• user_id           Integer
+• task_id           Integer
+
+conversation_events
+• id                Integer
+• conversation_id   Integer
+• type              Integer
+• body              String
