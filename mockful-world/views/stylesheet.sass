@@ -87,6 +87,22 @@ body
 .read-message
   background-color: #ececec
 
+.messages
+  > .message
+    > *
+      border-top: 1px
+      border-bottom: 1px
+      border-left: 0
+      border-right: 0
+      border-color: gainsboro
+      border-style: solid
+      min-height: 4em
+      padding: 5px
+      margin-left: 10px
+      margin-bottom: 2px
+    + .message > *
+      border-top: none
+
 .message-table
   width: 100%
   table-layout: fixed
@@ -177,17 +193,7 @@ p.lead.task-title
 .conversation-event-person
   font-weight: bold
 
-.quotation
-  border-top: 1px
-  border-bottom: 1px
-  border-left: 0
-  border-right: 0
-  border-color: gainsboro
-  border-style: solid
-  min-height: 4em
-  padding: 5px
-  margin-left: 10px
-  margin-bottom: 2px
+
 
 // .quotation:hover
 //   background-color: #f5f5f5
@@ -372,7 +378,7 @@ h2.herotop
     position: relative
     margin-top: 20px
     margin: 0
-    overflow-y: scroll
+    //overflow-y: scroll
     height: 400px
     +pie-clearfix
     > *
