@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-MultifyApi::Application.config.secret_token = 'ceebed6f1a7cf0987d055ecba79f1e8ec5ed6e89712e99f5d10f6db50b93f8227f10af170b585c90824a0ec40a7457f607a3311ff64a6ab00f19c0ca4da62e3e'
+Multify::Application.config.secret_token = 'e2d587fe1d0e7e49de91785acf0e5226c88902c157eb399b46aa331ed82b874dea36a44abed90a2ac77e1ed05f3d9c8f68692061c132b1ba811ca8b9839b327a'

@@ -1,4 +1,4 @@
-MultifyApi::Application.configure do
+Multify::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -23,7 +23,7 @@ MultifyApi::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :logger
+  config.active_record.mass_assignment_sanitizer = :strict
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
@@ -34,7 +34,4 @@ MultifyApi::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
-
-  # devise needs this
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 end

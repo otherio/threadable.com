@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-MultifyApi::Application.load_tasks
+Multify::Application.load_tasks

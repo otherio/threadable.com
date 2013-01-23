@@ -13,11 +13,3 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/public
-
-
-.DS_Store
-.sass-cache
-.fseventsd
-.bundle
-chromedriver.log

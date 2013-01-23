@@ -1,6 +1,12 @@
 require File.expand_path('../boot', __FILE__)
 
-require 'rails/all'
+# Pick the frameworks you want:
+require "active_record/railtie"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "active_resource/railtie"
+require "sprockets/railtie"
+# require "rails/test_unit/railtie"
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -9,7 +15,7 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module MultifyApi
+module Multify
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -58,17 +64,5 @@ module MultifyApi
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    config.generators do |g|
-      g.test_framework :rspec
-    end
-
-    # devise wants this for deployment on heroku
-    # (don't access db or load models while precompiling assets)
-    config.assets.initialize_on_precompile = false
-
-
-    config.assets.paths << Rails.root + 'app/assets/templates'
-    config.assets.precompile += ['require.js', 'config.js']
   end
 end
