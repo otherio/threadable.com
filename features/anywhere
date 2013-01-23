@@ -22,11 +22,11 @@ MVP "the new charmander"
 - get an email when a message is posted @conversations
 - post a message to a conversation via www @conversations
 - post a message to a conversation via email @conversations
-- sort tasks by fancy! (dragging is fancy)
-- add & remove doers to a task
+- sort tasks by fancy! (dragging is fancy) @tasks
+- add & remove doers to a task @tasks
 - see my tasks vs all tasks @tasks
-- invite people to the project
-- display conversation events in www
+- invite people to the project @tasks
+- display conversation events in www @conversations
 
 MVP+ "i hate and love your stuff"
 - mute a conversation
@@ -56,11 +56,13 @@ MVP++++ "Post-funding openness"
 - set the subject line thing for the project
 - see a member list page
 - see calendar
+- make the event thing like doodle
 - see who muted a conversation maybe
 
 SKY
 - subprojecty context things
 - have a fuckin ical feed
+- get voting for things in somehow
 
 MOON
 - per-user subject prefix

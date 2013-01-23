@@ -1,63 +1,94 @@
 Feature: Projects and Tasks
- I should be able to create tasks, delete tasks, add myself as a doer for a task, add others as doers for a task, remove others as doers for a task, mark tasks as completed, and mark tasks as uncompleted.
+ I should be able to make and complete a task
+ I should be able to sort tasks and see the completed ones
+ I should be able to add doers, and view mine vs everyones tasks
+ I should be able to invite someone to a task who isn't part of the project
 
-  Scenario: what the fuck
-    in order to run these fucking tests on ian's machine
-    do some bullshit that should not be necessary
-    Given that I am logged in
-
-  Scenario: I want to create a project
-    In order to create a project
-    As a member of the site
-    I should be able to create a project
-    Given that I am logged in
-     When I create a project called "build a huge wooden duck"
-     Then the project called "build a huge wooden duck" should be created
-
-  Scenario: I want to create a task
+  Scenario: I want to create a task through the website
     In order to create a task
     As a member of a project
     I should be able to create a task
-    Given that I am logged in
-      And I am on the page for the project "build a huge wooden duck"
-      And I create a task called "buy tons of wood"
-     Then a task called "buy tons of wood" should be created in the project "build a huge wooden duck"
+    Given that I am Alice the organizer
+      And I am on my project page
+      And I create a task called "machine adjustable seat rails"
+     Then a task called "machine adjustable seat rails" should be created in my project
 
-  Scenario: I want to complete a task
+  Scenario: I want to complete a task through the website
     As a member of a project
     I should be able to complete a task
-    Given that I am logged in
-      And I am on the page for the project "build a huge wooden duck"
-      And I create a task called "haul wood into car"
-      And I click completed on the task "haul wood into car"
-     Then the task "haul wood into car" should be marked as complete
+    Given that I am Bob the machinist
+      And I am on my project page
+      And I open the "machine adjustable seat rails" task
+      And I mark the task as complete
+     Then the task "machine adjustable seat rails" should be marked as complete
 
-  Scenario: I want to hide completed tasks
-    In order to better view what is left to do
-    I should be able to hide completed tasks from view
-    Given that I am logged in
-      And I am on the page for the project "build a huge wooden duck"
-      And I click the "Unfinished" button
-      Then the task "haul wood into car" should no longer be visible
-      And the task "buy tons of wood" should be visible
-
-  @wip
-  Scenario: I want to add a registered user as a doer for a task
-    In order to add a registered user as a doer for a task
+  Scenario: I want to un-complete a completed task
     As a member of a project
-    I should be able to add an registered user as a doer for a task
-    Given that I am logged in
-      And I am a member of the project "build a huge wooden duck"
-      And I am on the task page for "buy tons of wood"
-      And I enter the comment "Ian, you said that you'd be willing to buy some wood for us. I donated 1/2 ton, could buy the rest?"
-     When I click on "Add Doer"
-      And I enter "Ian" in the name field
-      And I enter "raindrift@sonic.net" in the email field
-      And "raindrift@sonic.net" does not belong to a registered user
-     Then "Ian" should be created as an unclaimed account
-      And "Ian" should be added as a member of the project "build a huge wooden duck"
-      And "Ian" should be added as a doer for the task "Buy a ton of wood"
-      And an email should be sent to "raindrift@sonic.net" with the comment "You said that you'd be willing to buy some wood for us. I donated 1/2 ton, could buy the rest?"
-      And a message should be displayed informing me that "Ian" has been added to the task and that an invitation email has been sent
+    I should be able to mark a task as not-complete
+    Given that I am Alice the organizer
+      And I am on my project page
+      And I open the "machine adjustable seat rails" task
+      And I mark the task as complete
+     Then the task "machine adjustable seat rails" should be not marked as complete
 
-    #RECHECK THIS WHOLE THING -- EDITED RADICALLY AT END OF DAY WHEN DISTRACTED
+  Scenario: I want to see completed vs incomplete tasks
+    As a member of a project
+    It should be clear which tasks remain incomplete
+    Given that I am Alice the organizer
+      And I am on my project page
+      And I mark the task "machine adjustable seat rails" as complete
+      And I create the task "weld seat rail mounts"
+     Then the task "weld seat rail mounts" should be in the "Unfinished" box
+      And the task "machine adjustable seat rails" should be in the "Complete" box
+
+  Scenario: I want to order my tasklist
+    As a member of a project
+    I need to communicate priority of tasks
+    By changing their order
+    Given that I am Alice
+      And I am on my project page
+      And I create the task "mount seat"
+     Then I should be able to drag "mount seat" under "weld seat rail mounts"
+
+  Scenario: I want to add myself as a doer on a task through the website
+    As a member of a project
+    I want to be able to communicate my interest in a task
+    (to everyone, as well as myself)
+    Given I am Bob the machinist
+      And I am on my project page
+      And I click on the task "weld seat rail mounts"
+      And I click "sign me up"
+     Then I should see "weld seat rail mounts" in "my tasks"
+    Given I am Alice the organizer
+      And I am on my project page
+      And I click on the task "weld seat rail mounts"
+     Then I should see "Bob" as a doer of the task
+
+  Scenario: I want to add someone as a doer of a task
+    As a member of the project
+    I want to communicate other people's interest in a task
+    Given I am Alice the organizer
+      And I am on the task "weld seat rail mounts"
+      And I add "Bethany" as a doer
+     Then I should see "Bethany" as a doer of the task
+      And Bethany should see "weld seat rail mounts" in her tasks
+
+  Scenario: I want to view my tasks and all tasks
+    As a member of the project
+    I want to be able to see what I am working on, and what others are working on
+    Given I am Bob the Machinist
+      And I am on my project page
+      And I click all tasks
+     Then I should see the tasks "weld seat rail mounts" and "mount seats"
+      And I click my tasks
+     Then I should see only the task "weld seat rail mounts"
+
+  Scenario: I want to invite someone new to do a task
+    As a member of the project
+    I want to be able to ask for help from outside the projects membership
+    By inviting a new user to a task
+    Given I am Alice the organizer
+      And I am on the task "mount seats"
+      And I add "andyleesmith@gmail.com" to the task
+     Then I should see "andyleesmith@gmail.com" as a doer of the task
+     Then Andy should get an email with a link to the task "mount seats"
