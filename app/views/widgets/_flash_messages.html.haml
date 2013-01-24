@@ -1,0 +1,25 @@
+- flash.each do |type, message|
+  - case type
+  - when :message
+    %div.alert.alert-success
+      %button{type: "button", class: "close", 'data-dismiss' => "alert"} &times;
+      %strong Hey!
+      = message
+
+  - when :error
+    %div.alert
+      %button{type: "button", class: "close", 'data-dismiss' => "alert"} &times;
+      %strong Error!
+      = message
+
+  - when :notice
+    %div.alert
+      %button{type: "button", class: "close", 'data-dismiss' => "alert"} &times;
+      %strong Notice!
+      = message
+
+  - when :alert
+    %div.alert
+      %button{type: "button", class: "close", 'data-dismiss' => "alert"} &times;
+      %strong Alert!
+      = message

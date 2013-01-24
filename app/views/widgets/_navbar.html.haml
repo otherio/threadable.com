@@ -1,0 +1,8 @@
+%a.logo{href:""} Multify
+
+- if user
+  Welcome Back #{user.name}
+
+- else
+
+  = link_to 'Login', new_user_session_url

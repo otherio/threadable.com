@@ -13,3 +13,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Since this is generated
+app/assets/stylesheets/_widgets.sass
+
+/db/structure.sql
+
+.sass-cache
+
+/chromedriver.log

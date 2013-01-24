@@ -1,3 +1,6 @@
+require 'capybara'
+require 'xpath'
+
 # works for xpath-0.1.4 gem
 module ::XPath::HTML
 

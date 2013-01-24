@@ -40,6 +40,3 @@ Feature: Conversations
       And I should see that I added myself as a doer of this task
      When I mark this task as complete
      Then I should see that I completed this task
-
-
-

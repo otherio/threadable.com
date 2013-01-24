@@ -4,31 +4,31 @@ describe ProjectsController do
   describe "routing" do
 
     it "routes to #index" do
-      get("/api/projects").should route_to("projects#index")
+      get("/projects").should route_to("projects#index")
     end
 
     it "routes to #new" do
-      get("/api/projects/new").should route_to("projects#new")
+      get("/projects/new").should route_to("projects#new")
     end
 
     it "routes to #show" do
-      get("/api/projects/1").should route_to("projects#show", :id => "1")
+      get("/ddi").should route_to("projects#show", :id => "ddi")
     end
 
     it "routes to #edit" do
-      get("/api/projects/1/edit").should route_to("projects#edit", :id => "1")
+      get("/projects/ddi/edit").should route_to("projects#edit", :id => "ddi")
     end
 
     it "routes to #create" do
-      post("/api/projects").should route_to("projects#create")
+      post("/projects").should route_to("projects#create")
     end
 
     it "routes to #update" do
-      put("/api/projects/1").should route_to("projects#update", :id => "1")
+      put("/projects/ddi").should route_to("projects#update", :id => "ddi")
     end
 
     it "routes to #destroy" do
-      delete("/api/projects/1").should route_to("projects#destroy", :id => "1")
+      delete("/projects/ddi").should route_to("projects#destroy", :id => "ddi")
     end
 
   end

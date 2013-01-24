@@ -3,8 +3,10 @@
   %head
     %title Multify
     = stylesheet_link_tag    "application", :media => "all"
-    = javascript_include_tag "application"
+    = javascript_include_tag "init"
     = csrf_meta_tags
 
   %body
+    = render_widget :navbar
+    = render_widget :flash_messages
     = yield

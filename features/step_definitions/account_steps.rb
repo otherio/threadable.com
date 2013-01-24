@@ -30,11 +30,6 @@ Given /^that I am "(.*?)"$/ do |arg1|
   # TODO: clear cookies or whatever
 end
 
-Given /^I am not logged in$/ do
-  visit '/'
-  page.should have_content('Sign in')
-end
-
 When /^I login with the following information:$/ do |table|
   info = table.hashes.first
 
