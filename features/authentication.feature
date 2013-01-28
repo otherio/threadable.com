@@ -11,6 +11,6 @@ Scenario: Logging in
     And I click "Login"
     And I fill in "Email" with "jared@jaredgrippe.me"
     And I fill in "Password" with "password"
-    And I click "Login" within the login form
+    And I click "Sign in" within the login form
    Then I should be on the home page
-    And I should see "Welcome back Jared Grippe"
+    And I should see "Signed in successfully."

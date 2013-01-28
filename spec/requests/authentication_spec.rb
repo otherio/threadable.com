@@ -7,11 +7,11 @@ describe "Authentication" do
     it "I can login" do
       visit '/'
       click_on 'Login'
-      page.current_path.should == login_path
+      page.current_path.should == new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
-      click_button 'Login'
-      page.should have_content "Welcome back #{user.name}"
+      click_on 'Sign in'
+      page.should have_content "Signed in successfully."
       page.current_path.should == root_path
     end
   end
