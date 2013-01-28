@@ -22,3 +22,5 @@ app/assets/stylesheets/_widgets.sass
 .sass-cache
 
 /chromedriver.log
+
+.DS_Store
