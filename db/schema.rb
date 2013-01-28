@@ -11,7 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20130128014551) do
+
+  create_table "conversations", :force => true do |t|
+    t.string   "subject"
+    t.integer  "project_id"
+    t.string   "slug"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
+
+  create_table "messages", :force => true do |t|
+    t.integer  "conversation_id"
+    t.text     "body"
+    t.boolean  "reply"
+    t.string   "subject"
+    t.string   "children"
+    t.integer  "parent_id"
+    t.string   "message_id_header"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"
 
   create_table "project_memberships", :force => true do |t|
     t.integer  "project_id"
