@@ -2,6 +2,8 @@
 
 ## Things...
 
+foo
+
 review existing scenarios (possibly update)
 order them scenarioes by importance AKA build order
 make tracker stories and chores
