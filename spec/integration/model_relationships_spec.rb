@@ -7,10 +7,10 @@ describe 'model relationships' do
 
     create_a_user!
     create_a_project!
-    create_a_project_membership!
-    create_a_task!
-    create_a_task_doer!
-    create_a_task_follower!
+    # create_a_project_membership!
+    # create_a_task!
+    # create_a_task_doer!
+    # create_a_task_follower!
 
   end
 
@@ -35,13 +35,13 @@ describe 'model relationships' do
 
     @project.slug.should == 'take-over-the-world'
 
-    @project.members.should == [@user]
+    # @project.members.should == [@user]
 
     @user.projects.should == [@project]
 
-    @project_membership = @project.project_memberships.create!(
-      user: create(:user)
-    )
+    # @project_membership = @project.project_memberships.create!(
+    #   user: create(:user)
+    # )
   end
 
   def create_a_project_membership!
