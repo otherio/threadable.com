@@ -6,13 +6,16 @@ Multify::Application.routes.draw do
   #   resources :tasks
   # end
 
-  resources :projects, only: [:index, :new, :create] do
-    # resources :tasks
+  resources :projects, except: [:edit, :show]
+  scope '/:project_id' do
+    resources :conversations, :only => [:index, :show, :create] do
+      member do
+        put :mute
+      end
+    end
   end
-  get    '/:id/edit' => 'projects#edit', :as => 'edit_project'
-  get    '/:id' => 'projects#show',      :as => 'project'
-  put    '/:id' => 'projects#update'
-  delete '/:id' => 'projects#destroy'
+  get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
+  get '/:project_id' => 'projects#show',      :as => 'project'
 
   root :to => 'homepage#show'
 

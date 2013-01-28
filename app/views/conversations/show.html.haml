@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Subject:
+  = @conversation.subject
+%p
+  %b Slug:
+  = @conversation.slug
+%p
+  %b Project:
+  = @conversation.project_id
+
+= link_to 'Edit', edit_conversation_path(@conversation)
+\|
+= link_to 'Back', conversations_path

@@ -10,10 +10,10 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/1
-  # GET /projects/1.json
+  # GET /make-a-tank
+  # GET /make-a-tank.json
   def show
-    find_project
+    @project = Project.find_by_slug!(params[:project_id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -32,9 +32,9 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/1/edit
+  # GET /make-a-tank/edit
   def edit
-    find_project
+    @project = Project.find_by_slug!(params[:project_id])
   end
 
   # POST /projects
@@ -53,10 +53,10 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # PUT /projects/1
-  # PUT /projects/1.json
+  # PUT /projects/make-a-tank
+  # PUT /projects/make-a-tank.json
   def update
-    find_project
+    @project = Project.find_by_slug!(params[:id])
 
     respond_to do |format|
       if @project.update_attributes(params[:project])
@@ -69,23 +69,16 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # DELETE /projects/1
-  # DELETE /projects/1.json
+  # DELETE /projects/make-a-tank
+  # DELETE /projects/make-a-tank.json
   def destroy
-    find_project
+    @project = Project.find_by_slug!(params[:id])
     @project.destroy
 
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :no_content }
     end
-  end
-
-  private
-
-  def find_project
-    @project = Project.find_by_slug(params[:id]) or
-      raise ActiveRecord::RecordNotFound, "Couldn't find Project with slug=#{params[:id]}"
   end
 
 end

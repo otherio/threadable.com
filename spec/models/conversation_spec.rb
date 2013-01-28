@@ -1,6 +1,5 @@
 require 'spec_helper'
 
 describe Conversation do
-  it { should have_many(:messages) }
-  it { should belong_to(:project) }
+  pending "add some examples to (or delete) #{__FILE__}"
 end

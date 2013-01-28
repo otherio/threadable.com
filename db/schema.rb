@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
     t.integer  "project_id"
     t.string   "slug"
     t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
   end
 
   add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
