@@ -95,6 +95,7 @@ conversations
 • id                Integer
 • project_id        Integer
 • slug              String
+• subject           String
 
 muted_conversations
 • user_id           Integer
