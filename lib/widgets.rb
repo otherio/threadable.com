@@ -1,9 +1,10 @@
 class Widgets
 
   def self.all
-    Dir[Rails.root.join('app/widgets/*.rb')].map do |path|
-      get path[%r{/([^/]+)_widget.rb$}, 1]
-    end
+    Dir[Rails.root.join('app/widgets/*.rb')].
+      map{|path| path[%r{/([^/]+)_widget.rb$}, 1] }.
+      compact.
+      map{|name| get(name) }
   end
 
   def self.get name
