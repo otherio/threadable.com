@@ -7,6 +7,9 @@
     = csrf_meta_tags
 
   %body
-    = render_widget :page_navigation
-    = render_widget :flash_messages
-    = yield
+    .page
+      = render_widget :page_navigation
+      .content
+        = yield
+      = render_widget :flash_messages
+      = render_widget :page_footer

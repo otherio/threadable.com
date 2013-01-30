@@ -1,0 +1,39 @@
+html, body
+  padding: 0
+  margin: 0
+  height: 100%
+  width: 100%
+  overflow-x: hidden
+
+body
+  > .page
+    position: absolute
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    padding-bottom: $page_footer_height
+    min-height: 300px
+    > .page_navigation
+      height: $page_navigation_height
+
+    > .flash_messages
+      position: absolute
+      top: $page_navigation_height / 2
+      left: 0
+      right: 0
+      margin: 0 20%
+    > .content
+      position: absolute
+      top: $page_navigation_height
+      left: 0
+      bottom: $page_footer_height
+      right: 0
+      overflow: auto
+
+    > .page_footer
+      position: absolute
+      left: 0
+      bottom: 0
+      right: 0
+      height: $page_footer_height
