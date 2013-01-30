@@ -18,7 +18,7 @@ module CapybaraEnvironment
     end
 
     Capybara.ignore_hidden_elements = true
-    Capybara.default_driver         = :selenium
+    Capybara.default_driver         = :webkit
     Capybara.javascript_driver      = :selenium
     Capybara.default_selector       = :css
     Capybara.default_wait_time      = 5
