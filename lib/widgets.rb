@@ -7,6 +7,7 @@ class Widgets
   end
 
   def self.get name
+    require Rails.root.join("app/widgets/#{name.underscore}_widget.rb")
     "::#{name.to_s.camelize}Widget".constantize
   end
 
@@ -27,3 +28,5 @@ class Widgets
   end
 
 end
+
+require File.expand_path('../widgets/base', __FILE__)
