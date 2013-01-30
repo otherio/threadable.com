@@ -5,3 +5,6 @@ pairs:
  jg: Jared Grippe
  am: Aaron Muszalski
  ap: Audrey Penven
+email:
+ prefix: pair
+ domain: other.io
