@@ -3,7 +3,7 @@ Multify::Application.configure do
 
   # this is until we actually deploy something
   config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == ['multify', 'frobozz horse battery staple']
+    [u, p] == ['multify', ENV['MULTIFY_PASSWORD']]
   end
 
   # Code is not reloaded between requests
