@@ -4,7 +4,11 @@ require 'rspec/rails'
 require 'rspec/autorun'
 
 require 'capybara_environment'
+
 CapybaraEnvironment.setup!
+Capybara.javascript_driver = :selenium
+Capybara.default_driver = :webkit
+
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
@@ -41,5 +45,4 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-
 end

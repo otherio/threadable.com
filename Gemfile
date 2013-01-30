@@ -38,4 +38,5 @@ group :test do
   gem 'faker'
   gem 'cucumber-rails', require: nil
   gem 'database_cleaner'
+  gem 'capybara-webkit'
 end
