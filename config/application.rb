@@ -72,6 +72,8 @@ module Multify
     # (don't access db or load models while precompiling assets)
     config.assets.initialize_on_precompile = false
 
+    config.assets.precompile += %w{init.js}
+
     config.generators.test_framework = :rspec
 
     config.middleware.use "Widgets::GenerateSass"
