@@ -1,11 +1,11 @@
 .navbar.navbar-inverse.navbar-static-top
   .navbar-inner
 
-    %a.brand{href:""} Multify
+    = link_to "Multify", root_url, class: 'brand'
 
-    - if user_signed_in?
+    - if user.present?
       %ul.nav.pull-right
-        %li= current_user.name
+        %li= link_to user.name, user_url(user)
         %li= link_to 'Logout', destroy_user_session_url, :method => :delete
 
     - else

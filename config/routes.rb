@@ -2,9 +2,9 @@ Multify::Application.routes.draw do
 
   devise_for :users
 
-  # resources :users do
+  resources :users do
   #   resources :tasks
-  # end
+  end
 
   resources :projects, except: [:edit, :show]
   scope '/:project_id' do

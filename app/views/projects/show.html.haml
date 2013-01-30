@@ -1,15 +1,23 @@
-%p#notice= notice
+.full-columns
+  .column.column-left
+    left
+  .column.column-right
+    right
 
-%p
-  %b Name:
-  = @project.name
-%p
-  %b Slug:
-  = @project.slug
-%p
-  %b Description:
-  = @project.description
 
-= link_to 'Edit', edit_project_path(@project)
-\|
-= link_to 'Back', projects_path
+-#
+  %p#notice= notice
+
+  %p
+    %b Name:
+    = @project.name
+  %p
+    %b Slug:
+    = @project.slug
+  %p
+    %b Description:
+    = @project.description
+
+  = link_to 'Edit', edit_project_path(@project)
+  \|
+  = link_to 'Back', projects_path

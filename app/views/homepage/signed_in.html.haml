@@ -1,2 +1,4 @@
-- 100.times do |x|
-  %div= x
+%h1 Projects
+%ul
+  - current_user.projects.each do |project|
+    %li=h project.inspect

@@ -1,7 +1,10 @@
 class HomepageController < ApplicationController
 
   def show
-    render :signed_in if user_signed_in?
+    if user_signed_in?
+      @projects = current_user.projects
+      render template: 'projects/index'
+    end
   end
 
 end

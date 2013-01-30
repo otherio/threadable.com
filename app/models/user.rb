@@ -16,4 +16,5 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
+  alias_method :to_param, :slug
 end
