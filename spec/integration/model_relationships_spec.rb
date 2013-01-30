@@ -13,12 +13,14 @@ describe 'model relationships' do
   end
 
   context "projects" do
-    let(:project) {user.projects.create!(
-      name: 'Take Over The World!',
-      description: 'The same thing we do every night.',
-    )}
+    let :project do
+      user.projects.create!(
+        name: 'Take Over The World!',
+        description: 'The same thing we do every night.',
+      )
+    end
 
-    let(:project_membership) { project.project_memberships.create!(user: user) }
+    let(:project_membership) { project.project_memberships.last }
 
     it "creates a project" do
       user.reload
@@ -38,7 +40,7 @@ describe 'model relationships' do
 
       project.reload
 
-      project.users.should == [user, project_membership.user]
+      project.users.should == [user]
     end
 
   end

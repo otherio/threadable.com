@@ -1,8 +1,11 @@
 class ProjectsController < ApplicationController
+
+  before_filter :authenticate_user!
+
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    @projects = current_user.projects.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +16,7 @@ class ProjectsController < ApplicationController
   # GET /make-a-tank
   # GET /make-a-tank.json
   def show
-    @project = Project.find_by_slug!(params[:project_id])
+    @project = current_user.projects.find_by_slug!(params[:project_id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +27,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   # GET /projects/new.json
   def new
-    @project = Project.new
+    @project = current_user.projects.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,17 +37,19 @@ class ProjectsController < ApplicationController
 
   # GET /make-a-tank/edit
   def edit
-    @project = Project.find_by_slug!(params[:project_id])
+    @project = current_user.projects.find_by_slug!(params[:project_id])
   end
 
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(params[:project])
+    @project = current_user.projects.new(params[:project])
+    @project_membership = current_user.project_memberships.new
+    @project_membership.project = @project
 
     respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+      if @project.save && @project_membership.save
+        format.html { redirect_to @project, notice: 'current_user.projects was successfully created.' }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.html { render action: "new" }
@@ -56,11 +61,11 @@ class ProjectsController < ApplicationController
   # PUT /projects/make-a-tank
   # PUT /projects/make-a-tank.json
   def update
-    @project = Project.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params[:id])
 
     respond_to do |format|
       if @project.update_attributes(params[:project])
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+        format.html { redirect_to @project, notice: 'current_user.projects was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -72,7 +77,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/make-a-tank
   # DELETE /projects/make-a-tank.json
   def destroy
-    @project = Project.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params[:id])
     @project.destroy
 
     respond_to do |format|

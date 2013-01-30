@@ -45,4 +45,12 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.with_options :type => :controller do |controller_specs|
+    controller_specs.include Devise::TestHelpers
+    controller_specs.before do
+      request.env["devise.mapping"] = Devise.mappings[:user]
+    end
+  end
+
 end
