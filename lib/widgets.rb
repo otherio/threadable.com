@@ -7,8 +7,9 @@ class Widgets
   end
 
   def self.get name
+    name = name.to_s
     require Rails.root.join("app/widgets/#{name.underscore}_widget.rb")
-    "::#{name.to_s.camelize}Widget".constantize
+    "::#{name.camelize}Widget".constantize
   end
 
   def self.render name, *arguments, &block
