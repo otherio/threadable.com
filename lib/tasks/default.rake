@@ -1,1 +1,1 @@
-task :default => [:spec]
+task :default => [:spec, :features]
