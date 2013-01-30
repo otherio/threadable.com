@@ -1,4 +1,4 @@
-class NavbarWidget < Widgets::Base
+class PageNavigationWidget < Widgets::Base
 
   def default_options
     {
