@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
     t.integer  "conversation_id"
     t.text     "body"
     t.boolean  "reply"
+    t.string   "from"
     t.string   "subject"
     t.string   "children"
     t.integer  "parent_id"

@@ -15,6 +15,7 @@ class Init < ActiveRecord::Migration
       t.integer  "conversation_id"
       t.text     "body"
       t.boolean  "reply"
+      t.string   "from"
       t.string   "subject"
       t.string   "children"
       t.integer  "parent_id"
