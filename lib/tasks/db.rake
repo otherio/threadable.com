@@ -5,4 +5,8 @@ namespace :db do
     Db::Populate.call
   end
 
+  task :reset do
+    Rake::Task['db:populate'].invoke
+  end
+
 end

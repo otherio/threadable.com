@@ -1,5 +1,6 @@
 require 'fixture_builder'
 require 'active_record/fixtures'
+require 'database_cleaner'
 
 module TestEnvironment::Fixtures
 
