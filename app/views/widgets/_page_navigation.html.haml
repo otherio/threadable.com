@@ -5,7 +5,7 @@
 
     - if user.present?
       %ul.nav.pull-right
-        %li= link_to user.name, user_url(user)
+        %li= link_to user.name || 'unknown', user_url(user)
         %li= link_to 'Logout', destroy_user_session_url, :method => :delete
 
     - else
