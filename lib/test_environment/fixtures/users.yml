@@ -1,0 +1,106 @@
+---
+alice_neilson:
+  id: 11
+  name: Alice Neilson
+  slug: alice-neilson
+  email: alice@other.io
+  encrypted_password: $2a$04$7sVET2XchGCd6kqjjeiANOIc32Ieg9gsSeDZXs4ATWPEXZAbPjUR2
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: joPypVMfeLKFzXa7Zbqq
+  created_at: 2013-02-03 21:44:35.907157000 Z
+  updated_at: 2013-02-03 21:44:35.907157000 Z
+tom_canver:
+  id: 12
+  name: Tom Canver
+  slug: tom-canver
+  email: tom@other.io
+  encrypted_password: $2a$04$0eZ35cSgB0U4uBoTOYFiies9IH5uWA75nAYkZZyuepCuJlcr7MKcq
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: wAqFkG2pkyVENudm6zLa
+  created_at: 2013-02-03 21:44:35.952670000 Z
+  updated_at: 2013-02-03 21:44:35.952670000 Z
+yan_hzu:
+  id: 13
+  name: Yan Hzu
+  slug: yan-hzu
+  email: yan@other.io
+  encrypted_password: $2a$04$0Od4XmZ.ieBA5mv1YjZuaOxp3NT20FKwpqYE.qn2YBnXrGTh3B/gG
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: mSz7M2p6ArrLtwnAM2Mf
+  created_at: 2013-02-03 21:44:35.968014000 Z
+  updated_at: 2013-02-03 21:44:35.968014000 Z
+bethany_pattern:
+  id: 14
+  name: Bethany Pattern
+  slug: bethany-pattern
+  email: bethany@other.io
+  encrypted_password: $2a$04$777YonDGr1gh6741cQu1oOX50UQ0PaueVGQTvHJhbxYLLzK5LqUe2
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: BeGbuLfPXYxwANsqez4G
+  created_at: 2013-02-03 21:44:35.982545000 Z
+  updated_at: 2013-02-03 21:44:35.982545000 Z
+bob_cauchois:
+  id: 15
+  name: Bob Cauchois
+  slug: bob-cauchois
+  email: bob@other.io
+  encrypted_password: $2a$04$Bci51OOQ6.lANx9G8skYkeeFIAN86MIprCEYblAE.M3/7nh.7oiDO
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: AR9d8ykfMvVMgWPssKmW
+  created_at: 2013-02-03 21:44:35.995584000 Z
+  updated_at: 2013-02-03 21:44:35.995584000 Z

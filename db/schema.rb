@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
 
   create_table "messages", :force => true do |t|
     t.integer  "conversation_id"
+    t.integer  "user_id"
     t.text     "body"
     t.boolean  "reply"
     t.string   "from"
@@ -78,7 +79,7 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
     t.string   "slug",       :null => false
     t.boolean  "done"
     t.datetime "due_at"
-    t.integer  "project_id"
+    t.integer  "conversation_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

@@ -11,28 +11,36 @@ Capybara.default_driver = :webkit
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+
 RSpec.configure do |config|
+
+  config.global_fixtures = :all
 
   config.include TestEnvironment
   config.include CapybaraEnvironment, :type => :request
   config.include CapybaraEnvironment, :type => :acceptance
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
+  config.fixture_path = "#{::Rails.root}/lib/test_environment/fixtures"
   config.use_transactional_fixtures = false
+
+  DatabaseCleaner.strategy = :truncation
 
   config.before do |spec|
     case spec.example.metadata[:type]
     when :request, :acceptance
-      DatabaseCleaner.strategy = :truncation
-    else
-      DatabaseCleaner.strategy = :transaction
+      config.use_transactional_fixtures = false
+      build_fixtures
+      DatabaseCleaner.start
     end
-    DatabaseCleaner.start
   end
-  config.after do
-    DatabaseCleaner.clean
+
+  config.after do |spec|
+    case spec.example.metadata[:type]
+    when :request, :acceptance
+      DatabaseCleaner.clean
+      config.use_transactional_fixtures = true
+    end
   end
 
   # If true, the base class of anonymous controllers will be inferred

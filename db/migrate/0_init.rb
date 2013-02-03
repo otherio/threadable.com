@@ -6,13 +6,13 @@ class Init < ActiveRecord::Migration
       t.integer  "project_id"
       t.string   "slug"
       t.datetime "created_at", :null => false
-      t.datetime "updated_at", :null => false
     end
 
     add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
 
     create_table "messages", :force => true do |t|
       t.integer  "conversation_id"
+      t.integer  "user_id"
       t.text     "body"
       t.boolean  "reply"
       t.string   "from"
@@ -35,6 +35,8 @@ class Init < ActiveRecord::Migration
       t.datetime "created_at",                    :null => false
       t.datetime "updated_at",                    :null => false
     end
+
+    add_index "project_memberships", ["project_id", "user_id"], :name => "index_project_memberships_on_project_id_and_user_id", :unique => true
 
     create_table "projects", :force => true do |t|
       t.string   "name"
@@ -97,7 +99,6 @@ class Init < ActiveRecord::Migration
     add_index "users", ["email"], :name => "index_users_on_email", :unique => true
     add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
     add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
-
 
   end
 end

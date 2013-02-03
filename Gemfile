@@ -39,4 +39,5 @@ group :test do
   gem 'cucumber-rails', require: nil
   gem 'database_cleaner'
   gem 'capybara-webkit'
+  gem 'fixture_builder'
 end
