@@ -31,6 +31,8 @@ group :development, :test do
   gem 'debugger'
   gem 'sqlite3'
   gem 'foreman' # for heroku
+  gem 'guard-rspec'
+  gem 'terminal-notifier-guard'
 end
 
 group :test do
@@ -41,4 +43,7 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara-webkit'
   gem 'fixture_builder'
+  # gem 'autotest-rails'
+  # gem 'autotest-fsevent'
+  gem 'rb-fsevent', :require => false if RUBY_PLATFORM =~ /darwin/i
 end
