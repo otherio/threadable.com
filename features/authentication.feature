@@ -3,6 +3,8 @@ Feature: Authentication
   I should be able to login
 
 Scenario: Logging in
+  In order to use the site
+  I'd like to keep my data associated with me
   Given the following users:
     | Name         | Email                | Password |
     | Jared Grippe | jared@jaredgrippe.me | password |
@@ -27,3 +29,13 @@ Scenario: Failing to log in
    And I fill in "Password" with "bullshitpassword"
    And I click "Sign in" within the login form
   Then I should see "Invalid email or password"
+
+Scenario: Signing up through the join form
+  Given I am not a member
+  When I go to the home page
+  And I click "Login"
+  And I click "Sign up"
+  And I fill in "Email" with "audrey.penven@gmail.com"
+  And I fill in "Password" with "bullshitpassword"
+  And I fill in "Password confirmation" with "bullshitpassword"
+  Then I click "Sign up"

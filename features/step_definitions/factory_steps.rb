@@ -5,3 +5,6 @@ Given /^the following (.+):$/ do |thing, table|
     create(thing.singularize, attributes)
   end
 end
+
+Given /^I am not a member$/ do
+end
