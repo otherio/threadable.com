@@ -8,6 +8,7 @@ gem 'thin'
 gem 'stringex'  # for url slugs
 gem 'devise'    # authentication
 gem 'virtus'
+gem 'method_object'
 #gem 'redis-rails'
 
 group :production do
