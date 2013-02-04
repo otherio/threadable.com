@@ -33,6 +33,7 @@ group :development, :test do
   gem 'foreman' # for heroku
   gem 'guard-rspec'
   gem 'terminal-notifier-guard'
+  gem 'pry-rails'
 end
 
 group :test do

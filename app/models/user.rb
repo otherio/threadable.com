@@ -13,7 +13,9 @@ class User < ActiveRecord::Base
   has_many :projects, :through => :project_memberships
   has_many :messages
   has_many :conversations, through: :messages, :uniq => true
-  has_many :tasks, through: :conversations
+
+  has_and_belongs_to_many :tasks
+
 
   # make sure the user has an auth token
   before_save :ensure_authentication_token

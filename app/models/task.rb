@@ -1,11 +1,26 @@
 class Task < ActiveRecord::Base
-  attr_accessible :name, :slug, :project_id, :done, :due_at
+  attr_accessible :conversation, :done, :due_at
 
-  belongs_to :conversation
+  has_one :conversation
   has_one :project, through: :conversation
 
-  has_and_belongs_to_many :doers, class_name: 'User', join_table: 'task_doers'
-  # has_and_belongs_to_many :followers, class_name: 'User', join_table: 'task_followers'
+  has_and_belongs_to_many :doers, class_name: 'User'
 
-  acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 40
+  def name
+    conversation.subject
+  end
+
+  def slug
+    conversation.slug
+  end
+
+  def done! at=Time.now
+    self.done_at = at
+    save!
+  end
+
+  def done?
+    done_at.present?
+  end
+
 end

@@ -152,6 +152,8 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry-rails (0.2.2)
+      pry (>= 0.9.10)
     rack (1.4.4)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -264,6 +266,7 @@ DEPENDENCIES
   jquery-rails
   method_object
   pg
+  pry-rails
   rails (= 3.2.11)
   rb-fsevent
   rspec-rails
