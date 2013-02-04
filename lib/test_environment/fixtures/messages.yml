@@ -1,8 +1,8 @@
 ---
 messages_001:
-  id: 17
-  conversation_id: 25
-  user_id: 
+  id: 1
+  conversation_id: 1
+  user_id: 1
   body: ! 'Some stuff about how we have decided on a course of action for this body.
 
     So, let''s do some carbon layup!'
@@ -12,12 +12,12 @@ messages_001:
   children: 
   parent_id: 
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.217023000 Z
-  updated_at: 2013-02-03 21:44:36.217023000 Z
+  created_at: 2013-02-04 00:19:31.521136000 Z
+  updated_at: 2013-02-04 00:19:31.521136000 Z
 messages_002:
-  id: 18
-  conversation_id: 25
-  user_id: 
+  id: 2
+  conversation_id: 1
+  user_id: 2
   body: ! 'Totally!
 
     I''m thinking we can do this on our first January workday. I''ll make sure we
@@ -26,28 +26,28 @@ messages_002:
   from: 
   subject: layup body carbon
   children: 
-  parent_id: 17
+  parent_id: 1
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.224932000 Z
-  updated_at: 2013-02-03 21:44:36.224932000 Z
+  created_at: 2013-02-04 00:19:31.528123000 Z
+  updated_at: 2013-02-04 00:19:31.528123000 Z
 messages_003:
-  id: 19
-  conversation_id: 25
-  user_id: 
+  id: 3
+  conversation_id: 1
+  user_id: 3
   body: I'm so there! Also, I think I can probably pick up some of those supplies
     from a friend, who was trying to make a kayak.
   reply: true
   from: 
   subject: layup body carbon
   children: 
-  parent_id: 18
+  parent_id: 2
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.229577000 Z
-  updated_at: 2013-02-03 21:44:36.229577000 Z
+  created_at: 2013-02-04 00:19:31.532380000 Z
+  updated_at: 2013-02-04 00:19:31.532380000 Z
 messages_004:
-  id: 20
-  conversation_id: 25
-  user_id: 
+  id: 4
+  conversation_id: 1
+  user_id: 2
   body: ! 'So, I''ve got a question: we''re using two layers of carbon with a layer
     of fiberglass between them for the bottom body panel, but do we want to do the
     same for the top? It doesn''t need to be as strong, and less fiberglass would
@@ -56,27 +56,27 @@ messages_004:
   from: 
   subject: layup body carbon
   children: 
-  parent_id: 19
+  parent_id: 3
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.234442000 Z
-  updated_at: 2013-02-03 21:44:36.234442000 Z
+  created_at: 2013-02-04 00:19:31.537201000 Z
+  updated_at: 2013-02-04 00:19:31.537201000 Z
 messages_005:
-  id: 21
-  conversation_id: 25
-  user_id: 
+  id: 5
+  conversation_id: 1
+  user_id: 1
   body: I think I can get in touch with Yan's friend who built the carbon kayak.  He
     might know!
   reply: true
   from: 
   subject: layup body carbon
   children: 
-  parent_id: 20
+  parent_id: 4
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.238442000 Z
-  updated_at: 2013-02-03 21:44:36.238442000 Z
+  created_at: 2013-02-04 00:19:31.541254000 Z
+  updated_at: 2013-02-04 00:19:31.541254000 Z
 messages_006:
-  id: 22
-  conversation_id: 25
+  id: 6
+  conversation_id: 1
   user_id: 
   body: ! 'Hey all! This looks pretty neat. Lets see if I can help you out here...
 
@@ -94,28 +94,28 @@ messages_006:
   from: ! '"Andy Lee Issacson" <andy@example.com>'
   subject: layup body carbon
   children: 
-  parent_id: 21
+  parent_id: 5
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.242560000 Z
-  updated_at: 2013-02-03 21:44:36.242560000 Z
+  created_at: 2013-02-04 00:19:31.545704000 Z
+  updated_at: 2013-02-04 00:19:31.545704000 Z
 messages_007:
-  id: 23
-  conversation_id: 25
-  user_id: 
+  id: 7
+  conversation_id: 1
+  user_id: 2
   body: Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass
     like you suggested, since we're under weight on the wheels anyway.
   reply: true
   from: 
   subject: layup body carbon
   children: 
-  parent_id: 22
+  parent_id: 6
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.246846000 Z
-  updated_at: 2013-02-03 21:44:36.246846000 Z
+  created_at: 2013-02-04 00:19:31.549799000 Z
+  updated_at: 2013-02-04 00:19:31.549799000 Z
 messages_008:
-  id: 24
-  conversation_id: 25
-  user_id: 
+  id: 8
+  conversation_id: 1
+  user_id: 2
   body: This turned out super awesome! Yan and Bethany and I stayed til 8pm doing
     the layup and fitting everything on the vacuum table. The pieces are curing in
     the oven now, but we got some photos of them before they went in. Bethany got
@@ -124,7 +124,7 @@ messages_008:
   from: 
   subject: layup body carbon
   children: 
-  parent_id: 23
+  parent_id: 7
   message_id_header: your-fantasy-message-id@example.com
-  created_at: 2013-02-03 21:44:36.251033000 Z
-  updated_at: 2013-02-03 21:44:36.251033000 Z
+  created_at: 2013-02-04 00:19:31.554356000 Z
+  updated_at: 2013-02-04 00:19:31.554356000 Z

@@ -1,10 +1,10 @@
 ---
 alice_neilson:
-  id: 11
+  id: 1
   name: Alice Neilson
   slug: alice-neilson
-  email: alice@other.io
-  encrypted_password: $2a$04$7sVET2XchGCd6kqjjeiANOIc32Ieg9gsSeDZXs4ATWPEXZAbPjUR2
+  email: alice@ucsd.edu
+  encrypted_password: $2a$04$wFNR.9b2D4izv0EeAuqgJe2XlZ8gTwmlyM1a6nHRAZyztXUxgl.xO
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -17,15 +17,15 @@ alice_neilson:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: joPypVMfeLKFzXa7Zbqq
-  created_at: 2013-02-03 21:44:35.907157000 Z
-  updated_at: 2013-02-03 21:44:35.907157000 Z
+  authentication_token: mxshvpjbn3cb6k3hNPQT
+  created_at: 2013-02-04 00:19:31.258992000 Z
+  updated_at: 2013-02-04 00:19:31.258992000 Z
 tom_canver:
-  id: 12
+  id: 2
   name: Tom Canver
   slug: tom-canver
-  email: tom@other.io
-  encrypted_password: $2a$04$0eZ35cSgB0U4uBoTOYFiies9IH5uWA75nAYkZZyuepCuJlcr7MKcq
+  email: tom@ucsd.edu
+  encrypted_password: $2a$04$xEN6Vj1itKS.5gMD3MaIZOxIwuUZldMNzqqWrC1LRWtWeItKB7W.G
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -38,15 +38,15 @@ tom_canver:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: wAqFkG2pkyVENudm6zLa
-  created_at: 2013-02-03 21:44:35.952670000 Z
-  updated_at: 2013-02-03 21:44:35.952670000 Z
+  authentication_token: dp83AwbABx5S13vyfxos
+  created_at: 2013-02-04 00:19:31.303082000 Z
+  updated_at: 2013-02-04 00:19:31.303082000 Z
 yan_hzu:
-  id: 13
+  id: 3
   name: Yan Hzu
   slug: yan-hzu
-  email: yan@other.io
-  encrypted_password: $2a$04$0Od4XmZ.ieBA5mv1YjZuaOxp3NT20FKwpqYE.qn2YBnXrGTh3B/gG
+  email: yan@ucsd.edu
+  encrypted_password: $2a$04$IwNCWFiwaibrdaUEgxo3WetiRJMlCiVQvv5QMVS.2fc6lmVSZjMDS
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -59,15 +59,15 @@ yan_hzu:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: mSz7M2p6ArrLtwnAM2Mf
-  created_at: 2013-02-03 21:44:35.968014000 Z
-  updated_at: 2013-02-03 21:44:35.968014000 Z
+  authentication_token: h4ys7qKV9CUCyDiudpaK
+  created_at: 2013-02-04 00:19:31.315745000 Z
+  updated_at: 2013-02-04 00:19:31.315745000 Z
 bethany_pattern:
-  id: 14
+  id: 4
   name: Bethany Pattern
   slug: bethany-pattern
-  email: bethany@other.io
-  encrypted_password: $2a$04$777YonDGr1gh6741cQu1oOX50UQ0PaueVGQTvHJhbxYLLzK5LqUe2
+  email: bethany@ucsd.edu
+  encrypted_password: $2a$04$3GhucWSl7rEa9hk7wq7y6OdnSFpN7nZOTKJPmCOhZulGToLcjqJ7C
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -80,15 +80,15 @@ bethany_pattern:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: BeGbuLfPXYxwANsqez4G
-  created_at: 2013-02-03 21:44:35.982545000 Z
-  updated_at: 2013-02-03 21:44:35.982545000 Z
+  authentication_token: 3S9VTVrGfohZrzMZ6a7V
+  created_at: 2013-02-04 00:19:31.327323000 Z
+  updated_at: 2013-02-04 00:19:31.327323000 Z
 bob_cauchois:
-  id: 15
+  id: 5
   name: Bob Cauchois
   slug: bob-cauchois
-  email: bob@other.io
-  encrypted_password: $2a$04$Bci51OOQ6.lANx9G8skYkeeFIAN86MIprCEYblAE.M3/7nh.7oiDO
+  email: bob@ucsd.edu
+  encrypted_password: $2a$04$sTaGc6yO0Zu1pzVv/rDaK.eI2oWmTgXL.mEpHWJNiw.vEgvRwGWGW
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -101,6 +101,6 @@ bob_cauchois:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: AR9d8ykfMvVMgWPssKmW
-  created_at: 2013-02-03 21:44:35.995584000 Z
-  updated_at: 2013-02-03 21:44:35.995584000 Z
+  authentication_token: ikw8FuKSMsVzGnBVsysV
+  created_at: 2013-02-04 00:19:31.338858000 Z
+  updated_at: 2013-02-04 00:19:31.338858000 Z

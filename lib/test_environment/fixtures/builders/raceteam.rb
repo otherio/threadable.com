@@ -3,17 +3,34 @@ raceteam = Project.create!(
   description: 'Senior engineering electric race team!'
 )
 
-users = {}
-["Alice Neilson", "Tom Canver", "Yan Hzu", "Bethany Pattern", "Bob Cauchois"].each do |name|
-  first, last = name.split(/\s+/)
+users = {
+  :alice => {
+    name: 'Alice Neilson',
+  },
+  :tom => {
+    name: 'Tom Canver',
+  },
+  :yan => {
+    name: 'Yan Hzu',
+  },
+  :bethany => {
+    name: 'Bethany Pattern',
+  },
+  :bob => {
+    name: 'Bob Cauchois',
+  },
+}
+
+
+users.each do |key, data|
   user = User.create!(
-    email: "#{first.downcase}@other.io",
-    name: name,
+    email: "#{key}@ucsd.edu",
+    name: data[:name],
     password: 'password',
   )
 
   raceteam.project_memberships.create!(user: user)
-  users[first.to_sym] = user
+  users[key] = user
 end
 
 # list of conversations
