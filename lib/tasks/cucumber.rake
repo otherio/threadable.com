@@ -1,7 +1,11 @@
-require 'rubygems'
-require 'cucumber'
-require 'cucumber/rake/task'
+begin
 
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format pretty"
+  require 'cucumber'
+  require 'cucumber/rake/task'
+
+  Cucumber::Rake::Task.new(:features) do |t|
+    t.cucumber_opts = "features --format pretty"
+  end
+
+rescue LoadError
 end
