@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
 
   has_many :conversations
   has_many :project_memberships
-  has_many :users, :through => :project_memberships
+  has_many :members, :through => :project_memberships, :source => 'user'
   has_many :tasks, :through => :conversations
 
   validates_presence_of :name, :slug

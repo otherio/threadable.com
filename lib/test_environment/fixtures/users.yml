@@ -1,0 +1,106 @@
+---
+alice_neilson:
+  id: 23
+  name: Alice Neilson
+  slug: alice-neilson
+  email: alice@ucsd.edu
+  encrypted_password: $2a$04$ATRUmfUZil7yjC1/medZkOASLhQGWoAnuS.y1K.UJuqW9qx6DJNmW
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: QxXptwq1JzQ8SLgtwgN6
+  created_at: 2013-02-04 03:06:15.799878000 Z
+  updated_at: 2013-02-04 03:06:15.799878000 Z
+tom_canver:
+  id: 24
+  name: Tom Canver
+  slug: tom-canver
+  email: tom@ucsd.edu
+  encrypted_password: $2a$04$JiF34dnzoPHZDLyiWLVsDet4vrx/i0yOTF.Xq/B4FVvmOyC9bMRBi
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: NfBoAzdarQEw5q2yQHd3
+  created_at: 2013-02-04 03:06:15.848096000 Z
+  updated_at: 2013-02-04 03:06:15.848096000 Z
+yan_hzu:
+  id: 25
+  name: Yan Hzu
+  slug: yan-hzu
+  email: yan@ucsd.edu
+  encrypted_password: $2a$04$Hixj/qhbL1xT7OfgBzsfTeRafGSp.YKFly00R1R6v.UJrJKntck0a
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: wgoSpWiYNz2hbDZK5vA4
+  created_at: 2013-02-04 03:06:15.856227000 Z
+  updated_at: 2013-02-04 03:06:15.856227000 Z
+bethany_pattern:
+  id: 26
+  name: Bethany Pattern
+  slug: bethany-pattern
+  email: bethany@ucsd.edu
+  encrypted_password: $2a$04$0YWw0Ac47/hGhz3oyZzhYuXliwe0eGbrzuQDSNATYqjAG.uXVe3ZO
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: pAYzAzGEy5kzCmjVbast
+  created_at: 2013-02-04 03:06:15.864273000 Z
+  updated_at: 2013-02-04 03:06:15.864273000 Z
+bob_cauchois:
+  id: 27
+  name: Bob Cauchois
+  slug: bob-cauchois
+  email: bob@ucsd.edu
+  encrypted_password: $2a$04$iywu9fbWagWssael.43sT.RGAI3W81rAdPZCCKXjElL6fznBorC9.
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: v989Adx8eqxddFDUaGwH
+  created_at: 2013-02-04 03:06:15.871888000 Z
+  updated_at: 2013-02-04 03:06:15.871888000 Z

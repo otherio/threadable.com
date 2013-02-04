@@ -1,0 +1,64 @@
+---
+conversations_001:
+  id: 11
+  subject: Welcome to our new Multify project!
+  project_id: 19
+  slug: welcome-to-our-new-multify-project
+  task_id: 
+  created_at: 2013-02-04 03:06:15.884448000 Z
+conversations_002:
+  id: 12
+  subject: How are we going to build the body?
+  project_id: 19
+  slug: how-are-we-going-to-build-the-body
+  task_id: 
+  created_at: 2013-02-04 03:06:15.904778000 Z
+conversations_003:
+  id: 13
+  subject: layup body carbon
+  project_id: 19
+  slug: layup-body-carbon
+  task_id: 8
+  created_at: 2013-02-04 03:06:15.910407000 Z
+conversations_004:
+  id: 14
+  subject: install mirrors
+  project_id: 19
+  slug: install-mirrors
+  task_id: 9
+  created_at: 2013-02-04 03:06:15.924520000 Z
+conversations_005:
+  id: 15
+  subject: trim body panels
+  project_id: 19
+  slug: trim-body-panels
+  task_id: 10
+  created_at: 2013-02-04 03:06:15.930325000 Z
+conversations_006:
+  id: 16
+  subject: make wooden form for carbon layup
+  project_id: 19
+  slug: make-wooden-form-for-carbon-layup
+  task_id: 11
+  created_at: 2013-02-04 03:06:15.935660000 Z
+conversations_007:
+  id: 17
+  subject: get epoxy
+  project_id: 19
+  slug: get-epoxy
+  task_id: 12
+  created_at: 2013-02-04 03:06:15.954658000 Z
+conversations_008:
+  id: 18
+  subject: get release agent
+  project_id: 19
+  slug: get-release-agent
+  task_id: 13
+  created_at: 2013-02-04 03:06:15.960262000 Z
+conversations_009:
+  id: 19
+  subject: get carbon and fiberglass
+  project_id: 19
+  slug: get-carbon-and-fiberglass
+  task_id: 14
+  created_at: 2013-02-04 03:06:15.965580000 Z

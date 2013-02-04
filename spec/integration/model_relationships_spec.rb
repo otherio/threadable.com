@@ -2,41 +2,122 @@ require 'spec_helper'
 
 describe 'model relationships' do
 
+  let!(:project){ Project.find_by_name('UCSD Electric Racing') }
+
+  def member(email)
+    project.members.find_by_email(email) or raise "unable to find #{email}"
+  end
+
+  def conversation(subject)
+    project.conversations.find_by_subject(subject)
+  end
+
+  def task(subject)
+    conversation(subject).task
+  end
+
   it "should work" do
-    project = Project.find_by_name('UCSD Electric Racingz')
     project.should be_a Project
 
-    project.conversations.count.should == 11
-    project.tasks.count.should == 10
-    project.project_memberships.count.should == 5
-    project.users.count.should == 5
+    project.name.should == 'UCSD Electric Racing'
+    project.description.should == 'Senior engineering electric race team!'
 
-    alice = project.users.where(name: 'Alice Neilson').first
+    project.conversations.to_set.should == Set[
+      conversation('Welcome to our new Multify project!'),
+      conversation('How are we going to build the body?'),
+      conversation('layup body carbon'),
+      conversation('install mirrors'),
+      conversation('trim body panels'),
+      conversation('make wooden form for carbon layup'),
+      conversation('get epoxy'),
+      conversation('get release agent'),
+      conversation('get carbon and fiberglass'),
+    ]
 
+    project.members.to_set.should == Set[
+      member('alice@ucsd.edu'),
+      member('tom@ucsd.edu'),
+      member('yan@ucsd.edu'),
+      member('bethany@ucsd.edu'),
+      member('bob@ucsd.edu'),
+    ]
+
+    project.tasks.to_set.should == Set[
+      task('layup body carbon'),
+      task('install mirrors'),
+      task('trim body panels'),
+      task('make wooden form for carbon layup'),
+      task('get epoxy'),
+      task('get release agent'),
+      task('get carbon and fiberglass'),
+    ]
+
+    project.tasks.not_done.to_set.should == Set[
+      task('install mirrors'),
+      task('trim body panels'),
+      task('make wooden form for carbon layup'),
+    ]
+
+    project.tasks.done.to_set.should == Set[
+      task('layup body carbon'),
+      task('get epoxy'),
+      task('get release agent'),
+      task('get carbon and fiberglass'),
+    ]
+
+    alice = member('alice@ucsd.edu')
+    alice.name.should == 'Alice Neilson'
+    alice.email.should == 'alice@ucsd.edu'
     alice.project_memberships.count.should == 1
-    alice.projects.count.should == 1
     alice.projects.should == [project]
-    alice.messages.count.should == 2
-    alice.conversations.count.should == 1
-    alice.tasks.count.should == 2
+    alice.messages.count.should == 3
+    alice.conversations.to_set.should == Set[
+      conversation('Welcome to our new Multify project!'),
+      conversation('How are we going to build the body?'),
+      conversation('layup body carbon'),
+      conversation('install mirrors'),
+      conversation('trim body panels'),
+      conversation('make wooden form for carbon layup'),
+      conversation('get epoxy'),
+      conversation('get release agent'),
+      conversation('get carbon and fiberglass'),
+    ]
+    alice.tasks.should == []
 
-    message = alice.messages.first
-    conversation = alice.conversations.first
+    tom = member('tom@ucsd.edu')
+    tom.tasks.to_set.should == Set[
+      task('layup body carbon'),
+      task('get epoxy'),
+      task('get release agent'),
+      task('get carbon and fiberglass'),
+    ]
 
+    conversation = alice.conversations.where(subject: 'Welcome to our new Multify project!').first
+    conversation.messages.count.should == 2
+    conversation.task.should be_blank
+    conversation.project.should == project
 
-    message.conversation.should == conversation
-    message.user.should == alice
-
+    conversation = alice.conversations.where(subject: 'layup body carbon').first
     conversation.messages.count.should == 8
     conversation.task.should be_present
     conversation.project.should == project
+
+
+    message = conversation.messages.first
+    message.conversation.should == conversation
+    message.user.should == alice
+    message.reply.should be_false
+
     # conversation.followers.count.should == 0
     # conversation.muters.count.should == 0
 
     task = conversation.task
     task.project.should == project
     task.conversation.should == conversation
-    task.doers.count.should == 0
+    task.doers.should == [
+      member('tom@ucsd.edu'),
+      member('yan@ucsd.edu'),
+    ]
 
 
   end

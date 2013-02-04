@@ -68,13 +68,6 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
 
   add_index "tasks_users", ["user_id", "task_id"], :name => "index_tasks_users_on_user_id_and_task_id", :unique => true
 
-  # create_table "task_followers", :force => true do |t|
-  #   t.integer "user_id"
-  #   t.integer "task_id"
-  # end
-
-  # add_index "task_followers", ["user_id", "task_id"], :name => "index_task_followers_on_user_id_and_task_id", :unique => true
-
   create_table "tasks", :force => true do |t|
     t.datetime "done_at"
     t.datetime "due_at"

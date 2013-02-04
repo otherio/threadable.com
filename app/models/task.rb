@@ -6,6 +6,9 @@ class Task < ActiveRecord::Base
 
   has_and_belongs_to_many :doers, class_name: 'User'
 
+  scope :done, where('tasks.done_at IS NOT NULL')
+  scope :not_done, where('tasks.done_at IS NULL')
+
   def name
     conversation.subject
   end

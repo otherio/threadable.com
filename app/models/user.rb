@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :project_memberships
   has_many :projects, :through => :project_memberships
   has_many :messages
-  has_many :conversations, through: :messages, :uniq => true
+  has_many :conversations, through: :projects, :uniq => true
 
   has_and_belongs_to_many :tasks
 
