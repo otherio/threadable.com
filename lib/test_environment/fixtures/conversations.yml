@@ -1,64 +1,91 @@
 ---
 conversations_001:
-  id: 11
+  id: 1
+  type: 
   subject: Welcome to our new Multify project!
-  project_id: 19
+  project_id: 1
   slug: welcome-to-our-new-multify-project
-  task_id: 
-  created_at: 2013-02-04 03:06:15.884448000 Z
+  due_at: 
+  done_at: 
+  created_at: 2013-02-04 03:57:41.764807000 Z
+  updated_at: 2013-02-04 03:57:41.764807000 Z
 conversations_002:
-  id: 12
+  id: 2
+  type: 
   subject: How are we going to build the body?
-  project_id: 19
+  project_id: 1
   slug: how-are-we-going-to-build-the-body
-  task_id: 
-  created_at: 2013-02-04 03:06:15.904778000 Z
+  due_at: 
+  done_at: 
+  created_at: 2013-02-04 03:57:41.810454000 Z
+  updated_at: 2013-02-04 03:57:41.810454000 Z
 conversations_003:
-  id: 13
+  id: 3
+  type: Task
   subject: layup body carbon
-  project_id: 19
+  project_id: 1
   slug: layup-body-carbon
-  task_id: 8
-  created_at: 2013-02-04 03:06:15.910407000 Z
+  due_at: 
+  done_at: 2013-02-04 03:57:41.911425000 Z
+  created_at: 2013-02-04 03:57:41.829191000 Z
+  updated_at: 2013-02-04 03:57:41.912375000 Z
 conversations_004:
-  id: 14
+  id: 4
+  type: Task
   subject: install mirrors
-  project_id: 19
+  project_id: 1
   slug: install-mirrors
-  task_id: 9
-  created_at: 2013-02-04 03:06:15.924520000 Z
+  due_at: 
+  done_at: 
+  created_at: 2013-02-04 03:57:41.833140000 Z
+  updated_at: 2013-02-04 03:57:41.833140000 Z
 conversations_005:
-  id: 15
+  id: 5
+  type: Task
   subject: trim body panels
-  project_id: 19
+  project_id: 1
   slug: trim-body-panels
-  task_id: 10
-  created_at: 2013-02-04 03:06:15.930325000 Z
+  due_at: 
+  done_at: 
+  created_at: 2013-02-04 03:57:41.836283000 Z
+  updated_at: 2013-02-04 03:57:41.836283000 Z
 conversations_006:
-  id: 16
+  id: 6
+  type: Task
   subject: make wooden form for carbon layup
-  project_id: 19
+  project_id: 1
   slug: make-wooden-form-for-carbon-layup
-  task_id: 11
-  created_at: 2013-02-04 03:06:15.935660000 Z
+  due_at: 
+  done_at: 
+  created_at: 2013-02-04 03:57:41.839419000 Z
+  updated_at: 2013-02-04 03:57:41.839419000 Z
 conversations_007:
-  id: 17
+  id: 7
+  type: Task
   subject: get epoxy
-  project_id: 19
+  project_id: 1
   slug: get-epoxy
-  task_id: 12
-  created_at: 2013-02-04 03:06:15.954658000 Z
+  due_at: 
+  done_at: 2013-02-04 03:57:41.881023000 Z
+  created_at: 2013-02-04 03:57:41.857074000 Z
+  updated_at: 2013-02-04 03:57:41.882120000 Z
 conversations_008:
-  id: 18
+  id: 8
+  type: Task
   subject: get release agent
-  project_id: 19
+  project_id: 1
   slug: get-release-agent
-  task_id: 13
-  created_at: 2013-02-04 03:06:15.960262000 Z
+  due_at: 
+  done_at: 2013-02-04 03:57:41.885920000 Z
+  created_at: 2013-02-04 03:57:41.860036000 Z
+  updated_at: 2013-02-04 03:57:41.887313000 Z
 conversations_009:
-  id: 19
+  id: 9
+  type: Task
   subject: get carbon and fiberglass
-  project_id: 19
+  project_id: 1
   slug: get-carbon-and-fiberglass
-  task_id: 14
-  created_at: 2013-02-04 03:06:15.965580000 Z
+  due_at: 
+  done_at: 2013-02-04 03:57:41.889901000 Z
+  created_at: 2013-02-04 03:57:41.863067000 Z
+  updated_at: 2013-02-04 03:57:41.890792000 Z

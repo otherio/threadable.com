@@ -40,5 +40,7 @@ module TestEnvironment::Fixtures
     ::ActiveRecord::Fixtures.create_fixtures(fixtures_folder, fixtures)
   end
 
+  extend self
+
 
 end

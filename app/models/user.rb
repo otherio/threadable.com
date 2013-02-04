@@ -14,7 +14,8 @@ class User < ActiveRecord::Base
   has_many :messages
   has_many :conversations, through: :projects, :uniq => true
 
-  has_and_belongs_to_many :tasks
+  has_and_belongs_to_many :tasks, join_table: 'task_doers'
+
 
 
   # make sure the user has an auth token

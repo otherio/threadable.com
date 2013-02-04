@@ -14,14 +14,24 @@
 ActiveRecord::Schema.define(:version => 20130128014551) do
 
   create_table "conversations", :force => true do |t|
+    t.string   "type"
     t.string   "subject"
     t.integer  "project_id"
     t.string   "slug"
-    t.integer  "task_id"
+    t.datetime "due_at"
+    t.datetime "done_at"
     t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
+
+  create_table "task_doers", :force => true do |t|
+    t.integer "user_id"
+    t.integer "task_id"
+  end
+
+  add_index "task_doers", ["user_id", "task_id"], :name => "index_task_doers_on_user_id_and_task_id", :unique => true
 
   create_table "messages", :force => true do |t|
     t.integer  "conversation_id"
@@ -60,20 +70,6 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
   end
 
   add_index "projects", ["slug"], :name => "index_projects_on_slug", :unique => true
-
-  create_table "tasks_users", :force => true do |t|
-    t.integer "user_id"
-    t.integer "task_id"
-  end
-
-  add_index "tasks_users", ["user_id", "task_id"], :name => "index_tasks_users_on_user_id_and_task_id", :unique => true
-
-  create_table "tasks", :force => true do |t|
-    t.datetime "done_at"
-    t.datetime "due_at"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "users", :force => true do |t|
     t.text     "name"

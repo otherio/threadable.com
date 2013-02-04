@@ -41,16 +41,17 @@ module Guard
     end
 
     def run_db_test_prepare
-      UI.info "Guard::Schema is running rake db:test:prepare"
+      command = 'rake -t -v db:schema:load db:test:prepare'
+      UI.info "Guard::Schema is running #{command}"
       started_at = Time.now
-      result, image = if system("bundle exec rake db:test:prepare")
+      result, image = if system("bundle exec #{command}")
         ["Database schema prepared successfully", :success]
       else
         ["Error while preparing database schema", :failed]
       end
       UI.info result
-      UI.info "rake db:test:prepare ended #{Time.now - started_at} seconds"
-      ::Guard::Notifier.notify(result, :title => 'rake db:test:prepare', :image => image) if notify?
+      UI.info "#{command} ended #{Time.now - started_at} seconds"
+      ::Guard::Notifier.notify(result, :title => command, :image => image) if notify?
       result
     end
 

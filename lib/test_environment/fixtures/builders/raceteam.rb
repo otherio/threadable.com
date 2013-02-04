@@ -138,22 +138,15 @@ Class.new do
   end
 
   def create_task(subject)
-    conversation = @project.conversations.create!(subject: subject)
-    Task.create!(conversation: conversation)
+    @project.tasks.create!(subject: subject)
   end
 
   def add_doer_to_task user, subject
-    task = @project.conversations.where(subject: subject).first.task
-    task.doers << user
+    @project.tasks.find_by_subject(subject).doers << user
   end
 
   def complete_task subject
-    task = @project.conversations.where(subject: subject).first.task
-    task.done!
+    @project.tasks.find_by_subject(subject).done!
   end
 
 end.new.go!
-
-
-
-
