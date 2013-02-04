@@ -1,0 +1,14 @@
+%h2 Tasks
+
+.not-done
+  %h4 Not Done
+  %ul
+    - @project.tasks.not_done.each do |task|
+      %li
+        %a{href:""}= task.subject
+.done
+  %h4 Done
+  %ul
+    - @project.tasks.done.each do |task|
+      %li
+        %a{href:""}= task.subject

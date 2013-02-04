@@ -131,6 +131,7 @@ Class.new do
   end
 
   def send_message(attributes)
+    sleep 1
     subject = attributes[:subject].sub(/^re: /i, '')
     conversation = @project.conversations.find_or_create_by_subject(subject) or
       raise "cant get project for subject: #{attributes.inspect}"
@@ -138,14 +139,17 @@ Class.new do
   end
 
   def create_task(subject)
+    sleep 1
     @project.tasks.create!(subject: subject)
   end
 
   def add_doer_to_task user, subject
+    sleep 1
     @project.tasks.find_by_subject(subject).doers << user
   end
 
   def complete_task subject
+    sleep 1
     @project.tasks.find_by_subject(subject).done!
   end
 

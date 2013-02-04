@@ -41,6 +41,7 @@ class Widgets::Base
     @options, @html_options = @html_options, @html_options.slice!(*default_options.keys)
     @options.reverse_merge!(default_options)
     @html_options.add_classname(self.classname)
+    init *@arguments
     locals.merge!(@options)
   end
 
@@ -51,6 +52,9 @@ class Widgets::Base
   def self.node_type node_type=nil
     @node_type = node_type unless node_type.nil?
     @node_type || :div
+  end
+
+  def init *arguments
   end
 
   def locals

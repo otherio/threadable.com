@@ -1,4 +1,7 @@
 class ConversationsController < ApplicationController
+
+  layout 'conversations'
+
   # GET /conversations
   # GET /conversations.json
   def index
@@ -13,10 +16,15 @@ class ConversationsController < ApplicationController
   # GET /conversations/1
   # GET /conversations/1.json
   def show
-    @conversation = project.conversations.find(params[:id])
+    @conversation = project.conversations.
+      where(slug: params[:id]).
+      includes(messages: :user).first
+
+    # conversation = conversation.to_read_only_object(include: { messages: { include: :user } })
+    # conversation.wtf!
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html {}
       format.json { render json: @conversation }
     end
   end
@@ -40,7 +48,7 @@ class ConversationsController < ApplicationController
   # PUT /conversations/1/mute
   # PUT /conversations/1/mute.json
   def mute
-    @conversation = project.conversations.find(params[:id])
+    @conversation = project.conversations.find_by_slug!(params[:id])
 
     respond_to do |format|
       if @conversation.mute!

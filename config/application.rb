@@ -79,3 +79,6 @@ module Multify
     config.middleware.use "Widgets::GenerateSass"
   end
 end
+
+require 'wtf'
+require 'active_record_read_only'

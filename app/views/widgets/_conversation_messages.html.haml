@@ -1,0 +1,19 @@
+%h2= conversation.subject
+%ol.messages
+  - conversation.messages.each do |message|
+    %li
+      %p
+        From:
+        - if message.user.present?
+          = message.user.name
+        - else
+          = message.from
+      %p= message.body
+
+
+  %li.new
+    = form_for :message do |f|
+      %div
+        = f.text_area :body, cols: nil, rows: nil
+      .pull-right
+        %input.btn{type: 'submit', value: 'Send'}

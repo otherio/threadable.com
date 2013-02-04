@@ -7,8 +7,9 @@ conversations_001:
   slug: welcome-to-our-new-multify-project
   due_at: 
   done_at: 
-  created_at: 2013-02-04 03:57:41.764807000 Z
-  updated_at: 2013-02-04 03:57:41.764807000 Z
+  messages_count: 2
+  created_at: 2013-02-04 05:20:53.995457000 Z
+  updated_at: 2013-02-04 05:20:55.048112000 Z
 conversations_002:
   id: 2
   type: 
@@ -17,8 +18,9 @@ conversations_002:
   slug: how-are-we-going-to-build-the-body
   due_at: 
   done_at: 
-  created_at: 2013-02-04 03:57:41.810454000 Z
-  updated_at: 2013-02-04 03:57:41.810454000 Z
+  messages_count: 1
+  created_at: 2013-02-04 05:20:56.056960000 Z
+  updated_at: 2013-02-04 05:20:56.062504000 Z
 conversations_003:
   id: 3
   type: Task
@@ -26,9 +28,10 @@ conversations_003:
   project_id: 1
   slug: layup-body-carbon
   due_at: 
-  done_at: 2013-02-04 03:57:41.911425000 Z
-  created_at: 2013-02-04 03:57:41.829191000 Z
-  updated_at: 2013-02-04 03:57:41.912375000 Z
+  done_at: 2013-02-04 05:21:21.302775000 Z
+  messages_count: 8
+  created_at: 2013-02-04 05:20:57.085089000 Z
+  updated_at: 2013-02-04 05:21:21.304223000 Z
 conversations_004:
   id: 4
   type: Task
@@ -37,8 +40,9 @@ conversations_004:
   slug: install-mirrors
   due_at: 
   done_at: 
-  created_at: 2013-02-04 03:57:41.833140000 Z
-  updated_at: 2013-02-04 03:57:41.833140000 Z
+  messages_count: 0
+  created_at: 2013-02-04 05:20:58.094149000 Z
+  updated_at: 2013-02-04 05:20:58.094149000 Z
 conversations_005:
   id: 5
   type: Task
@@ -47,8 +51,9 @@ conversations_005:
   slug: trim-body-panels
   due_at: 
   done_at: 
-  created_at: 2013-02-04 03:57:41.836283000 Z
-  updated_at: 2013-02-04 03:57:41.836283000 Z
+  messages_count: 0
+  created_at: 2013-02-04 05:20:59.101612000 Z
+  updated_at: 2013-02-04 05:20:59.101612000 Z
 conversations_006:
   id: 6
   type: Task
@@ -57,8 +62,9 @@ conversations_006:
   slug: make-wooden-form-for-carbon-layup
   due_at: 
   done_at: 
-  created_at: 2013-02-04 03:57:41.839419000 Z
-  updated_at: 2013-02-04 03:57:41.839419000 Z
+  messages_count: 0
+  created_at: 2013-02-04 05:21:00.109820000 Z
+  updated_at: 2013-02-04 05:21:00.109820000 Z
 conversations_007:
   id: 7
   type: Task
@@ -66,9 +72,10 @@ conversations_007:
   project_id: 1
   slug: get-epoxy
   due_at: 
-  done_at: 2013-02-04 03:57:41.881023000 Z
-  created_at: 2013-02-04 03:57:41.857074000 Z
-  updated_at: 2013-02-04 03:57:41.882120000 Z
+  done_at: 2013-02-04 05:21:13.220684000 Z
+  messages_count: 0
+  created_at: 2013-02-04 05:21:04.153136000 Z
+  updated_at: 2013-02-04 05:21:13.221915000 Z
 conversations_008:
   id: 8
   type: Task
@@ -76,9 +83,10 @@ conversations_008:
   project_id: 1
   slug: get-release-agent
   due_at: 
-  done_at: 2013-02-04 03:57:41.885920000 Z
-  created_at: 2013-02-04 03:57:41.860036000 Z
-  updated_at: 2013-02-04 03:57:41.887313000 Z
+  done_at: 2013-02-04 05:21:14.227429000 Z
+  messages_count: 0
+  created_at: 2013-02-04 05:21:05.161929000 Z
+  updated_at: 2013-02-04 05:21:14.228713000 Z
 conversations_009:
   id: 9
   type: Task
@@ -86,6 +94,7 @@ conversations_009:
   project_id: 1
   slug: get-carbon-and-fiberglass
   due_at: 
-  done_at: 2013-02-04 03:57:41.889901000 Z
-  created_at: 2013-02-04 03:57:41.863067000 Z
-  updated_at: 2013-02-04 03:57:41.890792000 Z
+  done_at: 2013-02-04 05:21:15.234802000 Z
+  messages_count: 0
+  created_at: 2013-02-04 05:21:06.170690000 Z
+  updated_at: 2013-02-04 05:21:15.236238000 Z

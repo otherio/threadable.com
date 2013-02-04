@@ -76,7 +76,7 @@ describe ConversationsController do
 
       it "redirects to the created conversation" do
         post :create, valid_params.merge(:conversation => valid_attributes), valid_session
-        response.should redirect_to conversation_url(project, Conversation.last)
+        response.should redirect_to conversation_url(project, Conversation.first)
       end
     end
 

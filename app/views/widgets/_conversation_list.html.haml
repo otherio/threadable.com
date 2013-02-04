@@ -1,0 +1,11 @@
+%h2 Conversations
+%ul
+  - conversations.each do |conversation|
+    %li
+      = link_to conversation_path(conversation.project, conversation) do
+        (#{conversation.messages.count}) #{conversation.subject}
+    -#
+      %ul
+        - conversation.messages.each do |message|
+          %li
+            = message.body

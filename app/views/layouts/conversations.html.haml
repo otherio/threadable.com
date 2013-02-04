@@ -1,0 +1,7 @@
+= layout_wrapper do
+  .conversations_layout
+    .left
+      = render_widget :task_list, @project.tasks
+
+    .right
+      = yield

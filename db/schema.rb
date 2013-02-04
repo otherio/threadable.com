@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
     t.string   "slug"
     t.datetime "due_at"
     t.datetime "done_at"
+    t.integer  "messages_count", :default => 0
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
