@@ -1,15 +1,13 @@
 require 'cucumber/rails'
 require 'capybara_environment'
 
-CapybaraEnvironment.setup!
 World(CapybaraEnvironment)
-DatabaseCleaner.strategy = :truncation
-DatabaseCleaner.clean
+CapybaraEnvironment.before_all!
 
-Before do
-  DatabaseCleaner.start
+Before do |scenario|
+  before_each! scenario
 end
 
-After do
-  DatabaseCleaner.clean
+After do |scenario|
+  after_each! scenario
 end

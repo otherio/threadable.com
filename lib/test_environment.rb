@@ -1,4 +1,6 @@
 require 'factory_girl'
+require 'database_cleaner'
+
 module TestEnvironment
 
   include FactoryGirl::Syntax::Methods
@@ -7,4 +9,20 @@ module TestEnvironment
     include "TestEnvironment::#{File.basename(path, '.rb').camelize}".constantize
   end
 
+  def before_all! test=nil
+
+  end
+
+  def before_each! test=nil
+
+  end
+
+  def after_each! test=nil
+
+  end
+
+  extend self
+
 end
+
+DatabaseCleaner.strategy = :truncation

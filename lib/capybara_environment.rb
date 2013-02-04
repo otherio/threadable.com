@@ -12,7 +12,7 @@ module CapybaraEnvironment
     include "CapybaraEnvironment::#{File.basename(path, '.rb').camelize}".constantize
   end
 
-  def self.setup!
+  def before_all!
     Capybara.register_driver :selenium do |app|
       Capybara::Selenium::Driver.new(app, browser: :chrome)
     end
@@ -22,6 +22,20 @@ module CapybaraEnvironment
     Capybara.javascript_driver      = :selenium
     Capybara.default_selector       = :css
     Capybara.default_wait_time      = 5
+    super
   end
+
+  def before_each! test=nil
+    DatabaseCleaner.clean
+    TestEnvironment::Fixtures.build!
+    DatabaseCleaner.start
+    super
+  end
+
+  def after_each! test=nil
+    super
+  end
+
+  extend self
 
 end

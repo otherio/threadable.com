@@ -2,12 +2,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-
 require 'capybara_environment'
-
-CapybaraEnvironment.setup!
-Capybara.javascript_driver = :selenium
-Capybara.default_driver = :webkit
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
@@ -25,23 +20,25 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   DatabaseCleaner.strategy = :truncation
+  DatabaseCleaner.clean
 
-  config.before do |spec|
+  config.before :all do
+    CapybaraEnvironment.before_all!
+  end
+
+  config.before :each do |spec|
+    before_each! spec
     case spec.example.metadata[:type]
     when :request, :acceptance
       config.use_transactional_fixtures = false
-      build_fixtures
-      DatabaseCleaner.start
     end
   end
 
-  config.after do |spec|
-    case spec.example.metadata[:type]
-    when :request, :acceptance
-      DatabaseCleaner.clean
-      config.use_transactional_fixtures = true
-    end
+  config.after :each do |spec|
+    after_each! spec
+    config.use_transactional_fixtures = true
   end
+
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
