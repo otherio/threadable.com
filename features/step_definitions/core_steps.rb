@@ -52,3 +52,7 @@ end
 When /^I debug$/ do
   debugger;1
 end
+
+Given /^this scenario is pending(?: because (.+))?$/ do |reason|
+  pending reason
+end
