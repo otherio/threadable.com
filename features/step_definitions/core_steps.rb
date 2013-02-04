@@ -48,3 +48,7 @@ end
 Then /^I should see "(.*?)"$/ do |content|
   page.should have_content content
 end
+
+When /^I debug$/ do
+  debugger;1
+end

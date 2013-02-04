@@ -4,6 +4,8 @@ module TestEnvironment::Paths
     case name
     when 'the home page'
       root_path
+    when 'the join page'
+      new_user_registration_path
     else
       raise "\n\nCan't find mapping from \"#{name}\" to a path.\nNow, go and add a mapping in #{__FILE__}\n\n"
     end
