@@ -24,6 +24,7 @@ end
 
 group :development do
   gem 'style-guide'
+  gem 'rb-fsevent', require: nil
 end
 
 group :development, :test do
@@ -44,7 +45,4 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara-webkit'
   gem 'fixture_builder'
-  # gem 'autotest-rails'
-  # gem 'autotest-fsevent'
-  gem 'rb-fsevent', :require => false if RUBY_PLATFORM =~ /darwin/i
 end
