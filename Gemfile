@@ -28,6 +28,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'rspec'
   gem 'rspec-rails'
   gem 'debugger'
   gem 'sqlite3'
