@@ -1,13 +1,27 @@
 Multify = {
 
   widgets: {},
+  pages: {},
 
-  init: function(){
-    Multify.init = $.noop;
-    // initialize all widgets
-    $.each(Multify.widgets, function(name, widget){
+  initialize: function(){
+    this.init = $.noop;
+    this.initializeWidgets();
+    this.initializePage();
+  },
+
+  initializeWidgets: function(){
+    $.each(this.widgets, function(name, widget){
       if (widget.initialize) widget.initialize();
     });
+  },
+
+  initializePage: function(){
+    var page = this.pages[this.pageName()];
+    if (page) page.initialize();
+  },
+
+  pageName: function(){
+    return $('#page').attr('name');
   }
 
 };

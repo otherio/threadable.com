@@ -1,5 +1,9 @@
-%h1 New conversation
+- url = project_conversations_path(@conversation.project)
+= form_for @conversation, url: url do |c|
+  .fields
+    = c.text_field :subject, placeholder: 'Subject'
+    = c.fields_for :messages do |m|
+      = m.text_area :body, cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."
+  .pull-right
+    %input.btn{type: 'submit', value: 'Send'}
 
-= render 'form'
-
-= link_to 'Back', conversations_path

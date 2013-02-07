@@ -1,5 +1,5 @@
 class Conversation < ActiveRecord::Base
-  attr_accessible :subject
+  attr_accessible :subject, :messages
 
   belongs_to :project
   has_many :messages

@@ -1,0 +1,9 @@
+%h4 New Message
+%p From: #{current_user.name}
+- message = conversation.messages.build
+- url = project_conversation_messages_path(conversation.project, conversation)
+= form_for message, as: :message, url: url, remote: true do |f|
+  .body_field
+    = f.text_area :body, cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."
+  .pull-right
+    %input.btn{type: 'submit', value: 'Send'}

@@ -13,6 +13,17 @@ class ConversationsController < ApplicationController
     end
   end
 
+  # GET /conversations/new
+  # GET /conversations/new.json
+  def new
+    @conversation = project.conversations.build
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @conversations }
+    end
+  end
+
   # GET /conversations/1
   # GET /conversations/1.json
   def show
@@ -32,11 +43,12 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
+    @message = Message.new(params[:conversation].delete(:messages))
     @conversation = project.conversations.new(params[:conversation])
 
     respond_to do |format|
-      if @conversation.save
-        format.html { redirect_to conversation_url(project, @conversation), notice: 'Conversation was successfully created.' }
+      if @conversation.save && @conversation.messages << @message
+        format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully created.' }
         format.json { render json: @conversation, status: :created, location: @conversation }
       else
         format.html { render action: "new" }
