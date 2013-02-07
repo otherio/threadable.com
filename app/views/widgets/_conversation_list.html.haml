@@ -2,7 +2,7 @@
 %ul
   - conversations.each do |conversation|
     %li
-      = link_to conversation_path(conversation.project, conversation) do
+      = link_to project_conversation_path(conversation.project, conversation) do
         (#{conversation.messages.count}) #{conversation.subject}
     -#
       %ul
