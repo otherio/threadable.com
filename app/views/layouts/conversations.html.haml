@@ -1,7 +1,13 @@
 = layout_wrapper do
   .conversations_layout
     .left
-      = render_widget :task_list, @project.tasks
+      %h2 Tasks
+      .not-done
+        %h4 Not Done
+        = render_widget :task_list, @project.tasks.not_done
+      .done
+        %h4 Done
+        = render_widget :task_list, @project.tasks.done
 
     .right
       = yield
