@@ -100,6 +100,33 @@ describe ConversationsController do
     end
   end
 
+  describe "POST add_doer" do
+    let(:doer) { create(:user) }
+    let(:task) { project.tasks.create! valid_attributes }
+
+    context "with valid params" do
+      it "adds a doer" do
+        expect {
+          post :add_doer, valid_params.merge(:task_id => task.to_param) #, {:doer_id => doer.id}
+        }.to change(task.doers, :count).by(1)
+      end
+
+      it "redirects back to the task" do
+        pending
+        post :add_doer, valid_params.merge(:doer => doer)
+        response.should redirect_to conversation_url(project, Conversation.first)
+      end
+    end
+
+    context "with a user id that isn't part of the project" do
+      it "returns a 404" do
+        1.should == 0
+      end
+    end
+
+  end
+
+
   describe "PUT mute" do
     # describe "with valid params" do
     #   it "updates the requested conversation" do

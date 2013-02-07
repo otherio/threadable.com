@@ -24,5 +24,7 @@ describe "Conversations" do
       get project_conversations_path(project)
       response.status.should be(200)
     end
+
+
   end
 end

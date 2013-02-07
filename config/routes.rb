@@ -18,6 +18,8 @@ Multify::Application.routes.draw do
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
   get '/:project_id' => 'projects#show',      :as => 'project'
 
+  post '/:project_id/conversations/:task_id/add_doer' => 'conversations#add_doer', :as => 'add_doer'
+
   root :to => 'homepage#show'
 
 end

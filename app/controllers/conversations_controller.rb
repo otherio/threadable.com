@@ -76,6 +76,25 @@ class ConversationsController < ApplicationController
     end
   end
 
+  # POST /conversations/1/add_doer
+  # POST /conversations/1/add_doer.json
+  def add_doer
+    @task = project.tasks.find_by_slug!(params[:task_id])
+    @doer = project.members.where(id: params[:doer_id]).first
+    respond_to do |format|
+    #   unless @doer.present?
+    #     # return a 404
+    #   end
+      if @task.doers.create(user: @doer)
+        format.html { redirect_to conversation_url(project, @task), notice: "Added #{doer.name} to this task."}
+        format.json { head :no_content, status: 202 }
+      else
+      end
+
+    end
+
+  end
+
   private
 
   def project
