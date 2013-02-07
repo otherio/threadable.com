@@ -1,46 +1,46 @@
 ---
 project_memberships_001:
-  id: 6
-  project_id: 9
-  user_id: 7
+  id: 1
+  project_id: 1
+  user_id: 1
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-02-04 21:52:52.152806000 Z
-  updated_at: 2013-02-04 21:52:52.152806000 Z
+  created_at: 2013-02-07 04:42:16.278020000 Z
+  updated_at: 2013-02-07 04:42:16.278020000 Z
 project_memberships_002:
-  id: 7
-  project_id: 9
-  user_id: 8
+  id: 2
+  project_id: 1
+  user_id: 2
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-02-04 21:52:52.177439000 Z
-  updated_at: 2013-02-04 21:52:52.177439000 Z
+  created_at: 2013-02-07 04:42:16.297308000 Z
+  updated_at: 2013-02-07 04:42:16.297308000 Z
 project_memberships_003:
-  id: 8
-  project_id: 9
-  user_id: 9
+  id: 3
+  project_id: 1
+  user_id: 3
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-02-04 21:52:52.211229000 Z
-  updated_at: 2013-02-04 21:52:52.211229000 Z
+  created_at: 2013-02-07 04:42:16.312539000 Z
+  updated_at: 2013-02-07 04:42:16.312539000 Z
 project_memberships_004:
-  id: 9
-  project_id: 9
-  user_id: 10
+  id: 4
+  project_id: 1
+  user_id: 4
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-02-04 21:52:52.224630000 Z
-  updated_at: 2013-02-04 21:52:52.224630000 Z
+  created_at: 2013-02-07 04:42:16.327423000 Z
+  updated_at: 2013-02-07 04:42:16.327423000 Z
 project_memberships_005:
-  id: 10
-  project_id: 9
-  user_id: 11
+  id: 5
+  project_id: 1
+  user_id: 5
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-02-04 21:52:52.237964000 Z
-  updated_at: 2013-02-04 21:52:52.237964000 Z
+  created_at: 2013-02-07 04:42:16.344818000 Z
+  updated_at: 2013-02-07 04:42:16.344818000 Z

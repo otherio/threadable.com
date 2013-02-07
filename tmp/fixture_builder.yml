@@ -1,15 +1,15 @@
 ---
 db/schema.rb: !binary |-
   ZDI4ZTczODFjOTM5NWFmODA4MDg5NDE0ODU3MjYyYmY=
-/Volumes/multify/lib/test_environment/factories/conversation_factory.rb: !binary |-
+/Users/nicoles/multify-rails/lib/test_environment/factories/conversation_factory.rb: !binary |-
   YWQxODkzMWJiOWU1YmE3MDRmZjNmNWY4NTMxODEwOWY=
-/Volumes/multify/lib/test_environment/factories/project_factory.rb: !binary |-
+/Users/nicoles/multify-rails/lib/test_environment/factories/project_factory.rb: !binary |-
   YjcxNTg1Mzk1ZjY1MGU4Mjc4OWM0MDc0NGY1OWVjMGI=
-/Volumes/multify/lib/test_environment/factories/task_factory.rb: !binary |-
+/Users/nicoles/multify-rails/lib/test_environment/factories/task_factory.rb: !binary |-
   Y2IxZmFhNDI0YmMyNmRiZTMyNWU4ZDU0ZGFmYzQxOTE=
-/Volumes/multify/lib/test_environment/factories/user_factory.rb: !binary |-
+/Users/nicoles/multify-rails/lib/test_environment/factories/user_factory.rb: !binary |-
   NTcxY2U0ZTkxZGU5NGEyYzQ0YmM3YzE5ZDYwMmFiMzQ=
-/Volumes/multify/lib/test_environment/fixtures/builders/raceteam.rb: !binary |-
+/Users/nicoles/multify-rails/lib/test_environment/fixtures/builders/raceteam.rb: !binary |-
   ZDZlMWUwZTNlZTg1YjIyMGQ2NDk3Y2FjODUxYWY0OGE=
-/Volumes/multify/lib/test_environment/fixtures.rb: !binary |-
+/Users/nicoles/multify-rails/lib/test_environment/fixtures.rb: !binary |-
   Y2NlNzA3NzRmNjk2OTY1N2VlNWE4NDFhOWQ2ZGJkZWU=
