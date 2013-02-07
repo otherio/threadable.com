@@ -11,7 +11,7 @@ Class.new do
       name: 'UCSD Electric Racing',
       description: 'Senior engineering electric race team!'
     )
-    @project.project_memberships.create!(user: @users[:alice])
+    @project.members << @users[:alice]
 
     # Alice invites her project mates
     @users[:tom]     = invite_user('Tom Canver',      'tom@ucsd.edu')
@@ -126,12 +126,11 @@ Class.new do
 
   def invite_user name, email
     user = create_user(name, email)
-    @project.project_memberships.create!(user: user)
+    @project.members << user
     user
   end
 
   def send_message(attributes)
-    sleep 1
     subject = attributes[:subject].sub(/^re: /i, '')
     conversation = @project.conversations.find_or_create_by_subject(subject) or
       raise "cant get project for subject: #{attributes.inspect}"
@@ -139,17 +138,14 @@ Class.new do
   end
 
   def create_task(subject)
-    sleep 1
     @project.tasks.create!(subject: subject)
   end
 
   def add_doer_to_task user, subject
-    sleep 1
     @project.tasks.find_by_subject(subject).doers << user
   end
 
   def complete_task subject
-    sleep 1
     @project.tasks.find_by_subject(subject).done!
   end
 

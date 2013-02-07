@@ -2,6 +2,8 @@ class ConversationsController < ApplicationController
 
   layout 'conversations'
 
+  before_filter :authenticate_user!
+
   # GET /conversations
   # GET /conversations.json
   def index
@@ -43,11 +45,12 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    @message = Message.new(params[:conversation].delete(:messages))
+    message = params[:conversation].delete(:messages)
     @conversation = project.conversations.new(params[:conversation])
+    @conversation.messages.build(message)
 
     respond_to do |format|
-      if @conversation.save && @conversation.messages << @message
+      if @conversation.save
         format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully created.' }
         format.json { render json: @conversation, status: :created, location: @conversation }
       else

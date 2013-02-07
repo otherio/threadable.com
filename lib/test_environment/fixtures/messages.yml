@@ -1,8 +1,8 @@
 ---
 messages_001:
-  id: 1
-  conversation_id: 1
-  user_id: 1
+  id: 46
+  conversation_id: 47
+  user_id: 30
   body: Hey all! I think we should try this way to organize our conversation and work
     for the car. Thanks for joining up!
   reply: false
@@ -11,12 +11,12 @@ messages_001:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:17.461037000 Z
-  updated_at: 2013-02-07 04:42:17.461037000 Z
+  created_at: 2013-02-07 07:07:33.022168000 Z
+  updated_at: 2013-02-07 07:07:33.022168000 Z
 messages_002:
-  id: 2
-  conversation_id: 1
-  user_id: 4
+  id: 47
+  conversation_id: 47
+  user_id: 33
   body: Yay! You go Alice. This tool looks radder than an 8-legged panda.
   reply: true
   from: 
@@ -24,12 +24,12 @@ messages_002:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:18.472405000 Z
-  updated_at: 2013-02-07 04:42:18.472405000 Z
+  created_at: 2013-02-07 07:07:33.032105000 Z
+  updated_at: 2013-02-07 07:07:33.032105000 Z
 messages_003:
-  id: 3
-  conversation_id: 2
-  user_id: 2
+  id: 48
+  conversation_id: 48
+  user_id: 31
   body: I'm not 100% clear on the right way to go for this, but we should figure out
     if we're going to make the body out of carbon or buy a giant boat and cut it up
     or whatever.
@@ -39,12 +39,12 @@ messages_003:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:19.493190000 Z
-  updated_at: 2013-02-07 04:42:19.493190000 Z
+  created_at: 2013-02-07 07:07:33.046104000 Z
+  updated_at: 2013-02-07 07:07:33.046104000 Z
 messages_004:
-  id: 4
-  conversation_id: 3
-  user_id: 1
+  id: 49
+  conversation_id: 49
+  user_id: 30
   body: ! 'Some stuff about how we have decided on a course of action for this body.
 
     So, let''s do some carbon layup!'
@@ -54,12 +54,12 @@ messages_004:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:24.568266000 Z
-  updated_at: 2013-02-07 04:42:24.568266000 Z
+  created_at: 2013-02-07 07:07:33.101769000 Z
+  updated_at: 2013-02-07 07:07:33.101769000 Z
 messages_005:
-  id: 5
-  conversation_id: 3
-  user_id: 2
+  id: 50
+  conversation_id: 49
+  user_id: 31
   body: ! 'Totally!
 
     I''m thinking we can do this on our first January workday. I''ll make sure we
@@ -70,12 +70,12 @@ messages_005:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:25.583127000 Z
-  updated_at: 2013-02-07 04:42:25.583127000 Z
+  created_at: 2013-02-07 07:07:33.113737000 Z
+  updated_at: 2013-02-07 07:07:33.113737000 Z
 messages_006:
-  id: 6
-  conversation_id: 3
-  user_id: 3
+  id: 51
+  conversation_id: 49
+  user_id: 32
   body: I'm so there! Also, I think I can probably pick up some of those supplies
     from a friend, who was trying to make a kayak.
   reply: true
@@ -84,12 +84,12 @@ messages_006:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:30.644051000 Z
-  updated_at: 2013-02-07 04:42:30.644051000 Z
+  created_at: 2013-02-07 07:07:33.191899000 Z
+  updated_at: 2013-02-07 07:07:33.191899000 Z
 messages_007:
-  id: 7
-  conversation_id: 3
-  user_id: 2
+  id: 52
+  conversation_id: 49
+  user_id: 31
   body: ! 'So, I''ve got a question: we''re using two layers of carbon with a layer
     of fiberglass between them for the bottom body panel, but do we want to do the
     same for the top? It doesn''t need to be as strong, and less fiberglass would
@@ -100,12 +100,12 @@ messages_007:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:39.733324000 Z
-  updated_at: 2013-02-07 04:42:39.733324000 Z
+  created_at: 2013-02-07 07:07:33.240946000 Z
+  updated_at: 2013-02-07 07:07:33.240946000 Z
 messages_008:
-  id: 8
-  conversation_id: 3
-  user_id: 1
+  id: 53
+  conversation_id: 49
+  user_id: 30
   body: I think I can get in touch with Yan's friend who built the carbon kayak.  He
     might know!
   reply: true
@@ -114,11 +114,11 @@ messages_008:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:40.747703000 Z
-  updated_at: 2013-02-07 04:42:40.747703000 Z
+  created_at: 2013-02-07 07:07:33.250650000 Z
+  updated_at: 2013-02-07 07:07:33.250650000 Z
 messages_009:
-  id: 9
-  conversation_id: 3
+  id: 54
+  conversation_id: 49
   user_id: 
   body: ! 'Hey all! This looks pretty neat. Lets see if I can help you out here...
 
@@ -138,12 +138,12 @@ messages_009:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:41.761366000 Z
-  updated_at: 2013-02-07 04:42:41.761366000 Z
+  created_at: 2013-02-07 07:07:33.260677000 Z
+  updated_at: 2013-02-07 07:07:33.260677000 Z
 messages_010:
-  id: 10
-  conversation_id: 3
-  user_id: 2
+  id: 55
+  conversation_id: 49
+  user_id: 31
   body: Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass
     like you suggested, since we're under weight on the wheels anyway.
   reply: true
@@ -152,12 +152,12 @@ messages_010:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:42.774309000 Z
-  updated_at: 2013-02-07 04:42:42.774309000 Z
+  created_at: 2013-02-07 07:07:33.270283000 Z
+  updated_at: 2013-02-07 07:07:33.270283000 Z
 messages_011:
-  id: 11
-  conversation_id: 3
-  user_id: 2
+  id: 56
+  conversation_id: 49
+  user_id: 31
   body: This turned out super awesome! Yan and Bethany and I stayed til 8pm doing
     the layup and fitting everything on the vacuum table. The pieces are curing in
     the oven now, but we got some photos of them before they went in. Bethany got
@@ -168,5 +168,5 @@ messages_011:
   children: 
   parent_id: 
   message_id_header: 
-  created_at: 2013-02-07 04:42:43.788039000 Z
-  updated_at: 2013-02-07 04:42:43.788039000 Z
+  created_at: 2013-02-07 07:07:33.280340000 Z
+  updated_at: 2013-02-07 07:07:33.280340000 Z

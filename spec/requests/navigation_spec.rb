@@ -7,25 +7,24 @@ describe "Navbar" do
     let(:project2) { create(:project) }
 
     before do
-      project.project_memberships.create(user: user)
-      project2.project_memberships.create(user: user)
+      project.members << user
+      project2.members << user
     end
 
     it "should include the project name" do
-      visit '/'
+      visit root_path
       click_on 'Login'
       page.current_path.should == new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
       click_button 'Sign in'
 
-      visit "/#{project.slug}"
+      visit project_path(project)
 
       page.should have_content project.name
     end
 
-    it "should include a dropdown with the other projects" do
-      1.should == 0
-    end
+    it "should include a dropdown with the other projects"
+
   end
 end
