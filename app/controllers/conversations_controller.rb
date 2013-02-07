@@ -64,7 +64,7 @@ class ConversationsController < ApplicationController
   private
 
   def project
-    @project ||= Project.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.find_by_slug!(params[:project_id])
   end
 
 end

@@ -1,19 +1,16 @@
 %h2= conversation.subject
+
 %ol.messages
   - conversation.messages.each do |message|
-    %li
-      %p
-        From:
-        - if message.user.present?
-          = message.user.name
-        - else
-          = message.from
-      %p= message.body
+    %li= render_widget(:message, message)
 
-
-  %li.new
-    = form_for :message do |f|
-      %div
-        = f.text_area :body, cols: nil, rows: nil
-      .pull-right
-        %input.btn{type: 'submit', value: 'Send'}
+.new_conversation_message
+  %h4 New Message
+  %p From: #{current_user.name}
+  - message = conversation.messages.build
+  - url = project_conversation_messages_path(conversation.project, conversation)
+  = form_for message, as: :message, url: url, remote: true do |f|
+    .body_field
+      = f.text_area :body, cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."
+    .pull-right
+      %input.btn{type: 'submit', value: 'Send'}

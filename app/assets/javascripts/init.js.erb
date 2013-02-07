@@ -1,3 +1,8 @@
 //= require modernizr
 
-Modernizr.load(<%= asset_path('application.js').to_json %>);
+yepnope({
+  load: <%= [asset_path('application.js')].to_json %>,
+  callback: function(){
+    Multify.init();
+  }
+});

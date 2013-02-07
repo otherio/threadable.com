@@ -7,11 +7,12 @@ Multify::Application.routes.draw do
   end
 
   resources :projects, except: [:edit, :show]
-  scope '/:project_id' do
+  scope '/:project_id', :as => 'project' do
     resources :conversations, :only => [:index, :show, :create] do
       member do
         put :mute
       end
+      resources :messages, :only => [:create]
     end
   end
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'

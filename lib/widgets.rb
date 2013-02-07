@@ -13,8 +13,12 @@ class Widgets
     "::#{name.camelize}Widget".constantize
   end
 
-  def self.render name, *arguments, &block
-    get(name).render(*arguments, &block)
+  def self.render name, view, *arguments, &block
+    # I have no idea why I need to do this sometimes
+    view.class.send :include, Haml::Helpers unless view.class.include? Haml::Helpers
+    view.init_haml_helpers if view.send(:haml_buffer).nil?
+    # end of bug fix
+    get(name).render(view, *arguments, &block)
   end
 
   def self.generate_sass!

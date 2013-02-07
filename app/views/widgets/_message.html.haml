@@ -1,0 +1,7 @@
+%p
+  From:
+  - if message.user.present?
+    = message.user.name
+  - else
+    = message.from
+%p= message.body

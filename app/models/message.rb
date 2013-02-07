@@ -12,6 +12,8 @@ class Message < ActiveRecord::Base
 
   before_create :touch_conversation_update_at
 
+  validates_presence_of :body
+
   private
 
   def touch_conversation_update_at

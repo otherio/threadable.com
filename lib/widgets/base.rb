@@ -68,8 +68,11 @@ class Widgets::Base
   def render
     @view.capture do
       @view.haml_tag(self.class.node_type, html_options) do
-        @view.concat \
+        @view.concat begin
           @view.render(partial: "widgets/#{classname}", locals: locals, &block)
+        rescue ActionView::MissingTemplate
+          @view.render(partial: "widgets/#{classname}.html", locals: locals, &block)
+        end
       end
     end
   end

@@ -82,3 +82,4 @@ end
 
 require 'wtf'
 require 'active_record_read_only'
+require 'ruby_template_handler'

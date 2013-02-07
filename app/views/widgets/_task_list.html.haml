@@ -2,4 +2,4 @@
   - tasks.each do |task|
     %li{title: task.subject}
       %input{type: "checkbox", checked: task.done?}
-      = link_to task.subject, conversation_url(@project, task)
+      = link_to task.subject, project_conversation_url(@project, task)
