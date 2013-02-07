@@ -269,6 +269,7 @@ DEPENDENCIES
   pry-rails
   rails (= 3.2.11)
   rb-fsevent
+  rspec
   rspec-rails
   sass-rails
   shoulda-matchers
