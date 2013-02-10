@@ -81,18 +81,13 @@ class ConversationsController < ApplicationController
   def add_doer
     @task = project.tasks.find_by_slug!(params[:task_id])
     @doer = project.members.where(id: params[:doer_id]).first
+    raise ActiveRecord::RecordNotFound unless @doer.present?
+
     respond_to do |format|
-    #   unless @doer.present?
-    #     # return a 404
-    #   end
-      if @task.doers.create(user: @doer)
-        format.html { redirect_to conversation_url(project, @task), notice: "Added #{doer.name} to this task."}
-        format.json { head :no_content, status: 202 }
-      else
-      end
-
+      @task.doers << @doer
+      format.html { redirect_to project_conversation_url(project, @task), notice: "Added #{@doer.name} to this task."}
+      format.json { head :created }
     end
-
   end
 
   private

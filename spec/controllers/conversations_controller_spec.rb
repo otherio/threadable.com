@@ -44,6 +44,10 @@ describe ConversationsController do
     }
   end
 
+  def xhr_valid_params
+    return valid_params.merge({format: 'json'})
+  end
+
   describe "GET index" do
     it "assigns all conversations as @conversations" do
       conversation = project.conversations.create! valid_attributes
@@ -104,23 +108,45 @@ describe ConversationsController do
     let(:doer) { create(:user) }
     let(:task) { project.tasks.create! valid_attributes }
 
+    before do
+      project.members << doer
+    end
+
     context "with valid params" do
+      subject { post :add_doer, valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} ) }
+
       it "adds a doer" do
-        expect {
-          post :add_doer, valid_params.merge(:task_id => task.to_param) #, {:doer_id => doer.id}
-        }.to change(task.doers, :count).by(1)
+        expect { subject }.to change(task.doers, :count).by(1)
       end
 
       it "redirects back to the task" do
-        pending
-        post :add_doer, valid_params.merge(:doer => doer)
-        response.should redirect_to conversation_url(project, Conversation.first)
+        subject
+        response.should redirect_to project_conversation_url(project, Conversation.first)
+      end
+
+      context "when called with xhr" do
+        subject { xhr :post, :add_doer, xhr_valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} ) }
+        it "returns :created" do
+          subject
+          response.response_code.should == 201
+        end
       end
     end
 
-    context "with a user id that isn't part of the project" do
-      it "returns a 404" do
-        1.should == 0
+    context "with a user who doesn't exist" do
+      subject { post :add_doer, valid_params.merge( {:task_id => task.to_param, :doer_id => 12345} ) }
+
+      it "raises a not found error" do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context "with a user who isn't part of the project" do
+      let(:non_member_doer) { create(:user) }
+      subject { post :add_doer, valid_params.merge( {:task_id => task.to_param, :doer_id => non_member_doer.id} ) }
+
+      it "raises a not found error" do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

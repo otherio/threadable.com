@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :token_authenticatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :name, :slug, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :name, :slug, :password, :password_confirmation, :remember_me, :tasks
 
   has_many :project_memberships
   has_many :projects, :through => :project_memberships
