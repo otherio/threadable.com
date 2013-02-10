@@ -10,9 +10,9 @@ gem 'devise'    # authentication
 gem 'virtus'
 gem 'method_object'
 #gem 'redis-rails'
+gem 'pg'
 
 group :production do
-  gem 'pg'
 end
 
 group :assets do

@@ -1,11 +1,26 @@
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+  adapter: postgresql
+  encoding: utf8
+  database: multify_development
   pool: 5
-  timeout: 5000
+  username: postgres
+  password: password
 
-test:
-  adapter: sqlite3
-  database: db/test.sqlite3
+test: &TEST
+  adapter: postgresql
+  encoding: utf8
+  database: multify_test
   pool: 5
-  timeout: 5000
+  username: postgres
+  password: password
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: multify_production
+  pool: 5
+  username: postgres
+  password: fhgt57395fhas76839gnae
+
+cucumber:
+  <<: *TEST
