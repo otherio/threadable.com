@@ -6,7 +6,7 @@ Multify::Application.routes.draw do
   #   resources :tasks
   end
 
-  resources :projects, except: [:edit, :show, :user_search]
+  resources :projects, except: [:edit, :show]
   scope '/:project_id', :as => 'project' do
     resources :conversations, :only => [:index, :new, :show, :create] do
       member do
@@ -17,7 +17,7 @@ Multify::Application.routes.draw do
   end
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
   get '/:project_id' => 'projects#show',      :as => 'project'
-  get '/:project_id/user_search' => 'projects#user_search', :as => 'user_search'
+  get '/:project_id/user_list' => 'projects#user_list', :as => 'user_list'
 
   post '/:project_id/conversations/:task_id/add_doer' => 'conversations#add_doer', :as => 'add_doer'
 

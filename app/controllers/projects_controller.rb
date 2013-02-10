@@ -86,19 +86,35 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def user_search
-    @project = current_user.projects.find_by_slug!(params[:id])
+  # GET /projects/user_list
+  # GET /projects/user_list.json
+  def user_list
+    @users = current_user.projects.find_by_slug!(params[:project_id]).members.all
 
     respond_to do |format|
-      users = @project.users.search_by_identity(params[:q])
-      unless users.empty?
-        format.json do
-          users.map { |user| { name: user.name, email: user.email, id: user.id} }
-        end
-        # return something here
-      else
+      format.json do
+        render json: @users.map { |user| { name: user.name, email: user.email, id: user.id} }
       end
     end
   end
+
+
+  # this will move out of the project level maybe.  or we will delete it soon.
+  # # GET /projects/user_search
+  # # GET /projects/user_search.json
+  # def user_search
+  #   @project = current_user.projects.find_by_slug!(params[:id])
+
+  #   respond_to do |format|
+  #     users = @project.users.search_by_identity(params[:q])
+  #     unless users.empty?
+  #       format.json do
+  #         users.map { |user| { name: user.name, email: user.email, id: user.id} }
+  #       end
+  #       # return something here
+  #     else
+  #     end
+  #   end
+  # end
 
 end

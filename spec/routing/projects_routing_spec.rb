@@ -31,8 +31,8 @@ describe ProjectsController do
       delete("/projects/1").should route_to("projects#destroy", :id => "1")
     end
 
-    it "routes to #user_search" do
-      get("/1/user_search?q=thing").should route_to("projects#user_search", :project_id => "1")
+    it "routes to #user_list" do
+      get("/1/user_list").should route_to("projects#user_list", :project_id => "1")
     end
 
   end
