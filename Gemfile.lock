@@ -147,6 +147,9 @@ GEM
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
     pg (0.14.1)
+    pg_search (0.5.7)
+      activerecord (>= 3)
+      activesupport (>= 3)
     polyglot (0.3.3)
     pry (0.9.11.4)
       coderay (~> 1.0.5)
@@ -266,6 +269,7 @@ DEPENDENCIES
   jquery-rails
   method_object
   pg
+  pg_search
   pry-rails
   rails (= 3.2.11)
   rb-fsevent

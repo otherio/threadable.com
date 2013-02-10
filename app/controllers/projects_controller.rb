@@ -86,4 +86,19 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def user_search
+    @project = current_user.projects.find_by_slug!(params[:id])
+
+    respond_to do |format|
+      users = @project.users.search_by_identity(params[:q])
+      unless users.empty?
+        format.json do
+          users.map { |user| { name: user.name, email: user.email, id: user.id} }
+        end
+        # return something here
+      else
+      end
+    end
+  end
+
 end

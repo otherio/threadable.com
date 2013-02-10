@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include PgSearch
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -16,11 +18,11 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
-
-
   # make sure the user has an auth token
   before_save :ensure_authentication_token
 
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
   alias_method :to_param, :slug
+
+  pg_search_scope :search_by_identity, :against => [:email, :name]
 end

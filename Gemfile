@@ -11,6 +11,7 @@ gem 'virtus'
 gem 'method_object'
 #gem 'redis-rails'
 gem 'pg'
+gem 'pg_search'
 
 group :production do
 end
