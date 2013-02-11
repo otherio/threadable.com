@@ -138,7 +138,7 @@ describe ConversationsController do
     end
 
     describe "with valid params" do
-      it "creates a new Conversation that is a Task, assigns a newly created conversation as @conversation, and redirects to the created task" do
+      it "creates a new Conversation of type Task, assigns a newly created conversation as @conversation, and redirects to the created task" do
         expect {
           post :create_as_task, valid_params.merge(:conversation => valid_attributes)
         }.to change(Conversation, :count).by(1)
@@ -152,7 +152,7 @@ describe ConversationsController do
       it "assigns a newly created but unsaved conversation as @conversation, and re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Conversation.any_instance.stub(:save).and_return(false)
-        post :create, valid_params.merge(:conversation => { "subject" => "invalid value" })
+        post :create_as_task, valid_params.merge(:conversation => { "subject" => "invalid value" })
         assigns(:conversation).should be_a_new(Task)
         response.should render_template("new")
       end
