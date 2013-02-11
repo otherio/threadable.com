@@ -74,7 +74,13 @@ module Multify
 
     config.assets.precompile += %w{init.js}
 
-    config.generators.test_framework = :rspec
+    config.app_generators do |c|
+      c.test_framework :rspec, :fixture => true,
+                               :fixture_replacement => nil
+
+      c.integration_tool :rspec
+      c.performance_tool :rspec
+    end
 
     config.middleware.use "Widgets::GenerateSass"
   end
