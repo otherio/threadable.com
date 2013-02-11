@@ -1,7 +1,11 @@
 = layout_wrapper do
   .conversations_layout
     .left
-      %h2 Tasks
+      %h2
+        Tasks
+      .form-inline
+        %input.input-small{:type => "text"}
+        %button.btn.btn-primary.icon-edit
       .not-done
         %h4 Not Done
         = render_widget :task_list, @project.tasks.not_done

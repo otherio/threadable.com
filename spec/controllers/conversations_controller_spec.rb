@@ -127,6 +127,38 @@ describe ConversationsController do
     end
   end
 
+  describe "POST create_as_task" do
+    def valid_attributes
+      {
+        "subject" => Faker::Company.bs,
+        "messages" => {
+            "body" => Faker::Company.bs
+        }
+      }
+    end
+
+    describe "with valid params" do
+      it "creates a new Conversation that is a Task, assigns a newly created conversation as @conversation, and redirects to the created task" do
+        expect {
+          post :create_as_task, valid_params.merge(:conversation => valid_attributes)
+        }.to change(Conversation, :count).by(1)
+        assigns(:conversation).should be_a(Task)
+        assigns(:conversation).should be_persisted
+        response.should redirect_to project_conversation_url(project, project.conversations.first)
+      end
+    end
+
+    describe "with invalid params" do
+      it "assigns a newly created but unsaved conversation as @conversation, and re-renders the 'new' template" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Conversation.any_instance.stub(:save).and_return(false)
+        post :create, valid_params.merge(:conversation => { "subject" => "invalid value" })
+        assigns(:conversation).should be_a_new(Task)
+        response.should render_template("new")
+      end
+    end
+  end
+
   describe "POST add_doer" do
     let(:doer) { create(:user) }
     let(:task) { project.tasks.create! valid_attributes }

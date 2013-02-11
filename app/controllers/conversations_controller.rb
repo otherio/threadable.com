@@ -61,6 +61,24 @@ class ConversationsController < ApplicationController
     end
   end
 
+  # POST /conversations
+  # POST /conversations.json
+  def create_as_task
+    message = params[:conversation].delete(:messages)
+    @conversation = project.tasks.new(params[:conversation])
+    @conversation.messages.build(message)
+
+    respond_to do |format|
+      if @conversation.save
+        format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Task was successfully created.' }
+        format.json { render json: @conversation, status: :created, location: @conversation }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @conversation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PUT /conversations/1/mute
   # PUT /conversations/1/mute.json
   def mute
