@@ -1,6 +1,6 @@
 .navbar.navbar-inverse.navbar-static-top
   .navbar-inner
-    = link_to "Multify", @project.present? ? project_conversations_url(@project) : root_url, class: 'brand'
+    = link_to "Multify", (@project.persisted? ? project_conversations_url(@project) : root_url), class: 'brand'
 
     - if user.present?
       %ul.nav.pull-right
@@ -12,7 +12,8 @@
               = @project[:name]
           %ul.dropdown-menu
             - user.projects.each do |project|
-              %li= link_to project[:name], project_conversations_url(project)
+              - if project.persisted?
+                %li= link_to project[:name], project_conversations_url(project)
 
 
         %li= link_to user.name || 'unknown', user_url(user)
