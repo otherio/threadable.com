@@ -65,11 +65,34 @@ describe ConversationsController do
   end
 
   describe "GET show" do
-    it "assigns the requested conversation as @conversation" do
-      conversation = project.conversations.create! valid_attributes
-      get :show, valid_params.merge(:id => conversation.to_param)
-      assigns(:conversation).should eq(conversation)
+
+    context "with a regular conversation" do
+      subject { get :show, valid_params.merge(:id => conversation.to_param) }
+      let!(:conversation) { project.conversations.create! valid_attributes }
+      let(:message) { create(:message, conversation: conversation) }
+
+      it "assigns the requested conversation as @conversation" do
+        subject
+        assigns(:conversation).should eq(conversation)
+      end
     end
+
+    context "with a task" do
+      subject { get :show, valid_params.merge(:id => task.to_param) }
+      let(:task) { project.tasks.create! valid_attributes }
+      let(:doer) { create(:user) }
+      let(:message) { create(:message, task: task) }
+
+      before do
+        task.doers << doer
+      end
+
+      it "has access to the doers" do
+        subject
+        assigns(:conversation).doers.should == [doer]
+      end
+    end
+
   end
 
   describe "POST create" do

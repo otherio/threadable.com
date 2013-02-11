@@ -1,0 +1,49 @@
+%p.lead.task-title
+  - if conversation.done?
+    %i.icon-ok.finished-check
+  - else
+    %i.icon-ok.unfinished-check
+
+  = conversation.subject
+
+.container-fluid
+  .row-fluid
+    .task-controls.span12
+      .doers-and-muted
+        %i.icon-bolt
+        doers:
+        -#conversation.doers.map {|doer| doer.name}.join(', ')
+        - conversation.doers.each do |doer|
+          = image_tag avatar_url(doer)
+
+        %a.control-link.muted.pull-right
+          muted count
+
+      %a.control-link.text-info
+
+        - if conversation.doers.include?(current_user)
+          %i.icon-remove
+          remove me
+        - else
+          %i.icon-plus
+          sign me up
+      &#183;
+      %a.control-link.text-info
+        %i.icon-user
+        add others
+      &#183;
+      %a.control-link.text-info
+        %i.icon-calendar
+        schedule event
+      &#183;
+      %a.control-link.text-info
+        - if conversation.done?
+          %i.icon-ok
+          mark as not done
+        - else
+          %i.icon-ok
+          mark as done
+
+      %a.control-link.text-info.pull-right
+        %i.icon-volume-off
+        mute conversation

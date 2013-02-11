@@ -19,10 +19,15 @@ describe "Conversations" do
       response.should be_redirect
     end
 
-    it "works! (now write some real specs)" do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      get project_conversations_path(project)
-      response.status.should be(200)
+    it "displays tasks as tasks" do
+      task = create(:task, project: project)
+
+      get project_conversation_path({project_id: project.to_param, id: task.to_param})
+      response.should be_success
+
+      response.body.should =~ /icon-ok/
+      response.body.should =~ /doers:/
+      response.body.should =~ /mark as done/
     end
 
 

@@ -31,7 +31,8 @@ class ConversationsController < ApplicationController
   def show
     @conversation = project.conversations.
       where(slug: params[:id]).
-      includes(messages: :user).first
+      includes(messages: :user).
+      first
 
     # conversation = conversation.to_read_only_object(include: { messages: { include: :user } })
     # conversation.wtf!

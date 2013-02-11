@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128014551) do
+ActiveRecord::Schema.define(:version => 20130211014554) do
 
   create_table "conversations", :force => true do |t|
     t.string   "type"
@@ -21,18 +21,11 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
     t.datetime "due_at"
     t.datetime "done_at"
     t.integer  "messages_count", :default => 0
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
-
-  create_table "task_doers", :force => true do |t|
-    t.integer "user_id"
-    t.integer "task_id"
-  end
-
-  add_index "task_doers", ["user_id", "task_id"], :name => "index_task_doers_on_user_id_and_task_id", :unique => true
 
   create_table "messages", :force => true do |t|
     t.integer  "conversation_id"
@@ -72,6 +65,13 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
 
   add_index "projects", ["slug"], :name => "index_projects_on_slug", :unique => true
 
+  create_table "task_doers", :force => true do |t|
+    t.integer "user_id"
+    t.integer "task_id"
+  end
+
+  add_index "task_doers", ["user_id", "task_id"], :name => "index_task_doers_on_user_id_and_task_id", :unique => true
+
   create_table "users", :force => true do |t|
     t.text     "name"
     t.string   "slug",                                   :null => false
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20130128014551) do
     t.string   "authentication_token"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "avatar_url"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

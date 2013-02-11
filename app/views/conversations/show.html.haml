@@ -1,1 +1,22 @@
+
+- if @conversation.task?
+  = render_widget :task_metadata, @conversation
+
+- else
+  = render_widget :conversation_metadata, @conversation
+
+- # this needs work
+.row-fluid
+  %hr.narrow
+  .message-controls
+    %a.control-link.text-info
+      %i.icon-edit
+      add message
+
+    &#183;
+
+    %a.control-link.text-info
+      %i.icon-camera
+      add photos/videos/docs
+
 = render_widget :conversation_messages, @conversation
