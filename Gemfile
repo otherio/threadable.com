@@ -19,6 +19,7 @@ end
 group :assets do
   gem 'sass-rails'
   gem 'compass-rails'
+  #gem 'bootstrap-sass-rails'
   gem 'font-awesome-sass-rails'
   gem 'uglifier', '>= 1.0.3'
 end

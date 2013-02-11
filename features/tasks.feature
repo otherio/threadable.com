@@ -1,8 +1,8 @@
-# Feature: Projects and Tasks
-#  I should be able to make and complete a task
-#  I should be able to sort tasks and see the completed ones
-#  I should be able to add doers, and view mine vs everyones tasks
-#  I should be able to invite someone to a task who isn't part of the project
+Feature: Projects and Tasks
+ I should be able to make and complete a task
+ I should be able to sort tasks and see the completed ones
+ I should be able to add doers, and view mine vs everyones tasks
+ I should be able to invite someone to a task who isn't part of the project
 
 #   Scenario: I want to create a task through the website
 #     In order to create a task
@@ -41,6 +41,18 @@
 #      Then the task "weld seat rail mounts" should be in the "Unfinished" box
 #       And the task "machine adjustable seat rails" should be in the "Complete" box
 
+  @javascript
+  Scenario: I want to add someone as a doer of a task
+    As a member of the project
+    I want to communicate other people's interest in a task
+    Given I am "Alice Neilson"
+      And I am on the task "install mirrors"
+      And I add "Bethany" as a doer
+     Then I should see "Bethany Pattern" as a doer of the task
+    Given I am "Bethany Pattern"
+      And I am on the task "install mirrors"
+     Then I should see "remove myself"
+
 #   Scenario: I want to order my tasklist
 #     As a member of a project
 #     I need to communicate priority of tasks
@@ -63,15 +75,6 @@
 #       And I am on my project page
 #       And I click on the task "weld seat rail mounts"
 #      Then I should see "Bob" as a doer of the task
-
-#   Scenario: I want to add someone as a doer of a task
-#     As a member of the project
-#     I want to communicate other people's interest in a task
-#     Given I am Alice the organizer
-#       And I am on the task "weld seat rail mounts"
-#       And I add "Bethany" as a doer
-#      Then I should see "Bethany" as a doer of the task
-#       And Bethany should see "weld seat rail mounts" in her tasks
 
 #   Scenario: I want to view my tasks and all tasks
 #     As a member of the project

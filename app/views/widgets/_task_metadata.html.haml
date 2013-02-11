@@ -12,31 +12,35 @@
       .doers-and-muted
         %i.icon-bolt
         doers:
-        -#conversation.doers.map {|doer| doer.name}.join(', ')
         - conversation.doers.each do |doer|
-          = image_tag avatar_url(doer)
+          = image_tag(avatar_url(doer), :class => 'has-tooltip', :"data-toggle" => "tooltip", title: doer.name, alt: doer.name)
 
         %a.control-link.muted.pull-right
           muted count
 
-      %a.control-link.text-info
-
+      %a.control-link.text-info.toggle-doer-self
         - if conversation.doers.include?(current_user)
           %i.icon-remove
           remove me
         - else
           %i.icon-plus
           sign me up
+
       &#183;
-      %a.control-link.text-info
+
+      %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true}
         %i.icon-user
         add others
+
       &#183;
-      %a.control-link.text-info
+
+      %a.control-link.text-info.schedule-event
         %i.icon-calendar
         schedule event
+
       &#183;
-      %a.control-link.text-info
+
+      %a.control-link.text-info.toggle-done
         - if conversation.done?
           %i.icon-ok
           mark as not done
@@ -44,6 +48,10 @@
           %i.icon-ok
           mark as done
 
-      %a.control-link.text-info.pull-right
+      %a.control-link.text-info.pull-right.mute-conversation
         %i.icon-volume-off
         mute conversation
+
+.add-others-popover
+  %input.add-others-typeahead{:type => "text", :name => "add-others-typeahead", :"data-provide" => "typeahead"}
+  %h2 things. they are real.
