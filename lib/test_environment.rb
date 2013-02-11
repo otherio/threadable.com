@@ -10,7 +10,8 @@ module TestEnvironment
   end
 
   def before_all! test=nil
-
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
   end
 
   def before_each! test=nil
@@ -25,4 +26,3 @@ module TestEnvironment
 
 end
 
-DatabaseCleaner.strategy = :truncation
