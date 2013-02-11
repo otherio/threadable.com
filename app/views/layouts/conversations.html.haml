@@ -5,7 +5,7 @@
         Tasks
       .form-inline
         %input.input-small{:type => "text"}
-        %button.btn.btn-primary.icon-edit
+        %button.btn.btn-text-thin Add a Task
       .not-done
         %h4 Not Done
         = render_widget :task_list, @project.tasks.not_done

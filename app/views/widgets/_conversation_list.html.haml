@@ -1,6 +1,9 @@
-%h2
-  Conversations
-  = link_to "", new_project_conversation_url, class: 'icon-edit btn btn-primary'
+.conversation-title
+  %h2.conversation-title
+    Conversations
+
+  %span.conversation-title
+    = link_to "Compose", new_project_conversation_url, class: 'btn btn-text-thin'
 %ul
   - conversations.each do |conversation|
     %li
