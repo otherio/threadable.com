@@ -1,7 +1,6 @@
 .navbar.navbar-inverse.navbar-static-top
   .navbar-inner
-
-    = link_to "Multify", root_url, class: 'brand'
+    = link_to "Multify", @project.present? ? project_conversations_url(@project) : root_url, class: 'brand'
 
     - if user.present?
       %ul.nav.pull-right
