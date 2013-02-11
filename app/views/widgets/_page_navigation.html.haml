@@ -5,8 +5,20 @@
 
     - if user.present?
       %ul.nav.pull-right
+        %li.dropdown
+          %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
+            - unless @project.present?
+              = 'Projects'
+            - else
+              = @project[:name]
+          %ul.dropdown-menu
+            - user.projects.each do |project|
+              %li= link_to project[:name], project_conversations_url(project)
+
+
         %li= link_to user.name || 'unknown', user_url(user)
         %li= link_to 'Logout', destroy_user_session_url, :method => :delete
+
 
     - else
       %ul.nav.pull-right
