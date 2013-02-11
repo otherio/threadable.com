@@ -1,7 +1,5 @@
-class TaskMetadataWidget < Widgets::Base
+class TaskMetadataWidget < Rails::Widget::Presenter
 
-  def init conversation
-    locals[:conversation] = conversation
-  end
+  options :task, :user
 
 end

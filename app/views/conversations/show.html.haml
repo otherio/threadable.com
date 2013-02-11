@@ -1,9 +1,9 @@
 
 - if @conversation.task?
-  = render_widget :task_metadata, @conversation
+  = render_widget :task_metadata, task: @conversation
 
 - else
-  = render_widget :conversation_metadata, @conversation
+  = render_widget :conversation_metadata, conversation: @conversation
 
 - # this needs work
 .row-fluid

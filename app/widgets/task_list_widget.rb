@@ -1,7 +1,5 @@
-class TaskListWidget < Widgets::Base
+class TaskListWidget < Rails::Widget::Presenter
 
-  def init tasks
-    locals[:tasks] = tasks
-  end
+  arguments :tasks
 
 end

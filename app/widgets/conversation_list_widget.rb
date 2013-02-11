@@ -1,7 +1,9 @@
-class ConversationListWidget < Widgets::Base
+class ConversationListWidget < Rails::Widget::Presenter
 
-  def init conversations
-    locals[:conversations] = conversations
-  end
+  arguments :project
+
+  options(
+    conversations: ->(*){ locals[:project].conversations },
+  )
 
 end

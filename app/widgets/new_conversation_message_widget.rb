@@ -1,7 +1,9 @@
-class NewConversationMessageWidget < Widgets::Base
+class NewConversationMessageWidget < Rails::Widget::Presenter
 
-  def init conversation
-    locals[:conversation] = conversation
-  end
+  arguments :conversation
+
+  options(
+    from: ->(*){ @view.current_user },
+  )
 
 end

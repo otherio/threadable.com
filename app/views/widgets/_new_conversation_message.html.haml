@@ -1,5 +1,5 @@
 %h4 New Message
-%p From: #{current_user.name}
+%p From: #{from.name}
 - message = conversation.messages.build
 - url = project_conversation_messages_path(conversation.project, conversation)
 = form_for message, as: :message, url: url, remote: true do |f|

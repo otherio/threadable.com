@@ -1,7 +1,5 @@
-class ConversationMetadataWidget < Widgets::Base
+class ConversationMetadataWidget < Rails::Widget::Presenter
 
-  def init conversation
-    locals[:conversation] = conversation
-  end
+  options :conversation
 
 end

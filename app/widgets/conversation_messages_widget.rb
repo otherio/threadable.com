@@ -1,7 +1,7 @@
-class ConversationMessagesWidget < Widgets::Base
+class ConversationMessagesWidget < Rails::Widget::Presenter
 
-  def init conversation
-    locals[:conversation] = conversation
-  end
+  arguments :conversation
+
+  options :from
 
 end

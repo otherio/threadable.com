@@ -4,23 +4,20 @@ describe ApplicationHelper do
   describe "#avatar_url" do
     subject { avatar_url(user) }
 
-    context "with a user with no local avatar" do
-      let(:user) { create(:user, email: 'foo@example.com') }
+    context "when the user is not present" do
+      let(:user){ nil }
+      it { should == view.default_avatar_url }
+    end
 
-      it "returns a url for a gravatar with no user avatar url present" do
-        url = subject
-        url.should include(Digest::MD5.hexdigest(user.email.downcase))
-        url.should =~ %r{^http://gravatar.com/}
-      end
+    context "when given a user with no local avatar" do
+      let(:user) { double(:user, email: 'foo@example.com', avatar_url: nil) }
+
+      it { should == "http://gravatar.com/avatar/b48def645758b95537d4424c84d1a9ff.png?s=24" }
     end
 
     context "with a user who has a local avatar" do
-      let(:user) { create(:user, email: 'foo@example.com', avatar_url: 'http://example.com/') }
-
-      it "returns the local url" do
-        url = subject
-        url.should == 'http://example.com/'
-      end
+      let(:user) { double(:user, email: 'foo@example.com', avatar_url: '/avatars/foo.jpg') }
+      it { should == '/avatars/foo.jpg' }
     end
   end
 end

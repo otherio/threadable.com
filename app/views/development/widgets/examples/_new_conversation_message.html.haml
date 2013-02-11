@@ -1,0 +1,2 @@
+- conversation = Conversation.last
+= render_widget :new_conversation_message, Conversation.last, from: conversation.project.members.last

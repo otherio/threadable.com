@@ -1,24 +1,19 @@
 .navbar.navbar-inverse.navbar-static-top
   .navbar-inner
-    = link_to "Multify", (@project.present? && @project.persisted?) ? project_conversations_url(@project) : root_url, class: 'brand'
+    = link_to "Multify", multify_link_url, class: 'brand'
 
     - if user.present?
       %ul.nav.pull-right
         %li.dropdown
-          %a.dropdown-toggle#account-menu{"data-toggle" => "dropdown", :href => ""}
-            - unless @project.present?
-              = 'Projects'
-            - else
-              = @project[:name]
-          %ul.dropdown-menu
+          %a.projects.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+            = project ? project.name : 'Projects'
+          %ul.projects.dropdown-menu
             - user.projects.each do |project|
               - if project.persisted?
-                %li= link_to project[:name], project_conversations_url(project)
-
+                %li= link_to project.name, project_conversations_url(project)
 
         %li= link_to user.name || 'unknown', user_url(user)
         %li= link_to 'Logout', destroy_user_session_url, :method => :delete
-
 
     - else
       %ul.nav.pull-right

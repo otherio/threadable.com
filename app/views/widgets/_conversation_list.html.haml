@@ -3,14 +3,10 @@
     Conversations
 
   %span.conversation-title
-    = link_to "Compose", new_project_conversation_url, class: 'btn btn-text-thin'
+    = link_to "Compose", new_project_conversation_url(project), class: 'btn btn-text-thin'
+
 %ul
   - conversations.each do |conversation|
     %li
-      = link_to project_conversation_path(conversation.project, conversation) do
+      = link_to project_conversation_path(project, conversation) do
         (#{conversation.messages.count}) #{conversation.subject}
-    -#
-      %ul
-        - conversation.messages.each do |message|
-          %li
-            = message.body

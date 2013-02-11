@@ -82,7 +82,6 @@ module Multify
       c.performance_tool :rspec
     end
 
-    config.middleware.use "Widgets::GenerateSass"
   end
 end
 

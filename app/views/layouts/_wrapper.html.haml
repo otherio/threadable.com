@@ -8,7 +8,7 @@
 
   %body
     #page{name:page_name}
-      = render_widget :page_navigation, user: current_user
+      = render_widget :page_navigation, user: current_user, project: @project
       .content
         = yield
       = render_widget :flash_messages

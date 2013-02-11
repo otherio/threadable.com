@@ -1,7 +1,5 @@
-class MessageWidget < Widgets::Base
+class MessageWidget < Rails::Widget::Presenter
 
-  def init message
-    locals[:message] = message
-  end
+  arguments :message
 
 end

@@ -126,3 +126,30 @@ conversation_events
 • conversation_id   Integer
 • type              Integer
 • body              String
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## TODO
+
+### Widget Framework
+
+0. make a controller to view widget examples
+0. get javascript tests working
