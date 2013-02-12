@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/deadlyicon/rails-widgets
-  revision: a5947b4da08c09b9d8a8d627561a7dbd1660d587
+  revision: 07bab62f113ba2b65755a874b2c5bf1bec9c17f3
   specs:
     rails-widgets (0.0.1)
       railties (>= 3.0, < 5.0)
@@ -152,7 +152,7 @@ GEM
     mime-types (1.19)
     mocha (0.10.5)
       metaclass (~> 0.0.1)
-    multi_json (1.5.1)
+    multi_json (1.6.0)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
     pg (0.14.1)
