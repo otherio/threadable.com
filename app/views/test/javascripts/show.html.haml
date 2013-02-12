@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %title Javascript Tests
+    %link{rel:'shortcut icon', type:"image/png", href: image_path('jasmine_favicon.png')}
+    = stylesheet_link_tag 'test/javascripts', :media => "all"
+    = javascript_include_tag 'test/javascripts'
+    - @specs.each do |spec|
+      = javascript_include_tag "#{spec}_spec"
+
+    = csrf_meta_tags
+
+    :javascript
+      fixtures = #{@fixtures.to_json}
+
+  %body
+    #body

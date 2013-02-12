@@ -38,4 +38,6 @@ Multify::Application.configure do
   # devise wants this
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
+  # enables the load of javascript specs
+  config.assets.paths << Rails.root.join("spec", "javascripts")
 end

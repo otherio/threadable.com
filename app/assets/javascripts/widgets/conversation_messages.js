@@ -12,7 +12,7 @@ Multify.Widget('conversation_messages', function(widget){
 
     $(function(){
       $('.conversation_messages textarea').trigger('keyup');
-    })
+    });
   };
 
   widget.appendMessage = function(form, event, message, status, request){

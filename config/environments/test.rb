@@ -34,4 +34,7 @@ Multify::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # enables the load of javascript specs
+  config.assets.paths << Rails.root.join("spec", "javascripts")
 end
