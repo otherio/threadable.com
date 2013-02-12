@@ -30,3 +30,5 @@ lib/.DS_Store
 lib/test_environment/fixtures/*.yml
 
 vendor/gems/rails-widgets
+
+lib/.DS_Store
