@@ -48,7 +48,7 @@ describe "page_navigation" do
         end
 
         describe "text" do
-          subject{ html.css('.projects button').first.text }
+          subject{ html.css('.projects .dropdown-toggle').first.text }
           it { should =~ /\s*Projects\s*/ }
         end
       end

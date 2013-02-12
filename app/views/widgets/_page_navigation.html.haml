@@ -4,7 +4,7 @@
 
     - if current_user.present?
       %ul.nav.pull-right
-        %li.projects.dropdown
+        %li.projects
           - if projects.present?
             %a.dropdown-toggle{"data-toggle" => "dropdown"}
               = current_project ? current_project.name : 'Projects'
