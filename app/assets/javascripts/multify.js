@@ -1,3 +1,6 @@
+//= require_self
+//= require_tree ./multify
+
 Multify = {
 
   widgets: {},
@@ -22,20 +25,7 @@ Multify = {
 
   pageName: function(){
     return $('#page').attr('name');
-  }
+  },
 
 };
 
-
-Multify.Widget = function(name, block){
-  if (arguments.length === 0) return;
-
-  var widget = Multify.widgets[name];
-  if (widget === undefined){
-    if (typeof block !== 'function') return;
-    widget = Multify.widgets[name] = this instanceof Multify.Widget ? this : new Multify.Widget;
-    widget.name = name;
-  }
-  if (block) block.call(widget, widget);
-  return widget;
-};
