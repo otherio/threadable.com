@@ -53,9 +53,28 @@ class ConversationsController < ApplicationController
     respond_to do |format|
       if @conversation.save
         format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully created.' }
-        format.json { render json: @conversation, status: :created, location: @conversation }
+        format.json { render json: @conversation, status: :created, location: project_conversation_url(project, @conversation) }
       else
         format.html { render action: "new" }
+        format.json { render json: @conversation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /conversations
+  # PUT /conversations.json
+  def update
+    if params[:conversation] && done = params[:conversation].delete(:done)
+      params[:conversation][:done_at] = done == "true" ? Time.now : nil
+    end
+    @conversation = project.conversations.find_by_slug!(params[:id])
+
+    respond_to do |format|
+      if @conversation.update_attributes(params[:conversation])
+        format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully updated.' }
+        format.json { render json: @conversation, status: :created, location: project_conversation_url(project, @conversation) }
+      else
+        format.html { redirect_to project_conversation_url(project, @conversation), notice: 'We were unable to update your conversation. Please try again later.' }
         format.json { render json: @conversation.errors, status: :unprocessable_entity }
       end
     end
@@ -71,7 +90,7 @@ class ConversationsController < ApplicationController
     respond_to do |format|
       if @conversation.save
         format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Task was successfully created.' }
-        format.json { render json: @conversation, status: :created, location: @conversation }
+        format.json { render json: @conversation, status: :created, location: project_conversation_url(project, @conversation) }
       else
         format.html { render action: "new" }
         format.json { render json: @conversation.errors, status: :unprocessable_entity }

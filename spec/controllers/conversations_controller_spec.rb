@@ -34,7 +34,7 @@ describe ConversationsController do
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      "subject" => Faker::Company.bs,
+      "subject" => "how are we going to build this thing?",
     }
   end
 
@@ -97,12 +97,11 @@ describe ConversationsController do
 
   describe "POST create" do
     def valid_attributes
-      {
-        "subject" => Faker::Company.bs,
+      super.merge(
         "messages" => {
-          "body" => Faker::Company.bs,
+          "body" => "I think we should use wood.",
         }
-      }
+      )
     end
 
     describe "with valid params" do
@@ -127,14 +126,59 @@ describe ConversationsController do
     end
   end
 
+
+  describe "PUT update" do
+    let!(:conversation){ Conversation.create!(valid_attributes.merge(project:project)) }
+
+    describe "with valid params" do
+      it "updates the requested conversation" do
+        now = Time.now
+        Time.stub(:now).and_return(now)
+        Conversation.any_instance.should_receive(:update_attributes).with({
+          "subject" => "How aren't we going to build this thing?",
+          "done_at" => Time.now,
+        })
+        put :update, valid_params.merge(:id => conversation.to_param, :conversation => {
+          "subject" => "How aren't we going to build this thing?",
+          "done" => "true",
+        })
+      end
+
+      it "assigns the requested conversation as @conversation" do
+        put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_attributes)
+        assigns(:conversation).should eq(conversation)
+      end
+
+      it "redirects to the conversation" do
+        put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_attributes)
+        response.should redirect_to project_conversation_url(project, conversation)
+      end
+    end
+
+    describe "with invalid params" do
+      it "assigns the conversation as @conversation" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Conversation.any_instance.stub(:save).and_return(false)
+        put :update, valid_params.update(:id => conversation.to_param, :conversation => {  })
+        assigns(:conversation).should eq(conversation)
+      end
+
+      it "re-renders the 'edit' template" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Conversation.any_instance.stub(:save).and_return(false)
+        put :update, valid_params.update(:id => conversation.to_param, :conversation => {  })
+        response.should redirect_to project_conversation_url(project, conversation)
+      end
+    end
+  end
+
   describe "POST create_as_task" do
     def valid_attributes
-      {
-        "subject" => Faker::Company.bs,
+      super.merge(
         "messages" => {
-            "body" => Faker::Company.bs
+          "body" => "I think we should use wood.",
         }
-      }
+      )
     end
 
     describe "with valid params" do

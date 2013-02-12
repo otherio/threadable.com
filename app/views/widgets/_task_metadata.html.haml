@@ -15,10 +15,10 @@
         - task.doers.each do |doer|
           = image_tag(avatar_url(doer), :class => 'has-tooltip', :"data-toggle" => "tooltip", title: doer.name, alt: doer.name)
 
-        %a.control-link.muted.pull-right
+        %a.control-link.muted.pull-right{href:""}
           muted count
 
-      %a.control-link.text-info.toggle-doer-self
+      %a.control-link.text-info.toggle-doer-self{href:""}
         - if task.doers.include?(user)
           %i.icon-remove
           remove me
@@ -28,19 +28,20 @@
 
       &#183;
 
-      %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true}
+      %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true, :href => ""}
         %i.icon-user
         add others
 
       &#183;
 
-      %a.control-link.text-info.schedule-event
+      %a.control-link.text-info.schedule-event{href:""}
         %i.icon-calendar
         schedule event
 
       &#183;
 
-      %a.control-link.text-info.toggle-done
+      - url = project_conversation_path(task.project, task, conversation: {done:!task.done?})
+      = link_to url, method: 'PUT', class: 'control-link text-info toggle-done' do
         - if task.done?
           %i.icon-ok
           mark as not done
@@ -48,7 +49,7 @@
           %i.icon-ok
           mark as done
 
-      %a.control-link.text-info.pull-right.mute-task
+      %a.control-link.text-info.pull-right.mute-task{href:""}
         %i.icon-volume-off
         mute conversation
 
