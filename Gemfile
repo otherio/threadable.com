@@ -10,12 +10,9 @@ gem 'devise'    # authentication
 gem 'virtus'
 gem 'method_object'
 gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
-#gem 'redis-rails'
 gem 'pg'
 gem 'pg_search'
-
-group :production do
-end
+gem 'js-routes'
 
 group :assets do
   gem 'sass-rails'
