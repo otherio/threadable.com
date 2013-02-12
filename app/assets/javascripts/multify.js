@@ -1,31 +1,19 @@
 //= require_self
 //= require_tree ./multify
 
-Multify = {
+Multify = (function(){
 
-  widgets: {},
-  pages: {},
+  var self, pageName;
 
-  initialize: function(){
-    this.init = $.noop;
-    this.initializeWidgets();
-    this.initializePage();
-  },
+  return self = {
 
-  initializeWidgets: function(){
-    $.each(this.widgets, function(name, widget){
-      if (widget.initialize) widget.initialize();
-    });
-  },
+    widgets: {},
+    pages: {},
 
-  initializePage: function(){
-    var page = this.pages[this.pageName()];
-    if (page) page.initialize();
-  },
+    pageName: function(){
+      return pageName || (pageName = $('#page').attr('name'));
+    },
 
-  pageName: function(){
-    return $('#page').attr('name');
-  },
+  };
 
-};
-
+})();

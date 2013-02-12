@@ -12,6 +12,7 @@ module LayoutHelper
     @javascript_env ||= {
       page_name: page_name,
       project: @project,
+      conversation: @conversation,
     }
   end
 
