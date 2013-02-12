@@ -8,4 +8,11 @@ module LayoutHelper
     "#{controller_name}/#{action_name}"
   end
 
+  def javascript_env
+    @javascript_env ||= {
+      page_name: page_name,
+      project: @project,
+    }
+  end
+
 end

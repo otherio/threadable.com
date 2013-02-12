@@ -1,33 +1,30 @@
 Multify.Widget('task_metadata', function(widget){
 
   widget.initialize = function(){
-    $('.has-tooltip').tooltip(this.show, this.hide);
-    $('.add-others').popover({ content: $('.add-others-popover').html(), html: true });
+    widget.$('.has-tooltip').tooltip(this.show, this.hide);
+    widget.$('.add-others').popover({ content: widget.$('.add-others-popover').html(), html: true });
 
-    $('.add-others').click( function() {
-      $('input.add-others-typeahead').typeahead({
+    widget.$('.add-others').click( function() {
+      widget.$('input.add-others-typeahead').typeahead({
         source: function(query, process) {
-          widget.getCurrentProjectUsers(process);
+          widget.getCurrentProjectMembers(process);
         },
         updater: function(item) {
           alert("would add " + item);
         }
       });
     });
-
   };
 
-  widget.getCurrentProjectUsers = function(callback) {
-    if(Multify.currentProjectUsers) {
-      callback(Multify.currentProjectUsers);
-    } else {
-      projectSlug = window.location.pathname.split('/')[1];
-      $.ajax('/' + projectSlug + '/user_list.json').success(
-        function(users){
-          Multify.currentProjectUsers = _.map(users, function(user) { return user.name + ' &lt;' + user.email + '&gt;'});
-          callback(Multify.currentProjectUsers);
-        }
-      );
-    }
+  widget.getCurrentProjectMembers = function(callback) {
+    // Multify.currentProject.members.load(callback);
+
+    if (widget.users) return callback(widget.users);
+
+    $.getJSON(Multify.project_members_path(), function(users){
+      widget.users = users.map(function(user) { return user.name + ' &lt;' + user.email + '&gt;' });
+      callback(users);
+    });
+
   };
 });

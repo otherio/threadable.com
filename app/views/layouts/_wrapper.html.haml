@@ -3,6 +3,7 @@
   %head
     %title Multify
     = stylesheet_link_tag    "application", :media => "all"
+    = javascript_tag %(ENV = #{javascript_env.to_json};)
     = javascript_include_tag "init"
     = csrf_meta_tags
 
