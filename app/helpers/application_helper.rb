@@ -13,6 +13,14 @@ module ApplicationHelper
     "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
   end
 
+  def current_project
+    @project
+  end
+
+  def current_conversation
+    @conversation
+  end
+
 end
 
 

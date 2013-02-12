@@ -20,13 +20,13 @@
   }
 
   function initializeCurrentProject(){
-    if (!ENV.project) return;
-    Multify.currentProject = ENV.project;
+    if (!ENV.currentProject) return;
+    Multify.currentProject = ENV.currentProject;
   }
 
   function initializeCurrentConversation(){
-    if (!ENV.conversation) return;
-    Multify.currentConversation = ENV.conversation;
+    if (!ENV.currentPonversation) return;
+    Multify.currentConversation = ENV.currentPonversation;
   }
 
 }();

@@ -13,8 +13,12 @@ describe "Authentication" do
       click_button 'Sign in'
       page.should have_content user.name
       page.current_path.should == root_path
-      click_on 'Logout'
+      within selector_for('the navbar') do
+        click_on user.name
+        click_on 'Logout'
+      end
       page.should_not have_content user.name
+      page.should have_content 'Notice! Signed out successfully.'
       page.current_path.should == root_path
     end
   end

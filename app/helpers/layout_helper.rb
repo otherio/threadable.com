@@ -10,9 +10,9 @@ module LayoutHelper
 
   def javascript_env
     @javascript_env ||= {
-      page_name: page_name,
-      project: @project,
-      conversation: @conversation,
+      pageName: page_name,
+      currentProject: current_project,
+      currentConversation: current_conversation,
     }
   end
 

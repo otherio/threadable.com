@@ -1,19 +1,13 @@
 //= require_self
 //= require_tree ./multify
 
-Multify = (function(){
+Multify = {
 
-  var self, pageName;
+  widgets: {},
+  pages: {},
 
-  return self = {
+  pageName: function(){
+    return ENV.pageName;
+  }
 
-    widgets: {},
-    pages: {},
-
-    pageName: function(){
-      return pageName || (pageName = $('#page').attr('name'));
-    },
-
-  };
-
-})();
+};

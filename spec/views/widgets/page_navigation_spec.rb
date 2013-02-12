@@ -2,14 +2,15 @@ require 'spec_helper'
 
 describe "page_navigation" do
 
-  let(:project){ nil }
+  let(:current_project){ nil }
   let(:projects){ [] }
-  let(:user){ nil }
+  let(:current_user){ nil }
 
   def locals
     {
-      user: user,
-      project: project,
+      current_user: current_user,
+      current_project: current_project,
+      projects: projects,
       multify_link_url: 'http://www.fark.com/',
     }
   end
@@ -19,10 +20,10 @@ describe "page_navigation" do
     it { should == locals[:multify_link_url] }
   end
 
-  context "when given a user" do
-    let(:user){ double(:user, name: 'Jared', projects: projects) }
+  context "when given a current_user" do
+    let(:current_user){ double(:current_user, name: 'Jared', projects: projects) }
 
-    context "and that user has projects projects" do
+    context "and that current_user has projects" do
       let(:projects){
         4.times.map do |i|
           double(:"project #{i}",
@@ -33,19 +34,22 @@ describe "page_navigation" do
         end
       }
 
-      it "should list all the projects" do
-        project_links = html.css('.dropdown ul.projects > li')
-        project_links.zip(projects).each do |project_link, project|
-          project_link.css('a').first[:href].should == view.project_conversations_url(project)
-        end
-      end
+      describe "the projects dropdown menu" do
+        it "should list all the projects" do
+          project_links = html.css('.projects .dropdown-menu > li > a').map do |link|
+            [link.text, link[:href]]
+          end
 
-      describe "the projects dropdown" do
-        subject{ html.css('.dropdown a.projects').first.text }
-        it { should =~ /\s*Projects\s*/ }
-        context "when given a project" do
-          let(:project){ projects[1] }
-          it { should =~ /\s*PROJECT 1\s*/ }
+          expected_project_links = projects.map do |project|
+            [project.name, view.project_conversations_url(project)]
+          end
+
+          project_links.should == expected_project_links
+        end
+
+        describe "text" do
+          subject{ html.css('.projects button').first.text }
+          it { should =~ /\s*Projects\s*/ }
         end
       end
 
@@ -53,8 +57,8 @@ describe "page_navigation" do
 
   end
 
-  context "when not given a user" do
-    let(:user){ nil }
+  context "when not given a current_user" do
+    let(:current_user){ nil }
     it "should just have a login link" do
       link = html.css('ul.nav.pull-right > li > a').first
       link[:href].should == view.new_user_session_url

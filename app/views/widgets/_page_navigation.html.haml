@@ -2,18 +2,29 @@
   .navbar-inner
     = link_to "Multify", multify_link_url, class: 'brand'
 
-    - if user.present?
-      %ul.nav.pull-right
-        %li.dropdown
-          %a.projects.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-            = project ? project.name : 'Projects'
-          %ul.projects.dropdown-menu
-            - user.projects.each do |project|
-              - if project.persisted?
+    - if current_user.present?
+      .btn-toolbar.pull-right
+        .projects.btn-group
+          - if projects.present?
+            %button.btn.btn-small.btn-primary.dropdown-toggle{"data-toggle" => "dropdown"}
+              = current_project ? current_project.name : 'Projects'
+              .caret
+            %ul.dropdown-menu
+              - projects.each do |project|
                 %li= link_to project.name, project_conversations_url(project)
-
-        %li= link_to user.name || 'unknown', user_url(user)
-        %li= link_to 'Logout', destroy_user_session_url, :method => :delete
+          - else
+            - if current_project.present?
+              = link_to current_project.name, project_conversations_url(current_project), class: 'btn btn-small btn-primary'
+            - else
+              = link_to 'Projects', projects_url, class: 'btn btn-small btn-primary'
+        .current_user.btn-group
+          %button.btn.btn-small.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+            = current_user.name
+            .caret
+          %ul.dropdown-menu
+            %li= link_to 'Profile', user_url(current_user)
+            %li.divider
+            %li= link_to 'Logout', destroy_user_session_url, :method => :delete
 
     - else
       %ul.nav.pull-right
