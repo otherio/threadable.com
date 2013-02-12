@@ -1,0 +1,9 @@
+%h4 Logged out
+= render_widget :page_navigation
+
+%h4 Logged in
+= render_widget :page_navigation, current_user: User.last
+
+%h4 Logged in viewing a project
+= render_widget :page_navigation, current_user: User.last, current_project: Project.last
+
