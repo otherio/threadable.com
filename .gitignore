@@ -24,6 +24,7 @@ app/assets/stylesheets/_widgets.sass
 /chromedriver.log
 
 .DS_Store
+lib/.DS_Store
 
 # these change every time you run rspec.
 lib/test_environment/fixtures/*.yml
