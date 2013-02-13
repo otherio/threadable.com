@@ -17,14 +17,14 @@ Multify.Widget('task_metadata', function(widget){
   };
 
   widget.getCurrentProjectMembers = function(callback) {
-    // Multify.currentProject.members.load(callback);
+    //Multify.currentProject.members.load(callback);
 
     if (widget.users) return callback(widget.users);
 
-    $.getJSON(Multify.project_members_path(), function(users){
+    $.getJSON(Multify.project_members_path(Multify.currentProject.slug), function(users) {
       widget.users = users.map(function(user) { return user.name + ' &lt;' + user.email + '&gt;' });
       callback(users);
     });
-
   };
+
 });

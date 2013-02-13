@@ -1,7 +1,6 @@
 !function(){
 
   Multify.initialize = function(){
-    delete Multify.initialize;
     initializeWidgets();
     initializePage();
     initializeCurrentProject();
