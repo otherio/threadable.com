@@ -1,22 +1,25 @@
 .navbar.navbar-inverse.navbar-static-top
   .navbar-inner
-    = link_to "Multify", multify_link_url, class: 'brand'
+
+
+    - if current_project.present?
+      = link_to current_project.name, project_conversations_url(current_project), class: 'brand'
+    - else
+      = link_to "Multify", multify_link_url, class: 'brand'
 
     - if current_user.present?
       %ul.nav.pull-right
         %li.projects.dropdown
           - if projects.present?
             %a.dropdown-toggle{"data-toggle" => "dropdown"}
-              = current_project ? current_project.name : 'Projects'
+              Projects
               .caret
             %ul.dropdown-menu
               - projects.each do |project|
                 %li= link_to project.name, project_conversations_url(project)
-          - else
-            - if current_project.present?
-              = link_to current_project.name, project_conversations_url(current_project)
-            - else
-              = link_to 'Projects', projects_url
+              %li.divider
+              %li= link_to 'All Projects', root_url
+
         %li.current_user.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
             = current_user.name

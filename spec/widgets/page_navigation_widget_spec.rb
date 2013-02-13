@@ -56,7 +56,7 @@ describe PageNavigationWidget do
             current_user: current_user,
             current_project: current_project,
             multify_link_url: view.project_conversations_url(current_project),
-            projects: projects - [current_project],
+            projects: projects,
           }
         end
 

@@ -7,7 +7,7 @@ class PageNavigationWidget < Rails::Widget::Presenter
   end
 
   local :projects do
-    current_user.projects - [current_project] if current_user
+    current_user.projects if current_user
   end
 
   private

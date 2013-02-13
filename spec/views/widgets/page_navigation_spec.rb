@@ -44,6 +44,8 @@ describe "page_navigation" do
             [project.name, view.project_conversations_url(project)]
           end
 
+          expected_project_links << ["All Projects", root_url]
+
           project_links.should == expected_project_links
         end
 
