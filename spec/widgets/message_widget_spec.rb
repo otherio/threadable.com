@@ -9,7 +9,7 @@ describe MessageWidget do
     {class: 'custom_class'}
   end
 
-    describe "locals" do
+  describe "locals" do
     subject{ presenter.locals }
     it do
       should == {
