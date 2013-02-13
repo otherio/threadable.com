@@ -1,0 +1,14 @@
+%h2 Tasks
+
+%form.input-append{action: project_tasks_path(project)}
+  %input.span3{type: "text", name: "subject"}
+  %button.btn{disabled: true}
+    %i.icon-plus
+
+.not-done
+  %h4 Not Done
+  = render_widget :task_list, project.tasks.not_done
+
+.done
+  %h4 Done
+  = render_widget :task_list, project.tasks.done

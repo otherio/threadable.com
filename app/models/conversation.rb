@@ -10,6 +10,8 @@ class Conversation < ActiveRecord::Base
 
   alias_method :to_param, :slug
 
+  validates_presence_of :subject
+
   def task?
     false
   end

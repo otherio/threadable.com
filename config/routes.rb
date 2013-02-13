@@ -22,13 +22,12 @@ Multify::Application.routes.draw do
       end
       resources :messages, :only => [:create]
     end
+    resources :tasks, :only => [:index, :create]
   end
+
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
   get '/:project_id' => 'projects#show',      :as => 'project'
   get '/:project_id/user_list' => 'projects#user_list', :as => 'user_list'
-
-  post '/:project_id/conversations/:task_id/add_doer' => 'conversations#add_doer', :as => 'add_doer'
-  post '/:project_id/tasks' => 'conversations#create_as_task', :as => 'create_as_task'
 
   root :to => 'homepage#show'
 

@@ -14,14 +14,17 @@
 //= require jasmine
 //= require jasmine-html
 //= require jasmine-jsreporter
-//= require jasmine.console_reporter
 //= require mock-ajax
 
 context = describe;
 
+beforeEach(function(){
+  jasmine.Ajax.useMock();
+});
+
 afterEach(function(){
   $('#body').html('');
-})
+});
 
 $(window).load(function() {
   var jasmineEnv = jasmine.getEnv();

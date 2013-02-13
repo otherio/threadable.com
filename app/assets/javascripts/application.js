@@ -6,5 +6,6 @@
 //= require bootstrap
 //= require underscore
 //= require multify
+//= require_tree ./behaviors
 //= require_tree ./widgets
 
