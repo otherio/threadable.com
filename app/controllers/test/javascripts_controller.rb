@@ -15,6 +15,8 @@ class Test::JavascriptsController < TestController
         @fixtures[spec] = view_context.render(file: "/test/javascripts/fixtures/#{spec}_fixture")
       end
     end
+  rescue Object => e
+    render text: "ERROR: #{e}\n#{e.backtrace*"\n"}", status: 500
   end
 
 end
