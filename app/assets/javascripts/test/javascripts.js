@@ -14,6 +14,8 @@
 //= require jasmine
 //= require jasmine-html
 //= require jasmine-jsreporter
+//= require jasmine.console_reporter
+//= require mock-ajax
 
 context = describe;
 
@@ -29,6 +31,8 @@ $(window).load(function() {
 
   jasmineEnv.addReporter(htmlReporter);
   jasmineEnv.addReporter(new jasmine.JSReporter);
+  // this is not the best.
+  //jasmineEnv.addReporter(new jasmine.ConsoleReporter);
 
   jasmineEnv.specFilter = function(spec) {
     return htmlReporter.specFilter(spec);
