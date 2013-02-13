@@ -1,5 +1,7 @@
 %ul
   - tasks.each do |task|
     %li{title: task.subject}
-      %input{type: "checkbox", checked: task.done?}
-      = link_to task.subject, project_conversation_url(task.project, task)
+
+      = link_to project_conversation_url(task.project, task) do
+        %i.icon-ok{ class: task.done? ? 'finished-check' : 'unfinished-check' }
+        %span>= task.subject
