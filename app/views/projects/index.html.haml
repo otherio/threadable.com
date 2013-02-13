@@ -1,23 +1,5 @@
 %h1 Projects
 
-%table
-  %tr
-    %th Name
-    %th Slug
-    %th Description
-    %th
-    %th
-    %th
-
+%ul
   - @projects.each do |project|
-    %tr
-      %td= project.name
-      %td= project.slug
-      %td= project.description
-      %td= link_to 'Show', project
-      %td= link_to 'Edit', edit_project_path(project)
-      %td= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Project', new_project_path
+    %li= link_to project.name, project_conversations_url(project)
