@@ -4,7 +4,7 @@
 
     - if current_user.present?
       %ul.nav.pull-right
-        %li.projects
+        %li.projects.dropdown
           - if projects.present?
             %a.dropdown-toggle{"data-toggle" => "dropdown"}
               = current_project ? current_project.name : 'Projects'
@@ -17,7 +17,7 @@
               = link_to current_project.name, project_conversations_url(current_project)
             - else
               = link_to 'Projects', projects_url
-        %li.current_user
+        %li.current_user.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
             = current_user.name
             .caret
