@@ -24,7 +24,7 @@ describe "conversation_list" do
   end
 
   it "should render a list of the given converations" do
-    links = html.css('ul > li > a')
+    links = html.css('ul.conversations > li > a')
     links.size.should == 2
     links.map(&:text).should == ["(0) conversation one\n", "(1) conversation two\n"]
     links.map{|l| l[:href] }.should == [
