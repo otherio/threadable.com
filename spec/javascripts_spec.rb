@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'javascript specs', :type => :request do
+describe 'javascript specs', type: :request, js: true do
 
   it "should all pass" do
     visit javascript_tests_path
