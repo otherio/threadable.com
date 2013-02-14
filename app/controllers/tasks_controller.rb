@@ -4,14 +4,6 @@ class TasksController < ApplicationController
 
   before_filter :authenticate_user!
 
-  def index
-    if request.xhr?
-      render json: {
-        as_html: view_context.render_widget(:tasks_sidebar, project),
-      }
-    end
-  end
-
   # POST /conversations
   # POST /conversations.json
   def create
@@ -19,6 +11,11 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
+        format.html {
+          if request.xhr?
+            render text: view_context.render_widget(:tasks_sidebar, project)
+          end
+        }
         format.json { render json: @task, status: :created, location: project_conversation_url(project, @task) }
       else
         format.html { render action: "new" }

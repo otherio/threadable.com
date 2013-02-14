@@ -33,27 +33,19 @@ Multify.Widget('tasks_sidebar', function(widget){
       url:      url,
       type:    'POST',
       data:     {task:{subject:subject}},
-      dataType: "json"
+      dataType: 'html'
     });
 
-    request.success(function(){
-      widget.reload(root);
+    request.success(function(html){
+      html = $(html);
+      root.replaceWith(html);
+      setTimeout(function(){ html.find('input:first').focus(); });
     });
 
     request.error(function(){
       console.log('ERR', arguments);
       root.find('input:first').val(subject);
     });
-  };
-
-  widget.reload = function(root){
-    var url = root.find('form').attr('action');
-    $.getJSON(url, function(tasks){
-      root.replaceWith(tasks.as_html);
-      setTimeout(function(){
-        root.find('input:first').focus();
-      });
-    })
   };
 
   widget.onValueChange = function(element){

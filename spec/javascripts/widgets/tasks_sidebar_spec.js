@@ -13,13 +13,9 @@ describe("widgets/tasks_sidebar", function(){
       $('.tasks_sidebar form').submit();
       mostRecentAjaxRequest().response({
         status: 201,
-        responseText: ''
+        responseText: '<div class="tasks_sidebar">fake html returned from the server</div>'
       });
-      mostRecentAjaxRequest().response({
-        status: 201,
-        responseText: '{"as_html": "the fake html we returned from the server"}'
-      });
-      expect( $('body').text() ).toMatch(/the fake html we returned from the server/);
+      expect( $('.tasks_sidebar').text() ).toEqual('fake html returned from the server');
     });
 
   });
