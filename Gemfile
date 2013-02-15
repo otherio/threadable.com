@@ -25,12 +25,12 @@ end
 group :development do
   gem 'style-guide'
   gem 'rb-fsevent', require: nil
+  gem 'debugger'
 end
 
 group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'debugger'
   gem 'sqlite3'
   gem 'foreman' # for heroku
   gem 'guard-rspec'
