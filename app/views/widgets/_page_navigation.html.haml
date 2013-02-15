@@ -4,6 +4,9 @@
 
     - if current_project.present?
       = link_to current_project.name, project_conversations_url(current_project), class: 'brand'
+      %btn.btn.btn-text-thin{:type => "button"}
+        %i.icon-plus
+        Invite
     - else
       = link_to "Multify", multify_link_url, class: 'brand'
 
