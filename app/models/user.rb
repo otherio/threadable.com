@@ -25,4 +25,15 @@ class User < ActiveRecord::Base
   alias_method :to_param, :slug
 
   pg_search_scope :search_by_identity, :against => [:email, :name]
+
+  def password_required= password_required
+    @password_required = password_required
+  end
+
+  private
+
+  def password_required?
+    @password_required.nil? ? super : @password_required
+  end
+
 end

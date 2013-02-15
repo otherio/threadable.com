@@ -4,13 +4,45 @@ class Project::MembersController < ApplicationController
 
   respond_to :json
 
-  # GET /projects/members
-  # GET /projects/members.json
+  # GET /projects/make-a-tank/members
+  # GET /projects/make-a-tank/members.json
   def index
-    project = current_user.projects.find_by_slug!(params[:project_id])
-    members = project.members
     respond_with(members)
   end
+
+  # POST /projects/make-a-tank/members.json
+  def create
+    member = params[:member].has_key?(:id) ?
+      User.find_by_id(params[:member][:id]) :
+      User.new(params[:member])
+
+    return head :not_found if member.blank?
+
+    member.password_required = false if member.new_record?
+
+    if member.save && project.members << member
+      respond_with member, status: :created
+    else
+      respond_with member, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /projects/make-a-tank/members.json
+  def destroy
+    project.members.find_by_user_id(params[:id]).destroy
+    head :no_content
+  end
+
+  private
+
+  def project
+    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+  end
+
+  def members
+    project.members
+  end
+
 
 
   # this will become the overall user search for invites maybe later.
