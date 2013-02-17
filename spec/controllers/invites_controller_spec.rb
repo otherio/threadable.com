@@ -24,7 +24,7 @@ describe InvitesController do
 
       def params
         super.merge(
-          user: {
+          invite: {
             name:  'Tord Boontje',
             email: 'tord@tordboontje.com',
           }
@@ -50,7 +50,7 @@ describe InvitesController do
 
       def params
         super.merge(
-          user: {
+          invite: {
             name:  invited_user.name,
             email: invited_user.email,
           }
@@ -69,7 +69,9 @@ describe InvitesController do
         let(:invited_user){ project.members.last }
 
         it "should error" do
-          ->{ post :create, params }.should raise_error ActiveRecord::RecordNotUnique
+          post :create, params
+          response.status.should == 400
+          project.members.reload.should include invited_user
         end
 
       end

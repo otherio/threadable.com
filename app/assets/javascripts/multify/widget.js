@@ -16,3 +16,8 @@ Multify.Widget.prototype.$ = function(query){
   if (arguments.length === 0) return elements;
   return elements.find(query);
 };
+
+Multify.Widget.prototype.S = function(){
+  var selector = S('.'+this.name);
+  return selector.apply(selector, arguments);
+};

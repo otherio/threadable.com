@@ -6,7 +6,7 @@ class InvitesController < ApplicationController
 
   # POST /projects/make-a-tank/invites.json
   def create
-    @user = User.find_or_initialize_by_email(params[:user])
+    @user = User.find_or_initialize_by_email(params[:invite])
 
     if @user.new_record?
       @user.password_required = false
@@ -16,6 +16,8 @@ class InvitesController < ApplicationController
     project.members << @user
 
     respond_with @user, status: :created
+  rescue ActiveRecord::RecordNotUnique
+    respond_with @user, status: :bad_request
   end
 
   private

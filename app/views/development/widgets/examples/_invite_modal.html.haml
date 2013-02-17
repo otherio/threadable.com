@@ -1,0 +1,3 @@
+= render_widget :invite_modal, current_user.try(:projects).try(:first) || Project.last
+
+%a(href="#invite_modal" role="button" class="btn" data-toggle="modal") Invite

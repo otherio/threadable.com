@@ -1,12 +1,13 @@
 .navbar.navbar-inverse.navbar-static-top
   .navbar-inner
 
-
     - if current_project.present?
+      = render_widget :invite_modal, current_project
       = link_to current_project.name, project_conversations_url(current_project), class: 'brand'
-      %btn.btn.btn-text-thin{:type => "button"}
+      %a(href="#invite_modal" role="button" class="btn btn-text-thin" data-toggle="modal")
         %i.icon-plus
         Invite
+
     - else
       = link_to "Multify", multify_link_url, class: 'brand'
 

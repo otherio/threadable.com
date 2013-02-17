@@ -6,6 +6,8 @@ module CapybaraEnvironment::Elements
       '.page_navigation'
     when 'the login form'
       'form.new_user'
+    when 'the modal'
+      '.modal'
     end
   end
 

@@ -1,26 +1,23 @@
-# Feature: Invitations
-#  I should be able to invite unregistered users to join the site, either by adding them as members a project,
-#  adding them as doers for a task, or adding them as followers of a task. The people I invite should be able
-#  to use those invitations to claim their accounts and become registered users.
+Feature: Invitations
+  I should be able to invite unregistered users to join the site, either by adding them as members a project,
+  adding them as doers for a task, or adding them as followers of a task. The people I invite should be able
+  to use those invitations to claim their accounts and become registered users.
 
-# @wip
-# Scenario: I want to add an unregistered user as a member of a project
-#  In order to add an unregistered user as a member of a project
-#  As a member of that project
-#  I should be able to add an unregistered user to the project and send them an invitation
-#   Given I am "Jared"
-#     And I am logged in
-#     And I am a member of the project "build a huge wooden duck"
-#     And I am on the project page for the project "build a huge wooden duck"
-#    When I click on "Add Person"
-#     And I enter "Slim" in the name field
-#     And I enter "sfslim@gmail.com" in the email field
-#     And I enter "Hey Slim — We're trying to build a huge wooden duck. I seem to recall you have some experience doing this. Care to lend a hand?" in the comment field
-#     And "sfslim@gmail.com" does not belong to a registered user
-#     Then "Slim" should be created as an unclaimed account
-#     And "Slim" should be added as a member of the project "build a huge wooden duck"
-#     And an email should be sent to "sfslim@gmail.com" with the comment "Hey Slim — We're trying to build a huge wooden duck. I seem to recall you have some experience doing this. Care to lend a hand?"
-#     And a message should be displayed informing me that "Slim" has been added to the project and that an invitation email has been sent
+  Scenario: I want to add an unregistered user as a member of a project
+    In order to add an unregistered user as a member to my project
+    As a member of that project
+    I should be able to add an unregistered user to the project and send them an invitation
+    Given I am "Alice Neilson"
+     When I invite "Frank Zappa", "frank@zappaworld.net" to the "UCSD Electric Racing" project
+     Then I should see "Hey! Frank Zappa <frank@zappaworld.net> was added to this project."
+
+  Scenario: when adding an existing member to a project
+    As a member of a project
+    I should get a notification if I try to add an existing member.
+    Given I am "Alice Neilson"
+     When I invite "Yan Zhu", "yan@ucsd.edu" to the "UCSD Electric Racing" project
+     Then I should see "Notice! That user is already a member of this project."
+
 
 
 # @wip
