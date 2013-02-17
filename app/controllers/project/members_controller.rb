@@ -12,15 +12,9 @@ class Project::MembersController < ApplicationController
 
   # POST /projects/make-a-tank/members.json
   def create
-    member = params[:member].has_key?(:id) ?
-      User.find_by_id(params[:member][:id]) :
-      User.new(params[:member])
-
+    member = User.find_by_id(params[:member][:id])
     return head :not_found if member.blank?
-
-    member.password_required = false if member.new_record?
-
-    if member.save && project.members << member
+    if project.members << member
       respond_with member, status: :created
     else
       respond_with member, status: :unprocessable_entity
@@ -29,7 +23,7 @@ class Project::MembersController < ApplicationController
 
   # DELETE /projects/make-a-tank/members.json
   def destroy
-    project.members.find_by_user_id(params[:id]).destroy
+    project.members.find_by_slug(params[:id]).destroy
     head :no_content
   end
 

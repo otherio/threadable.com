@@ -27,7 +27,7 @@ describe Project::MembersController do
   describe "POST create" do
     describe "when given a valid user id" do
       let(:other_user){ (User.all - project.members).first }
-      it "creates a new Project" do
+      it "creates a new project membership" do
         post :create, valid_params.merge(:member => {id: other_user.id})
         response.should be_success
         response.body.should == other_user.to_json
@@ -36,23 +36,12 @@ describe Project::MembersController do
     end
 
     describe "when given an invalid user id" do
-      it "creates a new Project" do
+      it "does not create a new project membership" do
         members = project.members.dup
-        post :create, valid_params.merge(:member => {id: 3278234823748293748932})
+        post :create, valid_params.merge(:member => {id: 'jon-varvatos'})
         response.should be_not_found
         response.body.should be_blank
         project.members.reload.should == members
-      end
-    end
-
-    describe "when given an email address" do
-      it "creates a new Project" do
-        expect{
-          post :create, valid_params.merge(:member => {email: 'alf@spacecamp.org'})
-        }.to change(User, :count).by(1)
-        response.should be_success
-        response.body.should == User.last.to_json
-        project.members.reload.map(&:email).should include 'alf@spacecamp.org'
       end
     end
 
