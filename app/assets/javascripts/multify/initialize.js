@@ -1,11 +1,22 @@
 !function(){
 
   Multify.initialize = function(){
+    initializeFlashMessages();
     initializeWidgets();
     initializePage();
     initializeCurrentProject();
     initializeCurrentConversation();
   };
+
+  function initializeFlashMessages(){
+    var flash = ENV.flash;
+    delete ENV.flash;
+    if (!flash) return;
+    flash.forEach(function(flash_message){
+      var type = flash_message[0], content = flash_message[1];
+      Multify.Flash[type](content);
+    });
+  }
 
   function initializeWidgets(){
     $.each(Multify.widgets, function(name, widget){

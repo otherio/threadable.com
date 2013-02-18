@@ -10,6 +10,7 @@ module LayoutHelper
 
   def javascript_env
     @javascript_env ||= {
+      flash: flash,
       pageName: page_name,
       currentProject: current_project,
       currentConversation: current_conversation,
