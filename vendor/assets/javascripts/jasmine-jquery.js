@@ -130,11 +130,11 @@ jasmine.Fixtures.prototype.createContainer_ = function(html) {
   } else {
     container = '<div id="' + this.containerId + '">' + html + '</div>'
   }
-  $('body').append(container)
+  $(document.body).append(container)
 }
 
 jasmine.Fixtures.prototype.addToContainer_ = function(html){
-  var container = $('body').find('#'+this.containerId).append(html)
+  var container = $(document.body).find('#'+this.containerId).append(html)
   if(!container.length){
     this.createContainer_(html)
   }
@@ -263,7 +263,7 @@ jasmine.JSONFixtures.prototype.loadFixtureIntoCache_ = function(relativeUrl) {
     success: function(data) {
       self.fixturesCache_[relativeUrl] = data
     },
-    error: function(jqXHR, status, errorThrown) {
+    fail: function(jqXHR, status, errorThrown) {
         throw Error('JSONFixture could not be loaded: ' + url + ' (status: ' + status + ', message: ' + errorThrown.message + ')')
     }
   })
@@ -317,7 +317,8 @@ jasmine.JQuery.matchersClass = {}
     },
 
     wasPrevented: function(selector, eventName) {
-      return data.spiedEvents[jasmine.spiedEventsKey(selector, eventName)].isDefaultPrevented()
+      var e;
+      return (e = data.spiedEvents[jasmine.spiedEventsKey(selector, eventName)]) && e.isDefaultPrevented()
     },
 
     cleanUp: function() {
@@ -364,6 +365,10 @@ jasmine.JQuery.matchersClass = {}
       return $(document).find(this.actual).length
     },
 
+    toHaveLength: function(length) {
+      return this.actual.length === length
+    },
+
     toHaveAttr: function(attributeName, expectedAttributeValue) {
       return hasProperty(this.actual.attr(attributeName), expectedAttributeValue)
     },
@@ -396,7 +401,7 @@ jasmine.JQuery.matchersClass = {}
     },
 
     toHaveValue: function(value) {
-      return this.actual.val() == value
+      return this.actual.val() === value
     },
 
     toHaveData: function(key, expectedValue) {
@@ -416,7 +421,7 @@ jasmine.JQuery.matchersClass = {}
     },
 
     toBeFocused: function(selector) {
-      return this.actual.is(':focus')
+      return this.actual[0] === this.actual[0].ownerDocument.activeElement
     },
 
     toHandle: function(event) {

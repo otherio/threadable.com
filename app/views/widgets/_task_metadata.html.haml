@@ -10,13 +10,15 @@
   .row-fluid
     .task-controls.span12
       .doers-and-muted
-        %i.icon-bolt
-        doers:
-        - task.doers.each do |doer|
-          = image_tag(avatar_url(doer), :class => 'has-tooltip', :"data-toggle" => "tooltip", title: doer.name, alt: doer.name)
+        %span.doers
+          %i.icon-bolt
+          doers:
+          - task.doers.each do |doer|
+            = image_tag(doer.avatar_url, :class => 'has-tooltip avatar-tiny', :"data-toggle" => "tooltip", title: doer.name, alt: doer.name)
 
-        %a.control-link.muted.pull-right{href:""}
-          muted count
+        %span.muted
+          %a.control-link.muted.pull-right{href:""}
+            muted count
 
       %a.control-link.text-info.toggle-doer-self{href:""}
         - if task.doers.include?(user)
@@ -28,7 +30,7 @@
 
       &#183;
 
-      %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true, :href => ""}
+      %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true, :width => '400', :href => ""}
         %i.icon-user
         add others
 
@@ -54,5 +56,9 @@
         mute conversation
 
 .add-others-popover
-  %input.add-others-typeahead{:type => "text", :name => "add-others-typeahead", :"data-provide" => "typeahead"}
-  %h2 things. they are real.
+  %input.user-search{:type => "text", :name => "add-others-typeahead", :"data-provide" => "typeahead"}
+  .user-list
+    %ul
+  .controls
+    %hr
+    controls go here.

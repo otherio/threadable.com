@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   include PgSearch
 
+  before_create :default_values
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -34,6 +36,18 @@ class User < ActiveRecord::Base
 
   def password_required?
     @password_required.nil? ? super : @password_required
+  end
+
+  def default_values
+    unless self.avatar_url
+      #default_avatar_url = URI.join(root_url, 'images/default-avatar.png').to_s
+
+      # change this when we have a default image other than gravatar's
+      #"http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=#{CGI.escape(default_avatar_url)}"
+      gravatar_id = Digest::MD5.hexdigest(self.email.downcase)
+      self.avatar_url = "http://gravatar.com/avatar/#{gravatar_id}.png?s=48"
+    end
+    true
   end
 
 end

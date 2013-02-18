@@ -15,6 +15,7 @@
 //= require jasmine-html
 //= require jasmine-jsreporter
 //= require mock-ajax
+//= require jasmine-jquery
 
 context = describe;
 

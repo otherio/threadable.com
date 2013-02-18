@@ -35,8 +35,8 @@
   }
 
   function initializeCurrentConversation(){
-    if (!ENV.currentPonversation) return;
-    Multify.currentConversation = ENV.currentPonversation;
+    if (!ENV.currentConversation) return;
+    Multify.currentConversation = ENV.currentConversation;
   }
 
 }();

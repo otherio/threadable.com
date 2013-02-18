@@ -22,8 +22,10 @@ Multify::Application.routes.draw do
       end
       resources :messages, :only => [:create]
     end
-    resources :tasks, :only => [:index, :create]
     resources :invites, :only => [:create]
+    resources :tasks, :only => [:index, :create] do
+      resources :doers, :only => [:create, :destroy], controller: 'task/doers'
+    end
   end
 
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
