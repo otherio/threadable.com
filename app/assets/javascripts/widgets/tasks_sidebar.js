@@ -43,7 +43,6 @@ Multify.Widget('tasks_sidebar', function(widget){
     });
 
     request.error(function(){
-      console.log('ERR', arguments);
       root.find('input:first').val(subject);
     });
   };

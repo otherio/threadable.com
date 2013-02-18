@@ -27,7 +27,6 @@ Multify.Widget('invite_modal', function(widget){
   }
 
   function onError(form, event, xhr, status, error){
-    console.log(xhr, status, error);
     if (xhr.status === 400){
       Multify.Flash.notice('That user is already a member of this project.');
       close(form.closest('.modal'));
