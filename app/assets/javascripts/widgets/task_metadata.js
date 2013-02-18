@@ -12,7 +12,7 @@ Multify.Widget('task_metadata', function(widget){
       widget.getCurrentProjectMembers(renderUserList);
       $('input.user-search').keyup(function() { renderUserList(widget.users); });
       $('input.user-search').focus();
-      $('html').one('click', closePopover);
+      $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closePopover(); } );
     });
   };
 
@@ -66,7 +66,7 @@ Multify.Widget('task_metadata', function(widget){
       {doer_id: user.id}
     ).done(function() {
       var $newDoerIcon = $('<img alt="' + user.name + '" class="has-tooltip avatar-tiny" data-toggle="tooltip" src="' + user.avatar_url + '" title="" data-original-title="' + user.name + '">');
-      $('span.doers').append($newDoerIcon);
+      $('span.doers').append($newDoerIcon, ' '); // the space fixes a weird presentation bug
       $newDoerIcon.tooltip();
     }).always(function() {
       $('span.doers i.icon-spinner').remove();
