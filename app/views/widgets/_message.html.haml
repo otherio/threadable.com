@@ -1,7 +1,11 @@
 %p
-  From:
   - if message.user.present?
-    = message.user.name
+    = image_tag(message.user.avatar_url, :class => 'avatar-tiny', alt: message.user.name)
+    %strong
+      = message.user.name
   - else
-    = message.from
+    %strong
+      = message.from
+  %span.pull-right
+    Date/Time
 %p= message.body
