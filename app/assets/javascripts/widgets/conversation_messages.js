@@ -16,9 +16,9 @@ Multify.Widget('conversation_messages', function(widget){
   };
 
   widget.appendMessage = function(form, event, message, status, request){
-    var message_node = $('<li>').html(message.as_html);
+    var message_node = $('<li>').addClass('message').html(message.as_html);
 
-    form.closest('.conversation_messages').find('.messages').append(message_node);
+    form.closest('.conversation_messages').find('> ol').append(message_node);
     form[0].reset();
   };
 

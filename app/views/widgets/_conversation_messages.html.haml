@@ -1,6 +1,13 @@
+%ol
+  - (conversation.messages + conversation.events).sort_by(&:created_at).each do |message_or_event|
 
-%ol.messages
-  - conversation.messages.each do |message|
-    %li= render_widget(:message, message)
+    - case message_or_event
+    - when Message
+      %li.message
+        = render_widget(:message, message_or_event)
+    - when Task::CreatedEvent
+      %li.event
+        %i.icon-exclamation-sign
+        %span Conversation created by #{message_or_event.user.name}
 
 = render_widget :new_conversation_message, conversation, from: from

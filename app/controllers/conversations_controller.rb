@@ -31,7 +31,7 @@ class ConversationsController < ApplicationController
   def show
     @conversation = project.conversations.
       where(slug: params[:id]).
-      includes(messages: :user).
+      includes(events: :user, messages: :user).
       first
 
     respond_to do |format|

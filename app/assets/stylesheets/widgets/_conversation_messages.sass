@@ -3,9 +3,14 @@
     list-style-type: none
     margin: 0
     > li
-      border: 1px solid #DDD
-      border-radius: 2px
-      padding: 10px
+      &.event
+        color: white
+        background-color: black
+        padding: 0.5em
+      &.message
+        border: 1px solid #DDD
+        border-radius: 2px
+        padding: 10px
 
   .new_conversation_message
     +clearfix
