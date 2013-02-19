@@ -10,11 +10,32 @@ describe Task do
     it { should allow_mass_assignment_of(field) }
   end
 
-  it "checks doneness" do
-    create(:task, done_at: Time.now).done?.should be_true
+  describe "#task?" do
+    it "should return true" do
+      Task.new.should be_task
+    end
   end
 
-  it "identifies itself as a task" do
-    create(:task).task?.should be_true
+  describe "#done?" do
+    it "should return true if done_at is present" do
+      Task.new(done_at: Time.now).should be_done
+      Task.new(done_at: nil).should_not be_done
+      Task.new.should_not be_done
+    end
   end
+
+  describe "#done!" do
+    let(:task){ create(:task) }
+    it "should set done_at to Time.now and save!" do
+      time = Time.at(2132132131)
+      Time.stub(:now).and_return(time)
+
+      task.done_at.should be_nil
+      task.should_not be_done
+      task.done!
+      task.should be_done
+      task.done_at.should == time
+    end
+  end
+
 end

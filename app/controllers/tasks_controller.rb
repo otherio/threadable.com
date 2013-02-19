@@ -4,6 +4,8 @@ class TasksController < ApplicationController
 
   before_filter :authenticate_user!
 
+  respond_to :html, :json
+
   # POST /conversations
   # POST /conversations.json
   def create
@@ -14,12 +16,20 @@ class TasksController < ApplicationController
         format.html {
           if request.xhr?
             render text: view_context.render_widget(:tasks_sidebar, project)
+          else
+            redirect_to project_conversation_url(project, @task)
           end
         }
-        format.json { render json: @task, status: :created, location: project_conversation_url(project, @task) }
+        format.json {
+          render json: @task, status: :created, location: project_conversation_url(project, @task)
+        }
       else
-        format.html { render action: "new" }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+        format.html {
+          render nothing: true, status: :unprocessable_entity
+        }
+        format.json {
+          render json: @task.errors, status: :unprocessable_entity
+        }
       end
     end
   end
