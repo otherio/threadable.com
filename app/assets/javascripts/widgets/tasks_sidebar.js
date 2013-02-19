@@ -43,7 +43,7 @@ Multify.Widget('tasks_sidebar', function(widget){
     });
 
     request.error(function(){
-      root.find('input:first').val(subject);
+      root.find('input:first').val(subject).trigger('keyup');
     });
   };
 
