@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :tasks
   has_many :project_memberships
   has_many :members, :through => :project_memberships, :source => 'user'
+  has_many :events, order: "created_at"
 
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug

@@ -44,7 +44,7 @@ class ConversationsController < ApplicationController
   # POST /conversations.json
   def create
     message = params[:conversation].delete(:messages)
-    @conversation = project.conversations.new(params[:conversation])
+    @conversation = project.conversations.new(params[:conversation].merge(creator: current_user))
     @conversation.messages.build(message)
 
     respond_to do |format|

@@ -49,10 +49,10 @@ TestEnvironment::FixtureBuilder.new do
 
 
   # Alice starts making some tasks
-  create_task('layup body carbon')
-  create_task('install mirrors')
-  create_task('trim body panels')
-  create_task('make wooden form for carbon layup')
+  create_task(users['Alice Neilson'], 'layup body carbon')
+  create_task(users['Alice Neilson'], 'install mirrors')
+  create_task(users['Alice Neilson'], 'trim body panels')
+  create_task(users['Alice Neilson'], 'make wooden form for carbon layup')
 
 
   send_message(
@@ -70,9 +70,9 @@ TestEnvironment::FixtureBuilder.new do
   )
   add_doer_to_task(users['Tom Canver'], 'layup body carbon')
 
-  create_task('get epoxy')
-  create_task('get release agent')
-  create_task('get carbon and fiberglass')
+  create_task(users['Alice Neilson'], 'get epoxy')
+  create_task(users['Alice Neilson'], 'get release agent')
+  create_task(users['Alice Neilson'], 'get carbon and fiberglass')
 
   send_message(
     subject: 'RE: layup body carbon',

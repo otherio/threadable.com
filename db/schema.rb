@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
     t.string   "type"
     t.string   "subject"
     t.integer  "project_id"
+    t.integer  "creator_id"
     t.string   "slug"
     t.datetime "due_at"
     t.datetime "done_at"
@@ -26,6 +27,19 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
   end
 
   add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
+
+  create_table "events", :force => true do |t|
+    t.string   "type"
+    t.integer  "project_id",      :null => false
+    t.integer  "conversation_id"
+    t.integer  "user_id"
+    t.text     "content"
+    t.datetime "created_at",      :null => false
+  end
+
+  add_index "events", ["conversation_id"], :name => "index_events_on_conversation_id"
+  add_index "events", ["project_id"], :name => "index_events_on_project_id"
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
   create_table "messages", :force => true do |t|
     t.integer  "conversation_id"

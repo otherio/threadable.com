@@ -7,7 +7,7 @@ class TasksController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    @task = project.tasks.create!(params[:task])
+    @task = project.tasks.build(params[:task].merge(creator: current_user))
 
     respond_to do |format|
       if @task.save

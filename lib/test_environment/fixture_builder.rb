@@ -42,14 +42,18 @@ class TestEnvironment::FixtureBuilder
 
   def send_message(attributes)
     subject = attributes[:subject].sub(/^re: /i, '')
-    conversation = conversations[subject] ||= project.conversations.find_or_create_by_subject(subject)
+    creator = attributes[:user]
+    conversation = conversations[subject] ||= project.conversations.create!(
+      subject: subject,
+      creator: creator,
+    )
     conversation or raise "cant find conversation by subject: #{subject}"
     messages << conversation.messages.create!(attributes)
   end
 
-  def create_task(subject)
-    conversations[subject] and raise "conversation already exists"
-    task = project.tasks.create!(subject: subject)
+  def create_task(creator, subject)
+    raise "task already exists" if conversations[subject]
+    task = project.tasks.create!(subject: subject, creator: creator)
     conversations[subject] = task
     tasks[subject] = task
   end

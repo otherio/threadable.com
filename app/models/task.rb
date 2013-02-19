@@ -6,8 +6,15 @@ class Task < Conversation
   scope :done, where('conversations.done_at IS NOT NULL')
   scope :not_done, where('conversations.done_at IS NULL')
 
+  after_save :create_done_event!
+
   def done! at=Time.now
     self.done_at = at
+    save!
+  end
+
+  def undone!
+    self.done_at = nil
     save!
   end
 
@@ -19,4 +26,17 @@ class Task < Conversation
     true
   end
 
+  private
+
+  def create_done_event!
+    if done_at_changed?
+      (done? ? DoneEvent : UndoneEvent).create!(task: self, project: project)
+    end
+  end
+
 end
+
+require_dependency "#{Rails.root}/app/models/task/event"
+require_dependency "#{Rails.root}/app/models/task/created_event"
+require_dependency "#{Rails.root}/app/models/task/done_event"
+require_dependency "#{Rails.root}/app/models/task/undone_event"
