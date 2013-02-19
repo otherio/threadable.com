@@ -34,9 +34,6 @@ class ConversationsController < ApplicationController
       includes(messages: :user).
       first
 
-    # conversation = conversation.to_read_only_object(include: { messages: { include: :user } })
-    # conversation.wtf!
-
     respond_to do |format|
       format.html {}
       format.json { render json: @conversation }
