@@ -7,7 +7,11 @@
         = render_widget(:message, message_or_event)
     - when Task::CreatedEvent
       %li.event
-        %i.icon-exclamation-sign
-        %span Conversation created by #{message_or_event.user.name}
+        %span
+          %strong
+            #{message_or_event.user.name}
+          created this task
+        %span.pull-right
+          Date/Time
 
 = render_widget :new_conversation_message, conversation, from: from
