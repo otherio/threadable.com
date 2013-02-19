@@ -28,3 +28,5 @@ app/assets/stylesheets/_widgets.sass
 lib/test_environment/fixtures/*.yml
 
 vendor/gems/rails-widgets
+
+.rspec
