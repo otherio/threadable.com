@@ -10,7 +10,7 @@
         font-size: 0.85em
       &.message
         border-top: 1px
-        border-bottom: 0
+        border-bottom: 1px
         border-left: 0
         border-right: 0
         border-color: gainsboro
@@ -18,6 +18,8 @@
         padding: 5px
         .message-text
           margin-left: 28px
+        + .message
+          border-top: none
 
   .new_conversation_message
     +clearfix

@@ -12,13 +12,15 @@
         %span
           - case item.type
           - when :conversation_created_event
-            #{user} started this conversation.
+            #{user} started this conversation
           - when :task_created_event
-            #{user} created this task.
+            #{user} created this task
           - when :task_done_event
-            #{user} completed this task.
+            %i.icon-ok.finished-check
+            #{user} marked this task as done
           - when :task_undone_event
-            #{user} uncompleted this task.
+            %i.icon-ok.unfinished-check
+            #{user} marked this task as not done
           - else
             - raise "unknown type #{item.type.inspect}"
 
