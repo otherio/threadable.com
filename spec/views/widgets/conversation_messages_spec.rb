@@ -59,13 +59,13 @@ describe "conversation_messages" do
 
     list_items.map{|li| li[:class] }.should == %w(event message event message event message event)
     list_items.map(&:text).map(&:strip).should == [
-      "[event0 user name]\n started this conversation.",
+      "[event0 user name]\n started this conversation",
       "message widget html for message0",
-      "[event1 user name]\n created this task.",
+      "[event1 user name]\n created this task",
       "message widget html for message1",
-      "[event2 user name]\n completed this task.",
+      "[event2 user name]\n marked this task as done",
       "message widget html for message2",
-      "[event3 user name]\n uncompleted this task.",
+      "[event3 user name]\n marked this task as not done",
     ]
     html.text.should include 'NEW CONVERSATION WIDGET'
   end

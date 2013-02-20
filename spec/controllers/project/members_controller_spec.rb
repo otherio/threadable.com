@@ -20,7 +20,8 @@ describe Project::MembersController do
     it "returns a list of users that are members of the project" do
       xhr :get, :index, valid_params
       response.should be_success
-      response.body.should == project.members.to_json
+      # this is fucking stupid
+      JSON.parse(response.body).should =~ JSON.parse(project.members.to_json)
     end
   end
 
@@ -41,7 +42,7 @@ describe Project::MembersController do
         post :create, valid_params.merge(:member => {id: 'jon-varvatos'})
         response.should be_not_found
         response.body.should be_blank
-        project.members.reload.should == members
+        project.members.reload.should =~ members
       end
     end
 
