@@ -36,6 +36,7 @@ class TestEnvironment::FixtureBuilder
     create_user name, email
   end
 
+  def set_avatar
   def accept_invite name
     project.members << users[name]
   end

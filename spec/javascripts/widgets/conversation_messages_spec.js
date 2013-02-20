@@ -6,16 +6,28 @@ describe("widgets/conversation_messages", function(){
   });
 
   describe("appendMessage", function(){
-    it("should append the given message to the message list", function(){
-      var form = $('.conversation_messages form');
-      var message = {
+    var form, message;
+
+    beforeEach(function() {
+      form = $('.conversation_messages form');
+      message = {
         as_html: '<div class="message"><p> From: Someone New </p> <p>Hi all.</p> </div>'
       };
+    });
+
+    it("should append the given message to the message list", function(){
       expect(messages().length).toEqual(2);
       this.widget.appendMessage(form, null, message, null, null);
       expect(messages().length).toEqual(3);
       expect(messages().filter(':last').html()).toEqual(message.as_html);
     });
+
+    it("refreshes the times", function() {
+      var timeagoSpy = spyOn($.prototype, 'timeago');
+      this.widget.appendMessage(form, null, message, null, null);
+      expect(timeagoSpy).toHaveBeenCalled();
+    });
+
   });
 
   describe("onMessageBodyChange", function(){

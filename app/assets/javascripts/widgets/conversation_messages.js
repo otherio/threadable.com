@@ -20,6 +20,7 @@ Multify.Widget('conversation_messages', function(widget){
 
     form.closest('.conversation_messages').find('> ol').append(message_node);
     form[0].reset();
+    $('.timeago').timeago().refresh();
   };
 
   widget.onMessageBodyChange = function(element){
