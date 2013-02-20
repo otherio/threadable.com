@@ -22,6 +22,12 @@ TestEnvironment::FixtureBuilder.new do
   accept_invite('Bethany Pattern')
   accept_invite('Bob Cauchois')
 
+  # each user sets their avatar via magic!
+  set_avatar 'alice@ucsd.edu',   'alice.jpg'
+  set_avatar 'tom@ucsd.edu',     'tom.jpg'
+  set_avatar 'bob@ucsd.edu',     'bob.jpg'
+  set_avatar 'yan@ucsd.edu',     'yan.jpg'
+  set_avatar 'bethany@ucsd.edu', 'bethany.jpg'
 
   # Alice sends a welcome email
   send_message(
