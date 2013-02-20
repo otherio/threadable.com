@@ -7,6 +7,6 @@
     %strong
       = message.from
   %span.pull-right
-    =timeago(message.created_at)
+    = timeago message.created_at
 .message-text
   = message.body

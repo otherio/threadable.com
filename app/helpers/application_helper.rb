@@ -8,9 +8,12 @@
     @conversation
   end
 
-  def timeago(time, options = {})
-    options[:class] ||= "timeago"
-    content_tag(:time, '', options.merge(:datetime => time.getutc.iso8601)) if time
+  def timeago(time, html_options={})
+    return unless time.respond_to? :getutc
+    html_options = HtmlOptions.new(html_options)
+    html_options.add_classname "timeago"
+    html_options[:datetime] = time.getutc.iso8601
+    content_tag(:time, '', html_options)
   end
 end
 
