@@ -12,6 +12,6 @@
             #{message_or_event.user.name}
           created this task
         %span.pull-right
-          Date/Time
+          =timeago(message_or_event.created_at)
 
 = render_widget :new_conversation_message, conversation, from: from

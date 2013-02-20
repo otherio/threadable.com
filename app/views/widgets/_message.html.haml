@@ -7,5 +7,5 @@
     %strong
       = message.from
   %span.pull-right
-    Date/Time
+    =timeago(message.created_at)
 %p= message.body
