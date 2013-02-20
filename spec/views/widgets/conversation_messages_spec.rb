@@ -7,9 +7,10 @@ describe "conversation_messages" do
     @created_at += 10
   end
 
-  def create_event index
+  def create_event index, type
     double(:"event",
       index: index,
+      type: type,
       created_at: generate_created_at,
       user: double(:user, name:"[event#{index} user name]"), )
   end
@@ -19,12 +20,15 @@ describe "conversation_messages" do
   end
 
   let :items do
-    [].tap do |items|
-      4.times do |index|
-        items << [:event, create_event(index)]
-        items << [:message, create_message(index)]
-      end
-    end
+    [
+      [:event,   create_event(0, :conversation_created_event)],
+      [:message, create_message(0)],
+      [:event,   create_event(1, :task_created_event)],
+      [:message, create_message(1)],
+      [:event,   create_event(2, :task_done_event)],
+      [:message, create_message(2)],
+      [:event,   create_event(3, :task_undone_event)],
+    ]
   end
 
   let(:conversation){ double(:conversation) }
@@ -53,16 +57,15 @@ describe "conversation_messages" do
   it "should return a list of messages and a new conversation form at the bottom" do
     list_items = html.css('ol > li')
 
-    list_items.map{|li| li[:class] }.should == %w(event message event message event message event message)
+    list_items.map{|li| li[:class] }.should == %w(event message event message event message event)
     list_items.map(&:text).map(&:strip).should == [
-      "[event0 user name]\ncreated this task",
+      "[event0 user name]\n started this conversation.",
       "message widget html for message0",
-      "[event1 user name]\ncreated this task",
+      "[event1 user name]\n created this task.",
       "message widget html for message1",
-      "[event2 user name]\ncreated this task",
+      "[event2 user name]\n completed this task.",
       "message widget html for message2",
-      "[event3 user name]\ncreated this task",
-      "message widget html for message3",
+      "[event3 user name]\n uncompleted this task.",
     ]
     html.text.should include 'NEW CONVERSATION WIDGET'
   end
