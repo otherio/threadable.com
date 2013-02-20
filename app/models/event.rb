@@ -1,5 +1,9 @@
 class Event < ActiveRecord::Base
 
+  def type
+    self.class.name.underscore.gsub('/','_').to_sym
+  end
+
   belongs_to :project
   belongs_to :user
 

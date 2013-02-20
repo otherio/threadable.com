@@ -5,10 +5,23 @@
       %li.message
         = render_widget(:message, item)
     - when :event
+      - user = capture do
+        %strong= item.user.name
+
       %li.event
         %span
-          %strong= item.user.name
-          created this task
+          - case item.type
+          - when :conversation_created_event
+            #{user} started this conversation.
+          - when :task_created_event
+            #{user} created this task.
+          - when :task_done_event
+            #{user} completed this task.
+          - when :task_undone_event
+            #{user} uncompleted this task.
+          - else
+            - raise "unknown type #{item.type.inspect}"
+
         %span.pull-right
           = timeago item.created_at
 
