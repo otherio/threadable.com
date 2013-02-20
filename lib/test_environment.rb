@@ -13,6 +13,7 @@ module TestEnvironment
   def before_all! test=nil
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean
+    TestEnvironment::Fixtures.load!
   end
 
   def before_each! test=nil

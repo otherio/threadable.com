@@ -26,13 +26,13 @@ module CapybaraEnvironment
   end
 
   def before_each! test=nil
-    DatabaseCleaner.clean
-    TestEnvironment::Fixtures.load!
     DatabaseCleaner.start
     super
   end
 
   def after_each! test=nil
+    DatabaseCleaner.clean
+    TestEnvironment::Fixtures.load!
     super
   end
 

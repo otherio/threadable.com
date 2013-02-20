@@ -20,9 +20,6 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/lib/test_environment/fixtures"
   config.use_transactional_fixtures = false
 
-  DatabaseCleaner.strategy = :truncation
-  DatabaseCleaner.clean
-
   config.before :all do
     CapybaraEnvironment.before_all!
   end
