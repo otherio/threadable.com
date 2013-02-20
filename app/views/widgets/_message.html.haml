@@ -1,6 +1,6 @@
-%p
+.message-head
   - if message.user.present?
-    = image_tag(message.user.avatar_url, :class => 'avatar-tiny', alt: message.user.name)
+    = image_tag(message.user.avatar_url, :class => 'avatar-small', alt: message.user.name)
     %strong
       = message.user.name
   - else
@@ -8,4 +8,5 @@
       = message.from
   %span.pull-right
     =timeago(message.created_at)
-%p= message.body
+.message-text
+  = message.body
