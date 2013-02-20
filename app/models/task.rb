@@ -8,6 +8,8 @@ class Task < Conversation
 
   after_save :create_done_event!
 
+  attr_accessor :current_user
+
   def done! current_user, at=Time.now
     @current_user = current_user
     self.done_at = at

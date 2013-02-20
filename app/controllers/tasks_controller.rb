@@ -6,8 +6,8 @@ class TasksController < ApplicationController
 
   respond_to :html, :json
 
-  # POST /conversations
-  # POST /conversations.json
+  # POST /tasks
+  # POST /tasks.json
   def create
     @task = project.tasks.build(params[:task].merge(creator: current_user))
 
@@ -21,7 +21,7 @@ class TasksController < ApplicationController
           end
         }
         format.json {
-          render json: @task, status: :created, location: project_conversation_url(project, @task)
+          render json: @task, status: :created, location: project_task_url(project, @task)
         }
       else
         format.html {
@@ -30,6 +30,27 @@ class TasksController < ApplicationController
         format.json {
           render json: @task.errors, status: :unprocessable_entity
         }
+      end
+    end
+  end
+
+  # PUT /tasks
+  # PUT /tasks.json
+  def update
+    @task = project.tasks.find_by_slug!(params[:id])
+    @task.current_user = current_user
+
+    if params[:task] && done = params[:task].delete(:done)
+      params[:task][:done_at] = done == "true" ? Time.now : nil
+    end
+
+    respond_to do |format|
+      if @task.update_attributes(params[:task])
+        format.html { redirect_to project_conversation_url(project, @task), notice: 'Task was successfully updated.' }
+        format.json { render json: @task, status: :created, location: project_task_url(project, @task) }
+      else
+        format.html { redirect_to project_conversation_url(project, @task), error: 'We were unable to update your task. Please try again later.' }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
   end

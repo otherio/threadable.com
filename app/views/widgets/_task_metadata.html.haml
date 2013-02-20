@@ -42,7 +42,7 @@
 
       &#183;
 
-      - url = project_conversation_path(task.project, task, conversation: {done:!task.done?})
+      - url = project_task_path(task.project, task, task: {done:!task.done?})
       = link_to url, method: 'PUT', class: 'control-link text-info toggle-done' do
         - if task.done?
           %i.icon-ok

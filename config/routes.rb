@@ -23,7 +23,7 @@ Multify::Application.routes.draw do
       resources :messages, :only => [:create]
     end
     resources :invites, :only => [:create]
-    resources :tasks, :only => [:index, :create] do
+    resources :tasks, :only => [:index, :create, :update] do
       resources :doers, :only => [:create, :destroy], controller: 'task/doers'
     end
   end
