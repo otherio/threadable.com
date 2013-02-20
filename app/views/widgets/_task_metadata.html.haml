@@ -6,54 +6,52 @@
 
   = task.subject
 
-.container-fluid
-  .row-fluid
-    .task-controls.span12
-      .doers-and-muted
-        %span.doers
-          %i.icon-bolt
-          doers:
-          - task.doers.each do |doer|
-            = image_tag(doer.avatar_url, :class => 'has-tooltip avatar-tiny', :"data-toggle" => "tooltip", title: doer.name, alt: doer.name)
+.task-controls
+  .doers-and-muted
+    %span.doers
+      %i.icon-bolt
+      doers:
+      - task.doers.each do |doer|
+        = image_tag(doer.avatar_url, :class => 'has-tooltip avatar-tiny', :"data-toggle" => "tooltip", title: doer.name, alt: doer.name)
 
-        %span.muted
-          %a.control-link.muted.pull-right{href:""}
-            muted count
+    %span.muted
+      %a.control-link.muted.pull-right{href:""}
+        muted count
 
-      %a.control-link.text-info.toggle-doer-self{href:""}
-        - if task.doers.include?(user)
-          %i.icon-remove
-          remove me
-        - else
-          %i.icon-plus
-          sign me up
+  %a.control-link.text-info.toggle-doer-self{href:""}
+    - if task.doers.include?(user)
+      %i.icon-remove
+      remove me
+    - else
+      %i.icon-plus
+      sign me up
 
-      &#183;
+  &#183;
 
-      %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true, :width => '400', :href => ""}
-        %i.icon-user
-        add others
+  %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true, :width => '400', :href => ""}
+    %i.icon-user
+    add others
 
-      &#183;
+  &#183;
 
-      %a.control-link.text-info.schedule-event{href:""}
-        %i.icon-calendar
-        schedule event
+  %a.control-link.text-info.schedule-event{href:""}
+    %i.icon-calendar
+    schedule event
 
-      &#183;
+  &#183;
 
-      - url = project_task_path(task.project, task, task: {done:!task.done?})
-      = link_to url, method: 'PUT', class: 'control-link text-info toggle-done' do
-        - if task.done?
-          %i.icon-ok
-          mark as not done
-        - else
-          %i.icon-ok
-          mark as done
+  - url = project_conversation_path(task.project, task, conversation: {done:!task.done?})
+  = link_to url, method: 'PUT', class: 'control-link text-info toggle-done' do
+    - if task.done?
+      %i.icon-ok
+      mark as not done
+    - else
+      %i.icon-ok
+      mark as done
 
-      %a.control-link.text-info.pull-right.mute-task{href:""}
-        %i.icon-volume-off
-        mute conversation
+  %a.control-link.text-info.pull-right.mute-task{href:""}
+    %i.icon-volume-off
+    mute conversation
 
 .add-others-popover
   %input.user-search{:type => "text", :name => "add-others-typeahead", :"data-provide" => "typeahead"}

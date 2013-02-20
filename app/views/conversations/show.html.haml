@@ -5,18 +5,18 @@
 - else
   = render_widget :conversation_metadata, conversation: @conversation
 
-- # this needs work
-.row-fluid
+.message-controls
   %hr.narrow
-  .message-controls
-    %a.control-link.text-info
-      %i.icon-edit
-      add message
+  %a.control-link.text-info
+    %i.icon-edit
+    add message
 
-    &#183;
+  &#183;
 
-    %a.control-link.text-info
-      %i.icon-camera
-      add photos/videos/docs
+  %a.control-link.text-info
+    %i.icon-camera
+    add photos/videos/docs
+
+%hr.narrow
 
 = render_widget :conversation_messages, @conversation
