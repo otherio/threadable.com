@@ -25,8 +25,8 @@ describe "events" do
     project.events.last.conversation.should == project.tasks.last
 
     # task done event
-    project.tasks.last.done!
-    project.tasks.last.done! # idempotent
+    project.tasks.last.done! project.members.first
+    project.tasks.last.done! project.members.first # idempotent
 
     project.events.reload
     project.events.size.should == 3
@@ -34,8 +34,8 @@ describe "events" do
     project.events.last.conversation.should == project.tasks.last
 
     #
-    project.tasks.last.undone!
-    project.tasks.last.undone! # idempotent
+    project.tasks.last.undone! project.members.first
+    project.tasks.last.undone! project.members.first # idempotent
 
     project.events.reload
     project.events.size.should == 4
@@ -44,7 +44,7 @@ describe "events" do
 
 
     # task done event
-    project.tasks.last.done!
+    project.tasks.last.done! project.members.first
 
     project.events.reload
     project.events.size.should == 5

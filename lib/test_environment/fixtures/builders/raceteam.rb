@@ -93,9 +93,9 @@ TestEnvironment::FixtureBuilder.new do
   add_doer_to_task(users['Yan Hzu'],    'get release agent')
   add_doer_to_task(users['Tom Canver'], 'get carbon and fiberglass')
 
-  complete_task('get epoxy')
-  complete_task('get release agent')
-  complete_task('get carbon and fiberglass')
+  complete_task(users['Tom Canver'], 'get epoxy')
+  complete_task(users['Tom Canver'], 'get release agent')
+  complete_task(users['Tom Canver'], 'get carbon and fiberglass')
 
   send_message(
     subject: 'RE: layup body carbon',
@@ -133,6 +133,6 @@ TestEnvironment::FixtureBuilder.new do
     reply: true,
   )
 
-  complete_task('layup body carbon')
+  complete_task(users['Alice Neilson'], 'layup body carbon')
 
 end

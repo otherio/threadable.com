@@ -11,9 +11,7 @@ describe "conversation_messages" do
     double(:"event",
       index: index,
       created_at: generate_created_at,
-      user: double(:user,
-        name:"[event#{index} user name]"),
-    )
+      user: double(:user, name:"[event#{index} user name]"), )
   end
 
   def create_message index

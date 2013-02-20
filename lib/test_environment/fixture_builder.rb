@@ -66,8 +66,8 @@ class TestEnvironment::FixtureBuilder
     tasks[subject].doers << user
   end
 
-  def complete_task subject
-    tasks[subject].done!
+  def complete_task user, subject
+    tasks[subject].done! user
   end
 
 end

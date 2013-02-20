@@ -8,7 +8,8 @@ class Task < Conversation
 
   after_save :create_done_event!
 
-  def done! at=Time.now
+  def done! current_user, at=Time.now
+    @current_user = current_user
     self.done_at = at
     save!
   end
@@ -30,7 +31,7 @@ class Task < Conversation
 
   def create_done_event!
     if done_at_changed?
-      (done? ? DoneEvent : UndoneEvent).create!(task: self, project: project)
+      (done? ? DoneEvent : UndoneEvent).create!(task: self, project: project, user: @current_user)
     end
   end
 
