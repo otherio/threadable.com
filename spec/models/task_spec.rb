@@ -32,9 +32,14 @@ describe Task do
 
       task.done_at.should be_nil
       task.should_not be_done
-      task.done!
+      Task::DoneEvent.should_receive(:create!)
+      task.done! User.new
       task.should be_done
       task.done_at.should == time
+      Task::UndoneEvent.should_receive(:create!)
+      task.undone! User.new
+      task.done_at.should be_nil
+      task.should_not be_done
     end
   end
 

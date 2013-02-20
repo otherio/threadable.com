@@ -14,7 +14,8 @@ class Task < Conversation
     save!
   end
 
-  def undone!
+  def undone! current_user
+    @current_user = current_user
     self.done_at = nil
     save!
   end
