@@ -2,11 +2,10 @@ require 'spec_helper'
 
 describe Task::DoersController do
 
-  let!(:current_user){ create(:user) }
-  let!(:project){ create(:project) }
+  let(:project){ Project.first }
+  let(:current_user){ project.members.first }
 
   before(:each) do
-    project.members << current_user
     @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in current_user
   end
@@ -14,6 +13,7 @@ describe Task::DoersController do
   def valid_attributes
     {
       "subject" => "how are we going to build this thing?",
+      "creator" => current_user,
     }
   end
 

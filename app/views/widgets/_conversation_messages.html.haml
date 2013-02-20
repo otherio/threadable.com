@@ -1,17 +1,15 @@
 %ol
-  - (conversation.messages + conversation.events).sort_by(&:created_at).each do |message_or_event|
-
-    - case message_or_event
-    - when Message
+  - items.each do |type, item|
+    - case type
+    - when :message
       %li.message
-        = render_widget(:message, message_or_event)
-    - when Task::CreatedEvent
+        = render_widget(:message, item)
+    - when :event
       %li.event
         %span
-          %strong
-            #{message_or_event.user.name}
+          %strong= item.user.name
           created this task
         %span.pull-right
-          =timeago(message_or_event.created_at)
+          = timeago item.created_at
 
 = render_widget :new_conversation_message, conversation, from: from
