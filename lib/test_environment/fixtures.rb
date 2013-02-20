@@ -45,4 +45,9 @@ module TestEnvironment::Fixtures
     nil
   end
 
+  def self.reload!
+    Dir[BUILDERS].each{|path| FileUtils.touch path }
+    load!
+  end
+
 end
