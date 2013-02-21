@@ -1,3 +1,4 @@
+ENV["RAILS_ENV"] ||= 'test'
 require 'cucumber/rails'
 require 'capybara_environment'
 

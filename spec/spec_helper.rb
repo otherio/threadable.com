@@ -11,11 +11,11 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 RSpec.configure do |config|
 
   config.global_fixtures = :all
+  config.use_transactional_fixtures = false
 
   config.include TestEnvironment
-
-  config.fixture_path = TestEnvironment.fixture_path
-  config.use_transactional_fixtures = false
+  config.include CapybaraEnvironment, :type => :request
+  config.include CapybaraEnvironment, :type => :acceptance
 
   config.before :suite do
     CapybaraEnvironment.before_suite!
@@ -27,23 +27,6 @@ RSpec.configure do |config|
 
   config.after :each do |spec|
     database_cleaner_clean!
-  end
-
-  [:request, :acceptance].each do |type|
-    config.with_options :type => type do |capybara_specs|
-
-      capybara_specs.include CapybaraEnvironment
-
-      capybara_specs.before do |spec|
-        Project.count.should == 2
-        ActiveRecord::Base.connection.open_transactions.should == 0
-      end
-
-      capybara_specs.after do |spec|
-        TestEnvironment::Fixtures.load!
-      end
-
-    end
   end
 
   config.with_options :type => :controller do |controller_specs|

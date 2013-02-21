@@ -14,6 +14,9 @@ module TestEnvironment::DatabaseCleaner
     if @database_cleaner_started
       DatabaseCleaner.clean
       @database_cleaner_started = false
+      if database_cleaner_strategy == :truncation
+        TestEnvironment::Fixtures.load!
+      end
     end
   end
 

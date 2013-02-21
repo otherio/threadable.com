@@ -40,7 +40,7 @@ module TestEnvironment::Fixtures
     ::ActiveRecord::Fixtures.reset_cache
     fixtures_folder = ::Rails.root.join('lib/test_environment/fixtures')
     fixtures = Dir[File.join(fixtures_folder, '*.yml')].map { |f| File.basename(f, '.yml') }
-    ::DatabaseCleaner.clean
+    ::DatabaseCleaner.clean_with :truncation
     ::ActiveRecord::Fixtures.create_fixtures(fixtures_folder, fixtures)
     nil
   end
