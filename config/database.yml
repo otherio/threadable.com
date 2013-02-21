@@ -6,21 +6,10 @@ development:
   username: postgres
   password: password
 
-test: &TEST
+test:
   adapter: postgresql
   encoding: utf8
   database: multify_test
   pool: 5
   username: postgres
   password: password
-
-production:
-  adapter: postgresql
-  encoding: utf8
-  database: multify_production
-  pool: 5
-  username: postgres
-  password: fhgt57395fhas76839gnae
-
-cucumber:
-  <<: *TEST
