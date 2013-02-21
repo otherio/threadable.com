@@ -40,10 +40,14 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'cucumber-rails', require: nil
+  gem 'capybara-webkit'
+end
+
+# we need this as long as we are goig to load fixtures in prod
+group :test, :production do
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'cucumber-rails', require: nil
   gem 'database_cleaner'
-  gem 'capybara-webkit'
   gem 'fixture_builder'
 end
