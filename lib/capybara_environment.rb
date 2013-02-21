@@ -29,16 +29,6 @@ module CapybaraEnvironment
     super
   end
 
-  def before_each! test=nil
-
-    super
-  end
-
-  def after_each! test=nil
-    super
-    TestEnvironment::Fixtures.load!
-  end
-
   extend self
 
 end
