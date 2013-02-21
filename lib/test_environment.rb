@@ -11,7 +11,7 @@ module TestEnvironment
   end
 
   def fixture_path
-    "#{::Rails.root}/lib/test_environment/fixtures"
+    TestEnvironment::Fixtures::FIXTURES.to_s
   end
 
   def database_cleaner_strategy

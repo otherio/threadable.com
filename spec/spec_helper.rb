@@ -11,6 +11,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 RSpec.configure do |config|
 
   config.global_fixtures = :all
+  config.fixture_path = TestEnvironment.fixture_path
   config.use_transactional_fixtures = false
 
   config.include TestEnvironment

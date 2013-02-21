@@ -10,6 +10,8 @@ module TestEnvironment::Fixtures
     require 'database_cleaner'
     require 'fixture_builder/configuration'
 
+    ActiveSupport::TestCase.fixture_path = FIXTURES.to_s
+
     ::FixtureBuilder::Configuration.class_eval do
       def fixtures_dir(path = '')
         FIXTURES.join(path).to_s
@@ -38,7 +40,7 @@ module TestEnvironment::Fixtures
   def self.load!
     configure_fixture_builder!
     ::ActiveRecord::Fixtures.reset_cache
-    fixtures_folder = ::Rails.root.join('lib/test_environment/fixtures')
+    fixtures_folder = FIXTURES.to_s
     fixtures = Dir[File.join(fixtures_folder, '*.yml')].map { |f| File.basename(f, '.yml') }
     ::DatabaseCleaner.clean_with :truncation
     ::ActiveRecord::Fixtures.create_fixtures(fixtures_folder, fixtures)
