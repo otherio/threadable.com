@@ -1,28 +1,28 @@
 ---
 conversations_001:
   id: 1
-  type:
+  type: 
   subject: Welcome to our new Multify project!
   project_id: 1
   creator_id: 1
   slug: welcome-to-our-new-multify-project
-  due_at:
-  done_at:
+  due_at: 
+  done_at: 
   messages_count: 2
-  created_at: 2013-02-20 06:08:33.709837000 Z
-  updated_at: 2013-02-20 06:08:33.783596000 Z
+  created_at: 2013-02-21 05:22:46.602795000 Z
+  updated_at: 2013-02-21 05:22:46.677855000 Z
 conversations_002:
   id: 2
-  type:
+  type: 
   subject: How are we going to build the body?
   project_id: 1
   creator_id: 2
   slug: how-are-we-going-to-build-the-body
-  due_at:
-  done_at:
+  due_at: 
+  done_at: 
   messages_count: 1
-  created_at: 2013-02-20 06:08:33.790922000 Z
-  updated_at: 2013-02-20 06:08:33.800096000 Z
+  created_at: 2013-02-21 05:22:46.685969000 Z
+  updated_at: 2013-02-21 05:22:46.696027000 Z
 conversations_003:
   id: 4
   type: Task
@@ -30,11 +30,11 @@ conversations_003:
   project_id: 1
   creator_id: 1
   slug: install-mirrors
-  due_at:
-  done_at:
+  due_at: 
+  done_at: 
   messages_count: 0
-  created_at: 2013-02-20 06:08:33.847078000 Z
-  updated_at: 2013-02-20 06:08:33.847078000 Z
+  created_at: 2013-02-21 05:22:46.836799000 Z
+  updated_at: 2013-02-21 05:22:46.836799000 Z
 conversations_004:
   id: 5
   type: Task
@@ -42,11 +42,11 @@ conversations_004:
   project_id: 1
   creator_id: 1
   slug: trim-body-panels
-  due_at:
-  done_at:
+  due_at: 
+  done_at: 
   messages_count: 0
-  created_at: 2013-02-20 06:08:33.856772000 Z
-  updated_at: 2013-02-20 06:08:33.856772000 Z
+  created_at: 2013-02-21 05:22:46.846411000 Z
+  updated_at: 2013-02-21 05:22:46.846411000 Z
 conversations_005:
   id: 6
   type: Task
@@ -54,11 +54,11 @@ conversations_005:
   project_id: 1
   creator_id: 1
   slug: make-wooden-form-for-carbon-layup
-  due_at:
-  done_at:
+  due_at: 
+  done_at: 
   messages_count: 0
-  created_at: 2013-02-20 06:08:33.865945000 Z
-  updated_at: 2013-02-20 06:08:33.865945000 Z
+  created_at: 2013-02-21 05:22:46.855586000 Z
+  updated_at: 2013-02-21 05:22:46.855586000 Z
 conversations_006:
   id: 7
   type: Task
@@ -66,11 +66,11 @@ conversations_006:
   project_id: 1
   creator_id: 1
   slug: get-epoxy
-  due_at:
-  done_at: 2013-02-20 06:08:33.940149000 Z
+  due_at: 
+  done_at: 2013-02-21 05:22:46.933886000 Z
   messages_count: 0
-  created_at: 2013-02-20 06:08:33.899468000 Z
-  updated_at: 2013-02-20 06:08:33.942286000 Z
+  created_at: 2013-02-21 05:22:46.890887000 Z
+  updated_at: 2013-02-21 05:22:46.935829000 Z
 conversations_007:
   id: 8
   type: Task
@@ -78,11 +78,11 @@ conversations_007:
   project_id: 1
   creator_id: 1
   slug: get-release-agent
-  due_at:
-  done_at: 2013-02-20 06:08:33.955963000 Z
+  due_at: 
+  done_at: 2013-02-21 05:22:46.949084000 Z
   messages_count: 0
-  created_at: 2013-02-20 06:08:33.909562000 Z
-  updated_at: 2013-02-20 06:08:33.958142000 Z
+  created_at: 2013-02-21 05:22:46.900591000 Z
+  updated_at: 2013-02-21 05:22:46.951123000 Z
 conversations_008:
   id: 9
   type: Task
@@ -90,11 +90,11 @@ conversations_008:
   project_id: 1
   creator_id: 1
   slug: get-carbon-and-fiberglass
-  due_at:
-  done_at: 2013-02-20 06:08:33.962632000 Z
+  due_at: 
+  done_at: 2013-02-21 05:22:46.955245000 Z
   messages_count: 0
-  created_at: 2013-02-20 06:08:33.918890000 Z
-  updated_at: 2013-02-20 06:08:33.964395000 Z
+  created_at: 2013-02-21 05:22:46.912383000 Z
+  updated_at: 2013-02-21 05:22:46.956927000 Z
 conversations_009:
   id: 3
   type: Task
@@ -102,20 +102,20 @@ conversations_009:
   project_id: 1
   creator_id: 1
   slug: layup-body-carbon
-  due_at:
-  done_at: 2013-02-20 06:08:34.005541000 Z
+  due_at: 
+  done_at: 2013-02-21 05:22:47.000158000 Z
   messages_count: 8
-  created_at: 2013-02-20 06:08:33.822241000 Z
-  updated_at: 2013-02-20 06:08:34.007222000 Z
+  created_at: 2013-02-21 05:22:46.808695000 Z
+  updated_at: 2013-02-21 05:22:47.002052000 Z
 conversations_010:
   id: 10
-  type:
+  type: 
   subject: Welcome everyone. Lets get started
   project_id: 2
   creator_id: 6
   slug: welcome-everyone-lets-get-started
-  due_at:
-  done_at:
+  due_at: 
+  done_at: 
   messages_count: 2
-  created_at: 2013-02-20 06:08:34.128606000 Z
-  updated_at: 2013-02-20 06:08:34.149457000 Z
+  created_at: 2013-02-21 05:22:47.080602000 Z
+  updated_at: 2013-02-21 05:22:47.095935000 Z

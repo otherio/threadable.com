@@ -4,12 +4,12 @@ ucsd_electric_racing:
   name: UCSD Electric Racing
   slug: ucsd-electric-racing
   description: Senior engineering electric race team!
-  created_at: 2013-02-20 06:08:33.592137000 Z
-  updated_at: 2013-02-20 06:08:33.592137000 Z
+  created_at: 2013-02-21 05:22:46.486153000 Z
+  updated_at: 2013-02-21 05:22:46.486153000 Z
 mars_exploration_rover:
   id: 2
   name: Mars Exploration Rover
   slug: mars-exploration-rover
   description: Put a robot on mars.
-  created_at: 2013-02-20 06:08:34.024145000 Z
-  updated_at: 2013-02-20 06:08:34.024145000 Z
+  created_at: 2013-02-21 05:22:47.021075000 Z
+  updated_at: 2013-02-21 05:22:47.021075000 Z

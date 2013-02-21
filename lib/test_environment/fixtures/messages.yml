@@ -6,26 +6,26 @@ messages_001:
   body: Hey all! I think we should try this way to organize our conversation and work
     for the car. Thanks for joining up!
   reply: false
-  from:
+  from: 
   subject: Welcome to our new Multify project!
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.776290000 Z
-  updated_at: 2013-02-20 06:08:33.776290000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.669859000 Z
+  updated_at: 2013-02-21 05:22:46.669859000 Z
 messages_002:
   id: 2
   conversation_id: 1
   user_id: 4
   body: Yay! You go Alice. This tool looks radder than an 8-legged panda.
   reply: true
-  from:
+  from: 
   subject: ! 'RE: Welcome to our new Multify project!'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.784590000 Z
-  updated_at: 2013-02-20 06:08:33.784590000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.678830000 Z
+  updated_at: 2013-02-21 05:22:46.678830000 Z
 messages_003:
   id: 3
   conversation_id: 2
@@ -34,13 +34,13 @@ messages_003:
     if we're going to make the body out of carbon or buy a giant boat and cut it up
     or whatever.
   reply: false
-  from:
+  from: 
   subject: How are we going to build the body?
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.801012000 Z
-  updated_at: 2013-02-20 06:08:33.801012000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.697067000 Z
+  updated_at: 2013-02-21 05:22:46.697067000 Z
 messages_004:
   id: 4
   conversation_id: 3
@@ -49,13 +49,13 @@ messages_004:
 
     So, let''s do some carbon layup!'
   reply: false
-  from:
+  from: 
   subject: layup body carbon
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.876302000 Z
-  updated_at: 2013-02-20 06:08:33.876302000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.867428000 Z
+  updated_at: 2013-02-21 05:22:46.867428000 Z
 messages_005:
   id: 5
   conversation_id: 3
@@ -65,13 +65,13 @@ messages_005:
     I''m thinking we can do this on our first January workday. I''ll make sure we
     get the supplies in time'
   reply: true
-  from:
+  from: 
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.884371000 Z
-  updated_at: 2013-02-20 06:08:33.884371000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.875574000 Z
+  updated_at: 2013-02-21 05:22:46.875574000 Z
 messages_006:
   id: 6
   conversation_id: 3
@@ -79,13 +79,13 @@ messages_006:
   body: I'm so there! Also, I think I can probably pick up some of those supplies
     from a friend, who was trying to make a kayak.
   reply: true
-  from:
+  from: 
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.928798000 Z
-  updated_at: 2013-02-20 06:08:33.928798000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.922611000 Z
+  updated_at: 2013-02-21 05:22:46.922611000 Z
 messages_007:
   id: 7
   conversation_id: 3
@@ -95,13 +95,13 @@ messages_007:
     same for the top? It doesn''t need to be as strong, and less fiberglass would
     be lighter, but will it crack?'
   reply: true
-  from:
+  from: 
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.972660000 Z
-  updated_at: 2013-02-20 06:08:33.972660000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.965301000 Z
+  updated_at: 2013-02-21 05:22:46.965301000 Z
 messages_008:
   id: 8
   conversation_id: 3
@@ -109,17 +109,17 @@ messages_008:
   body: I think I can get in touch with Yan's friend who built the carbon kayak.  He
     might know!
   reply: true
-  from:
+  from: 
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.980208000 Z
-  updated_at: 2013-02-20 06:08:33.980208000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.972593000 Z
+  updated_at: 2013-02-21 05:22:46.972593000 Z
 messages_009:
   id: 9
   conversation_id: 3
-  user_id:
+  user_id: 
   body: ! 'Hey all! This looks pretty neat. Lets see if I can help you out here...
 
     So on the kayak, we use two layers of carbon plus some batting on the bottom,
@@ -135,11 +135,11 @@ messages_009:
   reply: true
   from: ! '"Andy Lee Issacson" <andy@example.com>'
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.987750000 Z
-  updated_at: 2013-02-20 06:08:33.987750000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.980018000 Z
+  updated_at: 2013-02-21 05:22:46.980018000 Z
 messages_010:
   id: 10
   conversation_id: 3
@@ -147,13 +147,13 @@ messages_010:
   body: Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass
     like you suggested, since we're under weight on the wheels anyway.
   reply: true
-  from:
+  from: 
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:33.995226000 Z
-  updated_at: 2013-02-20 06:08:33.995226000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.987385000 Z
+  updated_at: 2013-02-21 05:22:46.987385000 Z
 messages_011:
   id: 11
   conversation_id: 3
@@ -163,36 +163,36 @@ messages_011:
     the oven now, but we got some photos of them before they went in. Bethany got
     epoxy everywhere! It was pretty funny.
   reply: true
-  from:
+  from: 
   subject: ! 'RE: layup body carbon'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:34.002209000 Z
-  updated_at: 2013-02-20 06:08:34.002209000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:46.996565000 Z
+  updated_at: 2013-02-21 05:22:46.996565000 Z
 messages_012:
   id: 12
   conversation_id: 10
   user_id: 6
   body: I've invited all the managers. You're all welcome to add anyone you need.
   reply: false
-  from:
+  from: 
   subject: Welcome everyone. Lets get started
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:34.141251000 Z
-  updated_at: 2013-02-20 06:08:34.141251000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:47.089970000 Z
+  updated_at: 2013-02-21 05:22:47.089970000 Z
 messages_013:
   id: 13
   conversation_id: 10
   user_id: 11
   body: Thanks John. I'll get right on that.
   reply: true
-  from:
+  from: 
   subject: ! 'RE: Welcome everyone. Lets get started'
-  children:
-  parent_id:
-  message_id_header:
-  created_at: 2013-02-20 06:08:34.150577000 Z
-  updated_at: 2013-02-20 06:08:34.150577000 Z
+  children: 
+  parent_id: 
+  message_id_header: 
+  created_at: 2013-02-21 05:22:47.096824000 Z
+  updated_at: 2013-02-21 05:22:47.096824000 Z
