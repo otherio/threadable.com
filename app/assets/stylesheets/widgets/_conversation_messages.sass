@@ -18,10 +18,10 @@
         border-color: gainsboro
         border-style: solid
         padding: 5px
-        .message-text
-          margin-left: 28px
-        + .message
+        &:first-child, + .message
           border-top: none
+        &:first-child
+          padding-top: 0
 
   .new_conversation_message
     +clearfix

@@ -8,5 +8,4 @@
       = message.from
   %span.pull-right
     = timeago message.created_at
-.message-text
-  = message.body
+.message-text<= h(message.body.strip).gsub(/\s*\n/, "<br/>").html_safe
