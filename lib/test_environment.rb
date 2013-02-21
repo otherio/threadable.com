@@ -16,7 +16,6 @@ module TestEnvironment
 
   def before_suite! test=nil
     DatabaseCleaner.clean_with :truncation
-    debugger;1
     TestEnvironment::Fixtures.load!
   end
 
