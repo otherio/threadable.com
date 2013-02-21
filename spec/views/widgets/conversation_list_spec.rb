@@ -4,8 +4,8 @@ describe "conversation_list" do
 
   let(:conversations){
     [
-      double(:conversation1, to_param: 'conversation-one', subject: 'conversation one'),
-      double(:conversation2, to_param: 'conversation-two', subject: 'conversation two'),
+      double(:conversation1, id: 1, to_param: 'conversation-one', subject: 'conversation one'),
+      double(:conversation2, id: 2, to_param: 'conversation-two', subject: 'conversation two'),
     ]
   }
   let(:project){ double(:project, to_param: 'some-project') }

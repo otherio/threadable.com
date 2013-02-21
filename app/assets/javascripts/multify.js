@@ -8,6 +8,14 @@ Multify = {
 
   pageName: function(){
     return ENV.pageName;
+  },
+
+  bind: function(){
+    $.fn.bind.apply($(this), arguments);
+  },
+
+  trigger: function(){
+    $.fn.trigger.apply($(this), arguments);
   }
 };
 

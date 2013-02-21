@@ -8,7 +8,19 @@ Multify.Widget('tasks_sidebar', function(widget){
           .bind('keyup', widget.onValueChange)
         .end
       .end
+      ('.task_list > *')
+        .bind('mouseenter', widget.onTaskMouseEnter)
+        .bind('mouseleave', widget.onTaskMouseLeave)
+      .end
     ;
+
+    Multify.bind('conversation_mouse_enter', function(event, task_id){
+      $('.tasks_sidebar *[data-task-id='+task_id+']').addClass('hover');
+    });
+
+    Multify.bind('conversation_mouse_leave', function(event, task_id){
+      $('.tasks_sidebar *[data-task-id='+task_id+']').removeClass('hover');
+    });
 
     $(function(){
       $('.tasks_sidebar input').trigger('keyup');
@@ -51,6 +63,14 @@ Multify.Widget('tasks_sidebar', function(widget){
     var form = element.closest('form');
     var message_body = form.find('input').val();
     form.find('button').attr('disabled', !message_body);
+  };
+
+  widget.onTaskMouseEnter = function(element){
+    Multify.trigger('conversation_mouse_enter', element.data('task-id'));
+  };
+
+  widget.onTaskMouseLeave = function(element){
+    Multify.trigger('conversation_mouse_leave', element.data('task-id'));
   };
 
 });

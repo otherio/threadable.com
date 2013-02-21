@@ -7,6 +7,7 @@ describe "task_list" do
   let(:tasks){
     5.times.map do |i|
       double(:"task#{i}",
+        id: i+1,
         done?: i > 2,
         project: project,
         subject: "TASK SUBJECT #{i}",

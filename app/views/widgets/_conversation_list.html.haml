@@ -6,6 +6,6 @@
 
 %ul.conversations
   - conversations.each do |conversation|
-    %li
+    %li.conversation{title: conversation.subject, "data-conversation-id" => conversation.id}
       = link_to project_conversation_path(project, conversation) do
         (#{conversation.messages.count}) #{conversation.subject}

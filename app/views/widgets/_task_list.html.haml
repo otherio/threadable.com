@@ -1,7 +1,5 @@
-%ul
-  - tasks.each do |task|
-    %li{title: task.subject}
-
-      = link_to project_conversation_url(task.project, task) do
-        %i.icon-ok{ class: task.done? ? 'finished-check' : 'unfinished-check' }
-        %span>= task.subject
+- tasks.each do |task|
+  %li.task{title: task.subject, "data-task-id" => task.id}
+    = link_to project_conversation_url(task.project, task) do
+      %i.icon-ok{ class: task.done? ? 'finished-check' : 'unfinished-check' }
+      %span>= task.subject

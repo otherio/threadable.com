@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe TaskListWidget do
 
+  let(:node_type){ :ol }
   let(:tasks)     { double(:tasks) }
   let(:arguments) { [tasks] }
 
