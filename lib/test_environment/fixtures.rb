@@ -18,8 +18,6 @@ module TestEnvironment::Fixtures
     require 'database_cleaner'
     require 'fixture_builder/configuration'
 
-    ActiveSupport::TestCase.fixture_path = FIXTURE_PATH.to_s
-
     ::FixtureBuilder::Configuration.class_eval do
       def fixtures_dir(path = '')
         FIXTURE_PATH.join(path).to_s
