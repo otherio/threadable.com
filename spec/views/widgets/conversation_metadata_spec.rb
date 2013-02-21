@@ -9,7 +9,7 @@ describe "conversation_metadata" do
 
   describe "return value" do
     subject{ return_value }
-    it { should == "<h2>CONVERSATION SUBJECT</h2>\n" }
+    it { should include "CONVERSATION SUBJECT" }
   end
 
 end
