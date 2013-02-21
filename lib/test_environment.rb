@@ -10,10 +10,6 @@ module TestEnvironment
     include extension unless extension.is_a? Class
   end
 
-  def fixture_path
-    TestEnvironment::Fixtures::FIXTURES.to_s
-  end
-
   def database_cleaner_strategy
     :transaction
   end
