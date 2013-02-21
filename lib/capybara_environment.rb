@@ -12,7 +12,11 @@ module CapybaraEnvironment
     include "CapybaraEnvironment::#{File.basename(path, '.rb').camelize}".constantize
   end
 
-  def before_all!
+  def database_cleaner_strategy
+    :truncation
+  end
+
+  def before_suite!
     Capybara.register_driver :selenium do |app|
       Capybara::Selenium::Driver.new(app, browser: :chrome)
     end
@@ -26,14 +30,13 @@ module CapybaraEnvironment
   end
 
   def before_each! test=nil
-    DatabaseCleaner.start
+
     super
   end
 
   def after_each! test=nil
-    DatabaseCleaner.clean
-    TestEnvironment::Fixtures.load!
     super
+    TestEnvironment::Fixtures.load!
   end
 
   extend self

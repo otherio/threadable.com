@@ -10,13 +10,13 @@ module TestEnvironment::Fixtures
     require 'database_cleaner'
     require 'fixture_builder/configuration'
 
-    FixtureBuilder::Configuration.class_eval do
+    ::FixtureBuilder::Configuration.class_eval do
       def fixtures_dir(path = '')
         FIXTURES.join(path).to_s
       end
     end
 
-    FixtureBuilder.configure do |fbuilder|
+    ::FixtureBuilder.configure do |fbuilder|
       # rebuild fixtures automatically when these files change:
       fbuilder.files_to_check += \
         Dir[Rails.root.join('lib/test_environment/factories/*.rb')] +
@@ -43,11 +43,6 @@ module TestEnvironment::Fixtures
     ::DatabaseCleaner.clean
     ::ActiveRecord::Fixtures.create_fixtures(fixtures_folder, fixtures)
     nil
-  end
-
-  def self.reload!
-    Dir[BUILDERS].each{|path| FileUtils.touch path }
-    load!
   end
 
 end

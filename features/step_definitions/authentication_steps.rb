@@ -4,6 +4,6 @@ Given /^I am not logged in$/ do
 end
 
 Given /^I am "(.*?)"$/ do |name|
-  @user = User.find_by_name(name)
+  @user = User.find_by_name!(name)
   login_as(@user)
 end

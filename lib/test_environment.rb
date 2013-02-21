@@ -10,18 +10,27 @@ module TestEnvironment
     include extension unless extension.is_a? Class
   end
 
-  def before_all! test=nil
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.clean
-    TestEnvironment::Fixtures.reload!
+  def database_cleaner_strategy
+    :transaction
+  end
+
+  def before_suite! test=nil
+    DatabaseCleaner.clean_with :truncation
+    debugger;1
+    TestEnvironment::Fixtures.load!
   end
 
   def before_each! test=nil
-
+    DatabaseCleaner.strategy = database_cleaner_strategy
+    @database_cleaner_started or begin
+      DatabaseCleaner.start
+      @database_cleaner_started = true
+    end
   end
 
   def after_each! test=nil
-
+    DatabaseCleaner.clean
+    @database_cleaner_started = false
   end
 
   extend self

@@ -5,8 +5,8 @@ require 'rspec/autorun'
 require 'rails/widgets/rspec'
 require 'capybara_environment'
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
 
@@ -17,24 +17,19 @@ RSpec.configure do |config|
   config.include CapybaraEnvironment, :type => :acceptance
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/lib/test_environment/fixtures"
+  config.fixture_path = '/dev/null' #{}"#{::Rails.root}/lib/test_environment/fixtures"
   config.use_transactional_fixtures = false
 
-  config.before :all do
-    CapybaraEnvironment.before_all!
+  config.before :suite do
+    CapybaraEnvironment.before_suite!
   end
 
   config.before :each do |spec|
     before_each! spec
-    case spec.example.metadata[:type]
-    when :request, :acceptance
-      config.use_transactional_fixtures = false
-    end
   end
 
   config.after :each do |spec|
     after_each! spec
-    config.use_transactional_fixtures = true
   end
 
 
