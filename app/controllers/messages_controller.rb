@@ -7,6 +7,10 @@ class MessagesController < ApplicationController
     @message.user = current_user
 
     if @message.save
+      conversation.project.members.each do |user|
+        SendConversationMessageWorker.enqueue(user_id: user.id, message_id: @message.id)
+      end
+
       render status: :created, location: project_conversation_messages_path(conversation.project, conversation)
     else
       render json: @message.errors, status: :unprocessable_entity

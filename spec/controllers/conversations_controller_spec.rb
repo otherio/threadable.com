@@ -57,24 +57,6 @@ describe ConversationsController do
       subject
       assigns(:conversation).should eq(conversation)
     end
-    # end
-
-    # context "with a task" do
-    #   subject { get :show, valid_params.merge(:id => task.to_param) }
-    #   let(:task) { project.tasks.create! valid_attributes }
-    #   let(:doer) { create(:user) }
-    #   let(:message) { create(:message, task: task) }
-
-    #   before do
-    #     task.doers << doer
-    #   end
-
-    #   it "has access to the doers" do
-    #     subject
-    #     assigns(:conversation).doers.should == [doer]
-    #   end
-    # end
-
   end
 
   describe "POST create" do
