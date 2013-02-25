@@ -44,10 +44,10 @@ describe("widgets/task_metadata", function(){
 
   describe("addDoersPopup", function() {
     describe("initialize", function() {
-      it("binds the popover to add doers", function() {
+      it("binds the popover to add others", function() {
         var popoverSpy = spyOn($.prototype, 'popover');
         this.widget.initialize();
-        expect(popoverSpy).toHaveBeenCalledWith({ html: true, content: $('.add-others-popover').html() });
+        expect(popoverSpy).toHaveBeenCalledWith({ html: true, trigger: 'manual', content: $('.add-others-popover').html() });
       });
     });
 
@@ -64,6 +64,10 @@ describe("widgets/task_metadata", function(){
 
       describe("with the user list open", function() {
         beforeEach(function() {
+          // dummy dom element for the scroll disabling behavior to work on.
+          $('body').append('<div class="conversations_layout"><div class="right"></div></div>');
+          $('.conversations_layout .right').css('overflow', 'scroll');
+
           $('.add-others').click();
           mostRecentAjaxRequest().response({status: 200, responseText: '[{"avatar_url":"http://gravatar.com/avatar/45b9d367acf9f3165389cb47d66b086d.png?s=48","created_at":"2013-02-18T00:50:44Z","email":"alice@ucsd.edu","id":1,"name":"Alice Neilson","slug":"alice-neilson","updated_at":"2013-02-18T00:51:27Z"},{"avatar_url":"http://gravatar.com/avatar/205511b09c34f87e73551c5d1323c7e3.png?s=48","created_at":"2013-02-18T00:50:45Z","email":"tom@ucsd.edu","id":2,"name":"Tom Canver","slug":"tom-canver","updated_at":"2013-02-18T00:50:45Z"},{"avatar_url":"http://gravatar.com/avatar/77cdc97fe3b7dc8e9a70d766bb334ecd.png?s=48","created_at":"2013-02-18T00:50:45Z","email":"yan@ucsd.edu","id":3,"name":"Yan Hzu","slug":"yan-hzu","updated_at":"2013-02-18T00:50:45Z"},{"avatar_url":"http://gravatar.com/avatar/e7389b0cd051a081509fdb134045a51b.png?s=48","created_at":"2013-02-18T00:50:46Z","email":"bethany@ucsd.edu","id":4,"name":"Bethany Pattern","slug":"bethany-pattern","updated_at":"2013-02-18T00:50:46Z"},{"avatar_url":"http://gravatar.com/avatar/b09a1a251e7c5bb5915c9e577bc562f8.png?s=48","created_at":"2013-02-18T00:50:46Z","email":"bob@ucsd.edu","id":5,"name":"Bob Cauchois","slug":"bob-cauchois","updated_at":"2013-02-18T00:50:46Z"}]'});
         });
@@ -72,8 +76,13 @@ describe("widgets/task_metadata", function(){
           expect($("input.user-search")).toBeFocused();
         });
 
-        xit("disables scrolling for the page when open", function() {
+        it("disables scrolling for the page when open", function() {
+          expect($('.conversations_layout .right').css('overflow')).toEqual('hidden');
+        });
 
+        it("re-enables scrolling when closed", function() {
+          $('.add-others').click();
+          expect($('.conversations_layout .right').css('overflow')).toEqual('scroll');
         });
 
         it("closes when pressing escape", function() {
@@ -112,10 +121,6 @@ describe("widgets/task_metadata", function(){
             expect($('.popover-content .user-list li').text()).toMatch(/Alice Neilson/);
             expect($('.popover-content .user-list li').text()).toMatch(/alice@ucsd\.edu/);
             expect($('.popover-content .user-list li').html()).toMatch(/http:\/\/gravatar.com\/avatar\//);
-          });
-
-          xit("only generates the list when opening the control", function() {
-
           });
         });
 
@@ -169,6 +174,27 @@ describe("widgets/task_metadata", function(){
             var tipSpy = spyOn($.prototype, 'tooltip');
             mostRecentAjaxRequest().response({status: 201, responseText: ''});
             expect(tipSpy).toHaveBeenCalled();
+          });
+        });
+
+        describe("invite", function() {
+          // TODO: this is a story that hasn't been started yet
+          xit("can open the invite modal", function() {
+            runs(function() {
+              $('.controls .invite-link').click();
+            });
+
+            waits(300);
+
+            runs(function() {
+              expect($('.invite_modal .modal').css('display')).toEqual('block');
+            });
+          });
+
+          it("includes the search term", function() {
+            expect($('.popover .invite-link-text').text()).toMatch(/Invite\.\.\./);
+            $('input.user-search').val('can').keyup();
+            expect($('.popover .invite-link-text').text()).toMatch(/Invite can/);
           });
         });
       });

@@ -47,11 +47,13 @@ Feature: Projects and Tasks
     I want to communicate other people's interest in a task
     Given I am "Alice Neilson"
       And I am on the task "install mirrors"
-      And I add "Bethany" as a doer
+      And I click "add others"
+      And I click doer "Bethany Pattern"
      Then I should see "Bethany Pattern" as a doer of the task
-    Given I am "Bethany Pattern"
-      And I am on the task "install mirrors"
-     Then I should see "remove myself"
+
+#    Given I am "Bethany Pattern"
+#      And I am on the task "install mirrors"
+#     Then I should see "remove myself"
 
 #   Scenario: I want to order my tasklist
 #     As a member of a project

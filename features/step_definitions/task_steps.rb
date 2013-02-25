@@ -10,5 +10,10 @@ Given /^I add "(.*?)" as a doer$/ do |doer|
 end
 
 Then /^I should see "(.*?)" as a doer of the task$/ do |doer|
-  page.should have_content(doer)  #probably this will have to inspect the html for the tooltip or alt txt
+  page.find(".doers img[alt='#{doer}']").should be
 end
+
+Given /^I click doer "(.*?)"$/ do |name|
+  find('a.item', text: name).click
+end
+

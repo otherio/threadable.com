@@ -2,22 +2,15 @@ Multify.Widget('task_metadata', function(widget){
 
   widget.initialize = function(){
     widget.$('.has-tooltip').tooltip(this.show, this.hide);
-    widget.$('.add-others').popover({ content: widget.$('.add-others-popover').html(), html: true });
+    widget.$('.add-others').popover({ content: widget.$('.add-others-popover').html(), html: true, trigger: 'manual' });
 
     $(document).keyup(onKeyDown);
 
-    widget.$('.add-others').click( function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      widget.getCurrentProjectMembers(renderUserList);
-      $('input.user-search').keyup(function() { renderUserList(widget.users); });
-      $('input.user-search').focus();
-      $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closePopover(); } );
-    });
+    widget.$('.add-others').click(onTogglePopover);
   };
 
   widget.getCurrentProjectMembers = function(callback) {
-    //Multify.currentProject.members.load(callback);
+    // TODO: move this into the Multify object, since it's useful generally.
 
     if (widget.users) return callback(widget.users);
 
@@ -47,17 +40,28 @@ Multify.Widget('task_metadata', function(widget){
         name = user.name.replace(searchRe, "<strong>$1</strong>");
       }
 
-      var $item = $('<li class="item">' +
+      var $item = $('<li class="item"><a class="item">' +
         '<img class="avatar-small" src="' + user.avatar_url + '">' +
         name + ' <span class="email pull-right">&lt;' + email + '&gt; </span>' +
-        '</li>');
+        '</a></li>');
 
       $container.append($item);
 
       $item.click(function(e) {
+        e.preventDefault();
         pickUser(user);
       });
     });
+  };
+
+  var updateInviteButton = function() {
+    var search = $('input.user-search').val();
+
+    if(search) {
+      $('.popover .invite-link-text').html('Invite <strong>' + search + '</strong>');
+    } else {
+      $('.popover .invite-link-text').html('Invite...');
+    }
   };
 
   var pickUser = function(user) {
@@ -77,7 +81,26 @@ Multify.Widget('task_metadata', function(widget){
   };
 
   var closePopover = function() {
+    $('.conversations_layout .right').css('overflow', 'scroll');
     $('.add-others').popover('hide');
+  };
+
+  var onTogglePopover = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if( $(e.currentTarget).parent().find('.popover').length ) {
+      // closing the popover
+      closePopover();
+    } else {
+      // opening the popover
+      $('.add-others').popover('show');
+      widget.getCurrentProjectMembers(renderUserList);
+      $('input.user-search').keyup(function() { renderUserList(widget.users); updateInviteButton(); });
+      $('input.user-search').focus();
+      $('.popover').on('click', function(e) { e.stopPropagation(); });  // clicking the popover doesn't close it
+      $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closePopover(); } );
+      $('.conversations_layout .right').css('overflow', 'hidden');
+    }
   };
 
   var onKeyDown = function(e) {
