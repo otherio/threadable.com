@@ -1,10 +1,8 @@
-class SendConversationMessageWorker < ResqueWorker.new(:user, :message)
+class SendConversationMessageWorker < ResqueWorker.new(:recipient, :message)
 
-  queue :outgoing_mail
+  queue :conversation_mail
 
   def call
-    #@user == user, @message == message
-
+    ConversationMailer.conversation_message(recipient, message).deliver
   end
-
 end

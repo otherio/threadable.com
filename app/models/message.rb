@@ -6,11 +6,12 @@ class Message < ActiveRecord::Base
 
   default_scope order('messages.created_at ASC')
 
-  attr_accessible :body, :children, :message_id_header, :reply, :subject, :from, :user, :parent_message
+  attr_accessible :body, :children, :message_id_header, :references_header, :reply, :subject, :from, :user, :parent_message
 
   scope :by_created_at, order('messages.created_at DESC')
 
   before_create :touch_conversation_update_at
+  after_initialize :add_message_id
 
   validates_presence_of :body
 
@@ -20,4 +21,8 @@ class Message < ActiveRecord::Base
     conversation.touch(:updated_at)
   end
 
+  def add_message_id
+    field = Mail::MessageIdField.new
+    self.message_id_header = field.message_id.to_s
+  end
 end

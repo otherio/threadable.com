@@ -14,6 +14,7 @@ gem 'pg'
 gem 'pg_search'
 gem 'js-routes'
 gem 'resque'
+gem 'mail'
 
 group :assets do
   gem 'sass-rails'
@@ -27,6 +28,7 @@ group :development do
   gem 'style-guide'
   gem 'rb-fsevent', require: nil
   gem 'debugger'
+  gem 'mailcatcher'
 end
 
 group :development, :test do
@@ -48,7 +50,7 @@ end
 # we need this as long as we are goig to load fixtures in prod
 group :test, :production do
   gem 'factory_girl_rails'
-  gem 'faker'
+  gem 'ffaker'
   gem 'database_cleaner'
   gem 'fixture_builder'
 end
