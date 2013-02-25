@@ -4,6 +4,11 @@ Multify::Application.routes.draw do
     get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'
   end
 
+  namespace :admin do
+    require 'resque/server'
+    mount Resque::Server, :at => "/resque"
+  end
+
   get '/development' => 'development#index'
 
   devise_for :users

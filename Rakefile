@@ -4,5 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 Multify::Application.load_tasks
-
-Dir.glob('lib/tasks/*.rake').each { |r| import r }
+require 'resque/tasks'

@@ -13,6 +13,7 @@ gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
 gem 'pg'
 gem 'pg_search'
 gem 'js-routes'
+gem 'resque'
 
 group :assets do
   gem 'sass-rails'
