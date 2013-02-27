@@ -1,8 +1,9 @@
-class SendConversationMessageWorker < ResqueWorker.new(:recipient, :message)
+class SendConversationMessageWorker < ResqueWorker.new(:params)
 
   queue :conversation_mail
 
   def call
-    ConversationMailer.conversation_message(recipient, message).deliver
+    @params.symbolize_keys!
+    ConversationMailer.conversation_message(@params).deliver
   end
 end

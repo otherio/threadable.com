@@ -41,7 +41,6 @@ Feature: Projects and Tasks
 #      Then the task "weld seat rail mounts" should be in the "Unfinished" box
 #       And the task "machine adjustable seat rails" should be in the "Complete" box
 
-  @javascript
   Scenario: I want to add someone as a doer of a task
     As a member of the project
     I want to communicate other people's interest in a task

@@ -19,25 +19,48 @@ describe MessagesController do
   end
 
   describe "POST create" do
-    let(:message) { FactoryGirl.build(:message, conversation: conversation) }
+    let(:message) { FactoryGirl.build(:message, subject: nil, conversation: conversation) }
     let(:valid_attributes) do
       message.attributes.reject{
           |key, _| ! Message.accessible_attributes.include?(key)
       }
     end
+    subject { xhr :post, :create, valid_params.merge(message: valid_attributes) }
 
     it "creates a new Message" do
-      expect {
-        xhr :post, :create, valid_params.merge(message: valid_attributes)
-      }.to change(conversation.messages, :count).by(1)
+      expect {subject}.to change(conversation.messages, :count).by(1)
       response.status.should == 201
+    end
+
+    it "sets the subject" do
+      subject
+      assigns(:message).subject.should == conversation.subject
+    end
+
+    it "has no parent message" do
+      subject
+      assigns(:message).parent_message.should be_nil
+    end
+
+    context "with more than one message in the conversation" do
+      let!(:first_message) { FactoryGirl.create(:message, conversation: conversation) }
+
+      it "sets the parent message if present" do
+        subject
+        assigns(:message).parent_message.id.should == first_message.id
+      end
     end
 
     it "enqueues emails for members" do
       SendConversationMessageWorker.any_instance.stub(:enqueue)
-      SendConversationMessageWorker.should_receive(:enqueue).exactly(5).times
+      SendConversationMessageWorker.should_receive(:enqueue).with(
+        sender: anything,
+        recipient: anything,
+        message: anything,
+        parent_message: anything
+      ).exactly(5).times
 
-      xhr :post, :create, valid_params.merge(message: valid_attributes)
+      subject
     end
   end
 end

@@ -7,7 +7,12 @@ describe SendConversationMessageWorker do
   let(:message) {FactoryGirl.create(:message, user: sender, parent_message: parent_message)}
 
   it "sends the specified email" do
-    SendConversationMessageWorker.perform(recipient, message)
+    SendConversationMessageWorker.perform(
+      recipient: recipient,
+      sender: sender,
+      message: message,
+      parent_message: parent_message
+    )
     ActionMailer::Base.deliveries.last.to.should == [recipient.email]
   end
 end

@@ -15,7 +15,7 @@ Multify::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
-  ActionMailer::Base.smtp_settings = {
+  config.action_mailer.smtp_settings = {
     :domain => 'multifyapp.com',
     :address => 'localhost',
     :port => 1025

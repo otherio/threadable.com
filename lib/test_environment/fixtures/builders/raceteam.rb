@@ -1,7 +1,7 @@
 TestEnvironment::FixtureBuilder.new do
 
   # Alice signs up
-  create_user('Alice Neilson', 'alice@ucsd.edu')
+  create_user('Alice Neilson', 'alice@ucsd.multifyapp.com')
 
   # Alice creates a project
   @project = Project.create!(
@@ -11,10 +11,10 @@ TestEnvironment::FixtureBuilder.new do
   project.members << users['Alice Neilson']
 
   # Alice invites her project mates
-  invite_user('Tom Canver',      'tom@ucsd.edu')
-  invite_user('Yan Hzu',         'yan@ucsd.edu')
-  invite_user('Bethany Pattern', 'bethany@ucsd.edu')
-  invite_user('Bob Cauchois',    'bob@ucsd.edu')
+  invite_user('Tom Canver',      'tom@ucsd.multifyapp.com')
+  invite_user('Yan Hzu',         'yan@ucsd.multifyapp.com')
+  invite_user('Bethany Pattern', 'bethany@ucsd.multifyapp.com')
+  invite_user('Bob Cauchois',    'bob@ucsd.multifyapp.com')
 
   # Alice's project mates all accept their invites
   accept_invite('Tom Canver')
@@ -23,11 +23,11 @@ TestEnvironment::FixtureBuilder.new do
   accept_invite('Bob Cauchois')
 
   # each user sets their avatar via magic!
-  set_avatar 'alice@ucsd.edu',   'alice.jpg'
-  set_avatar 'tom@ucsd.edu',     'tom.jpg'
-  set_avatar 'bob@ucsd.edu',     'bob.jpg'
-  set_avatar 'yan@ucsd.edu',     'yan.jpg'
-  set_avatar 'bethany@ucsd.edu', 'bethany.jpg'
+  set_avatar 'alice@ucsd.multifyapp.com',   'alice.jpg'
+  set_avatar 'tom@ucsd.multifyapp.com',     'tom.jpg'
+  set_avatar 'bob@ucsd.multifyapp.com',     'bob.jpg'
+  set_avatar 'yan@ucsd.multifyapp.com',     'yan.jpg'
+  set_avatar 'bethany@ucsd.multifyapp.com', 'bethany.jpg'
 
   # Alice sends a welcome email
   send_message(

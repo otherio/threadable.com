@@ -1,6 +1,8 @@
 class ConversationMailer < ActionMailer::Base
 
-  def conversation_message(recipient, sender, message, parent)
+  def conversation_message(params)
+    recipient, sender, message, parent = params[:recipient], params[:sender], params[:message], params[:parent_message]
+
     mail(
       to: "\"#{recipient['name']}\" <#{recipient['email']}>",
       subject: message['subject'],

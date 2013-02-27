@@ -45,11 +45,11 @@ describe 'model relationships' do
     ]
 
     project.members.to_set.should == Set[
-      member('alice@ucsd.edu'),
-      member('tom@ucsd.edu'),
-      member('yan@ucsd.edu'),
-      member('bethany@ucsd.edu'),
-      member('bob@ucsd.edu'),
+      member('alice@ucsd.multifyapp.com'),
+      member('tom@ucsd.multifyapp.com'),
+      member('yan@ucsd.multifyapp.com'),
+      member('bethany@ucsd.multifyapp.com'),
+      member('bob@ucsd.multifyapp.com'),
     ]
 
     project.tasks.to_set.should == Set[
@@ -83,9 +83,9 @@ describe 'model relationships' do
     expect( task('get release agent')                 ).to     be_done
     expect( task('get carbon and fiberglass')         ).to     be_done
 
-    alice = member('alice@ucsd.edu')
+    alice = member('alice@ucsd.multifyapp.com')
     alice.name.should == 'Alice Neilson'
-    alice.email.should == 'alice@ucsd.edu'
+    alice.email.should == 'alice@ucsd.multifyapp.com'
     alice.project_memberships.count.should == 1
     alice.projects.should == [project]
     alice.messages.count.should == 3
@@ -102,7 +102,7 @@ describe 'model relationships' do
     ]
     alice.tasks.should == []
 
-    tom = member('tom@ucsd.edu')
+    tom = member('tom@ucsd.multifyapp.com')
     tom.tasks.to_set.should == Set[
       task('layup body carbon'),
       task('get epoxy'),

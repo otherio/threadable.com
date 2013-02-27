@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe ConversationMailer do
-  let(:recipient) {JSON.parse(FactoryGirl.create(:user).to_json)}
+  let(:recipient_json) {JSON.parse(FactoryGirl.create(:user).to_json)}
   let(:sender) { FactoryGirl.create(:user) }
   let(:sender_json) {JSON.parse(sender.to_json)}
   let(:message) {FactoryGirl.create(:message, user: sender)}
@@ -9,7 +9,14 @@ describe ConversationMailer do
   let(:parent_message_json) { nil }
 
   describe "#message" do
-    subject { ConversationMailer.conversation_message(recipient, sender_json, message_json, parent_message_json).deliver }
+    subject do
+      ConversationMailer.conversation_message(
+        sender: sender_json,
+        recipient: recipient_json,
+        message: message_json,
+        parent_message: parent_message_json
+      ).deliver
+    end
 
     it "has the correct subject line" do
       subject.subject.should == message_json['subject']
@@ -20,7 +27,7 @@ describe ConversationMailer do
     end
 
     it "has the correct recipient address" do
-      subject[:to].inspect.should include(recipient['name'], "<#{recipient['email']}>")
+      subject[:to].inspect.should include(recipient_json['name'], "<#{recipient_json['email']}>")
     end
 
     it "has correct references and in-reply-to headers" do

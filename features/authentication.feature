@@ -8,7 +8,7 @@ Scenario: Logging in
   Given I am not logged in
     And I go to the home page
     And I click "Login"
-    And I fill in "Email" with "alice@ucsd.edu"
+    And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I fill in "Password" with "password"
     And I click "Sign in" within the login form
    Then I should be on the home page
@@ -18,7 +18,7 @@ Scenario: Failing to log in
   Given I am not logged in
     And I go to the home page
     And I click "Login"
-    And I fill in "Email" with "alice@ucsd.edu"
+    And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I fill in "Password" with "bullshitpassword"
     And I click "Sign in" within the login form
    Then I should see "Invalid email or password"
@@ -51,7 +51,7 @@ Scenario: Account creation fails if email is already used
   I should not be able to create another one
   Given I am not logged in
     And I go to the join page
-    And I fill in "Email" with "alice@ucsd.edu"
+    And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I fill in "Password" with "password"
     And I fill in "Password confirmation" with "password"
     And I click "Sign up"
@@ -66,7 +66,7 @@ Scenario: Forgot password form works for existing users
     And I go to the home page
     And I click "Login"
     And I click "Forgot your password"
-    And I fill in "Email" with "alice@ucsd.edu"
+    And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I click "Send me reset password instructions"
    Then I should see "You will receive an email with instructions about how to reset your password"
 

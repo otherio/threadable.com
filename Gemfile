@@ -45,6 +45,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'cucumber-rails', require: nil
   gem 'capybara-webkit'
+  gem 'resque_spec'
 end
 
 # we need this as long as we are goig to load fixtures in prod

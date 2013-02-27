@@ -5,7 +5,7 @@ TestEnvironment::FixtureBuilder.new do
   # http://marsrover.nasa.gov/journal/
 
   # John from NASA signs up
-  create_user('John Callas', 'john-callas@nasa.gov')
+  create_user('John Callas', 'john-callas@nasa.multifyapp.com')
 
   # Alice creates a project
   @project = Project.create!(
@@ -14,11 +14,11 @@ TestEnvironment::FixtureBuilder.new do
   )
   project.members << users['John Callas']
 
-  invite_user 'Bruce Banerdt',  'bruce-banerdt@nasa.gov'
-  invite_user 'Diana Blaney',   'diana-blaney@nasa.gov'
-  invite_user 'Larry Bryant',   'larry-bryant@nasa.gov'
-  invite_user 'Steven Squyres', 'steven-squyres@nasa.gov'
-  invite_user 'Ray Arvidson',   'ray-arvidson@nasa.gov'
+  invite_user 'Bruce Banerdt',  'bruce-banerdt@nasa.multifyapp.com'
+  invite_user 'Diana Blaney',   'diana-blaney@nasa.multifyapp.com'
+  invite_user 'Larry Bryant',   'larry-bryant@nasa.multifyapp.com'
+  invite_user 'Steven Squyres', 'steven-squyres@nasa.multifyapp.com'
+  invite_user 'Ray Arvidson',   'ray-arvidson@nasa.multifyapp.com'
 
   accept_invite 'Bruce Banerdt'
   accept_invite 'Diana Blaney'
