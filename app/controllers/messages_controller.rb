@@ -12,6 +12,7 @@ class MessagesController < ApplicationController
 
     if @message.save
       conversation.project.members.each do |user|
+        next if user.id == current_user.id
         SendConversationMessageWorker.enqueue(
           recipient: user,
           sender: @message.user,
