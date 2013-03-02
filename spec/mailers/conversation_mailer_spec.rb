@@ -22,6 +22,13 @@ describe ConversationMailer do
       subject.subject.should == message_json['subject']
     end
 
+    it "has its headers in the correct case" do
+      text = subject.to_s
+      text.should =~ /In-Reply-To:/
+      text.should =~ /References:/
+      text.should =~ /Message-ID:/
+    end
+
     it "has the correct sender address" do
       subject[:from].inspect.should include(sender_json['name'], "<#{sender_json['email']}>")
     end
