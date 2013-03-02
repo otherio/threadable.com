@@ -8,7 +8,7 @@ describe Message do
     it { should allow_mass_assignment_of(attr) }
   end
 
-  it "has a message id" do
-    subject.message_id_header.should =~ /^.+\@[\w\.]+\.mail$/
+  it "has a message id with a predictable domain (not some heroku crap hostname)" do
+    subject.message_id_header.should =~ /^.+\@multifyapp\.com$/
   end
 end

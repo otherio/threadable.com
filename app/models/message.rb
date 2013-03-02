@@ -22,7 +22,6 @@ class Message < ActiveRecord::Base
   end
 
   def add_message_id
-    field = Mail::MessageIdField.new
-    self.message_id_header = field.message_id.to_s
+    self.message_id_header = "#{Mail.random_tag}@multifyapp.com"
   end
 end
