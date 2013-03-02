@@ -9,6 +9,6 @@ describe Message do
   end
 
   it "has a message id with a predictable domain (not some heroku crap hostname)" do
-    subject.message_id_header.should =~ /^.+\@multifyapp\.com$/
+    subject.message_id_header.should =~ /^<.+\@multifyapp\.com>$/
   end
 end

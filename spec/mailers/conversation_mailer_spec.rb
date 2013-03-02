@@ -43,7 +43,8 @@ describe ConversationMailer do
     end
 
     it "has the correct message id" do
-      subject.message_id.should == message_json['message_id_header']
+      # Mail strips the [<>] from these
+      "<#{subject.message_id}>".should == message_json['message_id_header']
     end
 
     it "contains a message body" do
@@ -58,11 +59,12 @@ describe ConversationMailer do
       let(:message_json) { JSON.parse(message.to_json) }
 
       it "has correct (rfc 2822) in-reply-to" do
-        subject.in_reply_to.should == parent_message['message_id_header']
+        # Mail strips the [<>] from these
+        "<#{subject.in_reply_to}>".should == parent_message['message_id_header']
       end
 
       it "has correct references" do
-        subject.references.should == "#{parent_message['references_header']} <#{parent_message['message_id_header']}>"
+        subject.references.should == "#{parent_message['references_header']} #{parent_message['message_id_header']}"
       end
     end
   end
