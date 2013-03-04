@@ -15,7 +15,7 @@ module LayoutHelper
       currentProject: current_project,
       currentConversation: current_conversation,
       currentTask: current_task,
-      currentTaskDoers: current_task.doers,
+      currentTaskDoers: current_task ? current_task.doers : nil,
     }
   end
 
