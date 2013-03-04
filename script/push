@@ -1,0 +1,3 @@
+#!/bin/sh
+
+script/ci && git push origin master
