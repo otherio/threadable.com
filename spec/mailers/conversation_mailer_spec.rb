@@ -14,7 +14,8 @@ describe ConversationMailer do
         sender: sender_json,
         recipient: recipient_json,
         message: message_json,
-        parent_message: parent_message_json
+        parent_message: parent_message_json,
+        reply_to: 'the-reply-to-address'
       ).deliver
     end
 
@@ -31,6 +32,11 @@ describe ConversationMailer do
 
     it "has the correct sender address" do
       subject[:from].inspect.should include(sender_json['name'], "<#{sender_json['email']}>")
+    end
+
+    it "has a munged reply-to address" do
+      project = message.conversation.project
+      subject[:reply_to].inspect.should == 'the-reply-to-address'
     end
 
     it "has the correct recipient address" do

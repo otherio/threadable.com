@@ -58,7 +58,8 @@ describe MessagesController do
           sender: anything,
           recipient: anything,
           message: anything,
-          parent_message: anything
+          parent_message: anything,
+          reply_to: anything
         ).exactly(4).times
 
         subject
@@ -69,7 +70,8 @@ describe MessagesController do
           sender: anything,
           recipient: current_user,
           message: anything,
-          parent_message: anything
+          parent_message: anything,
+          reply_to: "#{project.name} <#{project.slug}@multifyapp.com>"
         )
         subject
       end

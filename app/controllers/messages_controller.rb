@@ -9,6 +9,7 @@ class MessagesController < ApplicationController
     @message.user = current_user
     @message.subject ||= conversation.subject
     @message.parent_message = last_message
+    reply_to = "#{project.name} <#{project.slug}@multifyapp.com>"
 
     if @message.save
       conversation.project.members.each do |user|
@@ -17,7 +18,8 @@ class MessagesController < ApplicationController
           recipient: user,
           sender: @message.user,
           message: @message,
-          parent_message: @message.parent_message
+          parent_message: @message.parent_message,
+          reply_to: reply_to
         )
       end
 

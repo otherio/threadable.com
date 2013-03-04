@@ -111,6 +111,9 @@ GEM
     gherkin (2.11.5)
       json (>= 1.4.6)
     github-markdown (0.5.3)
+    griddler (0.3.1)
+      htmlentities
+      rails (>= 3.2.0)
     guard (1.6.2)
       listen (>= 0.6.0)
       lumberjack (>= 1.0.2)
@@ -127,6 +130,7 @@ GEM
       haml (~> 3.1)
       railties (>= 3.1, < 4.1)
     hike (1.2.1)
+    htmlentities (4.3.1)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.2.0)
@@ -303,6 +307,7 @@ DEPENDENCIES
   fixture_builder
   font-awesome-sass-rails
   foreman
+  griddler
   guard-rspec
   haml-rails
   jquery-rails
