@@ -5,6 +5,14 @@ GIT
     rails-widgets (0.0.1)
       railties (>= 3.0, < 5.0)
 
+GIT
+  remote: https://github.com/raindrift/griddler
+  revision: 0bc5683e2e292b7b7fdf4c8cd7cb55c18aeb77f8
+  specs:
+    griddler (0.3.1)
+      htmlentities
+      rails (>= 3.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -111,9 +119,6 @@ GEM
     gherkin (2.11.5)
       json (>= 1.4.6)
     github-markdown (0.5.3)
-    griddler (0.3.1)
-      htmlentities
-      rails (>= 3.2.0)
     guard (1.6.2)
       listen (>= 0.6.0)
       lumberjack (>= 1.0.2)
@@ -307,7 +312,7 @@ DEPENDENCIES
   fixture_builder
   font-awesome-sass-rails
   foreman
-  griddler
+  griddler!
   guard-rspec
   haml-rails
   jquery-rails

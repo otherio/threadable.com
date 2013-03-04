@@ -14,7 +14,7 @@ gem 'pg'
 gem 'pg_search'
 gem 'js-routes'
 gem 'resque'
-gem 'griddler'
+gem 'griddler', git: 'https://github.com/raindrift/griddler'
 gem 'mail'
 
 group :assets do
