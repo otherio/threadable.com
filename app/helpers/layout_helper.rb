@@ -14,6 +14,8 @@ module LayoutHelper
       pageName: page_name,
       currentProject: current_project,
       currentConversation: current_conversation,
+      currentTask: current_task,
+      currentTaskDoers: current_task.doers,
     }
   end
 

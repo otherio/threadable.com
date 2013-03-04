@@ -8,6 +8,14 @@
     @conversation
   end
 
+  def current_task
+    if @conversation && @conversation.task?
+      return @conversation
+    else
+      return nil
+    end
+  end
+
   def timeago(time, html_options={})
     return unless time.respond_to? :getutc
     html_options = HtmlOptions.new(html_options)

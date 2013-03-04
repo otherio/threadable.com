@@ -6,6 +6,8 @@
     initializePage();
     initializeCurrentProject();
     initializeCurrentConversation();
+    initializeCurrentTask();
+    initializeCurrentTaskDoers();
   };
 
   function initializeFlashMessages(){
@@ -37,6 +39,16 @@
   function initializeCurrentConversation(){
     if (!ENV.currentConversation) return;
     Multify.currentConversation = ENV.currentConversation;
+  }
+
+  function initializeCurrentTask(){
+    if (!ENV.currentTask) return;
+    Multify.currentTask = ENV.currentTask;
+  }
+
+  function initializeCurrentTaskDoers(){
+    if (!ENV.currentTaskDoers) return;
+    Multify.currentTaskDoers = ENV.currentTaskDoers;
   }
 
 }();

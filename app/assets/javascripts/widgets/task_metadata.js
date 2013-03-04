@@ -40,6 +40,11 @@ Multify.Widget('task_metadata', function(widget){
         name = user.name.replace(searchRe, "<strong>$1</strong>");
       }
 
+      var openingHtml;
+      var closingHtml;
+
+      var userIsAlreadyDoer = _.find(Multify.currentTaskDoers, function(doer) { return doer.id == user.id; } );
+
       var $item = $('<li class="item"><a class="item">' +
         '<img class="avatar-small" src="' + user.avatar_url + '">' +
         name + ' <span class="email pull-right">&lt;' + email + '&gt; </span>' +
@@ -47,10 +52,16 @@ Multify.Widget('task_metadata', function(widget){
 
       $container.append($item);
 
-      $item.click(function(e) {
-        e.preventDefault();
-        pickUser(user);
-      });
+      if (userIsAlreadyDoer) {
+        $item.addClass("disabled");
+      }
+
+      else {
+        $item.click(function(e) {
+          e.preventDefault();
+          pickUser(user);
+        });
+      };
     });
   };
 
@@ -72,6 +83,7 @@ Multify.Widget('task_metadata', function(widget){
       var $newDoerIcon = $('<img alt="' + user.name + '" class="has-tooltip avatar-tiny" data-toggle="tooltip" src="' + user.avatar_url + '" title="" data-original-title="' + user.name + '">');
       $('span.doers').append($newDoerIcon, ' '); // the space fixes a weird presentation bug
       $newDoerIcon.tooltip();
+      Multify.currentTaskDoers.push(user);
     }).always(function() {
       $('span.doers i.icon-spinner').remove();
     });
