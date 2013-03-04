@@ -68,9 +68,8 @@ module Multify
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # devise wants this for deployment on heroku
-    # (don't access db or load models while precompiling assets)
-    config.assets.initialize_on_precompile = false
+    # we need this for routes in our assets
+    config.assets.initialize_on_precompile = true
 
     config.assets.precompile += %w{init.js}
 
