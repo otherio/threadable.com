@@ -75,9 +75,11 @@ describe EmailProcessor do
         end
 
         context "with references" do
+          #check everything in the reply-to context
         end
 
         context "with in-reply-to and references" do
+          # check everything in the reply-to context and also make sure the right one gets precedence
         end
       end
 
@@ -94,7 +96,13 @@ describe EmailProcessor do
 
     end
 
-    context "when the project is specified via cc or bcc"
+    context "when the project is specified via cc or bcc" do
+      it "still identifies the project correctly"
+    end
+
+    context "when multiple projects are specified via cc or bcc" do
+      it "should do something reasonable, but what?"
+    end
 
     context "when the sender is not a member of the project" do
       it "sets the sender correctly"
