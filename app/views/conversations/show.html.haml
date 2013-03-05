@@ -1,6 +1,6 @@
 
 - if @conversation.task?
-  = render_widget :task_metadata, task: @conversation
+  = render_widget :task_metadata, task: @conversation, user: current_user
 
 - else
   = render_widget :conversation_metadata, conversation: @conversation
