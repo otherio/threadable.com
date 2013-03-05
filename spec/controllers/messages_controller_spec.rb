@@ -21,24 +21,25 @@ describe MessagesController do
   describe "POST create" do
     let(:message) { FactoryGirl.build(:message, subject: nil, conversation: conversation) }
     let(:valid_attributes) do
-      message.attributes.reject{
-          |key, _| ! Message.accessible_attributes.include?(key)
-      }
+      message.attributes.reject{|key, _| !Message.accessible_attributes.include?(key) }
     end
-    subject { xhr :post, :create, valid_params.merge(message: valid_attributes) }
+
+    def request!
+      xhr :post, :create, valid_params.merge(message: valid_attributes)
+    end
 
     it "creates a new Message" do
-      expect {subject}.to change(conversation.messages, :count).by(1)
+      expect{ request! }.to change(conversation.messages, :count).by(1)
       response.status.should == 201
     end
 
     it "sets the subject" do
-      subject
+      request!
       assigns(:message).subject.should == conversation.subject
     end
 
     it "has no parent message" do
-      subject
+      request!
       assigns(:message).parent_message.should be_nil
     end
 
@@ -46,13 +47,14 @@ describe MessagesController do
       let!(:first_message) { FactoryGirl.create(:message, conversation: conversation) }
 
       it "sets the parent message if present" do
-        subject
+        request!
         assigns(:message).parent_message.id.should == first_message.id
       end
     end
 
     context "sending emails" do
       before { SendConversationMessageWorker.any_instance.stub(:enqueue) }
+
       it "enqueues emails for members" do
         SendConversationMessageWorker.should_receive(:enqueue).with(
           sender: anything,
@@ -61,8 +63,7 @@ describe MessagesController do
           parent_message: anything,
           reply_to: anything
         ).exactly(4).times
-
-        subject
+        request!
       end
 
       it "does not send mail to the current user" do
@@ -73,9 +74,11 @@ describe MessagesController do
           parent_message: anything,
           reply_to: "#{project.name} <#{project.slug}@multifyapp.com>"
         )
-        subject
+        request!
       end
+
     end
+
   end
 end
 
