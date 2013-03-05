@@ -7,6 +7,9 @@ Multify.Widget('task_metadata', function(widget){
     $(document).keyup(onKeyDown);
 
     widget.$('.add-others').click(onTogglePopover);
+
+    widget.$('.toggle-doer-self').click(onToggleDoer);
+    console.log('init');
   };
 
   widget.getCurrentProjectMembers = function(callback) {
@@ -90,6 +93,10 @@ Multify.Widget('task_metadata', function(widget){
 
     closePopover();
     $('span.doers').append('<i class="icon-spinner icon-spin"/>');
+
+    if(Multify.currentUser.id == user.id){
+      $('.toggle-doer-self').html('<i class="icon-remove"></i> remove me');
+    }
   };
 
   var closePopover = function() {
@@ -101,10 +108,8 @@ Multify.Widget('task_metadata', function(widget){
     e.preventDefault();
     e.stopPropagation();
     if( $(e.currentTarget).parent().find('.popover').length ) {
-      // closing the popover
       closePopover();
     } else {
-      // opening the popover
       $('.add-others').popover('show');
       widget.getCurrentProjectMembers(renderUserList);
       $('input.user-search').keyup(function() { renderUserList(widget.users); updateInviteButton(); });
@@ -113,6 +118,13 @@ Multify.Widget('task_metadata', function(widget){
       $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closePopover(); } );
       $('.conversations_layout .right').css('overflow', 'hidden');
     }
+  };
+
+  var onToggleDoer = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    pickUser(Multify.currentUser);
+
   };
 
   var onKeyDown = function(e) {
