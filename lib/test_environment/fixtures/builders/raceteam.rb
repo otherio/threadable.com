@@ -133,6 +133,6 @@ TestEnvironment::FixtureBuilder.new do
     reply: true,
   )
 
-  complete_task(users['Alice Neilson'], 'layup body carbon')
+  complete_task(users['Tom Canver'], 'layup body carbon')
 
 end
