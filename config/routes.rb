@@ -5,7 +5,6 @@ Multify::Application.routes.draw do
   end
 
   namespace :admin do
-    require 'resque/server'
     mount Resque::Server, :at => "/resque"
   end
 
