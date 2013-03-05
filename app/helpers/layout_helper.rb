@@ -16,6 +16,7 @@ module LayoutHelper
       currentConversation: current_conversation,
       currentTask: current_task,
       currentTaskDoers: current_task ? current_task.doers : nil,
+      currentUser: current_user,
     }
   end
 

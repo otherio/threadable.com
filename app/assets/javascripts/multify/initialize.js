@@ -8,6 +8,7 @@
     initializeCurrentConversation();
     initializeCurrentTask();
     initializeCurrentTaskDoers();
+    initializeCurrentUser();
   };
 
   function initializeFlashMessages(){
@@ -49,6 +50,11 @@
   function initializeCurrentTaskDoers(){
     if (!ENV.currentTaskDoers) return;
     Multify.currentTaskDoers = ENV.currentTaskDoers;
+  }
+
+  function initializeCurrentUser(){
+    if (!ENV.currentUser) return;
+    Multify.currentUser = ENV.currentUser;
   }
 
 }();
