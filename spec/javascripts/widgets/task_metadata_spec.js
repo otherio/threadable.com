@@ -56,7 +56,7 @@ describe("widgets/task_metadata", function(){
       });
 
       it("updates the link text", function() {
-        expect($('.toggle-doer-self').text()).toEqual('remove me');
+        expect($('.toggle-doer-self').text()).toEqual(' remove me');
       });
     });
 
