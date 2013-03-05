@@ -19,7 +19,7 @@
         muted count
 
   %a.control-link.text-info.toggle-doer-self{href:""}
-    - if task.doers.include?(user)
+    - if task.doers.include?(current_user)
       %i.icon-remove
       remove me
     - else
