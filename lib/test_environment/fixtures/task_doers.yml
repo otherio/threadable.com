@@ -1,0 +1,25 @@
+---
+task_doers_001:
+  id: '1'
+  user_id: '2'
+  task_id: '3'
+task_doers_002:
+  id: '2'
+  user_id: '3'
+  task_id: '3'
+task_doers_003:
+  id: '3'
+  user_id: '2'
+  task_id: '7'
+task_doers_004:
+  id: '4'
+  user_id: '2'
+  task_id: '8'
+task_doers_005:
+  id: '5'
+  user_id: '3'
+  task_id: '8'
+task_doers_006:
+  id: '6'
+  user_id: '2'
+  task_id: '9'
