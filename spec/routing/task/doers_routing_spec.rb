@@ -8,7 +8,7 @@ describe Task::DoersController do
     end
 
     it "routes to #destroy" do
-      pending
+      delete("/love-a-duck/tasks/w-the-f/doers/1").should route_to("task/doers#destroy", :project_id => 'love-a-duck', :task_id => 'w-the-f', :id => '1')
     end
 
   end
