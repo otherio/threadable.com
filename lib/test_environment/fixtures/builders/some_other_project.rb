@@ -5,14 +5,14 @@ TestEnvironment::FixtureBuilder.new do
   # http://marsrover.nasa.gov/journal/
 
   # John from NASA signs up
-  create_user('John Callas', 'john-callas@nasa.multifyapp.com')
+  create_user 'John Callas', 'john-callas@nasa.multifyapp.com'
 
   # Alice creates a project
   @project = Project.create!(
     name: 'Mars Exploration Rover',
     description: 'Put a robot on mars.',
   )
-  project.members << users['John Callas']
+  project.members << user('John Callas')
 
   invite_user 'Bruce Banerdt',  'bruce-banerdt@nasa.multifyapp.com'
   invite_user 'Diana Blaney',   'diana-blaney@nasa.multifyapp.com'
@@ -27,18 +27,17 @@ TestEnvironment::FixtureBuilder.new do
   accept_invite 'Ray Arvidson'
 
   send_message(
-    user: users['John Callas'],
+    user: 'John Callas',
     reply: false,
     subject: 'Welcome everyone. Lets get started',
     body: %(I've invited all the managers. You're all welcome to add anyone you need.)
   )
 
   send_message(
-    user: users['Ray Arvidson'],
+    user: 'Ray Arvidson',
     reply: true,
     subject: 'RE: Welcome everyone. Lets get started',
     body: %(Thanks John. I'll get right on that.)
   )
-
 
 end

@@ -16,6 +16,10 @@ class TestEnvironment::FixtureBuilder
     @users ||= {}
   end
 
+  def user user_name
+    users.fetch user_name
+  end
+
   def conversations
     @conversations ||= {}
   end
@@ -41,12 +45,12 @@ class TestEnvironment::FixtureBuilder
   end
 
   def accept_invite name
-    project.members << users[name]
+    project.members << user(name)
   end
 
   def send_message(attributes)
     subject = attributes[:subject].sub(/^re: /i, '')
-    creator = attributes[:user]
+    creator = attributes[:user] = user(attributes[:user]) if attributes[:user]
     conversation = conversations[subject] ||= project.conversations.create!(
       subject: subject,
       creator: creator,
@@ -55,19 +59,20 @@ class TestEnvironment::FixtureBuilder
     messages << conversation.messages.create!(attributes)
   end
 
-  def create_task(creator, subject)
+  def create_task(user_name, subject)
+    creator = user(user_name)
     raise "task already exists" if conversations[subject]
     task = project.tasks.create!(subject: subject, creator: creator)
     conversations[subject] = task
     tasks[subject] = task
   end
 
-  def add_doer_to_task user, subject
-    tasks[subject].doers << user
+  def add_doer_to_task user_name, subject
+    tasks[subject].doers << user(user_name)
   end
 
-  def complete_task user, subject
-    tasks[subject].done! user
+  def complete_task user_name, subject
+    tasks[subject].done! user(user_name)
   end
 
 end
