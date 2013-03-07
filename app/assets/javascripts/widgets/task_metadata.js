@@ -179,8 +179,11 @@ Multify.Widget('task_metadata', function(widget){
     e.preventDefault();
     e.stopPropagation();
 
-    var currentDoers = $.map(Multify.currentTaskDoers, function(user,i) { return user.id; } );
-    if ($.inArray(Multify.currentUser.id, currentDoers) !== -1 ) {
+    var isDoer = _.some(Multify.currentTaskDoers, function(doer) {
+      return Multify.currentUser.id == doer.id;
+    });
+
+    if (isDoer) {
       removeUser(Multify.currentUser);
     } else {
       pickUser(Multify.currentUser);
