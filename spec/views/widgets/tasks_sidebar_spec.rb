@@ -2,18 +2,41 @@ require 'spec_helper'
 
 describe "tasks_sidebar" do
 
-  let(:tasks){ double(:tasks) }
-  let(:project){ double(:project,
-    tasks: tasks,
-    to_param: 'lick-a-fish',
-  ) }
+  let(:current_user){ double(:current_user) }
+
+  let(:project){
+    double(:project, tasks: tasks, to_param: 'lick-a-fish')
+  }
+
+  let(:tasks){
+    [
+      double(:"task0", :done? => true,  :doers => []),
+      double(:"task1", :done? => false, :doers => []),
+      double(:"task2", :done? => true,  :doers => [current_user]),
+      double(:"task3", :done? => false, :doers => []),
+      double(:"task4", :done? => true,  :doers => []),
+      double(:"task5", :done? => false, :doers => [current_user]),
+      double(:"task6", :done? => true,  :doers => []),
+      double(:"task7", :done? => false, :doers => []),
+      double(:"task8", :done? => true,  :doers => [current_user]),
+      double(:"task9", :done? => false, :doers => []),
+    ]
+  }
 
   before do
-    project.tasks.should_receive(:not_done).and_return(:fake_not_done_tasks)
-    project.tasks.should_receive(:done).and_return(:fake_done_tasks)
-
-    view.should_receive(:render_widget).with(:task_list, :fake_not_done_tasks)
-    view.should_receive(:render_widget).with(:task_list, :fake_done_tasks)
+    view.stub(:current_user){ current_user }
+    view.should_receive(:render_widget).with(:task_list, [
+      tasks[0], tasks[2], tasks[4], tasks[6], tasks[8]
+    ])
+    view.should_receive(:render_widget).with(:task_list, [
+      tasks[1], tasks[3], tasks[5], tasks[7], tasks[9]
+    ])
+    view.should_receive(:render_widget).with(:task_list, [
+      tasks[2], tasks[8]
+    ])
+    view.should_receive(:render_widget).with(:task_list, [
+      tasks[5]
+    ])
   end
 
   def locals

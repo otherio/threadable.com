@@ -32,13 +32,16 @@ When /^I go to (.+)$/ do |name|
 end
 
 Then /^I should be on (.+)$/ do |name|
-  wait_until_expectation do
-    page.current_path.should == path_to(name)
-  end
+  page.current_path.should == path_to(name)
 end
 
-When /^I click "(.*?)"$/ do |thing|
-  click_on thing
+When /^I click "(.*?)"$/ do |name|
+  click_on name
+end
+
+
+When /^I click the "(.*?)" button$/ do |name|
+  click_button name
 end
 
 When /^I fill in "(.*?)" with "(.*?)"$/ do |field, value|
@@ -49,7 +52,12 @@ Then /^I should see "(.*?)"$/ do |content|
   page.should have_content content
 end
 
+Then /^I should not see "(.*?)"$/ do |content|
+  page.should_not have_content content
+end
+
 When /^I debug$/ do
+  require 'debugger'
   debugger;1
 end
 

@@ -9,8 +9,8 @@ Scenario: Logging in
     And I go to the home page
     And I click "Login"
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
-    And I fill in "Password" with "password"
-    And I click "Sign in" within the login form
+    And I fill in "user_password" with "password"
+    And I click the "Sign in" button
    Then I should be on the home page
     And I should see "Signed in successfully."
 
@@ -19,8 +19,8 @@ Scenario: Failing to log in
     And I go to the home page
     And I click "Login"
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
-    And I fill in "Password" with "bullshitpassword"
-    And I click "Sign in" within the login form
+    And I fill in "user_password" with "bullshitpassword"
+    And I click the "Sign in" button
    Then I should see "Invalid email or password"
 
 Scenario: Signing up through the join form
@@ -31,8 +31,8 @@ Scenario: Signing up through the join form
   Given I am not a member
    When I go to the join page
     And I fill in "Email" with "audrey.penven@gmail.com"
-    And I fill in "Password" with "password"
-    And I fill in "Password confirmation" with "password"
+    And I fill in "user_password" with "password"
+    And I fill in "user_password_confirmation" with "password"
     And I click "Sign up"
    Then I should see "You have signed up successfully"
 
@@ -41,8 +41,8 @@ Scenario: Account creation fails if passwords don't match
   Given I am not a member
    When I go to the join page
     And I fill in "Email" with "audrey.penven@gmail.com"
-    And I fill in "Password" with "password"
-    And I fill in "Password confirmation" with "nonmatchingpassword"
+    And I fill in "user_password" with "password"
+    And I fill in "user_password_confirmation" with "nonmatchingpassword"
     And I click "Sign up"
    Then I should see "Password doesn't match confirmation"
 
@@ -52,8 +52,8 @@ Scenario: Account creation fails if email is already used
   Given I am not logged in
     And I go to the join page
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
-    And I fill in "Password" with "password"
-    And I fill in "Password confirmation" with "password"
+    And I fill in "user_password" with "password"
+    And I fill in "user_password_confirmation" with "password"
     And I click "Sign up"
    Then I should see "Email has already been taken"
 

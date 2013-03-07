@@ -6,6 +6,16 @@ class TasksController < ApplicationController
 
   respond_to :html, :json
 
+  # POST /index
+  # POST /index.json
+  def index
+    if request.xhr?
+      render text: view_context.render_widget(:tasks_sidebar, project)
+    else
+      render nothing: true, status: :not_found
+    end
+  end
+
   # POST /tasks
   # POST /tasks.json
   def create

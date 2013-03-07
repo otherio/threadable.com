@@ -8,7 +8,7 @@ describe("widgets/task_metadata", function(){
     ENV = {
       currentProject: {slug: 'project-slug'},
       currentConversation: {slug: 'conversation-slug'},
-      currentUser: {id: 1, name: 'Alice Neilson', avatar_url: "avatar.jpg"},
+      currentUser: {id: 1, name: 'Alice Neilson', avatar_url: "/assets/fixtures/alice.jpg"},
       currentTaskDoers: JSON.parse('[{"avatar_url":"http://gravatar.com/avatar/205511b09c34f87e73551c5d1323c7e3.png?s=48","created_at":"2013-02-18T00:50:45Z","email":"tom@ucsd.edu","id":2,"name":"Tom Canver","slug":"tom-canver","updated_at":"2013-02-18T00:50:45Z"}]')
     };
     Multify.initialize();  // reset current project

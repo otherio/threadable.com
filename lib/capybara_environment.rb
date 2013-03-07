@@ -1,7 +1,6 @@
 require 'test_environment'
 require 'capybara'
 require 'capybara/dsl'
-require 'patches/capybara'
 
 module CapybaraEnvironment
 
@@ -22,7 +21,7 @@ module CapybaraEnvironment
     end
 
     Capybara.ignore_hidden_elements = true
-    Capybara.default_driver         = ENV['MULTIFY_SELENIUM'] == 'true' ? :selenium : :webkit
+    Capybara.default_driver         = :selenium
     Capybara.javascript_driver      = :selenium
     Capybara.default_selector       = :css
     Capybara.default_wait_time      = 5

@@ -1,8 +1,47 @@
 Feature: Projects and Tasks
- I should be able to make and complete a task
- I should be able to sort tasks and see the completed ones
- I should be able to add doers, and view mine vs everyones tasks
- I should be able to invite someone to a task who isn't part of the project
+  As a member of a project
+  I should be able to make and complete a task
+  I should be able to sort tasks and see the completed ones
+  I should be able to add doers, and view mine vs everyones tasks
+  I should be able to invite someone to a task who isn't part of the project
+
+  Scenario: Creating, asigning and completing a task for an existing project
+    Given I am "Tom Canver"
+     When I go to the project conversations page for "UCSD Electric Racing"
+      And I add a new task titled "Research carbon fiber techniques"
+     Then I should see "Research carbon fiber techniques" within the not done tasks list
+     When I click "Research carbon fiber techniques" within the not done tasks list
+     Then I should be on the "Research carbon fiber techniques" conversation page
+     When I add "Yan Hzu" as a doer for this task
+     Then I should see "Yan Hzu" within the list of doers for this task
+     When I click "My Tasks" within the tasks sidebar
+     Then I should not see "Research carbon fiber techniques" within the tasks sidebar
+     When I click "sign me up"
+     Then I should see "Tom Canver" within the list of doers for this task
+      And I should see "Research carbon fiber techniques" within the tasks sidebar
+
+
+  Scenario: I want to add someone as a doer of a task
+    As a member of the project
+    I want to communicate other people's interest in a task
+    Given I am "Alice Neilson"
+      And I am on the task "install mirrors"
+      And I click "add others"
+      And I click doer "Bethany Pattern"
+     Then I should see "Bethany Pattern" as a doer of the task
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #   Scenario: I want to create a task through the website
 #     In order to create a task
@@ -41,14 +80,6 @@ Feature: Projects and Tasks
 #      Then the task "weld seat rail mounts" should be in the "Unfinished" box
 #       And the task "machine adjustable seat rails" should be in the "Complete" box
 
-  Scenario: I want to add someone as a doer of a task
-    As a member of the project
-    I want to communicate other people's interest in a task
-    Given I am "Alice Neilson"
-      And I am on the task "install mirrors"
-      And I click "add others"
-      And I click doer "Bethany Pattern"
-     Then I should see "Bethany Pattern" as a doer of the task
 
 #    Given I am "Bethany Pattern"
 #      And I am on the task "install mirrors"

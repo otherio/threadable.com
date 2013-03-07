@@ -12,6 +12,12 @@ Multify.Widget('tasks_sidebar', function(widget){
         .bind('mouseenter', widget.onTaskMouseEnter)
         .bind('mouseleave', widget.onTaskMouseLeave)
       .end
+      ('button.all_tasks')
+        .bind('click', onClickAllTasksButton)
+      .end
+      ('button.my_tasks')
+        .bind('click', onClickMyTasksButton)
+      .end
     ;
 
     Multify.bind('conversation_mouse_enter', function(event, task_id){
@@ -27,6 +33,42 @@ Multify.Widget('tasks_sidebar', function(widget){
     });
   };
 
+  widget.path = function(element){
+    element || (element =  widget.$());
+    return element.find('form').attr('action');
+  };
+
+  widget.reload = function(element){
+    element || (element = widget.$());
+
+    var request = $.ajax({
+      url:      widget.path(),
+      type:     'GET',
+      dataType: 'html'
+    });
+
+    request.success(function(html){
+      widget.replace(html);
+    });
+
+    return request;
+  };
+
+  widget.replace = function(html){
+    var element = widget.$();
+    html = $(html);
+    element = element.map(function(){
+      var
+        instance = $(this),
+        showing  = instance.attr('showing'),
+        new_html = html.clone();
+      instance.replaceWith(new_html);
+      new_html.find('button.'+showing).click();
+      return new_html[0];
+    });
+    setTimeout(function(){ element.find('input:first').focus(); });
+  };
+
   widget.onSubmit = function(form, event){
     event.preventDefault();
 
@@ -36,10 +78,13 @@ Multify.Widget('tasks_sidebar', function(widget){
       subject = input.val();
     if (subject) widget.createTask(root, subject);
     input.val('');
+
+    return widget;
   };
 
-  widget.createTask = function(root, subject){
-    var url = root.find('form').attr('action');
+  widget.createTask = function(element, subject){
+    element || (element =  widget.$());
+    var url = element.find('form').attr('action');
 
     var request = $.ajax({
       url:      url,
@@ -49,13 +94,11 @@ Multify.Widget('tasks_sidebar', function(widget){
     });
 
     request.success(function(html){
-      html = $(html);
-      root.replaceWith(html);
-      setTimeout(function(){ html.find('input:first').focus(); });
+      widget.replace(html);
     });
 
     request.error(function(){
-      root.find('input:first').val(subject).trigger('keyup');
+      element.find('input:first').val(subject).trigger('keyup');
     });
   };
 
@@ -71,6 +114,14 @@ Multify.Widget('tasks_sidebar', function(widget){
 
   widget.onTaskMouseLeave = function(element){
     Multify.trigger('conversation_mouse_leave', element.data('task-id'));
+  };
+
+  function onClickAllTasksButton(element){
+    element.closest('.tasks_sidebar').attr('showing', 'all_tasks');
+  };
+
+  function onClickMyTasksButton(element){
+    element.closest('.tasks_sidebar').attr('showing', 'my_tasks');
   };
 
 });

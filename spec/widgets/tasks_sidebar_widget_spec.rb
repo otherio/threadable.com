@@ -27,6 +27,7 @@ describe TasksSidebarWidget do
     it do
       should == {
         class: "tasks_sidebar custom_class",
+        showing: "all_tasks",
       }
     end
   end

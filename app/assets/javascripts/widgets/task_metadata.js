@@ -23,12 +23,15 @@ Multify.Widget('task_metadata', function(widget){
   };
 
   widget.appendDoerIcon = function(user){
-    var icon = $('<img class="has-tooltip avatar-tiny" data-toggle="tooltip" title="">');
-    icon.attr('alt', user.name);
-    icon.attr('src', user.avatar_url);
-    icon.attr('data-original-title', user.name);
-    $('span.doers').append(icon, ' '); // the space fixes a weird presentation bug
-    icon.tooltip();
+    var avatar = $('<span class="avatar has-tooltip" data-toggle="tooltip" title="">');
+    avatar.attr('data-user', user.id);
+    avatar.attr('data-original-title', user.name);
+    var img = $('<img class="avatar-tiny">');
+    img.attr('alt', user.name);
+    img.attr('src', user.avatar_url);
+    avatar.append(img, $('<span class="name">').text(user.name));
+    widget.$('.doers').append(avatar, ' '); // the space fixes a weird presentation bug
+    avatar.tooltip();
     return this;
   };
 
@@ -37,7 +40,7 @@ Multify.Widget('task_metadata', function(widget){
     var $container = $('.popover-content .user-list ul');
     $container.empty();
 
-    _.each(users, function(user) {
+    users.forEach(function(user) {
       var search = $('input.user-search').val().toLowerCase();
       if (search && user.email.toLowerCase().indexOf(search) == -1 && user.name.toLowerCase().indexOf(search) == -1) {
         return;
@@ -57,7 +60,7 @@ Multify.Widget('task_metadata', function(widget){
 
       var userIsAlreadyDoer = _.find(Multify.currentTaskDoers, function(doer) { return doer.id == user.id; } );
 
-      var $item = $('<li class="item"><a class="item">' +
+      var $item = $('<li class="item"><a href="" class="item">' +
         '<img class="avatar-small" src="' + user.avatar_url + '">' +
         name + ' <span class="email pull-right">&lt;' + email + '&gt; </span>' +
         '</a></li>');
@@ -103,6 +106,7 @@ Multify.Widget('task_metadata', function(widget){
     request.success(function() {
       widget.appendDoerIcon(user);
       Multify.currentTaskDoers.push(user);
+      Multify.widgets['tasks_sidebar'].reload();
     })
 
     request.always(function() {
@@ -138,17 +142,18 @@ Multify.Widget('task_metadata', function(widget){
       if (Multify.currentUser.id == user.id){
         $('.toggle-doer-self').html('<i class="icon-plus"></i> sign me up');
       }
+      Multify.widgets['tasks_sidebar'].reload();
     });
 
     request.fail(function(){
-      $('span.doers').append(user_icon);
+      widget.$('.doers').append(user_icon);
     });
 
     request.always(function() {
-      $('span.doers i.icon-spinner').remove();
+      widget.$('.doers i.icon-spinner').remove();
     });
 
-    var user_icon = $('span.doers img[alt="' + user.name + '"]');
+    var user_icon = widget.$('.doers .avatar[data-user="'+user.id+'"]');
 
     user_icon.replaceWith('<i class="icon-spinner icon-spin"/>');
   };

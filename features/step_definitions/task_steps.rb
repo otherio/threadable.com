@@ -10,10 +10,22 @@ Given /^I add "(.*?)" as a doer$/ do |doer|
 end
 
 Then /^I should see "(.*?)" as a doer of the task$/ do |doer|
-  page.find(".doers img[alt='#{doer}']").should be
+  page.should have_selector(".task_metadata .doers .name", text: doer)
 end
 
 Given /^I click doer "(.*?)"$/ do |name|
   find('a.item', text: name).click
 end
 
+When /^I add a new task titled "(.*?)"$/ do |task_subject|
+  within_element 'the tasks sidebar' do
+    fill_in 'subject', with: task_subject
+    find('.icon-plus').click
+  end
+end
+
+When /^I add "(.*?)" as a doer for this task$/ do |doer_name|
+  click_on 'add others'
+  page.driver.browser.keyboard.send_keys doer_name
+  click_on doer_name
+end

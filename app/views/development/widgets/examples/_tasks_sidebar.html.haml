@@ -1,1 +1,5 @@
-= render_widget :tasks_sidebar, Project.last
+.row
+  .span3
+    = render_widget :tasks_sidebar, current_user.projects.last
+  .span3
+    = render_widget :tasks_sidebar, current_user.projects.last

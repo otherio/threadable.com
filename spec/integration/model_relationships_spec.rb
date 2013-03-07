@@ -108,6 +108,7 @@ describe 'model relationships' do
       task('get epoxy'),
       task('get release agent'),
       task('get carbon and fiberglass'),
+      task('trim body panels'),
     ]
 
     conversation = alice.conversations.where(subject: 'Welcome to our new Multify project!').first

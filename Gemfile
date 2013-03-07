@@ -47,9 +47,9 @@ group :development, :test do
 end
 
 group :test do
+  gem 'capybara', '>= 2.0.2'
   gem 'shoulda-matchers'
   gem 'cucumber-rails', require: nil
-  gem 'capybara-webkit'
   gem 'resque_spec'
 end
 
