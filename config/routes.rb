@@ -10,7 +10,7 @@ Multify::Application.routes.draw do
 
   get '/development' => 'development#index'
 
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   resources :users do
   #   resources :tasks
