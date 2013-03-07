@@ -12,7 +12,7 @@ class Task::DoersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to project_conversation_url(project, @task), notice: "Added #{@doer.name} to this task."}
-      format.json { head :created }
+      format.json { render json: {}, status: :created }
     end
   end
 
@@ -23,7 +23,7 @@ class Task::DoersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to project_conversation_url(project, @task), notice: "Removed #{@doer.name} from this task."}
-      format.json { head :no_content }
+      format.json { render json: {}, status: :no_content }
     end
   end
 

@@ -61,7 +61,35 @@ describe("widgets/task_metadata", function(){
     });
 
     describe("clicking the remove me link", function() {
+      beforeEach(function() {
+        Multify.currentTaskDoers.push(Multify.currentUser);
+        Multify.Widget('task_metadata').appendDoerIcon(Multify.currentUser);
+        $('.toggle-doer-self').click();
+      });
 
+      it("removes the current user as a doer", function() {
+        var request = mostRecentAjaxRequest();
+        expect(request.url).toEqual(Multify.project_task_doer_path(ENV.currentProject.slug, ENV.currentConversation.slug, Multify.currentUser.id));
+        expect(request.method).toEqual('DELETE');
+      });
+
+      it("updates the displayed list of doers on the task", function() {
+        expect($('.doers')).toContain('i.icon-spinner');
+        mostRecentAjaxRequest().response({status: 204, responseText: ''});
+        expect($('.doers')).not.toContain('i.icon-spinner');
+        expect($('.doers')).not.toContain('img[alt="Alice Neilson"]');
+        expect(_.find(Multify.currentTaskDoers, function(doer) { return doer.name == "Alice Neilson"})).toBeFalsy();
+      });
+
+      it("removes the spinner on failure", function() {
+        expect($('.doers')).toContain('i.icon-spinner');
+        mostRecentAjaxRequest().response({status: 500, responseText: ''});
+        expect($('.doers')).not.toContain('i.icon-spinner');
+      });
+
+      it("updates the link text", function() {
+        expect($.trim($('.toggle-doer-self').text())).toEqual('sign me up');
+      });
     });
   });
 

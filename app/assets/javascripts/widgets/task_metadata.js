@@ -23,21 +23,31 @@ Multify.Widget('task_metadata', function(widget){
     });
   };
 
+  widget.appendDoerIcon = function(user){
+    var icon = $('<img class="has-tooltip avatar-tiny" data-toggle="tooltip" title="">');
+    icon.attr('alt', user.name);
+    icon.attr('src', user.avatar_url);
+    icon.attr('data-original-title', user.name);
+    $('span.doers').append(icon, ' '); // the space fixes a weird presentation bug
+    icon.tooltip();
+    return this;
+  };
+
   var renderUserList = function(users){
-    if(!users) { return; }
+    if (!users) { return; }
     var $container = $('.popover-content .user-list ul');
     $container.empty();
 
     _.each(users, function(user) {
       var search = $('input.user-search').val().toLowerCase();
-      if(search && user.email.toLowerCase().indexOf(search) == -1 && user.name.toLowerCase().indexOf(search) == -1) {
+      if (search && user.email.toLowerCase().indexOf(search) == -1 && user.name.toLowerCase().indexOf(search) == -1) {
         return;
       }
 
       var name = user.name;
       var email = user.email;
 
-      if(search) {
+      if (search) {
         var searchRe = RegExp('(' + RegExp.quote(search) + ')', 'gi');
         email = user.email.replace(searchRe, "<strong>$1</strong>");
         name = user.name.replace(searchRe, "<strong>$1</strong>");
@@ -71,7 +81,7 @@ Multify.Widget('task_metadata', function(widget){
   var updateInviteButton = function() {
     var search = $('input.user-search').val();
 
-    if(search) {
+    if (search) {
       $('.popover .invite-link-text').html('Invite <strong>' + search + '</strong>');
     } else {
       $('.popover .invite-link-text').html('Invite...');
@@ -79,24 +89,69 @@ Multify.Widget('task_metadata', function(widget){
   };
 
   var pickUser = function(user) {
-    $.post(
-      Multify.project_task_doers_path(Multify.currentProject.slug, Multify.currentConversation.slug),
-      {doer_id: user.id}
-    ).done(function() {
-      var $newDoerIcon = $('<img alt="' + user.name + '" class="has-tooltip avatar-tiny" data-toggle="tooltip" src="' + user.avatar_url + '" title="" data-original-title="' + user.name + '">');
-      $('span.doers').append($newDoerIcon, ' '); // the space fixes a weird presentation bug
-      $newDoerIcon.tooltip();
+    var url = Multify.project_task_doers_path(
+      Multify.currentProject.slug,
+      Multify.currentConversation.slug
+    );
+
+    var request = $.ajax({
+      url: url,
+      data: {doer_id: user.id},
+      type: 'POST',
+      dataType: 'json',
+    });
+
+    request.success(function() {
+      widget.appendDoerIcon(user);
       Multify.currentTaskDoers.push(user);
-    }).always(function() {
+    })
+
+    request.always(function() {
       $('span.doers i.icon-spinner').remove();
     });
 
     closePopover();
     $('span.doers').append('<i class="icon-spinner icon-spin"/>');
 
-    if(Multify.currentUser.id == user.id){
+    if (Multify.currentUser.id == user.id){
       $('.toggle-doer-self').html('<i class="icon-remove"></i> remove me');
     }
+  };
+
+  var removeUser = function(user) {
+    var url = Multify.project_task_doer_path(
+      Multify.currentProject.slug,
+      Multify.currentConversation.slug,
+      user.id
+    );
+
+    var request = $.ajax({
+      url: url,
+      type: 'DELETE',
+      dataType: 'json',
+    });
+
+    request.done(function() {
+      Multify.currentTaskDoers = Multify.currentTaskDoers.filter(function(doer){
+        return doer.id !== user.id;
+      });
+
+      if (Multify.currentUser.id == user.id){
+        $('.toggle-doer-self').html('<i class="icon-plus"></i> sign me up');
+      }
+    });
+
+    request.fail(function(){
+      $('span.doers').append(user_icon);
+    });
+
+    request.always(function() {
+      $('span.doers i.icon-spinner').remove();
+    });
+
+    var user_icon = $('span.doers img[alt="' + user.name + '"]');
+
+    user_icon.replaceWith('<i class="icon-spinner icon-spin"/>');
   };
 
   var closePopover = function() {
@@ -107,7 +162,7 @@ Multify.Widget('task_metadata', function(widget){
   var onTogglePopover = function(e) {
     e.preventDefault();
     e.stopPropagation();
-    if( $(e.currentTarget).parent().find('.popover').length ) {
+    if ($(e.currentTarget).parent().find('.popover').length ) {
       closePopover();
     } else {
       $('.add-others').popover('show');
@@ -123,13 +178,18 @@ Multify.Widget('task_metadata', function(widget){
   var onToggleDoer = function(e) {
     e.preventDefault();
     e.stopPropagation();
-    pickUser(Multify.currentUser);
 
+    var currentDoers = $.map(Multify.currentTaskDoers, function(user,i) { return user.id; } );
+    if ($.inArray(Multify.currentUser.id, currentDoers) !== -1 ) {
+      removeUser(Multify.currentUser);
+    } else {
+      pickUser(Multify.currentUser);
+    }
   };
 
   var onKeyDown = function(e) {
     var code = e.keyCode ? e.keyCode : e.which;
-    if(code == 27) {
+    if (code == 27) {
       closePopover();
     }
   }
