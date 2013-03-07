@@ -8,10 +8,10 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :token_authenticatable
+         :token_authenticatable, :omniauthable, :omniauth_providers => [:clef]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :name, :slug, :password, :password_confirmation, :remember_me, :tasks, :avatar_url
+  attr_accessible :email, :name, :slug, :password, :password_confirmation, :remember_me, :tasks, :avatar_url, :provider, :uid
 
   has_many :project_memberships
   has_many :projects, :through => :project_memberships

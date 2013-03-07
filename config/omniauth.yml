@@ -1,0 +1,12 @@
+development:
+  clef_id: 20ed5a5bbfce93329b70a7f365e45dbe
+  clef_secret: 06bb1e31f5f74b4a227035b84cc2e867
+
+test:
+  clef_id: this_is_a_bullshit_id
+  clef_secret: this_is_a_bullshit_secret
+
+production:
+  clef_id: <%= ENV['MULTIFY_CLEF_ID'] %>
+  clef_secret: <%= ENV['MULTIFY_CLEF_SECRET'] %>
+

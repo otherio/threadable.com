@@ -18,6 +18,8 @@ gem 'resque'
 gem 'griddler', git: 'https://github.com/raindrift/griddler'
 gem 'mail'
 gem 'compass-rails'
+gem 'omniauth'
+gem 'omniauth-clef'
 
 group :assets do
   gem 'sass-rails'
