@@ -48,6 +48,7 @@ group :test do
   gem 'cucumber-rails', require: nil
   gem 'capybara-webkit'
   gem 'resque_spec'
+  gem 'rspec-extra-formatters'
 end
 
 # we need this as long as we are goig to load fixtures in prod

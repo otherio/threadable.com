@@ -9,7 +9,6 @@ Multify.Widget('task_metadata', function(widget){
     widget.$('.add-others').click(onTogglePopover);
 
     widget.$('.toggle-doer-self').click(onToggleDoer);
-    console.log('init');
   };
 
   widget.getCurrentProjectMembers = function(callback) {

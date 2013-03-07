@@ -35,7 +35,7 @@ describe("widgets/invite_modal", function(){
   }
 
   context('when the server responds with a 200', function(){
-    it("should focus the first input when the modal is shown", function(){
+    it("should show a flash message saying the user has been added", function(){
       spyOn(Multify.Flash, 'message');
 
       open_invite_modal();
@@ -51,7 +51,7 @@ describe("widgets/invite_modal", function(){
       waits(400);
 
       runs(function(){
-        var content =  Multify.Flash.message.mostRecentCall.args[0][0]
+        var content = Multify.Flash.message.mostRecentCall.args[0][0]
         expect(content.nodeName).toEqual('SPAN');
         expect(content.textContent).toEqual("Ballzonya <ballz@ya.org> was added to this project.");
       });
