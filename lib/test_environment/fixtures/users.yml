@@ -4,7 +4,7 @@ alice_neilson:
   name: Alice Neilson
   slug: alice-neilson
   email: alice@ucsd.multifyapp.com
-  encrypted_password: $2a$04$Z8DhnNIzQUW/9JTuhrhlEuf.Sbej8IHNQC/w8WrARzW1gyKHDz04m
+  encrypted_password: $2a$04$KhsjlViukek173YmhCgzUeUU.v/KMOfgdf8qY1BauR6udiaDDRFmG
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -17,16 +17,16 @@ alice_neilson:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: CwjsyP77PSmLAWwEex9o
-  created_at: 2013-03-06 17:12:52.066207000 Z
-  updated_at: 2013-03-06 17:12:52.066207000 Z
+  authentication_token: BqvRJafuGPtcyrs3syEF
+  created_at: 2013-03-08 03:40:31.129882000 Z
+  updated_at: 2013-03-08 03:40:31.129882000 Z
   avatar_url: /assets/fixtures/alice.jpg
 tom_canver:
   id: 2
   name: Tom Canver
   slug: tom-canver
   email: tom@ucsd.multifyapp.com
-  encrypted_password: $2a$04$g/YRFxV38xOpmjg3T9JGQOha5d.rm.HR48Mb51bM6f3kbEq82Er8i
+  encrypted_password: $2a$04$sNFrHiulWLDz3sfJ4M69SeiEM3i4dceyDk46ZEBEVmAcIvOq.R4.i
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -39,16 +39,16 @@ tom_canver:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 3cYPe7syEczdh9EtphYJ
-  created_at: 2013-03-06 17:12:52.139708000 Z
-  updated_at: 2013-03-06 17:12:52.139708000 Z
+  authentication_token: ypjML4vt9BDqqtmMNqzK
+  created_at: 2013-03-08 03:40:31.344399000 Z
+  updated_at: 2013-03-08 03:40:31.344399000 Z
   avatar_url: /assets/fixtures/tom.jpg
 bob_cauchois:
   id: 5
   name: Bob Cauchois
   slug: bob-cauchois
   email: bob@ucsd.multifyapp.com
-  encrypted_password: $2a$04$QJrR.nW6MgpQXCvAre.cAOtqwtUOUtCAoaa9aRswLGKpJHrc4EIv.
+  encrypted_password: $2a$04$ZVwuTqY0BYkRR.TulnPUT.NuCe.ZQ2jcSmePhF3eda4qL9GgLD0JO
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -61,16 +61,16 @@ bob_cauchois:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: HqrnpVJZ8ZerLRTzdEyV
-  created_at: 2013-03-06 17:12:52.155763000 Z
-  updated_at: 2013-03-06 17:12:52.155763000 Z
+  authentication_token: G98zWCWHADd2hwtRsD31
+  created_at: 2013-03-08 03:40:31.381094000 Z
+  updated_at: 2013-03-08 03:40:31.381094000 Z
   avatar_url: /assets/fixtures/bob.jpg
 yan_hzu:
   id: 3
   name: Yan Hzu
   slug: yan-hzu
   email: yan@ucsd.multifyapp.com
-  encrypted_password: $2a$04$Nsbrm1BBy.l6MSItUw.Fz./1FcN2UDMeFl.15QCCS8nsjcQLNDzdO
+  encrypted_password: $2a$04$pvhbBsFPSfTbZMVi0oAn4.kFu81FaDfQ7CvL7vE/1Rp7Y.fRT1KUu
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -83,16 +83,16 @@ yan_hzu:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: PLyzciLyt5aBLU7abnBj
-  created_at: 2013-03-06 17:12:52.145238000 Z
-  updated_at: 2013-03-06 17:12:52.145238000 Z
+  authentication_token: eZk8jRj6GhvcLyqsX8XY
+  created_at: 2013-03-08 03:40:31.356049000 Z
+  updated_at: 2013-03-08 03:40:31.356049000 Z
   avatar_url: /assets/fixtures/yan.jpg
 bethany_pattern:
   id: 4
   name: Bethany Pattern
   slug: bethany-pattern
   email: bethany@ucsd.multifyapp.com
-  encrypted_password: $2a$04$GsZECN/O9sZF8wxYiX/eS.u4YUPHlSi2h8nibew8iqtN2oio4zlS2
+  encrypted_password: $2a$04$tXpUsMQSQwN9a1HPp0ge7evjRJ7RFUyinf86LztsFSyCnoS4un.Xq
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -105,16 +105,16 @@ bethany_pattern:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 31FNbudQyRzSguzaFots
-  created_at: 2013-03-06 17:12:52.150827000 Z
-  updated_at: 2013-03-06 17:12:52.150827000 Z
+  authentication_token: muapWQXpxtbz9j6wsEvS
+  created_at: 2013-03-08 03:40:31.368375000 Z
+  updated_at: 2013-03-08 03:40:31.368375000 Z
   avatar_url: /assets/fixtures/bethany.jpg
 john_callas:
   id: 6
   name: John Callas
   slug: john-callas
   email: john-callas@nasa.multifyapp.com
-  encrypted_password: $2a$04$XnkO38PQOD3FRzlpTzXNWew3sOJNJ4GBlBmbqq.ZYPNdtp2yi/K96
+  encrypted_password: $2a$04$mDPOrokIX3qtSXFx/idhse4sJTyJTArKbYre96G4MlZRgbCq8YFS2
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -127,16 +127,16 @@ john_callas:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: WpnwsZmnFpaTXzw2vdyh
-  created_at: 2013-03-06 17:12:52.432556000 Z
-  updated_at: 2013-03-06 17:12:52.432556000 Z
+  authentication_token: H7N7qp6UQuvpRCfffdHR
+  created_at: 2013-03-08 03:40:31.829445000 Z
+  updated_at: 2013-03-08 03:40:31.829445000 Z
   avatar_url: http://gravatar.com/avatar/cf9602418b177d3d4d10b1f0f9c77968.png?s=48
 bruce_banerdt:
   id: 7
   name: Bruce Banerdt
   slug: bruce-banerdt
   email: bruce-banerdt@nasa.multifyapp.com
-  encrypted_password: $2a$04$32v2PQpIGvbJm8yxF.qbs.RaxNZSY.FBSvQs4REnO/ZZUiZw39Cbe
+  encrypted_password: $2a$04$ST4GNFLC/ke8Epc26ey3j.tOtE6fwLtKwvE/pMOj.gBoTwm0fKu0C
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -149,16 +149,16 @@ bruce_banerdt:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: fyUUhBV4eZetS7MpJbYk
-  created_at: 2013-03-06 17:12:52.443855000 Z
-  updated_at: 2013-03-06 17:12:52.443855000 Z
+  authentication_token: sVixgpfxEHss68BBBHKm
+  created_at: 2013-03-08 03:40:31.851306000 Z
+  updated_at: 2013-03-08 03:40:31.851306000 Z
   avatar_url: http://gravatar.com/avatar/21a396de18e91b7b0f0cebc4d14061f5.png?s=48
 diana_blaney:
   id: 8
   name: Diana Blaney
   slug: diana-blaney
   email: diana-blaney@nasa.multifyapp.com
-  encrypted_password: $2a$04$Pf39Fg9RRx2YCMVgvCFMx.YA1wY31KshbYUxBvBEuKsctLrHNPOyG
+  encrypted_password: $2a$04$3keLAsP71pohV2obb/L80OJQmIQxyaXBdhtY72zqOmud7hqTBkE5q
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -171,16 +171,16 @@ diana_blaney:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 4JySyYKhaYesSQ3Nqqsu
-  created_at: 2013-03-06 17:12:52.449122000 Z
-  updated_at: 2013-03-06 17:12:52.449122000 Z
+  authentication_token: CzGVoTPLC5eXaJT4phHA
+  created_at: 2013-03-08 03:40:31.863690000 Z
+  updated_at: 2013-03-08 03:40:31.863690000 Z
   avatar_url: http://gravatar.com/avatar/08d9160150822d3da7088dafcb9073a0.png?s=48
 larry_bryant:
   id: 9
   name: Larry Bryant
   slug: larry-bryant
   email: larry-bryant@nasa.multifyapp.com
-  encrypted_password: $2a$04$4aCd1GXUv6a0tGmhSgO1iuRhzDEb6n7I8yDMhAaSscybR5xixo4Ry
+  encrypted_password: $2a$04$B04uFAqAXCYXWvNlWTK0TuHTQhVgGmzPWqjopGG1phZJ0IWvdXtrC
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -193,16 +193,16 @@ larry_bryant:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: jsxeqFjq2pKXQMmKJDE4
-  created_at: 2013-03-06 17:12:52.455001000 Z
-  updated_at: 2013-03-06 17:12:52.455001000 Z
+  authentication_token: YEEaZAFzAMz8FNofKu5J
+  created_at: 2013-03-08 03:40:31.876589000 Z
+  updated_at: 2013-03-08 03:40:31.876589000 Z
   avatar_url: http://gravatar.com/avatar/a0e19766f6d82cffa4d675463e980d64.png?s=48
 steven_squyres:
   id: 10
   name: Steven Squyres
   slug: steven-squyres
   email: steven-squyres@nasa.multifyapp.com
-  encrypted_password: $2a$04$n/oTud2hH3QEKtsD8AFoGOXaQ2QZYY/v.JfaibnG.1IGqr0W/dBg.
+  encrypted_password: $2a$04$Vrry4N6dr50OMBBbYHoxQeZRRdCR3PgV6026wJx5T6ZhqBoneGxVq
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -215,16 +215,16 @@ steven_squyres:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: jPJkR8V3Dg7a9z4sZAw7
-  created_at: 2013-03-06 17:12:52.460684000 Z
-  updated_at: 2013-03-06 17:12:52.460684000 Z
+  authentication_token: E3sG2JYqxc7HaT1yc8KZ
+  created_at: 2013-03-08 03:40:31.889281000 Z
+  updated_at: 2013-03-08 03:40:31.889281000 Z
   avatar_url: http://gravatar.com/avatar/ba02365ee9ef481875fc3dabf38a5deb.png?s=48
 ray_arvidson:
   id: 11
   name: Ray Arvidson
   slug: ray-arvidson
   email: ray-arvidson@nasa.multifyapp.com
-  encrypted_password: $2a$04$ZsEldZ/wF1.MaKNL3owonOktXsuVB1v./xmQ/O38yZNUF1RkcKlEG
+  encrypted_password: $2a$04$X2gq2ni3C/FXbqm1VV1MaugT3OpwoDCONkdZvK3ZMQ1e5X4WOXyKW
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -237,7 +237,7 @@ ray_arvidson:
   confirmed_at: 
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: cycy9ae5mBLkUJpkHnk1
-  created_at: 2013-03-06 17:12:52.466179000 Z
-  updated_at: 2013-03-06 17:12:52.466179000 Z
+  authentication_token: yjGxgu7mhpAcppr2xghn
+  created_at: 2013-03-08 03:40:31.900971000 Z
+  updated_at: 2013-03-08 03:40:31.900971000 Z
   avatar_url: http://gravatar.com/avatar/51cfc03f9d5bf49150d179e9b5af1566.png?s=48

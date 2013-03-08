@@ -7,12 +7,30 @@ class EmailProcessor
     headers = Mail::Header.new(email.params[:headers])
 
     if headers['In-Reply-To']
-      parent_message = Message.where(message_id_header: headers['In-Reply-To'].to_s).first
-      conversation = parent_message.conversation
+      referenced_message = headers['In-Reply-To'].to_s
+    elsif headers['References']
+      referenced_message = headers['References'].to_s.split(' ').last
     end
 
-    unless conversation
-      # make a new conversation
+    if referenced_message
+      parent_message = Message.all(
+        :joins => {
+          :conversation => :project
+        },
+        :conditions => {
+          :projects => { :id => project.id },
+          :messages => { :message_id_header => referenced_message }
+        }
+      ).first
+    end
+
+    if parent_message
+      conversation = parent_message.conversation
+    else
+      conversation = project.conversations.create(
+        subject: email.subject,
+        creator: user
+      )
     end
 
     message = conversation.messages.create(
