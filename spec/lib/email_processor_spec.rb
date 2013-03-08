@@ -4,7 +4,7 @@ describe EmailProcessor do
   context "when the project exists" do
     context "when the sender is a member of the project" do
 
-      let(:project) { FactoryGirl.create(:conversation) }
+      let(:project) { FactoryGirl.create(:project) }
       let(:to) { project.slug }
       let(:user) { FactoryGirl.create(:user)}
       let(:headers) { nil }
@@ -59,6 +59,10 @@ describe EmailProcessor do
           subject.conversation.creator.should == user
         end
 
+        context "when the sender is not a member of the project" do
+          it "bounces the mail until we make it do something better"
+        end
+
         shared_examples_for :a_reply_in_a_thread do
           it "sets the conversation correctly" do
             subject.conversation.should == parent_message.conversation
@@ -70,11 +74,21 @@ describe EmailProcessor do
 
           context "when the message is sent to list A, but the replied-to message is in list B" do
             let(:other_project) { FactoryGirl.create(:project) }
-            let(:to) { other_project.slug }
+            let!(:to) { other_project.slug }
 
-            xit "creates a new conversation in list A" do
+            before do
+              other_project.members << user
+            end
+
+            it "creates a new conversation in list A" do
               subject.conversation.project.should == other_project
             end
+          end
+
+          context "when the sender is not a member of the project" do
+            it "sets the from address on the message correctly"
+
+            it "adds the message to the thread"
           end
         end
 
@@ -113,7 +127,17 @@ describe EmailProcessor do
       end
 
       context "outgoing mail" do
-        it "creates outgoing mail jobs for all the users in the project except the sender"
+        let(:user2) { FactoryGirl.create(:user) }
+
+        before do
+          project.members << user2
+          SendConversationMessageWorker.any_instance.stub(:enqueue)
+        end
+
+        it "enqueues emails for members" do
+          SendConversationMessageWorker.should_receive(:enqueue).at_least(:once)
+          subject
+        end
 
         context "when creating the outgoing mail jobs fails" do
           it "does not create the message in the db"
@@ -127,10 +151,6 @@ describe EmailProcessor do
 
     context "when multiple projects are specified in the envelope" do
       it "iterates through the to addresses and processes each individually"
-    end
-
-    context "when the sender is not a member of the project" do
-      it "sets the sender correctly"
     end
   end
 

@@ -35,13 +35,14 @@ class EmailProcessor
 
     message = conversation.messages.create(
       subject: email.subject,
-      parent_message: parent_message,
+      parent_message: parent_message ? parent_message : nil,
       user: user,
       from: email.from,
       body: email.body
     )
 
-    message.save
+    MessageDispatch.new(message).enqueue
+
     message
   end
 end

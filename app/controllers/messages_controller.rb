@@ -9,19 +9,9 @@ class MessagesController < ApplicationController
     @message.user = current_user
     @message.subject ||= conversation.subject
     @message.parent_message = last_message
-    reply_to = "#{project.name} <#{project.slug}@multifyapp.com>"
 
     if @message.save
-      conversation.project.members.each do |user|
-        next if user.id == current_user.id
-        SendConversationMessageWorker.enqueue(
-          recipient: user,
-          sender: @message.user,
-          message: @message,
-          parent_message: @message.parent_message,
-          reply_to: reply_to
-        )
-      end
+      MessageDispatch.new(@message).enqueue
 
       render status: :created, location: project_conversation_messages_path(conversation.project, conversation)
     else
