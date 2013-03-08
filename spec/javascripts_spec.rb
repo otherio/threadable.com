@@ -10,9 +10,11 @@ describe 'javascript specs', type: :request, driver: :selenium do
         sleep 0.25
       end
     end
+
     unless results['passed']
       specs = specs_for(results).reject{|spec| spec["passed"] }
-      raise "The following Javascript specs failed:\n" + specs.map{ |spec| "  "+ spec["description"] }.join("\n")
+      failures = specs.map{ |spec| "  "+ spec["description"] }.join("\n")
+      raise "The following Javascript specs failed:\n#{failures}\n\n#{page.text}"
     end
   end
 
