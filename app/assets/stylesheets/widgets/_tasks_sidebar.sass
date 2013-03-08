@@ -1,11 +1,9 @@
-&[showing=all_tasks]
-  > .all_tasks
-    display: block
-  > .my_tasks
+&
+  > .my_tasks, > .all_tasks
     display: none
 
-&[showing=my_tasks]
-  > .all_tasks
-    display: none
-  > .my_tasks
-    display: block
+&[showing=all_tasks] > .all_tasks
+  display: block
+
+&[showing=my_tasks] > .my_tasks
+  display: block

@@ -28,8 +28,10 @@ Multify.Widget('tasks_sidebar', function(widget){
       $('.tasks_sidebar *[data-task-id='+task_id+']').removeClass('hover');
     });
 
+
     $(function(){
       $('.tasks_sidebar input').trigger('keyup');
+      widget.showTab();
     });
   };
 
@@ -102,6 +104,15 @@ Multify.Widget('tasks_sidebar', function(widget){
     });
   };
 
+  widget.showTab = function(tab_name, element){
+    element || (element =  widget.$());
+    tab_name = tab_name || localStorage['multify.widgets.tasks_sidebar.tab'] || 'all_tasks';
+    localStorage['multify.widgets.tasks_sidebar.tab'] = tab_name;
+    element.closest('.tasks_sidebar').attr('showing', tab_name);
+    element.find('.btn.'+tab_name).addClass('active').siblings().removeClass('active');
+    return widget;
+  };
+
   widget.onValueChange = function(element){
     var form = element.closest('form');
     var message_body = form.find('input').val();
@@ -117,11 +128,11 @@ Multify.Widget('tasks_sidebar', function(widget){
   };
 
   function onClickAllTasksButton(element){
-    element.closest('.tasks_sidebar').attr('showing', 'all_tasks');
+    widget.showTab('all_tasks', element);
   };
 
   function onClickMyTasksButton(element){
-    element.closest('.tasks_sidebar').attr('showing', 'my_tasks');
+    widget.showTab('my_tasks', element);
   };
 
 });

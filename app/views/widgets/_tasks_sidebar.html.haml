@@ -5,11 +5,9 @@
   %button.btn{disabled: true}
     %i.icon-plus
 
-.clearfix
-  .pull-right
-    .btn-group{'data-toggle' => "buttons-radio"}
-      %button.btn.btn-mini.active.all_tasks All Tasks
-      %button.btn.btn-mini.my_tasks My Tasks
+.btn-group{'data-toggle' => "buttons-radio"}
+  %button.btn.btn-mini.all_tasks All Tasks
+  %button.btn.btn-mini.my_tasks My Tasks
 
 - tasks = project.tasks.to_a
 
