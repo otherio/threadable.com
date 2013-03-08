@@ -70,7 +70,7 @@ describe ConversationMailer do
       end
 
       it "has correct references" do
-        subject.references.should == "#{parent_message['references_header']} #{parent_message['message_id_header']}"
+        subject.to_s.should include "References:#{parent_message['references_header']} #{parent_message['message_id_header']}"
       end
     end
   end

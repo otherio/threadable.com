@@ -1,0 +1,91 @@
+---
+project_memberships_001:
+  id: 1
+  project_id: 1
+  user_id: 1
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.183567000 Z
+  updated_at: 2013-03-08 23:15:41.183567000 Z
+project_memberships_002:
+  id: 2
+  project_id: 1
+  user_id: 2
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.240471000 Z
+  updated_at: 2013-03-08 23:15:41.240471000 Z
+project_memberships_003:
+  id: 3
+  project_id: 1
+  user_id: 3
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.243414000 Z
+  updated_at: 2013-03-08 23:15:41.243414000 Z
+project_memberships_004:
+  id: 4
+  project_id: 1
+  user_id: 4
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.246074000 Z
+  updated_at: 2013-03-08 23:15:41.246074000 Z
+project_memberships_005:
+  id: 5
+  project_id: 1
+  user_id: 5
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.248964000 Z
+  updated_at: 2013-03-08 23:15:41.248964000 Z
+project_memberships_006:
+  id: 6
+  project_id: 2
+  user_id: 6
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.725032000 Z
+  updated_at: 2013-03-08 23:15:41.725032000 Z
+project_memberships_007:
+  id: 7
+  project_id: 2
+  user_id: 7
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.793592000 Z
+  updated_at: 2013-03-08 23:15:41.793592000 Z
+project_memberships_008:
+  id: 8
+  project_id: 2
+  user_id: 8
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.796372000 Z
+  updated_at: 2013-03-08 23:15:41.796372000 Z
+project_memberships_009:
+  id: 9
+  project_id: 2
+  user_id: 10
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.799430000 Z
+  updated_at: 2013-03-08 23:15:41.799430000 Z
+project_memberships_010:
+  id: 10
+  project_id: 2
+  user_id: 11
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-08 23:15:41.802347000 Z
+  updated_at: 2013-03-08 23:15:41.802347000 Z

@@ -1,0 +1,243 @@
+---
+alice_neilson:
+  id: 1
+  name: Alice Neilson
+  slug: alice-neilson
+  email: alice@ucsd.multifyapp.com
+  encrypted_password: $2a$04$vD2WdEQf2q5MTTnuZ.b27e3FD.TIhLlTzBAwd60FZLdllN4xaEcpW
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: ksteyqL7DmxnBuTHGDvB
+  created_at: 2013-03-08 23:15:40.959150000 Z
+  updated_at: 2013-03-08 23:15:40.959150000 Z
+  avatar_url: /assets/fixtures/alice.jpg
+tom_canver:
+  id: 2
+  name: Tom Canver
+  slug: tom-canver
+  email: tom@ucsd.multifyapp.com
+  encrypted_password: $2a$04$HLO38e8Q50cEoJLFB10fnO80qEbfn6JSNztLQ.a29gdDk8d4QGqgu
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: UWC9MAm5PSHeELy8vY4D
+  created_at: 2013-03-08 23:15:41.198482000 Z
+  updated_at: 2013-03-08 23:15:41.198482000 Z
+  avatar_url: /assets/fixtures/tom.jpg
+bob_cauchois:
+  id: 5
+  name: Bob Cauchois
+  slug: bob-cauchois
+  email: bob@ucsd.multifyapp.com
+  encrypted_password: $2a$04$XJNPq6UhvJK63zyTjUINB.HEaHtZwHHgqufMmQjx7lBUWzeUo5xYa
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: HZSic6zkHyRkoJpAwnAj
+  created_at: 2013-03-08 23:15:41.236856000 Z
+  updated_at: 2013-03-08 23:15:41.236856000 Z
+  avatar_url: /assets/fixtures/bob.jpg
+yan_hzu:
+  id: 3
+  name: Yan Hzu
+  slug: yan-hzu
+  email: yan@ucsd.multifyapp.com
+  encrypted_password: $2a$04$xxO8e/3/a8xNiox2860BwuY6zEOXqg.te8SkWfitDtaJW.tddkSoW
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: qZuaJyyJjZQXMGxtU2fu
+  created_at: 2013-03-08 23:15:41.211761000 Z
+  updated_at: 2013-03-08 23:15:41.211761000 Z
+  avatar_url: /assets/fixtures/yan.jpg
+bethany_pattern:
+  id: 4
+  name: Bethany Pattern
+  slug: bethany-pattern
+  email: bethany@ucsd.multifyapp.com
+  encrypted_password: $2a$04$OnygvkdPRwO.n3MATqswyuhMFlXsYlHelwvi4R0vFId4AXTFvj2wK
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: RezE6XK6PXp9FRUK9XEq
+  created_at: 2013-03-08 23:15:41.223904000 Z
+  updated_at: 2013-03-08 23:15:41.223904000 Z
+  avatar_url: /assets/fixtures/bethany.jpg
+john_callas:
+  id: 6
+  name: John Callas
+  slug: john-callas
+  email: john-callas@nasa.multifyapp.com
+  encrypted_password: $2a$04$syMnDFbN4rGJTNxaDOYO/.X3xtcq/tVAeuFXzB5jxwASGqgyhHRhi
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: WqiuzcRKLqxfz853uF5M
+  created_at: 2013-03-08 23:15:41.714495000 Z
+  updated_at: 2013-03-08 23:15:41.714495000 Z
+  avatar_url: http://gravatar.com/avatar/cf9602418b177d3d4d10b1f0f9c77968.png?s=48
+bruce_banerdt:
+  id: 7
+  name: Bruce Banerdt
+  slug: bruce-banerdt
+  email: bruce-banerdt@nasa.multifyapp.com
+  encrypted_password: $2a$04$U01P2mUX9FhQPw7/o2OaKO7WrleHaxkceb7dhgwAlRfsq1.678iB.
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: qXzazxgkHRVdy1WuhXNa
+  created_at: 2013-03-08 23:15:41.737755000 Z
+  updated_at: 2013-03-08 23:15:41.737755000 Z
+  avatar_url: http://gravatar.com/avatar/21a396de18e91b7b0f0cebc4d14061f5.png?s=48
+diana_blaney:
+  id: 8
+  name: Diana Blaney
+  slug: diana-blaney
+  email: diana-blaney@nasa.multifyapp.com
+  encrypted_password: $2a$04$s09Hm0S2RfisIXY./gUHXeGECpRA0FdkjAmWuvB5KBLOMihqh3k2i
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: yderDsSXXF7EARBgK58f
+  created_at: 2013-03-08 23:15:41.749904000 Z
+  updated_at: 2013-03-08 23:15:41.749904000 Z
+  avatar_url: http://gravatar.com/avatar/08d9160150822d3da7088dafcb9073a0.png?s=48
+larry_bryant:
+  id: 9
+  name: Larry Bryant
+  slug: larry-bryant
+  email: larry-bryant@nasa.multifyapp.com
+  encrypted_password: $2a$04$HWrmL1plBC4tmO/2W9XyDOd3zE5syTWUIqg/7jnzB0HHt1UUOH5Wm
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: 35RQpZFrgvQosCu57ZMT
+  created_at: 2013-03-08 23:15:41.764234000 Z
+  updated_at: 2013-03-08 23:15:41.764234000 Z
+  avatar_url: http://gravatar.com/avatar/a0e19766f6d82cffa4d675463e980d64.png?s=48
+steven_squyres:
+  id: 10
+  name: Steven Squyres
+  slug: steven-squyres
+  email: steven-squyres@nasa.multifyapp.com
+  encrypted_password: $2a$04$bKoLDarFMnJcBlhCGeCx5ezOBAWbzr8tByPW3T0V85V6kfRBpJoc6
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: mAZzsyyKHVs95Jzsw2eA
+  created_at: 2013-03-08 23:15:41.777544000 Z
+  updated_at: 2013-03-08 23:15:41.777544000 Z
+  avatar_url: http://gravatar.com/avatar/ba02365ee9ef481875fc3dabf38a5deb.png?s=48
+ray_arvidson:
+  id: 11
+  name: Ray Arvidson
+  slug: ray-arvidson
+  email: ray-arvidson@nasa.multifyapp.com
+  encrypted_password: $2a$04$78r4rsFOxSHpCD54FyQAf.a.2AXwcCme6GWVkA7ArOc5bpPYcmRdu
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: 
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  authentication_token: 4VxsKHkoQB7hDnkwFgFN
+  created_at: 2013-03-08 23:15:41.790458000 Z
+  updated_at: 2013-03-08 23:15:41.790458000 Z
+  avatar_url: http://gravatar.com/avatar/51cfc03f9d5bf49150d179e9b5af1566.png?s=48
