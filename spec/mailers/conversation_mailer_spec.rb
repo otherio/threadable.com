@@ -61,7 +61,7 @@ describe ConversationMailer do
       let(:grandparent_message) {FactoryGirl.create(:message, user: sender)}
       let(:parent_message) {FactoryGirl.create(:message, user: sender, parent_message: grandparent_message, references_header: "<i am a references header> #{grandparent_message.message_id_header}")}
       let(:parent_message_json) { JSON.parse(parent_message.to_json) }
-      let(:message) {FactoryGirl.create(:message, user: sender, parent_message: parent_message)}
+      let(:message) { FactoryGirl.create(:message, user: sender, parent_message: parent_message)}
       let(:message_json) { JSON.parse(message.to_json) }
 
       it "has correct (rfc 2822) in-reply-to" do

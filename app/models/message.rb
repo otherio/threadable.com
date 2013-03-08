@@ -11,6 +11,7 @@ class Message < ActiveRecord::Base
   scope :by_created_at, order('messages.created_at DESC')
 
   before_create :touch_conversation_update_at
+  before_create :add_references
   after_initialize :add_message_id
 
   validates_presence_of :body
@@ -23,5 +24,12 @@ class Message < ActiveRecord::Base
 
   def add_message_id
     self.message_id_header = "<#{Mail.random_tag}@multifyapp.com>"
+  end
+
+  def add_references
+    if self.parent_message
+      self.references_header = [parent_message.references_header, parent_message.message_id_header].join(' ')
+    end
+    true
   end
 end
