@@ -69,7 +69,7 @@ module Multify
     config.assets.version = '1.0'
 
     # we need this for routes in our assets
-    config.assets.initialize_on_precompile = true
+    config.assets.initialize_on_precompile = false
 
     config.assets.precompile += %w{init.js}
 

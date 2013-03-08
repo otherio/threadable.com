@@ -17,13 +17,12 @@ gem 'js-routes'
 gem 'resque'
 gem 'griddler', git: 'https://github.com/raindrift/griddler'
 gem 'mail'
-gem 'compass-rails'
 gem 'omniauth'
 gem 'omniauth-clef'
 
 group :assets do
+  gem 'compass-rails'
   gem 'sass-rails'
-  #gem 'bootstrap-sass-rails'
   gem 'font-awesome-sass-rails'
   gem 'uglifier', '>= 1.0.3'
 end
