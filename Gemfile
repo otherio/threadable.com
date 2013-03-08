@@ -43,6 +43,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'terminal-notifier-guard'
   gem 'pry-rails'
+  gem 'pry-debugger'
 end
 
 group :test do
