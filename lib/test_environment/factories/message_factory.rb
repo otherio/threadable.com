@@ -5,6 +5,5 @@ FactoryGirl.define do
     conversation
     user
     from { user.email }
-    parent_message { nil }
   end
 end

@@ -11,7 +11,7 @@ class ConversationMailer < ActionMailer::Base
       'Reply-To' => params[:reply_to],
       'Message-ID' => message['message_id_header'],
       'In-Reply-To' => parent ? parent['message_id_header'] : nil,
-      'References' => parent ? [parent['references_header'], parent['message_id_header']].join(' ') : nil
+      'References' => message['references_header']
     )
   end
 end
