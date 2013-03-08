@@ -1,0 +1,3 @@
+#!/bin/sh
+
+heroku run 'rake --verbose --trace db:schema:load db:fixtures:loadhere'
