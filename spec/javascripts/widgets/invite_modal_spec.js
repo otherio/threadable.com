@@ -34,6 +34,11 @@ describe("widgets/invite_modal", function(){
       runs(function(){
         spyOn(Multify.Flash, 'message');
         open_invite_modal();
+      });
+
+      waits(400);
+
+      runs(function(){
         submit_invite();
         var request = mostRecentAjaxRequest();
         var expected_url = $('.invite_modal form').attr('action');
@@ -62,6 +67,11 @@ describe("widgets/invite_modal", function(){
       runs(function(){
         spyOn(Multify.Flash, 'notice');
         open_invite_modal();
+      });
+
+      waits(400);
+
+      runs(function(){
         submit_invite();
 
         mostRecentAjaxRequest().response({
