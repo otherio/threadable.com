@@ -142,7 +142,7 @@ describe EmailProcessor do
         context "when creating the outgoing mail jobs fails" do
           it "does not create the message in the db"
 
-          it "raises some error that makes griddler tell sendgrid to fuck off for a while"
+          it "raises some error that makes incoming! tell mailgun to fuck off for a while"
 
         end
       end
