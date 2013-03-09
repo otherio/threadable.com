@@ -105,7 +105,7 @@ describe EmailProcessor do
         message.should be_persisted
         # message.subject.should == params['subject']
 
-        message.body.should == params['body-html']
+        message.body.should == params['stripped-text']
         message.user.should == user
         message.conversation.should be_persisted
         # message.conversation.subject.should == message.subject

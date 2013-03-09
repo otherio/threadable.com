@@ -1,6 +1,7 @@
 class EmailProcessor
 
   class MailgunRequestToEmail < Incoming::Strategies::Mailgun
+    default_options[:stripped] = true
     setup :api_key => Multify.config('mailgun')['key']
   end
 
@@ -85,7 +86,7 @@ class EmailProcessor
       parent_message: parent_message,
       user: user,
       from: from,
-      body: email.html_part ? email.html_part.body.to_s : email.body.to_s,
+      body: email.text_part.body.to_s,
     )
   end
 
