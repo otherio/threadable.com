@@ -5,14 +5,6 @@ GIT
     rails-widgets (0.0.1)
       railties (>= 3.0, < 5.0)
 
-GIT
-  remote: https://github.com/raindrift/griddler
-  revision: 6f16bb9d34b6b1f1f0963c821f86973eef0efd22
-  specs:
-    griddler (0.3.1)
-      htmlentities
-      rails (>= 3.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -134,9 +126,11 @@ GEM
       railties (>= 3.1, < 4.1)
     hashie (1.2.0)
     hike (1.2.1)
-    htmlentities (4.3.1)
     httpauth (0.2.0)
     i18n (0.6.4)
+    incoming (0.1.3)
+      mail (~> 2.4.1)
+      postmark-mitt (~> 0.0.11)
     journey (1.0.4)
     jquery-rails (2.2.0)
       railties (>= 3.0, < 5.0)
@@ -144,6 +138,7 @@ GEM
     js-routes (0.8.6)
       rails (>= 3.2)
     json (1.7.7)
+    json_pure (1.7.7)
     jwt (0.1.7)
       multi_json (>= 1.5)
     listen (0.7.2)
@@ -191,6 +186,9 @@ GEM
       activerecord (>= 3)
       activesupport (>= 3)
     polyglot (0.3.3)
+    postmark-mitt (0.0.11)
+      json_pure
+      multi_json
     pry (0.9.11.4)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -329,9 +327,9 @@ DEPENDENCIES
   fixture_builder
   font-awesome-sass-rails
   foreman
-  griddler!
   guard-rspec
   haml-rails
+  incoming
   jquery-rails
   js-routes
   mail
