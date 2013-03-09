@@ -11,15 +11,7 @@ describe("widgets/invite_modal", function(){
   });
 
   function open_invite_modal(){
-    runs(function(){
-      $('.invite_modal .modal').modal('show');
-    });
-
-    // waits(1000);
-
-    // runs(function(){
-    //   expectFirstInputToBeFocused();
-    // });
+    $('.invite_modal .modal').modal('show');
   }
 
   function submit_invite(){
@@ -38,13 +30,16 @@ describe("widgets/invite_modal", function(){
 
   context('when the server responds with a 200', function(){
     it("should show a flash message saying the user has been added", function(){
-      spyOn(Multify.Flash, 'message');
-
-      open_invite_modal();
 
       runs(function(){
+        spyOn(Multify.Flash, 'message');
+        open_invite_modal();
         submit_invite();
-        mostRecentAjaxRequest().response({
+        var request = mostRecentAjaxRequest();
+        var expected_url = $('.invite_modal form').attr('action');
+        expect(request.url).toEqual(expected_url);
+        expect(request.method).toEqual("POST");
+        request.response({
           status: 200,
           responseText: '{"name":"Ballzonya", "email":"ballz@ya.org"}'
         });
@@ -53,9 +48,8 @@ describe("widgets/invite_modal", function(){
       waits(400);
 
       runs(function(){
-        var args = Multify.Flash.message.mostRecentCall.args;
-        expect(args.length).toEqual(1)
-        var element = args[0];
+        expect(Multify.Flash.message.calls.length).toEqual(1);
+        var element = Multify.Flash.message.mostRecentCall.args[0]
         var html = element.clone().appendTo('<div>').parent().html();
         expect(html).toEqual("<span>Ballzonya &lt;ballz@ya.org&gt; was added to this project.</span>");
       });
@@ -64,11 +58,10 @@ describe("widgets/invite_modal", function(){
 
   context('when the server responds with a 400', function(){
     it("should close the modal and flash a message saying the user is already a member of this project", function(){
-      spyOn(Multify.Flash, 'notice');
-
-      open_invite_modal();
 
       runs(function(){
+        spyOn(Multify.Flash, 'notice');
+        open_invite_modal();
         submit_invite();
 
         mostRecentAjaxRequest().response({
