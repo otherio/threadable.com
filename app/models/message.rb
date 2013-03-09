@@ -12,9 +12,14 @@ class Message < ActiveRecord::Base
 
   before_create :touch_conversation_update_at
   before_validation :add_references, :only => :create
-  after_initialize :add_message_id
+  before_validation :message_id_header, :only => :create
 
-  validates_presence_of :body
+  validates_presence_of :body, :conversation
+
+  def message_id_header
+    read_attribute(:message_id_header) or \
+    write_attribute(:message_id_header, "<#{Mail.random_tag}@multifyapp.com>")
+  end
 
   private
 
@@ -22,16 +27,9 @@ class Message < ActiveRecord::Base
     conversation.touch(:updated_at)
   end
 
-  def add_message_id
-    self.message_id_header = "<#{Mail.random_tag}@multifyapp.com>"
-  end
-
   def add_references
     if self.parent_message
-      self.references_header = [
-        parent_message.references_header,
-        parent_message.message_id_header
-      ].join(' ')
+      self.references_header = "#{parent_message.references_header} #{parent_message.message_id_header}"
     end
     true
   end

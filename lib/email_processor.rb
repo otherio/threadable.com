@@ -6,11 +6,13 @@ class EmailProcessor
     # parse headers
     headers = Mail::Header.new(email.params[:headers])
 
-    if headers['In-Reply-To']
-      referenced_message = headers['In-Reply-To'].to_s
+    referenced_message = if headers['In-Reply-To']
+      headers['In-Reply-To'].to_s
     elsif headers['References']
-      referenced_message = headers['References'].to_s.split(' ').last
+      headers['References'].to_s.split(' ').last
     end
+
+    message_id_header = headers['Message-ID']
 
     if referenced_message
       parent_message = Message.all(
@@ -34,6 +36,7 @@ class EmailProcessor
     end
 
     message = conversation.messages.create(
+      message_id_header: message_id_header,
       subject: email.subject,
       parent_message: parent_message ? parent_message : nil,
       user: user,

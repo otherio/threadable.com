@@ -45,10 +45,14 @@ class ConversationsController < ApplicationController
   def create
     message = params[:conversation].delete(:messages)
     @conversation = project.conversations.new(params[:conversation].merge(creator: current_user))
-    @conversation.messages.build(message)
+
+    Conversation.transaction do
+      @conversation.save or raise ActiveRecord::Rollback
+      @conversation.messages.create(message) or raise ActiveRecord::Rollback
+    end
 
     respond_to do |format|
-      if @conversation.save
+      if @conversation.persisted?
         format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully created.' }
         format.json { render json: @conversation, status: :created, location: project_conversation_url(project, @conversation) }
       else
