@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
     t.string   "children"
     t.integer  "parent_id"
     t.string   "message_id_header"
-    t.string   "references_header"
+    t.text     "references_header"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
