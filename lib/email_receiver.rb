@@ -1,25 +1,19 @@
-class EmailProcessor
+class EmailReceiver < MethodObject.new(:request)
 
   class MailgunRequestToEmail < Incoming::Strategies::Mailgun
     setup :api_key => Multify.config('mailgun')['key']
   end
 
-  def self.process_request(request)
-    strategy = MailgunRequestToEmail.new(request)
-    strategy.authenticate or return false
-    email = strategy.message
-    ProcessEmailWorker.enqueue(email.to_s)
-  end
-
-  def self.process_email(email)
-    new(email).dispatch!
-  end
-
-  def initialize(email)
-    @email = Mail.read_from_string(email.to_s)
-  end
-
   attr_reader :email
+
+  # http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
+  def call
+    strategy = MailgunRequestToEmail.new(@request)
+    strategy.authenticate or raise "mailgun authentication failed"
+    @email = strategy.message
+    dispatch!
+    conversation_message
+  end
 
   def dispatch!
     MessageDispatch.new(conversation_message).enqueue

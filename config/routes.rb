@@ -32,6 +32,8 @@ Multify::Application.routes.draw do
     end
   end
 
+  resources :emails, :only => :create
+
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
   get '/:project_id' => 'projects#show',      :as => 'project'
   get '/:project_id/user_list' => 'projects#user_list', :as => 'user_list'

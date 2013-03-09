@@ -208,8 +208,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   require "omniauth-clef"
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
-  omniauthconfig = YAML.load(ERB.new(Rails.root.join('config/omniauth.yml').read).result)[Rails.env]
-  config.omniauth :clef, omniauthconfig['clef_id'], omniauthconfig['clef_secret']
+  config.omniauth :clef, Multify.config('omniauth')['clef_id'], Multify.config('omniauth')['clef_secret']
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

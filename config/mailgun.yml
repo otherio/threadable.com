@@ -1,0 +1,11 @@
+development:
+  key: 'INTENTIONALLY LEFT BLANK'
+  password: 'INTENTIONALLY LEFT BLANK'
+
+test:
+  key: 'INTENTIONALLY LEFT BLANK'
+  password: 'INTENTIONALLY LEFT BLANK'
+
+production:
+  key: <%= ENV['MULTIFY_MAILGUN_KEY'] %>
+  password: <%= ENV['MULTIFY_MAILGUN_PASSWORD'] %>
