@@ -72,10 +72,10 @@ Multify::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.smtp_settings = {
-    :user_name => 'otherio',
-    :password => 'EhZRY9B967Zf',
+    :user_name => 'postmaster@multifyapp.com',
+    :password => '02h9yt8o2sz5',
     :domain => 'multifyapp.com',
-    :address => 'smtp.sendgrid.net',
+    :address => 'smtp.mailgun.org',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true
