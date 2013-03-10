@@ -12,9 +12,9 @@
       %i.icon-bolt
       doers:
       - task.doers.each do |doer|
-        %span.avatar.has-tooltip{:"data-user" => doer.id, :"data-toggle" => "tooltip", title: doer.name}
+        %span.avatar.has-tooltip{:"data-user" => doer.id, :"data-toggle" => "tooltip", title: doer.name}<>
           = image_tag(doer.avatar_url, :class => 'avatar-tiny', alt: doer.name)
-          %span.name= doer.name
+          %span.name<>= doer.name
 
     %span.muted
       %a.control-link.muted.pull-right{href:""}

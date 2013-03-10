@@ -30,7 +30,7 @@ Multify.Widget('task_metadata', function(widget){
     img.attr('alt', user.name);
     img.attr('src', user.avatar_url);
     avatar.append(img, $('<span class="name">').text(user.name));
-    widget.$('.doers').append(avatar, ' '); // the space fixes a weird presentation bug
+    widget.$('.doers').append(avatar);
     avatar.tooltip();
     return this;
   };
