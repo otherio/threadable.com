@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
       # change this when we have a default image other than gravatar's
       #"http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=#{CGI.escape(default_avatar_url)}"
       gravatar_id = Digest::MD5.hexdigest(self.email.downcase)
-      self.avatar_url = "http://gravatar.com/avatar/#{gravatar_id}.png?s=48"
+      self.avatar_url = "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
     end
     true
   end
