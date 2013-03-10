@@ -7,6 +7,7 @@ describe ConversationMailer do
   let(:message) {FactoryGirl.create(:message, user: sender)}
   let(:message_json) {JSON.parse(message.to_json)}
   let(:parent_message_json) { nil }
+  let(:project) { message.conversation.project }
 
   describe "#message" do
     subject do
@@ -15,12 +16,27 @@ describe ConversationMailer do
         recipient: recipient_json,
         message: message_json,
         parent_message: parent_message_json,
+        project: JSON.parse(project.to_json),
         reply_to: 'the-reply-to-address'
       ).deliver
     end
 
-    it "has the correct subject line" do
-      subject.subject.should == message_json['subject']
+    context "subject" do
+      let(:subject_tag) { project.slug[0..7] }
+      it "prepends the project's subject tag" do
+        subject.subject.should == "[#{subject_tag}] #{message_json['subject']}"
+      end
+
+      context "with an existing subject tag" do
+        let(:project) { FactoryGirl.create(:project) }
+        let(:conversation) { FactoryGirl.create(:conversation) }
+        let(:message) { FactoryGirl.create(:message, conversation: conversation, subject: "RE: Re: [#{subject_tag}] this is a subject") }
+
+        it "does not prepend the subject tag twice" do
+          subject.subject.should =~ /\[#{subject_tag}\]/
+          subject.subject.should_not =~ /(\[#{subject_tag}\]).*\1/
+        end
+      end
     end
 
     it "has its headers in the correct case" do

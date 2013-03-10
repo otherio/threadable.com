@@ -1,11 +1,13 @@
 class ConversationMailer < ActionMailer::Base
 
   def conversation_message(params)
-    recipient, sender, message, parent = params[:recipient], params[:sender], params[:message], params[:parent_message]
+    recipient, sender, message, parent, project = params[:recipient], params[:sender], params[:message], params[:parent_message], params[:project]
+
+    subject_tag = project['slug'][0..7]
 
     mail(
       to: "\"#{recipient['name']}\" <#{recipient['email']}>",
-      subject: message['subject'],
+      subject: message['subject'].include?("[#{subject_tag}]") ? message['subject'] : "[#{subject_tag}] #{message['subject']}",
       from: "\"#{sender['name']}\" <#{sender['email']}>",
       body: message['body'],
       'Reply-To' => params[:reply_to],
@@ -15,5 +17,3 @@ class ConversationMailer < ActionMailer::Base
     )
   end
 end
-
-

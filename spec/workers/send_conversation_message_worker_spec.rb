@@ -12,6 +12,7 @@ describe SendConversationMessageWorker do
       sender: sender,
       message: message,
       parent_message: parent_message,
+      project: message.conversation.project,
       reply_to: 'foo@example.com'
     )
     ActionMailer::Base.deliveries.last.to.should == [recipient.email]

@@ -16,10 +16,11 @@ describe MessageDispatch do
 
     it "enqueues emails for members" do
       SendConversationMessageWorker.should_receive(:enqueue).with(
-        sender: anything,
+        sender: message.user,
         recipient: anything,
-        message: anything,
-        parent_message: anything,
+        message: message,
+        parent_message: message.parent_message,
+        project: project,
         reply_to: anything
       ).exactly(project.members.length - 1).times
       subject
@@ -31,6 +32,7 @@ describe MessageDispatch do
         recipient: user,
         message: anything,
         parent_message: anything,
+        project: anything,
         reply_to: anything
       )
       subject
