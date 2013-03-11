@@ -7,7 +7,7 @@ class ConversationMailer < ActionMailer::Base
     subject_tag = project['slug'][0..7]
 
     body = message['body']
-    body += "\n_______________________________________________\n"
+    body += "\n_____\n"
     body += "View on Multify: #{project_conversation_url(project['slug'], conversation['slug'])}"
 
     mail(
