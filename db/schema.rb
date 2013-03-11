@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
 
   add_index "conversations", ["project_id"], :name => "index_conversations_on_project_id"
 
+  create_table "email_addresses", :force => true do |t|
+    t.integer "user_id"
+    t.text    "address",                    :null => false
+    t.boolean "primary", :default => false
+  end
+
+  add_index "email_addresses", ["address"], :name => "index_email_addresses_on_address", :unique => true
+  add_index "email_addresses", ["primary"], :name => "index_email_addresses_on_primary"
+  add_index "email_addresses", ["user_id"], :name => "index_email_addresses_on_user_id"
+
   create_table "events", :force => true do |t|
     t.string   "type"
     t.integer  "project_id",      :null => false
@@ -90,7 +100,6 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
   create_table "users", :force => true do |t|
     t.text     "name"
     t.string   "slug",                                   :null => false
-    t.text     "email"
     t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -112,7 +121,6 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
     t.string   "uid"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
 

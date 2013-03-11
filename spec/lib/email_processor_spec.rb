@@ -125,9 +125,6 @@ describe EmailProcessor do
       def self.it_should_only_create_a_new_message_for_that_conversation!
         it "should create only a new message for that conversation" do
           subject.conversation_message
-          if Conversation.count != conversation_count
-            binding.pry
-          end
           Conversation.count.should == conversation_count
           Message.count.should == message_count + 1
 

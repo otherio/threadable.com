@@ -13,8 +13,3 @@ test:
   pool: 5
   username: postgres
   password: password
-
-production:
-  adapter: sqlite3
-  encoding: utf8
-  database: db/for_compiling_assets_only.sqlite3

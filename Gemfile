@@ -12,7 +12,6 @@ gem 'method_object'
 gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
 # gem 'rails-widgets', path: './vendor/gems/rails-widgets'
 gem 'pg'
-gem 'pg_search'
 gem 'js-routes'
 gem 'resque'
 gem 'incoming'
@@ -43,6 +42,7 @@ group :development, :test do
   gem 'terminal-notifier-guard'
   gem 'pry-rails'
   gem 'pry-debugger'
+  gem 'pry-stack_explorer'
 end
 
 group :test do

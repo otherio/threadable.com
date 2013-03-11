@@ -30,6 +30,7 @@ Scenario: Signing up through the join form
   and the password fields match
   Given I am not a member
    When I go to the join page
+    And I fill in "Name" with "Audrey Penven"
     And I fill in "Email" with "audrey.penven@gmail.com"
     And I fill in "user_password" with "password"
     And I fill in "user_password_confirmation" with "password"
@@ -40,6 +41,7 @@ Scenario: Account creation fails if passwords don't match
   I should not be able to create an account if the password and passowrd confirmation don't match
   Given I am not a member
    When I go to the join page
+    And I fill in "Name" with "Audrey Penven"
     And I fill in "Email" with "audrey.penven@gmail.com"
     And I fill in "user_password" with "password"
     And I fill in "user_password_confirmation" with "nonmatchingpassword"
@@ -51,6 +53,7 @@ Scenario: Account creation fails if email is already used
   I should not be able to create another one
   Given I am not logged in
     And I go to the join page
+    And I fill in "Name" with "Alice Neilson"
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I fill in "user_password" with "password"
     And I fill in "user_password_confirmation" with "password"
@@ -80,4 +83,4 @@ Scenario: Forgot password form should notify the user if an account doesn't exis
     And I click "Forgot your password"
     And I fill in "Email" with "fakeuser@gmail.com"
     And I click "Send me reset password instructions"
-   Then I should see "Email not found"
+   Then I should see "Notice! You will receive an email with instructions about how to reset your password in a few minutes."

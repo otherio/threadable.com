@@ -30,6 +30,5 @@ describe "Conversations" do
       response.body.should =~ /mark as done/
     end
 
-
   end
 end
