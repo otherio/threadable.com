@@ -18,6 +18,7 @@ gem 'incoming'
 gem 'mail'
 gem 'omniauth'
 gem 'omniauth-clef'
+gem 'encryptor'
 
 group :assets do
   gem 'compass-rails'
@@ -50,6 +51,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'cucumber-rails', require: nil
   gem 'resque_spec'
+  gem 'timecop'
 end
 
 # we need this as long as we are goig to load fixtures in prod

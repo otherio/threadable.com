@@ -87,11 +87,15 @@ describe ConversationMailer do
       subject.body.should include message_json['body']
     end
 
-    context "with a host" do
-      it "has a footer that links to the conversation" do
-        subject.body.should include "\n_____\n"
-        subject.body.should include "View on Multify: #{project_conversation_url(project.slug, message.conversation.slug)}"
-      end
+    it "has a footer that links to the conversation" do
+      subject.body.should include "\n_____\n"
+      subject.body.should include "View on Multify: #{project_conversation_url(project.slug, message.conversation.slug)}"
+    end
+
+    it "includes an unsubscribe link" do
+      pending 'we need to make an unsubscribe url'
+
+      subject.body.should include "Unsubscribe: #{unsubscribe_url(UnsubscribeToken.new(user_id: recipient.id, project_id: project.id).token)}"
     end
 
     describe "with parent messages" do

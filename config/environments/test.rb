@@ -37,4 +37,6 @@ Multify::Application.configure do
 
   # enables the load of javascript specs
   config.assets.paths << Rails.root.join("spec", "javascripts")
+
+  config.unsubscribe_token_key = 'test key'
 end
