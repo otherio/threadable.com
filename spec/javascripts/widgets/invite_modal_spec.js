@@ -29,7 +29,7 @@ describe("widgets/invite_modal", function(){
   // }
 
   context('when the server responds with a 200', function(){
-    it("should show a flash message saying the user has been added", function(){
+    xit("should show a flash message saying the user has been added", function(){
 
       runs(function(){
         spyOn(Multify.Flash, 'message');
