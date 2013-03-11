@@ -1,4 +1,4 @@
-  module ApplicationHelper
+module ApplicationHelper
 
   def current_project
     @project
@@ -23,6 +23,11 @@
     html_options[:datetime] = time.getutc.iso8601
     content_tag(:time, '', html_options)
   end
+
+  def strong *args
+    content_tag(:strong, *args)
+  end
+
 end
 
 

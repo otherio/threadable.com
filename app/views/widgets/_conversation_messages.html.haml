@@ -5,22 +5,23 @@
       %li.message
         = render_widget(:message, item)
     - when :event
-      - user = capture do
-        %strong= item.user.name
-
       %li.event
         %span
           - case item.type
           - when :conversation_created_event
-            #{user} started this conversation
+            #{strong(item.user.name)} started this conversation
           - when :task_created_event
-            #{user} created this task
+            #{strong(item.user.name)} created this task
           - when :task_done_event
             %i.icon-ok.finished-check
-            #{user} marked this task as done
+            #{strong(item.user.name)} marked this task as done
           - when :task_undone_event
             %i.icon-ok.unfinished-check
-            #{user} marked this task as not done
+            #{strong(item.user.name)} marked this task as not done
+          - when :task_added_doer_event
+            #{strong(item.user.name)} added #{strong(item.doer.name)} as a doer
+          - when :task_removed_doer_event
+            #{strong(item.user.name)} removed #{strong(item.doer.name)} as a doer
           - else
             - raise "unknown type #{item.type.inspect}"
 

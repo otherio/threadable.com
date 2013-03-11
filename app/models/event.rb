@@ -4,9 +4,12 @@ class Event < ActiveRecord::Base
     self.class.name.underscore.gsub('/','_').to_sym
   end
 
+  serialize :content
+
   belongs_to :project
   belongs_to :user
 
+  attr_accessible :content
   attr_accessible :project
   attr_accessible :user
 
