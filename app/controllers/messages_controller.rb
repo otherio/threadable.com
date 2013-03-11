@@ -3,16 +3,11 @@ class MessagesController < ApplicationController
   # POST /:project_id/conversations/:conversation_id/messages
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create
-    # TODO: prefetch the user and parent message
-    last_message = conversation.messages.last
-    @message = conversation.messages.new(params[:message])
-    @message.user = current_user
-    @message.subject ||= conversation.subject
-    @message.parent_message = last_message
+    message_attributes = params[:message].merge(parent_message: conversation.messages.last)
 
-    if @message.save
-      MessageDispatch.new(@message).enqueue
+    @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
 
+    if @message.persisted?
       render status: :created, location: project_conversation_messages_path(conversation.project, conversation)
     else
       render json: @message.errors, status: :unprocessable_entity

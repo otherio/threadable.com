@@ -48,7 +48,8 @@ class ConversationsController < ApplicationController
 
     Conversation.transaction do
       @conversation.save or raise ActiveRecord::Rollback
-      @conversation.messages.create(message) or raise ActiveRecord::Rollback
+      @message = ConversationMessageCreator.call(current_user, @conversation, message)
+      raise ActiveRecord::Rollback unless @message.persisted?
     end
 
     respond_to do |format|
