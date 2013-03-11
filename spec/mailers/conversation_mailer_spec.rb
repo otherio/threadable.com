@@ -8,6 +8,19 @@ describe ConversationMailer do
   let(:message_json) {JSON.parse(message.to_json)}
   let(:parent_message_json) { nil }
   let(:project) { message.conversation.project }
+  let(:conversation) { message.conversation }
+
+  # this makes project_conversation_url work
+  before do
+    self.default_url_options[:host] = 'foo.com'
+
+    @url_options_saved = ConversationMailer.default_url_options
+    ConversationMailer.default_url_options = self.default_url_options
+  end
+
+  after do
+    ConversationMailer.default_url_options = @url_options_saved
+  end
 
   describe "#message" do
     subject do
@@ -17,6 +30,7 @@ describe ConversationMailer do
         message: message_json,
         parent_message: parent_message_json,
         project: JSON.parse(project.to_json),
+        conversation: JSON.parse(conversation.to_json),
         reply_to: 'the-reply-to-address'
       ).deliver
     end
@@ -69,8 +83,14 @@ describe ConversationMailer do
       "<#{subject.message_id}>".should == message_json['message_id_header']
     end
 
-    it "contains a message body" do
-      subject.body.should == message_json['body']
+    it "contains the message body" do
+      subject.body.should include message_json['body']
+    end
+
+    context "with a host" do
+      it "has a footer that links to the conversation" do
+        subject.body.should include "View on Multify: #{project_conversation_url(project.slug, message.conversation.slug)}"
+      end
     end
 
     describe "with parent messages" do

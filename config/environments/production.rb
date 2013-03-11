@@ -84,4 +84,6 @@ Multify::Application.configure do
     :enable_starttls_auto => true
   }
 
+  config.action_controller.default_url_options = { :host => 'www.multifyapp.com' }
+  config.action_mailer.default_url_options = config.action_controller.default_url_options
 end

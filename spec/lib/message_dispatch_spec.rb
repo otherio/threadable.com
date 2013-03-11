@@ -21,6 +21,7 @@ describe MessageDispatch do
         message: message,
         parent_message: message.parent_message,
         project: project,
+        conversation: message.conversation,
         reply_to: anything
       ).exactly(project.members.length - 1).times
       subject
@@ -33,6 +34,7 @@ describe MessageDispatch do
         message: anything,
         parent_message: anything,
         project: anything,
+        conversation: anything,
         reply_to: anything
       )
       subject

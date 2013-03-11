@@ -19,6 +19,7 @@ class MessageDispatch
         message: @message,
         parent_message: @message.parent_message,
         project: project,
+        conversation: @message.conversation,
         reply_to: reply_to
       )
     end
