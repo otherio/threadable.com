@@ -54,3 +54,8 @@ email_addresses_011:
   user_id: 11
   address: ray-arvidson@nasa.multifyapp.com
   primary: false
+email_addresses_012:
+  id: 12
+  user_id: 11
+  address: ray@gmail.multifyapp.com
+  primary: false

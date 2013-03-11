@@ -14,6 +14,18 @@ Scenario: Logging in
    Then I should be on the home page
     And I should see "Signed in successfully."
 
+Scenario: Logging in with both of my emails
+  As a user with multiple email addresses
+  I should be able to login with any of them.
+  Given I am not logged in
+    And I go to the home page
+    And I click "Login"
+    And I fill in "Email" with "ray@gmail.multifyapp.com"
+    And I fill in "user_password" with "password"
+    And I click the "Sign in" button
+   Then I should be on the home page
+    And I should be logged in as "Ray Arvidson"
+
 Scenario: Failing to log in
   Given I am not logged in
     And I go to the home page
@@ -36,6 +48,7 @@ Scenario: Signing up through the join form
     And I fill in "user_password_confirmation" with "password"
     And I click "Sign up"
    Then I should see "You have signed up successfully"
+    And I should be logged in as "Audrey Penven"
 
 Scenario: Account creation fails if passwords don't match
   I should not be able to create an account if the password and passowrd confirmation don't match

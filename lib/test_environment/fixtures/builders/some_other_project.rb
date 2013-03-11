@@ -20,6 +20,8 @@ TestEnvironment::FixtureBuilder.new do
   invite_user 'Steven Squyres', 'steven-squyres@nasa.multifyapp.com'
   invite_user 'Ray Arvidson',   'ray-arvidson@nasa.multifyapp.com'
 
+  users['Ray Arvidson'].email_addresses.create! address: 'ray@gmail.multifyapp.com'
+
   accept_invite 'Bruce Banerdt'
   accept_invite 'Diana Blaney'
   # accept_invite 'Larry Bryant' # he never accepted his invite
