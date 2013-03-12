@@ -1,5 +1,6 @@
-- tasks.each do |task|
-  %li.task{title: task.subject, "data-task-id" => task.id}
+- tasks.each_with_index do |task, index|
+  %li.task.clearfix{title: task.subject, "data-task-id" => task.id, :"data-position" => task.position, :"data-slug" => task.slug}
+    %i.icon-reorder
+    %i.icon-ok{ class: task.done? ? 'finished-check' : 'unfinished-check' }
     = link_to project_conversation_url(task.project, task) do
-      %i.icon-ok{ class: task.done? ? 'finished-check' : 'unfinished-check' }
       %span>= task.subject

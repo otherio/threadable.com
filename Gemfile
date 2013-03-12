@@ -19,6 +19,7 @@ gem 'mail'
 gem 'omniauth'
 gem 'omniauth-clef'
 gem 'encryptor'
+gem 'acts_as_list'
 
 group :assets do
   gem 'compass-rails'
@@ -32,6 +33,7 @@ group :development do
   gem 'rb-fsevent', require: nil
   gem 'debugger'
   gem 'mailcatcher'
+  # gem 'sql-logging'
 end
 
 group :development, :test do

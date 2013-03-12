@@ -9,12 +9,12 @@
   %button.btn.btn-mini.all_tasks All Tasks
   %button.btn.btn-mini.my_tasks My Tasks
 
-- tasks = project.tasks.to_a
+- tasks = project.tasks.includes(:doers).to_a
 
 .all_tasks
   .not_done
     %h4 Not Done
-    = render_widget :task_list, tasks.reject(&:done?)
+    = render_widget :task_list, tasks.reject(&:done?), class: 'sortable'
 
   .done
     %h4 Done
@@ -25,7 +25,7 @@
 .my_tasks
   .not_done
     %h4 Not Done
-    = render_widget :task_list, my_tasks.reject(&:done?)
+    = render_widget :task_list, my_tasks.reject(&:done?), class: 'sortable'
 
   .done
     %h4 Done

@@ -159,8 +159,8 @@ describe EmailProcessor do
         end
 
         context "to an existing conversation" do
-          let(:conversation){ project.conversations.last }
-          let(:parent_message){ conversation.messages.last }
+          let(:conversation){ project.conversations.first }
+          let(:parent_message){ conversation.messages.first }
 
           context "via the in-reply-to header" do
             def message_headers

@@ -3,10 +3,18 @@ class Task < Conversation
 
   has_and_belongs_to_many :doers, class_name: 'User', join_table: 'task_doers'
 
+  validates_presence_of :position
+
+  default_scopes.clear
+  default_scope unscoped.order('conversations.position ASC')
+
+  acts_as_list :scope => :project
+
   scope :done, where('conversations.done_at IS NOT NULL')
   scope :not_done, where('conversations.done_at IS NULL')
 
   after_save :create_done_event!
+  before_validation :set_position
 
   attr_accessor :current_user
 
@@ -36,6 +44,10 @@ class Task < Conversation
     if done_at_changed?
       (done? ? DoneEvent : UndoneEvent).create!(task: self, project: project, user: @current_user)
     end
+  end
+
+  def set_position
+    self.position ||= project.tasks.count + 1
   end
 
 end

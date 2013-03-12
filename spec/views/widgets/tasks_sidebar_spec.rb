@@ -25,17 +25,20 @@ describe "tasks_sidebar" do
 
   before do
     view.stub(:current_user){ current_user }
+    project.tasks.should_receive(:includes).with(:doers).and_return(tasks)
+
+
+    view.should_receive(:render_widget).with(:task_list, [
+      tasks[1], tasks[3], tasks[5], tasks[7], tasks[9]
+    ], class: 'sortable')
     view.should_receive(:render_widget).with(:task_list, [
       tasks[0], tasks[2], tasks[4], tasks[6], tasks[8]
     ])
     view.should_receive(:render_widget).with(:task_list, [
-      tasks[1], tasks[3], tasks[5], tasks[7], tasks[9]
-    ])
+      tasks[5]
+    ], class: 'sortable')
     view.should_receive(:render_widget).with(:task_list, [
       tasks[2], tasks[8]
-    ])
-    view.should_receive(:render_widget).with(:task_list, [
-      tasks[5]
     ])
   end
 

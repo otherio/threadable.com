@@ -1,6 +1,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.growing-inputs
+//= require jquery.sortable
 //= require timeago
 //= require s
 //= require jquery-s

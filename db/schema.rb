@@ -15,11 +15,11 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
 
   create_table "conversations", :force => true do |t|
     t.string   "type"
-    t.string   "subject"
-    t.integer  "project_id"
-    t.integer  "creator_id"
-    t.string   "slug"
-    t.datetime "due_at"
+    t.string   "subject",                       :null => false
+    t.integer  "project_id",                    :null => false
+    t.integer  "creator_id",                    :null => false
+    t.integer  "position"
+    t.string   "slug",                          :null => false
     t.datetime "done_at"
     t.integer  "messages_count", :default => 0
     t.datetime "created_at",                    :null => false

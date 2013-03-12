@@ -7,7 +7,7 @@ class ConversationsController < ApplicationController
   # GET /conversations
   # GET /conversations.json
   def index
-    @conversations = project.conversations.all
+    @conversations = project.conversations.includes(events: :user, messages: :user).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -33,6 +33,10 @@ class ConversationsController < ApplicationController
       where(slug: params[:id]).
       includes(events: :user, messages: :user).
       first
+
+    # if @conversation.task?
+    #   @conversation.tasks.includes(:user).all
+    # end
 
     respond_to do |format|
       format.html {}
@@ -119,7 +123,8 @@ class ConversationsController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    # @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.where(slug: params[:project_id]).includes(:tasks).first
   end
 
 end

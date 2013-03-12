@@ -9,6 +9,8 @@ class TasksController < ApplicationController
   # POST /index
   # POST /index.json
   def index
+    @project = current_user.projects.where(slug: params[:project_id]).includes(:tasks).first
+
     if request.xhr?
       render text: view_context.render_widget(:tasks_sidebar, project)
     else
@@ -44,8 +46,8 @@ class TasksController < ApplicationController
     end
   end
 
-  # PUT /tasks
-  # PUT /tasks.json
+  # PUT /:project_id/tasks/:id
+  # PUT /:project_id/tasks/:id.json
   def update
     @task = project.tasks.find_by_slug!(params[:id])
     @task.current_user = current_user
@@ -57,10 +59,10 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.update_attributes(params[:task])
         format.html { redirect_to project_conversation_url(project, @task), notice: 'Task was successfully updated.' }
-        format.json { render json: @task, status: :created, location: project_task_url(project, @task) }
+        format.json { render json: @task, status: :ok }
       else
         format.html { redirect_to project_conversation_url(project, @task), error: 'We were unable to update your task. Please try again later.' }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+        format.json { render json: @task, status: :unprocessable_entity }
       end
     end
   end

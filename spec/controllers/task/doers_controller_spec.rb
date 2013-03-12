@@ -27,6 +27,10 @@ describe Task::DoersController do
     return valid_params.merge({format: 'json'})
   end
 
+  def expected_conversation
+    project.conversations.find_by_subject(valid_attributes["subject"])
+  end
+
 
   describe "POST create" do
     let(:doer) { create(:user) }
@@ -37,21 +41,22 @@ describe Task::DoersController do
     end
 
     context "with valid params" do
-      subject { post :create, valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} ) }
+      def post!
+        post :create, valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} )
+      end
 
       it "adds a doer" do
-        expect { subject }.to change(task.doers, :count).by(1)
+        expect { post! }.to change(task.doers, :count).by(1)
       end
 
       it "redirects back to the task" do
-        subject
-        response.should redirect_to project_conversation_url(project, Conversation.first)
+        post!
+        response.should redirect_to project_conversation_url(project, expected_conversation)
       end
 
       context "when called with xhr" do
-        subject { xhr :post, :create, xhr_valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} ) }
         it "returns :created" do
-          subject
+          xhr :post, :create, xhr_valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} )
           response.response_code.should == 201
         end
       end
@@ -85,21 +90,22 @@ describe Task::DoersController do
     end
 
     context "with valid params" do
-      subject { delete :destroy, valid_params.merge( {:task_id => task.to_param, :id => doer.id} ) }
+      def post!
+        delete :destroy, valid_params.merge( {:task_id => task.to_param, :id => doer.id} )
+      end
 
       it "adds a doer" do
-        expect { subject }.to change(task.doers, :count).by(-1)
+        expect { post! }.to change(task.doers, :count).by(-1)
       end
 
       it "redirects back to the task" do
-        subject
-        response.should redirect_to project_conversation_url(project, Conversation.first)
+        post!
+        response.should redirect_to project_conversation_url(project, expected_conversation)
       end
 
       context "when called with xhr" do
-        subject { xhr :delete, :destroy, xhr_valid_params.merge( {:task_id => task.to_param, :id => doer.id} ) }
         it "returns :deleted" do
-          subject
+          xhr :delete, :destroy, xhr_valid_params.merge( {:task_id => task.to_param, :id => doer.id} )
           response.response_code.should == 204
         end
       end

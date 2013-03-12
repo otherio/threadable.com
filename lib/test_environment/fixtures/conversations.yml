@@ -5,117 +5,117 @@ conversations_001:
   subject: Welcome to our new Multify project!
   project_id: 1
   creator_id: 1
+  position: 
   slug: welcome-to-our-new-multify-project
-  due_at: 
   done_at: 
   messages_count: 2
-  created_at: 2013-03-11 01:36:10.623672000 Z
-  updated_at: 2013-03-11 01:36:10.679968000 Z
+  created_at: 2013-03-13 00:13:04.580343000 Z
+  updated_at: 2013-03-13 00:13:04.654194000 Z
 conversations_002:
   id: 2
   type: 
   subject: How are we going to build the body?
   project_id: 1
   creator_id: 2
+  position: 
   slug: how-are-we-going-to-build-the-body
-  due_at: 
   done_at: 
   messages_count: 1
-  created_at: 2013-03-11 01:36:10.684571000 Z
-  updated_at: 2013-03-11 01:36:10.689695000 Z
+  created_at: 2013-03-13 00:13:04.661476000 Z
+  updated_at: 2013-03-13 00:13:04.670573000 Z
 conversations_003:
   id: 4
   type: Task
   subject: install mirrors
   project_id: 1
   creator_id: 1
+  position: 2
   slug: install-mirrors
-  due_at: 
   done_at: 
   messages_count: 0
-  created_at: 2013-03-11 01:36:10.756711000 Z
-  updated_at: 2013-03-11 01:36:10.756711000 Z
+  created_at: 2013-03-13 00:13:04.723766000 Z
+  updated_at: 2013-03-13 00:13:04.723766000 Z
 conversations_004:
   id: 5
   type: Task
   subject: trim body panels
   project_id: 1
   creator_id: 1
+  position: 3
   slug: trim-body-panels
-  due_at: 
   done_at: 
   messages_count: 0
-  created_at: 2013-03-11 01:36:10.762617000 Z
-  updated_at: 2013-03-11 01:36:10.762617000 Z
+  created_at: 2013-03-13 00:13:04.735467000 Z
+  updated_at: 2013-03-13 00:13:04.735467000 Z
 conversations_005:
   id: 6
   type: Task
   subject: make wooden form for carbon layup
   project_id: 1
   creator_id: 1
+  position: 4
   slug: make-wooden-form-for-carbon-layup
-  due_at: 
   done_at: 
   messages_count: 0
-  created_at: 2013-03-11 01:36:10.768067000 Z
-  updated_at: 2013-03-11 01:36:10.768067000 Z
+  created_at: 2013-03-13 00:13:04.747077000 Z
+  updated_at: 2013-03-13 00:13:04.747077000 Z
 conversations_006:
   id: 7
   type: Task
   subject: get epoxy
   project_id: 1
   creator_id: 1
+  position: 5
   slug: get-epoxy
-  due_at: 
-  done_at: 2013-03-11 01:36:10.818894000 Z
+  done_at: 2013-03-13 00:13:04.829053000 Z
   messages_count: 0
-  created_at: 2013-03-11 01:36:10.791113000 Z
-  updated_at: 2013-03-11 01:36:10.820227000 Z
+  created_at: 2013-03-13 00:13:04.782791000 Z
+  updated_at: 2013-03-13 00:13:04.831080000 Z
 conversations_007:
   id: 8
   type: Task
   subject: get release agent
   project_id: 1
   creator_id: 1
+  position: 6
   slug: get-release-agent
-  due_at: 
-  done_at: 2013-03-11 01:36:10.829754000 Z
+  done_at: 2013-03-13 00:13:04.845584000 Z
   messages_count: 0
-  created_at: 2013-03-11 01:36:10.796832000 Z
-  updated_at: 2013-03-11 01:36:10.831077000 Z
+  created_at: 2013-03-13 00:13:04.794928000 Z
+  updated_at: 2013-03-13 00:13:04.847726000 Z
 conversations_008:
   id: 9
   type: Task
   subject: get carbon and fiberglass
   project_id: 1
   creator_id: 1
+  position: 7
   slug: get-carbon-and-fiberglass
-  due_at: 
-  done_at: 2013-03-11 01:36:10.833641000 Z
+  done_at: 2013-03-13 00:13:04.853122000 Z
   messages_count: 0
-  created_at: 2013-03-11 01:36:10.803580000 Z
-  updated_at: 2013-03-11 01:36:10.834703000 Z
+  created_at: 2013-03-13 00:13:04.806648000 Z
+  updated_at: 2013-03-13 00:13:04.854824000 Z
 conversations_009:
   id: 3
   type: Task
   subject: layup body carbon
   project_id: 1
   creator_id: 1
+  position: 1
   slug: layup-body-carbon
-  due_at: 
-  done_at: 2013-03-11 01:36:10.859988000 Z
+  done_at: 2013-03-13 00:13:04.895602000 Z
   messages_count: 8
-  created_at: 2013-03-11 01:36:10.705104000 Z
-  updated_at: 2013-03-11 01:36:10.861027000 Z
+  created_at: 2013-03-13 00:13:04.696170000 Z
+  updated_at: 2013-03-13 00:13:04.897281000 Z
 conversations_010:
   id: 10
   type: 
   subject: Welcome everyone. Lets get started
   project_id: 2
   creator_id: 6
+  position: 
   slug: welcome-everyone-lets-get-started
-  due_at: 
   done_at: 
   messages_count: 2
-  created_at: 2013-03-11 01:36:10.934310000 Z
-  updated_at: 2013-03-11 01:36:10.944185000 Z
+  created_at: 2013-03-13 00:13:05.016052000 Z
+  updated_at: 2013-03-13 00:13:05.031036000 Z

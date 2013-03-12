@@ -11,6 +11,8 @@ describe "task_list" do
         done?: i > 2,
         project: project,
         subject: "TASK SUBJECT #{i}",
+        position: i,
+        slug: "#{i}-task"
       )
     end
   }
@@ -23,6 +25,10 @@ describe "task_list" do
     list_elements = html.css('ul > li')
     list_elements.zip(tasks).each do |li, task|
       li[:title].should == task.subject
+      li[:"data-task-id"].should == task.id
+      li[:"data-position"].should == task.position
+      li[:"data-slug"].should == task.slug
+
       link = li.css('a').first
       link[:href].should == project_conversation_url(project, task)
       link.text.should == task.subject

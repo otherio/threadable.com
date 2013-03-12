@@ -30,8 +30,7 @@ Multify.Widget('tasks_sidebar', function(widget){
 
 
     $(function(){
-      $('.tasks_sidebar input').trigger('keyup');
-      widget.showTab();
+      widget.reset();
     });
   };
 
@@ -68,7 +67,14 @@ Multify.Widget('tasks_sidebar', function(widget){
       new_html.find('button.'+showing).click();
       return new_html[0];
     });
+    widget.reset();
     setTimeout(function(){ element.find('input:first').focus(); });
+  };
+
+  widget.reset = function(element){
+    $('.tasks_sidebar input').trigger('keyup');
+    $('.tasks_sidebar .sortable.task_list').sortable().bind('sortupdate', widget.sortupdate);
+    widget.showTab();
   };
 
   widget.onSubmit = function(form, event){
@@ -125,6 +131,39 @@ Multify.Widget('tasks_sidebar', function(widget){
 
   widget.onTaskMouseLeave = function(element){
     Multify.trigger('conversation_mouse_leave', element.data('task-id'));
+  };
+
+  widget.sortupdate = function(event, data){
+    var task = data.item;
+    var list = $(this);
+    var tasks = list.find('>li');
+    var index = task.index();
+    var current_position = task.data('position');
+    var new_position;
+    if (index < 1){
+      new_position = $(tasks.get(index+1)).data('position') - 1
+    }else{
+      new_position = $(tasks.get(index-1)).data('position')
+
+      if (current_position >= new_position) new_position++;
+    }
+
+    if (!$.isNumeric(new_position)) throw new Error('unabled to determine new position');
+
+    var url = Multify.project_task_path(
+      Multify.currentProject.slug, task.data('slug')
+    );
+
+    var request = $.ajax({
+      url: url,
+      type: 'PUT',
+      dataType: 'json',
+      data: {task:{position: new_position}}
+    });
+
+    request.done(function(){
+      widget.reload(list);
+    });
   };
 
   function onClickAllTasksButton(element){

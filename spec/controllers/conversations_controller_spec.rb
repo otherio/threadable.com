@@ -30,6 +30,10 @@ describe ConversationsController do
     valid_params.merge({format: 'json'})
   end
 
+  def expected_conversation
+    project.conversations.find_by_subject(valid_attributes["subject"])
+  end
+
   describe "GET index" do
     it "assigns all conversations as @conversations" do
       conversation = project.conversations.create! valid_attributes
@@ -75,7 +79,7 @@ describe ConversationsController do
         }.to change(Conversation, :count).by(1)
         assigns(:conversation).should be_a(Conversation)
         assigns(:conversation).should be_persisted
-        response.should redirect_to project_conversation_url(project, project.conversations.first)
+        response.should redirect_to project_conversation_url(project, expected_conversation)
       end
     end
 
