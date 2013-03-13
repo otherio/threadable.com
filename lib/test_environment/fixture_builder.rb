@@ -75,4 +75,10 @@ class TestEnvironment::FixtureBuilder
     tasks[subject].done! user(user_name)
   end
 
+  def unsubscribe_from_project_email user_name
+    project_membership = user(user_name).project_memberships.where(project_id: project.id).first
+    project_membership.gets_email = false
+    project_membership.save!
+  end
+
 end

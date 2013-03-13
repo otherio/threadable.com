@@ -2,34 +2,17 @@ require "spec_helper"
 require 'base64'
 
 describe UnsubscribeToken do
-  let(:userid) { 12345 }
-  let(:projectid) { 56789 }
-  let(:time) { Time.new(2013,01,01) }
 
-  before do
-    Timecop.freeze(time)
-  end
+  describe "encrypt & decrypt" do
+    it "should return a string built from the user id, the current time and some random data" do
+      token = UnsubscribeToken.encrypt(22, 44)
+      UnsubscribeToken.decrypt(token).should == [22, 44]
 
-  after do
-    Timecop.return
-  end
+      tokens = 10.times.map{ UnsubscribeToken.encrypt(22, 44) }
+      tokens.uniq.length.should == tokens.length
 
-  context "making a token" do
-    subject { UnsubscribeToken.new(user_id: userid, project_id: projectid) }
-
-    it "makes a token" do
-      subject.token.should be_a(String)
+      tokens.map{|token| UnsubscribeToken.decrypt(token) }.should == 10.times.map{ [22, 44] }
     end
   end
 
-  context "decrypting the token" do
-    let(:token) { UnsubscribeToken.new(user_id: userid, project_id: projectid).token }
-    subject { UnsubscribeToken.new(token: token) }
-
-    it "decrypts the token" do
-      subject.user_id.should == userid
-      subject.project_id.should == projectid
-      subject.time.should == time
-    end
-  end
 end

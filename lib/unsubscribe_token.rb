@@ -1,33 +1,33 @@
-class UnsubscribeToken
-  attr_reader :token, :user_id, :project_id, :time
+module UnsubscribeToken
 
-  def initialize(params)
-    if params[:token]
-      @token = params[:token]
-      decrypt
-    else
-      @user_id = params[:user_id]
-      @project_id = params[:project_id]
-      encrypt
+  class << self
+
+    def encrypt project_id, user_id, time=Time.now
+      nonce = rand(100000000..999999999)
+      cleartext_token = [compact(project_id), compact(user_id), compact(time.to_i), compact(nonce)].join(':')
+      Base64.urlsafe_encode64(Encryptor.encrypt(cleartext_token, key: key, algorithm: 'bf-ofb'))
     end
+
+    def decrypt token
+      cleartext_token = Encryptor.decrypt(Base64.urlsafe_decode64(token), key: key, algorithm: 'bf-ofb')
+      project_id, user_id = cleartext_token.split(':').first(2).map{|s| expand(s) }
+      [project_id, user_id]
+    end
+
+    private
+
+    def key
+      @key ||= Digest::SHA256.hexdigest(Multify::Application.config.unsubscribe_token_key)
+    end
+
+    def compact string
+      string.to_s(36)
+    end
+
+    def expand string
+      string.to_i(36)
+    end
+
   end
 
-  private
-
-  def decrypt
-    cleartext_token = Encryptor.decrypt(Base64.urlsafe_decode64(@token), key: key, algorithm: 'bf-ofb')
-    @user_id, @project_id, epoch = cleartext_token.split(':').first(3).map{|thing| thing.to_i(36)}
-    @time = Time.at(epoch)
-  end
-
-  def encrypt
-    nonce = rand(100000000..999999999)
-
-    cleartext_token = [@user_id.to_s(36), @project_id.to_s(36), Time.now.to_i.to_s(36), nonce.to_s(36)].join(':')
-    @token = Base64.urlsafe_encode64(Encryptor.encrypt(cleartext_token, key: key, algorithm: 'bf-ofb'))
-  end
-
-  def key
-    Digest::SHA256.hexdigest(Multify::Application.config.unsubscribe_token_key)
-  end
 end

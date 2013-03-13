@@ -6,7 +6,17 @@ class Message < ActiveRecord::Base
 
   default_scope order('messages.created_at ASC')
 
-  attr_accessible :subject, :body, :children, :message_id_header, :references_header, :reply, :from, :user, :parent_message
+  attr_accessible(
+    :subject,
+    :body,
+    :children,
+    :message_id_header,
+    :references_header,
+    :reply,
+    :from,
+    :user,
+    :parent_message,
+  )
 
   scope :by_created_at, order('messages.created_at DESC')
 

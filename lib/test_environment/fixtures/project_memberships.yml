@@ -6,8 +6,8 @@ project_memberships_001:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:15.835982000 Z
-  updated_at: 2013-03-13 03:26:15.835982000 Z
+  created_at: 2013-03-13 07:32:06.281080000 Z
+  updated_at: 2013-03-13 07:32:06.281080000 Z
 project_memberships_002:
   id: 2
   project_id: 1
@@ -15,8 +15,8 @@ project_memberships_002:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:15.908021000 Z
-  updated_at: 2013-03-13 03:26:15.908021000 Z
+  created_at: 2013-03-13 07:32:06.365334000 Z
+  updated_at: 2013-03-13 07:32:06.365334000 Z
 project_memberships_003:
   id: 3
   project_id: 1
@@ -24,8 +24,8 @@ project_memberships_003:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:15.909627000 Z
-  updated_at: 2013-03-13 03:26:15.909627000 Z
+  created_at: 2013-03-13 07:32:06.368793000 Z
+  updated_at: 2013-03-13 07:32:06.368793000 Z
 project_memberships_004:
   id: 4
   project_id: 1
@@ -33,8 +33,8 @@ project_memberships_004:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:15.911029000 Z
-  updated_at: 2013-03-13 03:26:15.911029000 Z
+  created_at: 2013-03-13 07:32:06.371571000 Z
+  updated_at: 2013-03-13 07:32:06.371571000 Z
 project_memberships_005:
   id: 5
   project_id: 1
@@ -42,17 +42,17 @@ project_memberships_005:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:15.912324000 Z
-  updated_at: 2013-03-13 03:26:15.912324000 Z
+  created_at: 2013-03-13 07:32:06.374639000 Z
+  updated_at: 2013-03-13 07:32:06.374639000 Z
 project_memberships_006:
   id: 6
-  project_id: 2
+  project_id: 1
   user_id: 6
   can_write: true
-  gets_email: true
+  gets_email: false
   moderator: false
-  created_at: 2013-03-13 03:26:16.235979000 Z
-  updated_at: 2013-03-13 03:26:16.235979000 Z
+  created_at: 2013-03-13 07:32:06.377607000 Z
+  updated_at: 2013-03-13 07:32:06.384808000 Z
 project_memberships_007:
   id: 7
   project_id: 2
@@ -60,8 +60,8 @@ project_memberships_007:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:16.290594000 Z
-  updated_at: 2013-03-13 03:26:16.290594000 Z
+  created_at: 2013-03-13 07:32:06.795942000 Z
+  updated_at: 2013-03-13 07:32:06.795942000 Z
 project_memberships_008:
   id: 8
   project_id: 2
@@ -69,17 +69,17 @@ project_memberships_008:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:16.292284000 Z
-  updated_at: 2013-03-13 03:26:16.292284000 Z
+  created_at: 2013-03-13 07:32:06.877015000 Z
+  updated_at: 2013-03-13 07:32:06.877015000 Z
 project_memberships_009:
   id: 9
   project_id: 2
-  user_id: 10
+  user_id: 9
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:16.293588000 Z
-  updated_at: 2013-03-13 03:26:16.293588000 Z
+  created_at: 2013-03-13 07:32:06.879675000 Z
+  updated_at: 2013-03-13 07:32:06.879675000 Z
 project_memberships_010:
   id: 10
   project_id: 2
@@ -87,5 +87,14 @@ project_memberships_010:
   can_write: true
   gets_email: true
   moderator: false
-  created_at: 2013-03-13 03:26:16.294983000 Z
-  updated_at: 2013-03-13 03:26:16.294983000 Z
+  created_at: 2013-03-13 07:32:06.882299000 Z
+  updated_at: 2013-03-13 07:32:06.882299000 Z
+project_memberships_011:
+  id: 11
+  project_id: 2
+  user_id: 12
+  can_write: true
+  gets_email: true
+  moderator: false
+  created_at: 2013-03-13 07:32:06.885117000 Z
+  updated_at: 2013-03-13 07:32:06.885117000 Z

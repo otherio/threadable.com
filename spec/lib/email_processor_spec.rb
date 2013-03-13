@@ -159,7 +159,7 @@ describe EmailProcessor do
         end
 
         context "to an existing conversation" do
-          let(:conversation){ project.conversations.first }
+          let(:conversation){ project.conversations.where(subject: 'layup body carbon').first }
           let(:parent_message){ conversation.messages.first }
 
           context "via the in-reply-to header" do

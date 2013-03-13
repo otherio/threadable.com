@@ -50,6 +50,7 @@ describe 'model relationships' do
       member('yan@ucsd.multifyapp.com'),
       member('bethany@ucsd.multifyapp.com'),
       member('bob@ucsd.multifyapp.com'),
+      member('jonathan@ucsd.multifyapp.com'),
     ]
 
     project.tasks.to_set.should == Set[

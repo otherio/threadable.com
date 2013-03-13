@@ -15,12 +15,17 @@ TestEnvironment::FixtureBuilder.new do
   invite_user 'Yan Hzu',         'yan@ucsd.multifyapp.com'
   invite_user 'Bethany Pattern', 'bethany@ucsd.multifyapp.com'
   invite_user 'Bob Cauchois',    'bob@ucsd.multifyapp.com'
+  invite_user 'Jonathan Spray',  'jonathan@ucsd.multifyapp.com'
 
   # Alice's project mates all accept their invites
   accept_invite 'Tom Canver'
   accept_invite 'Yan Hzu'
   accept_invite 'Bethany Pattern'
   accept_invite 'Bob Cauchois'
+  accept_invite 'Jonathan Spray'
+
+  # Jonathan hates email
+  unsubscribe_from_project_email 'Jonathan Spray'
 
   # each user sets their avatar via magic!
   set_avatar 'alice@ucsd.multifyapp.com',   'alice.jpg'

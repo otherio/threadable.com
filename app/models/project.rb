@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :tasks, :order => "position"
   has_many :project_memberships
   has_many :members, :through => :project_memberships, :source => 'user'
+  has_many :members_who_get_email, :through => :project_memberships, :source => 'user', :conditions => {project_memberships:{gets_email:true}}
   has_many :events, order: "created_at"
 
   validates_presence_of :name, :slug
@@ -14,6 +15,14 @@ class Project < ActiveRecord::Base
 
   def to_param
     slug
+  end
+
+  def subject_tag
+    slug[0..6]
+  end
+
+  def formatted_email_address
+    "#{name} <#{slug}@multifyapp.com>"
   end
 
 end

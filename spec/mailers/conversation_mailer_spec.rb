@@ -1,118 +1,108 @@
 require "spec_helper"
 
 describe ConversationMailer do
-  let(:recipient_json) {JSON.parse(FactoryGirl.create(:user).to_json)}
-  let(:sender) { FactoryGirl.create(:user) }
-  let(:sender_json) {JSON.parse(sender.to_json)}
-  let(:message) {FactoryGirl.create(:message, user: sender)}
-  let(:message_json) {JSON.parse(message.to_json)}
-  let(:parent_message_json) { nil }
-  let(:project) { message.conversation.project }
-  let(:conversation) { message.conversation }
+  describe "conversation_message" do
 
-  # this makes project_conversation_url work
-  before do
-    self.default_url_options[:host] = 'foo.com'
+    before do
+      default_url_options[:host] = 'multifyapp.com'
+      described_class.default_url_options[:host] = 'multifyapp.com'
+    end
+    after do
+      described_class.default_url_options.delete(:host)
+    end
 
-    @url_options_saved = ConversationMailer.default_url_options
-    ConversationMailer.default_url_options = self.default_url_options
+    let(:project){ Project.find_by_name('UCSD Electric Racing') }
+
+    let(:conversation){ project.conversations.find_by_subject('layup body carbon') }
+
+    let(:parent_message){ conversation.messages.last }
+
+    let(:references){
+      %W(
+        <j34h2jkh423jk4h32jk4h23jk42jk3h4@somewhere.io>
+        <ovcbivcb0vc9v09v0b9bv0bv0@anotherpla.ce>
+      )
+    }
+
+    let(:message){
+      conversation.messages.new(
+        user: project.members.first,
+        subject: conversation.subject,
+        body: 'This is the best project everz.',
+        parent_message: parent_message,
+        references_header: references.join(" ")
+      )
+    }
+
+    let(:reply_to){ 'foo@example.com' }
+
+    let(:recipient){ project.members.last }
+
+    def data
+      {
+        :project_id                => project.id,
+        :project_slug              => project.slug,
+        :conversation_slug         => conversation.slug,
+        :message_subject           => message.subject,
+        :sender_name               => message.user.name,
+        :sender_email              => message.user.email,
+        :recipient_id              => recipient.id,
+        :recipient_name            => recipient.name,
+        :recipient_email           => recipient.email,
+        :message_body              => message.body,
+        :message_message_id_header => message.message_id_header,
+        :message_references_header => message.references_header,
+        :parent_message_id_header  => message.parent_message.message_id_header,
+        :reply_to                  => reply_to,
+      }
+    end
+
+    subject(:mail) { ConversationMailer.conversation_message(data) }
+
+    let(:mail_headers){
+      Hash[mail.header_fields.map{|hf| [hf.name, hf.value] }]
+    }
+    let(:mail_as_text){ mail.to_s }
+
+    def validate_mail!
+      mail.subject.should include "[ucsd-el] #{conversation.subject}"
+      mail.subject.scan('ucsd-el').size.should == 1
+      mail.to.should == [recipient.email]
+      mail.from.should == [message.user.email]
+
+      mail_as_text.should =~ /In-Reply-To:/
+      mail_as_text.should =~ /References:/
+      mail_as_text.should =~ /Message-ID:/
+      mail_as_text.should include 'This is the best project everz.'
+      mail_as_text.should include "View on Multify: #{project_conversation_url(project, conversation)}"
+      mail_as_text =~ /multifyapp\.com\/#{Regexp.escape(project.slug)}\/unsubscribe\/(\S+)/
+
+      unsubscribe_token = $1
+      unsubscribe_token.should_not be_blank
+      unsubscribe_token = URI.decode(unsubscribe_token)
+      UnsubscribeToken.decrypt(unsubscribe_token).should == [project.id, recipient.id]
+
+      mail.reply_to.should == [reply_to]
+      mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]
+      mail.message_id.should == message.message_id_header[1..-2]
+      mail.references.should == references.map{|r| r[1..-2] }
+    end
+
+    it "returns a mail message as expected" do
+      validate_mail!
+    end
+
+    context "when the subject is a reply" do
+      def data
+        super.merge(
+          :message_subject => "RE: Re: [ucsd-el] #{conversation.subject}",
+        )
+      end
+      it "should parse and construct the correct subject" do
+        validate_mail!
+      end
+    end
+
   end
 
-  after do
-    ConversationMailer.default_url_options = @url_options_saved
-  end
-
-  describe "#message" do
-    subject do
-      ConversationMailer.conversation_message(
-        sender: sender_json,
-        recipient: recipient_json,
-        message: message_json,
-        parent_message: parent_message_json,
-        project: JSON.parse(project.to_json),
-        conversation: JSON.parse(conversation.to_json),
-        reply_to: 'the-reply-to-address'
-      ).deliver
-    end
-
-    context "subject" do
-      let(:subject_tag) { project.slug[0..7] }
-      it "prepends the project's subject tag" do
-        subject.subject.should == "[#{subject_tag}] #{message_json['subject']}"
-      end
-
-      context "with an existing subject tag" do
-        let(:project) { FactoryGirl.create(:project) }
-        let(:conversation) { FactoryGirl.create(:conversation) }
-        let(:message) { FactoryGirl.create(:message, conversation: conversation, subject: "RE: Re: [#{subject_tag}] this is a subject") }
-
-        it "does not prepend the subject tag twice" do
-          subject.subject.should =~ /\[#{subject_tag}\]/
-          subject.subject.should_not =~ /(\[#{subject_tag}\]).*\1/
-        end
-      end
-    end
-
-    it "has its headers in the correct case" do
-      text = subject.to_s
-      text.should =~ /In-Reply-To:/
-      text.should =~ /References:/
-      text.should =~ /Message-ID:/
-    end
-
-    it "has the correct sender address" do
-      subject[:from].inspect.should include(sender_json['name'], "<#{sender_json['email']}>")
-    end
-
-    it "has a munged reply-to address" do
-      project = message.conversation.project
-      subject[:reply_to].inspect.should == 'the-reply-to-address'
-    end
-
-    it "has the correct recipient address" do
-      subject[:to].inspect.should include(recipient_json['name'], "<#{recipient_json['email']}>")
-    end
-
-    it "has correct references and in-reply-to headers" do
-      subject.in_reply_to.should be_nil
-      subject.references.should be_nil
-    end
-
-    it "has the correct message id" do
-      # Mail strips the [<>] from these
-      "<#{subject.message_id}>".should == message_json['message_id_header']
-    end
-
-    it "contains the message body" do
-      subject.body.should include message_json['body']
-    end
-
-    it "has a footer that links to the conversation" do
-      subject.body.should include "\n_____\n"
-      subject.body.should include "View on Multify: #{project_conversation_url(project.slug, message.conversation.slug)}"
-    end
-
-    it "includes an unsubscribe link" do
-      pending 'we need to make an unsubscribe url'
-
-      subject.body.should include "Unsubscribe: #{unsubscribe_url(UnsubscribeToken.new(user_id: recipient.id, project_id: project.id).token)}"
-    end
-
-    describe "with parent messages" do
-      let(:grandparent_message) {FactoryGirl.create(:message, user: sender)}
-      let(:parent_message) {FactoryGirl.create(:message, user: sender, parent_message: grandparent_message, references_header: "<i am a references header> #{grandparent_message.message_id_header}")}
-      let(:parent_message_json) { JSON.parse(parent_message.to_json) }
-      let(:message) { FactoryGirl.create(:message, user: sender, parent_message: parent_message)}
-      let(:message_json) { JSON.parse(message.to_json) }
-
-      it "has correct (rfc 2822) in-reply-to" do
-        # Mail strips the [<>] from these
-        "<#{subject.in_reply_to}>".should == parent_message['message_id_header']
-      end
-
-      it "has correct references" do
-        subject.to_s.should include "References:#{parent_message['references_header']} #{parent_message['message_id_header']}"
-      end
-    end
-  end
 end

@@ -1,24 +1,27 @@
 class ConversationMailer < ActionMailer::Base
 
-  def conversation_message(params)
-    recipient, sender, message, parent, project, conversation =
-      params[:recipient], params[:sender], params[:message], params[:parent_message], params[:project], params[:conversation]
+  def conversation_message(data)
+    @data = data
 
-    subject_tag = project['slug'][0..7]
+    subject_tag = @data[:project_slug][0..6]
 
-    body = message['body']
-    body += "\n_____\n"
-    body += "View on Multify: #{project_conversation_url(project['slug'], conversation['slug'])}"
+    subject = @data[:message_subject].include?("[#{subject_tag}]") ?
+      @data[:message_subject] : "[#{subject_tag}] #{@data[:message_subject]}"
+
+    from = %("#{@data[:sender_name]}" <#{@data[:sender_email]}>)
+
+    unsubscribe_token = UnsubscribeToken.encrypt(@data[:project_id], @data[:recipient_id])
+    @unsubscribe_url = project_unsubscribe_url(@data[:project_slug], unsubscribe_token)
 
     mail(
-      to: "\"#{recipient['name']}\" <#{recipient['email']}>",
-      subject: message['subject'].include?("[#{subject_tag}]") ? message['subject'] : "[#{subject_tag}] #{message['subject']}",
-      from: "\"#{sender['name']}\" <#{sender['email']}>",
-      body: body,
-      'Reply-To' => params[:reply_to],
-      'Message-ID' => message['message_id_header'],
-      'In-Reply-To' => parent ? parent['message_id_header'] : nil,
-      'References' => message['references_header']
+      :'to'          => %(#{@data[:recipient_name].inspect} <#{@data[:recipient_email]}>),
+      :'subject'     => subject,
+      :'from'        => from,
+      :'Reply-To'    => @data[:reply_to],
+      :'Message-ID'  => @data[:message_message_id_header],
+      :'In-Reply-To' => @data[:parent_message_id_header],
+      :'References'  => @data[:message_references_header],
     )
   end
+
 end

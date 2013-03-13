@@ -30,6 +30,8 @@ Multify::Application.routes.draw do
     resources :tasks, :only => [:index, :create, :update] do
       resources :doers, :only => [:create, :destroy], controller: 'task/doers'
     end
+    get '/unsubscribe/:token' => 'email_subscriptions#unsubscribe', as: 'unsubscribe'
+    get '/subscribe/:token' => 'email_subscriptions#subscribe', as: 'subscribe'
   end
 
   resources :emails, :only => :create

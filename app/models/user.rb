@@ -91,6 +91,10 @@ class User < ActiveRecord::Base
     super
   end
 
+  def formatted_email_address
+    "#{name} <#{email}>"
+  end
+
   private
 
   def password_required?

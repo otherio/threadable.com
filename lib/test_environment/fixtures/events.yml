@@ -6,7 +6,7 @@ events_001:
   conversation_id: 1
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:15.983237000 Z
+  created_at: 2013-03-13 07:32:06.491253000 Z
 events_002:
   id: 2
   type: Conversation::CreatedEvent
@@ -14,7 +14,7 @@ events_002:
   conversation_id: 2
   user_id: 2
   content: 
-  created_at: 2013-03-13 03:26:16.019002000 Z
+  created_at: 2013-03-13 07:32:06.539028000 Z
 events_003:
   id: 3
   type: Task::CreatedEvent
@@ -22,7 +22,7 @@ events_003:
   conversation_id: 3
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.054919000 Z
+  created_at: 2013-03-13 07:32:06.585180000 Z
 events_004:
   id: 4
   type: Task::CreatedEvent
@@ -30,7 +30,7 @@ events_004:
   conversation_id: 4
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.066079000 Z
+  created_at: 2013-03-13 07:32:06.598465000 Z
 events_005:
   id: 5
   type: Task::CreatedEvent
@@ -38,7 +38,7 @@ events_005:
   conversation_id: 5
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.073315000 Z
+  created_at: 2013-03-13 07:32:06.610080000 Z
 events_006:
   id: 6
   type: Task::CreatedEvent
@@ -46,7 +46,7 @@ events_006:
   conversation_id: 6
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.081601000 Z
+  created_at: 2013-03-13 07:32:06.621808000 Z
 events_007:
   id: 7
   type: Task::CreatedEvent
@@ -54,7 +54,7 @@ events_007:
   conversation_id: 7
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.109423000 Z
+  created_at: 2013-03-13 07:32:06.657952000 Z
 events_008:
   id: 8
   type: Task::CreatedEvent
@@ -62,7 +62,7 @@ events_008:
   conversation_id: 8
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.117554000 Z
+  created_at: 2013-03-13 07:32:06.669922000 Z
 events_009:
   id: 9
   type: Task::CreatedEvent
@@ -70,7 +70,7 @@ events_009:
   conversation_id: 9
   user_id: 1
   content: 
-  created_at: 2013-03-13 03:26:16.160223000 Z
+  created_at: 2013-03-13 07:32:06.681241000 Z
 events_010:
   id: 10
   type: Task::DoneEvent
@@ -78,7 +78,7 @@ events_010:
   conversation_id: 7
   user_id: 2
   content: 
-  created_at: 2013-03-13 03:26:16.184088000 Z
+  created_at: 2013-03-13 07:32:06.712997000 Z
 events_011:
   id: 11
   type: Task::DoneEvent
@@ -86,7 +86,7 @@ events_011:
   conversation_id: 8
   user_id: 2
   content: 
-  created_at: 2013-03-13 03:26:16.189318000 Z
+  created_at: 2013-03-13 07:32:06.720884000 Z
 events_012:
   id: 12
   type: Task::DoneEvent
@@ -94,7 +94,7 @@ events_012:
   conversation_id: 9
   user_id: 2
   content: 
-  created_at: 2013-03-13 03:26:16.194330000 Z
+  created_at: 2013-03-13 07:32:06.727658000 Z
 events_013:
   id: 13
   type: Task::DoneEvent
@@ -102,12 +102,12 @@ events_013:
   conversation_id: 3
   user_id: 2
   content: 
-  created_at: 2013-03-13 03:26:16.220844000 Z
+  created_at: 2013-03-13 07:32:06.770712000 Z
 events_014:
   id: 14
   type: Conversation::CreatedEvent
   project_id: 2
   conversation_id: 10
-  user_id: 6
+  user_id: 7
   content: 
-  created_at: 2013-03-13 03:26:16.299912000 Z
+  created_at: 2013-03-13 07:32:06.893908000 Z
