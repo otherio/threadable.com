@@ -5,6 +5,7 @@ Feature: Projects and Tasks
   I should be able to add doers, and view mine vs everyones tasks
   I should be able to invite someone to a task who isn't part of the project
 
+  @javascript
   Scenario: Creating, asigning and completing a task for an existing project
     Given I am "Tom Canver"
      When I go to the project conversations page for "UCSD Electric Racing"
@@ -20,7 +21,7 @@ Feature: Projects and Tasks
      Then I should see "Tom Canver" within the list of doers for this task
       And I should see "Research carbon fiber techniques" within the tasks sidebar
 
-
+  @javascript
   Scenario: I want to add someone as a doer of a task
     As a member of the project
     I want to communicate other people's interest in a task

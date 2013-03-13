@@ -50,10 +50,12 @@ end
 
 group :test do
   gem 'capybara', '>= 2.0.2'
+  gem 'capybara-webkit'
   gem 'shoulda-matchers'
   gem 'cucumber-rails', require: nil
   gem 'resque_spec'
   gem 'timecop'
+  gem 'launchy'
 end
 
 # we need this as long as we are goig to load fixtures in prod

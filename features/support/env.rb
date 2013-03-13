@@ -10,3 +10,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 CapybaraEnvironment.before_suite!
 
+Before do
+  TestEnvironment::Fixtures.load! if User.count == 0
+end

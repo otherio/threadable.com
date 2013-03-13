@@ -26,6 +26,6 @@ end
 
 When /^I add "(.*?)" as a doer for this task$/ do |doer_name|
   click_on 'add others'
-  page.driver.browser.keyboard.send_keys doer_name
+  fill_in 'add-others-typeahead', with: doer_name
   click_on doer_name
 end
