@@ -18,6 +18,7 @@ class MessageDispatch
         :message_subject           => @message.subject,
         :sender_name               => @message.user.name,
         :sender_email              => @message.user.email,
+        :recipient_id              => user.id,
         :recipient_name            => user.name,
         :recipient_email           => user.email,
         :message_body              => @message.body,

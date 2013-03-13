@@ -20,6 +20,7 @@ describe MessageDispatch do
           :message_subject           => message.subject,
           :sender_name               => sender.name,
           :sender_email              => sender.email,
+          :recipient_id              => recipient.id,
           :recipient_name            => recipient.name,
           :recipient_email           => recipient.email,
           :message_body              => message.body,
