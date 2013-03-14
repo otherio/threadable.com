@@ -11,7 +11,7 @@ class ResqueWorker < MethodObject
 
     def queue queue=nil
       @queue = queue.to_sym unless queue.nil?
-      @queue ||= :*
+      @queue
     end
 
     def enqueue *args
