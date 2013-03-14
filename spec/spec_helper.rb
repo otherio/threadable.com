@@ -23,6 +23,9 @@ RSpec.configure do |config|
   end
 
   config.before :each do |spec|
+    Rails.application.routes.stub(:default_url_options).and_return(Rails.application.routes.default_url_options.try(:dup) || {})
+    Rails.configuration.action_controller.stub(:default_url_options).and_return({})
+    Rails.configuration.action_mailer.stub(:default_url_options).and_return({})
     database_cleaner_start!
   end
 

@@ -4,11 +4,7 @@ describe ConversationMailer do
   describe "conversation_message" do
 
     before do
-      default_url_options[:host] = 'multifyapp.com'
-      described_class.default_url_options[:host] = 'multifyapp.com'
-    end
-    after do
-      described_class.default_url_options.delete(:host)
+      Rails.application.routes.default_url_options[:host] = 'multifyapp.com'
     end
 
     let(:project){ Project.find_by_name('UCSD Electric Racing') }
