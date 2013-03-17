@@ -12,7 +12,7 @@ Scenario: Logging in
     And I fill in "user_password" with "password"
     And I click the "Sign in" button
    Then I should be on the home page
-    And I should see "Signed in successfully."
+    And I should be logged in as "Alice Neilson"
 
 Scenario: Logging in with both of my emails
   As a user with multiple email addresses
@@ -47,7 +47,6 @@ Scenario: Signing up through the join form
     And I fill in "user_password" with "password"
     And I fill in "user_password_confirmation" with "password"
     And I click "Sign up"
-   Then I should see "You have signed up successfully"
     And I should be logged in as "Audrey Penven"
 
 Scenario: Account creation fails if passwords don't match

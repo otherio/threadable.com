@@ -20,7 +20,6 @@ describe "Authentication" do
         click_on 'Logout'
       end
       page.should_not have_content user.name
-      page.should have_content 'Notice! Signed out successfully.'
       page.current_path.should == root_path
     end
   end
