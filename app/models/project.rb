@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   attr_accessible :description, :name, :slug
 
-  has_many :conversations
+  has_many :conversations, :order => "updated_at DESC"
   has_many :tasks, :order => "position"
   has_many :project_memberships
   has_many :members, :through => :project_memberships, :source => 'user'

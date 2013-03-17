@@ -2,55 +2,59 @@ require 'spec_helper'
 
 describe "tasks_sidebar" do
 
-  let(:current_user){ double(:current_user) }
+  let(:project){ double(:project, to_param: 'lick-a-fish') }
 
-  let(:project){
-    double(:project, tasks: tasks, to_param: 'lick-a-fish')
-  }
-
-  let(:tasks){
+  let(:conversations){
     [
-      double(:"task0", :done? => true,  :doers => []),
-      double(:"task1", :done? => false, :doers => []),
-      double(:"task2", :done? => true,  :doers => [current_user]),
-      double(:"task3", :done? => false, :doers => []),
-      double(:"task4", :done? => true,  :doers => []),
-      double(:"task5", :done? => false, :doers => [current_user]),
-      double(:"task6", :done? => true,  :doers => []),
-      double(:"task7", :done? => false, :doers => []),
-      double(:"task8", :done? => true,  :doers => [current_user]),
-      double(:"task9", :done? => false, :doers => []),
+      double(:"conversation0", id: 0, :new_record? => false, :subject => 'conversation0', project: project, :task? => true, :done? => true),
+      double(:"conversation1", id: 1, :new_record? => true,  :subject => 'conversation1', project: project, :task? => false),
+      double(:"conversation2", id: 2, :new_record? => false, :subject => 'conversation2', project: project, :task? => true, :done? => false),
+      double(:"conversation3", id: 3, :new_record? => false, :subject => 'conversation3', project: project, :task? => false),
     ]
   }
 
-  before do
-    view.stub(:current_user){ current_user }
-    project.tasks.should_receive(:includes).with(:doers).and_return(tasks)
-
-
-    view.should_receive(:render_widget).with(:task_list, [
-      tasks[1], tasks[3], tasks[5], tasks[7], tasks[9]
-    ], class: 'sortable')
-    view.should_receive(:render_widget).with(:task_list, [
-      tasks[0], tasks[2], tasks[4], tasks[6], tasks[8]
-    ])
-    view.should_receive(:render_widget).with(:task_list, [
-      tasks[5]
-    ], class: 'sortable')
-    view.should_receive(:render_widget).with(:task_list, [
-      tasks[2], tasks[8]
-    ])
-  end
+  let(:tasks) { double(:tasks) }
+  let(:my_tasks) { double(:my_tasks) }
+  let(:done_tasks) { double(:done_tasks) }
+  let(:not_done_tasks) { double(:not_done_tasks) }
+  let(:my_done_tasks) { double(:my_done_tasks) }
+  let(:my_not_done_tasks) { double(:my_not_done_tasks) }
 
   def locals
     {
       project: project,
+      conversations: conversations,
+      tasks: tasks,
+      my_tasks: my_tasks,
+      done_tasks: done_tasks,
+      not_done_tasks: not_done_tasks,
+      my_done_tasks: my_done_tasks,
+      my_not_done_tasks: my_not_done_tasks,
     }
+  end
+
+
+  before do
+    view.should_receive(:render_widget).with(:task_list, not_done_tasks, class: 'sortable')
+    view.should_receive(:render_widget).with(:task_list, done_tasks)
+    view.should_receive(:render_widget).with(:task_list, my_not_done_tasks, class: 'sortable')
+    view.should_receive(:render_widget).with(:task_list, my_done_tasks)
   end
 
   describe "form action" do
     subject{ html.css('form').first[:action] }
     it {should == '/lick-a-fish/tasks'}
+  end
+
+  it "should be a think" do
+    conversation_elements = html.css('.conversations > ol > li')
+    conversation_elements.size.should == 3
+    conversation_elements[0][:'data-conversation-id'].should == "0"
+    conversation_elements[1][:'data-conversation-id'].should == "2"
+    conversation_elements[2][:'data-conversation-id'].should == "3"
+    conversation_elements[0].css('a').first[:href].should == project_conversation_url(project, conversations[0])
+    conversation_elements[1].css('a').first[:href].should == project_conversation_url(project, conversations[2])
+    conversation_elements[2].css('a').first[:href].should == project_conversation_url(project, conversations[3])
   end
 
 end

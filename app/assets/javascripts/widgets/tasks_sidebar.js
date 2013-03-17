@@ -8,7 +8,7 @@ Multify.Widget('tasks_sidebar', function(widget){
           .bind('keyup', widget.onValueChange)
         .end
       .end
-      ('.task_list > *')
+      ('.lists li')
         .bind('mouseenter', widget.onTaskMouseEnter)
         .bind('mouseleave', widget.onTaskMouseLeave)
       .end
@@ -18,16 +18,18 @@ Multify.Widget('tasks_sidebar', function(widget){
       ('button.my_tasks')
         .bind('click', onClickMyTasksButton)
       .end
+      ('button.conversations')
+        .bind('click', onClickConversationsButton)
+      .end
     ;
 
-    Multify.bind('conversation_mouse_enter', function(event, task_id){
-      $('.tasks_sidebar *[data-task-id='+task_id+']').addClass('hover');
+    Multify.bind('conversation_mouse_enter', function(event, id){
+      widget.$('*[data-conversation-id='+id+']').addClass('hover');
     });
 
-    Multify.bind('conversation_mouse_leave', function(event, task_id){
-      $('.tasks_sidebar *[data-task-id='+task_id+']').removeClass('hover');
+    Multify.bind('conversation_mouse_leave', function(event, id){
+      widget.$('*[data-conversation-id='+id+']').removeClass('hover');
     });
-
 
     $(function(){
       widget.reset();
@@ -126,11 +128,11 @@ Multify.Widget('tasks_sidebar', function(widget){
   };
 
   widget.onTaskMouseEnter = function(element){
-    Multify.trigger('conversation_mouse_enter', element.data('task-id'));
+    Multify.trigger('conversation_mouse_enter', element.data('conversation-id'));
   };
 
   widget.onTaskMouseLeave = function(element){
-    Multify.trigger('conversation_mouse_leave', element.data('task-id'));
+    Multify.trigger('conversation_mouse_leave', element.data('conversation-id'));
   };
 
   widget.sortupdate = function(event, data){
@@ -173,5 +175,11 @@ Multify.Widget('tasks_sidebar', function(widget){
   function onClickMyTasksButton(element){
     widget.showTab('my_tasks', element);
   };
+
+  function onClickConversationsButton(element){
+    widget.showTab('conversations', element);
+  };
+
+
 
 });

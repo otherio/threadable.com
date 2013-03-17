@@ -26,7 +26,7 @@ describe InviteModalWidget do
     subject{ presenter.html_options }
     it do
       should == {
-        class: "invite_modal custom_class",
+        class: "invite_modal modal hide fade custom_class",
       }
     end
   end

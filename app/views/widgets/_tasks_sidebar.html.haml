@@ -1,32 +1,39 @@
-%h2 Tasks
+.btn-group{'data-toggle' => "buttons-radio"}
+  %button.btn.btn-mini.conversations Conversations
+  %button.btn.btn-mini.all_tasks All Tasks
+  %button.btn.btn-mini.my_tasks My Tasks
 
 %form.input-append{action: project_tasks_path(project)}
   %input{type: "text", name: "subject"}
   %button.btn{disabled: true}
     %i.icon-plus
 
-.btn-group{'data-toggle' => "buttons-radio"}
-  %button.btn.btn-mini.all_tasks All Tasks
-  %button.btn.btn-mini.my_tasks My Tasks
-
-- tasks = project.tasks.includes(:doers).to_a
+.conversations
+  %ol
+    - conversations.each do |conversation|
+      - next if conversation.new_record?
+      %li.task.clearfix{title: conversation.subject, "data-conversation-id" => conversation.id}
+        = link_to project_conversation_url(conversation.project, conversation) do
+          - if conversation.task?
+            %i.icon-ok{ class: conversation.done? ? 'finished-check' : 'unfinished-check' }
+          - else
+            %i.icon-comment-alt
+          %span= conversation.subject
 
 .all_tasks
   .not_done
-    %h4 Not Done
-    = render_widget :task_list, tasks.reject(&:done?), class: 'sortable'
+    %h5 Not Done
+    = render_widget :task_list, not_done_tasks, class: 'sortable'
 
   .done
-    %h4 Done
-    = render_widget :task_list, tasks.select(&:done?)
-
-- my_tasks = tasks.select{|task| task.doers.include? current_user }
+    %h5 Done
+    = render_widget :task_list, done_tasks
 
 .my_tasks
   .not_done
-    %h4 Not Done
-    = render_widget :task_list, my_tasks.reject(&:done?), class: 'sortable'
+    %h5 Not Done
+    = render_widget :task_list, my_not_done_tasks, class: 'sortable'
 
   .done
-    %h4 Done
-    = render_widget :task_list, my_tasks.select(&:done?)
+    %h5 Done
+    = render_widget :task_list, my_done_tasks

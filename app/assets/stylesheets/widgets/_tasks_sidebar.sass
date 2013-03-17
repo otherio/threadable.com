@@ -1,11 +1,36 @@
 &
+  .btn-group
+    margin: 10px 0
+
   input[name=subject]
     width: auto
 
-  > .my_tasks, > .all_tasks
+  > .my_tasks, > .all_tasks, > .conversations
     display: none
 
-&[showing=all_tasks] > .all_tasks
+
+  li
+    &:hover, &.hover
+      background-color: #FFFFD6
+  > .conversations
+    ol
+      list-style-type: none
+      margin: 0
+      li
+        .icon-comment-alt
+          color: gainsboro
+        a
+          white-space: nowrap
+          display: block
+          text-decoration: none
+          text-overflow: ellipsis
+          overflow: hidden
+
+
+&[showing=conversations] > .conversations
+  display: block
+
+&[showing=all_tasks] >  .all_tasks
   display: block
 
 &[showing=my_tasks] > .my_tasks
