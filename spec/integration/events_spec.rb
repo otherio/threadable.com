@@ -6,21 +6,24 @@ describe "events" do
 
   it "should create events when things happen" do
 
-    5.times{ project.members << create(:user) }
+    expected_event_types = []
 
+    5.times{ project.members << create(:user) }
     #
     project.conversations.create! subject: 'Welcome Everyone', creator: project.members.first
 
+    expected_event_types << :conversation_created_event
     project.events.reload
-    project.events.size.should == 1
+    project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Conversation::CreatedEvent
     project.events.last.conversation.should == project.conversations.first
 
     #
     project.tasks.create! subject: 'buy some cereal', creator: project.members.second
 
+    expected_event_types << :task_created_event
     project.events.reload
-    project.events.size.should == 2
+    project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::CreatedEvent
     project.events.last.conversation.should == project.tasks.last
 
@@ -28,8 +31,9 @@ describe "events" do
     project.tasks.last.done! project.members.first
     project.tasks.last.done! project.members.first # idempotent
 
+    expected_event_types << :task_done_event
     project.events.reload
-    project.events.size.should == 3
+    project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::DoneEvent
     project.events.last.conversation.should == project.tasks.last
 
@@ -37,8 +41,10 @@ describe "events" do
     project.tasks.last.undone! project.members.first
     project.tasks.last.undone! project.members.first # idempotent
 
+    expected_event_types << :task_undone_event
+
     project.events.reload
-    project.events.size.should == 4
+    project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::UndoneEvent
     project.events.last.conversation.should == project.tasks.last
 
@@ -46,8 +52,9 @@ describe "events" do
     # task done event
     project.tasks.last.done! project.members.first
 
+    expected_event_types << :task_done_event
     project.events.reload
-    project.events.size.should == 5
+    project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::DoneEvent
     project.events.last.conversation.should == project.tasks.last
 
