@@ -13,7 +13,7 @@ class InvitesController < ApplicationController
       @user.save!
     end
 
-    project.members << @user
+    project.project_memberships.create(:user => @user, :gets_email => false)
 
     respond_with @user, status: :created
   rescue ActiveRecord::RecordNotUnique

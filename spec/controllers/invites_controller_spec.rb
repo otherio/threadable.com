@@ -40,6 +40,7 @@ describe InvitesController do
         invited_user.email.should == 'tord@tordboontje.com'
         response.body.should == invited_user.to_json
         project.members.reload.should include invited_user
+        invited_user.project_memberships.last.gets_email.should be_false
       end
 
     end
@@ -63,6 +64,7 @@ describe InvitesController do
         User.count.should == user_count
         response.body.should == invited_user.to_json
         project.members.reload.should include invited_user
+        invited_user.project_memberships.last.gets_email.should be_false
       end
 
       context "that is already a member of the project" do
