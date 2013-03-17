@@ -22,7 +22,7 @@ describe ResqueWorker do
   describe ".queue" do
     subject{ TestWorker.queue }
     context "when not specified" do
-      it { should == :* }
+      it { should be_nil }
     end
     context "when specified" do
       before{ TestWorker.queue :important }
