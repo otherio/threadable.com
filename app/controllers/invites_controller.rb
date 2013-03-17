@@ -15,6 +15,13 @@ class InvitesController < ApplicationController
 
     project.project_memberships.create(:user => @user, :gets_email => false)
 
+    UserMailer.invite_notice(
+      project: @project,
+      user: @user,
+      host: request.host,
+      port: request.port,
+    ).deliver
+
     respond_with @user, status: :created
   rescue ActiveRecord::RecordNotUnique
     respond_with @user, status: :bad_request

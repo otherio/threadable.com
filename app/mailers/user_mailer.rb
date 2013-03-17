@@ -1,8 +1,22 @@
 class UserMailer < ActionMailer::Base
 
   def unsubscribe_notice(options)
-    @project, @user, @host, @port = options.values_at(:project, :user, :host, :port)
-    url_options.merge! options.slice()
+    @options = options
+    @subject = "You've been unsubscribed from #{options[:project].name}"
+    send_notice
+  end
+
+  def invite_notice(options)
+    @options = options
+    @subject = "You've been invited to #{options[:project].name}"
+    send_notice
+  end
+
+  private
+
+  def send_notice
+    @project, @user, @host, @port = @options.values_at(:project, :user, :host, :port)
+    url_options.merge! @options.slice()
 
     subscribe_token = UnsubscribeToken.encrypt(@project.id, @user.id)
     @subscribe_url = project_subscribe_url(@project, subscribe_token, host: @host, port: @port)
@@ -10,7 +24,7 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @user.formatted_email_address,
       from: @project.formatted_email_address,
-      subject: "You've been unsubscribed from #{@project.name}",
+      subject: @subject
     )
   end
 

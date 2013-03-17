@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe InvitesController do
-
   let(:project) { Project.find_by_name("UCSD Electric Racing", include: :members) }
   let(:user)    { project.members.first }
 
@@ -17,11 +16,25 @@ describe InvitesController do
   end
 
   describe "#create" do
-
     let!(:user_count){ User.count }
 
-    context "when given info for a user that we haven't seen" do
+    shared_examples_for :a_sender_of_invite_notices do
+      it "should send the user an email asking them if they want email for this project" do
+        fake_mail = double(:fake_mail)
 
+        UserMailer.should_receive(:invite_notice).with(
+          project: project,
+          user: kind_of(User),
+          host: 'test.host',
+          port: 80,
+        ).and_return(fake_mail)
+        fake_mail.should_receive(:deliver)
+
+        post :create, params
+      end
+    end
+
+    context "when given info for a user that we haven't seen" do
       def params
         super.merge(
           invite: {
@@ -30,6 +43,8 @@ describe InvitesController do
           }
         )
       end
+
+      it_behaves_like :a_sender_of_invite_notices
 
       it "should create a new user record and add them as a member to the project" do
         post :create, params
@@ -42,11 +57,9 @@ describe InvitesController do
         project.members.reload.should include invited_user
         invited_user.project_memberships.last.gets_email.should be_false
       end
-
     end
 
     context "when given info for an existing user" do
-
       let(:invited_user){ (User.all - project.members).last }
 
       def params
@@ -57,6 +70,8 @@ describe InvitesController do
           }
         )
       end
+
+      it_behaves_like :a_sender_of_invite_notices
 
       it "should create a new user record and add them as a member to the project" do
         post :create, params
@@ -75,11 +90,7 @@ describe InvitesController do
           response.status.should == 400
           project.members.reload.should include invited_user
         end
-
       end
-
     end
-
   end
-
 end
