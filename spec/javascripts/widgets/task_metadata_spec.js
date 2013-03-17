@@ -261,16 +261,21 @@ describe("widgets/task_metadata", function(){
         });
 
         describe("invite", function() {
-          // TODO: this is a story that hasn't been started yet
-          xit("can open the invite modal", function() {
-            runs(function() {
-              $('.controls .invite-link').click();
-            });
+          it("can open the invite modal", function() {
+            // runs(function() {
+            //   $('.task_metadata .add-others').click();
+            // });
 
-            waits(300);
+            // waits(300);
 
             runs(function() {
-              expect($('.invite_modal .modal').css('display')).toEqual('block');
+              spyOn(Multify,'trigger');
+              expect($('.task_metadata .popover').is(':visible')).toBe(true);
+              $('.task_metadata .user-search').val('"Jared Grippe" <jared@foo.com>');
+              $('.task_metadata .controls .invite-link').click();
+              expect(Multify.trigger).toHaveBeenCalledWith('show_invite_modal', {
+                name: 'Jared Grippe', email: 'jared@foo.com'
+              });
             });
           });
 

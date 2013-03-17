@@ -1,20 +1,19 @@
-.modal.hide.fade{id: "invite_modal"}
-  = form_for :invite, url: project_invites_url(project), html: {class: 'form-horizontal'}, remote: true do |f|
-    .modal-header
-      %button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
-      %h3 Invite
+= form_for :invite, url: project_invites_url(project), html: {class: 'form-horizontal'}, remote: true do |f|
+  .modal-header
+    %button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+    %h3 Invite
 
-    .modal-body
-      .flash_messages
-      %label.control-group
-        .control-label Name
-        .controls
-          = f.text_field :name, placeholder: 'Name', required: true
+  .modal-body
+    .flash_messages
+    %label.control-group
+      .control-label Name
+      .controls
+        = f.text_field :name, placeholder: 'Name', required: true
 
-      %label.control-group
-        .control-label Email
-        .controls
-          = f.text_field :email, placeholder: 'Email', type: 'email', required: true
+    %label.control-group
+      .control-label Email
+      .controls
+        = f.text_field :email, placeholder: 'Email', type: 'email', required: true
 
-    .modal-footer
-      = f.submit :Invite, class: 'btn btn-primary'
+  .modal-footer
+    = f.submit :Invite, class: 'btn btn-primary'

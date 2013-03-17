@@ -2,7 +2,11 @@ Multify.Widget('task_metadata', function(widget){
 
   widget.initialize = function(){
     widget.$('.has-tooltip').tooltip(this.show, this.hide);
-    widget.$('.add-others').popover({ content: widget.$('.add-others-popover').html(), html: true, trigger: 'manual' });
+    widget.$('.add-others').popover({
+      content: widget.$('.add-others-popover').html(),
+      html: true,
+      trigger: 'manual'
+    });
 
     $(document).keyup(onKeyDown);
 
@@ -33,6 +37,23 @@ Multify.Widget('task_metadata', function(widget){
     widget.$('.doers').append(avatar);
     avatar.tooltip();
     return this;
+  };
+
+  var showInviteModal = function(event){
+    event.preventDefault();
+    var val = $(this).parents('.popover-content').find('input.user-search').val() || '';
+    var data = {name:[]};
+
+    val = val.replace(/["'<>]/g,'');
+    val.split(/\s+/).forEach(function(part){
+      if (part.indexOf('@') === -1){
+        data.name.push(part);
+      }else{
+        data.email = part;
+      }
+    });
+    data.name = data.name.join(' ');
+    Multify.trigger('show_invite_modal', data);
   };
 
   var renderUserList = function(users){
@@ -169,13 +190,14 @@ Multify.Widget('task_metadata', function(widget){
     if ($(e.currentTarget).parent().find('.popover').length ) {
       closePopover();
     } else {
-      $('.add-others').popover('show');
+      widget.$('.add-others').popover('show');
       widget.getCurrentProjectMembers(renderUserList);
-      $('input.user-search').keyup(function() { renderUserList(widget.users); updateInviteButton(); });
-      $('input.user-search').focus();
-      $('.popover').on('click', function(e) { e.stopPropagation(); });  // clicking the popover doesn't close it
+      widget.$('input.user-search').keyup(function() { renderUserList(widget.users); updateInviteButton(); });
+      widget.$('input.user-search').focus();
+      widget.$('.popover').on('click', function(e) { e.stopPropagation(); });  // clicking the popover doesn't close it
       $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closePopover(); } );
       $('.conversations_layout .right').css('overflow', 'hidden');
+      widget.$('.invite-link').click(showInviteModal);
     }
   };
 

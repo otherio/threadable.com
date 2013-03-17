@@ -1,5 +1,13 @@
 Multify.Widget('invite_modal', function(widget){
 
+  Multify.bind('show_invite_modal', function(event, data){
+    data || (data={});
+    var invite_modal = $('.invite_modal:first');
+    invite_modal.find('input[name="invite[name]"]').val(data.name);
+    invite_modal.find('input[name="invite[email]"]').val(data.email);
+    invite_modal.modal('show');
+  });
+
   widget.initialize = function(){
     widget.S()
       ('.modal')

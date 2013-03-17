@@ -11,7 +11,7 @@ describe("widgets/invite_modal", function(){
   });
 
   function open_invite_modal(){
-    $('.invite_modal .modal').modal('show');
+    $('.invite_modal').modal('show');
   }
 
   function submit_invite(){
@@ -92,9 +92,15 @@ describe("widgets/invite_modal", function(){
 
   context('when the server responds with a 500', function(){
     it("should close the modal and flash a message saying the user is already a member of this project", function(){
-      spyOn(Multify.Modal.Flash, 'alert');
 
-      open_invite_modal();
+      runs(function(){
+        spyOn(Multify.Modal.Flash, 'alert');
+        spyOn(Multify.Flash, 'notice');
+        open_invite_modal();
+      });
+
+      waits(400);
+
       runs(function(){
         submit_invite();
 

@@ -4,7 +4,7 @@
     - if current_project.present?
       = render_widget :invite_modal, current_project
       = link_to current_project.name, project_conversations_url(current_project), class: 'brand'
-      %a(href="#invite_modal" role="button" class="btn btn-text-thin" data-toggle="modal")
+      %a(href="" role="button" class="btn btn-text-thin" data-toggle="modal" data-target=".invite_modal")
         %i.icon-plus
         Invite
 
