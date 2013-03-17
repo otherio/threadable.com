@@ -1,7 +1,8 @@
 class MessageDispatch
 
-  def initialize(message)
+  def initialize(message, options = {})
     @message = message
+    @options = options
   end
 
   def enqueue
@@ -9,7 +10,7 @@ class MessageDispatch
     project.project_memberships.all
 
     project.members_who_get_email.each do |user|
-      next if user.id == @message.user.id
+      next if user.id == @message.user.id && !@options[:email_sender]
 
       SendConversationMessageWorker.enqueue(
         :project_id                => project.id,

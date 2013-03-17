@@ -33,5 +33,17 @@ describe MessageDispatch do
       MessageDispatch.new(message).enqueue
     end
 
+    context "with options" do
+      it "sends email to the sender" do
+        project.members_who_get_email.each do |recipient|
+          SendConversationMessageWorker.should_receive(:enqueue).with(
+            hash_including( :recipient_email => recipient.email )
+          )
+        end
+
+        MessageDispatch.new(message, email_sender: true).enqueue
+      end
+
+    end
   end
 end
