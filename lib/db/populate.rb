@@ -6,8 +6,9 @@ class Db::Populate < MethodObject
 
     developers.each do |name|
       first, last = name.scan(/^(.+?) (.+)/).first
-      User.find_or_create_by_email(
-        email: "#{first.downcase}@other.io",
+      email = "#{first.downcase}@other.io"
+      User.find_by_email(email) or User.create(
+        email_addresses: [EmailAddress.new(address: email)],
         name: name,
         password: 'password',
       )
