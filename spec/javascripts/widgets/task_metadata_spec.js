@@ -1,3 +1,42 @@
+sharedExamplesForPopovers = function(selector) {
+  it("disables scrolling for the page when open", function() {
+    expect($('.conversations_layout .right').css('overflow')).toEqual('hidden');
+  });
+
+  it("re-enables scrolling when closed", function() {
+    $(selector).click();
+    expect($('.conversations_layout .right').css('overflow')).toEqual('scroll');
+  });
+
+  it("closes when pressing escape", function() {
+    runs(function() {
+      var press = jQuery.Event("keyup");
+      press.ctrlKey = false;
+      press.which = 27;
+      $("body").trigger(press);
+    });
+
+    waits(300);
+
+    runs(function() {
+      expect($(selector).parent()).not.toContain('.popover');
+    });
+  });
+
+  it("closes when clicking outside the popover", function() {
+    runs(function() {
+      $('html').click();
+    });
+
+    waits(300);
+
+    runs(function() {
+      expect($(selector).parent()).not.toContain('.popover');
+    });
+  });
+};
+
+
 describe("widgets/task_metadata", function(){
 
   beforeEach(function(){
@@ -16,10 +55,11 @@ describe("widgets/task_metadata", function(){
   });
 
   describe("Init", function() {
-    xit("sets up tooltips for doers", function() {
-
+    it("sets up tooltips for doers", function() {
+      var tooltipSpy = spyOn($.prototype, 'tooltip');
+      this.widget.initialize();
+      expect(tooltipSpy.callCount).toEqual($('.has-tooltip').length);
     });
-
   });
 
   describe("toggle the user as a doer", function() {
@@ -117,6 +157,45 @@ describe("widgets/task_metadata", function(){
     });
   });
 
+  describe("doer info popover", function() {
+    describe("initialize", function() {
+      it("binds the popover to doer avatars", function() {
+        var popoverSpy = spyOn($.prototype, 'popover');
+        this.widget.initialize();
+        expect(popoverSpy).toHaveBeenCalledWith({ html: true, trigger: 'manual', content: $('.doer-popover').first().html(), placement: 'bottom' });
+      });
+    });
+
+    describe("toggling the popover", function() {
+      var popover;
+
+      beforeEach(function() {
+        // dummy dom element for the scroll disabling behavior to work on.
+        $('body').append('<div class="conversations_layout"><div class="right"></div></div>');
+        $('.conversations_layout .right').css('overflow', 'scroll');
+
+        $('.doers .avatar-tiny').click();
+      });
+
+      it("opens when a doer avatar is clicked", function() {
+        expect($('.popover').is(':visible')).toBeTruthy();
+      });
+
+      it("disables the tooltip", function() {
+        $('.doers .avatar-tiny').mouseenter();
+        expect($('.tooltip').is(':visible')).toBeFalsy();
+      });
+
+      sharedExamplesForPopovers('.doers .avatar');
+
+      it("re-enables the tooltip", function() {
+        $('.doers .avatar-tiny').click();
+        $('.doers .avatar-tiny').mouseenter();
+
+        expect($('.tooltip').is(':visible')).toBeTruthy();
+      });
+    });
+  });
 
   describe("addDoersPopup", function() {
     describe("initialize", function() {
@@ -152,41 +231,7 @@ describe("widgets/task_metadata", function(){
           expect($("input.user-search")).toBeFocused();
         });
 
-        it("disables scrolling for the page when open", function() {
-          expect($('.conversations_layout .right').css('overflow')).toEqual('hidden');
-        });
-
-        it("re-enables scrolling when closed", function() {
-          $('.add-others').click();
-          expect($('.conversations_layout .right').css('overflow')).toEqual('scroll');
-        });
-
-        it("closes when pressing escape", function() {
-          runs(function() {
-            var press = jQuery.Event("keyup");
-            press.ctrlKey = false;
-            press.which = 27;
-            $("body").trigger(press);
-          });
-
-          waits(300);
-
-          runs(function() {
-            expect($('.task-controls')).not.toContain('.popover');
-          });
-        });
-
-        it("closes when clicking outside the popover", function() {
-          runs(function() {
-            $('html').click();
-          });
-
-          waits(300);
-
-          runs(function() {
-            expect($('.task-controls')).not.toContain('.popover');
-          });
-        });
+        sharedExamplesForPopovers('.add-others');
 
         describe("rendering user list", function() {
           it("displays a complete list of users", function() {
@@ -293,3 +338,4 @@ describe("widgets/task_metadata", function(){
     });
   });
 });
+
