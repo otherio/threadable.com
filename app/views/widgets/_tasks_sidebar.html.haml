@@ -23,7 +23,7 @@
           - if conversation.task?
             %i.icon-ok{ class: conversation.done? ? 'finished-check' : 'unfinished-check' }
           - else
-            %i.icon-comment-alt
+            %i.icon-comment-alt.read-message
           %span= conversation.subject
 
 .all_tasks
