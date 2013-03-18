@@ -1,1 +1,4 @@
-= render_widget :conversation_messages, Conversation.last, from: User.last
+- project = Project.find_by_name("UCSD Electric Racing", include: :members)
+- user    = project.members.first
+- conversation = project.conversations.find_by_subject('Welcome to our new Multify project!')
+= render_widget :conversation_messages, conversation, from: user

@@ -28,6 +28,18 @@ module ApplicationHelper
     content_tag(:strong, *args)
   end
 
+  def humanize_time datetime
+    ago = Time.now - datetime
+    case
+    when ago > 1.year
+      datetime.strftime('%-m/%-d/%Y')
+    when ago > 1.day
+      datetime.strftime('%b %-d')
+    else
+      datetime.strftime('%l:%M %p')
+    end
+  end
+
 end
 
 

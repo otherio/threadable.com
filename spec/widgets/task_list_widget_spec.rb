@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TaskListWidget do
 
-  let(:node_type){ :ol }
+  let(:node_type){ :ul }
   let(:tasks)     { double(:tasks) }
   let(:arguments) { [tasks] }
 
@@ -23,7 +23,7 @@ describe TaskListWidget do
   describe "html_options" do
     it "should return the expected hash" do
       subject.html_options.should == {
-        class: "task_list custom_class",
+        class: "task_list custom_class conversations",
       }
     end
   end

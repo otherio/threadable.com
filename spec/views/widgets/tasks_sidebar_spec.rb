@@ -30,6 +30,7 @@ describe "tasks_sidebar" do
       not_done_tasks: not_done_tasks,
       my_done_tasks: my_done_tasks,
       my_not_done_tasks: my_not_done_tasks,
+      with_title: false,
     }
   end
 
@@ -47,7 +48,7 @@ describe "tasks_sidebar" do
   end
 
   it "should be a think" do
-    conversation_elements = html.css('.conversations > ol > li')
+    conversation_elements = html.css('.conversation')
     conversation_elements.size.should == 3
     conversation_elements[0][:'data-conversation-id'].should == "0"
     conversation_elements[1][:'data-conversation-id'].should == "2"

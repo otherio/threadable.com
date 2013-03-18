@@ -1,7 +1,9 @@
 class TaskListWidget < Rails::Widget::Presenter
 
-  node_type :ol
+  node_type :ul
 
   arguments :tasks
+
+  classname 'conversations'
 
 end

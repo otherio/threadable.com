@@ -12,7 +12,7 @@ class TasksController < ApplicationController
     @project = current_user.projects.where(slug: params[:project_id]).includes(:tasks).first
 
     if request.xhr?
-      render text: view_context.render_widget(:tasks_sidebar, project)
+      render_widget
     else
       render nothing: true, status: :not_found
     end
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
       if @task.save
         format.html {
           if request.xhr?
-            render text: view_context.render_widget(:tasks_sidebar, project)
+            render_widget
           else
             redirect_to project_conversation_url(project, @task)
           end
@@ -71,6 +71,15 @@ class TasksController < ApplicationController
 
   def project
     @project ||= current_user.projects.find_by_slug!(params[:project_id])
+  end
+
+  def render_widget
+    conversations = params[:conversations] == "false" ? false : nil
+    with_title = params[:with_title] == "true" ? true : nil
+    render text: view_context.render_widget(:tasks_sidebar, project,
+      conversations: conversations,
+      with_title: with_title
+    )
   end
 
 end

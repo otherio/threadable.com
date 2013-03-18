@@ -4,8 +4,9 @@ class Conversation < ActiveRecord::Base
 
   belongs_to :project
   belongs_to :creator, class_name: 'User'
-  has_many :messages
+  has_many :messages, order: 'messages.created_at ASC'
   has_many :events
+  has_many :participants, through: :messages, source: :user, uniq: true, order: nil
 
   default_scope order('conversations.updated_at DESC')
 

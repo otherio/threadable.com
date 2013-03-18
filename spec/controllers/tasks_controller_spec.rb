@@ -85,8 +85,10 @@ describe TasksController do
           controller.stub(:view_context).and_return(view_context)
 
           view_context.should_receive(:render_widget).
-            with(:tasks_sidebar, project).
-            and_return("FAKE TASKS SIDEBAR WIDGET")
+            with(:tasks_sidebar, project,
+              conversations: nil,
+              with_title: nil
+            ).and_return("FAKE TASKS SIDEBAR WIDGET")
 
           expect { xhr :post, :create, valid_params }.to change(Task, :count).by(1)
           assigns(:task).should be_a(Task)

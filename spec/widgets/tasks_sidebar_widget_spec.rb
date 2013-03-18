@@ -38,6 +38,7 @@ describe TasksSidebarWidget do
   end
 
   before do
+    conversations.stub(:includes).and_return(conversations)
     view.stub(:current_user).and_return(current_user)
     tasks.stub(:includes).with(:doers).and_return(tasks)
   end
@@ -59,6 +60,7 @@ describe TasksSidebarWidget do
         not_done_tasks: [conversations[1], conversations[3], conversations[5], conversations[9]],
         my_done_tasks: [conversations[2], conversations[8]],
         my_not_done_tasks: [conversations[5]],
+        with_title: false,
       }
     end
   end
@@ -68,6 +70,8 @@ describe TasksSidebarWidget do
     it do
       should == {
         class: "tasks_sidebar custom_class",
+        'data-conversations' => true,
+        'data-with_title' => false,
       }
     end
   end

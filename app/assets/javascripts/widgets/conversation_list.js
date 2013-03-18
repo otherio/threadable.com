@@ -2,7 +2,7 @@ Multify.Widget('conversation_list', function(widget){
 
   widget.initialize = function(){
     S('.conversation_list')
-      ('.conversations > *')
+      ('.conversation')
         .bind('mouseenter', widget.onConversationMouseEnter)
         .bind('mouseleave', widget.onConversationMouseLeave)
       .end

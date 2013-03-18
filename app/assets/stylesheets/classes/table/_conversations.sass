@@ -1,0 +1,25 @@
+table.conversations
+  table-layout: fixed
+  width: 100%
+  border-top: 1px solid gainsboro
+  tr
+    border-bottom: 1px solid gainsboro
+    &:hover, &.hover
+      background-color: #FFFFD6
+  td
+    overflow: hidden
+    white-space: nowrap
+    padding: 1px 0
+    a
+      text-decoration: none
+
+    &.participants
+      width: 30%
+
+    &.subject
+      width: auto
+      text-overflow: ellipsis
+
+    &.datetime
+      width: 100px
+      text-align: right

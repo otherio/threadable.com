@@ -1,0 +1,41 @@
+ul.conversations
+  list-style-type: none
+  margin: 0
+  border-top: 1px solid gainsboro
+  li
+    position: relative
+    border-bottom: 1px solid gainsboro
+    padding: 1px 5px
+    a
+      display: block
+      margin: 0 18px
+      white-space: nowrap
+      text-overflow: ellipsis
+      overflow: hidden
+      text-decoration: none
+
+    .icon-ok, .icon-comment-alt
+      position: absolute
+      top: 5px
+      left: 0
+
+    .icon-reorder
+      display: none
+
+    &:hover, &.hover
+      background-color: #FFFFD6
+
+
+  &.sortable
+    li
+      &.sortable-placeholder
+        height: 20px
+        border: 1px dashed #CCC
+        background: none
+      .icon-reorder
+        display: block
+        position: absolute
+        top: 5px
+        right: 0
+        color: gainsboro
+        cursor: move

@@ -10,7 +10,7 @@ class ConversationsController < ApplicationController
     @conversations = project.conversations.includes(events: :user, messages: :user).all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render layout: 'application' }
       format.json { render json: @conversations }
     end
   end

@@ -8,7 +8,7 @@ Multify.Widget('tasks_sidebar', function(widget){
           .bind('keyup', widget.onValueChange)
         .end
       .end
-      ('.lists li')
+      ('.task')
         .bind('mouseenter', widget.onTaskMouseEnter)
         .bind('mouseleave', widget.onTaskMouseLeave)
       .end
@@ -46,6 +46,7 @@ Multify.Widget('tasks_sidebar', function(widget){
 
     var request = $.ajax({
       url:      widget.path(),
+      data:     element.closest('.tasks_sidebar').data(),
       type:     'GET',
       dataType: 'html'
     });
@@ -57,7 +58,7 @@ Multify.Widget('tasks_sidebar', function(widget){
     return request;
   };
 
-  widget.replace = function(html){
+  widget.replace = function(html, refocus){
     var element = widget.$();
     html = $(html);
     element = element.map(function(){
@@ -70,7 +71,7 @@ Multify.Widget('tasks_sidebar', function(widget){
       return new_html[0];
     });
     widget.reset();
-    setTimeout(function(){ element.find('input:first').focus(); });
+    if (refocus) setTimeout(function(){ element.find('input:first').focus(); });
   };
 
   widget.reset = function(element){
@@ -86,25 +87,27 @@ Multify.Widget('tasks_sidebar', function(widget){
       root    = form.closest('.tasks_sidebar'),
       input   = form.find('input'),
       subject = input.val();
-    if (subject) widget.createTask(root, subject);
+    if (subject) widget.createTask(root, subject, true);
     input.val('');
 
     return widget;
   };
 
-  widget.createTask = function(element, subject){
+  widget.createTask = function(element, subject, refocus){
     element || (element =  widget.$());
     var url = element.find('form').attr('action');
+
+    var data = $.extend(element.closest('.tasks_sidebar').data(), {task:{subject:subject}});
 
     var request = $.ajax({
       url:      url,
       type:    'POST',
-      data:     {task:{subject:subject}},
+      data:     data,
       dataType: 'html'
     });
 
     request.success(function(html){
-      widget.replace(html);
+      widget.replace(html, refocus);
     });
 
     request.error(function(){

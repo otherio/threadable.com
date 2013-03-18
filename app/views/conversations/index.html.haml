@@ -1,1 +1,7 @@
-= render_widget :conversation_list, @project, conversations: @conversations
+.tasks-and-conversations-layout
+  .left
+    .padding
+      = render_widget :tasks_sidebar, @project, conversations: false, tasks: @tasks, with_title: true
+  .right
+    .padding
+      = render_widget :conversation_list, @project, conversations: @conversations

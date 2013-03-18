@@ -4,8 +4,14 @@
   %li
     = link_to "Compose", new_project_conversation_url(project), class: 'btn btn-text-thin'
 
-%ul.conversations
-  - conversations.each do |conversation|
-    %li.conversation{title: conversation.subject, "data-conversation-id" => conversation.id}
-      = link_to project_conversation_path(project, conversation) do
-        (#{conversation.messages.count}) #{conversation.subject}
+%table.conversations
+  %tbody
+    - conversations.each do |conversation|
+      %tr.conversation{title: conversation.subject, "data-conversation-id" => conversation.id}
+        %td.participants
+          = conversation.participants.map{|p| p.name.split(/\s+/).first }.join(', ')
+          (#{conversation.messages.count})
+        %td.subject
+          = link_to conversation.subject, project_conversation_path(project, conversation)
+        %td.datetime
+          = humanize_time conversation.updated_at

@@ -144,6 +144,10 @@ describe("widgets/task_metadata", function(){
           mostRecentAjaxRequest().response({status: 200, responseText: '[{"avatar_url":"http://gravatar.com/avatar/45b9d367acf9f3165389cb47d66b086d.png?s=48","created_at":"2013-02-18T00:50:44Z","email":"alice@ucsd.edu","id":1,"name":"Alice Neilson","slug":"alice-neilson","updated_at":"2013-02-18T00:51:27Z"},{"avatar_url":"http://gravatar.com/avatar/205511b09c34f87e73551c5d1323c7e3.png?s=48","created_at":"2013-02-18T00:50:45Z","email":"tom@ucsd.edu","id":2,"name":"Tom Canver","slug":"tom-canver","updated_at":"2013-02-18T00:50:45Z"},{"avatar_url":"http://gravatar.com/avatar/77cdc97fe3b7dc8e9a70d766bb334ecd.png?s=48","created_at":"2013-02-18T00:50:45Z","email":"yan@ucsd.edu","id":3,"name":"Yan Hzu","slug":"yan-hzu","updated_at":"2013-02-18T00:50:45Z"},{"avatar_url":"http://gravatar.com/avatar/e7389b0cd051a081509fdb134045a51b.png?s=48","created_at":"2013-02-18T00:50:46Z","email":"bethany@ucsd.edu","id":4,"name":"Bethany Pattern","slug":"bethany-pattern","updated_at":"2013-02-18T00:50:46Z"},{"avatar_url":"http://gravatar.com/avatar/b09a1a251e7c5bb5915c9e577bc562f8.png?s=48","created_at":"2013-02-18T00:50:46Z","email":"bob@ucsd.edu","id":5,"name":"Bob Cauchois","slug":"bob-cauchois","updated_at":"2013-02-18T00:50:46Z"}]'});
         });
 
+        afterEach(function(){
+          $('.conversations_layout').remove();
+        });
+
         it("focuses the input field immediately", function() {
           expect($("input.user-search")).toBeFocused();
         });

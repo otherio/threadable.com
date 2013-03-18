@@ -4,8 +4,6 @@ class Message < ActiveRecord::Base
   belongs_to :parent_message, :class_name => 'Message', :foreign_key => 'parent_id'
   belongs_to :user
 
-  default_scope order('messages.created_at ASC')
-
   attr_accessible(
     :subject,
     :body,

@@ -11,9 +11,9 @@ module CapybaraEnvironment::Elements
     when 'the tasks sidebar'
       '.tasks_sidebar'
     when 'the done tasks list'
-      '.tasks_sidebar .done ol'
+      '.tasks_sidebar .done .task_list'
     when 'the not done tasks list'
-      '.tasks_sidebar .not_done ol'
+      '.tasks_sidebar .not_done .task_list'
     when 'the list of doers for this task'
       '.task_metadata .doers'
     end

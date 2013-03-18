@@ -1,18 +1,24 @@
-.btn-group{'data-toggle' => "buttons-radio"}
-  %button.btn.btn-mini.conversations Conversations
-  %button.btn.btn-mini.all_tasks All Tasks
-  %button.btn.btn-mini.my_tasks My Tasks
+.clearfix
+  .pull-right.btn-group{'data-toggle' => "buttons-radio"}
+    - if conversations
+      %button.btn.btn-mini.conversations Conversations
+    %button.btn.btn-mini.all_tasks All Tasks
+    %button.btn.btn-mini.my_tasks My Tasks
+  - if with_title
+    %h2 Tasks
 
-%form.input-append{action: project_tasks_path(project)}
-  %input{type: "text", name: "subject"}
-  %button.btn{disabled: true}
-    %i.icon-plus
+.form
+  %form.input-append{action: project_tasks_path(project)}
+    .input
+      %input{type: "text", name: "subject", placeholder: "new task..."}
+    %button.btn{disabled: true}
+      %i.icon-plus
 
-.conversations
-  %ol
+- if conversations
+  %ul.conversations
     - conversations.each do |conversation|
       - next if conversation.new_record?
-      %li.task.clearfix{title: conversation.subject, "data-conversation-id" => conversation.id}
+      %li.conversation.clearfix{title: conversation.subject, "data-conversation-id" => conversation.id}
         = link_to project_conversation_url(conversation.project, conversation) do
           - if conversation.task?
             %i.icon-ok{ class: conversation.done? ? 'finished-check' : 'unfinished-check' }
