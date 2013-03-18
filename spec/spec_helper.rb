@@ -15,6 +15,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.include TestEnvironment
+  config.include ResqueUnit::Assertions
   config.include CapybaraEnvironment, :type => :request
   config.include CapybaraEnvironment, :type => :acceptance
 
@@ -23,6 +24,8 @@ RSpec.configure do |config|
   end
 
   config.before :each do |spec|
+    Resque.reset!
+    ActionMailer::Base.deliveries.clear
     Rails.application.routes.stub(:default_url_options).and_return(Rails.application.routes.default_url_options.try(:dup) || {})
     Rails.configuration.action_controller.stub(:default_url_options).and_return({})
     Rails.configuration.action_mailer.stub(:default_url_options).and_return({})

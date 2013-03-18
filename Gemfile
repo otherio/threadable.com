@@ -57,6 +57,7 @@ group :test do
   gem 'resque_spec'
   gem 'timecop'
   gem 'launchy'
+  gem 'resque_unit'
 end
 
 # we need this as long as we are goig to load fixtures in prod

@@ -9,8 +9,9 @@ class MessageDispatch
     project = @message.conversation.project
     project.project_memberships.all
 
+
     project.members_who_get_email.each do |user|
-      next if user.id == @message.user.id && !@options[:email_sender]
+      next if !@options[:email_sender] && user.id == @message.user.id
 
       SendConversationMessageWorker.enqueue(
         :project_id                => project.id,

@@ -1,5 +1,7 @@
 class MessagesController < ApplicationController
 
+  before_filter :authenticate_user!
+
   # POST /:project_id/conversations/:conversation_id/messages
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create

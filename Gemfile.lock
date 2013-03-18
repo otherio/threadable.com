@@ -254,6 +254,8 @@ GEM
     resque_spec (0.13.0)
       resque (>= 1.19.0)
       rspec (>= 2.5.0)
+    resque_unit (0.4.4)
+      json (>= 1.4.6)
     rspec (2.12.0)
       rspec-core (~> 2.12.0)
       rspec-expectations (~> 2.12.0)
@@ -368,6 +370,7 @@ DEPENDENCIES
   rb-fsevent
   resque!
   resque_spec
+  resque_unit
   rspec
   rspec-rails
   sass-rails
