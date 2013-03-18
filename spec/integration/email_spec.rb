@@ -128,7 +128,7 @@ EMAIL
 
         ActionMailer::Base.deliveries.each do |email|
           email.body.should include complex_message_body
-          email.subject.should == "√ [ucsd-el] #{conversation.subject}"
+          email.subject.should == "✔ [ucsd-el] #{conversation.subject}"
         end
 
       end
