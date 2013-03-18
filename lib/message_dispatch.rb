@@ -17,6 +17,7 @@ class MessageDispatch
         :project_id                => project.id,
         :project_slug              => project.slug,
         :conversation_slug         => @message.conversation.slug,
+        :is_a_task                 => @message.conversation.task?,
         :message_subject           => @message.subject,
         :sender_name               => @message.user.name,
         :sender_email              => @message.user.email,

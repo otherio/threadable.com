@@ -1,3 +1,4 @@
+# Encoding: UTF-8
 class ConversationMailer < ActionMailer::Base
 
   def conversation_message(data)
@@ -7,6 +8,9 @@ class ConversationMailer < ActionMailer::Base
 
     subject = @data[:message_subject].include?("[#{subject_tag}]") ?
       @data[:message_subject] : "[#{subject_tag}] #{@data[:message_subject]}"
+
+    # add a check mark to the subect if the conversation is a task, and if the subject doesn't already include one
+    subject = "√ #{subject}" if @data[:is_a_task] && !subject.include?("√")
 
     from = %("#{@data[:sender_name]}" <#{@data[:sender_email]}>)
 

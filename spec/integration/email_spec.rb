@@ -1,3 +1,4 @@
+# Encoding: UTF-8
 require 'spec_helper'
 
 describe "email" do
@@ -81,7 +82,7 @@ EMAIL
 
     context "replying to an existing conversation" do
 
-      let(:conversation){ project.conversations.first }
+      let(:conversation){ project.tasks.first }
 
       def params
         {message: {body: complex_message_body} }
@@ -106,6 +107,7 @@ EMAIL
             :project_id                => project.id,
             :project_slug              => project.slug,
             :conversation_slug         => message.conversation.slug,
+            :is_a_task                 => message.conversation.task?,
             :message_subject           => message.subject,
             :sender_name               => message.user.name,
             :sender_email              => message.user.email,
@@ -126,6 +128,7 @@ EMAIL
 
         ActionMailer::Base.deliveries.each do |email|
           email.body.should include complex_message_body
+          email.subject.should == "√ [ucsd-el] #{conversation.subject}"
         end
 
       end
