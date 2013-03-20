@@ -7,6 +7,10 @@ Then /^I should see "(.*?)" as a doer of the task$/ do |doer|
   page.should have_selector(".task_metadata .doers .name", text: doer)
 end
 
+Then /^I should not see "(.*?)" as a doer of the task$/ do |doer|
+  page.should_not have_selector(".task_metadata .doers .name", text: doer)
+end
+
 Given /^I click doer "(.*?)"$/ do |name|
   find('a.item', text: name).click
 end
@@ -18,8 +22,9 @@ When /^I add a new task titled "(.*?)"$/ do |task_subject|
   end
 end
 
-When /^I add "(.*?)" as a doer for this task$/ do |doer_name|
-  click_on 'add others'
+When /^I (add|remove) "(.*?)" as a doer for this task$/ do |_, doer_name|
+
+  click_on 'add/remove others'
   fill_in 'add-others-typeahead', with: doer_name
   within('.popover .user-list'){ click_on doer_name }
 end

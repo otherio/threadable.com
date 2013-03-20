@@ -83,16 +83,18 @@ Multify.Widget('task_metadata', function(widget){
 
       var $item = $('<li class="item"><a href="" class="item">' +
         '<img class="avatar-small" src="' + user.avatar_url + '">' +
-        name + ' <span class="email pull-right">&lt;' + email + '&gt; </span>' +
+        name + ' <span class="email">&lt;' + email + '&gt; </span>' +
         '</a></li>');
 
       $container.append($item);
 
       if (userIsAlreadyDoer) {
-        $item.addClass("disabled");
-      }
-
-      else {
+        $item.addClass("active_doer");
+        $item.click(function(e) {
+          e.preventDefault();
+          removeUser(user);
+        });
+      } else {
         $item.click(function(e) {
           e.preventDefault();
           pickUser(user);
@@ -177,6 +179,7 @@ Multify.Widget('task_metadata', function(widget){
     var user_icon = widget.$('.doers .avatar[data-user="'+user.id+'"]');
 
     user_icon.replaceWith('<i class="icon-spinner icon-spin"/>');
+    closePopover();
   };
 
   var closePopover = function() {

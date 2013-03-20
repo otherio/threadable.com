@@ -16,8 +16,10 @@ describe("widgets/task_metadata", function(){
   });
 
   describe("Init", function() {
-    xit("sets up tooltips for doers", function() {
-
+    it("sets up tooltips for doers", function() {
+      var tooltipSpy = spyOn($.prototype, 'tooltip');
+      this.widget.initialize();
+      expect(tooltipSpy.callCount).toEqual($('.has-tooltip').length);
     });
 
   });
@@ -199,14 +201,8 @@ describe("widgets/task_metadata", function(){
             expect($('.popover-content .user-list li').html()).toMatch(/http:\/\/gravatar.com\/avatar\//);
           });
 
-          it("disables users who are already doers", function() {
-            expect($('.popover-content .user-list li.disabled').text()).toMatch(/Tom Canver/);
-            $('.popover-content .user-list li.disabled').click();
-            waits(300);
-
-            runs(function() {
-              expect($('.task-controls')).toContain('.popover');
-            });
+          it("highlights users who are already doers", function() {
+            expect($('.popover-content .user-list li.active_doer').text()).toMatch(/Tom Canver/);
           });
         });
 
@@ -261,6 +257,40 @@ describe("widgets/task_metadata", function(){
             var tipSpy = spyOn($.prototype, 'tooltip');
             mostRecentAjaxRequest().response({status: 201, responseText: ''});
             expect(tipSpy).toHaveBeenCalled();
+          });
+        });
+
+        describe("removing doers", function() {
+          beforeEach(function() {
+            $('.popover-content .user-list li.active_doer').first().click();
+          });
+
+          it("removes the clicked doer", function() {
+            var request = mostRecentAjaxRequest();
+            expect(request.url).toEqual(Multify.project_task_doer_path(ENV.currentProject.slug, ENV.currentConversation.slug, 2));
+            expect(request.method).toEqual('DELETE');
+          });
+
+          it("closes the popover", function() {
+            waits(300);
+
+            runs(function() {
+              expect($('.task-controls')).not.toContain('.popover');
+            });
+          });
+
+          it("updates the displayed list of doers on the task", function() {
+            expect($('.doers')).toContain('i.icon-spinner');
+            mostRecentAjaxRequest().response({status: 201, responseText: ''});
+            expect($('.doers')).not.toContain('i.icon-spinner');
+            expect($('.doers')).not.toContain('img[alt="Tom Canver"]');
+            expect(_.find(Multify.currentTaskDoers, function(doer) { return doer.name == "Tom Canver"})).toBeFalsy();
+          });
+
+          it("removes the spinner on failure", function() {
+            expect($('.doers')).toContain('i.icon-spinner');
+            mostRecentAjaxRequest().response({status: 500, responseText: ''});
+            expect($('.doers')).not.toContain('i.icon-spinner');
           });
         });
 

@@ -27,9 +27,19 @@ Feature: Projects and Tasks
     I want to communicate other people's interest in a task
     Given I am "Alice Neilson"
       And I am on the task "install mirrors"
-      And I click "add others"
-      And I click doer "Bethany Pattern"
+     When I add "Bethany Pattern" as a doer for this task
      Then I should see "Bethany Pattern" as a doer of the task
+
+
+@javascript
+  Scenario: I want to remove someone as a doer of a task
+    As a member of the project
+    I want to communicate other people's interest in a task
+    Given I am "Alice Neilson"
+      And I am on the task "layup body carbon"
+     When I remove "Yan Hzu" as a doer for this task
+     Then I should not see "Yan Hzu" as a doer of the task
+
 
 
 

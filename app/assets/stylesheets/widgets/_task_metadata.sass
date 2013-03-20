@@ -29,7 +29,8 @@
       width: 258px
 
     .user-list
-      overflow: auto
+      overflow: hidden
+      white-space: nowrap
       max-height: 300px
 
       ul
@@ -60,6 +61,6 @@
         strong
           color: rgb(95,95,95)
 
-      li.disabled
+      li.active_doer
+        font-weight: bold
         opacity: 0.4
-        cursor: default
