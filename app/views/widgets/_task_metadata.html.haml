@@ -12,24 +12,9 @@
       %i.icon-bolt
       doers:
       - task.doers.each do |doer|
-        %span.avatar<>
-          %span.has-tooltip{:"data-user" => doer.id, :"data-toggle" => "tooltip", :"data-placement" => "bottom", title: doer.name}<>
-            = image_tag(doer.avatar_url, :class => 'avatar-tiny', alt: doer.name)
+        %span.avatar.has-tooltip{:"data-user" => doer.id, :"data-toggle" => "tooltip", title: doer.name}<>
+          = image_tag(doer.avatar_url, :class => 'avatar-tiny', alt: doer.name)
           %span.name<>= doer.name
-          %span.doer-popover
-            .doer-info
-              = image_tag(doer.avatar_url, :class => 'avatar pull-left', alt: doer.name)
-              .doer-name
-                = doer.name
-              .doer-email
-                %a.control-link.text-info{href: "mailto:#{doer.email}"}
-                  %i.icon-envelope
-                  = doer.email
-              .doer-remove-link
-                %a.control-link.text-info
-                  %i.icon-remove
-                  remove
-                  = doer.name
 
     %span.muted
       %a.control-link.muted.pull-right{href:""}

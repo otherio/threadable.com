@@ -8,20 +8,11 @@ Multify.Widget('task_metadata', function(widget){
       trigger: 'manual'
     });
 
-    widget.$('.doers .avatar').each(function(index, avatar) {
-      $(avatar).popover({
-        content: $(avatar).find('.doer-popover').html(),
-        html: true,
-        trigger: 'manual',
-        placement: 'bottom'
-      });
-    });
-
     $(document).keyup(onKeyDown);
 
     widget.$('.add-others').click(onTogglePopover);
+
     widget.$('.toggle-doer-self').click(onToggleDoer);
-    widget.$('.doers > .avatar').click(onToggleDoerPopover);
   };
 
   widget.getCurrentProjectMembers = function(callback) {
@@ -203,7 +194,9 @@ Multify.Widget('task_metadata', function(widget){
       widget.getCurrentProjectMembers(renderUserList);
       widget.$('input.user-search').keyup(function() { renderUserList(widget.users); updateInviteButton(); });
       widget.$('input.user-search').focus();
-      isolatePopover(function() { closePopover(); });
+      widget.$('.popover').on('click', function(e) { e.stopPropagation(); });  // clicking the popover doesn't close it
+      $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closePopover(); } );
+      $('.conversations_layout .right').css('overflow', 'hidden');
       widget.$('.invite-link').click(showInviteModal);
     }
   };
@@ -227,38 +220,6 @@ Multify.Widget('task_metadata', function(widget){
     var code = e.keyCode ? e.keyCode : e.which;
     if (code == 27) {
       closePopover();
-      closeDoerPopover();
     }
-  };
-
-  var onToggleDoerPopover = function(e) {
-    e.stopPropagation();
-    if ($(e.currentTarget).parent().find('.popover').length ) {
-      console.log('closing');
-      closeDoerPopover(e.currentTarget);
-    } else {
-      console.log('opening');
-      openDoerPopover(e.currentTarget);
-    }
-  };
-
-  var openDoerPopover = function(doerSelector) {
-    $(doerSelector).popover('show');
-    $(doerSelector).find('.has-tooltip').tooltip('destroy');
-    isolatePopover(function() { closeDoerPopover(); });
-  };
-
-  var closeDoerPopover = function(doerSelector) {
-    doerSelector = doerSelector || '.doers .avatar';
-
-    $('.conversations_layout .right').css('overflow', 'scroll');
-    $(doerSelector).popover('hide');
-    $(doerSelector).find('.has-tooltip').tooltip(this.show, this.hide);
-  };
-
-  var isolatePopover = function(closeCallback) {
-    widget.$('.popover').on('click', function(e) { e.stopPropagation(); });  // clicking the popover doesn't close it
-    $('html').one('click', function(e) { e.preventDefault(); e.stopPropagation(); closeCallback(); } );
-    $('.conversations_layout .right').css('overflow', 'hidden');
   }
 });
