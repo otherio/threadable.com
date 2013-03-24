@@ -118,9 +118,14 @@ Multify.Widget('tasks_sidebar', function(widget){
   widget.showTab = function(tab_name, element){
     element || (element =  widget.$());
     tab_name = tab_name || localStorage['multify.widgets.tasks_sidebar.tab'] || 'all_tasks';
+    var button = element.find('.btn.'+tab_name);
+    if (button.length === 0){
+      tab_name = 'all_tasks';
+      button = element.find('.btn.'+tab_name);
+    }
     localStorage['multify.widgets.tasks_sidebar.tab'] = tab_name;
     element.closest('.tasks_sidebar').attr('showing', tab_name);
-    element.find('.btn.'+tab_name).addClass('active').siblings().removeClass('active');
+    button.addClass('active').siblings().removeClass('active');
     return widget;
   };
 
