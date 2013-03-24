@@ -71,7 +71,7 @@ describe ConversationMailer do
       mail_as_text.should =~ /Message-ID:/
       mail_as_text.should include 'This is the best project everz.'
       mail_as_text.should include "View on Multify: #{project_conversation_url(project, conversation)}"
-      mail_as_text =~ /multifyapp\.com\/#{Regexp.escape(project.slug)}\/unsubscribe\/(\S+)/
+      mail_as_text =~ /\/#{Regexp.escape(project.slug)}\/unsubscribe\/(\S+)/
 
       unsubscribe_token = $1
       unsubscribe_token.should_not be_blank

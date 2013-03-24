@@ -25,6 +25,8 @@ module CapybaraEnvironment
     Capybara.javascript_driver      = :selenium
     Capybara.default_selector       = :css
     Capybara.default_wait_time      = 5
+    Capybara.server_port = Rails.configuration.action_mailer.default_url_options[:port]
+    Capybara.server_host = Rails.configuration.action_mailer.default_url_options[:host]
     super
   end
 
