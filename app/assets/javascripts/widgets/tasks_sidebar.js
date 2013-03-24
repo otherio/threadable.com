@@ -117,6 +117,7 @@ Multify.Widget('tasks_sidebar', function(widget){
 
   widget.showTab = function(tab_name, element){
     element || (element =  widget.$());
+    element = element.closest('.tasks_sidebar');
     tab_name = tab_name || localStorage['multify.widgets.tasks_sidebar.tab'] || 'all_tasks';
     var button = element.find('.btn.'+tab_name);
     if (button.length === 0){
@@ -124,7 +125,7 @@ Multify.Widget('tasks_sidebar', function(widget){
       button = element.find('.btn.'+tab_name);
     }
     localStorage['multify.widgets.tasks_sidebar.tab'] = tab_name;
-    element.closest('.tasks_sidebar').attr('showing', tab_name);
+    element.attr('showing', tab_name);
     button.addClass('active').siblings().removeClass('active');
     return widget;
   };
