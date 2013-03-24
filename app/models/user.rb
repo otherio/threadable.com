@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   devise(
     :database_authenticatable,
     :registerable,
+    :confirmable,
     :recoverable,
     :rememberable,
     :trackable,
@@ -110,7 +111,8 @@ class User < ActiveRecord::Base
   private
 
   def password_required?
-    @password_required.nil? ? true : @password_required
+    return @password_required unless @password_required.nil?
+    confirmed?
   end
 
   def default_values

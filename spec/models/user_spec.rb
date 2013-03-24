@@ -11,7 +11,7 @@ describe User do
 
   it { should validate_presence_of :name }
   it { should validate_presence_of :email }
-  it { should validate_confirmation_of :password }
+  # it { should validate_confirmation_of :password } # this is only when confirmed
 
   it { should allow_mass_assignment_of :name }
   it { should allow_mass_assignment_of :email }
@@ -36,10 +36,29 @@ describe User do
     user.errors.messages[:email].should include "has already been taken"
   end
 
-  it "should validate the length of password" do
-    build_user_with_password("").should_not be_valid
-    build_user_with_password("boo").should_not be_valid
-    build_user_with_password("booyakasha").should be_valid
+  context "when confirmed" do
+    def build_user_with_password password
+      super.tap{|user| user.confirmed_at = Time.now }
+    end
+    it "should validate the length of password" do
+      build_user_with_password("").should_not be_valid
+      build_user_with_password("boo").should_not be_valid
+      build_user_with_password("booyakasha").should be_valid
+    end
+
+    it "should validate that password and password_confirmation match" do
+      FactoryGirl.build(:user,
+        password: 'abcdefgh',
+        password_confirmation: 'ijklmnop',
+        confirmed_at: Time.now
+      ).should_not be_valid
+
+      FactoryGirl.build(:user,
+        password: 'abcdefgh',
+        password_confirmation: 'abcdefgh',
+        confirmed_at: Time.now
+      ).should be_valid
+    end
   end
 
   describe "#find_by_email" do
@@ -95,6 +114,35 @@ describe User do
     it "should include email by default" do
       user = FactoryGirl.build(:user)
       user.as_json['email'].should == user.email
+    end
+  end
+
+  describe "password_required?" do
+    context "when confirmed" do
+      let(:user){ User.where('confirmed_at IS NOT NULL').first }
+      it "should be true" do
+        user.send(:password_required?).should be_true
+      end
+    end
+    context "when not confirmed" do
+      let(:user){ FactoryGirl.create(:user, confirmed_at: nil) }
+      it "should be false" do
+        user.send(:password_required?).should be_false
+      end
+    end
+    context "when @password_required is truthy" do
+      let(:user){ User.new }
+      before{ user.password_required = 42 }
+      it "should be true" do
+        user.send(:password_required?).should be_true
+      end
+    end
+    context "when @password_required is false" do
+      let(:user){ User.new }
+      before{ user.password_required = false }
+      it "should be true" do
+        user.send(:password_required?).should be_false
+      end
     end
   end
 

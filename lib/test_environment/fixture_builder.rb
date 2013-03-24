@@ -33,7 +33,7 @@ class TestEnvironment::FixtureBuilder
   end
 
   def create_user name, email
-    users[name] = User.create!(email: email, name: name, password: 'password')
+    users[name] = FactoryGirl.create(:user, email: email, name: name, password: 'password')
   end
 
   def invite_user name, email
@@ -45,6 +45,7 @@ class TestEnvironment::FixtureBuilder
   end
 
   def accept_invite name
+    user(name).confirm!
     project.members << user(name)
   end
 

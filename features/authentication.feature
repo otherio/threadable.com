@@ -35,43 +35,6 @@ Scenario: Failing to log in
     And I click the "Sign in" button
    Then I should see "Invalid email or password"
 
-Scenario: Signing up through the join form
-  I should be able to create an account
-  with a valid email address
-  that isn't already used
-  and the password fields match
-  Given I am not a member
-   When I go to the join page
-    And I fill in "Name" with "Audrey Penven"
-    And I fill in "Email" with "audrey.penven@gmail.com"
-    And I fill in "user_password" with "password"
-    And I fill in "user_password_confirmation" with "password"
-    And I click "Sign up"
-    And I should be logged in as "Audrey Penven"
-
-Scenario: Account creation fails if passwords don't match
-  I should not be able to create an account if the password and passowrd confirmation don't match
-  Given I am not a member
-   When I go to the join page
-    And I fill in "Name" with "Audrey Penven"
-    And I fill in "Email" with "audrey.penven@gmail.com"
-    And I fill in "user_password" with "password"
-    And I fill in "user_password_confirmation" with "nonmatchingpassword"
-    And I click "Sign up"
-   Then I should see "Password doesn't match confirmation"
-
-Scenario: Account creation fails if email is already used
-  If an account already exists for this email address
-  I should not be able to create another one
-  Given I am not logged in
-    And I go to the join page
-    And I fill in "Name" with "Alice Neilson"
-    And I fill in "Email" with "alice@ucsd.multifyapp.com"
-    And I fill in "user_password" with "password"
-    And I fill in "user_password_confirmation" with "password"
-    And I click "Sign up"
-   Then I should see "Email has already been taken"
-
 Scenario: Forgot password form works for existing users
   If I have an account
   and I forget my password

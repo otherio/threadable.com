@@ -21,6 +21,7 @@ gem 'omniauth'
 gem 'omniauth-clef'
 gem 'encryptor'
 gem 'acts_as_list'
+gem 'simple_form'
 
 group :assets do
   gem 'compass-rails'

@@ -10,7 +10,14 @@ Multify::Application.routes.draw do
 
   get '/development' => 'development#index'
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  # get "users/confirmation" => "confirmations#show", as: 'user_confirmation'
+  devise_for :users, :controllers => {
+    :confirmations => 'confirmations',
+    :omniauth_callbacks => "users/omniauth_callbacks",
+  }
+  devise_scope :user do
+    put "/users/confirm" => "confirmations#confirm", as: 'user_confirm'
+  end
 
   resources :users do
   #   resources :tasks

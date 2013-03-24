@@ -1,0 +1,8 @@
+%h2 Sign up. All we need is your email address.
+= simple_form_for(resource, :as => resource_name, :url => user_registration_path(resource)) do |form|
+  = devise_error_messages!
+  = form.input :name, :input_html => {required: true}
+  = form.input :email, :input_html => {required: true, :autofocus => true}
+  = form.submit "Sign up"
+
+=# render 'shared/links'

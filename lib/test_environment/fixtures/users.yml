@@ -3,7 +3,7 @@ jonathan_spray:
   id: 6
   name: Jonathan Spray
   slug: jonathan-spray
-  encrypted_password: $2a$04$651Zf1k960kjRZA8Az8KGueOQUKFyAfqJjr.hnzzn/yfd6tZnuyhS
+  encrypted_password: $2a$04$XlaFKNfi2ky67bc.BYm.0eRnbYBi44ipgtpQCmvgFVPYaS24ymv3W
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -13,12 +13,12 @@ jonathan_spray:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.129184000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: jADi368Y35eRVyhVasf2
-  created_at: 2013-03-17 22:20:40.122167000 Z
-  updated_at: 2013-03-17 22:20:40.122167000 Z
+  authentication_token: qwBVgYKHtH3piTTicsyi
+  created_at: 2013-03-24 23:12:21.133908000 Z
+  updated_at: 2013-03-24 23:12:21.133908000 Z
   avatar_url: http://gravatar.com/avatar/233ba14e9cc014a3ba99153c85c1b4e4.png?s=48&d=retro
   provider: 
   uid: 
@@ -26,7 +26,7 @@ alice_neilson:
   id: 1
   name: Alice Neilson
   slug: alice-neilson
-  encrypted_password: $2a$04$gAGmy3ozK8d3zvM9PjT3EennwlNf.bJ6/D48hqjZUJ0noMdoMm2qq
+  encrypted_password: $2a$04$YCy52iGZfbDztjlO3vOAQ.Q52cJXhVXa3B5.jhF47vQp3eDKmp.Mm
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -36,12 +36,12 @@ alice_neilson:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:20.911412000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 8s8ToRHzq3ZMrD4T8xDk
-  created_at: 2013-03-17 22:20:39.888317000 Z
-  updated_at: 2013-03-17 22:20:40.161055000 Z
+  authentication_token: QrorgRXyPMaiwVkfh5z5
+  created_at: 2013-03-24 23:12:20.934659000 Z
+  updated_at: 2013-03-24 23:12:21.170885000 Z
   avatar_url: /assets/fixtures/alice.jpg
   provider: 
   uid: 
@@ -49,7 +49,7 @@ tom_canver:
   id: 2
   name: Tom Canver
   slug: tom-canver
-  encrypted_password: $2a$04$y8HOo2nOxpVBmB4KGgHL3ugZaSxwhUffCjWfdcHiDROQITF0YWOCq
+  encrypted_password: $2a$04$bgFAuJ.y00CgeXp7s5uRdedZsAIMX3KUldnMxH7zImgkhjAVud3ii
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -59,12 +59,12 @@ tom_canver:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.074588000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: eJYcZqrYWqpAKx5jMsUm
-  created_at: 2013-03-17 22:20:40.049935000 Z
-  updated_at: 2013-03-17 22:20:40.167664000 Z
+  authentication_token: sJdHzVg5PAxKsp1q7TQC
+  created_at: 2013-03-24 23:12:21.079889000 Z
+  updated_at: 2013-03-24 23:12:21.175665000 Z
   avatar_url: /assets/fixtures/tom.jpg
   provider: 
   uid: 
@@ -72,7 +72,7 @@ bob_cauchois:
   id: 5
   name: Bob Cauchois
   slug: bob-cauchois
-  encrypted_password: $2a$04$3NRhAaf/EvU/0JOWofWIv.uzuGyjxq0k6/q/5OFV7.A/Mih1dhzNG
+  encrypted_password: $2a$04$zNUAYlCQkeEtjE68Z3GaoO5pV1U./q1NSDn5vgXoj3kq06zeVaPSS
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -82,12 +82,12 @@ bob_cauchois:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.114979000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 2iy3iodSYp3q8KyKFGZQ
-  created_at: 2013-03-17 22:20:40.105066000 Z
-  updated_at: 2013-03-17 22:20:40.173507000 Z
+  authentication_token: msXqVEuJS8ywWvNrEAWn
+  created_at: 2013-03-24 23:12:21.120084000 Z
+  updated_at: 2013-03-24 23:12:21.180145000 Z
   avatar_url: /assets/fixtures/bob.jpg
   provider: 
   uid: 
@@ -95,7 +95,7 @@ yan_hzu:
   id: 3
   name: Yan Hzu
   slug: yan-hzu
-  encrypted_password: $2a$04$ALdvgFiPwx1RiVN104ErHeIxopITobC36LJs6RrFLbel8JBQtWcfG
+  encrypted_password: $2a$04$IVh3FpxCyPWH6Kn0px6/Munmfo79ZjKHA.RdU8wUB1l3W7E4vlL5O
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -105,12 +105,12 @@ yan_hzu:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.087173000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: yJVvCzYevR3fGo44aesP
-  created_at: 2013-03-17 22:20:40.068517000 Z
-  updated_at: 2013-03-17 22:20:40.179241000 Z
+  authentication_token: s9ZNfddLynPw28suJswq
+  created_at: 2013-03-24 23:12:21.092645000 Z
+  updated_at: 2013-03-24 23:12:21.185223000 Z
   avatar_url: /assets/fixtures/yan.jpg
   provider: 
   uid: 
@@ -118,7 +118,7 @@ bethany_pattern:
   id: 4
   name: Bethany Pattern
   slug: bethany-pattern
-  encrypted_password: $2a$04$OraM2XAer/cNUhhwllJbT.dMt/AagI1/qLg7MPHpO8YnGAztWE2M.
+  encrypted_password: $2a$04$unETj.qcpZKQ144kNGLH/ebvi6pfgClmLo9TBBsl8HANe0FVGbPjG
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -128,12 +128,12 @@ bethany_pattern:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.102194000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 4Xz4ntguCVoCWQtu9CnL
-  created_at: 2013-03-17 22:20:40.087367000 Z
-  updated_at: 2013-03-17 22:20:40.185023000 Z
+  authentication_token: knMkiwGBMbd2s11fS5FR
+  created_at: 2013-03-24 23:12:21.106210000 Z
+  updated_at: 2013-03-24 23:12:21.189766000 Z
   avatar_url: /assets/fixtures/bethany.jpg
   provider: 
   uid: 
@@ -141,7 +141,7 @@ john_callas:
   id: 7
   name: John Callas
   slug: john-callas
-  encrypted_password: $2a$04$42JYq5.JpgWH1h0f/UStLuiaccMSztrfEJoq3siDMp6gc8iUYFMmG
+  encrypted_password: $2a$04$fnRBnPHD.mhtm5QKMljZ5ONXYIMaY6.fR/Q08vMB9x5KBefNedwpu
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -151,12 +151,12 @@ john_callas:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.445259000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: zzSjEgizhix2zuyYL9xj
-  created_at: 2013-03-17 22:20:40.697230000 Z
-  updated_at: 2013-03-17 22:20:40.697230000 Z
+  authentication_token: 7BebgULotgMSNXsrbv7Z
+  created_at: 2013-03-24 23:12:21.448914000 Z
+  updated_at: 2013-03-24 23:12:21.448914000 Z
   avatar_url: http://gravatar.com/avatar/cf9602418b177d3d4d10b1f0f9c77968.png?s=48&d=retro
   provider: 
   uid: 
@@ -164,7 +164,7 @@ bruce_banerdt:
   id: 8
   name: Bruce Banerdt
   slug: bruce-banerdt
-  encrypted_password: $2a$04$B4mXkVK9.dor1UgBAAfwMuOF6TJChQWABLtHyn2zW23s5S.JL/SZ2
+  encrypted_password: $2a$04$er7PhIwuroxdCgNszlimTeSgAzGBPBEnx4XowH6lKeXtQoH8W9Idq
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -174,12 +174,12 @@ bruce_banerdt:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.460927000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 9y9rejRby17zeLgTyqJU
-  created_at: 2013-03-17 22:20:40.725100000 Z
-  updated_at: 2013-03-17 22:20:40.725100000 Z
+  authentication_token: L2n9usGtWr2MEu2dxZuZ
+  created_at: 2013-03-24 23:12:21.464300000 Z
+  updated_at: 2013-03-24 23:12:21.464300000 Z
   avatar_url: http://gravatar.com/avatar/21a396de18e91b7b0f0cebc4d14061f5.png?s=48&d=retro
   provider: 
   uid: 
@@ -187,7 +187,7 @@ diana_blaney:
   id: 9
   name: Diana Blaney
   slug: diana-blaney
-  encrypted_password: $2a$04$jOG0BxvqfD3AEu66EM6uhOuxqU.4pJuNA1TeKMLsHLABKKsa2mUsC
+  encrypted_password: $2a$04$HeVWb3lnTEBQgTX3GjiHT.s1LxfnAlgbdBmt4vux.Nvl2Hg83EbXK
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -197,12 +197,12 @@ diana_blaney:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.470612000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: 8xoseMzK2bcjALudUFqu
-  created_at: 2013-03-17 22:20:40.742475000 Z
-  updated_at: 2013-03-17 22:20:40.742475000 Z
+  authentication_token: gbDypeS6nX4tP39oNV9U
+  created_at: 2013-03-24 23:12:21.476008000 Z
+  updated_at: 2013-03-24 23:12:21.476008000 Z
   avatar_url: http://gravatar.com/avatar/08d9160150822d3da7088dafcb9073a0.png?s=48&d=retro
   provider: 
   uid: 
@@ -210,7 +210,7 @@ larry_bryant:
   id: 10
   name: Larry Bryant
   slug: larry-bryant
-  encrypted_password: $2a$04$k1xLXuVaQyyMfyFpr71D4eFg9B6qiOGsFWGvSUjagfm6fn6PmzlyK
+  encrypted_password: $2a$04$bAU/mMy40Ik47f9dJRTnNuF4CEHYMuEHU9hmqN1T1INaXNjMepEBy
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -220,12 +220,12 @@ larry_bryant:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.483700000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: XdhppC4GD5sdQa7xGXKw
-  created_at: 2013-03-17 22:20:40.759865000 Z
-  updated_at: 2013-03-17 22:20:40.759865000 Z
+  authentication_token: u4mELU4yirxVKuDz6HKZ
+  created_at: 2013-03-24 23:12:21.488499000 Z
+  updated_at: 2013-03-24 23:12:21.488499000 Z
   avatar_url: http://gravatar.com/avatar/a0e19766f6d82cffa4d675463e980d64.png?s=48&d=retro
   provider: 
   uid: 
@@ -233,7 +233,7 @@ steven_squyres:
   id: 11
   name: Steven Squyres
   slug: steven-squyres
-  encrypted_password: $2a$04$wP.wRBhqUYyT2xk66LtXwuZSa82a8DW/GnWcG1UgI6OVWST2GEvu6
+  encrypted_password: $2a$04$cOMoj4cz.7kC0YJaDKBQYe6EzFpr4LYUlpuVJfb6.I8q/9P7XllnO
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -243,12 +243,12 @@ steven_squyres:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.495380000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: RiJSxkUeozGGAMYQVscB
-  created_at: 2013-03-17 22:20:40.777296000 Z
-  updated_at: 2013-03-17 22:20:40.777296000 Z
+  authentication_token: nySK2Fcha8ZsikafhRXB
+  created_at: 2013-03-24 23:12:21.498784000 Z
+  updated_at: 2013-03-24 23:12:21.498784000 Z
   avatar_url: http://gravatar.com/avatar/ba02365ee9ef481875fc3dabf38a5deb.png?s=48&d=retro
   provider: 
   uid: 
@@ -256,7 +256,7 @@ ray_arvidson:
   id: 12
   name: Ray Arvidson
   slug: ray-arvidson
-  encrypted_password: $2a$04$WXAOs2g.GxHjTezQ44A9LesWC09AqjbRKmN/uoDhAalFZNT5YnM/2
+  encrypted_password: $2a$04$s7hqUDxAX1CTTXGdc6TxzOuRzFZIZ4WKBRko49BV2jLwKvfX.sG4.
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
@@ -266,12 +266,12 @@ ray_arvidson:
   current_sign_in_ip: 
   last_sign_in_ip: 
   confirmation_token: 
-  confirmed_at: 
+  confirmed_at: 2013-03-24 23:12:21.505167000 Z
   confirmation_sent_at: 
   unconfirmed_email: 
-  authentication_token: mfT8YsyFxfBhpwFXoAK7
-  created_at: 2013-03-17 22:20:40.794187000 Z
-  updated_at: 2013-03-17 22:20:40.794187000 Z
+  authentication_token: 765zEuy2KwGCVs2Rywsk
+  created_at: 2013-03-24 23:12:21.508611000 Z
+  updated_at: 2013-03-24 23:12:21.508611000 Z
   avatar_url: http://gravatar.com/avatar/51cfc03f9d5bf49150d179e9b5af1566.png?s=48&d=retro
   provider: 
   uid: 
