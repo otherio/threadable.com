@@ -10,13 +10,8 @@ Multify = {
     return ENV.pageName;
   },
 
-  bind: function(){
-    $.fn.bind.apply($(this), arguments);
-  },
-
-  trigger: function(){
-    $.fn.trigger.apply($(this), arguments);
-  }
+  bind: $.proxy($.fn.bind, $(this)),
+  trigger: $.proxy($.fn.trigger, $(this))
 };
 
 // i can't believe this isn't already here.
