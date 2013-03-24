@@ -32,12 +32,12 @@ end
 group :development do
   gem 'style-guide'
   gem 'rb-fsevent', require: nil
-  gem 'debugger'
   gem 'mailcatcher'
   # gem 'sql-logging'
 end
 
 group :development, :test do
+  gem 'debugger'
   gem 'rspec'
   gem 'rspec-rails'
   gem 'sqlite3'
