@@ -32,11 +32,7 @@ class ConversationsController < ApplicationController
     @conversation = project.conversations.
       where(slug: params[:id]).
       includes(events: :user, messages: :user).
-      first
-
-    # if @conversation.task?
-    #   @conversation.tasks.includes(:user).all
-    # end
+      first!
 
     respond_to do |format|
       format.html {}
