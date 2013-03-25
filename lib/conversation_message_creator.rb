@@ -5,7 +5,10 @@ class ConversationMessageCreator < MethodObject.new(:user, :conversation, :messa
     message.user = @user
     message.from = @user.email
     message.subject ||= @conversation.subject
-    MessageDispatch.new(message, email_sender: true).enqueue if message.save
+    message.class.transaction do
+      message.save
+      MessageDispatch.new(message, email_sender: true).enqueue
+    end
     message
   end
 
