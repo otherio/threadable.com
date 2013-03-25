@@ -45,27 +45,45 @@ class EmailProcessor
     @user ||= project.members.find_by_email! from
   end
 
-  def parent_message_id
-    @parent_message_id ||= begin
-      if email.header['In-Reply-To']
-        email.header['In-Reply-To'].to_s
-      elsif email.header['References']
-        email.header['References'].to_s.split(/\s+/).last
-      end
-    end
-  end
-
   def parent_message
-    return nil unless parent_message_id.present?
-    @parent_message ||= Message.all(
+    in_reply_to = email.header['In-Reply-To'].to_s
+    return nil unless in_reply_to || email.header['References']
+    return @parent_message if @parent_message
+
+    references = email.header['References'].to_s.split(/\s+/)
+    references << in_reply_to if in_reply_to && (in_reply_to != references.last)
+
+    # try the simple query with the most likely parent first
+    @parent_message = Message.all(
       :joins => {
         :conversation => :project,
       },
       :conditions => {
         :projects => { :id => project.id },
-        :messages => { :message_id_header => parent_message_id },
+        :messages => { :message_id_header => references.pop },
       },
     ).first
+
+    unless @parent_message
+      # not there! fetch all possible matches
+      potential_parents = Message.all(
+        :joins => {
+          :conversation => :project,
+        },
+        :conditions => {
+          :projects => { :id => project.id },
+          :messages => { :message_id_header => references },
+        },
+      )
+
+      references.reverse.each do |reference|
+        potential_parents.each do |message|
+          return @parent_message = message if message.message_id_header == reference
+        end
+      end
+    end
+
+    @parent_message
   end
 
   def conversation
