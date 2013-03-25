@@ -14,6 +14,8 @@ class Message < ActiveRecord::Base
     :from,
     :user,
     :parent_message,
+    :shareworthy,
+    :knowledge
   )
 
   scope :by_created_at, order('messages.created_at DESC')

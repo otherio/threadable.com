@@ -2,11 +2,11 @@
   - items.each do |type, item|
     - case type
     - when :message
-      %li.message
+      %li.with_message
         = render_widget(:message, item)
     - when :event
-      %li.event
-        %span
+      %li.with_event
+        %span.event
           - case item.type
           - when :conversation_created_event
             #{strong(item.user.name)} started this conversation
@@ -25,7 +25,7 @@
           - else
             - raise "unknown type #{item.type.inspect}"
 
-        %span.pull-right
-          = timeago item.created_at
+          %span.pull-right
+            = timeago item.created_at
 
 = render_widget :new_conversation_message, conversation, from: from

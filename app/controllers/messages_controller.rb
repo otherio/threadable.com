@@ -16,6 +16,17 @@ class MessagesController < ApplicationController
     end
   end
 
+  # PUT /:project_id/conversations/:conversation_id/messages/:id
+  # PUT /:project_id/conversations/:conversation_id/messages/:id.json
+  def update
+    @message = conversation.messages.find_by_id!(params[:id])
+
+    unless @message.update_attributes(params[:message])
+      render json: @message.errors, status: :unprocessable_entity
+    end
+  end
+
+
   private
 
   def project

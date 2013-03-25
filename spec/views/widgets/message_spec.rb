@@ -18,12 +18,19 @@ describe "message" do
     )
   }
 
+  let(:presenter){ double(:presenter) }
+
   def locals
-    {message: message}
+    {
+      message: message,
+      presenter: presenter,
+    }
   end
 
   before do
     view.should_receive(:timeago).with(message.created_at)
+    presenter.should_receive(:link_to_toggle).with(:shareworthy)
+    presenter.should_receive(:link_to_toggle).with(:knowledge)
   end
 
   it "should render the message with the user's info" do

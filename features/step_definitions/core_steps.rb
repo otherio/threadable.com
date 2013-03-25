@@ -64,3 +64,8 @@ end
 Given /^this scenario is pending(?: because (.+))?$/ do |reason|
   pending reason
 end
+
+
+When /^I reload the page$/ do
+  visit page.current_path
+end

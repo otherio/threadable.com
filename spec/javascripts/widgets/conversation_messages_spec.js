@@ -60,7 +60,7 @@ describe("widgets/conversation_messages", function(){
   });
 
   function messages(){
-    return $('.conversation_messages li.message');
+    return $('.conversation_messages li:has(>.message)');
   }
 
 });

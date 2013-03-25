@@ -9,3 +9,12 @@
   %span.pull-right
     = timeago message.created_at
 .message-text<= h(message.body.strip).gsub(/\s*\n/, "<br/>").html_safe
+
+.message-actions
+
+  = presenter.link_to_toggle(:shareworthy) do
+    %i.icon-bullhorn
+    shareworthy
+  = presenter.link_to_toggle(:knowledge) do
+    %i.icon-book
+    knowledge

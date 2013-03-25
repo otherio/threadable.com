@@ -13,6 +13,11 @@ module TestEnvironment::Paths
     when /^the "(.+?)" conversation page$/
       task = Task.find_by_subject($1)
       project_conversation_path task.project, task
+    when /^the "(.+?)" conversation for the "(.+?)" project$/
+      message_name, project_name = $1, $2
+      project = Project.find_by_name($2)
+      conversation = project.conversations.find_by_subject($1)
+      project_conversation_path(project, conversation)
     else
       raise "\n\nCan't find mapping from \"#{name}\" to a path.\nNow, go and add a mapping in #{__FILE__}\n\n"
     end

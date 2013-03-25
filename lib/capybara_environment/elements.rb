@@ -16,6 +16,8 @@ module CapybaraEnvironment::Elements
       '.tasks_sidebar .not_done .task_list'
     when 'the list of doers for this task'
       '.task_metadata .doers'
+    when 'the first message'
+      all('.message').first
     end
   end
 

@@ -45,7 +45,7 @@ describe "conversation_messages" do
       when :message
         view.should_receive(:render_widget).
           with(:message, item).
-          and_return("message widget html for message#{item.index}")
+          and_return(%(<div class="message">message widget html for message#{item.index}</div>).html_safe)
       end
     end
 
@@ -55,7 +55,7 @@ describe "conversation_messages" do
   end
 
   it "should return a list of messages and a new conversation form at the bottom" do
-    list_items = html.css('ol > li')
+    list_items = html.css('ol > li > *')
 
     list_items.map{|li| li[:class] }.should == %w(event message event message event message event)
     list_items.map(&:text).map(&:strip).should == [

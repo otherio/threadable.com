@@ -62,8 +62,10 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
     t.integer  "parent_id"
     t.string   "message_id_header"
     t.text     "references_header"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.boolean  "shareworthy",       :default => false
+    t.boolean  "knowledge",         :default => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"

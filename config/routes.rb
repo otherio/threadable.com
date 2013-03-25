@@ -31,7 +31,7 @@ Multify::Application.routes.draw do
       member do
         put :mute
       end
-      resources :messages, :only => [:create]
+      resources :messages, :only => [:create, :update]
     end
     resources :invites, :only => [:create]
     resources :tasks, :only => [:index, :create, :update] do
