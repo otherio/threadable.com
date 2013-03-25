@@ -47,7 +47,7 @@ class Task < Conversation
   end
 
   def set_position
-    self.position ||= project.tasks.count + 1
+    self.position ||= project.tasks.count + 1 if project.present?
   end
 
 end
