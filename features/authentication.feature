@@ -6,8 +6,7 @@ Scenario: Logging in
   In order to use the site
   I'd like to keep my data associated with me
   Given I am not logged in
-    And I go to the home page
-    And I click "Login"
+    And I go to the sign in page
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I fill in "user_password" with "password"
     And I click the "Sign in" button
@@ -18,7 +17,7 @@ Scenario: Logging in with both of my emails
   As a user with multiple email addresses
   I should be able to login with any of them.
   Given I am not logged in
-    And I go to the home page
+    And I go to the sign in page
     And I click "Login"
     And I fill in "Email" with "ray@gmail.multifyapp.com"
     And I fill in "user_password" with "password"
@@ -28,7 +27,7 @@ Scenario: Logging in with both of my emails
 
 Scenario: Failing to log in
   Given I am not logged in
-    And I go to the home page
+    And I go to the sign in page
     And I click "Login"
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
     And I fill in "user_password" with "bullshitpassword"
@@ -41,7 +40,7 @@ Scenario: Forgot password form works for existing users
   I should be able to reset it
   Given this scenario is pending because of a lame devise bug
    When I am not logged in
-    And I go to the home page
+    And I go to the sign in page
     And I click "Login"
     And I click "Forgot your password"
     And I fill in "Email" with "alice@ucsd.multifyapp.com"
@@ -53,7 +52,7 @@ Scenario: Forgot password form should notify the user if an account doesn't exis
   and I try to use the forgot password form
   I should see an error
   Given I am not a member
-   When I go to the home page
+   When I go to the sign in page
     And I click "Login"
     And I click "Forgot your password"
     And I fill in "Email" with "fakeuser@gmail.com"

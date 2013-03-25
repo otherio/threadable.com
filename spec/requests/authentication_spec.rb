@@ -7,9 +7,10 @@ describe "Authentication" do
     let!(:user){ User.find_by_name!("Alice Neilson") }
 
     it "I can login and logout" do
-      visit '/'
-      click_on 'Login'
-      page.current_path.should == new_user_session_path
+      # visit '/users/sign_in'
+      # click_on 'Login'
+      # page.current_path.should == new_user_session_path
+      visit new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'password'
       click_button 'Sign in'

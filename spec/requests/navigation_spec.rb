@@ -12,9 +12,10 @@ describe "Navbar" do
     end
 
     it "should include the project name" do
-      visit root_path
-      click_on 'Login'
-      page.current_path.should == new_user_session_path
+      # visit root_path
+      # click_on 'Login'
+      # page.current_path.should == new_user_session_path
+      visit new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
       click_button 'Sign in'

@@ -6,6 +6,8 @@ module TestEnvironment::Paths
       root_path
     when 'the join page'
       new_user_registration_path
+    when 'the sign in page'
+      new_user_session_path
     when /^the project page for "(.+?)"$/
       project_path Project.find_by_name($1)
     when /^the project conversations page for "(.+?)"$/

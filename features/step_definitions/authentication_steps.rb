@@ -1,5 +1,5 @@
 Given /^I am not logged in$/ do
-  visit '/'
+  visit new_user_session_path
   page.should have_content('Multify')
 end
 
