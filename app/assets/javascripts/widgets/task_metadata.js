@@ -40,20 +40,25 @@ Multify.Widget('task_metadata', function(widget){
   };
 
   var showInviteModal = function(event){
+    closePopover();
     event.preventDefault();
     var val = $(this).parents('.popover-content').find('input.user-search').val() || '';
-    var data = {name:[]};
+    var userDetails = {name:[]};
 
     val = val.replace(/["'<>]/g,'');
     val.split(/\s+/).forEach(function(part){
       if (part.indexOf('@') === -1){
-        data.name.push(part);
+        userDetails.name.push(part);
       }else{
-        data.email = part;
+        userDetails.email = part;
       }
     });
-    data.name = data.name.join(' ');
-    Multify.trigger('show_invite_modal', data);
+    userDetails.name = userDetails.name.join(' ');
+    userDetails.success = function(user) {
+      pickUser(user);
+      widget.users.push(user);
+    };
+    Multify.trigger('show_invite_modal', userDetails);
   };
 
   var renderUserList = function(users){
@@ -184,7 +189,8 @@ Multify.Widget('task_metadata', function(widget){
 
   var closePopover = function() {
     $('.conversations_layout .right').css('overflow', 'scroll');
-    $('.add-others').popover('hide');
+    $('html').off('click');
+      $('.add-others').popover('hide');
   };
 
   var onTogglePopover = function(e) {

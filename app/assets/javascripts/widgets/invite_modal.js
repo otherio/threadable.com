@@ -10,15 +10,24 @@ Multify.Widget('invite_modal', function(widget){
 
   widget.initialize = function(){
     widget.S()
-      ('.modal')
-        .bind('shown', onShown)
-      .end
+      .bind('shown', onShown)
       ('form')
         .bind('ajax:send', onSend)
         .bind('ajax:success', onSuccess)
         .bind('ajax:error', onError)
       .end
     ;
+
+    Multify.bind('show_invite_modal', function(event, options){
+      options || (options={});
+      var invite_modal = $('.invite_modal:first');
+      invite_modal.find('input[name="invite[name]"]').val(options.name);
+      invite_modal.find('input[name="invite[email]"]').val(options.email);
+      invite_modal.modal('show');
+      if(options.success) {
+        widget.success = options.success;
+      }
+    });
   };
 
   function onShown(modal, event){
@@ -32,6 +41,9 @@ Multify.Widget('invite_modal', function(widget){
   function onSuccess(form, event, user, status, xhr){
     close(form.closest('.modal'));
     Multify.Flash.message($('<span>').text(user.name+' <'+user.email+'> was added to this project.'));
+    if(widget.success) {
+      widget.success(user);
+    }
   }
 
   function onError(form, event, xhr, status, error){

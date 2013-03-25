@@ -132,6 +132,8 @@ describe("widgets/task_metadata", function(){
     describe("user list", function() {
       it("fetches the user list when the control is opened", function() {
         spyOn(this.widget, "getCurrentProjectMembers");
+        this.widget.initialize();
+
         $('.add-others').click();
         expect(this.widget.getCurrentProjectMembers).toHaveBeenCalled();
       });
@@ -295,21 +297,21 @@ describe("widgets/task_metadata", function(){
         });
 
         describe("invite", function() {
-          it("can open the invite modal", function() {
-            // runs(function() {
-            //   $('.task_metadata .add-others').click();
-            // });
-
-            // waits(300);
-
+          it("can open the invite modal, and closes the popover", function() {
             runs(function() {
-              spyOn(Multify,'trigger');
+              spyOn(Multify, 'trigger').andCallThrough()
               expect($('.task_metadata .popover').is(':visible')).toBe(true);
               $('.task_metadata .user-search').val('"Jared Grippe" <jared@foo.com>');
               $('.task_metadata .controls .invite-link').click();
+            });
+
+            waits(300);
+
+            runs(function() {
               expect(Multify.trigger).toHaveBeenCalledWith('show_invite_modal', {
-                name: 'Jared Grippe', email: 'jared@foo.com'
+                name: 'Jared Grippe', email: 'jared@foo.com', success: jasmine.any(Function)
               });
+              expect($('.task-controls')).not.toContain('.popover');
             });
           });
 
