@@ -2,13 +2,16 @@ class UserMailer < ActionMailer::Base
 
   def unsubscribe_notice(options)
     @options = options
+    @sender = options[:project].formatted_email_address
     @subject = "You've been unsubscribed from #{options[:project].name}"
     send_notice
   end
 
   def invite_notice(options)
     @options = options
-    @subject = "You've been invited to #{options[:project].name}"
+    @sender = options[:sender].formatted_email_address
+    @subject = "You're invited to #{options[:project].name}"
+    @invite_message = options[:invite_message]
     send_notice
   end
 
@@ -23,7 +26,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @user.formatted_email_address,
-      from: @project.formatted_email_address,
+      from: @sender,
       subject: @subject
     )
   end

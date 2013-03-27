@@ -24,8 +24,10 @@ describe InvitesController do
 
         UserMailer.should_receive(:invite_notice).with(
           project: project,
+          sender: user,
           user: kind_of(User),
           host: 'test.host',
+          invite_message: params[:invite][:invite_message],
           port: 80,
         ).and_return(fake_mail)
         fake_mail.should_receive(:deliver)
@@ -40,6 +42,7 @@ describe InvitesController do
           invite: {
             name:  'Tord Boontje',
             email: 'tord@tordboontje.com',
+            invite_message: 'You are a jerk, hang out with us',
           }
         )
       end
@@ -67,6 +70,7 @@ describe InvitesController do
           invite: {
             name:  invited_user.name,
             email: invited_user.email,
+            invite_message: 'You are a jerk, hang out with us',
           }
         )
       end
