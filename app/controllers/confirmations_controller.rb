@@ -5,6 +5,18 @@ class ConfirmationsController < Devise::ConfirmationsController
     super if resource.nil? or resource.confirmed?
   end
 
+  # POST /resource/confirmation
+  def create
+    self.resource = resource_class.send_confirmation_instructions(resource_params)
+    if successfully_sent?(resource)
+      respond_with({}, :location => after_resending_confirmation_instructions_path_for(resource_name))
+    else
+      self.resource = User.new(email: params[:user][:email]) if self.resource.new_record?
+      flash.now[:error] = "A user with that email could not be found."
+      render :new
+    end
+  end
+
   def confirm
     self.resource = resource_class.find_by_confirmation_token(params[resource_name][:confirmation_token]) if params[resource_name][:confirmation_token].present?
     if self.resource.nil?
@@ -22,5 +34,7 @@ class ConfirmationsController < Devise::ConfirmationsController
       render :action => "show"
     end
   end
+
+
 
 end

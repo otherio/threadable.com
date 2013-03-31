@@ -59,24 +59,41 @@ class User < ActiveRecord::Base
     joins(:email_addresses).where(email_addresses: {address: address}).limit(1)
   }
 
-  def self.find_by_email(email)
-    by_email(email).first
-  end
-
-  def self.find_by_email!(email)
-    by_email(email).first!
-  end
-
-  def self.find_or_initialize_by_email(attributes)
-    if attributes.is_a?(Hash)
-      email = attributes[:email]
-    else
-      email = attributes
-      attributes = {}
+  class << self
+    def find_by_email(email)
+      by_email(email).first
     end
-    user = find_by_email(email) || new(email: email)
-    user.attributes = attributes
-    user
+
+    def find_by_email!(email)
+      by_email(email).first!
+    end
+
+    def find_or_initialize_by_email(attributes)
+      if attributes.is_a?(Hash)
+        email = attributes[:email]
+      else
+        email = attributes
+        attributes = {}
+      end
+      user = find_by_email(email) || new(email: email)
+      user.attributes = attributes
+      user
+    end
+
+    def find_for_authentication(conditions={})
+      condititons = conditions.symbolize_keys
+      email = conditions.delete(:email) || conditions.delete(:unconfirmed_email)
+      return self.by_email(email).first if email.present?
+      return self.where(condititons).first if condititons.present?
+    end
+
+    alias_method :find_first_by_auth_conditions, :find_for_authentication
+
+    def send_confirmation_instructions(attributes={})
+      confirmable = find_by_unconfirmed_email_with_errors(attributes) if reconfirmable
+      confirmable.resend_confirmation_token if confirmable.present? && confirmable.persisted?
+      confirmable
+    end
   end
 
   def password_required= password_required
@@ -92,7 +109,7 @@ class User < ActiveRecord::Base
   end
 
   def email= address
-    (primary_email_address || email_addresses.build(user:self)).address = address
+    (primary_email_address || email_addresses.build(user:self, primary:true)).address = address
   end
 
   def email_changed?
@@ -122,8 +139,8 @@ class User < ActiveRecord::Base
   def gravatar_url
     # change this when we have a default image other than gravatar's
     #"http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=#{CGI.escape(default_avatar_url)}"
-    gravatar_id = Digest::MD5.hexdigest(self.email.downcase)
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro" if email.present?
+    gravatar_id = Digest::MD5.hexdigest(email.downcase) if email.present?
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
   end
 
   def validate_email_is_unique
