@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git remote remove heroku
+git remote add production git@heroku.com:multify-production.git
+git remote add staging git@heroku.com:multify-staging.git

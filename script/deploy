@@ -1,3 +1,14 @@
 #!/bin/sh
 
-script/ci && git push heroku master
+ENV=${1:-staging}
+
+# run CI
+script/ci || exit
+
+# push to CI
+git push $ENV master || exit
+
+# tag this rev as having been released
+git push --delete origin latest-$ENV
+git tag latest-$ENV
+git push origin latest-$ENV
