@@ -10,5 +10,5 @@ git push $ENV master || exit
 
 # tag this rev as having been released
 git push --delete origin latest-$ENV
-git tag latest-$ENV
-git push origin latest-$ENV
+git tag -f latest-$ENV
+git push --tags
