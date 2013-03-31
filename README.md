@@ -10,7 +10,7 @@
 
 #### Install Postgress
 
-    brew install postgress
+    brew install postgres
 
 
 
