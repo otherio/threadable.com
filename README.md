@@ -1,7 +1,5 @@
 # Multify
 
-
-
 ## Install
 
 #### Install Redis
@@ -30,7 +28,15 @@ We rely on a number of custom heroku config variables
 
 We need the latest version of the ruby build pack in order to allow us to have `config.assets.initialize_on_precompile` enabled which we need to compile our routes into JavaScript.
 
+### Git remotes
 
+To configure your git remotes, run:
+script/setup_remotes
 
+### Pushing
 
+To push to staging, run:
+script/deploy
 
+To push to production, run:
+script/deploy production
