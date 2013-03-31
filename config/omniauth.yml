@@ -10,3 +10,6 @@ production:
   clef_id: <%= ENV['MULTIFY_CLEF_ID'] %>
   clef_secret: <%= ENV['MULTIFY_CLEF_SECRET'] %>
 
+staging:
+  clef_id: <%= ENV['MULTIFY_CLEF_ID'] %>
+  clef_secret: <%= ENV['MULTIFY_CLEF_SECRET'] %>
