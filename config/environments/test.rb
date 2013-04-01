@@ -33,6 +33,10 @@ Multify::Application.configure do
     :port => 3010,
   }
 
+  config.action_mailer.smtp_settings = {
+    :domain => 'multifyapp.test',
+  }
+
   # Raise exception on mass assignment protection for Active Record models
   config.active_record.mass_assignment_sanitizer = :strict
 
