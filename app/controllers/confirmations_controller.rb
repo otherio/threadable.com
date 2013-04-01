@@ -11,8 +11,10 @@ class ConfirmationsController < Devise::ConfirmationsController
     if successfully_sent?(resource)
       respond_with({}, :location => after_resending_confirmation_instructions_path_for(resource_name))
     else
-      self.resource = User.new(email: params[:user][:email]) if self.resource.new_record?
-      flash.now[:error] = "A user with that email could not be found."
+      if self.resource.new_record?
+        self.resource = User.new(email: params[:user][:email])
+        flash.now[:error] = "A user with that email could not be found."
+      end
       render :new
     end
   end

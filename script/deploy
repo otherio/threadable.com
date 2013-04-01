@@ -5,7 +5,7 @@ ENV=${1:-staging}
 # run CI
 script/ci || exit
 
-# push to CI
+# push to github
 git push $ENV master || exit
 
 # tag this rev as having been released
