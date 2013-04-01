@@ -6,7 +6,8 @@ Scenario: Signing up
   When I signup with the following information:
     | Name  | Weird Al Yankovik     |
     | Email | weird.al@yankovik.com |
-  Then I should see "A message with a confirmation link has been sent to your email address. Please open the link to activate your account."
+  Then I should see "Thanks for signing up!"
+   And I should see "We just sent you an email with a link to confirm your email address and set a password for your account."
    And I a confirmation link should have been sent to "weird.al@yankovik.com"
   When I click the validation link sent to "weird.al@yankovik.com"
   Then I should see "You're almost done! Now create a password to securely access your account."
@@ -18,7 +19,8 @@ Scenario: Signing up
   When I fill in the password fields with "ilovepizza"
    And I click "Confirm Account"
   Then I should see "Your account was successfully confirmed. You are now signed in."
-  Then I should be logged in as "Weird Al Yankovik"
+   And I should be logged in as "Weird Al Yankovik"
+
 
 Scenario: Account creation fails if email is already used
   If an account already exists for this email address

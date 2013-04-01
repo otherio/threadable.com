@@ -12,10 +12,11 @@ Multify::Application.routes.draw do
 
   # get "users/confirmation" => "confirmations#show", as: 'user_confirmation'
   devise_for :users, :controllers => {
+    :registrations => 'registrations',
     :confirmations => 'confirmations',
     :omniauth_callbacks => "users/omniauth_callbacks",
-  }
-  devise_scope :user do
+  } do
+    get '/thanks-for-signing-up' => 'registrations#thanks', as: 'thanks_for_signing_up'
     put "/users/confirm" => "confirmations#confirm", as: 'user_confirm'
   end
 
