@@ -5,6 +5,9 @@ ENV=${1:-staging}
 # run CI
 script/ci || exit
 
+# update local tags
+git fetch --tags
+
 # push to github
 git push $ENV master || exit
 
