@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
   end
 
   def email= address
-    (primary_email_address || email_addresses.build(user:self, primary:true)).address = address
+    (primary_email_address || email_addresses.build(user:self)).address = address
   end
 
   def email_changed?
