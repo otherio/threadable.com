@@ -92,6 +92,8 @@ module Multify
       c.performance_tool :rspec
     end
 
+    # login is enabled by default, but can be disabled
+    config.login_enabled = ENV["MULTIFY_DISABLE_LOGIN"] ? false : true
   end
 end
 

@@ -36,6 +36,11 @@ describe User do
     user.errors.messages[:email].should include "has already been taken"
   end
 
+  context "devise options" do
+    subject { described_class }
+    it { should include Devise::Models::Registerable }
+  end
+
   context "when confirmed" do
     def build_user_with_password password
       super.tap{|user| user.confirmed_at = Time.now }
