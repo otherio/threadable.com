@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /make-a-tank/edit
+  # GET /projects/edit
   def edit
     @project = current_user.projects.find_by_slug!(params[:project_id])
   end
@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save && @project.members << current_user
-        format.html { redirect_to @project, notice: 'current_user.projects was successfully created.' }
+        format.html { redirect_to @project, notice: "#{@project.name} was successfully created." }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.html { render action: "new" }
@@ -59,11 +59,27 @@ class ProjectsController < ApplicationController
   # PUT /projects/make-a-tank
   # PUT /projects/make-a-tank.json
   def update
-    @project = current_user.projects.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params[:project_id])
 
     respond_to do |format|
       if @project.update_attributes(params[:project])
-        format.html { redirect_to @project, notice: 'current_user.projects was successfully updated.' }
+        format.html { redirect_to @project, notice: "#{@project.name} was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /projects/make-like-a-tree-and/leave
+  # PUT /projects/make-like-a-tree-and/leave.json
+  def leave
+    @project = current_user.projects.find_by_slug!(params[:id])
+
+    respond_to do |format|
+      if current_user.projects.delete(@project)
+        format.html { redirect_to projects_path, notice: "You have successfully abandoned #{@project.name}." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

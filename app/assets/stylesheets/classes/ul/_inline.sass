@@ -1,4 +1,14 @@
-ul.inline
+ul
+  &.inline
+    margin: 0
+    &.middle-aligned > li
+      vertical-align: middle
 
-  &.middle-aligned > li
-    vertical-align: middle
+  &.separated
+    > li
+      &:after
+        position: relative
+        left: 0.25em
+        content: " \2022"
+      &:last-child:after
+        display: none

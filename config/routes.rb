@@ -28,7 +28,11 @@ Multify::Application.routes.draw do
   #   resources :tasks
   end
 
-  resources :projects, except: [:edit, :show]
+  resources :projects, except: [:show, :update] do
+    member do
+      put :leave
+    end
+  end
 
   scope '/:project_id', :as => 'project' do
     resources :members, :only => [:index, :create, :destroy], controller: 'project/members'
@@ -50,6 +54,7 @@ Multify::Application.routes.draw do
 
   get '/:project_id/edit' => 'projects#edit', :as => 'edit_project'
   get '/:project_id' => 'projects#show',      :as => 'project'
+  put '/:project_id' => 'projects#update'
   get '/:project_id/user_list' => 'projects#user_list', :as => 'user_list'
 
 

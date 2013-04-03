@@ -1,5 +1,30 @@
-%h1 Projects
 
-%ul
-  - @projects.each do |project|
-    %li= link_to project.name, project_conversations_url(project)
+.fluid-columns
+  .row
+    .span10.offset2
+
+      %h1 Projects
+
+      %table.projects.table.table-hover
+        %head
+          %tr
+            %th.name Name
+            %th.actions Actions
+        %tbody
+          - @projects.each do |project|
+            %tr
+              %td.name= link_to project.name, project_conversations_path(project)
+              %td.actions
+
+                .btn-group
+                  %button.btn.dropdown-toggle{"data-toggle" => "dropdown"}
+                    %i.icon-cog
+                  %ul.dropdown-menu
+                    %li
+                      = link_to edit_project_path(project) do
+                        %i.icon-pencil
+                        Edit
+                    %li
+                      = link_to leave_project_path(project), method: :put, confirm: 'Are you sure?' do
+                        %i.icon-trash
+                        Leave

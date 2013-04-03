@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  attr_accessible :description, :name, :slug
+  attr_accessible :description, :name, :slug, :subject_tag
 
   has_many :conversations, :order => "updated_at DESC"
   has_many :tasks, :order => "position"
@@ -10,6 +10,7 @@ class Project < ActiveRecord::Base
 
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
+  validates_format_of :subject_tag, with: /^[\w -]+$/
 
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 
@@ -18,7 +19,7 @@ class Project < ActiveRecord::Base
   end
 
   def subject_tag
-    slug[0..6]
+    read_attribute(:subject_tag).presence || slug[0..6]
   end
 
   def formatted_email_address

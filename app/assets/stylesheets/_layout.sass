@@ -17,6 +17,11 @@ body
   > .page_navigation
     height: $page_navigation_height
 
+  > .content, > .page_navigation .navbar-content
+    max-width: 1500px
+    margin-left: auto
+    margin-right: auto
+
   > .flash_messages
     position: absolute
     top: $page_navigation_height / 2
@@ -25,6 +30,7 @@ body
     margin: 0 20%
   > .content
     position: absolute
+    padding: 1em
     top: $page_navigation_height
     left: 0
     bottom: $page_footer_height
