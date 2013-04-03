@@ -6,7 +6,7 @@ describe HomepageController do
     context "when not signed in" do
       it "should redirect to signup.other.io" do
         get :show
-        response.should redirect_to 'http://signup.other.io'
+        response.should render_template('homepage/show')
       end
     end
     context "when signed in" do
@@ -15,7 +15,7 @@ describe HomepageController do
       end
       it "should do nothing" do
         get :show
-        response.should render_template('projects/index')
+        response.should redirect_to projects_path
       end
     end
   end
