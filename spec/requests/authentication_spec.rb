@@ -15,7 +15,7 @@ describe "Authentication" do
       fill_in 'Password', with: 'password'
       click_button 'Sign in'
       page.should have_content user.name
-      page.current_path.should == projects_path
+      page.current_path.should == root_path
       within selector_for('the navbar') do
         click_on user.name
         click_on 'Logout'

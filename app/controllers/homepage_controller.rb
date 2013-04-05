@@ -1,7 +1,10 @@
 class HomepageController < ApplicationController
 
   def show
-    redirect_to projects_path if user_signed_in?
+    if user_signed_in?
+      @projects = current_user.projects
+      render template: 'projects/index'
+    end
   end
 
 end
