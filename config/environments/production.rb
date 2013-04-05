@@ -75,9 +75,9 @@ Multify::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
-    :user_name => 'postmaster@beta.multifyapp.com',
+    :user_name => 'postmaster@multifyapp.com',
     :password => Multify.config('mailgun')['password'],
-    :domain => 'beta.multifyapp.com',
+    :domain => 'multifyapp.com',
     :address => 'smtp.mailgun.org',
     :port => 587,
     :authentication => :plain,
