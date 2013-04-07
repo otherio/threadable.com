@@ -1,7 +1,6 @@
 class EmailProcessor
 
   class MailgunRequestToEmail < Incoming::Strategies::Mailgun
-    default_options[:stripped] = true
     setup :api_key => Multify.config('mailgun')['key']
   end
 
@@ -18,6 +17,7 @@ class EmailProcessor
 
   def initialize(email)
     @email = Mail.read_from_string(email.to_s)
+    prepare_body
   end
 
   attr_reader :email
@@ -104,8 +104,14 @@ class EmailProcessor
       parent_message: parent_message,
       user: user,
       from: from,
-      body: email.text_part.body.to_s,
+      body: @text_body
     )
+  end
+
+  private
+
+  def prepare_body
+    @text_body = @email.text_part.body.to_s.gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
   end
 
 end
