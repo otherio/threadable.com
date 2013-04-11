@@ -1,6 +1,6 @@
 class DemoAuthController < ActionController::Base
   # GET /demo
-  def show
+  def index
     user = User.find_by_name('Alice Neilson')
     sign_in(user)
 
