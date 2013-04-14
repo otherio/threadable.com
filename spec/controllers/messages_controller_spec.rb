@@ -6,6 +6,12 @@ describe MessagesController do
   let(:current_user){ project.members.first }
   let!(:conversation) { FactoryGirl.create(:conversation, project: project) }
 
+  let(:valid_attributes) do
+    from_factory = message.attributes.reject{|key, _| !Message.accessible_attributes.include?(key) }
+    from_factory["body"] = from_factory.delete("body_plain")
+    from_factory
+  end
+
   before(:each) do
     @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in current_user
@@ -20,9 +26,6 @@ describe MessagesController do
 
   describe "POST create" do
     let(:message) { FactoryGirl.build(:message, subject: nil, conversation: conversation) }
-    let(:valid_attributes) do
-      message.attributes.reject{|key, _| !Message.accessible_attributes.include?(key) }
-    end
 
     def request!
       xhr :post, :create, valid_params.merge(message: valid_attributes)
@@ -61,5 +64,30 @@ describe MessagesController do
       end
     end
   end
-end
 
+  describe "PUT update" do
+    let(:message) { FactoryGirl.create(:message, subject: nil, conversation: conversation) }
+    let(:message_params) { valid_attributes }
+
+    def request!
+      xhr :put, :update, valid_params.merge(id: message.id, message: message_params)
+    end
+
+    context "setting shareworthy and knowledge" do
+      let(:message_params) { {shareworthy: true, knowledge: true} }
+      it "marks the message correctly" do
+        request!
+        assigns(:message).shareworthy.should == true
+        assigns(:message).knowledge.should == true
+      end
+    end
+
+    context "with disallowed keys" do
+      let(:message_params) { {body_plain: 'i am evil'} }
+      it "returns a 403" do
+        request!
+        response.status.should == 403
+      end
+    end
+  end
+end

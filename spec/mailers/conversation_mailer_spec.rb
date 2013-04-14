@@ -24,7 +24,7 @@ describe ConversationMailer do
       conversation.messages.new(
         user: project.members.first,
         subject: conversation.subject,
-        body: 'This is the best project everz.',
+        body_plain: 'This is the best project everz.',
         parent_message: parent_message,
         references_header: references.join(" ")
       )
@@ -45,7 +45,7 @@ describe ConversationMailer do
         :recipient_id              => recipient.id,
         :recipient_name            => recipient.name,
         :recipient_email           => recipient.email,
-        :message_body              => message.body,
+        :message_body              => message.body_plain,
         :message_message_id_header => message.message_id_header,
         :message_references_header => message.references_header,
         :parent_message_id_header  => message.parent_message.message_id_header,

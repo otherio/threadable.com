@@ -44,6 +44,8 @@ class ConversationsController < ApplicationController
   # POST /conversations.json
   def create
     message = params[:conversation].delete(:messages)
+    message[:body_plain] = message.delete(:body) unless message.nil?
+
     @conversation = project.conversations.new(params[:conversation].merge(creator: current_user))
 
     Conversation.transaction do

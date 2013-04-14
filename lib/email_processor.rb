@@ -104,7 +104,7 @@ class EmailProcessor
       parent_message: parent_message,
       user: user,
       from: from,
-      body: @text_body
+      body_plain: @text_body
     )
   end
 

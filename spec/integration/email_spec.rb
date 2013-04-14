@@ -88,7 +88,7 @@ EMAIL
         {message: {body: complex_message_body} }
       end
 
-      it "should create a message send emails through mailgun" do
+      it "should create a message and send emails through mailgun" do
         ->{
           xhr :post, project_conversation_messages_path(project, conversation), params
           response.should be_success
@@ -99,7 +99,7 @@ EMAIL
         message.from.should == user.email
         message.user_id.should == user.id
         message.subject.should == conversation.subject
-        message.body.should == complex_message_body
+        message.body_plain.should == complex_message_body
         message.message_id_header.should be_present
 
         project.members_who_get_email.each do |recipient|
@@ -114,7 +114,7 @@ EMAIL
             :recipient_id              => recipient.id,
             :recipient_name            => recipient.name,
             :recipient_email           => recipient.email,
-            :message_body              => message.body,
+            :message_body              => message.body_plain,
             :message_message_id_header => message.message_id_header,
             :message_references_header => message.references_header,
             :parent_message_id_header  => message.parent_message.try(:message_id_header),

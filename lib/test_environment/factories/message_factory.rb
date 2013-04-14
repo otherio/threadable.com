@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :message do
     subject { Faker::Company.catch_phrase }
-    body { Faker::HipsterIpsum.paragraph }
+    body_plain { Faker::HipsterIpsum.paragraph }
     conversation
     user
     from { user.email }

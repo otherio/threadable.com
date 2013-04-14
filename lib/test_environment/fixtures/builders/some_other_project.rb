@@ -32,14 +32,14 @@ TestEnvironment::FixtureBuilder.new do
     user: 'John Callas',
     reply: false,
     subject: 'Welcome everyone. Lets get started',
-    body: %(I've invited all the managers. You're all welcome to add anyone you need.)
+    body_plain: %(I've invited all the managers. You're all welcome to add anyone you need.)
   )
 
   send_message(
     user: 'Ray Arvidson',
     reply: true,
     subject: 'RE: Welcome everyone. Lets get started',
-    body: %(Thanks John. I'll get right on that.)
+    body_plain: %(Thanks John. I'll get right on that.)
   )
 
 end

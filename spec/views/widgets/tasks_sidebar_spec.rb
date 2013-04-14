@@ -47,7 +47,7 @@ describe "tasks_sidebar" do
     it {should == '/lick-a-fish/tasks'}
   end
 
-  it "should be a think" do
+  it "should be a thing" do
     conversation_elements = html.css('.conversation')
     conversation_elements.size.should == 3
     conversation_elements[0][:'data-conversation-id'].should == "0"

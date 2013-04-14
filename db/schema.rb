@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211014554) do
+ActiveRecord::Schema.define(:version => 20130414203205) do
 
   create_table "conversations", :force => true do |t|
     t.string   "type"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
   create_table "messages", :force => true do |t|
     t.integer  "conversation_id"
     t.integer  "user_id"
-    t.text     "body"
+    t.text     "body_plain"
     t.boolean  "reply"
     t.string   "from"
     t.string   "subject"
@@ -66,6 +66,9 @@ ActiveRecord::Schema.define(:version => 20130211014554) do
     t.boolean  "knowledge",         :default => false
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
+    t.text     "stripped_plain"
+    t.text     "body_html"
+    t.text     "stripped_html"
   end
 
   add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"

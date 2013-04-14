@@ -4,7 +4,7 @@ describe Message do
   it { should belong_to(:parent_message) }
   it { should belong_to(:conversation) }
 
-  [:body, :children, :message_id_header, :references_header, :reply, :subject, :from, :user, :parent_message].each do |attr|
+  [:body_plain, :body_html, :stripped_plain, :stripped_html, :children, :message_id_header, :references_header, :reply, :subject, :from, :user, :parent_message].each do |attr|
     it { should allow_mass_assignment_of(attr) }
   end
 
@@ -21,5 +21,13 @@ describe Message do
       message.save
       message.references_header.should == [parent_message.references_header, parent_message.message_id_header].join(' ')
     end
+  end
+
+  describe "#body" do
+    it "returns the plain text for now" do
+      message = subject
+      message.body.should == message.body_plain
+    end
+
   end
 end

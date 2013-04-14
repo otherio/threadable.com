@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create
     message_attributes = params[:message].merge(parent_message: conversation.messages.last)
+    message_attributes[:body_plain] = message_attributes.delete(:body)
 
     @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
 
@@ -20,12 +21,17 @@ class MessagesController < ApplicationController
   # PUT /:project_id/conversations/:conversation_id/messages/:id.json
   def update
     @message = conversation.messages.find_by_id!(params[:id])
+    updated_message = params[:message]
 
-    unless @message.update_attributes(params[:message])
+    unless updated_message.except(:shareworthy, :knowledge).empty?
+      render :status => :forbidden, :text => "Read-only message field"
+      return
+    end
+
+    unless @message.update_attributes(updated_message)
       render json: @message.errors, status: :unprocessable_entity
     end
   end
-
 
   private
 

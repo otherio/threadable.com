@@ -6,7 +6,10 @@ class Message < ActiveRecord::Base
 
   attr_accessible(
     :subject,
-    :body,
+    :body_plain,
+    :body_html,
+    :stripped_plain,
+    :stripped_html,
     :children,
     :message_id_header,
     :references_header,
@@ -24,11 +27,15 @@ class Message < ActiveRecord::Base
   before_validation :add_references, :only => :create
   before_validation :message_id_header, :only => :create
 
-  validates_presence_of :body, :conversation
+  validates_presence_of :body_plain, :conversation
 
   def message_id_header
     read_attribute(:message_id_header) or \
     write_attribute(:message_id_header, "<#{Mail.random_tag}@multifyapp.com>")
+  end
+
+  def body
+    body_plain
   end
 
   private

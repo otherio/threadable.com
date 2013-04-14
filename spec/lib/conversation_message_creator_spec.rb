@@ -11,7 +11,7 @@ describe ConversationMessageCreator do
   let(:message_attributes) {
     {
       subject: "hey fellas",
-      body: "anyone want some cake?",
+      body_plain: "anyone want some cake?",
     }
   }
 
@@ -27,7 +27,7 @@ describe ConversationMessageCreator do
     message.should be_a Message
     message.should be_persisted
     message.subject.should == message_attributes[:subject]
-    message.body.should == message_attributes[:body]
+    message.body_plain.should == message_attributes[:body_plain]
     message.user.should == user
     message.conversation.should == conversation
   end
