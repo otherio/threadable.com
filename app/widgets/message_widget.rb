@@ -1,6 +1,10 @@
 class MessageWidget < Rails::Widget::Presenter
 
-  arguments :message
+  arguments :message, :index
+
+  local :first_message do
+    index == 0
+  end
 
   def initialize *a
     super
@@ -19,6 +23,10 @@ class MessageWidget < Rails::Widget::Presenter
 
   def message
     locals[:message]
+  end
+
+  def index
+    locals[:index]
   end
 
 end

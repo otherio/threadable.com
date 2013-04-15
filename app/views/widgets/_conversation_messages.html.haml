@@ -1,9 +1,9 @@
 %ol
-  - items.each do |type, item|
+  - items.each_with_index do |(type, item), index|
     - case type
     - when :message
       %li.with_message
-        = render_widget(:message, item)
+        = render_widget(:message, item, index)
     - when :event
       %li.with_event
         %span.event

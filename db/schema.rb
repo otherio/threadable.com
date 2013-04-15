@@ -66,9 +66,9 @@ ActiveRecord::Schema.define(:version => 20130414203205) do
     t.boolean  "knowledge",         :default => false
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
-    t.text     "stripped_plain"
-    t.text     "body_html"
-    t.text     "stripped_html"
+    t.text     "stripped_plain",    :default => ""
+    t.text     "body_html",         :default => ""
+    t.text     "stripped_html",     :default => ""
   end
 
   add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"

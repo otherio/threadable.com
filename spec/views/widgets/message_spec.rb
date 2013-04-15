@@ -12,7 +12,8 @@ describe "message" do
   let(:message){
     double(:message,
      from: 'MESSAGE FROM',
-     body: 'MESSAGE BODY',
+     body_plain: 'MESSAGE BODY',
+     stripped_plain: 'NOT QUOTED MESSAGE BODY',
      user: user,
      created_at: 'MESSAGE CREATED AT',
     )
@@ -24,11 +25,13 @@ describe "message" do
     {
       message: message,
       presenter: presenter,
+      index: 0,
     }
   end
 
   before do
     view.should_receive(:timeago).with(message.created_at)
+    view.should_receive(:first_message)
     presenter.should_receive(:link_to_toggle).with(:shareworthy)
     presenter.should_receive(:link_to_toggle).with(:knowledge)
   end

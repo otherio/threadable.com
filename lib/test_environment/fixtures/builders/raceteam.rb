@@ -39,6 +39,7 @@ TestEnvironment::FixtureBuilder.new do
     user: 'Alice Neilson',
     reply: false,
     subject: 'Welcome to our new Multify project!',
+    stripped_plain: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!',
     body_plain: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!'
   )
 
@@ -47,6 +48,7 @@ TestEnvironment::FixtureBuilder.new do
     user: 'Bethany Pattern',
     reply: true,
     subject: 'RE: Welcome to our new Multify project!',
+    stripped_plain: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.',
     body_plain: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.',
   )
 
@@ -55,6 +57,7 @@ TestEnvironment::FixtureBuilder.new do
     user: 'Tom Canver',
     reply: false,
     subject: 'How are we going to build the body?',
+    stripped_plain: "I'm not 100% clear on the right way to go for this, but we should figure out if we're going to make the body out of carbon or buy a giant boat and cut it up or whatever.",
     body_plain: "I'm not 100% clear on the right way to go for this, but we should figure out if we're going to make the body out of carbon or buy a giant boat and cut it up or whatever.",
   )
 
@@ -68,6 +71,7 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'layup body carbon',
+    stripped_plain: "Some stuff about how we have decided on a course of action for this body.\nSo, let's do some carbon layup!",
     body_plain: "Some stuff about how we have decided on a course of action for this body.\nSo, let's do some carbon layup!",
     user: 'Alice Neilson',
     reply: false,
@@ -75,6 +79,7 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'RE: layup body carbon',
+    stripped_plain: "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time",
     body_plain: "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time",
     user: 'Tom Canver',
     reply: true,
@@ -87,6 +92,7 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'RE: layup body carbon',
+    stripped_plain: "I'm so there! Also, I think I can probably pick up some of those supplies from a friend, who was trying to make a kayak.",
     body_plain: "I'm so there! Also, I think I can probably pick up some of those supplies from a friend, who was trying to make a kayak.",
     user: 'Yan Hzu',
     reply: true,
@@ -105,6 +111,7 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'RE: layup body carbon',
+    stripped_plain: "So, I've got a question: we're using two layers of carbon with a layer of fiberglass between them for the bottom body panel, but do we want to do the same for the top? It doesn't need to be as strong, and less fiberglass would be lighter, but will it crack?",
     body_plain: "So, I've got a question: we're using two layers of carbon with a layer of fiberglass between them for the bottom body panel, but do we want to do the same for the top? It doesn't need to be as strong, and less fiberglass would be lighter, but will it crack?",
     user: 'Tom Canver',
     reply: true,
@@ -112,6 +119,7 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'RE: layup body carbon',
+    stripped_plain: "I think I can get in touch with Yan's friend who built the carbon kayak.  He might know!",
     body_plain: "I think I can get in touch with Yan's friend who built the carbon kayak.  He might know!",
     user: 'Alice Neilson',
     reply: true,
@@ -120,6 +128,7 @@ TestEnvironment::FixtureBuilder.new do
   send_message(
     subject: 'RE: layup body carbon',
     body_plain: "Hey all! This looks pretty neat. Lets see if I can help you out here...\nSo on the kayak, we use two layers of carbon plus some batting on the bottom, and carbon/glass on the sides. Looking at the drawings on your blog, it seems like the top of the bodywork has a pretty wide unsupported area. In that case, I'd go for the carbon/glass, even though it's a little heavier. You could also use single layers of carbon and back it with some rod or some aluminum to reduce flexing and make it less likely to crack.\nGood luck!\nAndy",
+    stripped_plain: "Hey all! This looks pretty neat. Lets see if I can help you out here...\nSo on the kayak, we use two layers of carbon plus some batting on the bottom, and carbon/glass on the sides. Looking at the drawings on your blog, it seems like the top of the bodywork has a pretty wide unsupported area. In that case, I'd go for the carbon/glass, even though it's a little heavier. You could also use single layers of carbon and back it with some rod or some aluminum to reduce flexing and make it less likely to crack.\nGood luck!\nAndy",
     user: nil,
     from: '"Andy Lee Issacson" <andy@example.com>',
     reply: true,
@@ -127,6 +136,7 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'RE: layup body carbon',
+    stripped_plain: "Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway.",
     body_plain: "Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway.",
     user: 'Tom Canver',
     reply: true,
@@ -134,7 +144,8 @@ TestEnvironment::FixtureBuilder.new do
 
   send_message(
     subject: 'RE: layup body carbon',
-    body_plain: "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.",
+    body_plain: "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.\n\n> Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass\n> like you suggested, since we're under weight on the wheels anyway.",
+    stripped_plain: "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.",
     user: 'Tom Canver',
     reply: true,
   )

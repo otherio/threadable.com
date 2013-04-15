@@ -46,6 +46,12 @@ describe MessagesController do
       assigns(:message).parent_message.should be_nil
     end
 
+    it "has a body_plain and a stripped_plain" do
+      request!
+      assigns(:message).body_plain.should == message.body_plain
+      assigns(:message).stripped_plain.should == message.body_plain
+    end
+
     context "with more than one message in the conversation" do
       let!(:first_message) { FactoryGirl.create(:message, conversation: conversation) }
 

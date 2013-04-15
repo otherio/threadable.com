@@ -7,6 +7,7 @@ class MessagesController < ApplicationController
   def create
     message_attributes = params[:message].merge(parent_message: conversation.messages.last)
     message_attributes[:body_plain] = message_attributes.delete(:body)
+    message_attributes[:stripped_plain] = message_attributes[:body_plain]
 
     @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
 

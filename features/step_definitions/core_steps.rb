@@ -57,8 +57,7 @@ Then /^I should not see "(.*?)"$/ do |content|
 end
 
 When /^I debug$/ do
-  require 'debugger'
-  debugger;1
+  binding.pry
 end
 
 Given /^this scenario is pending(?: because (.+))?$/ do |reason|

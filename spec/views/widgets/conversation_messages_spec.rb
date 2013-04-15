@@ -40,11 +40,11 @@ describe "conversation_messages" do
   end
 
   before do
-    items.each do |type, item|
+    items.each_with_index do |(type, item), index|
       case type
       when :message
         view.should_receive(:render_widget).
-          with(:message, item).
+          with(:message, item, index).
           and_return(%(<div class="message">message widget html for message#{item.index}</div>).html_safe)
       end
     end

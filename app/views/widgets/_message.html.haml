@@ -8,7 +8,12 @@
       = message.from
   %span.pull-right
     = timeago message.created_at
-.message-text<= h(message.body.strip).gsub(/\s*\n/, "<br/>").html_safe
+- if first_message || message.body_plain == message.stripped_plain
+  .message-text<= h(message.body_plain.strip).gsub(/\s*\n/, "<br/>").html_safe
+- else
+  .message-text<= h(message.stripped_plain.strip).gsub(/\s*\n/, "<br/>").html_safe
+  %button.btn.btn-small.show-quoted-link{:alt => "show quoted text"} ...
+  .message-text-full<= h(message.body_plain.strip).gsub(/\s*\n/, "<br/>").html_safe
 
 .message-actions
 
