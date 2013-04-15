@@ -4,20 +4,27 @@ class EmailProcessor
     setup :api_key => Multify.config('mailgun')['key']
   end
 
+  class MailgunRequestToEmailStripped < Incoming::Strategies::Mailgun
+    option :stripped, true
+    setup :api_key => Multify.config('mailgun')['key']
+  end
+
   def self.process_request(request)
     strategy = MailgunRequestToEmail.new(request)
     strategy.authenticate or return false
     email = strategy.message
-    ProcessEmailWorker.enqueue(email.to_s)
+    email_stripped = MailgunRequestToEmailStripped.new(request).message
+
+    ProcessEmailWorker.enqueue(email.to_s, email_stripped.to_s)
   end
 
-  def self.process_email(email)
-    new(email).dispatch!
+  def self.process_email(email, email_stripped)
+    new(email, email_stripped).dispatch!
   end
 
-  def initialize(email)
+  def initialize(email, email_stripped)
     @email = Mail.read_from_string(email.to_s)
-    prepare_body
+    @email_stripped = Mail.read_from_string(email_stripped.to_s)
   end
 
   attr_reader :email
@@ -104,14 +111,17 @@ class EmailProcessor
       parent_message: parent_message,
       user: user,
       from: from,
-      body_plain: @text_body
+      body_plain: filter_token(@email.text_part),
+      body_html: filter_token(@email.html_part),
+      stripped_plain: filter_token(@email_stripped.text_part),
+      stripped_html: filter_token(@email_stripped.html_part),
     )
   end
 
   private
 
-  def prepare_body
-    @text_body = @email.text_part.body.to_s.gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
+  def filter_token(part)
+    part.body.to_s.gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
   end
 
 end

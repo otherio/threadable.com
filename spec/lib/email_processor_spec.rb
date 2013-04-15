@@ -28,7 +28,9 @@ describe EmailProcessor do
 
   let(:request){ double(:request, params: params) }
   let(:request_processor){ double(:request_processor) }
+  let(:stripped_request_processor){ double(:stripped_request_processor) }
   let(:email_as_a_string){ EmailProcessor::MailgunRequestToEmail.new(request).message }
+  let(:stripped_email_as_a_string){ EmailProcessor::MailgunRequestToEmailStripped.new(request).message }
 
   describe ".process_request" do
 
@@ -43,11 +45,21 @@ describe EmailProcessor do
     context "when authentication succeeds" do
       let(:authentication_result){ true }
 
+      before do
+        EmailProcessor::MailgunRequestToEmailStripped.should_receive(:new). \
+          and_return(stripped_request_processor)
+      end
+
       it "should take a request, create an email and schedule a ProcessEmailWorker job to process it" do
         email = double(:email)
         request_processor.should_receive(:message).and_return(email)
         email.should_receive(:to_s).and_return('EMAIL AS A STRING')
-        ProcessEmailWorker.should_receive(:enqueue).with('EMAIL AS A STRING')
+
+        stripped_email = double(:stripped_email)
+        stripped_request_processor.should_receive(:message).and_return(stripped_email)
+        stripped_email.should_receive(:to_s).and_return('STRIPPED')
+
+        ProcessEmailWorker.should_receive(:enqueue).with('EMAIL AS A STRING', 'STRIPPED')
         EmailProcessor.process_request(request)
       end
     end
@@ -65,16 +77,17 @@ describe EmailProcessor do
 
     it "should create a new EmailProcessor instance and call dispatch!" do
       email = double(:email)
+      stripped = double(:stripped)
       instance = double(:instance)
-      EmailProcessor.should_receive(:new).with(email).and_return(instance)
+      EmailProcessor.should_receive(:new).with(email, stripped).and_return(instance)
       instance.should_receive(:dispatch!)
-      EmailProcessor.process_email(email)
+      EmailProcessor.process_email(email, stripped)
     end
   end
 
   describe ".new" do
 
-    subject{ EmailProcessor.new(email_as_a_string) }
+    subject{ EmailProcessor.new(email_as_a_string, stripped_email_as_a_string) }
 
     attr_reader :message
 
@@ -91,6 +104,10 @@ describe EmailProcessor do
 
     describe "#conversation_message" do
 
+      def filter_token(body)
+        body.gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
+      end
+
       let(:message){ subject.conversation_message }
 
       let!(:conversation_count){ Conversation.count }
@@ -99,17 +116,16 @@ describe EmailProcessor do
       let(:project){ Project.find_by_slug('ucsd-electric-racing') }
       let(:user   ){ User.find_by_email('alice@ucsd.multifyapp.com') }
 
-      let(:body_without_token) {
-        params['body-plain'].gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
-      }
-
-
       def validate_message!
         message.should be_a Message
         message.should be_persisted
         message.subject.should == params['subject']
 
-        message.body.should == body_without_token
+        message.body_plain.should == filter_token(params['body-plain'])
+        message.body_html.should == filter_token(params['body-html'])
+        message.stripped_plain.should == filter_token(params['stripped-text'])
+        message.stripped_html.should == filter_token(params['stripped-html'])
+
         message.user.should == user
         message.conversation.should be_persisted
         message.conversation.project.should == project
