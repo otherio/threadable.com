@@ -3,6 +3,7 @@ Feature: Invitations
   adding them as doers for a task, or adding them as followers of a task. The people I invite should be able
   to use those invitations to claim their accounts and become registered users.
 
+  @javascript
   Scenario: I want to add an unregistered user as a member of a project
     In order to add an unregistered user as a member to my project
     As a member of that project
