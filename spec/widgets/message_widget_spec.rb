@@ -5,7 +5,7 @@ describe MessageWidget do
   let(:project){ double(:project) }
   let(:conversation){ double(:conversation, project: project) }
   let(:message)   { double(:message, shareworthy?: true, knowledge?: true, conversation: conversation) }
-  let(:arguments) { [message, 0] }
+  let(:arguments) { [message] }
 
   def html_options
     {class: 'custom_class'}
@@ -18,8 +18,6 @@ describe MessageWidget do
         block: nil,
         presenter: presenter,
         message: message,
-        first_message: true,
-        index: 0,
       }
     end
   end

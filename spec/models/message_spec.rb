@@ -28,6 +28,5 @@ describe Message do
       message = subject
       message.body.should == message.body_plain
     end
-
   end
 end

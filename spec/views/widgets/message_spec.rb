@@ -25,13 +25,11 @@ describe "message" do
     {
       message: message,
       presenter: presenter,
-      index: 0,
     }
   end
 
   before do
     view.should_receive(:timeago).with(message.created_at)
-    view.should_receive(:first_message)
     presenter.should_receive(:link_to_toggle).with(:shareworthy)
     presenter.should_receive(:link_to_toggle).with(:knowledge)
   end

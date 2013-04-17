@@ -39,6 +39,9 @@ When /^I click "(.*?)"$/ do |name|
   click_on name
 end
 
+When /^I click selector "(.*)"$/ do |selector|
+  page.find(selector).click
+end
 
 When /^I click the "(.*?)" button$/ do |name|
   click_button name

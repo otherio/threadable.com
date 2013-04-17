@@ -1,5 +1,5 @@
 Then /^a message should have hidden quoted text$/ do
-  page.should have_selector('.show-quoted-link')
+  page.should have_selector('.show-quoted-text')
   page.find('.message-text-full', visible: false).should_not be_visible
 end
 

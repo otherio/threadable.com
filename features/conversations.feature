@@ -10,7 +10,7 @@ Feature: Conversations
     Given I am "Alice Neilson"
       And I go to the "layup body carbon" conversation for the "UCSD Electric Racing" project
      Then a message should have hidden quoted text
-     When I click the "..." button
+     When I click selector ".show-quoted-text"
      Then a message should have visible quoted text
 
 #  Scenario: I want to create a new conversation through the website
