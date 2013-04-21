@@ -70,6 +70,7 @@ describe TasksSidebarWidget do
     it do
       should == {
         class: "tasks_sidebar custom_class",
+        widget: "tasks_sidebar",
         'data-conversations' => true,
         'data-with_title' => false,
       }

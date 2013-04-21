@@ -1,68 +1,71 @@
-Multify.Widget('invite_modal', function(widget){
+Rails.widget('invite_modal', function(Widget){
 
-  Multify.bind('show_invite_modal', function(event, data){
-    data || (data={});
-    var invite_modal = $('.invite_modal:first');
-    invite_modal.find('input[name="invite[name]"]').val(data.name);
-    invite_modal.find('input[name="invite[email]"]').val(data.email);
-    invite_modal.modal('show');
-  });
+  Widget.initialize = function(page){
+    page.on('shown',        Widget.selector,      onShown)
+    page.on('ajax:send',    Widget.selector+' form', onSend)
+    page.on('ajax:success', Widget.selector+' form', onSuccess)
+    page.on('ajax:error',   Widget.selector+' form', onError)
 
-  widget.initialize = function(){
-    widget.S()
-      .bind('shown', onShown)
-      ('form')
-        .bind('ajax:send', onSend)
-        .bind('ajax:success', onSuccess)
-        .bind('ajax:error', onError)
-      .end
-    ;
-
-    Multify.bind('show_invite_modal', function(event, options){
+    page.bind('show_invite_modal', function(event, options){
       options || (options={});
-      var invite_modal = $('.invite_modal:first');
+      var invite_modal = page.$('.invite_modal:first');
       invite_modal.find('input[name="invite[name]"]').val(options.name);
       invite_modal.find('input[name="invite[email]"]').val(options.email);
       invite_modal.modal('show');
-      if(options.success) {
-        widget.success = options.success;
-      }
+      onNextSuccess(invite_modal, options.success);
     });
   };
 
-  function onShown(modal, event){
-    focusFirstInput(modal);
+  this.initialize = function(){
+    this.flash = new Multify.Flash(this.node.find('.flash_messages'));
   }
 
-  function onSend(form, event){
-    form.closest('.modal').find('.flash_messages').empty();
+  this.focus = function(){
+    this.node.find('input:visible:first').focus();
+  };
+
+  this.reset = function(){
+    this.flash.empty();
+    this.focus();
+    this.node.find('form')[0].reset();
+    return this;
+  };
+
+  this.close = function(){
+    this.node.modal('hide');
+    this.reset();
+  };
+
+  function onNextSuccess(invite_modal, callback){
+    if (!callback) return
+    invite_modal.one('ajax:success', callback);
+    invite_modal.one('ajax:complete', function(){
+      invite_modal.unbind('ajax:success', callback);
+    });
   }
 
-  function onSuccess(form, event, user, status, xhr){
-    close(form.closest('.modal'));
-    Multify.Flash.message($('<span>').text(user.name+' <'+user.email+'> was added to this project.'));
-    if(widget.success) {
-      widget.success(user);
-    }
+  function onShown(event){
+    $(this).find('input:visible:first').focus();
   }
 
-  function onError(form, event, xhr, status, error){
+  function onSend(event){
+    $(this).widget(Widget).reset();
+  }
+
+  function onSuccess(event, user, status, xhr){
+    var widget = $(this).widget(Widget)
+    widget.close();
+    widget.page().flash.message(user.name+' <'+user.email+'> was added to this project.');
+  }
+
+  function onError(event, xhr, status, error){
+    var widget = $(this).widget(Widget);
     if (xhr.status === 400){
-      Multify.Flash.notice('That user is already a member of this project.');
-      close(form.closest('.modal'));
+      widget.page().flash.notice('That user is already a member of this project.');
     }else{
-      Multify.Modal.Flash.alert('Oops! Something went wrong. Please try again later.');
-      focusFirstInput(form);
+      widget.page().flash.alert('Oops! Something went wrong. Please try again later.');
     }
-  }
-
-  function focusFirstInput(element){
-    element.find('input:visible:first').focus();
-  }
-
-  function close(modal){
-    modal.modal('hide');
-    modal.find('form')[0].reset();
+    widget.close();
   }
 
 });

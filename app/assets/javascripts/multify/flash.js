@@ -1,6 +1,10 @@
-Multify.Flash = {
+Multify.Flash = function(node){
+  this.node = $(node);
+}
 
-  create: function(type, content){
+Object.extend(Multify.Flash.prototype, {
+
+  create: function(type, html){
     var classnames, title, alert;
 
     switch(type){
@@ -25,35 +29,44 @@ Multify.Flash = {
     alert = $(
       '<div class="alert">'+
       '  <button type="button" class="close" data-dismiss="alert">×</button>'+
-      '  <strong></strong> <span></span>'+
+      '  <strong></strong> '+
       '</div>'
     );
 
     alert.addClass(classnames);
-    alert.find('strong').text(title);
-    alert.find('span').html(content);
+    alert.find('strong').text(title)
+    alert.append(html);
     return alert;
+  },
+
+  createAndAppendFromText: function(type, text){
+    return this.append(this.create(type, Multify.Util.text2html(text)));
+  },
+
+  empty: function(){
+    this.node.empty();
+    return this;
   },
 
   append: function(alert){
-    $('#page > .flash_messages').append(alert);
+    this.node.append(alert);
     return alert;
   },
 
-  message: function(content){
-    return this.append(this.create('message', content));
+  message: function(text){
+    return this.createAndAppendFromText('message', text);
   },
 
-  error: function(content){
-    return this.append(this.create('error', content));
+  error: function(text){
+    return this.createAndAppendFromText('error', text);
   },
 
-  notice: function(content){
-    return this.append(this.create('notice', content));
+  notice: function(text){
+    return this.createAndAppendFromText('notice', text);
   },
 
-  alert: function(content){
-    return this.append(this.create('alert', content));
+  alert: function(text){
+    return this.createAndAppendFromText('alert', text);
   }
 
-};
+});

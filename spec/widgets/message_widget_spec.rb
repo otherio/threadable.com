@@ -27,6 +27,7 @@ describe MessageWidget do
     it do
       should == {
         class: "message custom_class",
+        widget: "message",
         shareworthy: true,
         knowledge: true
       }

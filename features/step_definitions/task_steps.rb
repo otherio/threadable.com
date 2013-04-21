@@ -23,8 +23,10 @@ When /^I add a new task titled "(.*?)"$/ do |task_subject|
 end
 
 When /^I (add|remove) "(.*?)" as a doer for this task$/ do |_, doer_name|
-
   click_on 'add/remove others'
-  fill_in 'add-others-typeahead', with: doer_name
-  within('.popover .user-list'){ click_on doer_name }
+  within '.add-remove-doers .popover' do
+    fill_in 'doers-typeahead', with: doer_name
+    # binding.pry
+    within('.user-list'){ click_on doer_name }
+  end
 end

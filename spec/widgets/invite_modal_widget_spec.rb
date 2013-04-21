@@ -27,6 +27,7 @@ describe InviteModalWidget do
     it do
       should == {
         class: "invite_modal modal hide fade custom_class",
+        widget: "invite_modal",
       }
     end
   end

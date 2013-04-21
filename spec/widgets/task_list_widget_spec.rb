@@ -24,6 +24,7 @@ describe TaskListWidget do
     it "should return the expected hash" do
       subject.html_options.should == {
         class: "task_list custom_class conversations",
+        widget: "task_list",
       }
     end
   end

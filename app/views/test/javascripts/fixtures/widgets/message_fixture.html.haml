@@ -1,7 +1,1 @@
-%ol
-  %li.with_message
-    = render_widget :message, Message.first
-
-  %li.with_message
-    - # this gets us a specific message that contains quoted text from the fixtures
-    = render_widget :message, Message.where("body_plain != stripped_plain and body_plain like 'This turned out super awesome%'").first
+= render_widget :message, Message.where("body_plain != stripped_plain and body_plain like 'This turned out super awesome%'").first

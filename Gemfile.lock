@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/deadlyicon/rails-widgets
-  revision: 0a48b5ddd4477dae357720912f2a7ae17ced747e
+  revision: 99d4900d28b7e1f68d837475d22d60f6d27ef9a2
   specs:
     rails-widgets (0.0.1)
       railties (>= 3.0, < 5.0)

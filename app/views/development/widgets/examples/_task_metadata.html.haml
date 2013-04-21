@@ -1,9 +1,11 @@
-- user = User.all.find{|u| u.tasks.empty? }
-- task = Task.last
-%h3 When the current users is a doer
-= render_widget :task_metadata, task: task, user: user
 
-- user = User.all.find{|u| u.tasks.present? }
-- task = user.tasks.last
-%h3 When the current users is not a doer
-= render_widget :task_metadata, task: task, user: user
+- if signed_in?
+
+  - @task = current_user.tasks.first || current_user.projects.first.tasks.first
+  - @project = @task.project
+
+  = render_widget :task_metadata, task: @task, user: current_user
+
+- else
+
+  %h2 please sign in to view this widget

@@ -1,105 +1,55 @@
-Multify.Widget('tasks_sidebar', function(widget){
+Rails.widget('tasks_sidebar', function(Widget){
 
-  widget.initialize = function(){
-    S('.tasks_sidebar')
-      ('form')
-        .bind('submit', widget.onSubmit)
-        ('input')
-          .bind('keyup', widget.onValueChange)
-        .end
-      .end
-      ('.task')
-        .bind('mouseenter', widget.onTaskMouseEnter)
-        .bind('mouseleave', widget.onTaskMouseLeave)
-      .end
-      ('button.all_tasks')
-        .bind('click', onClickAllTasksButton)
-      .end
-      ('button.my_tasks')
-        .bind('click', onClickMyTasksButton)
-      .end
-      ('button.conversations')
-        .bind('click', onClickConversationsButton)
-      .end
-    ;
+  // this runs one time when the dom is ready
+  // if this widget was listed in the page digest
 
-    Multify.bind('conversation_mouse_enter', function(event, id){
-      widget.$('*[data-conversation-id='+id+']').addClass('hover');
+  Widget.initialize = function(page){
+    page.on('click',      Widget.selector+' button.all_tasks',     onClickAllTasksButton)
+    page.on('click',      Widget.selector+' button.my_tasks',      onClickMyTasksButton)
+    page.on('click',      Widget.selector+' button.conversations', onClickConversationsButton)
+    page.on('submit',     Widget.selector+' form',                 onSubmit)
+    page.on('keyup',      Widget.selector+' form input',           onFormValueChange)
+    page.on('mouseenter', Widget.selector+' .task',                onTaskMouseEnter)
+    page.on('mouseleave', Widget.selector+' .task',                onTaskMouseLeave)
+
+    page.bind('conversation_mouse_enter', function(event, id){
+      $(Widget.selector+' *[data-conversation-id='+id+']').addClass('hover');
     });
 
-    Multify.bind('conversation_mouse_leave', function(event, id){
-      widget.$('*[data-conversation-id='+id+']').removeClass('hover');
+    page.bind('conversation_mouse_leave', function(event, id){
+      $(Widget.selector+' *[data-conversation-id='+id+']').removeClass('hover');
     });
 
-    $(function(){
-      widget.reset();
-    });
+    $(Widget.selector).widget();
   };
 
-  widget.path = function(element){
-    element || (element =  widget.$());
-    return element.find('form').attr('action');
+  // this runs the first time you call .widget() in a widget dom node
+  this.initialize = function(){
+    this.node.find('input').trigger('keyup');
+    this.node.find('.sortable.task_list').sortable().bind('sortupdate', onSortupdate);
+    this.showTab();
   };
 
-  widget.reload = function(element){
-    element || (element = widget.$());
+  this.showTab = function(tab_name){
+    tab_name = tab_name || localStorage['multify.widgets.tasks_sidebar.tab'] || 'all_tasks';
+    var button = this.node.find('.btn.'+tab_name);
+    if (button.length === 0){
+      tab_name = 'all_tasks';
+      button = this.node.find('.btn.'+tab_name);
+    }
+    localStorage['multify.widgets.tasks_sidebar.tab'] = tab_name;
+    this.node.attr('showing', tab_name);
+    button.addClass('active').siblings().removeClass('active');
+    return this;
+  };
+
+  this.createTask = function(subject){
+    var url = this.node.find('form').attr('action');
+
+    var data = {task:{subject:subject}};
 
     var request = $.ajax({
-      url:      widget.path(),
-      data:     element.closest('.tasks_sidebar').data(),
-      type:     'GET',
-      dataType: 'html'
-    });
-
-    request.success(function(html){
-      widget.replace(html);
-    });
-
-    return request;
-  };
-
-  widget.replace = function(html, refocus){
-    var element = widget.$();
-    html = $(html);
-    element = element.map(function(){
-      var
-        instance = $(this),
-        showing  = instance.attr('showing'),
-        new_html = html.clone();
-      instance.replaceWith(new_html);
-      new_html.find('button.'+showing).click();
-      return new_html[0];
-    });
-    widget.reset();
-    if (refocus) setTimeout(function(){ element.find('input:first').focus(); });
-  };
-
-  widget.reset = function(element){
-    $('.tasks_sidebar input').trigger('keyup');
-    $('.tasks_sidebar .sortable.task_list').sortable().bind('sortupdate', widget.sortupdate);
-    widget.showTab();
-  };
-
-  widget.onSubmit = function(form, event){
-    event.preventDefault();
-
-    var
-      root    = form.closest('.tasks_sidebar'),
-      input   = form.find('input'),
-      subject = input.val();
-    if (subject) widget.createTask(root, subject, true);
-    input.val('');
-
-    return widget;
-  };
-
-  widget.createTask = function(element, subject, refocus){
-    element || (element =  widget.$());
-    var url = element.find('form').attr('action');
-
-    var data = $.extend(element.closest('.tasks_sidebar').data(), {task:{subject:subject}});
-
-    var request = $.ajax({
+      context:  this,
       url:      url,
       type:    'POST',
       data:     data,
@@ -107,50 +57,91 @@ Multify.Widget('tasks_sidebar', function(widget){
     });
 
     request.success(function(html){
-      widget.replace(html, refocus);
+      request.new_widget = this.replace(html);
     });
 
-    request.error(function(){
-      element.find('input:first').val(subject).trigger('keyup');
-    });
+    return request;
   };
 
-  widget.showTab = function(tab_name, element){
-    element || (element =  widget.$());
-    element = element.closest('.tasks_sidebar');
-    tab_name = tab_name || localStorage['multify.widgets.tasks_sidebar.tab'] || 'all_tasks';
-    var button = element.find('.btn.'+tab_name);
-    if (button.length === 0){
-      tab_name = 'all_tasks';
-      button = element.find('.btn.'+tab_name);
-    }
-    localStorage['multify.widgets.tasks_sidebar.tab'] = tab_name;
-    element.attr('showing', tab_name);
-    button.addClass('active').siblings().removeClass('active');
+  this.replace = function(html){
+    var tab = this.node.attr('showing');
+    var node = $(html);
+    this.node.replaceWith(node);
+    var widget = node.widget();
+    widget.showTab(tab);
     return widget;
   };
 
-  widget.onValueChange = function(element){
-    var form = element.closest('form');
+  this.reload = function(){
+    return $.ajax({
+      url:      this.node.find('form').attr('action'),
+      type:     'GET',
+      dataType: 'html',
+      success:  this.replace.bind(this)
+    });
+  };
+
+
+
+  // private
+
+  function onClickAllTasksButton(event){
+    $(this).widget().showTab('all_tasks');
+  }
+
+  function onClickMyTasksButton(event){
+    $(this).widget().showTab('my_tasks');
+  }
+
+  function onClickConversationsButton(event){
+    $(this).widget().showTab('conversations');
+  }
+
+  function onFormValueChange(event){
+    var form = $(this).widget().node.find('form');
     var message_body = form.find('input').val();
     form.find('button').attr('disabled', !message_body);
-  };
+  }
 
-  widget.onTaskMouseEnter = function(element){
-    Multify.trigger('conversation_mouse_enter', element.data('conversation-id'));
-  };
+  function onSubmit(event){
+    event.preventDefault();
+    var
+      form    = $(this),
+      input   = form.find('input'),
+      subject = input.val();
 
-  widget.onTaskMouseLeave = function(element){
-    Multify.trigger('conversation_mouse_leave', element.data('conversation-id'));
-  };
+    if (!subject) return;
+    var create = $(this).widget().createTask(subject);
 
-  widget.sortupdate = function(event, data){
-    var task = data.item;
-    var list = $(this);
-    var tasks = list.find('>li');
-    var index = task.index();
-    var current_position = task.data('position');
-    var new_position;
+    create.success(function(){
+      setTimeout(function(){
+        create.new_widget.node.find('form input').focus();
+      });
+    });
+
+    create.fail(function(){ input.val(subject); });
+
+    input.val('');
+  }
+
+  function onTaskMouseEnter(event){
+    Multify.page.trigger('conversation_mouse_enter', $(this).data('conversation-id'));
+  }
+
+  function onTaskMouseLeave(event){
+    Multify.page.trigger('conversation_mouse_leave', $(this).data('conversation-id'));
+  }
+
+  function onSortupdate(event, data){
+    var
+      task             = data.item,
+      list             = $(this),
+      widget           = list.closest(Widget.selector).widget(),
+      tasks            = list.find('>li'),
+      index            = task.index(),
+      current_position = task.data('position'),
+      new_position, url;
+
     if (index < 1){
       new_position = $(tasks.get(index+1)).data('position') - 1
     }else{
@@ -159,36 +150,19 @@ Multify.Widget('tasks_sidebar', function(widget){
       if (current_position >= new_position) new_position++;
     }
 
-    if (!$.isNumeric(new_position)) throw new Error('unabled to determine new position');
+    if (!$.isNumeric(new_position)) throw new Error('unable to determine new position');
 
-    var url = Multify.project_task_path(
-      Multify.currentProject.slug, task.data('slug')
+    url = Multify.page.project_task_path(
+      Multify.page.current_project.slug, task.data('slug')
     );
 
-    var request = $.ajax({
+    $.ajax({
       url: url,
       type: 'PUT',
       dataType: 'json',
-      data: {task:{position: new_position}}
+      data: {task:{position: new_position}},
+      success: function(){ widget.reload(); }
     });
-
-    request.done(function(){
-      widget.reload(list);
-    });
-  };
-
-  function onClickAllTasksButton(element){
-    widget.showTab('all_tasks', element);
-  };
-
-  function onClickMyTasksButton(element){
-    widget.showTab('my_tasks', element);
-  };
-
-  function onClickConversationsButton(element){
-    widget.showTab('conversations', element);
-  };
-
-
+  }
 
 });

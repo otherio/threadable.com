@@ -1,32 +1,29 @@
-Multify.Widget('conversation_messages', function(widget){
+Rails.widget('conversation_messages', function(Widget){
 
-  widget.initialize = function(){
-    S('.conversation_messages')
-      ('form')
-        .bind('ajax:success', widget.appendMessage)
-        ('textarea')
-          .bind('keyup', widget.onMessageBodyChange)
-        .end
-      .end
-    ;
-
-    $(function(){
-      $('.conversation_messages textarea').trigger('keyup');
-    });
+  Widget.initialize = function(page){
+    page.on('ajax:success', '.conversation_messages form', appendMessage);
+    page.on('keyup', '.conversation_messages form textarea', onMessageBodyChange);
   };
 
-  widget.appendMessage = function(form, event, message, status, request){
-    var message_node = $('<li>').addClass('message').html(message.as_html);
-
-    form.closest('.conversation_messages').find('> ol').append(message_node);
-    form[0].reset();
-    $('.timeago').timeago();
+  this.initialize = function(){
+    this.node.find('textarea').trigger('keyup');
+    this.node.find('.timeago').timeago();
   };
 
-  widget.onMessageBodyChange = function(element){
-    var form = element.closest('form');
+  function appendMessage(event, message, status, request){
+    var form = $(this);
+    var widget = form.widget(Widget);
+    var message = $(message.as_html);
+    var li = $('<li>').addClass('with_message').html(message);
+    widget.node.find('> ol').append(li);
+    this.reset();
+    message.widget('initialize');
+  }
+
+  function onMessageBodyChange(){
+    var form = $(this).closest('form');
     var message_body = form.find('textarea').val();
     form.find('input[type=submit]').attr('disabled', !message_body);
-  };
+  }
 
 });

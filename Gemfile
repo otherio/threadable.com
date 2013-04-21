@@ -11,7 +11,6 @@ gem 'devise'    # authentication
 gem 'virtus'
 gem 'method_object'
 gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
-# gem 'rails-widgets', path: './vendor/gems/rails-widgets'
 gem 'pg'
 gem 'js-routes'
 gem 'resque'

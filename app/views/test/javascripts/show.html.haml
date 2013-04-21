@@ -2,15 +2,17 @@
 %html
   %head
     %title Javascript Tests
-    = stylesheet_link_tag 'test/javascripts', :media => "all"
-    = javascript_include_tag 'test/javascripts'
-    - @specs.each do |spec|
-      = javascript_include_tag "#{spec}_spec"
-
     = csrf_meta_tags
 
     :javascript
-      fixtures = #{@fixtures.to_json}
+      fixtures = #{@fixtures.to_json};
+
+    = stylesheet_link_tag 'application', :media => "all"
+    = stylesheet_link_tag 'specs', :media => "all"
+    = javascript_include_tag 'application'
+    = javascript_include_tag 'specs'
+    - @specs.each do |spec|
+      = javascript_include_tag "#{spec}_spec"
 
   %body
-    #body
+    .page

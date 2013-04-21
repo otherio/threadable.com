@@ -1,3 +1,3 @@
-S('.submit').click(function(element, event){
-  element.closest('form').submit();
+$(document).on('click', '.submit', function(event){
+  $(this).closest('form').submit();
 });

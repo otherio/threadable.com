@@ -12,6 +12,8 @@ class Task < Conversation
 
   scope :done, where('conversations.done_at IS NOT NULL')
   scope :not_done, where('conversations.done_at IS NULL')
+  scope :with_doers, includes(:doers).where('task_doers.id IS NOT NULL')
+  scope :without_doers, includes(:doers).where('task_doers.id IS NULL')
 
   after_save :create_done_event!
   before_validation :set_position

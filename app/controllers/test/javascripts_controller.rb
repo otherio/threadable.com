@@ -3,6 +3,8 @@ class Test::JavascriptsController < TestController
   layout false
 
   SPECS_PATH = Rails.root.join('spec/javascripts')
+  VIEWS = Rails.root.join("app/views")
+  FIXTURES = VIEWS.join("test/javascripts/fixtures")
 
   def show
     @specs = Dir[SPECS_PATH + '**/*_spec.js'].map do |spec|
@@ -10,13 +12,22 @@ class Test::JavascriptsController < TestController
     end
 
     @fixtures = {}
-    @specs.each do |spec|
-      ActiveRecord::Base.transaction do
-        @fixtures[spec] = view_context.render(file: "/test/javascripts/fixtures/#{spec}_fixture")
-      end
+    Dir[FIXTURES.join("**/*")].each do |path|
+      path = Pathname(path)
+      next unless path.file?
+      render_fixture(path)
     end
-  rescue Object => e
-    render text: "ERROR: #{e}\n#{e.backtrace*"\n"}", status: 500
+  end
+
+
+  def render_fixture path
+    render_path = path.relative_path_from(VIEWS).to_s.sub(/\.\w+\.\w+$/,'')
+    name = path.relative_path_from(FIXTURES).sub(/_fixture\..+$/, '')
+    ActiveRecord::Base.transaction do
+      @fixtures[name] = view_context.render(file: render_path)
+      raise ActiveRecord::Rollback
+    end
+  rescue ActiveRecord::Rollback
   end
 
 end

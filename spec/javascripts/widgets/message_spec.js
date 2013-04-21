@@ -1,14 +1,6 @@
-describe("widgets/message", function(){
-
-  beforeEach(function(){
-    loadFixture('widgets/message');
-    this.widget = Multify.Widget('message');
-  });
+describeWidget("message", function(){
 
   describe("initialize", function(){
-    beforeEach(function() {
-      this.widget.initialize();
-    });
 
     it("binds shareworthy and knowledge actions", function() {
       this.widget.$('a.shareworthy').first().click();
@@ -23,8 +15,10 @@ describe("widgets/message", function(){
     });
 
     it("binds the show-quoted-text button", function() {
-      this.widget.$('button.show-quoted-text').first().click();
+      this.widget.$('.show-quoted-text').first().click();
       expect(this.widget.$('.message-body')).toHaveClass('show-full');
     });
+
   });
+
 });

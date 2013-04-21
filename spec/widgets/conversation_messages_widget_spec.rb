@@ -73,6 +73,7 @@ describe ConversationMessagesWidget do
     it "should return the expected hash" do
       subject.html_options.should == {
         class: "conversation_messages custom_class",
+        widget: "conversation_messages",
       }
     end
   end

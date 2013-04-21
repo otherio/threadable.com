@@ -70,6 +70,7 @@ describe PageNavigationWidget do
     it "should return the expected hash" do
       subject.html_options.should == {
         class: "page_navigation custom_class",
+        widget: "page_navigation",
       }
     end
   end

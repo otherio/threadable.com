@@ -9,11 +9,8 @@ module ApplicationHelper
   end
 
   def current_task
-    if @conversation && @conversation.task?
-      return @conversation
-    else
-      return nil
-    end
+    return @task if @task
+    return @conversation if @conversation && @conversation.task?
   end
 
   def timeago(time, html_options={})

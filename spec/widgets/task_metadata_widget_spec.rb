@@ -2,8 +2,16 @@ require 'spec_helper'
 
 describe TaskMetadataWidget do
 
-  let(:task) { double(:task) }
-  let(:user)         { double(:user) }
+  let(:project_members) { double(:project_members, to_json:'[project_members]') }
+  let(:task_doers) { double(:task_doers, to_json:'[task_doers]') }
+  let(:project) { double(:project, members: project_members) }
+  let(:task) { double(:task, project: project, doers: task_doers) }
+  let(:user) { double(:user) }
+  let(:user_is_a_doer){ false }
+
+  before do
+    task_doers.stub(:include?).with(user).and_return(user_is_a_doer)
+  end
 
   def html_options
     {
@@ -30,7 +38,17 @@ describe TaskMetadataWidget do
     it do
       should == {
         class: "task_metadata custom_class",
+        widget: "task_metadata",
+        'data-doers' => '[task_doers]',
+        'data-project_members' => '[project_members]',
       }
+    end
+  end
+
+  context "when the given user is a doer" do
+    let(:user_is_a_doer){ true }
+    it "should add im-a-doer as a classname" do
+      presenter.html_options[:class].should include 'im-a-doer'
     end
   end
 

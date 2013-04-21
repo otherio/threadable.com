@@ -1,29 +1,23 @@
-Multify.Widget('conversation_list', function(widget){
+Rails.widget('conversation_list', function(Widget){
 
-  widget.initialize = function(){
-    S('.conversation_list')
-      ('.conversation')
-        .bind('mouseenter', widget.onConversationMouseEnter)
-        .bind('mouseleave', widget.onConversationMouseLeave)
-      .end
-    ;
+  Widget.initialize = function(page){
 
-    Multify.bind('conversation_mouse_enter', function(event, conversation_id){
-      $('.conversation_list *[data-conversation-id='+conversation_id+']').addClass('hover');
+    page.on('mouseenter', '.conversation_list .conversation', function(event){
+      page.trigger('conversation_mouse_enter', $(this).data('conversation-id'));
     });
 
-    Multify.bind('conversation_mouse_leave', function(event, conversation_id){
-      $('.conversation_list *[data-conversation-id='+conversation_id+']').removeClass('hover');
+    page.on('mouseleave', '.conversation_list .conversation', function(event){
+      page.trigger('conversation_mouse_leave', $(this).data('conversation-id'));
     });
 
-  };
+    page.bind('conversation_mouse_enter', function(event, conversation_id){
+      page.$('.conversation_list *[data-conversation-id='+conversation_id+']').addClass('hover');
+    });
 
-  widget.onConversationMouseEnter = function(element){
-    Multify.trigger('conversation_mouse_enter', element.data('conversation-id'));
-  };
+    page.bind('conversation_mouse_leave', function(event, conversation_id){
+      page.$('.conversation_list *[data-conversation-id='+conversation_id+']').removeClass('hover');
+    });
 
-  widget.onConversationMouseLeave = function(element){
-    Multify.trigger('conversation_mouse_leave', element.data('conversation-id'));
   };
 
 });

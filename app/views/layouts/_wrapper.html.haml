@@ -8,7 +8,7 @@
     = csrf_meta_tags
 
   %body
-    #page{name:page_name}
+    .page{name:page_name}
       = render_widget :page_navigation, current_user: current_user, current_project: current_project
       .content
         = yield

@@ -3,6 +3,6 @@
 yepnope({
   load: <%= [asset_path('application.js')].to_json %>,
   callback: function(){
-    Multify.initialize();
+    Multify.initialize(ENV);
   }
 });

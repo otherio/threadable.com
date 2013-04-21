@@ -1,21 +1,20 @@
 //= require_self
+//= require "./multify/util"
+//= require "./multify/routes"
 //= require_tree ./multify
 
 Multify = {
+  // _ready_callbacks: [],
+  // ready: function(callback){
+  //   this._ready_callbacks.push(callback);
+  // },
 
-  widgets: {},
-  pages: {},
+  initialize: function(env){
+    Multify.page = new Multify.Page(env);
+    $(function(){
+      Multify.page.trigger('domready');
+    });
+  }
 
-  pageName: function(){
-    return ENV.pageName;
-  },
-
-  bind: $.proxy($.fn.bind, $(this)),
-  trigger: $.proxy($.fn.trigger, $(this))
 };
 
-// i can't believe this isn't already here.
-// thank you, stackoverflow.
-RegExp.quote = function(str) {
-  return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-};

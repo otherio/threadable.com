@@ -20,17 +20,17 @@
       %a.control-link.muted.pull-right{href:""}
         muted count
 
-  %a.control-link.text-info.toggle-doer-self{href:""}
-    - if task.doers.include?(user)
-      %i.icon-remove
-      remove me
-    - else
-      %i.icon-plus
-      sign me up
+  %a.control-link.text-info.remove-self-from-doers{href:""}
+    %i.icon-remove
+    remove me
+  %a.control-link.text-info.add-self-as-doer{href:""}
+    %i.icon-plus
+    sign me up
 
   &#183;
 
-  %a.control-link.text-info.add-others{:"data-placement" => 'bottom', :"data-html" => true, :width => '400', :href => ""}
+  %a.control-link.text-info.add-remove-doers{href:""}
+    -# {href:"", :"data-toggle-doers_popover" => '.add-remove-doers'}
     %i.icon-user
     add/remove others
 
@@ -55,13 +55,4 @@
     %i.icon-volume-off
     mute conversation
 
-.add-others-popover
-  %input.user-search{:type => "text", :name => "add-others-typeahead", :"data-provide" => "typeahead"}
-  .user-list
-    %ul
-  .controls
-    %hr
-    %a.invite-link{:href => ""}
-      %i.icon-plus
-      %span.invite-link-text
-        Invite...
+= render_widget(:doers_popover, class: 'add-remove-doers')

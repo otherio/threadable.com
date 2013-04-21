@@ -1,30 +1,35 @@
-describe("widgets/conversation_messages", function(){
-
-  beforeEach(function(){
-    loadFixture('widgets/conversation_messages');
-    this.widget = Multify.Widget('conversation_messages');
-  });
+describeWidget("conversation_messages", function(){
 
   describe("appendMessage", function(){
-    var form, message;
 
     beforeEach(function() {
-      form = $('.conversation_messages form');
-      message = {
-        as_html: '<div class="message"><p> From: Someone New </p> <p>Hi all.</p> </div>'
+      this.form = this.widget.$('form');
+
+      this.message = {
+        as_html: '<div class="message" widget="message">fake message</div>'
       };
+
+      this.messages = function(){
+        return this.widget.$('li.with_message');
+      }
+
+      this.appendMessage = function(){
+        this.form.trigger('ajax:success', [this.message, 200, {}]);
+      }
     });
 
     it("should append the given message to the message list", function(){
-      expect(messages().length).toEqual(2);
-      this.widget.appendMessage(form, null, message, null, null);
-      expect(messages().length).toEqual(3);
-      expect(messages().filter(':last').html()).toEqual(message.as_html);
+      expect(this.messages().length).toEqual(2);
+
+      this.appendMessage();
+
+      expect(this.messages().length).toEqual(3);
+      expect(this.messages().filter(':last').html()).toEqual(this.message.as_html);
     });
 
     it("refreshes the times", function() {
       var timeagoSpy = spyOn($.prototype, 'timeago');
-      this.widget.appendMessage(form, null, message, null, null);
+      this.appendMessage();
       expect(timeagoSpy).toHaveBeenCalled();
     });
 
@@ -32,8 +37,8 @@ describe("widgets/conversation_messages", function(){
 
   describe("onMessageBodyChange", function(){
     beforeEach(function(){
-      this.textarea = $('.conversation_messages textarea').val('');
-      this.submit_button = $('.conversation_messages input[type=submit]');
+      this.textarea = this.widget.$('textarea')
+      this.submit_button = this.widget.$('input[type=submit]');
     });
 
     context("when the message body is blank", function(){
@@ -41,7 +46,7 @@ describe("widgets/conversation_messages", function(){
         this.textarea.val('');
       });
       it("should disable the send button", function(){
-        this.widget.onMessageBodyChange(this.textarea);
+        this.textarea.trigger('keyup');
         expect(this.submit_button.is(':disabled')).toBe(true);
       });
     });
@@ -51,16 +56,12 @@ describe("widgets/conversation_messages", function(){
         this.textarea.val('hello friends.');
       });
       it("should enable the send button", function(){
-        this.widget.onMessageBodyChange(this.textarea);
+        this.textarea.trigger('keyup');
         expect(this.submit_button.is(':disabled')).toBe(false);
       });
     });
 
 
   });
-
-  function messages(){
-    return $('.conversation_messages li:has(>.message)');
-  }
 
 });

@@ -11,12 +11,12 @@ module LayoutHelper
   def javascript_env
     @javascript_env ||= {
       flash: flash,
-      pageName: page_name,
-      currentProject: current_project,
-      currentConversation: current_conversation,
-      currentTask: current_task,
-      currentTaskDoers: current_task ? current_task.doers : nil,
-      currentUser: current_user,
+      page_name: page_name,
+      current_user: current_user,
+      current_project: current_project,
+      current_conversation: current_conversation,
+      current_task: current_task,
+      current_task_doers: current_task.try(:doers),
     }
   end
 

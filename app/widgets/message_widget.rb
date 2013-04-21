@@ -2,8 +2,7 @@ class MessageWidget < Rails::Widget::Presenter
 
   arguments :message
 
-  def initialize *a
-    super
+  def init
     @html_options[:shareworthy] = true if message.shareworthy?
     @html_options[:knowledge] = true if message.knowledge?
   end

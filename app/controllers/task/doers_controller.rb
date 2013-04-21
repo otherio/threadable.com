@@ -2,6 +2,9 @@ class Task::DoersController < ApplicationController
 
   before_filter :authenticate_user!
 
+  before_filter do
+    # raise "fuuuck"
+  end
 
   # POST /conversations/1/add_doer
   # POST /conversations/1/add_doer.json

@@ -40,6 +40,7 @@ describe ConversationListWidget do
     it "should return the expected hash" do
       subject.html_options.should == {
         class: "conversation_list custom_class",
+        widget: "conversation_list",
       }
     end
   end

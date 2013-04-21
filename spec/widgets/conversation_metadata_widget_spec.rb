@@ -24,6 +24,7 @@ describe ConversationMetadataWidget do
     it do
       should == {
         class: "conversation_metadata custom_class",
+        widget: "conversation_metadata",
       }
     end
   end
