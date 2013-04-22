@@ -39,6 +39,10 @@ class Message < ActiveRecord::Base
     body_plain
   end
 
+  def root?
+    parent_message.nil?
+  end
+
   private
 
   def touch_conversation_update_at
@@ -51,4 +55,5 @@ class Message < ActiveRecord::Base
     end
     true
   end
+
 end

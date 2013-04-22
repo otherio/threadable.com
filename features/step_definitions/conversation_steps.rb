@@ -1,8 +1,3 @@
-Then /^a message should have hidden quoted text$/ do
-  page.should have_selector('.show-quoted-text')
-  page.find('.message-text-full', visible: false).should_not be_visible
-end
-
-Then /^a message should have visible quoted text$/ do
-  page.find('.message-text-full').should be_visible
+When /^I show the quoted text for the message containing "(.*?)"$/ do |contents|
+  find(%(.message:contains(#{contents.inspect}) .show-quoted-text)).click
 end

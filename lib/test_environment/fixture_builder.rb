@@ -57,7 +57,9 @@ class TestEnvironment::FixtureBuilder
       creator: creator,
     )
     conversation or raise "cant find conversation by subject: #{subject}"
-    messages << conversation.messages.create!(attributes)
+    message = conversation.messages.create!(attributes)
+    messages << messages
+    message
   end
 
   def create_task(user_name, subject)

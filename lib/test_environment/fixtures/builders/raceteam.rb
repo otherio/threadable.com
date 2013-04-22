@@ -134,7 +134,7 @@ TestEnvironment::FixtureBuilder.new do
     reply: true,
   )
 
-  send_message(
+  message = send_message(
     subject: 'RE: layup body carbon',
     stripped_plain: "Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway.",
     body_plain: "Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway.",
@@ -143,6 +143,7 @@ TestEnvironment::FixtureBuilder.new do
   )
 
   send_message(
+    parent_message: message,
     subject: 'RE: layup body carbon',
     body_plain: "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.\n\n> Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass\n> like you suggested, since we're under weight on the wheels anyway.",
     stripped_plain: "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.",

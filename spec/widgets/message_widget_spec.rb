@@ -4,7 +4,22 @@ describe MessageWidget do
 
   let(:project){ double(:project) }
   let(:conversation){ double(:conversation, project: project) }
-  let(:message)   { double(:message, shareworthy?: true, knowledge?: true, conversation: conversation) }
+
+  let(:stripped_plain){ 'STRIPPED PLAIN' }
+  let(:body_plain){ 'BODY PLAIN' }
+
+  let(:root){ false }
+
+  let(:message)   {
+    double(:message,
+      shareworthy?: true,
+      knowledge?: true,
+      conversation: conversation,
+      body_plain: body_plain,
+      stripped_plain: stripped_plain,
+      root?: root,
+    )
+  }
   let(:arguments) { [message] }
 
   def html_options
@@ -18,6 +33,9 @@ describe MessageWidget do
         block: nil,
         presenter: presenter,
         message: message,
+        body_plain: "BODY PLAIN",
+        hide_quoted_text: true,
+        stripped_plain: "STRIPPED PLAIN",
       }
     end
   end
@@ -44,6 +62,31 @@ describe MessageWidget do
       view.should_receive(:link_to).with('THE_PATH', remote: true, method: 'put', :"data-params" => params, class: classname, &block).and_return('THE LINK')
       presenter.link_to_toggle(:shareworthy, &block).should == 'THE LINK'
     end
+  end
+
+  describe "hide_quoted_text local" do
+    subject{ presenter.locals[:hide_quoted_text] }
+
+    context "when the message is a root message" do
+      let(:root){ true }
+      it { should be_false }
+    end
+
+    context "when the message is not a root message" do
+      let(:root){ false }
+
+      context "when the message body is not the same as the message stripped" do
+        let(:body_plain){ 'NOT THE SAME!'}
+        it { should be_true }
+      end
+
+      context "when the message body is the same as the message stripped" do
+        let(:body_plain){ stripped_plain }
+        it { should be_false }
+      end
+    end
+
+
   end
 
 end

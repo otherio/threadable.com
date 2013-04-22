@@ -5,6 +5,10 @@ class MessageWidget < Rails::Widget::Presenter
   def init
     @html_options[:shareworthy] = true if message.shareworthy?
     @html_options[:knowledge] = true if message.knowledge?
+
+    locals[:hide_quoted_text] = !message.root? && (message.body_plain != message.stripped_plain)
+    locals[:stripped_plain] = htmlify message.stripped_plain
+    locals[:body_plain] = htmlify message.body_plain
   end
 
   def link_to_toggle attribute, &block
@@ -18,6 +22,10 @@ class MessageWidget < Rails::Widget::Presenter
 
   def message
     locals[:message]
+  end
+
+  def htmlify(message_content)
+    @view.send(:h, message_content.strip).gsub(/\s*\n/, "<br/>").html_safe
   end
 
 end

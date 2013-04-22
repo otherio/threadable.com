@@ -11,13 +11,8 @@ describe 'javascript specs', type: :request do
       end
     end
 
-    p results
-
     unless results['passed']
-      specs = specs_for(results)
-
-      specs.each{|s| puts s["description"] }
-      specs = specs.reject{|spec| spec["passed"] }
+      specs = specs_for(results).reject{|spec| spec["passed"] }
       failures = specs.map{ |spec| "  "+ spec["description"] }.join("\n")
       raise "The following Javascript specs failed:\n#{failures}\n\n#{page.text}"
     end

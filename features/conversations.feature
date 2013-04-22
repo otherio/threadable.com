@@ -9,9 +9,10 @@ Feature: Conversations
     I should be able to expand collapsed quoted text
     Given I am "Alice Neilson"
       And I go to the "layup body carbon" conversation for the "UCSD Electric Racing" project
-     Then a message should have hidden quoted text
-     When I click selector ".show-quoted-text"
-     Then a message should have visible quoted text
+     Then I should see "This turned out super awesome! Yan"
+      But I should not see "> Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass"
+     When I show the quoted text for the message containing "This turned out super awesome! Yan"
+     Then I should see "> Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass"
 
 #  Scenario: I want to create a new conversation through the website
 #     As a member of a project
