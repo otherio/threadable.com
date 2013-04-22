@@ -106,7 +106,6 @@ class EmailProcessor
   end
 
   def conversation_message
-
     @conversation_message ||= conversation.messages.create(
       message_id_header: email.header['Message-ID'].to_s,
       subject: email.subject,
