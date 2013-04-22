@@ -28,8 +28,8 @@ Then /^I should be able to leave the "(.*?)" project$/ do |project_name|
     find('.actions .dropdown-toggle').click
     click_on 'Leave'
   end
-  alert = page.driver.browser.switch_to.alert
-  alert.accept
+
+  accept_prompt!
 
   visit path_to('the home page')
   page.should_not have_content project_name
