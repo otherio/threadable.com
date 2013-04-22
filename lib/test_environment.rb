@@ -15,8 +15,7 @@ module TestEnvironment
   end
 
   def before_suite!
-    ::DatabaseCleaner.clean_with :truncation
-    ::TestEnvironment::Fixtures.load!
+    ::TestEnvironment::Fixtures.configure_fixture_builder!
   end
 
   extend self

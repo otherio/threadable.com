@@ -4,12 +4,15 @@ require 'capybara_environment'
 
 World(CapybaraEnvironment)
 
-Cucumber::Rails::World.fixture_path = TestEnvironment.fixture_path
+# Cucumber::Rails::World.fixture_path = TestEnvironment.fixture_path
 Cucumber::Rails::World.use_transactional_fixtures = false
-Cucumber::Rails::Database.javascript_strategy = :truncation
+# Cucumber::Rails::Database.javascript_strategy = :truncation
 
 CapybaraEnvironment.before_suite!
 
+DatabaseCleaner.strategy = :truncation
+
 Before do
-  TestEnvironment::Fixtures.load! if User.count == 0
+  DatabaseCleaner.clean!
+  ::TestEnvironment::Fixtures.load!
 end
