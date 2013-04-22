@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   # GET /make-a-tank
   # GET /make-a-tank.json
   def show
-    @project = current_user.projects.find_by_slug!(params[:project_id])
+    @project = current_user.projects.find_by_slug!(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/edit
   def edit
-    @project = current_user.projects.find_by_slug!(params[:project_id])
+    @project = current_user.projects.find_by_slug!(params[:id])
   end
 
   # POST /projects
@@ -59,11 +59,11 @@ class ProjectsController < ApplicationController
   # PUT /projects/make-a-tank
   # PUT /projects/make-a-tank.json
   def update
-    @project = current_user.projects.find_by_slug!(params[:project_id])
+    @project = current_user.projects.find_by_slug!(params[:id])
 
     respond_to do |format|
       if @project.update_attributes(params[:project])
-        format.html { redirect_to @project, notice: "#{@project.name} was successfully updated." }
+        format.html { redirect_to root_path, notice: "#{@project.name} was successfully updated." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
