@@ -19,10 +19,10 @@ describe EmailProcessor do
       'recipient'        => recipient,
       'subject'          => 'this is the subject',
       'attachment-count' => '0',
-      'body-html'        => "<div dir=3D\"ltr\">I am writing you back. Back! I write!</div><div class=3D\"g=\nmail_extra\"><br><br><div class=3D\"gmail_quote\">On Tue, Apr 2, 2013 at 10:51=\n AM, Nicole Aptekar <span dir=3D\"ltr\">&lt;<a href=3D\"mailto:nicoletbn@gmail=\n.com\" target=3D\"_blank\">nicoletbn@gmail.com</a>&gt;</span> wrote:<br>\n\n<blockquote class=3D\"gmail_quote\" style=3D\"margin:0 0 0 .8ex;border-left:1p=\nx #ccc solid;padding-left:1ex\"><div dir=3D\"ltr\">Sure~</div><div class=3D\"HO=\nEnZb\"><div class=3D\"h5\"><div class=3D\"gmail_extra\"><br><br><div class=3D\"gm=\nail_quote\">\n\nOn Tue, Apr 2, 2013 at 10:37 AM, ian <span dir=3D\"ltr\">&lt;<a href=3D\"mailt=\no:ian@sonic.net\" target=3D\"_blank\">ian@sonic.net</a>&gt;</span> wrote:<br>\n\n<blockquote class=3D\"gmail_quote\" style=3D\"margin:0 0 0 .8ex;border-left:1p=\nx #ccc solid;padding-left:1ex\">It&#39;s Tuesday. I have work lunch Wednesda=\ny, so I can take care of that thing. Also, want to grab food at 12:30?<span=\n><font color=3D\"#888888\"><div>\n\n\n\n<br></div><div>-Ian<span></span></div>\n</font></span></blockquote></div><br></div>\n</div></div></blockquote></div><br></div>",
-      'body-plain'       => "I am writing you back. Back! I write!\n\n\nOn Tue, Apr 2, 2013 at 10:51 AM, Nicole Aptekar <nicoletbn@gmail.com> wrote:\n\n> Sure~\n>\n>\n> On Tue, Apr 2, 2013 at 10:37 AM, ian <ian@sonic.net> wrote:\n>\n>> It's Tuesday. I have work lunch Wednesday, so I can take care of that\n>> thing. Also, want to grab food at 12:30?\n>>\n>> -Ian\n>>\n>\n>_____\nView on Multify: http://beta.multifyapp.com/something/conversations/re-underground-tour\nUnsubscribe:  http://beta.multifyapp.com/something/unsubscribe/jrZdC0zxf2FgMfTrZKPaf90=\n",
-      'stripped-html'    => '<div dir=3D"ltr">I am writing you back. Back! I write!</div>',
-      'stripped-text'    => 'I am writing you back. Back! I write!',
+      'body-html'        => body_html,
+      'body-plain'       => body_plain,
+      'stripped-html'    => stripped_html,
+      'stripped-text'    => stripped_text,
     }
   end
 
@@ -32,6 +32,10 @@ describe EmailProcessor do
   let(:email_as_a_string){ EmailProcessor::MailgunRequestToEmail.new(request).message }
   let(:stripped_email_as_a_string){ EmailProcessor::MailgunRequestToEmailStripped.new(request).message }
   let(:recipient) { 'UCSD Electric Racing <ucsd-electric-racing@multifyapp.com>' }
+  let(:body_html) { "<div dir=3D\"ltr\">I am writing you back. Back! I write!</div><div class=3D\"g=\nmail_extra\"><br><br><div class=3D\"gmail_quote\">On Tue, Apr 2, 2013 at 10:51=\n AM, Nicole Aptekar <span dir=3D\"ltr\">&lt;<a href=3D\"mailto:nicoletbn@gmail=\n.com\" target=3D\"_blank\">nicoletbn@gmail.com</a>&gt;</span> wrote:<br>\n\n<blockquote class=3D\"gmail_quote\" style=3D\"margin:0 0 0 .8ex;border-left:1p=\nx #ccc solid;padding-left:1ex\"><div dir=3D\"ltr\">Sure~</div><div class=3D\"HO=\nEnZb\"><div class=3D\"h5\"><div class=3D\"gmail_extra\"><br><br><div class=3D\"gm=\nail_quote\">\n\nOn Tue, Apr 2, 2013 at 10:37 AM, ian <span dir=3D\"ltr\">&lt;<a href=3D\"mailt=\no:ian@sonic.net\" target=3D\"_blank\">ian@sonic.net</a>&gt;</span> wrote:<br>\n\n<blockquote class=3D\"gmail_quote\" style=3D\"margin:0 0 0 .8ex;border-left:1p=\nx #ccc solid;padding-left:1ex\">It&#39;s Tuesday. I have work lunch Wednesda=\ny, so I can take care of that thing. Also, want to grab food at 12:30?<span=\n><font color=3D\"#888888\"><div>\n\n\n\n<br></div><div>-Ian<span></span></div>\n</font></span></blockquote></div><br></div>\n</div></div></blockquote></div><br></div>" }
+  let(:body_plain) {"Sorry I sent that blank mail. Shouldn't be possible in the future. derp.\n\n\nOn Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:\n\n> This is a response!\n>\n> So there!\n>\n> On Sunday, April 21, 2013, Nicole Aptekar wrote:\n>\n> > Another test. Mail back plz?\n> > _____\n> > View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/testing\n> > Unsubscribe:\n> >\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=\n> >\n> >\n> _____\n> View on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\n>"}
+  let(:stripped_html) { '<div dir=3D"ltr">I am writing you back. Back! I write!</div>' }
+  let(:stripped_text) { 'I am writing you back. Back! I write!' }
 
   describe ".process_request" do
 
@@ -125,7 +129,7 @@ describe EmailProcessor do
     describe "#conversation_message" do
 
       def filter_token(body)
-        body.gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
+        body.gsub(%r{(Unsubscribe:.+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
       end
 
       let(:message){ subject.conversation_message }
@@ -173,6 +177,14 @@ describe EmailProcessor do
         end
       end
 
+      context "when an unsubscribe token is present" do
+        let(:body_plain) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\n>"}
+
+        it "should filter the token from the unsubscribe link" do
+          subject.conversation_message
+          message.body_plain.should == "View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/"
+        end
+      end
 
       context "when this message is not a reply" do
         it_should_create_a_conversation_and_message!

@@ -106,6 +106,7 @@ class EmailProcessor
   end
 
   def conversation_message
+
     @conversation_message ||= conversation.messages.create(
       message_id_header: email.header['Message-ID'].to_s,
       subject: email.subject,
@@ -122,7 +123,7 @@ class EmailProcessor
   private
 
   def filter_token(part)
-    part.body.to_s.gsub(%r{(Unsubscribe:\s+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
+    part.body.to_s.gsub(%r{(Unsubscribe:.+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
   end
 
 end
