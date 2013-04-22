@@ -6,6 +6,7 @@ describe UserMailer do
   let(:user){ project.members.first }
   let(:sender){ project.members.last }
   let(:invite_message){ "I can't feel my face ☃❄❅ it is cold" }
+  let(:smtp_domain) { Rails.application.config.action_mailer.smtp_settings[:domain] }
 
   shared_examples_for :a_user_notice_mail do
     it "returns the expected message" do
@@ -27,7 +28,7 @@ describe UserMailer do
   describe "unsubscribe_notice" do
     subject(:mail) { UserMailer.unsubscribe_notice(project: project, user: user, host:'example.com', port:3000) }
     let(:expected_subject) { "You've been unsubscribed from #{project.name}" }
-    let(:expected_sender) { "#{project.slug}@multifyapp.com" }
+    let(:expected_sender) { "#{project.slug}@#{smtp_domain}" }
     let(:find_in_body) { %(You've been unsubscribed from the "#{project.name}" project on Multify.) }
     it_behaves_like :a_user_notice_mail
   end
@@ -45,7 +46,6 @@ describe UserMailer do
     end
     let(:expected_subject) { "You're invited to #{project.name}" }
     let(:expected_sender) { sender.email }
-    #let(:find_in_body) { %(Click here to join the conversation about #{project.name} on Multify!) }
     let(:find_in_body) { invite_message }
     it_behaves_like :a_user_notice_mail
   end

@@ -34,10 +34,11 @@ class EmailProcessor
   end
 
   def multify_project_slug
-    # this will move to an envelope thing later
     @multify_project_slug ||= email.to.map do |email|
-      email.scan(/^(.+?)@multifyapp.com$/).try(:first)
+      email.scan(/^(.+?)@(.*)multifyapp.com$/).try(:first)
     end.flatten.compact.first
+    raise "No project slug" unless @multify_project_slug
+    @multify_project_slug
   end
 
   def from

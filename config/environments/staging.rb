@@ -84,7 +84,7 @@ Multify::Application.configure do
     :enable_starttls_auto => true
   }
 
-  config.action_controller.default_url_options = { :host => 'multify-staging.herokuapp.com' }
+  config.action_controller.default_url_options = { :host => 'www-staging.multifyapp.com' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday

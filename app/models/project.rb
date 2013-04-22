@@ -22,7 +22,8 @@ class Project < ActiveRecord::Base
   end
 
   def formatted_email_address
-    "#{name} <#{slug}@multifyapp.com>"
+    smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
+    "#{name} <#{slug}@#{smtp_domain}>"
   end
 
 end

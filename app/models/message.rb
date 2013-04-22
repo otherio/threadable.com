@@ -30,8 +30,9 @@ class Message < ActiveRecord::Base
   validates_presence_of :body_plain, :conversation
 
   def message_id_header
+    smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
     read_attribute(:message_id_header) or \
-    write_attribute(:message_id_header, "<#{Mail.random_tag}@multifyapp.com>")
+    write_attribute(:message_id_header, "<#{Mail.random_tag}@#{smtp_domain}>")
   end
 
   def body

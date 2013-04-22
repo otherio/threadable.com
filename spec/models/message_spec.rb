@@ -8,8 +8,10 @@ describe Message do
     it { should allow_mass_assignment_of(attr) }
   end
 
+  let(:smtp_domain) { Rails.application.config.action_mailer.smtp_settings[:domain] }
+
   it "has a message id with a predictable domain (not some heroku crap hostname)" do
-    subject.message_id_header.should =~ /^<.+\@multifyapp\.com>$/
+    subject.message_id_header.should =~ /^<.+\@#{smtp_domain}>$/
   end
 
   context "with a parent message" do

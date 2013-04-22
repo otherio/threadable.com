@@ -35,5 +35,12 @@ describe Project do
     end
   end
 
+  describe "#formatted_email_address" do
+    it "should return a formatted email address" do
+      project = Project.create(name: 'Bob', slug: 'hole-faller')
+      smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
+      project.formatted_email_address.should == "Bob <hole-faller@#{smtp_domain}>"
+    end
+  end
 
 end

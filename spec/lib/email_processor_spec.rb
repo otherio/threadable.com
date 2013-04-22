@@ -16,7 +16,7 @@ describe EmailProcessor do
       'timestamp'        => 1.minute.ago.to_i,
       'message-headers'  => message_headers.to_a.to_json,
       'from'             => 'Alice Neilson <alice@ucsd.multifyapp.com>',
-      'recipient'        => 'UCSD Electric Racing <ucsd-electric-racing@multifyapp.com>',
+      'recipient'        => recipient,
       'subject'          => 'this is the subject',
       'attachment-count' => '0',
       'body-html'        => "<div dir=3D\"ltr\">I am writing you back. Back! I write!</div><div class=3D\"g=\nmail_extra\"><br><br><div class=3D\"gmail_quote\">On Tue, Apr 2, 2013 at 10:51=\n AM, Nicole Aptekar <span dir=3D\"ltr\">&lt;<a href=3D\"mailto:nicoletbn@gmail=\n.com\" target=3D\"_blank\">nicoletbn@gmail.com</a>&gt;</span> wrote:<br>\n\n<blockquote class=3D\"gmail_quote\" style=3D\"margin:0 0 0 .8ex;border-left:1p=\nx #ccc solid;padding-left:1ex\"><div dir=3D\"ltr\">Sure~</div><div class=3D\"HO=\nEnZb\"><div class=3D\"h5\"><div class=3D\"gmail_extra\"><br><br><div class=3D\"gm=\nail_quote\">\n\nOn Tue, Apr 2, 2013 at 10:37 AM, ian <span dir=3D\"ltr\">&lt;<a href=3D\"mailt=\no:ian@sonic.net\" target=3D\"_blank\">ian@sonic.net</a>&gt;</span> wrote:<br>\n\n<blockquote class=3D\"gmail_quote\" style=3D\"margin:0 0 0 .8ex;border-left:1p=\nx #ccc solid;padding-left:1ex\">It&#39;s Tuesday. I have work lunch Wednesda=\ny, so I can take care of that thing. Also, want to grab food at 12:30?<span=\n><font color=3D\"#888888\"><div>\n\n\n\n<br></div><div>-Ian<span></span></div>\n</font></span></blockquote></div><br></div>\n</div></div></blockquote></div><br></div>",
@@ -31,6 +31,7 @@ describe EmailProcessor do
   let(:stripped_request_processor){ double(:stripped_request_processor) }
   let(:email_as_a_string){ EmailProcessor::MailgunRequestToEmail.new(request).message }
   let(:stripped_email_as_a_string){ EmailProcessor::MailgunRequestToEmailStripped.new(request).message }
+  let(:recipient) { 'UCSD Electric Racing <ucsd-electric-racing@multifyapp.com>' }
 
   describe ".process_request" do
 
@@ -99,7 +100,26 @@ describe EmailProcessor do
         fake_message_dispatch.should_receive(:enqueue)
         subject.dispatch!
       end
+    end
 
+    describe "#multify_project_slug" do
+      subject{ EmailProcessor.new(email_as_a_string, stripped_email_as_a_string).multify_project_slug }
+
+      context "with a recipient in a multify subdomain" do
+        let(:recipient) { 'UCSD Electric Racing <ucsd-electric-racing@www-staging.multifyapp.com>' }
+
+        it "returns the project slug even when using a subdomain" do
+          subject.should == 'ucsd-electric-racing'
+        end
+      end
+
+      context "with no multify project in the to field" do
+        let(:recipient) { 'Some random guy <randomguy@example.com>' }
+
+        it "raises an error" do
+          expect { subject }.to raise_error
+        end
+      end
     end
 
     describe "#conversation_message" do

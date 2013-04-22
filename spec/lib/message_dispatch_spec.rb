@@ -7,6 +7,7 @@ describe MessageDispatch do
     let(:conversation){ project.conversations.find_by_subject('layup body carbon') }
     let(:message)     { conversation.messages.last }
     let(:sender)      { message.user }
+    let(:smtp_domain) { Rails.application.config.action_mailer.smtp_settings[:domain] }
 
     it "enqueues emails for members" do
       project.members_who_get_email.length.should > 3
@@ -28,7 +29,7 @@ describe MessageDispatch do
           :message_message_id_header => message.message_id_header,
           :message_references_header => message.references_header,
           :parent_message_id_header  => message.parent_message.try(:message_id_header),
-          :reply_to                  => "#{project.name} <#{project.slug}@multifyapp.com>",
+          :reply_to                  => "#{project.name} <#{project.slug}@#{smtp_domain}>",
         )
       end
       MessageDispatch.new(message).enqueue
