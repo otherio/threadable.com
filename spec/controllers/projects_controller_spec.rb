@@ -45,8 +45,9 @@ describe ProjectsController do
   describe "GET show" do
     it "assigns the requested project as @project" do
       project = user.projects.create! valid_attributes
-      get :show, {:project_id => project.to_param}
+      get :show, {:id => project.to_param}
       assigns(:project).should eq(project)
+      response.should redirect_to project_conversations_url(project)
     end
   end
 
@@ -60,7 +61,7 @@ describe ProjectsController do
   describe "GET edit" do
     it "assigns the requested project as @project" do
       project = user.projects.create! valid_attributes
-      get :edit, {:project_id => project.to_param}
+      get :edit, {:id => project.to_param}
       assigns(:project).should eq(project)
     end
   end
@@ -123,7 +124,7 @@ describe ProjectsController do
       it "redirects to the project" do
         project = user.projects.create! valid_attributes
         put :update, {:id => project.to_param, :project => valid_attributes}
-        response.should redirect_to(project)
+        response.should redirect_to(root_path)
       end
     end
 

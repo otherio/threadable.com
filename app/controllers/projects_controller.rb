@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.find_by_slug!(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { redirect_to project_conversations_url(@project) }
       format.json { render json: @project }
     end
   end
