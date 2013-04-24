@@ -21,6 +21,8 @@ gem 'omniauth-clef'
 gem 'encryptor'
 gem 'acts_as_list'
 gem 'simple_form'
+gem 'newrelic_rpm'
+gem 'honeybadger'
 
 group :assets do
   gem 'compass-rails'
