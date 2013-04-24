@@ -1,66 +1,66 @@
 ---
 email_addresses_001:
-  id: 66
-  user_id: 13
+  id: 1
+  user_id: 1
   address: alice@ucsd.multifyapp.com
   primary: false
 email_addresses_002:
-  id: 67
-  user_id: 14
+  id: 2
+  user_id: 2
   address: tom@ucsd.multifyapp.com
   primary: false
 email_addresses_003:
-  id: 68
-  user_id: 15
+  id: 3
+  user_id: 3
   address: yan@ucsd.multifyapp.com
   primary: false
 email_addresses_004:
-  id: 69
-  user_id: 16
+  id: 4
+  user_id: 4
   address: bethany@ucsd.multifyapp.com
   primary: false
 email_addresses_005:
-  id: 70
-  user_id: 17
+  id: 5
+  user_id: 5
   address: bob@ucsd.multifyapp.com
   primary: false
 email_addresses_006:
-  id: 71
-  user_id: 18
+  id: 6
+  user_id: 6
   address: jonathan@ucsd.multifyapp.com
   primary: false
 email_addresses_007:
-  id: 72
-  user_id: 19
+  id: 7
+  user_id: 7
   address: john-callas@nasa.multifyapp.com
   primary: false
 email_addresses_008:
-  id: 73
-  user_id: 20
+  id: 8
+  user_id: 8
   address: bruce-banerdt@nasa.multifyapp.com
   primary: false
 email_addresses_009:
-  id: 74
-  user_id: 21
+  id: 9
+  user_id: 9
   address: diana-blaney@nasa.multifyapp.com
   primary: false
 email_addresses_010:
-  id: 75
-  user_id: 22
+  id: 10
+  user_id: 10
   address: larry-bryant@nasa.multifyapp.com
   primary: false
 email_addresses_011:
-  id: 76
-  user_id: 23
+  id: 11
+  user_id: 11
   address: steven-squyres@nasa.multifyapp.com
   primary: false
 email_addresses_012:
-  id: 77
-  user_id: 24
+  id: 12
+  user_id: 12
   address: ray-arvidson@nasa.multifyapp.com
   primary: false
 email_addresses_013:
-  id: 78
-  user_id: 24
+  id: 13
+  user_id: 12
   address: ray@gmail.multifyapp.com
   primary: false
