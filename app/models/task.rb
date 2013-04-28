@@ -21,12 +21,14 @@ class Task < Conversation
   attr_accessor :current_user
 
   def done! current_user, at=Time.now
+    return if done?
     @current_user = current_user
     self.done_at = at
     save!
   end
 
   def undone! current_user
+    return unless done?
     @current_user = current_user
     self.done_at = nil
     save!

@@ -41,6 +41,25 @@ describe Task do
       task.done_at.should be_nil
       task.should_not be_done
     end
+
+    it 'is idempotent' do
+      Task::DoneEvent.should_receive(:create!).once
+      user = User.new
+
+      Time.stub(:now).and_return(Time.at(2132132131))
+      task.done! user
+
+      Time.stub(:now).and_return(Time.at(2132132133))
+      task.done! user
+
+      Task.any_instance.should_receive(:save!).once
+
+      Time.stub(:now).and_return(Time.at(2132132135))
+      task.undone! user
+
+      Time.stub(:now).and_return(Time.at(2132132137))
+      task.undone! user
+    end
   end
 
 end
