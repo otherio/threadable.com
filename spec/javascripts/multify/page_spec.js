@@ -9,7 +9,7 @@ describe("Multify.Page", function(){
       current_conversation: {current_conversation:true},
       current_task:         {current_task:true},
       current_task_doers:   {current_task_doers:true},
-      current_user:         {current_user:true},
+      current_user:         {current_user:true}
     };
 
     page = new Multify.Page(env);
@@ -22,11 +22,11 @@ describe("Multify.Page", function(){
   it("should assign current_{x} properties", function(){
     expect(page.name).toEqual('example/page/name');
 
-    expect(page.current_project     ).toEqual(page.current_project)
-    expect(page.current_conversation).toEqual(page.current_conversation)
-    expect(page.current_task        ).toEqual(page.current_task)
-    expect(page.current_task_doers  ).toEqual(page.current_task_doers)
-    expect(page.current_user        ).toEqual(page.current_user)
+    expect(page.current_project     ).toEqual(page.current_project);
+    expect(page.current_conversation).toEqual(page.current_conversation);
+    expect(page.current_task        ).toEqual(page.current_task);
+    expect(page.current_task_doers  ).toEqual(page.current_task_doers);
+    expect(page.current_user        ).toEqual(page.current_user);
   });
 
   describe('domready handling', function(){
