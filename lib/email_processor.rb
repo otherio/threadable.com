@@ -11,6 +11,9 @@ class EmailProcessor
 
   def self.process_request(request)
     strategy = MailgunRequestToEmail.new(request)
+    Rails.logger.debug("Received email from mailgun")
+    Rails.logger.debug(request.params.to_json)
+
     strategy.authenticate or return false
     email = strategy.message
     email_stripped = MailgunRequestToEmailStripped.new(request).message
