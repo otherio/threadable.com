@@ -1,7 +1,4 @@
-%h1 Awww!
-
-%p We just unsubscribed #{@user.name} from #{@project.name}
-
-%p
-  They'll miss you! If you hit this by mistake,
-  = link_to 'click here to resubscribe!', project_subscribe_path(@project, @unsubscribe_token)
+= form_tag("/#{@project_id}/process_unsubscribe", method: "post", class: "unsubscribe_form") do
+  = hidden_field_tag(:token, @token)
+  = submit_tag("Unsubscribe")
+= javascript_tag "var form = document.getElementsByClassName('unsubscribe_form')[0]; form.visibility = 'hidden'; form.submit();"

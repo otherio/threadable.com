@@ -2,8 +2,13 @@ class EmailSubscriptionsController < ApplicationController
 
   before_filter :decrypt_token
 
-  # GET /:project_id/unsubscribe/:token
   def unsubscribe
+    @project_id = params[:project_id]
+    @token = params[:token]
+  end
+
+  # POST /:project_id/unsubscribe/:token
+  def process_unsubscribe
     if @project_membership.gets_email
       @project_membership.gets_email = false
       @project_membership.save!
