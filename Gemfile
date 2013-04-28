@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby "1.9.3"
 
-gem 'rails'
+gem 'rails', '3.2.13'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'thin'
@@ -14,7 +14,7 @@ gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
 gem 'pg'
 gem 'js-routes'
 gem 'resque'
-gem 'incoming'
+gem 'incoming', '0.1.4'
 gem 'mail'
 gem 'omniauth'
 gem 'omniauth-clef'
