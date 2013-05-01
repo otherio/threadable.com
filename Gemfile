@@ -35,6 +35,7 @@ group :development do
   gem 'style-guide'
   gem 'rb-fsevent', require: nil
   gem 'mailcatcher'
+  gem 'better_errors'
   # gem 'sql-logging'
 end
 

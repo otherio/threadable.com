@@ -41,6 +41,9 @@ GEM
     arel (3.0.2)
     backports (2.6.7)
     bcrypt-ruby (3.0.1)
+    better_errors (0.8.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
     bourne (1.1.2)
@@ -338,6 +341,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  better_errors
   capybara (>= 2.0.2)
   capybara-webkit
   compass-rails
