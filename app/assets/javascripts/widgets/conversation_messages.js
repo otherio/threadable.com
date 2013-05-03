@@ -18,6 +18,7 @@ Rails.widget('conversation_messages', function(Widget){
     widget.node.find('> ol').append(li);
     this.reset();
     message.widget('initialize');
+    onMessageBodyChange.call(this);
   }
 
   function onMessageBodyChange(){
