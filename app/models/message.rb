@@ -43,6 +43,10 @@ class Message < ActiveRecord::Base
     parent_message.nil?
   end
 
+  def html?
+    ! body_html.empty?
+  end
+
   private
 
   def touch_conversation_update_at

@@ -9,6 +9,8 @@ class MessageWidget < Rails::Widget::Presenter
     locals[:hide_quoted_text] = !message.root? && (message.body_plain != message.stripped_plain)
     locals[:stripped_plain] = htmlify message.stripped_plain
     locals[:body_plain] = htmlify message.body_plain
+    locals[:stripped_html] = htmlify message.stripped_html
+    locals[:body_html] = htmlify message.body_html
   end
 
   def link_to_toggle attribute, &block

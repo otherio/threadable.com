@@ -7,6 +7,8 @@ describe MessageWidget do
 
   let(:stripped_plain){ 'STRIPPED PLAIN' }
   let(:body_plain){ 'BODY PLAIN' }
+  let(:stripped_html){ 'STRIPPED HTML' }
+  let(:body_html){ 'BODY HTML' }
 
   let(:root){ false }
 
@@ -17,6 +19,8 @@ describe MessageWidget do
       conversation: conversation,
       body_plain: body_plain,
       stripped_plain: stripped_plain,
+      body_html: body_html,
+      stripped_html: stripped_html,
       root?: root,
     )
   }
@@ -36,6 +40,8 @@ describe MessageWidget do
         body_plain: "BODY PLAIN",
         hide_quoted_text: true,
         stripped_plain: "STRIPPED PLAIN",
+        body_html: 'BODY HTML',
+        stripped_html: 'STRIPPED HTML'
       }
     end
   end

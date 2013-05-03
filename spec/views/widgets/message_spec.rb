@@ -14,12 +14,16 @@ describe "message" do
      from: 'MESSAGE FROM',
      user: user,
      created_at: 'MESSAGE CREATED AT',
+     html?: has_html
     )
   }
 
   let(:presenter){ double(:presenter) }
 
   let(:hide_quoted_text){ false }
+  let(:stripped_html) { nil }
+  let(:body_html) { nil }
+  let(:has_html) { false }
 
   def locals
     {
@@ -27,6 +31,8 @@ describe "message" do
       presenter: presenter,
       stripped_plain: 'STRIPPED PLAIN',
       body_plain: 'BODY PLAIN',
+      stripped_html: stripped_html,
+      body_html: body_html,
       hide_quoted_text: hide_quoted_text,
     }
   end
@@ -62,8 +68,41 @@ describe "message" do
     let(:hide_quoted_text){ true }
     it "should render the truncated and full message contents and the show quoted text button" do
       html.css('.message-text-full').should be_present
-      html.css('.message-text-full').text.should == 'BODY PLAIN'
       html.css('button.show-quoted-text').should be_present
+    end
+  end
+
+  context "with no html part" do
+    context "when the message does not have quoted text" do
+      it "should show the plain message with quoted text removed" do
+        html.css('.message-text').text.should == 'STRIPPED PLAIN'
+      end
+    end
+
+    context "when the message has quoted text" do
+      let(:hide_quoted_text){ true }
+      it "should show the complete plain message" do
+        html.css('.message-text-full').text.should == 'BODY PLAIN'
+      end
+    end
+  end
+
+  context "with an html part" do
+    let(:stripped_html) { 'STRIPPED HTML' }
+    let(:body_html) { 'BODY HTML' }
+    let(:has_html) { true }
+
+    context "when the message does not have quoted text" do
+      it "should show the html message with quoted text removed" do
+        html.css('.message-text').text.should == 'STRIPPED HTML'
+      end
+    end
+
+    context "when the message has quoted text" do
+      let(:hide_quoted_text){ true }
+      it "should show the complete html message" do
+        html.css('.message-text-full').text.should == 'BODY HTML'
+      end
     end
   end
 
