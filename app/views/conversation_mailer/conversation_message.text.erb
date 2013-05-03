@@ -1,4 +1,4 @@
-<%= @data[:message_body].html_safe %>
+<%= @message[:message_body].html_safe %>
 _____
-View on Multify: <%= project_conversation_url(@data[:project_slug], @data[:conversation_slug]) %>
+View on Multify: <%= project_conversation_url(@message[:project_slug], @message[:conversation_slug]) %>
 Unsubscribe:  <%= @unsubscribe_url %>
