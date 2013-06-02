@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+case ARGV.first
+when 'staging'
+  exec 'heroku run console --app multify-staging'
+when 'production'
+  exec 'heroku run console --app multify-production'
+when 'local'
+  exec 'rails c'
+else
+  exec 'rails c'
+end
+
+
