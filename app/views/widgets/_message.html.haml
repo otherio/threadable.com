@@ -10,9 +10,9 @@
     = timeago message.created_at
 
 .message-body
-  .message-text<= message.html? ? stripped_html.html_safe : stripped_plain
+  .message-text<= message.html? ? html_unescape(stripped_html) : stripped_plain
   - if hide_quoted_text
-    .message-text-full<= message.html? ? body_html.html_safe : body_plain
+    .message-text-full<= message.html? ? html_unescape(body_html) : body_plain
     %button.btn.btn-small.show-quoted-text{:alt => "show quoted text"} &middot; &middot; &middot;
 
 .message-actions

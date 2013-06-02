@@ -37,6 +37,10 @@ module ApplicationHelper
     end
   end
 
+  def html_unescape(string)
+    CGI.unescapeHTML("#{string}").html_safe
+  end
+
 end
 
 
