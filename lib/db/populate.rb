@@ -4,16 +4,15 @@ class Db::Populate < MethodObject
     # Other accounts
     developers =  YAML.load(Rails.root.join('config/developers.yml').read)
 
-    developers.map do |name|
+    developers.each do |name|
       first, last = name.scan(/^(.+?) (.+)/).first
       email = "#{first.downcase}@other.io"
-      user = User.find_by_email(email) || User.create!(
+      next if User.by_email(email).exists?
+      User.create!(
         email: email,
         name: name,
         password: 'password',
-      )
-      user.confirm!
-      user
+      ).confirm!
     end
 
   end
