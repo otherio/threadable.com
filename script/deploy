@@ -1,9 +1,12 @@
 #!/bin/sh
 
 ENV=${1:-staging}
+SKIP_CI=${2:-nope}
 
-# run CI
-script/ci || exit
+if [ $SKIP_CI != '--now' ]
+  # run CI
+  then script/ci || exit
+fi
 
 # update local tags
 git fetch --tags
