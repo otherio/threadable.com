@@ -4,6 +4,7 @@ Rails.widget('new_conversation_message', function(Widget){
     page.on('keyup', '.conversation_messages form textarea', onMessageBodyChange);
     page.on('click', '.conversation_messages .attach-files', attachFiles);
     page.on('click', '.conversation_messages .attachment-preview .remove', removeAttachment);
+    page.on('ajax:success', '.conversation_messages form', resetForm);
   };
 
   var ATTACHMENT_PREVIEW_TEMPLATE;
@@ -59,6 +60,13 @@ Rails.widget('new_conversation_message', function(Widget){
   function removeAttachment(event){
     event.preventDefault();
     $(this).closest('.attachment-preview').remove();
+  }
+
+  function resetForm(){
+    this.reset();
+    var form = $(this);
+    form.find('textarea').trigger('keyup');
+    form.find('.attachments').empty();
   }
 
 });

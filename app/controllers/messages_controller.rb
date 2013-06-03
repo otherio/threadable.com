@@ -9,12 +9,9 @@ class MessagesController < ApplicationController
     message_attributes[:body_plain] = message_attributes.delete(:body)
     message_attributes[:stripped_plain] = message_attributes[:body_plain]
 
-    attachments = Array(message_attributes.try(:delete, :attachments))
-
     @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
 
     if @message.persisted?
-      @message.attachments = attachments.map{|attachment| Attachment.create!(attachment) }
       render status: :created, location: project_conversation_messages_path(conversation.project, conversation)
     else
       render json: @message.errors, status: :unprocessable_entity

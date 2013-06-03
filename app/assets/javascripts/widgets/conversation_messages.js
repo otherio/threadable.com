@@ -14,9 +14,7 @@ Rails.widget('conversation_messages', function(Widget){
     var message = $(message.as_html);
     var li = $('<li>').addClass('with_message').html(message);
     widget.node.find('> ol').append(li);
-    this.reset();
     message.widget('initialize');
-    form.find('textarea').trigger('keyup')
   }
 
 });
