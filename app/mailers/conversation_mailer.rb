@@ -16,7 +16,14 @@ class ConversationMailer < ActionMailer::Base
     unsubscribe_token = UnsubscribeToken.encrypt(message.project.id, recipient.id)
     @unsubscribe_url = project_unsubscribe_url(message.project.slug, unsubscribe_token)
 
-    email = mail(
+    message.attachments.each do |attachment|
+      attachments[attachment.filename] = {
+        :mime_type => attachment.mimetype,
+        :content   => attachment.content,
+      }
+    end
+
+    mail(
       :'to'          => %(#{recipient.name.inspect} <#{recipient.email}>),
       :'subject'     => subject,
       :'from'        => from,
@@ -25,15 +32,6 @@ class ConversationMailer < ActionMailer::Base
       :'In-Reply-To' => message.parent_message.try(:message_id_header),
       :'References'  => message.references_header,
     )
-
-    message.attachments.each do |attachment|
-      email.attachments[attachment.filename] = {
-        :mime_type => attachment.mimetype,
-        :content   => attachment.content,
-      }
-    end
-
-    email
   end
 
 end
