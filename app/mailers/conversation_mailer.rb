@@ -11,7 +11,9 @@ class ConversationMailer < ActionMailer::Base
     # add a check mark to the subect if the conversation is a task, and if the subject doesn't already include one
     subject = "✔ #{subject}" if message.conversation.task? && !subject.include?("✔")
 
-    from = %("#{message.user.name}" <#{message.user.email}>)
+    from = message.user == recipient ?
+      message.project.formatted_email_address :
+      message.user.formatted_email_address
 
     unsubscribe_token = UnsubscribeToken.encrypt(message.project.id, recipient.id)
     @unsubscribe_url = project_unsubscribe_url(message.project.slug, unsubscribe_token)

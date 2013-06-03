@@ -22,7 +22,7 @@ describe ConversationMailer do
 
     let(:message){
       conversation.messages.new(
-        user: project.members.first,
+        user: project.members.find_by_email("jonathan@ucsd.multifyapp.com"),
         subject: conversation.subject,
         body_plain: 'This is the best project everz.',
         parent_message: parent_message,
@@ -30,7 +30,7 @@ describe ConversationMailer do
       )
     }
 
-    let(:recipient){ project.members.last }
+    let(:recipient){ project.members.find_by_email("bethany@ucsd.multifyapp.com") }
 
     subject(:mail) { ConversationMailer.conversation_message(message, recipient) }
 
@@ -39,11 +39,13 @@ describe ConversationMailer do
     }
     let(:mail_as_text){ mail.to_s }
 
+    let(:expected_from){ message.user.email }
+
     def validate_mail!
       mail.subject.should include "[ucsd-el] #{conversation.subject}"
       mail.subject.scan('ucsd-el').size.should == 1
       mail.to.should == [recipient.email]
-      mail.from.should == [message.user.email]
+      mail.from.should == [expected_from]
 
       mail_as_text.should =~ /In-Reply-To:/
       mail_as_text.should =~ /References:/
@@ -76,6 +78,13 @@ describe ConversationMailer do
       end
     end
 
+    context "when we send a message to the message author" do
+      let(:recipient){ message.user }
+      let(:expected_from){ project.email }
+      it "should set the from address as the project instead of the sender" do
+        validate_mail!
+      end
+    end
   end
 
 end

@@ -22,9 +22,14 @@ class Project < ActiveRecord::Base
     read_attribute(:subject_tag).presence || slug[0..6]
   end
 
-  def formatted_email_address
+  def email_address
     smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
-    "#{name} <#{slug}@#{smtp_domain}>"
+    "#{slug}@#{smtp_domain}"
+  end
+  alias_method :email, :email_address
+
+  def formatted_email_address
+    "#{name} <#{email_address}>"
   end
 
 end
