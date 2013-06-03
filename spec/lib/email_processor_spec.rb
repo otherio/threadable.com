@@ -97,11 +97,8 @@ describe EmailProcessor do
     attr_reader :message
 
     describe "#dispatch!" do
-
-      it "should pass the new message to MessageDispatch and call enqueue" do
-        fake_message_dispatch = double(:fake_message_dispatch)
-        MessageDispatch.should_receive(:new).with(subject.conversation_message).and_return(fake_message_dispatch)
-        fake_message_dispatch.should_receive(:enqueue)
+      it "should enqueue the message to be sent" do
+        SendConversationMessageWorker.should_receive(:enqueue).with(message_id: subject.conversation_message.id)
         subject.dispatch!
       end
     end

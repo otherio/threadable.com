@@ -2,11 +2,9 @@ Rails.widget('conversation_messages', function(Widget){
 
   Widget.initialize = function(page){
     page.on('ajax:success', '.conversation_messages form', appendMessage);
-    page.on('keyup', '.conversation_messages form textarea', onMessageBodyChange);
   };
 
   this.initialize = function(){
-    this.node.find('textarea').trigger('keyup');
     this.node.find('.timeago').timeago();
   };
 
@@ -18,13 +16,7 @@ Rails.widget('conversation_messages', function(Widget){
     widget.node.find('> ol').append(li);
     this.reset();
     message.widget('initialize');
-    onMessageBodyChange.call(this);
-  }
-
-  function onMessageBodyChange(){
-    var form = $(this).closest('form');
-    var message_body = form.find('textarea').val();
-    form.find('input[type=submit]').attr('disabled', !message_body);
+    form.find('textarea').trigger('keyup')
   }
 
 });

@@ -15,6 +15,10 @@
     .message-text-full<= message.html? ? html_unescape(body_html) : body_plain
     %button.btn.btn-small.show-quoted-text{:alt => "show quoted text"} &middot; &middot; &middot;
 
+.message-attachments
+  - message.attachments.each do |attachment|
+    = render_widget :attachment_preview, attachment
+
 .message-actions
 
   = presenter.link_to_toggle(:shareworthy) do

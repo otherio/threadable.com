@@ -1,0 +1,6 @@
+%a{href:attachment.url, title: attachment.filename}
+  - case attachment.mimetype
+  - when /^image/
+    %img{src: "#{attachment.url}/convert?h=43&w=43&fit=crop"}
+  - else
+    %i.icon-file.icon-3x

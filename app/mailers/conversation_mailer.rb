@@ -1,31 +1,39 @@
 # Encoding: UTF-8
+
 class ConversationMailer < ActionMailer::Base
 
-  def conversation_message(message)
-    @message = message
+  def conversation_message(message, recipient)
+    @message, @recipient = message, recipient
+    subject_tag = message.project.subject_tag
 
-    subject_tag = @message[:project_slug][0..6]
-
-    subject = @message[:message_subject].include?("[#{subject_tag}]") ?
-      @message[:message_subject] : "[#{subject_tag}] #{@message[:message_subject]}"
-
+    subject = message.subject
+    subject = "[#{subject_tag}] #{subject}" unless subject.include?("[#{subject_tag}]")
     # add a check mark to the subect if the conversation is a task, and if the subject doesn't already include one
-    subject = "✔ #{subject}" if @message[:is_a_task] && !subject.include?("✔")
+    subject = "✔ #{subject}" if message.conversation.task? && !subject.include?("✔")
 
-    from = %("#{@message[:sender_name]}" <#{@message[:sender_email]}>)
+    from = %("#{message.user.name}" <#{message.user.email}>)
 
-    unsubscribe_token = UnsubscribeToken.encrypt(@message[:project_id], @message[:recipient_id])
-    @unsubscribe_url = project_unsubscribe_url(@message[:project_slug], unsubscribe_token)
+    unsubscribe_token = UnsubscribeToken.encrypt(message.project.id, recipient.id)
+    @unsubscribe_url = project_unsubscribe_url(message.project.slug, unsubscribe_token)
 
-    mail(
-      :'to'          => %(#{@message[:recipient_name].inspect} <#{@message[:recipient_email]}>),
+    email = mail(
+      :'to'          => %(#{recipient.name.inspect} <#{recipient.email}>),
       :'subject'     => subject,
       :'from'        => from,
-      :'Reply-To'    => @message[:reply_to],
-      :'Message-ID'  => @message[:message_message_id_header],
-      :'In-Reply-To' => @message[:parent_message_id_header],
-      :'References'  => @message[:message_references_header],
+      :'Reply-To'    => message.project.formatted_email_address,
+      :'Message-ID'  => message.message_id_header,
+      :'In-Reply-To' => message.parent_message.try(:message_id_header),
+      :'References'  => message.references_header,
     )
+
+    message.attachments.each do |attachment|
+      email.attachments[attachment.filename] = {
+        :mime_type => attachment.mimetype,
+        :content   => attachment.content,
+      }
+    end
+
+    email
   end
 
 end

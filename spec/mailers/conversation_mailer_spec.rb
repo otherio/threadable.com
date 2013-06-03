@@ -30,30 +30,9 @@ describe ConversationMailer do
       )
     }
 
-    let(:reply_to){ 'foo@example.com' }
-
     let(:recipient){ project.members.last }
 
-    def data
-      {
-        :project_id                => project.id,
-        :project_slug              => project.slug,
-        :conversation_slug         => conversation.slug,
-        :message_subject           => message.subject,
-        :sender_name               => message.user.name,
-        :sender_email              => message.user.email,
-        :recipient_id              => recipient.id,
-        :recipient_name            => recipient.name,
-        :recipient_email           => recipient.email,
-        :message_body              => message.body_plain,
-        :message_message_id_header => message.message_id_header,
-        :message_references_header => message.references_header,
-        :parent_message_id_header  => message.parent_message.message_id_header,
-        :reply_to                  => reply_to,
-      }
-    end
-
-    subject(:mail) { ConversationMailer.conversation_message(data) }
+    subject(:mail) { ConversationMailer.conversation_message(message, recipient) }
 
     let(:mail_headers){
       Hash[mail.header_fields.map{|hf| [hf.name, hf.value] }]
@@ -78,7 +57,7 @@ describe ConversationMailer do
       unsubscribe_token = URI.decode(unsubscribe_token)
       UnsubscribeToken.decrypt(unsubscribe_token).should == [project.id, recipient.id]
 
-      mail.reply_to.should == [reply_to]
+      mail.header[:'Reply-To'].to_s.should == project.formatted_email_address
       mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]
       mail.message_id.should == message.message_id_header[1..-2]
       mail.references.should == references.map{|r| r[1..-2] }
@@ -89,10 +68,8 @@ describe ConversationMailer do
     end
 
     context "when the subject is a reply" do
-      def data
-        super.merge(
-          :message_subject => "RE: Re: [ucsd-el] #{conversation.subject}",
-        )
+      before do
+        message.subject = "RE: Re: [ucsd-el] #{conversation.subject}"
       end
       it "should parse and construct the correct subject" do
         validate_mail!

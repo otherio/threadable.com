@@ -11,7 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130414203205) do
+ActiveRecord::Schema.define(:version => 20130602212716) do
+
+  create_table "attachments", :force => true do |t|
+    t.string   "url"
+    t.string   "filename"
+    t.string   "mimetype"
+    t.integer  "size"
+    t.boolean  "writeable"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "attachments_messages", :id => false, :force => true do |t|
+    t.integer "message_id"
+    t.integer "attachment_id"
+  end
+
+  add_index "attachments_messages", ["message_id"], :name => "index_attachments_messages_on_message_id"
 
   create_table "conversations", :force => true do |t|
     t.string   "type"

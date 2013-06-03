@@ -5,5 +5,20 @@
 = form_for message, as: :message, url: url, remote: true do |f|
   .body_field
     = f.text_area :body, cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."
+  .attachments
+    .hidden.attachment-preview
+      %a.remove{href:""}
+        %i.icon-remove
+      %a.preview{href:"",  target:"_blank"}
+        %i.icon-file.icon-3x
+
+      %input{type:'hidden', class: 'url',       name:'message[attachments][][url]'}
+      %input{type:'hidden', class: 'filename',  name:'message[attachments][][filename]'}
+      %input{type:'hidden', class: 'mimetype',  name:'message[attachments][][mimetype]'}
+      %input{type:'hidden', class: 'size',      name:'message[attachments][][size]'}
+      %input{type:'hidden', class: 'writeable', name:'message[attachments][][writeable]'}
+
+  %button.attach-files Attach Files
+
   .pull-right
     %input.btn{type: 'submit', value: 'Send'}

@@ -1,8 +1,10 @@
 class Message < ActiveRecord::Base
 
   belongs_to :conversation, :counter_cache => true
+  has_one :project, :through => :conversation
   belongs_to :parent_message, :class_name => 'Message', :foreign_key => 'parent_id'
   belongs_to :user
+  has_and_belongs_to_many :attachments
 
   attr_accessible(
     :subject,

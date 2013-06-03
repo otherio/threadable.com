@@ -23,6 +23,7 @@ gem 'acts_as_list'
 gem 'simple_form'
 gem 'newrelic_rpm'
 gem 'honeybadger'
+gem 'filepicker-rails'
 
 group :assets do
   gem 'compass-rails'

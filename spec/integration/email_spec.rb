@@ -103,23 +103,7 @@ EMAIL
         message.message_id_header.should be_present
 
         project.members_who_get_email.each do |recipient|
-          assert_queued(SendConversationMessageWorker, [{
-            :project_id                => project.id,
-            :project_slug              => project.slug,
-            :conversation_slug         => message.conversation.slug,
-            :is_a_task                 => message.conversation.task?,
-            :message_subject           => message.subject,
-            :sender_name               => message.user.name,
-            :sender_email              => message.user.email,
-            :recipient_id              => recipient.id,
-            :recipient_name            => recipient.name,
-            :recipient_email           => recipient.email,
-            :message_body              => message.body_plain,
-            :message_message_id_header => message.message_id_header,
-            :message_references_header => message.references_header,
-            :parent_message_id_header  => message.parent_message.try(:message_id_header),
-            :reply_to                  => project.formatted_email_address,
-          }])
+          assert_queued(SendConversationMessageWorker, [{message_id: message.id, email_sender: true}])
         end
 
         Resque.run!

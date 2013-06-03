@@ -94,6 +94,8 @@ module Multify
 
     # login is enabled by default, but can be disabled
     config.login_enabled = ENV["MULTIFY_DISABLE_LOGIN"] ? false : true
+
+    config.filepicker_rails.api_key = ENV['MULTIFY_FILEPICKER_API_KEY']
   end
 end
 

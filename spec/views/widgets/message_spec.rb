@@ -14,7 +14,8 @@ describe "message" do
      from: 'MESSAGE FROM',
      user: user,
      created_at: 'MESSAGE CREATED AT',
-     html?: has_html
+     html?: has_html,
+     attachments: [],
     )
   }
 

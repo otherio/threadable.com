@@ -33,7 +33,7 @@ class EmailProcessor
   attr_reader :email
 
   def dispatch!
-    MessageDispatch.new(conversation_message).enqueue
+    SendConversationMessageWorker.enqueue(message_id: conversation_message.id)
   end
 
   def multify_project_slug

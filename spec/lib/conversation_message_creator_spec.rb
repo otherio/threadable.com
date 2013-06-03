@@ -20,8 +20,9 @@ describe ConversationMessageCreator do
 
   it "should create a new conversation message and dispatch it for emailing" do
     message_dispatcher = double(:message_dispatcher)
-    MessageDispatch.should_receive(:new).with(kind_of(Message), email_sender: true).and_return(message_dispatcher)
-    message_dispatcher.should_receive(:enqueue)
+    # MessageDispatch.should_receive(:new).with(kind_of(Message), email_sender: true).and_return(message_dispatcher)
+    SendConversationMessageWorker.should_receive(:enqueue) #.with(message_id: 1)
+    # message_dispatcher.should_receive(:enqueue)
 
     message = ConversationMessageCreator.call(user, conversation, message_attributes)
     message.should be_a Message
