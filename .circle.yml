@@ -5,3 +5,7 @@ deployment:
     commands:
       - git push git@heroku.com:multify-staging.git $CIRCLE_SHA1:master
       - heroku run rake db:migrate --app multify-staging
+
+machine:
+  environment:
+    MULTIFY_FILEPICKER_API_KEY: AoHaLq8oRH9Dy9MVuTTvwz
