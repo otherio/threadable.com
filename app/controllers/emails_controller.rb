@@ -2,6 +2,9 @@ class EmailsController < ActionController::Base
 
   # POST /emails
   def create
+
+    Rails.logger.debug params.inspect
+
     if EmailProcessor.process_request(request)
       render nothing: true, status: :ok
     else
