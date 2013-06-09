@@ -58,6 +58,19 @@ describe MessageWidget do
     end
   end
 
+  context "with a malicious message" do
+    subject { presenter.locals }
+
+    [:stripped_html, :body_html, :stripped_plain, :body_plain].each do |message_type|
+      let(message_type) { '<script>some nefarious crap</script><p>stuff that is okay</p>' }
+
+      it "sanitizes the html" do
+        locals = subject
+        locals[message_type].should =~ /okay/
+        locals[message_type].should_not =~ /script/
+      end
+    end
+  end
 
   describe "link_to_toggle" do
     it "should..." do
