@@ -126,7 +126,7 @@ describe EmailProcessor do
     describe "#conversation_message" do
 
       def filter_token(body)
-        body.gsub(%r{(Unsubscribe:.+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
+        body.gsub(%r{(https?://[\w\-\.]*multifyapp\.com/[\w\-\.]+/unsubscribe/)[^/]+}m, '\1')
       end
 
       let(:message){ subject.conversation_message }
@@ -176,16 +176,16 @@ describe EmailProcessor do
 
       context "when an unsubscribe token is present" do
         let(:body_plain) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\n>"}
-        let(:body_html) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\n>"}
+        let(:body_html) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> <a href=\"http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\">\n"}
         let(:stripped_text) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\n>"}
-        let(:stripped_html) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\n>"}
+        let(:body_html) {"View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> <a href=\"http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=\">\n"}
 
         it "should filter the token from the unsubscribe link" do
           subject.conversation_message
-          message.body_plain.should == "View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/"
-          message.body_html.should == "View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/"
-          message.stripped_plain.should == "View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/"
-          message.stripped_html.should == "View on Multify:\n> > http://beta.multifyapp.com/multify-testing/conversations/tView on Multify:\n> http://beta.multifyapp.com/multify-testing/conversations/testing\n> Unsubscribe:\n> http://beta.multifyapp.com/multify-testing/unsubscribe/"
+          message.body_plain.should_not =~ /jrFFF0qqfzWrYOzqJ6Pdf90/
+          message.body_html.should_not =~ /jrFFF0qqfzWrYOzqJ6Pdf90/
+          message.stripped_plain.should_not =~ /jrFFF0qqfzWrYOzqJ6Pdf90/
+          message.stripped_html.should_not =~ /jrFFF0qqfzWrYOzqJ6Pdf90/
         end
       end
 

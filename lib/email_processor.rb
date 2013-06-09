@@ -125,7 +125,7 @@ class EmailProcessor
   private
 
   def filter_token(part)
-    part.body.to_s.gsub(%r{(Unsubscribe:.+http.*multifyapp\.com/.*/unsubscribe/)[^/]+$}m, '\1')
+    part.body.to_s.gsub(%r{(https?://[\w\-\.]*multifyapp\.com/[\w\-\.]+/unsubscribe/)[^/]+}m, '\1')
   end
 
 end
