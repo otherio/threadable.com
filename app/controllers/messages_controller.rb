@@ -47,7 +47,7 @@ class MessagesController < ApplicationController
   end
 
   def strip_html(html)
-    Sanitize.clean(html.gsub(%r{<br/?>}, "\n"))
+    HTMLEntities.new.decode Sanitize.clean(html.gsub(%r{<br/?>}, "\n"))
   end
 
 end

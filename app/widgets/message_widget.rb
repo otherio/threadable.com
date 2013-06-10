@@ -31,7 +31,7 @@ class MessageWidget < Rails::Widget::Presenter
   end
 
   def clean_html(html)
-    Sanitize.clean(html, Sanitize::Config::RELAXED)
+    Sanitize.clean(html, Sanitize::Config::RELAXED).html_safe
   end
 
 end

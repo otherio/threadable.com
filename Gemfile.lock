@@ -146,6 +146,7 @@ GEM
     hike (1.2.2)
     honeybadger (1.6.2)
       json
+    htmlentities (4.3.1)
     httpauth (0.2.0)
     i18n (0.6.1)
     incoming (0.1.4)
@@ -368,6 +369,7 @@ DEPENDENCIES
   guard-rspec
   haml-rails
   honeybadger
+  htmlentities
   incoming (= 0.1.4)
   jquery-rails
   js-routes

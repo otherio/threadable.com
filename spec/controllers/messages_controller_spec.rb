@@ -54,6 +54,23 @@ describe MessagesController do
       assigns(:message).stripped_plain.should == message.body_plain
     end
 
+    context "with special characters in the message" do
+      let(:message) do
+        FactoryGirl.build(:message,
+          subject: nil,
+          conversation: conversation,
+          body_plain: 'foo & bar',
+          body_html: '<b>foo &amp; bar</b>'
+        )
+      end
+
+      it "transforms entities for the text part" do
+        request!
+        assigns(:message).body_html.should == message.body_html
+        assigns(:message).body_plain.should == message.body_plain
+      end
+    end
+
     context "with more than one message in the conversation" do
       let!(:first_message) { FactoryGirl.create(:message, conversation: conversation) }
 
