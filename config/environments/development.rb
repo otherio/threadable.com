@@ -51,5 +51,5 @@ Multify::Application.configure do
 
   config.unsubscribe_token_key = 'dev key'
 
-  config.storage = :local
+  config.storage = {local:'development'}
 end

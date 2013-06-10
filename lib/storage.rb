@@ -7,14 +7,12 @@ module Storage
   end
 
   def self.local?
-    config == :local
+    config.has_key? :local
   end
 
   def self.local_root
     @local_root ||= Rails.root.join('public')
   end
-
-  PUBLIC_PATH = 'storage'
 
   def self.connection
     @connection ||= if local?
@@ -33,7 +31,11 @@ module Storage
   end
 
   def self.directory
-    @directory ||= connection.directories.get(local? ? PUBLIC_PATH : config[:bucket_name])
+    @directory ||= if local?
+      connection.directories.create(key: "storage/#{config[:local]}")
+    else
+      connection.directories.get(config[:bucket_name])
+    end
   end
 
   def self.put(key, body)
