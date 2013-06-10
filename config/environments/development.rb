@@ -50,4 +50,6 @@ Multify::Application.configure do
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   config.unsubscribe_token_key = 'dev key'
+
+  config.storage = :local
 end

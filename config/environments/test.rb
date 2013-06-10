@@ -47,4 +47,6 @@ Multify::Application.configure do
   config.assets.paths << Rails.root.join("spec", "javascripts")
 
   config.unsubscribe_token_key = 'test key'
+
+  config.storage = :local
 end

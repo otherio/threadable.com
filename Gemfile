@@ -27,6 +27,8 @@ gem 'filepicker-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'sanitize'
 gem 'htmlentities'
+gem 'fog'
+gem 'httmultiparty'
 
 group :assets do
   gem 'compass-rails'

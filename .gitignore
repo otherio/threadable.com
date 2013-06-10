@@ -30,3 +30,5 @@ vendor/gems/rails-widgets
 .rspec
 
 .Trashes
+
+public/storage

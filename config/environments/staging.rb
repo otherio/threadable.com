@@ -89,4 +89,10 @@ Multify::Application.configure do
 
   # TODO: should live in a yaml file or ENV or something someday
   config.unsubscribe_token_key = 'staging unsubscribe key so there'
+
+  config.storage = {
+    s3_access_key_id:     ENV['MULTIFY_S3_ACCESS_KEY_ID'],
+    s3_secret_access_key: ENV['MULTIFY_S3_SECRET_ACCESS_KEY'],
+    bucket_name:          ENV['MULTIFY_S3_BUCKET_NAME'],
+  }
 end
