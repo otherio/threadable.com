@@ -40,7 +40,7 @@ class EmailProcessor < MethodObject.new(:email_data)
     return if !known_user? && !known_conversation?
 
     @attachments = @email.attachments.map do |attachment|
-      StoreIncomingAttachment.call(attachment.filename, attachment.body.decoded, attachment.content_type)
+      StoreIncomingAttachment.call(project.slug, attachment.filename, attachment.body.decoded, attachment.content_type)
     end
 
     dispatch!

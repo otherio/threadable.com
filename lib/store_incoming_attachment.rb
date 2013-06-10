@@ -1,4 +1,4 @@
-class StoreIncomingAttachment < MethodObject.new(:name, :body, :content_type)
+class StoreIncomingAttachment < MethodObject.new(:project_slug, :filename, :body, :content_type)
 
   def call
     store_file!
@@ -8,14 +8,14 @@ class StoreIncomingAttachment < MethodObject.new(:name, :body, :content_type)
 
   def store_file!
     uuid = SecureRandom.uuid
-    file = Storage.put("attachments/#{uuid}", @body)
+    file = Storage.put("attachments/#{@project_slug}/#{uuid}/#{@filename}", @body)
     @url = file.public_url
   end
 
   def create_attachment_record!
     @attachment = Attachment.create!(
       url: @url,
-      filename: @name,
+      filename: @filename,
       mimetype: @content_type,
     )
   end
