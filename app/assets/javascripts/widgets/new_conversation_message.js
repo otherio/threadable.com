@@ -1,7 +1,6 @@
 Rails.widget('new_conversation_message', function(Widget){
 
   Widget.initialize = function(page){
-    page.on('keyup', '.conversation_messages form textarea', onMessageBodyChange);
     page.on('click', '.conversation_messages .attach-files', attachFiles);
     page.on('click', '.conversation_messages .attachment-preview .remove', removeAttachment);
     page.on('ajax:success', '.conversation_messages form', resetForm);
@@ -10,8 +9,10 @@ Rails.widget('new_conversation_message', function(Widget){
   var ATTACHMENT_PREVIEW_TEMPLATE;
 
   this.initialize = function(){
+    this.node.find('input[type=submit]').attr('disabled', true);
     this.node.find('textarea').trigger('keyup');
     ATTACHMENT_PREVIEW_TEMPLATE = this.node.find('.hidden.attachment-preview').remove().removeClass('hidden');
+    this.node.find('textarea').click(function(e) { setupNewMessageInput(e.currentTarget); } );
   };
 
   this.pickFiles = function(){
@@ -45,11 +46,13 @@ Rails.widget('new_conversation_message', function(Widget){
     this.node.find('form .attachments').append(nodes);
   };
 
-  function onMessageBodyChange(){
-    var textarea = $(this);
-    var form = textarea.closest('form');
-    var message_body = form.find('textarea').val();
-    form.find('input[type=submit]').attr('disabled', !message_body);
+  // private
+
+  function setupNewMessageInput(target){
+    var $target = $(target);
+    $target.css('height', '200px');
+    $target.wysihtml5({'image': false});
+    $target.closest('form').find('input[type=submit]').attr('disabled', false);
   }
 
   function attachFiles(event){
@@ -65,8 +68,12 @@ Rails.widget('new_conversation_message', function(Widget){
   function resetForm(){
     this.reset();
     var form = $(this);
-    form.find('textarea').trigger('keyup');
+
     form.find('.attachments').empty();
+    $('ul.wysihtml5-toolbar').remove();
+    $('iframe.wysihtml5-sandbox').off('onload').remove();
+    form.find('textarea').css('height', '40px').show();
+    form.find('input[type=submit]').attr('disabled', true);
   }
 
 });

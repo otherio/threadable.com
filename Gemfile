@@ -24,6 +24,8 @@ gem 'simple_form'
 gem 'newrelic_rpm'
 gem 'honeybadger'
 gem 'filepicker-rails'
+gem 'bootstrap-wysihtml5-rails'
+gem 'sanitize'
 
 group :assets do
   gem 'compass-rails'

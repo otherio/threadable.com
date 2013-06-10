@@ -7,6 +7,8 @@
 //= require timeago
 //= require bootstrap
 //= require underscore
+//= require bootstrap-wysihtml5
+
 //= require_self
 //= require multify
 //= require_tree ./behaviors

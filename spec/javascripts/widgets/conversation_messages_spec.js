@@ -4,7 +4,6 @@ describeWidget("conversation_messages", function(){
   });
 
   describe("appendMessage", function(){
-
     describe("on ajax success", function() {
       beforeEach(function() {
         this.form = this.widget.$('form');
@@ -36,44 +35,42 @@ describeWidget("conversation_messages", function(){
         this.triggerSuccess();
         expect(timeagoSpy).toHaveBeenCalled();
       });
-    });
 
-    it("disables the send button after sending", function() {
-      expect(this.submit_button.is(':disabled')).toBe(true);
-      this.widget.$('textarea').val('this is a message').trigger('keyup');
-      expect(this.submit_button.is(':disabled')).toBe(false);
-      this.submit_button.click();
-      mostRecentAjaxRequest().response({status: 200, responseText: '{}'});
-      expect(this.submit_button.is(':disabled')).toBe(true);
+      it("resets the form after sending", function() {
+        expect(this.submit_button.is(':disabled')).toBe(true);
+        this.widget.$('textarea').click();
+        expect(this.submit_button.is(':disabled')).toBe(false);
+        this.submit_button.click();
+        mostRecentAjaxRequest().response({status: 200, responseText: '{}'});
+        expect(this.submit_button.is(':disabled')).toBe(true);
+        expect(this.widget.$('ul.wysihtml5-toolbar').html()).toBe(undefined);
+        expect(this.widget.$('iframe.wysihtml5-sandbox').html()).toBe(undefined);
+        expect(this.widget.$('textarea').css('height')).toEqual('40px');
+        expect(this.widget.$('textarea')).toBeVisible();
+      });
     });
   });
 
-  describe("onMessageBodyChange", function(){
-    beforeEach(function(){
-      this.textarea = this.widget.$('textarea')
+  describe("setupNewMessageInput", function() {
+    beforeEach(function() {
+      this.textarea = this.widget.$('textarea');
     });
 
-    context("when the message body is blank", function(){
-      beforeEach(function(){
-        this.textarea.val('');
-      });
-      it("should disable the send button", function(){
-        this.textarea.trigger('keyup');
-        expect(this.submit_button.is(':disabled')).toBe(true);
-      });
+    it("adds html controls", function() {
+      var wysispy = spyOn($.prototype, 'wysihtml5');
+      this.textarea.click();
+      expect(wysispy).toHaveBeenCalled();
     });
 
-    context("when the message body is present", function(){
-      beforeEach(function(){
-        this.textarea.val('hello friends.');
-      });
-      it("should enable the send button", function(){
-        this.textarea.trigger('keyup');
-        expect(this.submit_button.is(':disabled')).toBe(false);
-      });
+    it("makes the textarea bigger", function() {
+      this.textarea.click();
+      expect(this.textarea.css('height')).toEqual('200px');
     });
 
-
+    it("enables the send button", function() {
+      this.textarea.click();
+      expect(this.submit_button.is(':disabled')).toBe(false);
+    });
   });
 
 });

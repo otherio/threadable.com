@@ -8,7 +8,7 @@ describe MessagesController do
 
   let(:valid_attributes) do
     from_factory = message.attributes.reject{|key, _| !Message.accessible_attributes.include?(key) }
-    from_factory["body"] = from_factory.delete("body_plain")
+    from_factory["body"] = from_factory.delete("body_html")
     from_factory
   end
 
@@ -48,6 +48,8 @@ describe MessagesController do
 
     it "has a body_plain and a stripped_plain" do
       request!
+      assigns(:message).body_html.should == message.body_html
+      assigns(:message).stripped_html.should == message.body_html
       assigns(:message).body_plain.should == message.body_plain
       assigns(:message).stripped_plain.should == message.body_plain
     end

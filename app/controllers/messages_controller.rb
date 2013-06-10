@@ -6,7 +6,9 @@ class MessagesController < ApplicationController
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create
     message_attributes = params[:message].merge(parent_message: conversation.messages.last)
-    message_attributes[:body_plain] = message_attributes.delete(:body)
+    message_attributes[:body_html] = message_attributes.delete(:body)
+    message_attributes[:stripped_html] = message_attributes[:body_html]
+    message_attributes[:body_plain] = strip_html(message_attributes[:body_html])
     message_attributes[:stripped_plain] = message_attributes[:body_plain]
 
     @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
@@ -42,6 +44,10 @@ class MessagesController < ApplicationController
 
   def conversation
     @conversation ||= project.conversations.find_by_slug!(params[:conversation_id])
+  end
+
+  def strip_html(html)
+    Sanitize.clean(html.gsub(%r{<br/?>}, "\n"))
   end
 
 end
