@@ -27,7 +27,11 @@ class MessageWidget < Rails::Widget::Presenter
   end
 
   def htmlify(message_content)
-    @view.send(:h, @view.sanitize(message_content.strip)).gsub(/\s*\n/, "<br/>").html_safe
+    @view.send(:h, clean_html(message_content.strip)).gsub(/\s*\n/, "<br/>").html_safe
+  end
+
+  def clean_html(html)
+    Sanitize.clean(html, Sanitize::Config::RELAXED)
   end
 
 end

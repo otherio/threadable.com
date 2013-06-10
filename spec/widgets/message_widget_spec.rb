@@ -64,7 +64,12 @@ describe MessageWidget do
     [:stripped_html, :body_html, :stripped_plain, :body_plain].each do |message_type|
       let(message_type) { '<script>some nefarious crap</script><p>stuff that is okay</p>' }
 
-      it "sanitizes the html" do
+      it "sanitizes the html using the relaxed configuration" do
+        Sanitize.should_receive(:clean).
+          with(anything, Sanitize::Config::RELAXED).
+          at_least(1).times.
+          and_call_original
+
         locals = subject
         locals[message_type].should =~ /okay/
         locals[message_type].should_not =~ /script/
