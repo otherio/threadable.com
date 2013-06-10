@@ -32,3 +32,5 @@ vendor/gems/rails-widgets
 .Trashes
 
 public/storage
+
+.env
