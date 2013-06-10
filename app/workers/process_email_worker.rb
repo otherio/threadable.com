@@ -1,9 +1,9 @@
-class ProcessEmailWorker < ResqueWorker.new(:email, :stripped)
+class ProcessEmailWorker < ResqueWorker.new(:params)
 
   queue :incoming_mail
 
   def call
-    EmailProcessor.process_email(@email, @stripped)
+    EmailProcessor.call(@params)
   end
 
 end

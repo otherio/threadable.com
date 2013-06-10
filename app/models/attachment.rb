@@ -4,8 +4,12 @@ class Attachment < ActiveRecord::Base
 
   validates :url, :presence => true
 
+  def binary?
+    MIME::Types[mimetype].first.try(:binary?)
+  end
+
   def content
-    @content ||= Storage.read_url(url)
+    @content ||= Storage.read_url(url, binary?)
   end
 
 end

@@ -45,9 +45,10 @@ module Storage
   end
 
   # this is here to support reading urls from local storage in development and test
-  def self.read_url(url)
+  def self.read_url(url, binary=false)
     if local? && url.include?(connection.endpoint)
-      local_root.join(URI.parse(url).path[1..-1]).read
+      path = local_root.join(URI.parse(url).path[1..-1])
+      binary ? File.binread(path) : File.read(path)
     else
       open(url).read
     end
