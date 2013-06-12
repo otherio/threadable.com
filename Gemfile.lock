@@ -64,7 +64,7 @@ GEM
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     chunky_png (1.2.6)
-    coderay (1.0.8)
+    coderay (1.0.9)
     columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
@@ -232,7 +232,7 @@ GEM
     postmark-mitt (0.0.11)
       json_pure
       multi_json
-    pry (0.9.11.4)
+    pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
@@ -329,7 +329,7 @@ GEM
     skinny (0.2.3)
       eventmachine (~> 1.0.0)
       thin (~> 1.5.0)
-    slop (3.4.3)
+    slop (3.4.5)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
