@@ -106,6 +106,7 @@ EMAIL
 
         attachment_filenames = message.attachments.map(&:filename).to_set
         expected_attachment_filenames = 1.upto(3).map{|n| params["attachment-#{n}"].original_filename}.to_set
+        # TODO check file body and encodings
 
         # TODO this should check file contents but encoding is hard :(
         expect(attachment_filenames).to eq expected_attachment_filenames

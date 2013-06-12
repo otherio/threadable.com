@@ -12,9 +12,11 @@ class EmailProcessor < MethodObject.new(:email_data)
   def self.encode_attachements(email_data)
     1.upto(email_data['attachment-count'].to_i).each do |n|
       attachment = email_data["attachment-#{n}"]
+      filename   = attachment.original_filename
+      body       = Base64.encode64(attachment.read)
       email_data["attachment-#{n}"] = {
-        "original_filename" => attachment.original_filename,
-        "read" =>  attachment.read,
+        "original_filename" => filename,
+        "read" => body,
       }
     end
   end
@@ -23,8 +25,10 @@ class EmailProcessor < MethodObject.new(:email_data)
 
   def self.decode_attachements(email_data)
     1.upto(email_data['attachment-count'].to_i).each do |n|
-      attachment = email_data["attachment-#{n}"]
-      email_data["attachment-#{n}"] = Attachent.new(attachment["original_filename"], attachment["read"])
+      attachment        = email_data["attachment-#{n}"]
+      original_filename = attachment["original_filename"]
+      read              = Base64.decode64(attachment["read"])
+      email_data["attachment-#{n}"] = Attachent.new(original_filename, read)
     end
   end
 
@@ -39,9 +43,7 @@ class EmailProcessor < MethodObject.new(:email_data)
     return if project.nil?
     return if !known_user? && !known_conversation?
 
-    @attachments = @email.attachments.map do |attachment|
-      StoreIncomingAttachment.call(project.slug, attachment.filename, attachment.body.decoded, attachment.content_type)
-    end
+    @attachments = @email.attachments.map{|a| StoreIncomingAttachment.call(project.slug, a)}
 
     dispatch!
     conversation_message

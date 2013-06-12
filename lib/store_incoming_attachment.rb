@@ -1,22 +1,17 @@
-class StoreIncomingAttachment < MethodObject.new(:project_slug, :filename, :body, :content_type)
+class StoreIncomingAttachment < MethodObject.new(:project_slug, :file)
 
   def call
-    store_file!
-    create_attachment_record!
-    @attachment
-  end
+    filename        = @file.filename
+    content_type    = @file.content_type.split(';').first
+    body            = StringIO.new(@file.body.decoded)
+    uploadable_file = UploadIO.new(body, content_type, filename)
+    filepicker_data = FilepickerUploader.post(uploadable_file)
 
-  def store_file!
-    uuid = SecureRandom.uuid
-    file = Storage.put("attachments/#{@project_slug}/#{uuid}/#{@filename}", @body)
-    @url = file.public_url
-  end
-
-  def create_attachment_record!
-    @attachment = Attachment.create!(
-      url: @url,
-      filename: @filename,
-      mimetype: @content_type,
+    Attachment.create!(
+      url:      filepicker_data["url"],
+      filename: filepicker_data["filename"],
+      mimetype: filepicker_data["type"],
+      size:     filepicker_data["size"],
     )
   end
 
