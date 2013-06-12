@@ -14,12 +14,12 @@ module Storage
     @local_root ||= Rails.root.join('public')
   end
 
-  def self.connection
-    @connection ||= if local?
+  def self.service
+    @service ||= if local?
       Fog::Storage.new({
         :provider   => 'Local',
         :local_root => local_root.tap(&:mkpath),
-        :endpoint   => "http://localhost:3000/",
+        :endpoint   => "/",
       })
     else
       Fog::Storage.new(
@@ -32,25 +32,24 @@ module Storage
 
   def self.directory
     @directory ||= if local?
-      connection.directories.create(key: "storage/#{config[:local]}")
+      service.directories.create(key: "storage/#{config[:local]}")
     else
-      connection.directories.get(config[:bucket_name])
+      service.directories.get(config[:bucket_name])
     end
   end
 
-  def self.put(key, body)
-    directory.files.create(key: key, body: body, public: true)
+  def self.files
+    directory.files
   end
 
-  def self.get(key)
-    directory.files.get(key)
+  def self.url_prefix
+    File.join(service.endpoint, directory.key)
   end
 
   # this is here to support reading urls from local storage in development and test
   def self.read_url(url, binary=false)
-    if local? && url.include?(connection.endpoint)
-      path = local_root.join(URI.parse(url).path[1..-1])
-      binary ? File.binread(path) : File.read(path)
+    if url.to_s.start_with?(url_prefix)
+      files.get(url.sub(url_prefix, '')).body
     else
       open(url).read
     end
