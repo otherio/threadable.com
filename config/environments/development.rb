@@ -52,4 +52,6 @@ Multify::Application.configure do
   config.unsubscribe_token_key = 'dev key'
 
   config.storage = {local:'development'}
+
+  config.redis[:db] = 1
 end

@@ -95,4 +95,18 @@ Multify::Application.configure do
     s3_secret_access_key: ENV['MULTIFY_S3_SECRET_ACCESS_KEY'],
     bucket_name:          ENV['MULTIFY_S3_BUCKET_NAME'],
   }
+
+
+  config.redis[:db] = 1
+
+  if ENV.has_key? "REDISCLOUD_URL"
+    uri = URI.parse(ENV["REDISCLOUD_URL"])
+    config.redis.merge!(
+      :host => uri.host,
+      :port => uri.port,
+      :password => uri.password
+    )
+  end
+
+
 end

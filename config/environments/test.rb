@@ -49,4 +49,6 @@ Multify::Application.configure do
   config.unsubscribe_token_key = 'test key'
 
   config.storage = {local:'test'}
+
+  config.redis[:db] = 2
 end
