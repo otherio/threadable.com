@@ -3,25 +3,6 @@ require 'spec_helper'
 
 describe "email" do
 
-  let :complex_message_body do
-<<-EMAIL
-Hello Steve,
-
-American apparel occupy pour-over art party, odio flannel small batch
-williamsburg. Wolf "velit commodo viral master" cleanse. Food truck
-cillum qui nisi. Pickled dolor & vero cupidatat, veniam anim tonx
-sustainable pitchfork keytar. Velit reprehenderit cupidatat, consectetur
-sartorial gastropub 18% fap you probably haven't heard of them tofu tonx
-pour-over ullamco retro meh. Qui officia eiusmod chambray, single-origin
-coffee hoodie kogi selfies bushwick. Kogi biodiesel laborum mumblecore.
-
---
-Jared
-jared@other.io
-
-EMAIL
-  end
-
   before do
     ActionMailer::Base.stub(:default_url_options).and_return(host: 'multifyapp.com')
   end
@@ -36,38 +17,18 @@ EMAIL
       EmailProcessor::UnsubscribeTokenFilterer.call(body)
     end
 
-
     let(:parent_message){ conversation.messages.first! }
 
     let :message_headers do
       {
-        'Message-Id' => '<3j4hjk35hk4h32423k@hackers.io>',
+        'Message-Id' => '<youioyiuoy@lolz.io>',
         'In-Reply-To' => parent_message.message_id_header,
       }
     end
 
-    # http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
-    def params
-      timestamp = "1370817404"
-      token = "116d1b6e-3ee0-4f9c-8f77-4b7d10c42ee2"
-      {
-        'timestamp'        => timestamp,
-        'token'            => token,
-        'signature'        => MailgunSignature.encode(timestamp, token),
-        'message-headers'  => message_headers.to_a.to_json,
-        'from'             => 'Alice Neilson <alice@ucsd.multifyapp.com>',
-        'recipient'        => 'UCSD Electric Racing <ucsd-electric-racing@multifyapp.com>',
-        'subject'          => 'this is the subject',
-        'body-html'        => '<div>'+complex_message_body+'</div>',
-        'body-plain'       => complex_message_body,
-        'stripped-html'    => '<div>'+complex_message_body+'</div>',
-        'stripped-text'    => complex_message_body,
-        'attachment-count' => '3',
-        'attachment-1'     => fixture_file_upload("#{self.class.fixture_path}/attachments/some.gif", 'image/gif',  true),
-        'attachment-2'     => fixture_file_upload("#{self.class.fixture_path}/attachments/some.jpg", 'image/jpeg', true),
-        'attachment-3'     => fixture_file_upload("#{self.class.fixture_path}/attachments/some.txt", 'text/plain', false),
-      }
-    end
+    let(:params) {
+      create_incoming_email_params('message-headers' => message_headers)
+    }
 
     context "when the signature is invalid" do
       it "should not so anything and render a bad request" do
@@ -79,13 +40,13 @@ EMAIL
     context "when the signature is valid" do
 
       it "should create a message" do
-        post '/emails', params
+        expect{
+          post '/emails', params
+        }.to change{ IncomingEmail.count }.by(1)
         expect(response).to be_success
 
-        worker_arg = params
-        EmailProcessor.encode_attachements(worker_arg)
-
-        assert_queued ProcessEmailWorker, [worker_arg]
+        incoming_email_id = IncomingEmail.last.id
+        assert_queued ProcessEmailWorker, [{incoming_email_id: incoming_email_id}]
 
         ->{ Resque.run! }.should change{ Message.count }.by(1)
         message = Message.last
@@ -145,9 +106,8 @@ EMAIL
 
     context "replying to an existing conversation" do
 
-      def params
-        {message: {body: complex_message_body} }
-      end
+      let(:body){ Faker::Email.plain_body }
+      let(:params){ {message: {body: body} } }
 
       it "should create a message and send emails through mailgun" do
         ->{
@@ -160,7 +120,7 @@ EMAIL
         message.from.should == sender.email
         message.user_id.should == sender.id
         message.subject.should == conversation.subject
-        message.body_plain.should == complex_message_body
+        message.body_plain.should == body
         message.message_id_header.should be_present
 
         project.members_who_get_email.each do |recipient|
@@ -172,7 +132,7 @@ EMAIL
         ActionMailer::Base.deliveries.size.should == 5
 
         ActionMailer::Base.deliveries.each do |email|
-          email.body.should include complex_message_body
+          email.body.should include body
           email.subject.should == "✔ [ucsd-el] #{conversation.subject}"
         end
 

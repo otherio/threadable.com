@@ -1,4 +1,4 @@
-class EmailProcessor < MethodObject.new(:email_data)
+class EmailProcessor < MethodObject.new(:incoming_email)
 
   class MailgunRequestToEmail < Incoming::Strategies::Mailgun
     setup :api_key => Multify.config('mailgun')['key']
@@ -9,36 +9,9 @@ class EmailProcessor < MethodObject.new(:email_data)
     setup :api_key => Multify.config('mailgun')['key']
   end
 
-  def self.encode_attachements(email_data)
-    1.upto(email_data['attachment-count'].to_i).each do |n|
-      attachment = email_data["attachment-#{n}"]
-      filename   = attachment.original_filename
-      body       = Base64.encode64(attachment.read)
-      email_data["attachment-#{n}"] = {
-        "original_filename" => filename,
-        "read" => body,
-      }
-    end
-  end
-
-  Attachent = Struct.new(:original_filename, :read)
-
-  def self.decode_attachements(email_data)
-    1.upto(email_data['attachment-count'].to_i).each do |n|
-      attachment        = email_data["attachment-#{n}"]
-      original_filename = attachment["original_filename"]
-      read              = Base64.decode64(attachment["read"])
-      email_data["attachment-#{n}"] = Attachent.new(original_filename, read)
-    end
-  end
-
-  Request = Struct.new(:params)
-
   def call
-    self.class.decode_attachements(@email_data)
-    request = Request.new(@email_data)
-    @email = MailgunRequestToEmail.new(request).message
-    @email_stripped = MailgunRequestToEmailStripped.new(request).message
+    @email = MailgunRequestToEmail.new(@incoming_email).message
+    @email_stripped = MailgunRequestToEmailStripped.new(@incoming_email).message
 
     return if project.nil?
     return if !known_user? && !known_conversation?

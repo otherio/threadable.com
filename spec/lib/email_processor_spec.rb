@@ -5,117 +5,43 @@ describe EmailProcessor do
   let!(:original_conversation_count){ Conversation.count }
   let!(:original_message_count){ Message.count }
   let!(:original_attachment_count){ Attachment.count }
-  let(:attachments){
-    attachment = Struct.new(:original_filename, :read)
-    [
-      attachment.new('dogs.jpeg', 'THIS IS SOME FAKE DATA'),
-      attachment.new('cats.gif', 'THIS IS SOME OTHER FAKE DATA'),
-    ]
-  }
   let(:project){ Project.find_by_name("UCSD Electric Racing") }
   let(:sender){ User.find_by_email!('alice@ucsd.multifyapp.com') }
   let(:in_reply_to_header){ nil }
   let(:recipient_param){ 'UCSD Electric Racing <ucsd-electric-racing@multifyapp.com>' }
   let(:from_param){ 'Alice Neilson <alice@ucsd.multifyapp.com>' }
 
-  def message_headers
+  let(:message_headers) do
     {'Message-Id' => '<3j4hjk35hk4h32423k@hackers.io>', 'In-Reply-To' => in_reply_to_header}
   end
-
-  # http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
-  def params
-    {
-      'signature'        => 'THIS IS A FAKE SIGNATURE THAT WE STUB AROUND',
-      'token'            => 'kashfjkhdjksahdjksadhjkasdhkjlashdjklashdjksa',
-      'timestamp'        => 1370817404,
-      'message-headers'  => message_headers.to_a.to_json,
-      'from'             => from_param,
-      'recipient'        => recipient_param,
-      'subject'          => 'this is the subject',
-      'body-html'        => <<-HTML,
-<div dir=3D"ltr">I am writing you back. Back! I write!</div>
-<div class=3D"g=\nmail_extra">
-  <br><br>
-  <div class=3D"gmail_quote">
-    On Tue, Apr 2, 2013 at 10:51=\n AM, Nicole Aptekar <span dir=3D"ltr">&lt;<a href=3D"mailto:nicoletbn@gmail=\n.com" target=3D"_blank">nicoletbn@gmail.com</a>&gt;</span> wrote:<br>
-    <blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-    x #ccc solid;padding-left:1ex">
-    <div dir=3D"ltr">Sure~</div>
-    <div class=3D"HO=
-      EnZb">
-      <div class=3D"h5">
-        <div class=3D"gmail_extra">
-          <br><br>
-          <div class=3D"gm=
-            ail_quote">
-            On Tue, Apr 2, 2013 at 10:37 AM, ian <span dir=3D"ltr">&lt;<a href=3D"mailt=
-              o:ian@sonic.net" target=3D"_blank">ian@sonic.net</a>&gt;</span> wrote:<br>
-            <blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-            x #ccc solid;padding-left:1ex">It&#39;s Tuesday. I have work lunch Wednesda=
-            y, so I can take care of that thing. Also, want to grab food at 12:30?<span=
-            >
-            <font color=3D"#888888">
-              <div>
-                <br>
-              </div>
-              <div>-Ian<span></span></div>
-            </font>
-            </span></blockquote>
-          </div>
-          <br>
-        </div>
-      </div>
-    </div>
-    </blockquote>
-  </div>
-  <br>
-</div>
-HTML
-      'body-plain'       => <<-TEXT,
-"Sorry I sent that blank mail. Shouldn't be possible in the future. derp.
-
-
-On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
-
-> This is a response!
->
-> So there!
->
-> On Sunday, April 21, 2013, Nicole Aptekar wrote:
->
-> > Another test. Mail back plz?
-> > _____
-> > View on Multify:
-> > http://beta.multifyapp.com/multify-testing/conversations/testing
-> > Unsubscribe:
-> >
-> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=
-> >
-> >
-> _____
-> View on Multify:
-> http://beta.multifyapp.com/multify-testing/conversations/testing
-> Unsubscribe:
-> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=
->
-TEXT
-      'stripped-html'    => '<div dir=3D"ltr">I am writing you back. Back! I write!</div>',
-      'stripped-text'    => 'I am writing you back. Back! I write!',
-      'attachment-count' => attachments.length,
-      'attachment-1'     => attachments[0],
-      'attachment-2'     => attachments[1],
-    }
+  let(:params) do
+    create_incoming_email_params(
+      'message-headers' => message_headers,
+      'recipient' => recipient_param,
+      'from' => from_param,
+    )
+  end
+  let(:incoming_email) do
+    IncomingEmail.new(params: params)
   end
 
 
   # Helpers
 
   def call!
-    @message = EmailProcessor.call(params)
+    @message = EmailProcessor.call(incoming_email)
   end
 
-  def filter_token(body)
+  def filter_unsubscribe_token(body)
     EmailProcessor::UnsubscribeTokenFilterer.call(body)
+  end
+
+  def attachments
+    1.upto(params['attachment-count'].to_i).map{|n|
+      attachment = params["attachment-#{n}"]
+      attachment.seek(0) if attachment.respond_to? :seek
+      attachment
+    }
   end
 
 
@@ -140,7 +66,7 @@ TEXT
     it "should create a message" do
       call!
       expect(Message.count   ).to eq original_message_count + 1
-      expect(Attachment.count).to eq original_attachment_count + 2
+      expect(Attachment.count).to eq original_attachment_count + attachments.size
       validate_message!
     end
   end
@@ -184,10 +110,10 @@ TEXT
     expect(@message.parent_message).to        eq expected_parent_message
     expect(@message.user).to                  eq expected_sender
     expect(@message.from).to                  eq expected_sender_email
-    expect(@message.body_plain).to            eq filter_token(params['body-plain'])
-    expect(@message.body_html).to             eq filter_token(params['body-html'])
-    expect(@message.stripped_plain).to        eq filter_token(params['stripped-text'])
-    expect(@message.stripped_html).to         eq filter_token(params['stripped-html'])
+    expect(@message.body_plain).to            eq filter_unsubscribe_token(params['body-plain'])
+    expect(@message.body_html).to             eq filter_unsubscribe_token(params['body-html'])
+    expect(@message.stripped_plain).to        eq filter_unsubscribe_token(params['stripped-text'])
+    expect(@message.stripped_html).to         eq filter_unsubscribe_token(params['stripped-html'])
     expect(@message.conversation).to          be_present
     expect(@message.conversation.project).to  eq project
 

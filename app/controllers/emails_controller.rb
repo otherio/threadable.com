@@ -4,9 +4,9 @@ class EmailsController < ActionController::Base
 
   # POST /emails
   def create
-    email_data = request.params.dup.slice!("controller", "action")
-    EmailProcessor.encode_attachements(email_data)
-    ProcessEmailWorker.enqueue(email_data)
+    email_params = request.params.dup.slice!("controller", "action")
+    incoming_email = IncomingEmail.create!(params: email_params)
+    ProcessEmailWorker.enqueue(incoming_email_id: incoming_email.id)
     render nothing: true, status: :ok
   end
 
