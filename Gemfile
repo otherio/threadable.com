@@ -67,10 +67,6 @@ group :test do
   gem 'timecop'
   gem 'launchy'
   gem 'resque_unit'
-end
-
-# we need this as long as we are goig to load fixtures in prod
-group :test, :production do
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'database_cleaner'
