@@ -42,17 +42,4 @@ module Storage
     directory.files
   end
 
-  def self.url_prefix
-    File.join(service.endpoint, directory.key)
-  end
-
-  # this is here to support reading urls from local storage in development and test
-  def self.read_url(url, binary=false)
-    if url.to_s.start_with?(url_prefix)
-      files.get(url.sub(url_prefix, '')).body
-    else
-      open(url).read
-    end
-  end
-
 end

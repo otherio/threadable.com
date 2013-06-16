@@ -9,7 +9,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def content
-    @content ||= Storage.read_url(url, binary?)
+    @content ||= HTTParty.get(url)
   end
 
 end
