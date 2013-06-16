@@ -19,10 +19,25 @@ module FilepickerUploader
     ::Rails.application.config.filepicker_rails.api_key
   end
 
+  def self.path
+    "/api/store/S3"
+  end
+
+  def self.params
+    {key: api_key}
+  end
+
+  def self.uri
+    @uri ||= URI(Uploader.base_uri).tap do |uri|
+      uri.path = path
+      uri.query = params.to_param
+    end
+  end
+
   UploadError = Class.new(StandardError)
 
-  def self.post(file)
-    response = Uploader.post("/api/store/S3?key=#{api_key}", query: {fileUpload: file})
+  def self.upload(file)
+    response = Uploader.post("#{uri.path}?#{uri.query}", query: {fileUpload: file})
     raise UploadError, response if response.is_a? String
     response
   end

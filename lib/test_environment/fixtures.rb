@@ -55,7 +55,7 @@ module TestEnvironment::Fixtures
     def load!
       fixtures.each do |table_name, records|
         truncate table_name
-        records.each do |fixture_name, record|
+        Array(records).each do |fixture_name, record|
           insert(table_name, fixture_name, record)
         end
         reset_pk_sequence table_name

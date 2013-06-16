@@ -39,6 +39,12 @@ describe "email" do
 
     context "when the signature is valid" do
 
+      before do
+        attachments_for_email_params(params).each do |attachment|
+          mock_filepicker_upload_for(attachment)
+        end
+      end
+
       it "should create a message" do
         expect{
           post '/emails', params

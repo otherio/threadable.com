@@ -16,6 +16,7 @@ module TestEnvironment
 
   def before_suite!
     ::TestEnvironment::Fixtures.configure_fixture_builder!
+    WebMock.disable_net_connect!(:allow_localhost => true)
   end
 
   extend self

@@ -21,6 +21,7 @@ describe EmailProcessor do
       'from' => from_param,
     )
   end
+
   let(:incoming_email) do
     IncomingEmail.new(params: params)
   end
@@ -37,11 +38,7 @@ describe EmailProcessor do
   end
 
   def attachments
-    1.upto(params['attachment-count'].to_i).map{|n|
-      attachment = params["attachment-#{n}"]
-      attachment.seek(0) if attachment.respond_to? :seek
-      attachment
-    }
+    attachments_for_email_params(params)
   end
 
 
@@ -63,6 +60,12 @@ describe EmailProcessor do
   # Shoulds
 
   def self.it_should_create_a_message!
+    before do
+      attachments.each do |attachment|
+        mock_filepicker_upload_for(attachment)
+      end
+    end
+
     it "should create a message" do
       call!
       expect(Message.count   ).to eq original_message_count + 1
@@ -134,6 +137,7 @@ describe EmailProcessor do
   let(:expected_parent_message){ parent_message }
   let(:expected_sender){ sender }
   let(:expected_sender_email){ sender.email }
+
 
   context "when the message is sent to a known project" do
     context "and the message is not a reply" do

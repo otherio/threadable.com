@@ -5,7 +5,7 @@ class StoreIncomingAttachment < MethodObject.new(:project_slug, :file)
     content_type    = @file.content_type.split(';').first
     body            = StringIO.new(@file.body.decoded)
     uploadable_file = UploadIO.new(body, content_type, filename)
-    filepicker_data = FilepickerUploader.post(uploadable_file)
+    filepicker_data = FilepickerUploader.upload(uploadable_file)
 
     Attachment.create!(
       url:      filepicker_data["url"],

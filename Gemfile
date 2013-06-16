@@ -71,4 +71,5 @@ group :test do
   gem 'ffaker'
   gem 'database_cleaner'
   gem 'fixture_builder'
+  gem 'webmock'
 end
