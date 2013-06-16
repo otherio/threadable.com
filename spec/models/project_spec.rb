@@ -50,4 +50,23 @@ describe Project do
     end
   end
 
+  describe "#subject_tag" do
+    context "when the project has a defined subject tag" do
+      let(:project) { Project.create(subject_tag: 'i am a tag', name: "Baby's First Project")}
+
+      it "returns the defined subject tag" do
+        project.subject_tag.should == 'i am a tag'
+      end
+    end
+
+    context "when the project has no custom subject tag" do
+      let(:project) { Project.create(name: "Baby's First Project")}
+
+      it "returns the default subject tag" do
+        project.subject_tag.should == 'babys-f'
+      end
+    end
+
+  end
+
 end
