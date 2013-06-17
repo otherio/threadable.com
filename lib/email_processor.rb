@@ -1,5 +1,7 @@
 class EmailProcessor < MethodObject.new(:incoming_email)
 
+  include Let
+
   class MailgunRequestToEmail < Incoming::Strategies::Mailgun
     setup :api_key => Multify.config('mailgun')['key']
   end
@@ -9,77 +11,79 @@ class EmailProcessor < MethodObject.new(:incoming_email)
     setup :api_key => Multify.config('mailgun')['key']
   end
 
+  attr_reader :incoming_email
   def call
-    @email = MailgunRequestToEmail.new(@incoming_email).message
-    @email_stripped = MailgunRequestToEmailStripped.new(@incoming_email).message
-
     return if project.nil?
-    return if !known_user? && !known_conversation?
-
-    @attachments = @email.attachments.map{|a| StoreIncomingAttachment.call(project.slug, a)}
+    return if user.nil? && pre_existing_conversation.nil?
 
     dispatch!
-    conversation_message
+    message
   end
 
   def dispatch!
-    SendConversationMessageWorker.enqueue(message_id: conversation_message.id)
+    SendConversationMessageWorker.enqueue(message_id: message.id)
   end
 
-  def multify_project_slug
-    @multify_project_slug ||= EmailProcessor::ProjectSlugFinder.call(@email.to) or raise "No project slug"
+  let :attachments do
+    email.attachments.map do |attachment|
+      StoreIncomingAttachment.call(project.slug, attachment)
+    end
   end
 
-  def from
-    @email.from.first
+  let :email do
+    MailgunRequestToEmail.new(incoming_email).message
   end
 
-  def project
-    @project ||= Project.find_by_slug multify_project_slug
+  let :email_stripped do
+    MailgunRequestToEmailStripped.new(incoming_email).message
   end
 
-  def known_user?
-    user.present?
+  let :multify_project_slug do
+    EmailProcessor::ProjectSlugFinder.call(email.to) or raise "No project slug"
   end
 
-  def user
-    @user ||= project.members.find_by_email from
+  let :from do
+    email.from.first
   end
 
-  def parent_message
-    @parent_message ||= ParentMessageFinder.call(project.id, @email.header)
+  let :project do
+    Project.find_by_slug multify_project_slug
   end
 
-  def known_conversation?
-    pre_existing_conversation.present?
+  let :user do
+    project.members.find_by_email from
   end
 
-  def pre_existing_conversation
+  let :parent_message do
+    ParentMessageFinder.call(project.id, email.header)
+  end
+
+  let :pre_existing_conversation do
     parent_message.conversation if parent_message
   end
 
-  def conversation
-    @conversation ||= pre_existing_conversation || project.conversations.create(subject: @email.subject, creator: user)
+  let :conversation do
+    pre_existing_conversation || project.conversations.create(subject: email.subject, creator: user)
   end
 
-  def conversation_message
-    @conversation_message ||= conversation.messages.create!(
-      message_id_header: @email.header['Message-ID'].to_s,
-      subject: @email.subject,
+  let :message do
+    conversation.messages.create!(
+      message_id_header: email.header['Message-ID'].to_s,
+      subject: email.subject,
       parent_message: parent_message,
       user: user,
       from: from,
-      body_plain: filter_token(@email.text_part),
-      body_html: filter_token(@email.html_part),
-      stripped_plain: filter_token(@email_stripped.text_part),
-      stripped_html: filter_token(@email_stripped.html_part),
-      attachments: @attachments,
+      body_plain: filter_unsubscribe_token(email.text_part),
+      body_html: filter_unsubscribe_token(email.html_part),
+      stripped_plain: filter_unsubscribe_token(email_stripped.text_part),
+      stripped_html: filter_unsubscribe_token(email_stripped.html_part),
+      attachments: attachments,
     )
   end
 
   private
 
-  def filter_token(part)
+  def filter_unsubscribe_token(part)
     EmailProcessor::UnsubscribeTokenFilterer.call(part.body)
   end
 

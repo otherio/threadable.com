@@ -30,6 +30,7 @@ gem 'htmlentities'
 gem 'fog'
 gem 'httmultiparty'
 gem 'rails_autolink'
+gem 'let'
 
 group :assets do
   gem 'compass-rails'
