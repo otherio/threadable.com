@@ -73,6 +73,8 @@ module TestEnvironment::Fixtures
     end
 
     def insert table_name, fixture_name, record
+      return if record.blank?
+
       columns = Hash[connection.columns(table_name).map { |c| [c.name, c] }]
       table_name = connection.quote_table_name(table_name)
 
