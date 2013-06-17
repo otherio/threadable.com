@@ -1,5 +1,5 @@
 class ConversationMetadataWidget < Rails::Widget::Presenter
 
-  options :conversation
+  option :conversation
 
 end

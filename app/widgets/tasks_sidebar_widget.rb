@@ -2,25 +2,41 @@ class TasksSidebarWidget < Rails::Widget::Presenter
 
   arguments :project
 
-  options(
-    with_title: false,
-    conversations: ->(*){ locals[:project].conversations.includes(:project) },
-    tasks: ->(*){ locals[:project].tasks.includes(:doers) },
-    my_tasks: ->(*){
-      locals[:tasks].select{|task|
-        task.doers.include? @view.current_user
-      }
-    },
-    done_tasks:        ->(*){ locals[:tasks].select(&:done?) },
-    not_done_tasks:    ->(*){ locals[:tasks].reject(&:done?) },
-    my_done_tasks:     ->(*){ locals[:my_tasks].select(&:done?) },
-    my_not_done_tasks: ->(*){ locals[:my_tasks].reject(&:done?) }
-  )
+  option :with_title, false
 
-  def initialize view, *arguments, &block
-    super
-    @html_options['data-conversations'] = locals[:conversations].present?
-    @html_options['data-with_title'] = locals[:with_title]
+  option :conversations do
+    project.conversations.includes(:project)
+  end
+
+  option :tasks do
+    project.tasks.includes(:doers)
+  end
+
+  option :my_tasks do
+    tasks.select do |task|
+      task.doers.include? @view.current_user
+    end
+  end
+
+  option :done_tasks do
+    tasks.select(&:done?)
+  end
+
+  option :not_done_tasks do
+    tasks.reject(&:done?)
+  end
+
+  option :my_done_tasks do
+    my_tasks.select(&:done?)
+  end
+
+  option :my_not_done_tasks do
+    my_tasks.reject(&:done?)
+  end
+
+  def init
+    @html_options['data-conversations'] = conversations.present?
+    @html_options['data-with_title'] = with_title
   end
 
 end

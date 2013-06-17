@@ -2,8 +2,8 @@ class ConversationListWidget < Rails::Widget::Presenter
 
   arguments :project
 
-  options(
-    conversations: ->(*){ locals[:project].conversations },
-  )
+  option :conversations do
+    project.conversations
+  end
 
 end

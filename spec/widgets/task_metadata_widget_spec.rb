@@ -39,8 +39,8 @@ describe TaskMetadataWidget do
       should == {
         class: "task_metadata custom_class",
         widget: "task_metadata",
-        'data-doers' => '[task_doers]',
-        'data-project_members' => '[project_members]',
+        :'data-doers' => '[task_doers]',
+        :'data-project_members' => '[project_members]',
       }
     end
   end

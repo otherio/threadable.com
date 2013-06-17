@@ -2,8 +2,8 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
 
   arguments :conversation
 
-  options(
-    from: ->(*){ @view.current_user },
-  )
+  option :from do
+    @view.current_user
+  end
 
 end

@@ -2,16 +2,34 @@ class MessageWidget < Rails::Widget::Presenter
 
   arguments :message
 
-  def init
-    @html_options[:shareworthy] = true if message.shareworthy?
-    @html_options[:knowledge] = true if message.knowledge?
-
-    locals[:hide_quoted_text] = !message.root? && (message.body_plain != message.stripped_plain)
-    locals[:stripped_plain]   = auto_link htmlify message.stripped_plain
-    locals[:body_plain]       = auto_link htmlify message.body_plain
-    locals[:stripped_html]    = auto_link clean_html message.stripped_html
-    locals[:body_html]        = auto_link clean_html message.body_html
+  html_option :shareworthy do
+    true if message.shareworthy?
   end
+
+  html_option :knowledge do
+    true if message.knowledge?
+  end
+
+  option :hide_quoted_text do
+    !message.root? && (message.body_plain != message.stripped_plain)
+  end
+
+  option :stripped_plain do
+    auto_link htmlify message.stripped_plain
+  end
+
+  option :body_plain do
+    auto_link htmlify message.body_plain
+  end
+
+  option :stripped_html do
+    auto_link clean_html message.stripped_html
+  end
+
+  option :body_html do
+    auto_link clean_html message.body_html
+  end
+
 
   def link_to_toggle attribute, &block
     path = @view.project_conversation_message_path(message.conversation.project, message.conversation, message)
@@ -21,10 +39,6 @@ class MessageWidget < Rails::Widget::Presenter
   end
 
   private
-
-  def message
-    locals[:message]
-  end
 
   def htmlify(message_content)
     @view.send(:h, clean_html(message_content)).gsub(/\s*\n/, "<br/>").html_safe

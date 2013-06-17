@@ -2,7 +2,13 @@ require 'spec_helper'
 
 describe AttachmentPreviewWidget do
 
-  let(:attachment){ double(:attachment) }
+  let(:attachment) do
+    double(:attachment,
+      url: 'http://example.com/32h4j32hj432hkj',
+      filename: 'foo.gif',
+      mimetype: 'image/gif',
+    )
+  end
   let(:arguments) { [attachment] }
 
   def html_options
@@ -15,9 +21,13 @@ describe AttachmentPreviewWidget do
     subject{ presenter.locals }
     it do
       should == {
-        block: nil,
-        presenter: presenter,
-        attachment: attachment,
+        block:           nil,
+        presenter:       presenter,
+        attachment:      attachment,
+        href:            'http://example.com/32h4j32hj432hkj',
+        filename:        'foo.gif',
+        mimetype:        'image/gif',
+        preview_src_url: 'http://example.com/32h4j32hj432hkj/convert?fit=crop&h=42&w=43',
       }
     end
   end
