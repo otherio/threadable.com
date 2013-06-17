@@ -7,10 +7,10 @@ class MessageWidget < Rails::Widget::Presenter
     @html_options[:knowledge] = true if message.knowledge?
 
     locals[:hide_quoted_text] = !message.root? && (message.body_plain != message.stripped_plain)
-    locals[:stripped_plain] = htmlify message.stripped_plain
-    locals[:body_plain] = htmlify message.body_plain
-    locals[:stripped_html] = htmlify message.stripped_html
-    locals[:body_html] = htmlify message.body_html
+    locals[:stripped_plain]   = auto_link htmlify message.stripped_plain
+    locals[:body_plain]       = auto_link htmlify message.body_plain
+    locals[:stripped_html]    = auto_link clean_html message.stripped_html
+    locals[:body_html]        = auto_link clean_html message.body_html
   end
 
   def link_to_toggle attribute, &block
@@ -27,11 +27,15 @@ class MessageWidget < Rails::Widget::Presenter
   end
 
   def htmlify(message_content)
-    @view.send(:h, clean_html(message_content.strip)).gsub(/\s*\n/, "<br/>").html_safe
+    @view.send(:h, clean_html(message_content)).gsub(/\s*\n/, "<br/>").html_safe
   end
 
   def clean_html(html)
     Sanitize.clean(html, Sanitize::Config::RELAXED).html_safe
+  end
+
+  def auto_link(text)
+    @view.send(:auto_link, text)
   end
 
 end

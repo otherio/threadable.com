@@ -29,6 +29,7 @@ gem 'sanitize'
 gem 'htmlentities'
 gem 'fog'
 gem 'httmultiparty'
+gem 'rails_autolink'
 
 group :assets do
   gem 'compass-rails'

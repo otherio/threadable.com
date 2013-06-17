@@ -57,24 +57,39 @@ describe MessageWidget do
       }
     end
   end
+  message_types = [:stripped_html, :body_html, :stripped_plain, :body_plain]
 
   context "with a malicious message" do
-    subject { presenter.locals }
-
-    [:stripped_html, :body_html, :stripped_plain, :body_plain].each do |message_type|
+    message_types.each do |message_type|
       let(message_type) { '<script>some nefarious crap</script><p>stuff that is okay</p>' }
+    end
 
-      it "sanitizes the html using the relaxed configuration" do
-        Sanitize.should_receive(:clean).
-          with(anything, Sanitize::Config::RELAXED).
-          at_least(1).times.
-          and_call_original
+    it "sanitizes the html using the relaxed configuration" do
+      # Sanitize.should_receive(:clean).
+      #   with(anything, Sanitize::Config::RELAXED).
+      #   at_least(1).times.
+      #   and_call_original
 
-        locals = subject
-        locals[message_type].should =~ /okay/
-        locals[message_type].should_not =~ /script/
+      message_types.each do |message_type|
+        presenter.locals[message_type].should =~ /okay/
+        presenter.locals[message_type].should_not =~ /script/
       end
     end
+  end
+
+  context "with a link in plaintext" do
+    message_types.each do |message_type|
+      let(message_type) { 'Go to http://www.rubyonrails.org and say hello to david@loudthinking.com' }
+    end
+
+    it "linkifies the plaintext" do
+      message_types.each do |message_type|
+        html = Nokogiri::HTML.fragment presenter.locals[message_type]
+        links = html.css(:a)
+        links.count.should == 2
+      end
+    end
+
   end
 
   describe "link_to_toggle" do
