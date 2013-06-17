@@ -51,11 +51,10 @@ group :development, :test do
   gem 'debugger'
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'guard-rspec'
-  gem 'terminal-notifier-guard'
+  gem 'guard-rspec', require: nil
+  gem 'terminal-notifier-guard', require: nil
   gem 'pry-rails'
   gem 'pry-debugger'
-  gem 'pry-stack_explorer'
 end
 
 group :test do
