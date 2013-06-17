@@ -9,7 +9,7 @@
   %span.pull-right
     = timeago message.created_at
 
-.message-body
+.message-body.well.well-small
   .message-text<= message.html? ? html_unescape(stripped_html) : stripped_plain
   - if hide_quoted_text
     .message-text-full<= message.html? ? html_unescape(body_html) : body_plain
