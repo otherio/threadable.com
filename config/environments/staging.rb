@@ -95,4 +95,7 @@ Multify::Application.configure do
     s3_secret_access_key: ENV['MULTIFY_S3_SECRET_ACCESS_KEY'],
     bucket_name:          ENV['MULTIFY_S3_BUCKET_NAME'],
   }
+
+  config.redis = Heroku.redis_config
+
 end

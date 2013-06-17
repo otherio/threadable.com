@@ -97,16 +97,6 @@ Multify::Application.configure do
   }
 
 
-  config.redis[:db] = 1
-
-  if ENV.has_key? "REDISCLOUD_URL"
-    uri = URI.parse(ENV["REDISCLOUD_URL"])
-    config.redis.merge!(
-      :host => uri.host,
-      :port => uri.port,
-      :password => uri.password
-    )
-  end
-
+  config.redis = Heroku.redis_config
 
 end
