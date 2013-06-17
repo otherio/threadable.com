@@ -134,8 +134,6 @@ GEM
     font-awesome-sass-rails (3.0.2.2)
       railties (>= 3.1.1)
       sass-rails (>= 3.1.1)
-    foreman (0.60.2)
-      thor (>= 0.13.6)
     formatador (0.2.4)
     fssm (0.2.9)
     gherkin (2.11.5)
@@ -398,7 +396,6 @@ DEPENDENCIES
   fixture_builder
   fog
   font-awesome-sass-rails
-  foreman
   guard-rspec
   haml-rails
   honeybadger
@@ -432,7 +429,6 @@ DEPENDENCIES
   sass-rails
   shoulda-matchers
   simple_form
-  sqlite3
   stringex
   style-guide
   terminal-notifier-guard

@@ -51,8 +51,6 @@ group :development, :test do
   gem 'debugger'
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'sqlite3'
-  gem 'foreman' # for heroku
   gem 'guard-rspec'
   gem 'terminal-notifier-guard'
   gem 'pry-rails'
