@@ -4,6 +4,10 @@ module CapybaraEnvironment::Elements
     case name
     when 'the navbar'
       '.page_navigation'
+    when 'the projects dropdown toggle'
+      '.projects.dropdown .dropdown-toggle'
+    when 'the projects dropdown menu'
+      '.projects.dropdown .dropdown-menu'
     when 'the login form'
       'form.new_user'
     when 'the modal'

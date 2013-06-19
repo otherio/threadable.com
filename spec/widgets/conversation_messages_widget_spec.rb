@@ -38,6 +38,10 @@ describe ConversationMessagesWidget do
   let(:from_user)    { double(:from_user) }
   let(:arguments)    { [conversation] }
 
+  before do
+    view.stub(:current_user).and_return(nil)
+  end
+
   def html_options
     {class: 'custom_class'}
   end

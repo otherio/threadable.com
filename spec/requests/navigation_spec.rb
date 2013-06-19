@@ -9,23 +9,25 @@ describe "Navbar" do
     before do
       project.members << user
       project2.members << user
+      login_as user
+      visit project_path(project)
     end
 
     it "should include the project name" do
-      # visit root_path
-      # click_on 'Login'
-      # page.current_path.should == new_user_session_path
-      visit new_user_session_path
-      fill_in 'Email', with: user.email
-      fill_in 'Password', with: user.password
-      click_button 'Sign in'
-
-      visit project_path(project)
 
       page.should have_content project.name
     end
 
-    it "should include a dropdown with the other projects"
+    it "should include a dropdown with the other projects" do
+      within_element 'the navbar' do
+        click_link('Projects')
+        within_element 'the projects dropdown menu' do
+          page.should have_content project.name
+          page.should have_content project2.name
+          page.should have_content 'All Projects'
+        end
+      end
+    end
 
   end
 end
