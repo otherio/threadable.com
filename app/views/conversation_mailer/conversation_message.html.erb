@@ -1,4 +1,7 @@
-<%= @message.body_plain.html_safe %>
+<%= @message.body_html.html_safe %>
+
+<pre>
 _____
 View on Multify: <%= project_conversation_url(@message.project.slug, @message.conversation.slug) %>
 Unsubscribe:  <%= @unsubscribe_url %>
+</pre>

@@ -138,7 +138,8 @@ describe "email" do
         ActionMailer::Base.deliveries.size.should == 5
 
         ActionMailer::Base.deliveries.each do |email|
-          email.body.should include body
+          email.text_part.body.should include body
+          email.html_part.body.should include body
           email.subject.should == "✔ [ucsd-el] #{conversation.subject}"
         end
 

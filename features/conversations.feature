@@ -3,7 +3,6 @@ Feature: Conversations
   I should be able to view messages by email and the web
   I should be able to see conversation events
 
-  @javascript
   Scenario: Viewing conversations with quoted text
     As a member of a project
     I should be able to expand collapsed quoted text
@@ -13,6 +12,15 @@ Feature: Conversations
       But I should not see "> Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass"
      When I show the quoted text for the message containing "This turned out super awesome! Yan"
      Then I should see "> Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass"
+
+  @javascript
+  Scenario: Posting a new message in a conversation
+    As a member of a project
+    I should be able to post messages to a conversation, and people should receive them.
+    Given I am "Alice Neilson"
+      And I go to the "layup body carbon" conversation for the "UCSD Electric Racing" project
+     When I send the message "This looks great!"
+     Then I should see "This looks great!"
 
 #  Scenario: I want to create a new conversation through the website
 #     As a member of a project
