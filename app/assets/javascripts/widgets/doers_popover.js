@@ -49,7 +49,9 @@ Rails.widget('doers_popover', function(Widget){
     popover.node.find('.invite-link').on('click', function(){
       popover.hide();
       var value = popover.node.find('.user-search').val() || '';
-      showInviteModal(widget, value);
+      showInviteModal(widget, value, function(user){
+        popover.addDoer(user);
+      });
     });
 
     popover.node.find('.user-search').on('keyup', function(event){
@@ -136,7 +138,7 @@ Rails.widget('doers_popover', function(Widget){
     popover.node.find('.user-list > ul').html(lis);
   };
 
-  var showInviteModal = function(widget, value){
+  var showInviteModal = function(widget, value, success){
     var invite = {};
 
     invite.name = [];
@@ -150,9 +152,8 @@ Rails.widget('doers_popover', function(Widget){
       }
     });
     invite.name = invite.name.join(' ');
-    invite.success = function(user) {
-      widget.addUserAsADoer(user);
-      // widget.users.push(user);
+    invite.success = function(event, user, status, xhr) {
+      success(user);
     };
     widget.page().trigger('show_invite_modal', invite);
   };
