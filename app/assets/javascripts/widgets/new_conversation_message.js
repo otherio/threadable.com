@@ -1,9 +1,9 @@
 Rails.widget('new_conversation_message', function(Widget){
 
   Widget.initialize = function(page){
-    page.on('click', '.conversation_messages .attach-files', attachFiles);
-    page.on('click', '.conversation_messages .attachment-preview .remove', removeAttachment);
-    page.on('ajax:success', '.conversation_messages form', resetForm);
+    page.on('click',        Widget.selector+' .attach-files', attachFiles);
+    page.on('click',        Widget.selector+' .attachment-preview .remove', removeAttachment);
+    page.on('ajax:success', Widget.selector+' form', resetForm);
   };
 
   var ATTACHMENT_PREVIEW_TEMPLATE;
