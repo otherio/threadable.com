@@ -43,14 +43,17 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    message = params[:conversation].delete(:messages)
-    message[:body_plain] = message.delete(:body) unless message.nil?
+    message_attributes = params.fetch(:message).dup
 
-    @conversation = project.conversations.new(params[:conversation].merge(creator: current_user))
+    conversation_attributes = {
+      creator: current_user,
+      subject: message_attributes.delete(:subject),
+    }
 
     Conversation.transaction do
+      @conversation = project.conversations.new(conversation_attributes)
       @conversation.save or raise ActiveRecord::Rollback
-      @message = ConversationMessageCreator.call(current_user, @conversation, message)
+      @message = ConversationMessageCreator.call(current_user, @conversation, message_attributes)
       raise ActiveRecord::Rollback unless @message.persisted?
     end
 

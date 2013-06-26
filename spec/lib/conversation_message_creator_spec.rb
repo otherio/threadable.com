@@ -8,14 +8,11 @@ describe ConversationMessageCreator do
 
   let(:user) { project.members.first }
 
-  let(:message_attributes) {
+  def message_attributes
     {
       subject: "hey fellas",
-      body_plain: "anyone want some cake?",
+      body: "Hey, <i>Anyone</i> want some <strong>cake</strong>?",
     }
-  }
-
-  before do
   end
 
   it "should create a new conversation message and dispatch it for emailing" do
@@ -27,10 +24,17 @@ describe ConversationMessageCreator do
     message = ConversationMessageCreator.call(user, conversation, message_attributes)
     message.should be_a Message
     message.should be_persisted
-    message.subject.should == message_attributes[:subject]
-    message.body_plain.should == message_attributes[:body_plain]
-    message.user.should == user
-    message.conversation.should == conversation
+    message.subject.should        == message_attributes[:subject]
+    message.body_html.should      == message_attributes[:body]
+    message.stripped_html.should  == message_attributes[:body]
+    message.body_plain.should     == strip_html(message_attributes[:body])
+    message.stripped_plain.should == strip_html(message_attributes[:body])
+    message.user.should           == user
+    message.conversation.should   == conversation
+  end
+
+  def strip_html(html)
+    HTMLEntities.new.decode Sanitize.clean(html.gsub(%r{<br/?>}, "\n"))
   end
 
 end

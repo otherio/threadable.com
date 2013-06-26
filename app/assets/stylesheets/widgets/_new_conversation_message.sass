@@ -1,33 +1,46 @@
-.attachment-preview
-  position: relative
-  display: inline-block
-  margin-right: 0.25em
+&
+  +clearfix
 
-  border: 1px solid grey
-  // background-color: lightgrey
-  +border-radius(5px)
-  padding: 5px
-  overflow: hidden
 
-  .preview
-    display: block
-    height: 43px
-    width: 43px
-    text-align: center
+  .message_subject, .message_body
+    margin-right: 14px
+    textarea, input[type="text"]
+      width: 100%
+    textarea
+      min-height: 40px
+
+  .attachment-preview
+    position: relative
+    display: inline-block
+    margin-right: 0.25em
+
+    border: 1px solid grey
+    // background-color: lightgrey
+    +border-radius(5px)
+    padding: 5px
     overflow: hidden
-    > *
+
+    .preview
       display: block
+      height: 43px
+      width: 43px
+      text-align: center
+      overflow: hidden
+      > *
+        display: block
 
-  a.remove
-    display: none
-    position: absolute
-    top: -3px
-    right: 1px
-    &, &:hover, &:active
-      color: black
-      text-decoration: none
-
-  &:hover
     a.remove
-      display: block
+      display: none
+      position: absolute
+      top: -3px
+      right: 1px
+      &, &:hover, &:active
+        color: black
+        text-decoration: none
+
+    &:hover
+      a.remove
+        display: block
+
+
 

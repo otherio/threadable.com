@@ -1,10 +1,12 @@
 %h4 New Message
 %p From: #{from.name}
-- message = conversation.messages.build
-- url = project_conversation_messages_path(conversation.project, conversation)
-= form_for message, as: :message, url: url, remote: true do |f|
+
+= simple_form_for message, as: :message, url: url, remote: remote do |f|
+  - if show_subject
+    .subject_field
+      = f.input :subject, label: false, autofocus: autofocus
   .body_field
-    = f.text_area :body, cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."
+    = f.input :body, as: :text, label: false, input_html: {cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."}
   .attachments
     .hidden.attachment-preview
       %a.remove{href:""}
@@ -18,7 +20,7 @@
       %input{type:'hidden', class: 'size',      name:'message[attachments][][size]'}
       %input{type:'hidden', class: 'writeable', name:'message[attachments][][writeable]'}
 
-  %button.attach-files Attach Files
+  %button.attach-files.btn Attach Files
 
   .pull-right
     %input.btn{type: 'submit', value: 'Send'}

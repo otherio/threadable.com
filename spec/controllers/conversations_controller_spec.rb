@@ -10,14 +10,12 @@ describe ConversationsController do
     sign_in current_user
   end
 
-  def valid_create_params
-    {
-      "subject" => "how are we going to build this thing?",
-    }
-  end
 
   def valid_attributes
-    valid_create_params.merge("creator" => current_user)
+    {
+      "subject" => "how are we going to build this thing?",
+      "creator" => current_user,
+    }
   end
 
   def valid_params
@@ -64,18 +62,20 @@ describe ConversationsController do
   end
 
   describe "POST create" do
-    def valid_attributes
-      super.merge(
-        "messages" => {
-          "body" => "I think we should use wood.",
+
+    def valid_create_params
+      {
+        "message" => {
+          "subject" => valid_attributes["subject"],
+          "body"    => "I think we should use wood.",
         }
-      )
+      }
     end
 
     describe "with valid params" do
       it "creates a new Conversation, assigns a newly created conversation as @conversation, and redirects to the created conversation" do
         expect {
-          post :create, valid_params.merge(:conversation => valid_attributes)
+          post :create, valid_params.merge(valid_create_params)
         }.to change(Conversation, :count).by(1)
         assigns(:conversation).should be_a(Conversation)
         assigns(:conversation).should be_persisted
@@ -87,7 +87,7 @@ describe ConversationsController do
       it "assigns a newly created but unsaved conversation as @conversation, and re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Conversation.any_instance.stub(:save).and_return(false)
-        post :create, valid_params.merge(:conversation => valid_create_params)
+        post :create, valid_params.merge(valid_create_params)
         assigns(:conversation).should be_a_new(Conversation)
         response.should render_template("new")
       end
@@ -97,6 +97,12 @@ describe ConversationsController do
 
   describe "PUT update" do
     let!(:conversation){ Conversation.create!(valid_attributes.merge(project:project, creator: current_user)) }
+
+    def valid_update_params
+      {
+        "subject" => valid_attributes["subject"],
+      }
+    end
 
     describe "with valid params" do
       it "updates the requested conversation" do
@@ -113,12 +119,12 @@ describe ConversationsController do
       end
 
       it "assigns the requested conversation as @conversation" do
-        put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_create_params)
+        put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_update_params)
         assigns(:conversation).should eq(conversation)
       end
 
       it "redirects to the conversation" do
-        put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_create_params)
+        put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_update_params)
         response.should redirect_to project_conversation_url(project, conversation)
       end
     end

@@ -9,10 +9,15 @@ Rails.widget('new_conversation_message', function(Widget){
   var ATTACHMENT_PREVIEW_TEMPLATE;
 
   this.initialize = function(){
-    this.node.find('input[type=submit]').attr('disabled', true);
-    this.node.find('textarea').trigger('keyup');
     ATTACHMENT_PREVIEW_TEMPLATE = this.node.find('.hidden.attachment-preview').remove().removeClass('hidden');
-    this.node.find('textarea').click(function(e) { setupNewMessageInput(e.currentTarget); } );
+    this.node.find('input[type=submit]').attr('disabled', true);
+    var textarea = this.node.find('textarea');
+    textarea.trigger('keyup');
+    if (this.data.auto_show_right_text){
+      setupNewMessageInput(textarea);
+    }else{
+      textarea.click(function() { setupNewMessageInput(textarea); });
+    }
   };
 
   this.pickFiles = function(){
