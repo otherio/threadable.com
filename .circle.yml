@@ -3,8 +3,8 @@ deployment:
   staging:
     branch: master
     commands:
-      - git push git@heroku.com:multify-staging.git $CIRCLE_SHA1:master
-      - heroku run rake db:migrate --app multify-staging
+      - git push git@heroku.com:covered-staging.git $CIRCLE_SHA1:master
+      - heroku run rake db:migrate --app covered-staging
 
 machine:
   environment:
