@@ -3,12 +3,12 @@ class EmailProcessor < MethodObject.new(:incoming_email)
   include Let
 
   class MailgunRequestToEmail < Incoming::Strategies::Mailgun
-    setup :api_key => Multify.config('mailgun')['key']
+    setup :api_key => Covered.config('mailgun')['key']
   end
 
   class MailgunRequestToEmailStripped < Incoming::Strategies::Mailgun
     option :stripped, true
-    setup :api_key => Multify.config('mailgun')['key']
+    setup :api_key => Covered.config('mailgun')['key']
   end
 
   attr_reader :incoming_email
@@ -38,7 +38,7 @@ class EmailProcessor < MethodObject.new(:incoming_email)
     MailgunRequestToEmailStripped.new(incoming_email).message
   end
 
-  let :multify_project_slug do
+  let :covered_project_slug do
     EmailProcessor::ProjectSlugFinder.call(email.to) or raise "No project slug"
   end
 
@@ -47,7 +47,7 @@ class EmailProcessor < MethodObject.new(:incoming_email)
   end
 
   let :project do
-    Project.find_by_slug multify_project_slug
+    Project.find_by_slug covered_project_slug
   end
 
   let :user do

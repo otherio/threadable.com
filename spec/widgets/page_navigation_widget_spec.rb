@@ -16,7 +16,7 @@ describe PageNavigationWidget do
         presenter: presenter,
         current_user: nil,
         current_project: nil,
-        multify_link_url: view.root_url,
+        covered_link_url: view.root_url,
         projects: nil,
       }
     end
@@ -36,7 +36,7 @@ describe PageNavigationWidget do
           presenter: presenter,
           current_user: current_user,
           current_project: nil,
-          multify_link_url: view.root_url,
+          covered_link_url: view.root_url,
           projects: projects,
         }
       end
@@ -55,7 +55,7 @@ describe PageNavigationWidget do
             presenter: presenter,
             current_user: current_user,
             current_project: current_project,
-            multify_link_url: view.project_conversations_url(current_project),
+            covered_link_url: view.project_conversations_url(current_project),
             projects: projects,
           }
         end

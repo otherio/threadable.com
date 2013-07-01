@@ -6,10 +6,10 @@ describe EmailProcessor do
   let!(:original_message_count){ Message.count }
   let!(:original_attachment_count){ Attachment.count }
   let(:project){ Project.find_by_name("UCSD Electric Racing") }
-  let(:sender){ User.find_by_email!('alice@ucsd.multifyapp.com') }
+  let(:sender){ User.find_by_email!('alice@ucsd.coveredapp.com') }
   let(:in_reply_to_header){ nil }
-  let(:recipient_param){ 'UCSD Electric Racing <ucsd-electric-racing@multifyapp.com>' }
-  let(:from_param){ 'Alice Neilson <alice@ucsd.multifyapp.com>' }
+  let(:recipient_param){ 'UCSD Electric Racing <ucsd-electric-racing@coveredapp.com>' }
+  let(:from_param){ 'Alice Neilson <alice@ucsd.coveredapp.com>' }
 
   let(:message_headers) do
     {'Message-Id' => '<3j4hjk35hk4h32423k@hackers.io>', 'In-Reply-To' => in_reply_to_header}
@@ -53,7 +53,7 @@ describe EmailProcessor do
   def self.in_reply_to_an_unknown_conversation!
     let(:conversation){ nil }
     let(:parent_message){ nil }
-    let(:in_reply_to_header){ '<somefakeunknowbsmessageidheader@multifyapp.com>' }
+    let(:in_reply_to_header){ '<somefakeunknowbsmessageidheader@coveredapp.com>' }
   end
 
 
@@ -172,7 +172,7 @@ describe EmailProcessor do
   end
 
   context "when the message is sent to a unknown project" do
-    let(:recipient_param){ 'Unknown Project <some-bullshit-email-address@multifyapp.com>' }
+    let(:recipient_param){ 'Unknown Project <some-bullshit-email-address@coveredapp.com>' }
     it_should_not_create_a_message!
     it_should_not_create_a_conversation!
   end

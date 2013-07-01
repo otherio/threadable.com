@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
   encoding: utf8
-  database: multify_development
+  database: covered_development
   pool: 5
   username: postgres
   password: password
@@ -9,7 +9,7 @@ development:
 test:
   adapter: postgresql
   encoding: utf8
-  database: multify_test
+  database: covered_test
   pool: 5
   username: postgres
   password: password

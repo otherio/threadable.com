@@ -8,4 +8,4 @@ deployment:
 
 machine:
   environment:
-    MULTIFY_FILEPICKER_API_KEY: AoHaLq8oRH9Dy9MVuTTvwz
+    COVERED_FILEPICKER_API_KEY: AoHaLq8oRH9Dy9MVuTTvwz

@@ -1,6 +1,6 @@
 Given /^I am not logged in$/ do
   visit new_user_session_path
-  page.should have_content('Multify')
+  page.should have_content('Covered')
 end
 
 Given /^I am "(.*?)"$/ do |name|

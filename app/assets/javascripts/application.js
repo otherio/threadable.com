@@ -10,7 +10,7 @@
 //= require bootstrap-wysihtml5
 
 //= require_self
-//= require multify
+//= require covered
 //= require_tree ./behaviors
 //= require_tree ./widgets
 

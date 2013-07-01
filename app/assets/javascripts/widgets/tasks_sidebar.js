@@ -31,13 +31,13 @@ Rails.widget('tasks_sidebar', function(Widget){
   };
 
   this.showTab = function(tab_name){
-    tab_name = tab_name || localStorage['multify.widgets.tasks_sidebar.tab'] || 'all_tasks';
+    tab_name = tab_name || localStorage['covered.widgets.tasks_sidebar.tab'] || 'all_tasks';
     var button = this.node.find('.btn.'+tab_name);
     if (button.length === 0){
       tab_name = 'all_tasks';
       button = this.node.find('.btn.'+tab_name);
     }
-    localStorage['multify.widgets.tasks_sidebar.tab'] = tab_name;
+    localStorage['covered.widgets.tasks_sidebar.tab'] = tab_name;
     this.node.attr('showing', tab_name);
     button.addClass('active').siblings().removeClass('active');
     return this;
@@ -125,11 +125,11 @@ Rails.widget('tasks_sidebar', function(Widget){
   }
 
   function onTaskMouseEnter(event){
-    Multify.page.trigger('conversation_mouse_enter', $(this).data('conversation-id'));
+    Covered.page.trigger('conversation_mouse_enter', $(this).data('conversation-id'));
   }
 
   function onTaskMouseLeave(event){
-    Multify.page.trigger('conversation_mouse_leave', $(this).data('conversation-id'));
+    Covered.page.trigger('conversation_mouse_leave', $(this).data('conversation-id'));
   }
 
   function onSortupdate(event, data){
@@ -152,8 +152,8 @@ Rails.widget('tasks_sidebar', function(Widget){
 
     if (!$.isNumeric(new_position)) throw new Error('unable to determine new position');
 
-    url = Multify.page.project_task_path(
-      Multify.page.current_project.slug, task.data('slug')
+    url = Covered.page.project_task_path(
+      Covered.page.current_project.slug, task.data('slug')
     );
 
     $.ajax({

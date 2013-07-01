@@ -3,5 +3,5 @@
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
 require File.expand_path('../config/application', __FILE__)
-Multify::Application.load_tasks
+Covered::Application.load_tasks
 require 'resque/tasks'

@@ -17,7 +17,7 @@ Rails.widget('invite_modal', function(Widget){
   };
 
   this.initialize = function(){
-    this.flash = new Multify.Flash(this.node.find('.flash_messages'));
+    this.flash = new Covered.Flash(this.node.find('.flash_messages'));
   }
 
   this.focus = function(){

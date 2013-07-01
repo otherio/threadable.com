@@ -29,7 +29,7 @@ describe UserMailer do
     subject(:mail) { UserMailer.unsubscribe_notice(project: project, user: user, host:'example.com', port:3000) }
     let(:expected_subject) { "You've been unsubscribed from #{project.name}" }
     let(:expected_sender) { "#{project.slug}@#{smtp_domain}" }
-    let(:find_in_body) { %(You've been unsubscribed from the "#{project.name}" project on Multify.) }
+    let(:find_in_body) { %(You've been unsubscribed from the "#{project.name}" project on Covered.) }
     it_behaves_like :a_user_notice_mail
   end
 

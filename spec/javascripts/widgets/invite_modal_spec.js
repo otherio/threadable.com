@@ -23,7 +23,7 @@ describeWidget("invite_modal", function(){
   //     var spy = jasmine.createSpy('successFunction');
 
   //     runs(function() {
-  //       Multify.page.trigger('show_invite_modal', {name: 'some guy', email: 'foo@foo.foo', success: spy});
+  //       Covered.page.trigger('show_invite_modal', {name: 'some guy', email: 'foo@foo.foo', success: spy});
   //     });
 
   //     waits(300);
@@ -41,7 +41,7 @@ describeWidget("invite_modal", function(){
   //   it("should show a flash message saying the user has been added", function(){
 
   //     runs(function(){
-  //       spyOn(Multify.Flash, 'message');
+  //       spyOn(Covered.Flash, 'message');
   //       open_invite_modal();
   //     });
 
@@ -64,8 +64,8 @@ describeWidget("invite_modal", function(){
   //     runs(function(){
   //       // TODO: for some reason this happens two times in test.
   //       // probably points to a deeper test pollution problem, so is worth finding out why
-  //       //expect(Multify.Flash.message.calls.length).toEqual(1);
-  //       var element = Multify.Flash.message.mostRecentCall.args[0]
+  //       //expect(Covered.Flash.message.calls.length).toEqual(1);
+  //       var element = Covered.Flash.message.mostRecentCall.args[0]
   //       var html = element.clone().appendTo('<div>').parent().html();
   //       expect(html).toEqual("<span>Ballzonya &lt;ballz@ya.org&gt; was added to this project.</span>");
   //     });
@@ -76,7 +76,7 @@ describeWidget("invite_modal", function(){
   //   it("should close the modal and flash a message saying the user is already a member of this project", function(){
 
   //     runs(function(){
-  //       spyOn(Multify.Flash, 'notice');
+  //       spyOn(Covered.Flash, 'notice');
   //       open_invite_modal();
   //     });
 
@@ -95,7 +95,7 @@ describeWidget("invite_modal", function(){
 
   //     runs(function(){
   //       expect($('.modal:visible').length).toBe(0);
-  //       expect(Multify.Flash.notice).toHaveBeenCalledWith('That user is already a member of this project.');
+  //       expect(Covered.Flash.notice).toHaveBeenCalledWith('That user is already a member of this project.');
   //     });
 
   //   });
@@ -105,8 +105,8 @@ describeWidget("invite_modal", function(){
   //   it("should close the modal and flash a message saying the user is already a member of this project", function(){
 
   //     runs(function(){
-  //       spyOn(Multify.Modal.Flash, 'alert');
-  //       spyOn(Multify.Flash, 'notice');
+  //       spyOn(Covered.Modal.Flash, 'alert');
+  //       spyOn(Covered.Flash, 'notice');
   //       open_invite_modal();
   //     });
 
@@ -126,7 +126,7 @@ describeWidget("invite_modal", function(){
   //     runs(function(){
   //       expect($('.modal:visible').length).toBe(1);
   //       // expectFirstInputToBeFocused();
-  //       expect(Multify.Modal.Flash.alert).toHaveBeenCalledWith('Oops! Something went wrong. Please try again later.');
+  //       expect(Covered.Modal.Flash.alert).toHaveBeenCalledWith('Oops! Something went wrong. Please try again later.');
   //     });
 
   //   });

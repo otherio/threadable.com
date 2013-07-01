@@ -1,10 +1,10 @@
-describe("Multify.Flash", function(){
+describe("Covered.Flash", function(){
 
   var flash, node;
 
   beforeEach(function(){
     node = $('<div>');
-    flash = new Multify.Flash(node);
+    flash = new Covered.Flash(node);
   });
 
   describe("#create", function() {

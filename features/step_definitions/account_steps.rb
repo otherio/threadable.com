@@ -3,7 +3,7 @@
 #   #clear cookies and shit
 # end
 
-# When /^I go to multify\.com$/ do
+# When /^I go to covered\.com$/ do
 #   visit '/'
 # end
 

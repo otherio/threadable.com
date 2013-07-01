@@ -4,7 +4,7 @@ class PageNavigationWidget < Rails::Widget::Presenter
 
   option :current_project
 
-  option :multify_link_url do
+  option :covered_link_url do
     current_project ? @view.project_conversations_url(current_project) : @view.root_url
   end
 

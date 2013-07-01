@@ -1,4 +1,4 @@
-describe("Multify.Page", function(){
+describe("Covered.Page", function(){
 
   var page, env;
 
@@ -12,7 +12,7 @@ describe("Multify.Page", function(){
       current_user:         {current_user:true}
     };
 
-    page = new Multify.Page(env);
+    page = new Covered.Page(env);
   });
 
   it("should assign page name", function(){

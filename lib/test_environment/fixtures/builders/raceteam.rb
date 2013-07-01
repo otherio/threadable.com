@@ -1,7 +1,7 @@
 TestEnvironment::FixtureBuilder.new do
 
   # Alice signs up
-  create_user('Alice Neilson', 'alice@ucsd.multifyapp.com')
+  create_user('Alice Neilson', 'alice@ucsd.coveredapp.com')
 
   # Alice creates a project
   @project = Project.create!(
@@ -11,11 +11,11 @@ TestEnvironment::FixtureBuilder.new do
   project.members << user('Alice Neilson')
 
   # Alice invites her project mates
-  invite_user 'Tom Canver',      'tom@ucsd.multifyapp.com'
-  invite_user 'Yan Hzu',         'yan@ucsd.multifyapp.com'
-  invite_user 'Bethany Pattern', 'bethany@ucsd.multifyapp.com'
-  invite_user 'Bob Cauchois',    'bob@ucsd.multifyapp.com'
-  invite_user 'Jonathan Spray',  'jonathan@ucsd.multifyapp.com'
+  invite_user 'Tom Canver',      'tom@ucsd.coveredapp.com'
+  invite_user 'Yan Hzu',         'yan@ucsd.coveredapp.com'
+  invite_user 'Bethany Pattern', 'bethany@ucsd.coveredapp.com'
+  invite_user 'Bob Cauchois',    'bob@ucsd.coveredapp.com'
+  invite_user 'Jonathan Spray',  'jonathan@ucsd.coveredapp.com'
 
   # Alice's project mates all accept their invites
   accept_invite 'Tom Canver'
@@ -28,17 +28,17 @@ TestEnvironment::FixtureBuilder.new do
   unsubscribe_from_project_email 'Jonathan Spray'
 
   # each user sets their avatar via magic!
-  set_avatar 'alice@ucsd.multifyapp.com',   'alice.jpg'
-  set_avatar 'tom@ucsd.multifyapp.com',     'tom.jpg'
-  set_avatar 'bob@ucsd.multifyapp.com',     'bob.jpg'
-  set_avatar 'yan@ucsd.multifyapp.com',     'yan.jpg'
-  set_avatar 'bethany@ucsd.multifyapp.com', 'bethany.jpg'
+  set_avatar 'alice@ucsd.coveredapp.com',   'alice.jpg'
+  set_avatar 'tom@ucsd.coveredapp.com',     'tom.jpg'
+  set_avatar 'bob@ucsd.coveredapp.com',     'bob.jpg'
+  set_avatar 'yan@ucsd.coveredapp.com',     'yan.jpg'
+  set_avatar 'bethany@ucsd.coveredapp.com', 'bethany.jpg'
 
   # Alice sends a welcome email
   send_message(
     user: 'Alice Neilson',
     reply: false,
-    subject: 'Welcome to our new Multify project!',
+    subject: 'Welcome to our new Covered project!',
     stripped_plain: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!',
     body_plain: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!'
   )
@@ -47,7 +47,7 @@ TestEnvironment::FixtureBuilder.new do
   send_message(
     user: 'Bethany Pattern',
     reply: true,
-    subject: 'RE: Welcome to our new Multify project!',
+    subject: 'RE: Welcome to our new Covered project!',
     stripped_plain: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.',
     body_plain: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.',
   )

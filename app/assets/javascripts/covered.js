@@ -1,20 +1,19 @@
 //= require_self
-//= require "./multify/util"
-//= require "./multify/routes"
-//= require_tree ./multify
+//= require "./covered/util"
+//= require "./covered/routes"
+//= require_tree ./covered
 
-Multify = {
+Covered = {
   // _ready_callbacks: [],
   // ready: function(callback){
   //   this._ready_callbacks.push(callback);
   // },
 
   initialize: function(env){
-    Multify.page = new Multify.Page(env);
+    Covered.page = new Covered.Page(env);
     $(function(){
-      Multify.page.trigger('domready');
+      Covered.page.trigger('domready');
     });
   }
 
 };
-

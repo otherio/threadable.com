@@ -7,9 +7,9 @@ test:
   clef_secret: this_is_a_bullshit_secret
 
 production:
-  clef_id: <%= ENV['MULTIFY_CLEF_ID'] %>
-  clef_secret: <%= ENV['MULTIFY_CLEF_SECRET'] %>
+  clef_id: <%= ENV['COVERED_CLEF_ID'] %>
+  clef_secret: <%= ENV['COVERED_CLEF_SECRET'] %>
 
 staging:
-  clef_id: <%= ENV['MULTIFY_CLEF_ID'] %>
-  clef_secret: <%= ENV['MULTIFY_CLEF_SECRET'] %>
+  clef_id: <%= ENV['COVERED_CLEF_ID'] %>
+  clef_secret: <%= ENV['COVERED_CLEF_SECRET'] %>

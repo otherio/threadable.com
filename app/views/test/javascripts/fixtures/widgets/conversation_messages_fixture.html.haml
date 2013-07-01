@@ -1,4 +1,4 @@
 - project = Project.find_by_name("UCSD Electric Racing", include: :members)
 - user    = project.members.first
-- conversation = project.conversations.find_by_subject('Welcome to our new Multify project!')
+- conversation = project.conversations.find_by_subject('Welcome to our new Covered project!')
 = render_widget :conversation_messages, conversation, from: user

@@ -1,1 +1,1 @@
-#Multify::Application.config.session_store :redis_store
+#Covered::Application.config.session_store :redis_store

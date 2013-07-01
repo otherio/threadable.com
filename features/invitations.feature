@@ -16,7 +16,7 @@ Feature: Invitations
     As a member of a project
     I should get a notification if I try to add an existing member.
     Given I am "Alice Neilson"
-     When I invite "Yan Zhu", "yan@ucsd.multifyapp.com" to the "UCSD Electric Racing" project
+     When I invite "Yan Zhu", "yan@ucsd.coveredapp.com" to the "UCSD Electric Racing" project
      Then I should see "Notice! That user is already a member of this project."
 
 

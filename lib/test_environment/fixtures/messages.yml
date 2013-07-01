@@ -7,15 +7,15 @@ messages_001:
     and work for the car. Thanks for joining up!
   reply: false
   from: 
-  subject: Welcome to our new Multify project!
+  subject: Welcome to our new Covered project!
   children: 
   parent_id: 
-  message_id_header: <51abf4a84bd3a_7f603fc4c4c349d471565@multifyapp.test>
+  message_id_header: <51d0f4325ca32_96993fc1198349dc5763d@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.318559000 Z
-  updated_at: 2013-06-03 01:43:04.318559000 Z
+  created_at: 2013-07-01 03:14:58.384163000 Z
+  updated_at: 2013-07-01 03:14:58.384163000 Z
   stripped_plain: Hey all! I think we should try this way to organize our conversation
     and work for the car. Thanks for joining up!
   body_html: ''
@@ -27,15 +27,15 @@ messages_002:
   body_plain: Yay! You go Alice. This tool looks radder than an 8-legged panda.
   reply: true
   from: 
-  subject: ! 'RE: Welcome to our new Multify project!'
+  subject: ! 'RE: Welcome to our new Covered project!'
   children: 
   parent_id: 
-  message_id_header: <51abf4a84f114_7f603fc4c4c349d4716cd@multifyapp.test>
+  message_id_header: <51d0f4325eac4_96993fc1198349dc577c7@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.326826000 Z
-  updated_at: 2013-06-03 01:43:04.326826000 Z
+  created_at: 2013-07-01 03:14:58.389578000 Z
+  updated_at: 2013-07-01 03:14:58.389578000 Z
   stripped_plain: Yay! You go Alice. This tool looks radder than an 8-legged panda.
   body_html: ''
   stripped_html: ''
@@ -51,12 +51,12 @@ messages_003:
   subject: How are we going to build the body?
   children: 
   parent_id: 
-  message_id_header: <51abf4a86c51d_7f603fc4c4c349d4717ee@multifyapp.test>
+  message_id_header: <51d0f432619d6_96993fc1198349dc57849@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.446056000 Z
-  updated_at: 2013-06-03 01:43:04.446056000 Z
+  created_at: 2013-07-01 03:14:58.401464000 Z
+  updated_at: 2013-07-01 03:14:58.401464000 Z
   stripped_plain: I'm not 100% clear on the right way to go for this, but we should
     figure out if we're going to make the body out of carbon or buy a giant boat and
     cut it up or whatever.
@@ -75,12 +75,12 @@ messages_004:
   subject: layup body carbon
   children: 
   parent_id: 
-  message_id_header: <51abf4a883cca_7f603fc4c4c349d4718c3@multifyapp.test>
+  message_id_header: <51d0f432712c7_96993fc1198349dc579bb@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.543065000 Z
-  updated_at: 2013-06-03 01:43:04.543065000 Z
+  created_at: 2013-07-01 03:14:58.466243000 Z
+  updated_at: 2013-07-01 03:14:58.466243000 Z
   stripped_plain: ! 'Some stuff about how we have decided on a course of action for
     this body.
 
@@ -100,12 +100,12 @@ messages_005:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51abf4a885ba0_7f603fc4c4c349d471999@multifyapp.test>
+  message_id_header: <51d0f43272a1e_96993fc1198349dc580c7@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.550218000 Z
-  updated_at: 2013-06-03 01:43:04.550218000 Z
+  created_at: 2013-07-01 03:14:58.471318000 Z
+  updated_at: 2013-07-01 03:14:58.471318000 Z
   stripped_plain: ! 'Totally!
 
     I''m thinking we can do this on our first January workday. I''ll make sure we
@@ -123,12 +123,12 @@ messages_006:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51abf4a89340b_7f603fc4c4c349d47205c@multifyapp.test>
+  message_id_header: <51d0f4327bd74_96993fc1198349dc581a3@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.605556000 Z
-  updated_at: 2013-06-03 01:43:04.605556000 Z
+  created_at: 2013-07-01 03:14:58.509025000 Z
+  updated_at: 2013-07-01 03:14:58.509025000 Z
   stripped_plain: I'm so there! Also, I think I can probably pick up some of those
     supplies from a friend, who was trying to make a kayak.
   body_html: ''
@@ -146,12 +146,12 @@ messages_007:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51abf4a89f186_7f603fc4c4c349d472174@multifyapp.test>
+  message_id_header: <51d0f43284190_96993fc1198349dc582a9@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.654247000 Z
-  updated_at: 2013-06-03 01:43:04.654247000 Z
+  created_at: 2013-07-01 03:14:58.542925000 Z
+  updated_at: 2013-07-01 03:14:58.542925000 Z
   stripped_plain: ! 'So, I''ve got a question: we''re using two layers of carbon with
     a layer of fiberglass between them for the bottom body panel, but do we want to
     do the same for the top? It doesn''t need to be as strong, and less fiberglass
@@ -169,12 +169,12 @@ messages_008:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51abf4a8a0c9d_7f603fc4c4c349d472292@multifyapp.test>
+  message_id_header: <51d0f4328551b_96993fc1198349dc58363@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.660839000 Z
-  updated_at: 2013-06-03 01:43:04.660839000 Z
+  created_at: 2013-07-01 03:14:58.547569000 Z
+  updated_at: 2013-07-01 03:14:58.547569000 Z
   stripped_plain: I think I can get in touch with Yan's friend who built the carbon
     kayak.  He might know!
   body_html: ''
@@ -200,12 +200,12 @@ messages_009:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51abf4a8a2699_7f603fc4c4c349d4723fc@multifyapp.test>
+  message_id_header: <51d0f4328656d_96993fc1198349dc5849a@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.667411000 Z
-  updated_at: 2013-06-03 01:43:04.667411000 Z
+  created_at: 2013-07-01 03:14:58.551760000 Z
+  updated_at: 2013-07-01 03:14:58.551760000 Z
   stripped_plain: ! 'Hey all! This looks pretty neat. Lets see if I can help you out
     here...
 
@@ -232,12 +232,12 @@ messages_010:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51abf4a8a3ee6_7f603fc4c4c349d472472@multifyapp.test>
+  message_id_header: <51d0f432875a1_96993fc1198349dc585d8@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.673778000 Z
-  updated_at: 2013-06-03 01:43:04.673778000 Z
+  created_at: 2013-07-01 03:14:58.555800000 Z
+  updated_at: 2013-07-01 03:14:58.555800000 Z
   stripped_plain: Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass
     like you suggested, since we're under weight on the wheels anyway.
   body_html: ''
@@ -260,12 +260,12 @@ messages_011:
   subject: ! 'RE: layup body carbon'
   children: 
   parent_id: 10
-  message_id_header: <51abf4a8a62ae_7f603fc4c4c349d472512@multifyapp.test>
-  references_header: ! ' <51abf4a8a3ee6_7f603fc4c4c349d472472@multifyapp.test>'
+  message_id_header: <51d0f43288ac8_96993fc1198349dc586b7@coveredapp.test>
+  references_header: ! ' <51d0f432875a1_96993fc1198349dc585d8@coveredapp.test>'
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.682897000 Z
-  updated_at: 2013-06-03 01:43:04.682897000 Z
+  created_at: 2013-07-01 03:14:58.561413000 Z
+  updated_at: 2013-07-01 03:14:58.561413000 Z
   stripped_plain: This turned out super awesome! Yan and Bethany and I stayed til
     8pm doing the layup and fitting everything on the vacuum table. The pieces are
     curing in the oven now, but we got some photos of them before they went in. Bethany
@@ -283,12 +283,12 @@ messages_012:
   subject: Welcome everyone. Lets get started
   children: 
   parent_id: 
-  message_id_header: <51abf4a8cab35_7f603fc4c4c349d472628@multifyapp.test>
+  message_id_header: <51d0f432a11e1_96993fc1198349dc5877c@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.832589000 Z
-  updated_at: 2013-06-03 01:43:04.832589000 Z
+  created_at: 2013-07-01 03:14:58.661665000 Z
+  updated_at: 2013-07-01 03:14:58.661665000 Z
   stripped_plain: ''
   body_html: ''
   stripped_html: ''
@@ -302,12 +302,12 @@ messages_013:
   subject: ! 'RE: Welcome everyone. Lets get started'
   children: 
   parent_id: 
-  message_id_header: <51abf4a8cc24f_7f603fc4c4c349d47277c@multifyapp.test>
+  message_id_header: <51d0f432a21ed_96993fc1198349dc5887e@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-06-03 01:43:04.838271000 Z
-  updated_at: 2013-06-03 01:43:04.838271000 Z
+  created_at: 2013-07-01 03:14:58.665455000 Z
+  updated_at: 2013-07-01 03:14:58.665455000 Z
   stripped_plain: ''
   body_html: ''
   stripped_html: ''

@@ -21,17 +21,17 @@
         .invite-content
           - custom_invitation = capture do
             Hey there!
-            I'm inviting you to our #{project.name} project on Multify.
-            Multify is a super rad conversation platform, that I (your cohort/friend/lover) am using to make #{project.name} more awesome!
+            I'm inviting you to our #{project.name} project on Covered.
+            Covered is a super rad conversation platform, that I (your cohort/friend/lover) am using to make #{project.name} more awesome!
             If you're interested in hearing about how we (your accomplices/pals/sweethearts) are making #{project.name} happen, you should join up!
           = f.text_area :invite_message, class: 'custom-message', cols: nil, rows: nil, required: true, value: custom_invitation
           .static_invitation
             %p
-              Click here to join the conversation about #{project.name} on Multify!
+              Click here to join the conversation about #{project.name} on Covered!
             %p
               (imagine this is a link)
             %p
-              If you feel you've received this message in error, don't worry. Multify won't send you any more email about this project until you click the link.
+              If you feel you've received this message in error, don't worry. Covered won't send you any more email about this project until you click the link.
 
 
   .modal-footer

@@ -4,11 +4,11 @@ require 'spec_helper'
 describe "email" do
 
   before do
-    ActionMailer::Base.stub(:default_url_options).and_return(host: 'multifyapp.com')
+    ActionMailer::Base.stub(:default_url_options).and_return(host: 'coveredapp.com')
   end
 
   let(:project) { Project.find_by_name("UCSD Electric Racing") }
-  let(:sender){ User.find_by_email!('alice@ucsd.multifyapp.com') }
+  let(:sender){ User.find_by_email!('alice@ucsd.coveredapp.com') }
   let(:conversation){ project.conversations.where(subject: 'layup body carbon').first! }
 
   context "recieving from mailgun" do
@@ -84,7 +84,7 @@ describe "email" do
 
         expected_messages = mail_recipients.map do |mail_recipient|
           {
-            from: "alice@ucsd.multifyapp.com",
+            from: "alice@ucsd.coveredapp.com",
             to: [mail_recipient.email],
             subject: "✔ [ucsd-el] this is the subject",
           }

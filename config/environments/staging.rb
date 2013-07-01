@@ -1,10 +1,10 @@
-Multify::Application.configure do
+Covered::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # this is until we actually deploy something
   # disabled so email can maybe work
   # config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-  #   [u, p] == ['multify', ENV['MULTIFY_PASSWORD']]
+  #   [u, p] == ['covered', ENV['COVERED_PASSWORD']]
   # end
 
   # Code is not reloaded between requests
@@ -75,25 +75,25 @@ Multify::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
-    :user_name => 'postmaster@staging.multifyapp.com',
-    :password => Multify.config('mailgun')['password'],
-    :domain => 'staging.multifyapp.com',
+    :user_name => 'postmaster@staging.coveredapp.com',
+    :password => Covered.config('mailgun')['password'],
+    :domain => 'staging.coveredapp.com',
     :address => 'smtp.mailgun.org',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true
   }
 
-  config.action_controller.default_url_options = { :host => 'www-staging.multifyapp.com' }
+  config.action_controller.default_url_options = { :host => 'www-staging.coveredapp.com' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday
   config.unsubscribe_token_key = 'staging unsubscribe key so there'
 
   config.storage = {
-    s3_access_key_id:     ENV['MULTIFY_S3_ACCESS_KEY_ID'],
-    s3_secret_access_key: ENV['MULTIFY_S3_SECRET_ACCESS_KEY'],
-    bucket_name:          ENV['MULTIFY_S3_BUCKET_NAME'],
+    s3_access_key_id:     ENV['COVERED_S3_ACCESS_KEY_ID'],
+    s3_secret_access_key: ENV['COVERED_S3_SECRET_ACCESS_KEY'],
+    bucket_name:          ENV['COVERED_S3_BUCKET_NAME'],
   }
 
   config.redis = Heroku.redis_config

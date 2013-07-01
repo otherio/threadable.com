@@ -212,7 +212,7 @@ Devise.setup do |config|
     OpenSSL::SSL.send(:remove_const, :VERIFY_PEER) if defined? OpenSSL::SSL::VERIFY_PEER
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
   end
-  config.omniauth :clef, Multify.config('omniauth')['clef_id'], Multify.config('omniauth')['clef_secret']
+  config.omniauth :clef, Covered.config('omniauth')['clef_id'], Covered.config('omniauth')['clef_secret']
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

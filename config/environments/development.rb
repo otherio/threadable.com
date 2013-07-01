@@ -1,4 +1,4 @@
-Multify::Application.configure do
+Covered::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -16,7 +16,7 @@ Multify::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.smtp_settings = {
-    :domain => 'multifyapp.com',
+    :domain => 'coveredapp.com',
     :address => 'localhost',
     :port => 1025
   }

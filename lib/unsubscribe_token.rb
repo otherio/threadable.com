@@ -17,7 +17,7 @@ module UnsubscribeToken
     private
 
     def key
-      @key ||= Digest::SHA256.hexdigest(Multify::Application.config.unsubscribe_token_key)
+      @key ||= Digest::SHA256.hexdigest(Covered::Application.config.unsubscribe_token_key)
     end
 
     def compact string

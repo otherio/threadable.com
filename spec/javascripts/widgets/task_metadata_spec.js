@@ -23,7 +23,7 @@ describeWidget("task_metadata", function(){
 
 //     page = loadFixture('widgets/task_metadata', ENV);
 
-//     this.widget = Multify.Widget('task_metadata');
+//     this.widget = Covered.Widget('task_metadata');
 
 //   });
 
@@ -77,7 +77,7 @@ describeWidget("task_metadata", function(){
 //     describe("clicking the remove me link", function() {
 //       beforeEach(function() {
 //         page.current_task_doers.push(page.current_user);
-//         Multify.Widget('task_metadata').appendDoerIcon(page.current_user);
+//         Covered.Widget('task_metadata').appendDoerIcon(page.current_user);
 //         $('.toggle-doer-self').click();
 //       });
 
@@ -311,7 +311,7 @@ describeWidget("task_metadata", function(){
 //   //       describe("invite", function() {
 //   //         it("can open the invite modal, and closes the popover", function() {
 //   //           runs(function() {
-//   //             spyOn(Multify, 'trigger').andCallThrough()
+//   //             spyOn(Covered, 'trigger').andCallThrough()
 //   //             expect($('.task_metadata .popover').is(':visible')).toBe(true);
 //   //             $('.task_metadata .user-search').val('"Jared Grippe" <jared@foo.com>');
 //   //             $('.task_metadata .controls .invite-link').click();

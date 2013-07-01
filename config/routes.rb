@@ -1,4 +1,4 @@
-Multify::Application.routes.draw do
+Covered::Application.routes.draw do
 
   unless Rails.env.production?
     get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'

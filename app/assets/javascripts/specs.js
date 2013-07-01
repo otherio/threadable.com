@@ -21,7 +21,7 @@ $(window).load(function() {
   $('.page').css({'position':'relative'});
 
   setTimeout(function(){
-    Multify // raise error if it's not loaded
+    Covered // raise error if it's not loaded
 
     var jasmineEnv = jasmine.getEnv();
     jasmineEnv.updateInterval = 1000;
@@ -53,8 +53,8 @@ function loadFixture(name, env){
   var fixture = fixtures[name];
   if (!fixture) throw new Error('fixtures '+name+' not found.');
   $('.page').html(fixture);
-  Multify.initialize(env || {});
-  return Multify.page;
+  Covered.initialize(env || {});
+  return Covered.page;
 }
 
 function describeWidget(widget_name, block){

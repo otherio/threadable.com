@@ -2,9 +2,9 @@
 
 case ARGV.first
 when 'staging'
-  exec 'heroku run console --app multify-staging'
+  exec 'heroku run console --app covered-staging'
 when 'production'
-  exec 'heroku run console --app multify-production'
+  exec 'heroku run console --app covered-production'
 when 'local'
   exec 'rails c'
 else

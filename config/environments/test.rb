@@ -1,4 +1,4 @@
-Multify::Application.configure do
+Covered::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # The test environment is used exclusively to run your application's
@@ -34,7 +34,7 @@ Multify::Application.configure do
   }
 
   config.action_mailer.smtp_settings = {
-    :domain => 'multifyapp.test',
+    :domain => 'coveredapp.test',
   }
 
   # Raise exception on mass assignment protection for Active Record models

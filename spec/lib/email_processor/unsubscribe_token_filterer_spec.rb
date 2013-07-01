@@ -19,18 +19,18 @@ On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
 >
 > > Another test. Mail back plz?
 > > _____
-> > View on Multify:
-> > http://beta.multifyapp.com/multify-testing/conversations/testing
+> > View on Covered:
+> > http://beta.coveredapp.com/covered-testing/conversations/testing
 > > Unsubscribe:
 > >
-> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=
+> http://beta.coveredapp.com/covered-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=
 > >
 > >
 > _____
-> View on Multify:
-> http://beta.multifyapp.com/multify-testing/conversations/testing
+> View on Covered:
+> http://beta.coveredapp.com/covered-testing/conversations/testing
 > Unsubscribe:
-> http://beta.multifyapp.com/multify-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=
+> http://beta.coveredapp.com/covered-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=
 >
 TEXT
    end
@@ -50,18 +50,18 @@ On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
 >
 > > Another test. Mail back plz?
 > > _____
-> > View on Multify:
-> > http://beta.multifyapp.com/multify-testing/conversations/testing
+> > View on Covered:
+> > http://beta.coveredapp.com/covered-testing/conversations/testing
 > > Unsubscribe:
 > >
-> http://beta.multifyapp.com/multify-testing/unsubscribe
+> http://beta.coveredapp.com/covered-testing/unsubscribe
 > >
 > >
 > _____
-> View on Multify:
-> http://beta.multifyapp.com/multify-testing/conversations/testing
+> View on Covered:
+> http://beta.coveredapp.com/covered-testing/conversations/testing
 > Unsubscribe:
-> http://beta.multifyapp.com/multify-testing/unsubscribe
+> http://beta.coveredapp.com/covered-testing/unsubscribe
 >
 TEXT
    end

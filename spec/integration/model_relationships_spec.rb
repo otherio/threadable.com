@@ -23,7 +23,7 @@ describe 'model relationships' do
     project.description.should == 'Senior engineering electric race team!'
 
     project.conversations.to_set.should == Set[
-      conversation('Welcome to our new Multify project!'),
+      conversation('Welcome to our new Covered project!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
       conversation('install mirrors'),
@@ -45,12 +45,12 @@ describe 'model relationships' do
     ]
 
     project.members.to_set.should == Set[
-      member('alice@ucsd.multifyapp.com'),
-      member('tom@ucsd.multifyapp.com'),
-      member('yan@ucsd.multifyapp.com'),
-      member('bethany@ucsd.multifyapp.com'),
-      member('bob@ucsd.multifyapp.com'),
-      member('jonathan@ucsd.multifyapp.com'),
+      member('alice@ucsd.coveredapp.com'),
+      member('tom@ucsd.coveredapp.com'),
+      member('yan@ucsd.coveredapp.com'),
+      member('bethany@ucsd.coveredapp.com'),
+      member('bob@ucsd.coveredapp.com'),
+      member('jonathan@ucsd.coveredapp.com'),
     ]
 
     project.tasks.to_set.should == Set[
@@ -84,14 +84,14 @@ describe 'model relationships' do
     expect( task('get release agent')                 ).to     be_done
     expect( task('get carbon and fiberglass')         ).to     be_done
 
-    alice = member('alice@ucsd.multifyapp.com')
+    alice = member('alice@ucsd.coveredapp.com')
     alice.name.should == 'Alice Neilson'
-    alice.email.should == 'alice@ucsd.multifyapp.com'
+    alice.email.should == 'alice@ucsd.coveredapp.com'
     alice.project_memberships.count.should == 1
     alice.projects.should == [project]
     alice.messages.count.should == 3
     alice.conversations.to_set.should == Set[
-      conversation('Welcome to our new Multify project!'),
+      conversation('Welcome to our new Covered project!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
       conversation('install mirrors'),
@@ -103,7 +103,7 @@ describe 'model relationships' do
     ]
     alice.tasks.should == []
 
-    tom = member('tom@ucsd.multifyapp.com')
+    tom = member('tom@ucsd.coveredapp.com')
     tom.tasks.to_set.should == Set[
       task('layup body carbon'),
       task('get epoxy'),
@@ -112,7 +112,7 @@ describe 'model relationships' do
       task('trim body panels'),
     ]
 
-    conversation = alice.conversations.where(subject: 'Welcome to our new Multify project!').first
+    conversation = alice.conversations.where(subject: 'Welcome to our new Covered project!').first
     conversation.messages.count.should == 2
     conversation.should_not be_a_task
     conversation.project.should == project

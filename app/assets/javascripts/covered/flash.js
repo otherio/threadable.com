@@ -1,8 +1,8 @@
-Multify.Flash = function(node){
+Covered.Flash = function(node){
   this.node = $(node);
 }
 
-Object.extend(Multify.Flash.prototype, {
+Object.extend(Covered.Flash.prototype, {
 
   create: function(type, html){
     var classnames, title, alert;
@@ -40,7 +40,7 @@ Object.extend(Multify.Flash.prototype, {
   },
 
   createAndAppendFromText: function(type, text){
-    return this.append(this.create(type, Multify.Util.text2html(text)));
+    return this.append(this.create(type, Covered.Util.text2html(text)));
   },
 
   empty: function(){

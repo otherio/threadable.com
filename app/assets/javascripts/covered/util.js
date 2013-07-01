@@ -1,11 +1,11 @@
-Multify.Util = {};
+Covered.Util = {};
 
 
-Multify.Util.text2html = function(text){
+Covered.Util.text2html = function(text){
   return $('<span>').text(text);
 };
 
-Multify.Util.EventFunctions = {
+Covered.Util.EventFunctions = {
   bind: function(types, data, fn){
     $(this).bind(types, data, fn);
     return this;

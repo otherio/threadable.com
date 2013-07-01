@@ -6,7 +6,7 @@
 #     As a non-member
 #     I should be able to create an account
 #     Given I am not a member
-#      When I go to multify.com
+#      When I go to covered.com
 #       And I join with the following information:
 #         | name         | email             | password |
 #         | Jared Grippe | fake@email.addr   | flower   |
@@ -18,7 +18,7 @@
 #     I should be able to log in
 #     Given that I am "Jared"
 #       And I am not logged in
-#      When I go to multify.com
+#      When I go to covered.com
 #       And I login with the following information:
 #         | email             | password |
 #         | fake@email.addr   | flower   |

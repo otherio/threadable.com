@@ -4,7 +4,7 @@ describe ConversationMailer do
   describe "conversation_message" do
 
     before do
-      Rails.application.routes.default_url_options[:host] = 'multifyapp.com'
+      Rails.application.routes.default_url_options[:host] = 'coveredapp.com'
     end
 
     let(:project){ Project.find_by_name('UCSD Electric Racing') }
@@ -22,7 +22,7 @@ describe ConversationMailer do
 
     let(:message){
       conversation.messages.new(
-        user: project.members.find_by_email("jonathan@ucsd.multifyapp.com"),
+        user: project.members.find_by_email("jonathan@ucsd.coveredapp.com"),
         subject: conversation.subject,
         body_plain: 'This is the best project everz.',
         parent_message: parent_message,
@@ -30,7 +30,7 @@ describe ConversationMailer do
       )
     }
 
-    let(:recipient){ project.members.find_by_email("bethany@ucsd.multifyapp.com") }
+    let(:recipient){ project.members.find_by_email("bethany@ucsd.coveredapp.com") }
 
     subject(:mail) { ConversationMailer.conversation_message(message, recipient) }
 
@@ -51,7 +51,7 @@ describe ConversationMailer do
       mail_as_text.should =~ /References:/
       mail_as_text.should =~ /Message-ID:/
       mail_as_text.should include 'This is the best project everz.'
-      mail_as_text.should include "View on Multify: #{project_conversation_url(project, conversation)}"
+      mail_as_text.should include "View on Covered: #{project_conversation_url(project, conversation)}"
       mail_as_text =~ /\/#{Regexp.escape(project.slug)}\/unsubscribe\/(\S+)/
 
       unsubscribe_token = $1

@@ -1,9 +1,9 @@
 /*
- * new Multify.Page('.page');
+ * new Covered.Page('.page');
  */
 !function(){
 
-  Multify.Page = function(env){
+  Covered.Page = function(env){
     var page = this;
     page.env = env;
     page.name = env.page_name;
@@ -17,9 +17,9 @@
     page.bind('domready', onDomready);
   };
 
-  Object.extend(Multify.Page.prototype, Multify.Routes);
-  Object.extend(Multify.Page.prototype, Multify.Util.EventFunctions);
-  Object.extend(Multify.Page.prototype, {
+  Object.extend(Covered.Page.prototype, Covered.Routes);
+  Object.extend(Covered.Page.prototype, Covered.Util.EventFunctions);
+  Object.extend(Covered.Page.prototype, {
 
     $: function(selector){
       return this.node.find(selector);
@@ -49,7 +49,7 @@
   }
 
   function createInitialFlashMessages(page) {
-    page.flash = new Multify.Flash(page.$('> .flash_messages'));
+    page.flash = new Covered.Flash(page.$('> .flash_messages'));
 
     var i, messages, message, type, content;
 
@@ -65,33 +65,33 @@
 
 
   // function initializePage(){
-  //   var page = Multify.pages[Multify.pageName()];
+  //   var page = Covered.pages[Covered.pageName()];
   //   if (page) page.initialize();
   // }
 
 //   function initializeCurrentProject(){
 //     if (!ENV.currentProject) return;
-//     Multify.page.current_project = ENV.currentProject;
+//     Covered.page.current_project = ENV.currentProject;
 //   }
 
 //   function initializeCurrentConversation(){
 //     if (!ENV.currentConversation) return;
-//     Multify.page.current_conversation = ENV.currentConversation;
+//     Covered.page.current_conversation = ENV.currentConversation;
 //   }
 
 //   function initializeCurrentTask(){
 //     if (!ENV.currentTask) return;
-//     Multify.currentTask = ENV.currentTask;
+//     Covered.currentTask = ENV.currentTask;
 //   }
 
 //   function initializeCurrentTaskDoers(){
 //     if (!ENV.currentTaskDoers) return;
-//     Multify.page.current_task_doers = ENV.currentTaskDoers;
+//     Covered.page.current_task_doers = ENV.currentTaskDoers;
 //   }
 
 //   function initializeCurrentUser(){
 //     if (!ENV.currentUser) return;
-//     Multify.page.current_user = ENV.currentUser;
+//     Covered.page.current_user = ENV.currentUser;
 //   }
 
 }();

@@ -11,13 +11,13 @@ describe "page_navigation" do
       current_user: current_user,
       current_project: current_project,
       projects: projects,
-      multify_link_url: 'http://www.fark.com/',
+      covered_link_url: 'http://www.fark.com/',
     }
   end
 
   describe "the brand link" do
     subject{ html.css('a.brand').first[:href] }
-    it { should == locals[:multify_link_url] }
+    it { should == locals[:covered_link_url] }
   end
 
   context "when given a current_user" do
