@@ -1,7 +1,7 @@
 TestEnvironment::FixtureBuilder.new do
 
   # Alice signs up
-  create_user('Alice Neilson', 'alice@ucsd.coveredapp.com')
+  create_user('Alice Neilson', 'alice@ucsd.covered.io')
 
   # Alice creates a project
   @project = Project.create!(
@@ -11,11 +11,11 @@ TestEnvironment::FixtureBuilder.new do
   project.members << user('Alice Neilson')
 
   # Alice invites her project mates
-  invite_user 'Tom Canver',      'tom@ucsd.coveredapp.com'
-  invite_user 'Yan Hzu',         'yan@ucsd.coveredapp.com'
-  invite_user 'Bethany Pattern', 'bethany@ucsd.coveredapp.com'
-  invite_user 'Bob Cauchois',    'bob@ucsd.coveredapp.com'
-  invite_user 'Jonathan Spray',  'jonathan@ucsd.coveredapp.com'
+  invite_user 'Tom Canver',      'tom@ucsd.covered.io'
+  invite_user 'Yan Hzu',         'yan@ucsd.covered.io'
+  invite_user 'Bethany Pattern', 'bethany@ucsd.covered.io'
+  invite_user 'Bob Cauchois',    'bob@ucsd.covered.io'
+  invite_user 'Jonathan Spray',  'jonathan@ucsd.covered.io'
 
   # Alice's project mates all accept their invites
   accept_invite 'Tom Canver'
@@ -28,11 +28,11 @@ TestEnvironment::FixtureBuilder.new do
   unsubscribe_from_project_email 'Jonathan Spray'
 
   # each user sets their avatar via magic!
-  set_avatar 'alice@ucsd.coveredapp.com',   'alice.jpg'
-  set_avatar 'tom@ucsd.coveredapp.com',     'tom.jpg'
-  set_avatar 'bob@ucsd.coveredapp.com',     'bob.jpg'
-  set_avatar 'yan@ucsd.coveredapp.com',     'yan.jpg'
-  set_avatar 'bethany@ucsd.coveredapp.com', 'bethany.jpg'
+  set_avatar 'alice@ucsd.covered.io',   'alice.jpg'
+  set_avatar 'tom@ucsd.covered.io',     'tom.jpg'
+  set_avatar 'bob@ucsd.covered.io',     'bob.jpg'
+  set_avatar 'yan@ucsd.covered.io',     'yan.jpg'
+  set_avatar 'bethany@ucsd.covered.io', 'bethany.jpg'
 
   # Alice sends a welcome email
   send_message(

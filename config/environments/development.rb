@@ -16,7 +16,7 @@ Covered::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.smtp_settings = {
-    :domain => 'coveredapp.com',
+    :domain => 'covered.io',
     :address => 'localhost',
     :port => 1025
   }

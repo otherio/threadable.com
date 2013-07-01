@@ -20,17 +20,17 @@ On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
 > > Another test. Mail back plz?
 > > _____
 > > View on Covered:
-> > http://beta.coveredapp.com/covered-testing/conversations/testing
+> > http://beta.covered.io/covered-testing/conversations/testing
 > > Unsubscribe:
 > >
-> http://beta.coveredapp.com/covered-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=
+> http://beta.covered.io/covered-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=
 > >
 > >
 > _____
 > View on Covered:
-> http://beta.coveredapp.com/covered-testing/conversations/testing
+> http://beta.covered.io/covered-testing/conversations/testing
 > Unsubscribe:
-> http://beta.coveredapp.com/covered-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=
+> http://beta.covered.io/covered-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=
 >
 TEXT
    end
@@ -51,17 +51,17 @@ On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
 > > Another test. Mail back plz?
 > > _____
 > > View on Covered:
-> > http://beta.coveredapp.com/covered-testing/conversations/testing
+> > http://beta.covered.io/covered-testing/conversations/testing
 > > Unsubscribe:
 > >
-> http://beta.coveredapp.com/covered-testing/unsubscribe
+> http://beta.covered.io/covered-testing/unsubscribe
 > >
 > >
 > _____
 > View on Covered:
-> http://beta.coveredapp.com/covered-testing/conversations/testing
+> http://beta.covered.io/covered-testing/conversations/testing
 > Unsubscribe:
-> http://beta.coveredapp.com/covered-testing/unsubscribe
+> http://beta.covered.io/covered-testing/unsubscribe
 >
 TEXT
    end

@@ -28,6 +28,6 @@ Scenario: Account creation fails if email is already used
   Given I am not logged in
     And I go to the join page
     And I fill in "Name" with "Alice Neilson"
-    And I fill in "Email" with "alice@ucsd.coveredapp.com"
+    And I fill in "Email" with "alice@ucsd.covered.io"
     And I click "Sign up"
    Then I should see "Email has already been taken"

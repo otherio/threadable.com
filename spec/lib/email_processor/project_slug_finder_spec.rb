@@ -4,13 +4,13 @@ describe EmailProcessor::ProjectSlugFinder do
 
   context "when given an array of email addresses that looks like a project email" do
     context "for production" do
-      let(:to){ [Faker::Internet.email, 'make-a-duck@beta.coveredapp.com', Faker::Internet.email] }
+      let(:to){ [Faker::Internet.email, 'make-a-duck@beta.covered.io', Faker::Internet.email] }
       it "should return the slug for that project" do
         expect(EmailProcessor::ProjectSlugFinder.call(to)).to eq 'make-a-duck'
       end
     end
     context "for staging" do
-      let(:to){ [Faker::Internet.email, 'make-a-duck@www-staging.coveredapp.com', Faker::Internet.email] }
+      let(:to){ [Faker::Internet.email, 'make-a-duck@www-staging.covered.io', Faker::Internet.email] }
       it "should return the slug for that project" do
         expect(EmailProcessor::ProjectSlugFinder.call(to)).to eq 'make-a-duck'
       end

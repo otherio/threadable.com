@@ -75,16 +75,16 @@ Covered::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
-    :user_name => 'postmaster@coveredapp.com',
+    :user_name => 'postmaster@covered.io',
     :password => Covered.config('mailgun')['password'],
-    :domain => 'coveredapp.com',
+    :domain => 'covered.io',
     :address => 'smtp.mailgun.org',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true
   }
 
-  config.action_controller.default_url_options = { :host => 'beta.coveredapp.com' }
+  config.action_controller.default_url_options = { :host => 'beta.covered.io' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday

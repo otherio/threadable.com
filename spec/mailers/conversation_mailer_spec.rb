@@ -4,7 +4,7 @@ describe ConversationMailer do
   describe "conversation_message" do
 
     before do
-      Rails.application.routes.default_url_options[:host] = 'coveredapp.com'
+      Rails.application.routes.default_url_options[:host] = 'covered.io'
     end
 
     let(:project){ Project.find_by_name('UCSD Electric Racing') }
@@ -22,7 +22,7 @@ describe ConversationMailer do
 
     let(:message){
       conversation.messages.new(
-        user: project.members.find_by_email("jonathan@ucsd.coveredapp.com"),
+        user: project.members.find_by_email("jonathan@ucsd.covered.io"),
         subject: conversation.subject,
         body_plain: 'This is the best project everz.',
         parent_message: parent_message,
@@ -30,7 +30,7 @@ describe ConversationMailer do
       )
     }
 
-    let(:recipient){ project.members.find_by_email("bethany@ucsd.coveredapp.com") }
+    let(:recipient){ project.members.find_by_email("bethany@ucsd.covered.io") }
 
     subject(:mail) { ConversationMailer.conversation_message(message, recipient) }
 

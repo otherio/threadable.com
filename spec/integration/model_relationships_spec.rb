@@ -45,12 +45,12 @@ describe 'model relationships' do
     ]
 
     project.members.to_set.should == Set[
-      member('alice@ucsd.coveredapp.com'),
-      member('tom@ucsd.coveredapp.com'),
-      member('yan@ucsd.coveredapp.com'),
-      member('bethany@ucsd.coveredapp.com'),
-      member('bob@ucsd.coveredapp.com'),
-      member('jonathan@ucsd.coveredapp.com'),
+      member('alice@ucsd.covered.io'),
+      member('tom@ucsd.covered.io'),
+      member('yan@ucsd.covered.io'),
+      member('bethany@ucsd.covered.io'),
+      member('bob@ucsd.covered.io'),
+      member('jonathan@ucsd.covered.io'),
     ]
 
     project.tasks.to_set.should == Set[
@@ -84,9 +84,9 @@ describe 'model relationships' do
     expect( task('get release agent')                 ).to     be_done
     expect( task('get carbon and fiberglass')         ).to     be_done
 
-    alice = member('alice@ucsd.coveredapp.com')
+    alice = member('alice@ucsd.covered.io')
     alice.name.should == 'Alice Neilson'
-    alice.email.should == 'alice@ucsd.coveredapp.com'
+    alice.email.should == 'alice@ucsd.covered.io'
     alice.project_memberships.count.should == 1
     alice.projects.should == [project]
     alice.messages.count.should == 3
@@ -103,7 +103,7 @@ describe 'model relationships' do
     ]
     alice.tasks.should == []
 
-    tom = member('tom@ucsd.coveredapp.com')
+    tom = member('tom@ucsd.covered.io')
     tom.tasks.to_set.should == Set[
       task('layup body carbon'),
       task('get epoxy'),
