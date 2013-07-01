@@ -1,6 +1,6 @@
 dependencies:
   pre:
-    - gem install debugger-linecache -v '1.1.2' -- --with-ruby-include=$rvm_path/src/ruby-1.9.3-p429/ --install-dir vendor/bundle/ruby/1.9.1/gems/
+    - gem install debugger-linecache -v '1.1.2' --install-dir vendor/bundle/ruby/1.9.1/ -- --with-ruby-include=$rvm_path/src/ruby-1.9.3-p429/
 
 deployment:
   staging:
