@@ -1,14 +1,6 @@
-dependencies:
-  pre:
-    - gem install debugger-linecache -v '1.1.2' --install-dir vendor/bundle/ruby/1.9.1/ -- --with-ruby-include=$rvm_path/src/ruby-1.9.3-p429/
-
 deployment:
   staging:
     branch: master
     commands:
       - git push git@heroku.com:covered-staging.git $CIRCLE_SHA1:master
       - heroku run rake db:migrate --app covered-staging
-
-machine:
-  environment:
-    COVERED_FILEPICKER_API_KEY: AoHaLq8oRH9Dy9MVuTTvwz
