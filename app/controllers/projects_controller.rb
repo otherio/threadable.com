@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = current_user.projects.all
+    @projects = current_user.projects.to_a
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   # GET /make-a-tank
   # GET /make-a-tank.json
   def show
-    @project = current_user.projects.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params.require(:id))
 
     respond_to do |format|
       format.html { redirect_to project_conversations_url(@project) }
@@ -37,13 +37,13 @@ class ProjectsController < ApplicationController
 
   # GET /projects/edit
   def edit
-    @project = current_user.projects.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params.require(:id))
   end
 
   # POST /projects
   # POST /projects.json
   def create
-    @project = current_user.projects.new(params[:project])
+    @project = current_user.projects.new(project_params)
 
     respond_to do |format|
       if @project.save && @project.members << current_user
@@ -59,10 +59,10 @@ class ProjectsController < ApplicationController
   # PUT /projects/make-a-tank
   # PUT /projects/make-a-tank.json
   def update
-    @project = current_user.projects.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params.require(:id))
 
     respond_to do |format|
-      if @project.update_attributes(params[:project])
+      if @project.update_attributes(project_params)
         format.html { redirect_to root_path, notice: "#{@project.name} was successfully updated." }
         format.json { head :no_content }
       else
@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/make-like-a-tree-and/leave
   # PUT /projects/make-like-a-tree-and/leave.json
   def leave
-    @project = current_user.projects.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params.require(:id))
 
     respond_to do |format|
       if current_user.projects.delete(@project)
@@ -91,13 +91,19 @@ class ProjectsController < ApplicationController
   # DELETE /projects/make-a-tank
   # DELETE /projects/make-a-tank.json
   def destroy
-    @project = current_user.projects.find_by_slug!(params[:id])
+    @project = current_user.projects.find_by_slug!(params.require(:id))
     @project.destroy
 
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def project_params
+    params.require(:project).permit(:name, :slug, :subject_tag, :description)
   end
 
 end

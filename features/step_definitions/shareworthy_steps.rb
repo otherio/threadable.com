@@ -1,11 +1,10 @@
-require 'selenium-webdriver'
-require 'selenium/webdriver/common/error'
-
 Then /^the first message should( not)? be shareworthy$/ do |knot|
-  raise "this requires selenium" unless Capybara.current_driver == :selenium
   begin
-    all('.message').first.native['shareworthy'].should == (knot ? nil : "true")
-  rescue Selenium::WebDriver::Error::StaleElementReferenceError
-    retry
+    page.document.synchronize do
+      selector = knot ? '.message:not([shareworthy])' : '.message[shareworthy]'
+      raise Capybara::ElementNotFound unless first(selector) == first('.message')
+    end
+  rescue Capybara::ElementNotFound
+    raise "the first message does is #{'not ' if knot} shareworthy"
   end
 end

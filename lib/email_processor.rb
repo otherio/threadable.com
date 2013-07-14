@@ -47,11 +47,11 @@ class EmailProcessor < MethodObject.new(:incoming_email)
   end
 
   let :project do
-    Project.find_by_slug covered_project_slug
+    Project.where(slug: covered_project_slug).first
   end
 
   let :user do
-    project.members.find_by_email from
+    project.members.with_email(from).first
   end
 
   let :parent_message do

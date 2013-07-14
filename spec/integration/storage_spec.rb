@@ -12,7 +12,6 @@ describe 'storage' do
 
     file.reload
     expect(file.body).to eq gif.read
-
     get file.public_url
     expect(response.headers["Content-Type"]).to eq file.content_type
     expect(response.body.force_encoding(file.body.encoding)).to eq gif.read

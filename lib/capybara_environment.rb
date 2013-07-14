@@ -21,12 +21,14 @@ module CapybaraEnvironment
     end
 
     Capybara.ignore_hidden_elements = true
-    Capybara.default_driver         = ENV['COVERED_SELENIUM'] == 'true' ? :selenium : :webkit
-    Capybara.javascript_driver      = :selenium
+    Capybara.default_driver         = ENV['SELENIUM'] == 'true' ? :selenium : :webkit
+    Capybara.javascript_driver      = ENV['SELENIUM'] == 'true' ? :selenium : :webkit
     Capybara.default_selector       = :css
     Capybara.default_wait_time      = 5
     Capybara.server_port = Rails.configuration.action_mailer.default_url_options[:port]
     Capybara.server_host = Rails.configuration.action_mailer.default_url_options[:host]
+
+    WebMock.disable_net_connect!(:allow_localhost => true)
     super
   end
 

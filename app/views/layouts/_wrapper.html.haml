@@ -11,8 +11,8 @@
     = csrf_meta_tags
 
   %body
-    .page{name:page_name}
-      = render_widget :page_navigation, current_user: current_user, current_project: current_project
+    .page
+      = render_widget :page_navigation, current_user: current_user, current_project: @project
       .content
         = yield
       .flash_messages

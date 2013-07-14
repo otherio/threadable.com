@@ -1,7 +1,6 @@
 module TestEnvironment::Filepicker
 
   def mock_filepicker_upload_for(expected_file)
-
     url = "https://www.filepicker.io/api/file/#{SecureRandom.uuid.gsub('-','')}"
     filename = expected_file.respond_to?(:original_filename) ?
       expected_file.original_filename : File.basename(expected_file.path)
@@ -14,13 +13,17 @@ module TestEnvironment::Filepicker
       "filename" => filename,
     }
 
-    # I could not get Webmock or FakeWeb to work with HTTMultiParty
-    FilepickerUploader::Uploader.should_receive(:post) do |url, options| #.with(file).and_return(response)
-      expect(url).to eq("#{FilepickerUploader.uri.path}?#{FilepickerUploader.uri.query}")
-      given_file = options.try(:[], :query).try(:[], :fileUpload)
-      expect(expected_file.original_filename).to eq(given_file.original_filename)
-      response
+    expected_url = "#{FilepickerUploader.uri.path}?#{FilepickerUploader.uri.query}"
+    expected_options = {query: {fileUpload: duck_type(:original_filename)}}
+
+    verify_args = ->(url, options) do
+      expect(options[:query][:fileUpload].original_filename).to eq(filename)
     end
+
+    FilepickerUploader::Uploader.
+      should_receive(:post).
+      with(expected_url, expected_options, &verify_args).
+      and_return(response)
 
     expected_file.seek(0) if expected_file.respond_to? :seek
 

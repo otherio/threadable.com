@@ -155,7 +155,7 @@ Rails.widget('doers_popover', function(Widget){
     invite.success = function(event, user, status, xhr) {
       success(user);
     };
-    widget.page().trigger('show_invite_modal', invite);
+    this.page().trigger('show_invite_modal', invite);
   };
 
 

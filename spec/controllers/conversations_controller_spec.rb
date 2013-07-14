@@ -130,17 +130,26 @@ describe ConversationsController do
     end
 
     describe "with invalid params" do
+      def invalid_params
+        {
+          id: conversation.to_param,
+          conversation: {
+            subject: ""
+          }
+        }
+      end
+
       it "assigns the conversation as @conversation" do
         # Trigger the behavior that occurs when invalid params are submitted
         Conversation.any_instance.stub(:save).and_return(false)
-        put :update, valid_params.update(:id => conversation.to_param, :conversation => {  })
+        put :update, valid_params.update(invalid_params)
         assigns(:conversation).should eq(conversation)
       end
 
-      it "re-renders the 'edit' template" do
+      it "redirect to the project conversation page" do
         # Trigger the behavior that occurs when invalid params are submitted
         Conversation.any_instance.stub(:save).and_return(false)
-        put :update, valid_params.update(:id => conversation.to_param, :conversation => {  })
+        put :update, valid_params.update(invalid_params)
         response.should redirect_to project_conversation_url(project, conversation)
       end
     end

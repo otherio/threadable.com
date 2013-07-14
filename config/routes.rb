@@ -4,9 +4,10 @@ Covered::Application.routes.draw do
     get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'
   end
 
-  namespace :admin do
-    mount Resque::Server, :at => "/resque"
-  end
+
+  # namespace :admin do
+  #   mount Resque::Server, :at => "/resque"
+  # end
 
   get '/development' => 'development#index'
   get '/demoauth' => 'demo_auth#index', as: 'demo_auth'
@@ -24,11 +25,20 @@ Covered::Application.routes.draw do
     put "/users/confirm" => "confirmations#confirm", as: 'user_confirm'
   end
 
+
+  get   '/projects'      => 'projects#index'
+  get   '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
+  get   '/:id'           => 'projects#show',      :as => 'project'
+  put   '/:id'           => 'projects#update'
+  patch '/:id'           => 'projects#update'
+  get   '/:id/user_list' => 'projects#user_list', :as => 'user_list'
+
+
   resources :users do
   #   resources :tasks
   end
 
-  resources :projects, except: [:show, :update] do
+  resources :projects, except: [:show, :update, :patch] do
     member do
       put :leave
     end
@@ -52,13 +62,6 @@ Covered::Application.routes.draw do
   end
 
   resources :emails, :only => :create
-
-  get '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
-  get '/:id'           => 'projects#show',      :as => 'project'
-  put '/:id'           => 'projects#update'
-  get '/:id/user_list' => 'projects#user_list', :as => 'user_list'
-
-
 
   root :to => 'homepage#show'
 

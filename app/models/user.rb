@@ -14,30 +14,14 @@ class User < ActiveRecord::Base
     :trackable,
     :token_authenticatable,
     :omniauthable,
-    :omniauth_providers => [:clef],
     :authentication_keys => [:email]
-  )
-
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible(
-    :name,
-    :email,
-    :slug,
-    :password,
-    :password_confirmation,
-    :remember_me,
-    :tasks,
-    :avatar_url,
-    :provider,
-    :uid,
-    :email_addresses
   )
 
   has_many :email_addresses
   has_many :project_memberships
   has_many :projects, :through => :project_memberships
   has_many :messages
-  has_many :conversations, through: :projects, :uniq => true
+  has_many :conversations, ->{ uniq }, through: :projects
 
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
@@ -46,6 +30,7 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, if: :password_required?
   validates_length_of       :password, allow_blank: true, minimum: 6, maximum: 128
   validate                  :validate_email_is_unique
+  validates_associated      :email_addresses
 
   # make sure the user has an auth token
   before_save :ensure_authentication_token
@@ -53,32 +38,13 @@ class User < ActiveRecord::Base
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
   alias_method :to_param, :slug
 
-  default_scope includes(:email_addresses)
+  default_scope -> { includes(:email_addresses) }
 
-  scope :by_email, ->(address){
+  scope :with_email, ->(address){
     joins(:email_addresses).where(email_addresses: {address: address}).limit(1)
   }
 
   class << self
-    def find_by_email(email)
-      by_email(email).first
-    end
-
-    def find_by_email!(email)
-      by_email(email).first!
-    end
-
-    def find_or_initialize_by_email(attributes)
-      if attributes.is_a?(Hash)
-        email = attributes[:email]
-      else
-        email = attributes
-        attributes = {}
-      end
-      user = find_by_email(email) || new(email: email)
-      user.attributes = attributes
-      user
-    end
 
     def find_for_authentication(conditions={})
       condititons = conditions.symbolize_keys
@@ -145,7 +111,7 @@ class User < ActiveRecord::Base
 
   def validate_email_is_unique
     if email_addresses.any?(&:has_taken_error?)
-      errors.add(:email, I18n.t('activerecord.errors.messages.taken'))
+      errors.add(:email, I18n.t('errors.messages.taken'))
     end
   end
 
@@ -154,22 +120,9 @@ class User < ActiveRecord::Base
   end
 
   def self.send_reset_password_instructions(attributes={})
-    user = find_or_initialize_by_email(attributes)
+    attributes.permit!
+    user = with_email(attributes[:email]).first_or_initialize(attributes)
     user.send_reset_password_instructions if user.persisted?
-    user
-  end
-
-  def self.find_for_clef_oauth(auth, signed_in_resource=nil)
-    user = User.where(:provider => auth.provider, :uid => auth.uid.to_s).first
-    user or User.transaction do
-      user = User.create(
-        name:     auth.extra.raw_info.name,
-        provider: auth.provider,
-        uid:      auth.uid,
-        password: Devise.friendly_token[0,20]
-      )
-      user.email_addresses.create(address:auth.info.email)
-    end
     user
   end
 

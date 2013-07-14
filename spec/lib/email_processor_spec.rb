@@ -2,11 +2,15 @@ require 'spec_helper'
 
 describe EmailProcessor do
 
+  before do
+    FilepickerUploader::Uploader.should_not_receive(:perform_request)
+  end
+
   let!(:original_conversation_count){ Conversation.count }
   let!(:original_message_count){ Message.count }
   let!(:original_attachment_count){ Attachment.count }
-  let(:project){ Project.find_by_name("UCSD Electric Racing") }
-  let(:sender){ User.find_by_email!('alice@ucsd.covered.io') }
+  let(:project){ Project.where(name: "UCSD Electric Racing").first! }
+  let(:sender){ User.with_email('alice@ucsd.covered.io').first! }
   let(:in_reply_to_header){ nil }
   let(:recipient_param){ 'UCSD Electric Racing <ucsd-electric-racing@covered.io>' }
   let(:from_param){ 'Alice Neilson <alice@ucsd.covered.io>' }
@@ -59,12 +63,16 @@ describe EmailProcessor do
 
   # Shoulds
 
-  def self.it_should_create_a_message!
+  def self.it_should_upload_attachments!
     before do
       attachments.each do |attachment|
         mock_filepicker_upload_for(attachment)
       end
     end
+  end
+
+  def self.it_should_create_a_message!
+    it_should_upload_attachments!
 
     it "should create a message" do
       call!
@@ -96,11 +104,37 @@ describe EmailProcessor do
   def self.it_should_not_create_a_conversation!
     let(:expected_conversation_subject){ conversation.subject }
     let(:expected_conversation_creator){ conversation.creator }
+    # it_should_upload_attachments!
     it "should not create a conversation" do
       call!
       expect(Conversation.count).to eq original_conversation_count
     end
   end
+
+
+
+  def self.it_should_create_a_message_and_a_conversation!
+    context do
+      it_should_create_a_message!
+      it_should_create_a_conversation!
+    end
+  end
+
+  def self.it_should_create_a_message_but_not_a_conversation!
+    context do
+      it_should_create_a_message!
+      it_should_not_create_a_conversation!
+    end
+  end
+
+  def self.it_should_not_create_a_message_or_a_conversation!
+    context do
+      it_should_not_create_a_message!
+      it_should_not_create_a_conversation!
+    end
+  end
+
+
 
 
   # Validations
@@ -142,30 +176,36 @@ describe EmailProcessor do
   context "when the message is sent to a known project" do
     context "and the message is not a reply" do
       let(:parent_message){ nil }
-      it_should_create_a_message!
-      it_should_create_a_conversation!
+
+      it_should_create_a_message_and_a_conversation!
+
+      # it_should_create_a_message!
+      # it_should_create_a_conversation!
     end
 
     context "and the message is a reply" do
       context "to an unknown conversation" do
         in_reply_to_an_unknown_conversation!
-        it_should_create_a_message!
-        it_should_create_a_conversation!
+        it_should_create_a_message_and_a_conversation!
+        # it_should_create_a_message!
+        # it_should_create_a_conversation!
       end
 
       context "to an known conversation" do
         in_reply_to_a_known_conversation!
-        it_should_create_a_message!
-        it_should_not_create_a_conversation!
+        it_should_create_a_message_but_not_a_conversation!
+        # it_should_create_a_message!
+        # it_should_not_create_a_conversation!
       end
 
       context "to a message of another project" do
-        let(:other_project){ Project.find_by_name("Mars Exploration Rover") }
+        let(:other_project){ Project.where(name: "Mars Exploration Rover").first! }
         let(:parent_message){ other_project.conversations.first!.messages.first! }
         let(:expected_parent_message){ nil }
         let(:in_reply_to_header){ parent_message.message_id_header }
-        it_should_create_a_message!
-        it_should_create_a_conversation!
+        it_should_create_a_message_and_a_conversation!
+        # it_should_create_a_message!
+        # it_should_create_a_conversation!
       end
 
     end
@@ -173,8 +213,9 @@ describe EmailProcessor do
 
   context "when the message is sent to a unknown project" do
     let(:recipient_param){ 'Unknown Project <some-bullshit-email-address@covered.io>' }
-    it_should_not_create_a_message!
-    it_should_not_create_a_conversation!
+    it_should_not_create_a_message_or_a_conversation!
+    # it_should_not_create_a_message!
+    # it_should_not_create_a_conversation!
   end
 
   context "when the message is sent by an unknown user" do
@@ -183,13 +224,11 @@ describe EmailProcessor do
       let(:expected_sender){ nil }
       let(:expected_sender_email){ 'whoknows@example.com' }
       in_reply_to_a_known_conversation!
-      it_should_create_a_message!
-      it_should_not_create_a_conversation!
+      it_should_create_a_message_but_not_a_conversation!
     end
     context "in reply to a unknown conversation" do
       in_reply_to_an_unknown_conversation!
-      it_should_not_create_a_message!
-      it_should_not_create_a_conversation!
+      it_should_not_create_a_message_or_a_conversation!
     end
   end
 

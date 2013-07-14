@@ -2,18 +2,18 @@ require 'spec_helper'
 
 describe 'model relationships' do
 
-  let!(:project){ Project.find_by_name('UCSD Electric Racing') }
+  let!(:project){ Project.where(name: "UCSD Electric Racing").first! }
 
   def member(email)
-    project.members.find_by_email(email) or raise "unable to find member #{email}"
+    project.members.with_email(email).first!
   end
 
   def conversation(subject)
-    project.conversations.find_by_subject(subject) or raise "unable to find conversation #{subject}"
+    project.conversations.where(subject: subject).first!
   end
 
   def task(subject)
-    project.tasks.find_by_subject(subject) or raise "unable to find task #{subject}"
+    project.tasks.where(subject: subject).first!
   end
 
   it "should work" do

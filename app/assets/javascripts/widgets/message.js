@@ -1,7 +1,7 @@
 Rails.widget('message', function(Widget){
 
   Widget.initialize = function(page){
-    page.on('ajax:success', this.selector+' a.shareworthy, a.knowledge', success);
+    page.on('ajax:success', this.selector+' a.shareworthy, '+this.selector+' a.knowledge', success);
     page.on('click', this.selector+' .show-quoted-text', showQuotedText);
   };
 
@@ -10,7 +10,7 @@ Rails.widget('message', function(Widget){
   };
 
   function success(event, message){
-    html = $(message.as_html);
+    var html = $(message.as_html);
     $(this).widget(Widget).node.replaceWith(html);
     html.widget();
   }

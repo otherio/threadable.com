@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "project members", driver: :rack_test do
 
-  let(:project) { Project.find_by_name("UCSD Electric Racing", include: :members) }
+  let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
   let(:user)    { project.members.first }
 
   before do

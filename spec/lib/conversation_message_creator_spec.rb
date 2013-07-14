@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ConversationMessageCreator do
 
-  let(:project) { Project.find_by_name("UCSD Electric Racing", include: :members) }
+  let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
 
   let(:conversation) { project.conversations.first }
 

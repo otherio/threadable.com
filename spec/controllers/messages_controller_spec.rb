@@ -7,7 +7,7 @@ describe MessagesController do
   let!(:conversation) { FactoryGirl.create(:conversation, project: project) }
 
   let(:valid_attributes) do
-    from_factory = message.attributes.reject{|key, _| !Message.accessible_attributes.include?(key) }
+    from_factory = message.attributes.dup
     from_factory["body"] = from_factory.delete("body_html")
     from_factory
   end
@@ -107,12 +107,5 @@ describe MessagesController do
       end
     end
 
-    context "with disallowed keys" do
-      let(:message_params) { {body_plain: 'i am evil'} }
-      it "returns a 403" do
-        request!
-        response.status.should == 403
-      end
-    end
   end
 end

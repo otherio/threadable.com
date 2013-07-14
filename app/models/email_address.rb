@@ -12,9 +12,7 @@ class EmailAddress < ActiveRecord::Base
     allow_blank: true,
     if: :address_changed?
 
-  attr_accessible :user, :address, :primary
-
-  scope :primary, where(primary: true)
+  scope :primary, -> { where(primary: true) }
   scope :for_user, ->(user){
     where(user_id: user.is_a?(User) ? user.id : user)
   }
@@ -23,7 +21,7 @@ class EmailAddress < ActiveRecord::Base
   }
 
   def has_taken_error?
-    errors[:address].present? && errors[:address].include?(I18n.t('activerecord.errors.messages.taken'))
+    errors[:address].present? && errors[:address].include?(I18n.t('errors.messages.taken'))
   end
 
   private

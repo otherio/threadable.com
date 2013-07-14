@@ -63,35 +63,4 @@
     };
   }
 
-
-  // function initializePage(){
-  //   var page = Covered.pages[Covered.pageName()];
-  //   if (page) page.initialize();
-  // }
-
-//   function initializeCurrentProject(){
-//     if (!ENV.currentProject) return;
-//     Covered.page.current_project = ENV.currentProject;
-//   }
-
-//   function initializeCurrentConversation(){
-//     if (!ENV.currentConversation) return;
-//     Covered.page.current_conversation = ENV.currentConversation;
-//   }
-
-//   function initializeCurrentTask(){
-//     if (!ENV.currentTask) return;
-//     Covered.currentTask = ENV.currentTask;
-//   }
-
-//   function initializeCurrentTaskDoers(){
-//     if (!ENV.currentTaskDoers) return;
-//     Covered.page.current_task_doers = ENV.currentTaskDoers;
-//   }
-
-//   function initializeCurrentUser(){
-//     if (!ENV.currentUser) return;
-//     Covered.page.current_user = ENV.currentUser;
-//   }
-
 }();

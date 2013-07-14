@@ -1,6 +1,6 @@
 Then /^I should be able to edit the "(.*?)" project$/ do |project_name|
   visit path_to('the home page')
-  within find(%{table.projects tr:contains("#{project_name}")}) do
+  within find('table.projects tr', text: project_name) do
     find('.actions .dropdown-toggle').click
     click_on 'Edit'
   end
@@ -11,7 +11,7 @@ Then /^I should be able to edit the "(.*?)" project$/ do |project_name|
   click_on 'Save'
   page.should have_content('Notice! UCSD Steam Powered Racing was successfully updated.')
 
-  within find(%{table.projects tr:contains("UCSD Steam Powered Racing")}) do
+  within find('table.projects tr', text: "UCSD Steam Powered Racing") do
     find('.actions .dropdown-toggle').click
     click_on 'Edit'
   end
@@ -24,7 +24,7 @@ end
 
 Then /^I should be able to leave the "(.*?)" project$/ do |project_name|
   visit path_to('the home page')
-  within find(%{table.projects tr:contains("#{project_name}")}) do
+  within find('table.projects tr', text: project_name) do
     find('.actions .dropdown-toggle').click
     click_on 'Leave'
   end

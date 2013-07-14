@@ -1,5 +1,5 @@
 %h2 You're almost done! Now create a password to securely access your account.
-= simple_form_for(resource, :as => resource_name, :url => send(:"#{resource_name}_confirm_path")) do |form|
+= simple_form_for(resource, :as => resource_name, :url => send(:"#{resource_name}_confirm_path"), :method => 'PUT') do |form|
   = devise_error_messages!
   = form.input :password, :input_html => {:autofocus => true}
   = form.input :password_confirmation

@@ -1,6 +1,6 @@
 Covered.Flash = function(node){
   this.node = $(node);
-}
+};
 
 Object.extend(Covered.Flash.prototype, {
 

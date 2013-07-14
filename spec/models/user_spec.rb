@@ -13,17 +13,6 @@ describe User do
   it { should validate_presence_of :email }
   # it { should validate_confirmation_of :password } # this is only when confirmed
 
-  it { should allow_mass_assignment_of :name }
-  it { should allow_mass_assignment_of :email }
-  it { should allow_mass_assignment_of :slug }
-  it { should allow_mass_assignment_of :password }
-  it { should allow_mass_assignment_of :password_confirmation }
-  it { should allow_mass_assignment_of :remember_me }
-  it { should allow_mass_assignment_of :tasks }
-  it { should allow_mass_assignment_of :avatar_url }
-  it { should allow_mass_assignment_of :provider }
-  it { should allow_mass_assignment_of :uid }
-
   def build_user_with_password password
     FactoryGirl.build(:user, password: password, password_confirmation: password)
   end
@@ -63,13 +52,6 @@ describe User do
         password_confirmation: 'abcdefgh',
         confirmed_at: Time.now
       ).should be_valid
-    end
-  end
-
-  describe "#find_by_email" do
-    let(:user){ FactoryGirl.create(:user) }
-    it "should find the user by the given email through the email_addresses relation" do
-      User.find_by_email(user.email).should == user
     end
   end
 

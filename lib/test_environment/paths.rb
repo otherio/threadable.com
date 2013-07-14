@@ -9,15 +9,15 @@ module TestEnvironment::Paths
     when 'the sign in page'
       new_user_session_path
     when /^the project page for "(.+?)"$/
-      project_path Project.find_by_name($1)
+      project_path Project.where(name: $1)
     when /^the project conversations page for "(.+?)"$/
-      project_conversations_path Project.find_by_name($1)
+      project_conversations_path Project.where(name: $1).first!
     when /^the "(.+?)" conversation page$/
-      task = Task.find_by_subject($1)
+      task = Task.where(subject: $1).first!
       project_conversation_path task.project, task
     when /^the "(.+?)" conversation for the "(.+?)" project$/
       message_name, project_name = $1, $2
-      project = Project.find_by_name($2)
+      project = Project.where(name: $2).first!
       conversation = project.conversations.find_by_subject($1)
       project_conversation_path(project, conversation)
     else

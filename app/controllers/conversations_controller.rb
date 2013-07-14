@@ -7,7 +7,7 @@ class ConversationsController < ApplicationController
   # GET /conversations
   # GET /conversations.json
   def index
-    @conversations = project.conversations.includes(events: :user, messages: :user).all
+    @conversations = project.conversations.includes(events: :user, messages: :user).load
 
     respond_to do |format|
       format.html { render layout: 'application' }
@@ -43,7 +43,7 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    message_attributes = params.fetch(:message).dup
+    message_attributes = params.require(:message).permit(:subject, :body)
 
     conversation_attributes = {
       creator: current_user,
@@ -71,13 +71,15 @@ class ConversationsController < ApplicationController
   # PUT /conversations
   # PUT /conversations.json
   def update
-    if params[:conversation] && done = params[:conversation].delete(:done)
-      params[:conversation][:done_at] = done == "true" ? Time.now : nil
+    conversation_params = params.require(:conversation).permit(:subject, :done)
+
+    if conversation_params && done = conversation_params.delete(:done)
+      conversation_params[:done_at] = done == "true" ? Time.now : nil
     end
-    @conversation = project.conversations.find_by_slug!(params[:id])
+    @conversation = project.conversations.with_slug(params[:id]).first!
 
     respond_to do |format|
-      if @conversation.update_attributes(params[:conversation])
+      if @conversation.update_attributes(conversation_params)
         format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully updated.' }
         format.json { render json: @conversation, status: :created, location: project_conversation_url(project, @conversation) }
       else
@@ -108,7 +110,7 @@ class ConversationsController < ApplicationController
   # PUT /conversations/1/mute
   # PUT /conversations/1/mute.json
   def mute
-    @conversation = project.conversations.find_by_slug!(params[:id])
+    @conversation = project.conversations.with_slug(params[:id]).first!
 
     respond_to do |format|
       if @conversation.mute!
@@ -124,8 +126,7 @@ class ConversationsController < ApplicationController
   private
 
   def project
-    # @project ||= current_user.projects.find_by_slug!(params[:project_id])
-    @project ||= current_user.projects.where(slug: params[:project_id]).includes(:tasks).first
+    @project ||= current_user.projects.where(slug: params[:project_id]).includes(:tasks).first!
   end
 
 end

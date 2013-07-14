@@ -135,17 +135,23 @@ describe TasksController do
     end
 
     describe "with invalid params" do
+      def invalid_params
+        {
+          id: task.to_param,
+          task: {position: ""}
+        }
+      end
       it "assigns the task as @task" do
         # Trigger the behavior that occurs when invalid params are submitted
         Task.any_instance.stub(:save).and_return(false)
-        put :update, valid_params.update(:id => task.to_param, :task => {  })
+        put :update, valid_params.update(invalid_params)
         assigns(:task).should eq(task)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Task.any_instance.stub(:save).and_return(false)
-        put :update, valid_params.update(:id => task.to_param, :task => {  })
+        put :update, valid_params.update(invalid_params)
         response.should redirect_to project_conversation_url(project, task)
       end
     end

@@ -15,8 +15,11 @@ module TestEnvironment
   end
 
   def before_suite!
+    # this keeps minitest from running at_exit like a dick
+    test_storage = Rails.root.join('public/storage/test')
+    test_storage.rmtree if test_storage.exist?
     ::TestEnvironment::Fixtures.configure_fixture_builder!
-    WebMock.disable_net_connect!(:allow_localhost => true)
+    # WebMock.disable_net_connect!(:allow_localhost => true)
   end
 
   extend self

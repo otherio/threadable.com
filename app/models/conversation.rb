@@ -1,14 +1,13 @@
 class Conversation < ActiveRecord::Base
 
-  attr_accessible :project, :creator, :subject, :messages, :done
-
   belongs_to :project
   belongs_to :creator, class_name: 'User'
-  has_many :messages, order: 'messages.created_at ASC'
+  has_many :messages, -> { order 'messages.created_at ASC' }
   has_many :events
-  has_many :participants, through: :messages, source: :user, uniq: true, order: nil
+  has_many :participants, through: :messages, source: :user # TODO: uniq
 
-  default_scope order('conversations.updated_at DESC')
+  default_scope -> { order('conversations.updated_at DESC') }
+  scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
 
   acts_as_url :subject, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 

@@ -2,7 +2,7 @@
 
 export RAILS_ENV=test
 export RACK_ENV=test
-export COVERED_SELENIUM=false
+export SELENIUM=false
 
 bundle check || bundle install
 bundle exec rake --trace --verbose db:schema:load || exit 1

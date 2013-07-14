@@ -6,25 +6,7 @@ class Message < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :attachments
 
-  attr_accessible(
-    :subject,
-    :body_plain,
-    :body_html,
-    :stripped_plain,
-    :stripped_html,
-    :children,
-    :message_id_header,
-    :references_header,
-    :reply,
-    :from,
-    :user,
-    :parent_message,
-    :shareworthy,
-    :knowledge,
-    :attachments,
-  )
-
-  scope :by_created_at, order('messages.created_at DESC')
+  scope :by_created_at, ->{ order('messages.created_at DESC') }
 
   before_create :touch_conversation_update_at
   before_validation :add_references, :only => :create

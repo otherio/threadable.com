@@ -9,7 +9,7 @@ class Task::DoersController < ApplicationController
   # POST /conversations/1/add_doer
   # POST /conversations/1/add_doer.json
   def create
-    @task = project.tasks.find_by_slug!(params[:task_id])
+    @task = project.tasks.where(slug: params[:task_id]).first!
     @doer = project.members.where(id: params[:doer_id]).first!
     @task.doers << @doer
     Task::AddedDoerEvent.create!(
@@ -26,7 +26,7 @@ class Task::DoersController < ApplicationController
   end
 
   def destroy
-    @task = project.tasks.find_by_slug!(params[:task_id])
+    @task = project.tasks.where(slug: params[:task_id]).first!
     @doer = @task.doers.where(id: params[:id]).first!
     @task.doers.delete(@doer)
     Task::RemovedDoerEvent.create!(
@@ -45,6 +45,6 @@ class Task::DoersController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.where(slug: params[:project_id]).first!
   end
 end

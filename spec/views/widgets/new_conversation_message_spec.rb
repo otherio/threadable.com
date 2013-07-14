@@ -4,7 +4,7 @@ describe "new_conversation_message" do
 
   let(:from){ double(:from, name: 'FROM NAME') }
   let(:project){ double(:project) }
-  let(:message){ double(:message, body: 'MESSAGE BODY', subject: 'MESSAGE SUBJECT') }
+  let(:message){ double(:message, class: Message, body: 'MESSAGE BODY', subject: 'MESSAGE SUBJECT') }
   let(:messages){ double(:messages, build: message) }
   let(:conversation){ double(:conversation, project: project, messages: messages) }
 

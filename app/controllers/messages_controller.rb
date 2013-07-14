@@ -5,7 +5,23 @@ class MessagesController < ApplicationController
   # POST /:project_id/conversations/:conversation_id/messages
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create
-    message_attributes = params.fetch(:message).dup
+    message_attributes = params.require(:message).permit(
+      :conversation_id,
+      :user_id,
+      :body_plain,
+      :reply,
+      :from,
+      :subject,
+      :children,
+      :parent_id,
+      :message_id_header,
+      :references_header,
+      :shareworthy,
+      :knowledge,
+      :stripped_plain,
+      :stripped_html,
+      :body
+    )
 
     @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
 
@@ -16,18 +32,18 @@ class MessagesController < ApplicationController
     end
   end
 
+
   # PUT /:project_id/conversations/:conversation_id/messages/:id
   # PUT /:project_id/conversations/:conversation_id/messages/:id.json
   def update
-    @message = conversation.messages.find_by_id!(params[:id])
-    updated_message = params[:message]
+    @message = conversation.messages.find(params[:id])
+    message_params = params.require(:message).permit(:shareworthy, :knowledge)
 
-    unless updated_message.except(:shareworthy, :knowledge).empty?
-      render :status => :forbidden, :text => "Read-only message field"
-      return
-    end
-
-    unless @message.update_attributes(updated_message)
+    if @message.update_attributes(message_params)
+      json = @message.as_json
+      json[:as_html] = view_context.render_widget :message, @message
+      render json: json
+    else
       render json: @message.errors, status: :unprocessable_entity
     end
   end
@@ -35,11 +51,11 @@ class MessagesController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.where(slug: params[:project_id]).first!
   end
 
   def conversation
-    @conversation ||= project.conversations.find_by_slug!(params[:conversation_id])
+    @conversation ||= project.conversations.where(slug: params[:conversation_id]).first!
   end
 
 end

@@ -12,7 +12,7 @@ class Project::MembersController < ApplicationController
 
   # POST /projects/make-a-tank/members.json
   def create
-    member = User.find_by_id(params[:member][:id])
+    member = User.where(id: params[:member][:id]).first
     return head :not_found if member.blank?
     if project.members << member
       respond_with member, status: :created
@@ -23,14 +23,14 @@ class Project::MembersController < ApplicationController
 
   # DELETE /projects/make-a-tank/members.json
   def destroy
-    project.members.find_by_slug(params[:id]).destroy
+    project.members.where(slug: params[:id]).first!.destroy
     head :no_content
   end
 
   private
 
   def project
-    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.where(slug: params[:project_id]).first!
   end
 
   def members

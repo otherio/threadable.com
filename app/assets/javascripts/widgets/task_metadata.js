@@ -64,7 +64,7 @@ Rails.widget('task_metadata', function(Widget){
     request = $.ajax({url: url, data: data, type: method, dataType: 'json', context: this});
 
     request.success(function() {
-      Covered.page.flash.notice(member_name+' have been '+verbed+' as a doer.');
+      this.page().flash.notice(member_name+' have been '+verbed+' as a doer.');
       if (member_is_current_user) add ? this.node.addClass('im-a-doer') : this.node.removeClass('im-a-doer');
       if (add){
         appendDoerIcon.call(this, member);
@@ -75,7 +75,7 @@ Rails.widget('task_metadata', function(Widget){
     });
 
     request.fail(function(){
-      Covered.page.flash.error('Opps. Something went wrong trying to '+verb+' '+member_name+' as a doer.');
+      this.page().flash.error('Opps. Something went wrong trying to '+verb+' '+member_name+' as a doer.');
     });
 
 

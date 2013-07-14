@@ -8,10 +8,6 @@ describe EmailAddress do
   it { should validate_presence_of :user }
   it { should validate_uniqueness_of :address }
 
-  it { should allow_mass_assignment_of :user }
-  it { should allow_mass_assignment_of :address }
-  it { should allow_mass_assignment_of :primary }
-
   it "should validate that there is only one primary email address for any one user" do
     user = FactoryGirl.create(:user)
     user.email_addresses.first.should_not be_primary

@@ -1,5 +1,5 @@
 When /^I invite "(.*?)", "(.*?)" to the "(.*?)" project$/ do |name, email, project|
-  project = Project.find_by_name(project)
+  project = Project.where(name: project).first!
   visit project_path(project)
 
   within selector_for('the navbar') do

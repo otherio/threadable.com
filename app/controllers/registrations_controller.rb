@@ -2,7 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    build_resource
+    build_resource params.require(:user).permit(:name, :email)
 
     if resource.save
       expire_session_data_after_sign_in!

@@ -25,14 +25,9 @@ class EmailProcessor::ParentMessageFinder < MethodObject.new(:project_id, :heade
   end
 
   def find message_id_header
-    Message.all(
-      :joins => {
-        :conversation => :project,
-      },
-      :conditions => {
-        :projects => { :id => @project_id },
-        :messages => { :message_id_header => message_id_header },
-      },
+    Message.joins(:conversation => :project).where(
+      :projects => { :id => @project_id },
+      :messages => { :message_id_header => message_id_header },
     )
   end
 

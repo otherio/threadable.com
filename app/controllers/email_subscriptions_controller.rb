@@ -30,7 +30,7 @@ class EmailSubscriptionsController < ApplicationController
   private
 
   def project
-    @project ||= Project.find_by_slug!(params[:project_id])
+    @project ||= Project.where(slug: params[:project_id]).first!
   end
 
   def decrypt_token

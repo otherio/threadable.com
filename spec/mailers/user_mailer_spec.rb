@@ -2,7 +2,7 @@
 require "spec_helper"
 
 describe UserMailer do
-  let(:project){ Project.find_by_name('UCSD Electric Racing') }
+  let(:project){ Project.where(name: "UCSD Electric Racing").first! }
   let(:user){ project.members.first }
   let(:sender){ project.members.last }
   let(:invite_message){ "I can't feel my face ☃❄❅ it is cold" }

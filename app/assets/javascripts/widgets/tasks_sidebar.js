@@ -125,11 +125,11 @@ Rails.widget('tasks_sidebar', function(Widget){
   }
 
   function onTaskMouseEnter(event){
-    Covered.page.trigger('conversation_mouse_enter', $(this).data('conversation-id'));
+    this.page().trigger('conversation_mouse_enter', $(this).data('conversation-id'));
   }
 
   function onTaskMouseLeave(event){
-    Covered.page.trigger('conversation_mouse_leave', $(this).data('conversation-id'));
+    this.page().trigger('conversation_mouse_leave', $(this).data('conversation-id'));
   }
 
   function onSortupdate(event, data){
@@ -152,8 +152,8 @@ Rails.widget('tasks_sidebar', function(Widget){
 
     if (!$.isNumeric(new_position)) throw new Error('unable to determine new position');
 
-    url = Covered.page.project_task_path(
-      Covered.page.current_project.slug, task.data('slug')
+    url = this.page().project_task_path(
+      this.page().current_project.slug, task.data('slug')
     );
 
     $.ajax({

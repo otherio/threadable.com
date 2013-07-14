@@ -21,7 +21,8 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = project.tasks.build(params[:task].merge(creator: current_user))
+    task_params = params.require(:task).permit(:subject)
+    @task = project.tasks.build(task_params.merge(creator: current_user))
 
     respond_to do |format|
       if @task.save
@@ -49,15 +50,18 @@ class TasksController < ApplicationController
   # PUT /:project_id/tasks/:id
   # PUT /:project_id/tasks/:id.json
   def update
-    @task = project.tasks.find_by_slug!(params[:id])
+    params.require(:id)
+    task_params = params.require(:task).permit(:subject, :done, :done_at)
+
+    @task = project.tasks.where(slug: params[:id]).first!
     @task.current_user = current_user
 
-    if params[:task] && done = params[:task].delete(:done)
-      params[:task][:done_at] = done == "true" ? Time.now : nil
+    if task_params && done = task_params.delete(:done)
+      task_params[:done_at] = done == "true" ? Time.now : nil
     end
 
     respond_to do |format|
-      if @task.update_attributes(params[:task])
+      if @task.update_attributes(task_params)
         format.html { redirect_to project_conversation_url(project, @task), notice: 'Task was successfully updated.' }
         format.json { render json: @task, status: :ok }
       else
@@ -70,7 +74,7 @@ class TasksController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.where(slug: params[:project_id]).first!
   end
 
   def render_widget

@@ -1,11 +1,11 @@
 ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../lib/fix_minitest", __FILE__)
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'rails/widgets/rspec'
 require 'capybara_environment'
 require 'webmock/rspec'
-
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 

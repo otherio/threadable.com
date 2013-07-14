@@ -51,6 +51,14 @@ When /^I fill in "(.*?)" with "(.*?)"$/ do |field, value|
   fill_in field, with: value
 end
 
+When /^I scroll to the bottom of the page$/ do
+  page.execute_script <<-JS
+    window.scrollBy(0,10000);
+    var conversation_messages = $('.conversations_layout > .right')[0];
+    if (conversation_messages) conversation_messages.scrollTop = 9999;
+  JS
+end
+
 Then /^I should see "(.*?)"$/ do |content|
   page.should have_content content
 end

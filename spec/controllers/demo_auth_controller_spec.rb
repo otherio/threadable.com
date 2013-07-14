@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DemoAuthController do
 
-  let(:alice){ User.find_by_name("Alice Neilson")}
+  let(:alice){ User.where(name: "Alice Neilson").first! }
 
   describe "GET index" do
     it "should redirect to the project conversations page" do

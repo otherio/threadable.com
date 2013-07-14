@@ -1,7 +1,7 @@
 //= require modernizr
 
 yepnope({
-  load: <%= [asset_path('application.js')].to_json %>,
+  load: <%= [javascript_path('application')].to_json %>,
   callback: function(){
     Covered.initialize(ENV);
   }

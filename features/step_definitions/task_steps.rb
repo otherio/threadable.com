@@ -26,7 +26,6 @@ When /^I (add|remove) "(.*?)" as a doer for this task$/ do |_, doer_name|
   click_on 'add/remove others'
   within '.add-remove-doers .popover' do
     fill_in 'doers-typeahead', with: doer_name
-    # binding.pry
     within('.user-list'){ click_on doer_name }
   end
 end

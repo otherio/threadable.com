@@ -4,7 +4,7 @@ describe "Authentication" do
 
   describe "login/logout" do
 
-    let!(:user){ User.find_by_name!("Alice Neilson") }
+    let!(:user){ User.where(name: "Alice Neilson").first! }
 
     it "I can login and logout" do
       # visit '/users/sign_in'

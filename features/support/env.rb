@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../../lib/fix_minitest", __FILE__)
 require 'cucumber/rails'
 require 'capybara_environment'
 

@@ -4,7 +4,7 @@ Given /^I am not logged in$/ do
 end
 
 Given /^I am "(.*?)"$/ do |name|
-  @user = User.find_by_name!(name)
+  @user = User.where(name: name).first!
   login_as(@user)
 end
 

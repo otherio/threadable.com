@@ -23,7 +23,7 @@ describeWidget("invite_modal", function(){
   //     var spy = jasmine.createSpy('successFunction');
 
   //     runs(function() {
-  //       Covered.page.trigger('show_invite_modal', {name: 'some guy', email: 'foo@foo.foo', success: spy});
+  //       this.page().trigger('show_invite_modal', {name: 'some guy', email: 'foo@foo.foo', success: spy});
   //     });
 
   //     waits(300);

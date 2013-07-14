@@ -34,3 +34,5 @@ vendor/gems/rails-widgets
 public/storage
 
 .env
+
+.libpeerconnection.log

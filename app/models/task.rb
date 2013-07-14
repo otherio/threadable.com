@@ -1,19 +1,17 @@
 class Task < Conversation
-  attr_accessible :due_at, :done_at
-
   has_and_belongs_to_many :doers, class_name: 'User', join_table: 'task_doers'
 
   validates_presence_of :position
 
   default_scopes.clear
-  default_scope unscoped.order('conversations.position ASC')
+  default_scope -> { unscoped.order('conversations.position ASC') }
 
   acts_as_list :scope => :project
 
-  scope :done, where('conversations.done_at IS NOT NULL')
-  scope :not_done, where('conversations.done_at IS NULL')
-  scope :with_doers, includes(:doers).where('task_doers.id IS NOT NULL')
-  scope :without_doers, includes(:doers).where('task_doers.id IS NULL')
+  scope :done, ->{ where('conversations.done_at IS NOT NULL') }
+  scope :not_done, ->{ where('conversations.done_at IS NULL') }
+  scope :with_doers, ->{ joins(:doers).where('task_doers.id IS NOT NULL') }
+  scope :without_doers, ->{ where('task_doers.id IS NULL') }
 
   after_save :create_done_event!
   before_validation :set_position

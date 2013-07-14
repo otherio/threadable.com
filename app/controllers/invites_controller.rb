@@ -6,7 +6,10 @@ class InvitesController < ApplicationController
 
   # POST /projects/make-a-tank/invites.json
   def create
-    @user = User.find_or_initialize_by_email(params[:invite].slice(:email, :name))
+    email = params.require(:invite)[:email]
+    name  = params.require(:invite)[:name]
+
+    @user = User.with_email(email).first_or_initialize(name: name, email: email)
 
     if @user.new_record?
       @user.password_required = false
@@ -32,7 +35,7 @@ class InvitesController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.find_by_slug!(params[:project_id])
+    @project ||= current_user.projects.where(slug: params[:project_id]).first!
   end
 
 end

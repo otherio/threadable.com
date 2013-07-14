@@ -41,7 +41,7 @@ class TestEnvironment::FixtureBuilder
   end
 
   def set_avatar email, filename
-    User.find_by_email(email).update_attribute(:avatar_url, "/assets/fixtures/#{filename}")
+    User.with_email(email).first!.update_attribute(:avatar_url, "/assets/fixtures/#{filename}")
   end
 
   def accept_invite name

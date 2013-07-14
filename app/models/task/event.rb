@@ -1,7 +1,5 @@
 class Task::Event < Conversation::Event
 
-  attr_accessible :task
-
   def task_id
     conversation_id
   end

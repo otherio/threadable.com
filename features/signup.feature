@@ -15,7 +15,7 @@ Scenario: Signing up
   Then I should see "Password can't be blank"
   When I fill in the password fields with "ilovepizza" and "ilovepizz"
   When I click "Confirm Account"
-  Then I should see "Password doesn't match confirmation"
+  Then I should see "Password confirmation doesn't match Password"
   When I fill in the password fields with "ilovepizza"
    And I click "Confirm Account"
   Then I should see "Your account was successfully confirmed. You are now signed in."

@@ -25,6 +25,6 @@
                         %i.icon-pencil
                         Edit
                     %li
-                      = link_to leave_project_path(project), method: :put, confirm: 'Are you sure?' do
+                      = link_to leave_project_path(project), method: :put, data:{ confirm: 'Are you sure?' } do
                         %i.icon-trash
                         Leave

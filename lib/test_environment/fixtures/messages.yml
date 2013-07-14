@@ -10,12 +10,12 @@ messages_001:
   subject: Welcome to our new Covered project!
   children: 
   parent_id: 
-  message_id_header: <51d399ede08b1_9b723ff524833bd8482dd@coveredapp.test>
+  message_id_header: <51dcea1b4a96c_a1923ff3814606cc4722e@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:37.925297000 Z
-  updated_at: 2013-07-03 03:26:37.925297000 Z
+  created_at: 2013-07-10 04:59:07.309996000 Z
+  updated_at: 2013-07-10 04:59:07.309996000 Z
   stripped_plain: Hey all! I think we should try this way to organize our conversation
     and work for the car. Thanks for joining up!
   body_html: ''
@@ -27,15 +27,15 @@ messages_002:
   body_plain: Yay! You go Alice. This tool looks radder than an 8-legged panda.
   reply: true
   from: 
-  subject: ! 'RE: Welcome to our new Covered project!'
+  subject: 'RE: Welcome to our new Covered project!'
   children: 
   parent_id: 
-  message_id_header: <51d399ede3237_9b723ff524833bd848349@coveredapp.test>
+  message_id_header: <51dcea1b4d21a_a1923ff3814606cc47350@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:37.932651000 Z
-  updated_at: 2013-07-03 03:26:37.932651000 Z
+  created_at: 2013-07-10 04:59:07.317572000 Z
+  updated_at: 2013-07-10 04:59:07.317572000 Z
   stripped_plain: Yay! You go Alice. This tool looks radder than an 8-legged panda.
   body_html: ''
   stripped_html: ''
@@ -51,12 +51,12 @@ messages_003:
   subject: How are we going to build the body?
   children: 
   parent_id: 
-  message_id_header: <51d399ede6a25_9b723ff524833bd848443@coveredapp.test>
+  message_id_header: <51dcea1b5154c_a1923ff3814606cc474e1@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:37.946586000 Z
-  updated_at: 2013-07-03 03:26:37.946586000 Z
+  created_at: 2013-07-10 04:59:07.334562000 Z
+  updated_at: 2013-07-10 04:59:07.334562000 Z
   stripped_plain: I'm not 100% clear on the right way to go for this, but we should
     figure out if we're going to make the body out of carbon or buy a giant boat and
     cut it up or whatever.
@@ -66,50 +66,46 @@ messages_004:
   id: 4
   conversation_id: 3
   user_id: 1
-  body_plain: ! 'Some stuff about how we have decided on a course of action for this
-    body.
-
-    So, let''s do some carbon layup!'
+  body_plain: |-
+    Some stuff about how we have decided on a course of action for this body.
+    So, let's do some carbon layup!
   reply: false
   from: 
   subject: layup body carbon
   children: 
   parent_id: 
-  message_id_header: <51d399ee4b7f_9b723ff524833bd8485e5@coveredapp.test>
+  message_id_header: <51dcea1b7b975_a1923ff3814606cc475ef@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.022293000 Z
-  updated_at: 2013-07-03 03:26:38.022293000 Z
-  stripped_plain: ! 'Some stuff about how we have decided on a course of action for
-    this body.
-
-    So, let''s do some carbon layup!'
+  created_at: 2013-07-10 04:59:07.508135000 Z
+  updated_at: 2013-07-10 04:59:07.508135000 Z
+  stripped_plain: |-
+    Some stuff about how we have decided on a course of action for this body.
+    So, let's do some carbon layup!
   body_html: ''
   stripped_html: ''
 messages_005:
   id: 5
   conversation_id: 3
   user_id: 2
-  body_plain: ! 'Totally!
-
-    I''m thinking we can do this on our first January workday. I''ll make sure we
-    get the supplies in time'
+  body_plain: |-
+    Totally!
+    I'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time
   reply: true
   from: 
-  subject: ! 'RE: layup body carbon'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51d399ee6656_9b723ff524833bd848654@coveredapp.test>
+  message_id_header: <51dcea1b7d804_a1923ff3814606cc476ae@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.028379000 Z
-  updated_at: 2013-07-03 03:26:38.028379000 Z
-  stripped_plain: ! 'Totally!
-
-    I''m thinking we can do this on our first January workday. I''ll make sure we
-    get the supplies in time'
+  created_at: 2013-07-10 04:59:07.515416000 Z
+  updated_at: 2013-07-10 04:59:07.515416000 Z
+  stripped_plain: |-
+    Totally!
+    I'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time
   body_html: ''
   stripped_html: ''
 messages_006:
@@ -120,15 +116,15 @@ messages_006:
     from a friend, who was trying to make a kayak.
   reply: true
   from: 
-  subject: ! 'RE: layup body carbon'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51d399ee21688_9b723ff524833bd848762@coveredapp.test>
+  message_id_header: <51dcea1b8a6bf_a1923ff3814606cc477d5@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.139069000 Z
-  updated_at: 2013-07-03 03:26:38.139069000 Z
+  created_at: 2013-07-10 04:59:07.568157000 Z
+  updated_at: 2013-07-10 04:59:07.568157000 Z
   stripped_plain: I'm so there! Also, I think I can probably pick up some of those
     supplies from a friend, who was trying to make a kayak.
   body_html: ''
@@ -137,22 +133,22 @@ messages_007:
   id: 7
   conversation_id: 3
   user_id: 2
-  body_plain: ! 'So, I''ve got a question: we''re using two layers of carbon with
-    a layer of fiberglass between them for the bottom body panel, but do we want to
+  body_plain: 'So, I''ve got a question: we''re using two layers of carbon with a
+    layer of fiberglass between them for the bottom body panel, but do we want to
     do the same for the top? It doesn''t need to be as strong, and less fiberglass
     would be lighter, but will it crack?'
   reply: true
   from: 
-  subject: ! 'RE: layup body carbon'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51d399ee2bde6_9b723ff524833bd8488a1@coveredapp.test>
+  message_id_header: <51dcea1b974de_a1923ff3814606cc47846@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.182015000 Z
-  updated_at: 2013-07-03 03:26:38.182015000 Z
-  stripped_plain: ! 'So, I''ve got a question: we''re using two layers of carbon with
+  created_at: 2013-07-10 04:59:07.620914000 Z
+  updated_at: 2013-07-10 04:59:07.620914000 Z
+  stripped_plain: 'So, I''ve got a question: we''re using two layers of carbon with
     a layer of fiberglass between them for the bottom body panel, but do we want to
     do the same for the top? It doesn''t need to be as strong, and less fiberglass
     would be lighter, but will it crack?'
@@ -166,15 +162,15 @@ messages_008:
     might know!
   reply: true
   from: 
-  subject: ! 'RE: layup body carbon'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51d399ee2d3c6_9b723ff524833bd84898b@coveredapp.test>
+  message_id_header: <51dcea1b98ad5_a1923ff3814606cc479f@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.187302000 Z
-  updated_at: 2013-07-03 03:26:38.187302000 Z
+  created_at: 2013-07-10 04:59:07.626438000 Z
+  updated_at: 2013-07-10 04:59:07.626438000 Z
   stripped_plain: I think I can get in touch with Yan's friend who built the carbon
     kayak.  He might know!
   body_html: ''
@@ -183,42 +179,27 @@ messages_009:
   id: 9
   conversation_id: 3
   user_id: 
-  body_plain: ! 'Hey all! This looks pretty neat. Lets see if I can help you out here...
-
-    So on the kayak, we use two layers of carbon plus some batting on the bottom,
-    and carbon/glass on the sides. Looking at the drawings on your blog, it seems
-    like the top of the bodywork has a pretty wide unsupported area. In that case,
-    I''d go for the carbon/glass, even though it''s a little heavier. You could also
-    use single layers of carbon and back it with some rod or some aluminum to reduce
-    flexing and make it less likely to crack.
-
+  body_plain: |-
+    Hey all! This looks pretty neat. Lets see if I can help you out here...
+    So on the kayak, we use two layers of carbon plus some batting on the bottom, and carbon/glass on the sides. Looking at the drawings on your blog, it seems like the top of the bodywork has a pretty wide unsupported area. In that case, I'd go for the carbon/glass, even though it's a little heavier. You could also use single layers of carbon and back it with some rod or some aluminum to reduce flexing and make it less likely to crack.
     Good luck!
-
-    Andy'
+    Andy
   reply: true
-  from: ! '"Andy Lee Issacson" <andy@example.com>'
-  subject: ! 'RE: layup body carbon'
+  from: '"Andy Lee Issacson" <andy@example.com>'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51d399ee2ea00_9b723ff524833bd8490f@coveredapp.test>
+  message_id_header: <51dcea1b9a1f1_a1923ff3814606cc480e@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.192802000 Z
-  updated_at: 2013-07-03 03:26:38.192802000 Z
-  stripped_plain: ! 'Hey all! This looks pretty neat. Lets see if I can help you out
-    here...
-
-    So on the kayak, we use two layers of carbon plus some batting on the bottom,
-    and carbon/glass on the sides. Looking at the drawings on your blog, it seems
-    like the top of the bodywork has a pretty wide unsupported area. In that case,
-    I''d go for the carbon/glass, even though it''s a little heavier. You could also
-    use single layers of carbon and back it with some rod or some aluminum to reduce
-    flexing and make it less likely to crack.
-
+  created_at: 2013-07-10 04:59:07.632612000 Z
+  updated_at: 2013-07-10 04:59:07.632612000 Z
+  stripped_plain: |-
+    Hey all! This looks pretty neat. Lets see if I can help you out here...
+    So on the kayak, we use two layers of carbon plus some batting on the bottom, and carbon/glass on the sides. Looking at the drawings on your blog, it seems like the top of the bodywork has a pretty wide unsupported area. In that case, I'd go for the carbon/glass, even though it's a little heavier. You could also use single layers of carbon and back it with some rod or some aluminum to reduce flexing and make it less likely to crack.
     Good luck!
-
-    Andy'
+    Andy
   body_html: ''
   stripped_html: ''
 messages_010:
@@ -229,15 +210,15 @@ messages_010:
     like you suggested, since we're under weight on the wheels anyway.
   reply: true
   from: 
-  subject: ! 'RE: layup body carbon'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 
-  message_id_header: <51d399ee2fed3_9b723ff524833bd8491aa@coveredapp.test>
+  message_id_header: <51dcea1b9bcd6_a1923ff3814606cc481c3@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.198217000 Z
-  updated_at: 2013-07-03 03:26:38.198217000 Z
+  created_at: 2013-07-10 04:59:07.639439000 Z
+  updated_at: 2013-07-10 04:59:07.639439000 Z
   stripped_plain: Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass
     like you suggested, since we're under weight on the wheels anyway.
   body_html: ''
@@ -246,26 +227,22 @@ messages_011:
   id: 11
   conversation_id: 3
   user_id: 2
-  body_plain: ! 'This turned out super awesome! Yan and Bethany and I stayed til 8pm
-    doing the layup and fitting everything on the vacuum table. The pieces are curing
-    in the oven now, but we got some photos of them before they went in. Bethany got
-    epoxy everywhere! It was pretty funny.
+  body_plain: |-
+    This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.
 
-
-    > Wow, thanks Andy! Super helpful. I think we''ll just go for the carbon/glass
-
-    > like you suggested, since we''re under weight on the wheels anyway.'
+    > Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass
+    > like you suggested, since we're under weight on the wheels anyway.
   reply: true
   from: 
-  subject: ! 'RE: layup body carbon'
+  subject: 'RE: layup body carbon'
   children: 
   parent_id: 10
-  message_id_header: <51d399ee31999_9b723ff524833bd8492fe@coveredapp.test>
-  references_header: ! ' <51d399ee2fed3_9b723ff524833bd8491aa@coveredapp.test>'
+  message_id_header: <51dcea1b9dd13_a1923ff3814606cc482ab@coveredapp.test>
+  references_header: ' <51dcea1b9bcd6_a1923ff3814606cc481c3@coveredapp.test>'
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.205119000 Z
-  updated_at: 2013-07-03 03:26:38.205119000 Z
+  created_at: 2013-07-10 04:59:07.648719000 Z
+  updated_at: 2013-07-10 04:59:07.648719000 Z
   stripped_plain: This turned out super awesome! Yan and Bethany and I stayed til
     8pm doing the layup and fitting everything on the vacuum table. The pieces are
     curing in the oven now, but we got some photos of them before they went in. Bethany
@@ -283,12 +260,12 @@ messages_012:
   subject: Welcome everyone. Lets get started
   children: 
   parent_id: 
-  message_id_header: <51d399ee4fe99_9b723ff524833bd849393@coveredapp.test>
+  message_id_header: <51dcea1bd007a_a1923ff3814606cc4832c@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.329350000 Z
-  updated_at: 2013-07-03 03:26:38.329350000 Z
+  created_at: 2013-07-10 04:59:07.853154000 Z
+  updated_at: 2013-07-10 04:59:07.853154000 Z
   stripped_plain: ''
   body_html: ''
   stripped_html: ''
@@ -299,15 +276,15 @@ messages_013:
   body_plain: Thanks John. I'll get right on that.
   reply: true
   from: 
-  subject: ! 'RE: Welcome everyone. Lets get started'
+  subject: 'RE: Welcome everyone. Lets get started'
   children: 
   parent_id: 
-  message_id_header: <51d399ee5123b_9b723ff524833bd849479@coveredapp.test>
+  message_id_header: <51dcea1bd1316_a1923ff3814606cc484c4@coveredapp.test>
   references_header: 
   shareworthy: false
   knowledge: false
-  created_at: 2013-07-03 03:26:38.334299000 Z
-  updated_at: 2013-07-03 03:26:38.334299000 Z
+  created_at: 2013-07-10 04:59:07.858141000 Z
+  updated_at: 2013-07-10 04:59:07.858141000 Z
   stripped_plain: ''
   body_html: ''
   stripped_html: ''

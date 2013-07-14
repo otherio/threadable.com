@@ -1,5 +1,7 @@
 When /^I show the quoted text for the message containing "(.*?)"$/ do |contents|
-  find(%(.message:contains(#{contents.inspect}) .show-quoted-text)).click
+  within find('.message', text: contents) do
+    find('.show-quoted-text').click
+  end
 end
 
 When /^I send the message "(.*?)"$/ do |value|

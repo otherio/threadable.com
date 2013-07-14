@@ -1,15 +1,15 @@
 //= require jquery
 //= require jquery_ujs
+//= require_self
 //= require rails_widgets
 //= require jquery.rails_widgets
 //= require jquery.growing-inputs
 //= require jquery.sortable
 //= require timeago
 //= require bootstrap
-//= require underscore
 //= require bootstrap-wysihtml5
 
-//= require_self
+
 //= require covered
 //= require_tree ./behaviors
 //= require_tree ./widgets
@@ -24,7 +24,7 @@ Object.extend = function(object, extension){
 // i can't believe this isn't already here.
 // thank you, stackoverflow.
 RegExp.quote = function(str) {
-  return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+  return str.toString().replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
 };
 
 

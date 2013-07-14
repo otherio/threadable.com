@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe EmailSubscriptionsController do
 
-  let(:project) { Project.find_by_name("UCSD Electric Racing", include: :members) }
-  let(:user)    { project.members.first }
+  let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
+  let(:user)    { project.members.first! }
   let(:token)   { UnsubscribeToken.encrypt(project.id, user.id) }
-  let(:project_membership){ user.project_memberships.where(project_id: project.id).first }
+  let(:project_membership){ user.project_memberships.where(project_id: project.id).first! }
 
   describe "GET unsubscribe" do
     it "renders the page with the unsubscribe js" do
