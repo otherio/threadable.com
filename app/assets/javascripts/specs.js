@@ -21,27 +21,23 @@ $(window).load(function() {
   $('.page').css({'position':'relative'});
 
   setTimeout(function(){
-    Covered // raise error if it's not loaded
+    if (!window.jasmine) throw new Error('jasmine failed to load');
+    if (!window.Covered) throw new Error('Covered failed to load');
 
     var jasmineEnv = jasmine.getEnv();
     jasmineEnv.updateInterval = 1000;
 
-    var htmlReporter = new jasmine.HtmlReporter();
+    jasmineEnv.htmlReporter = new jasmine.HtmlReporter();
+    jasmineEnv.jsReporter = new jasmine.JSReporter();
 
-    jasmineEnv.addReporter(htmlReporter);
-    jasmineEnv.addReporter(new jasmine.JSReporter);
+    jasmineEnv.addReporter(jasmineEnv.htmlReporter);
+    jasmineEnv.addReporter(jasmineEnv.jsReporter);
     // this is not the best.
     //jasmineEnv.addReporter(new jasmine.ConsoleReporter);
 
     jasmineEnv.specFilter = function(spec) {
-      return htmlReporter.specFilter(spec);
+      return jasmineEnv.htmlReporter.specFilter(spec);
     };
-
-    var finishCallback = jasmine.getEnv().currentRunner().finishCallback;
-    jasmine.getEnv().currentRunner().finishCallback = function(){
-      finishCallback.apply(this, arguments);
-      jasmine.results = jasmine.getJSReport();
-    }
 
     jasmineEnv.execute();
 

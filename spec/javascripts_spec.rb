@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'javascript specs', type: :request do
 
-  pending "should all pass" do
+  it "should all pass" do
     visit javascript_tests_path
     Timeout::timeout(20) do
       until results.present?
@@ -23,7 +23,6 @@ describe 'javascript specs', type: :request do
   end
 
   def specs_for(suite)
-    return [] if suite.nil?
     specs = suite["specs"] || []
     suite["suites"].each do |suite|
       specs += specs_for(suite)
