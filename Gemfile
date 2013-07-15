@@ -10,8 +10,7 @@ gem 'unicorn'
 gem 'redis'
 gem 'pg'
 gem 'honeybadger'
-gem 'resque', github: 'resque/resque'
-# gem 'resque-web', git: 'https://github.com/resque/resque-web.git'
+gem 'resque'
 
 gem 'stringex'  # for url slugs
 gem 'devise' #, github: 'plataformatec/devise', branch: 'rails4'    # authentication

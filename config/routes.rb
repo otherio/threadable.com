@@ -4,10 +4,10 @@ Covered::Application.routes.draw do
     get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'
   end
 
-
-  # namespace :admin do
-  #   mount Resque::Server, :at => "/resque"
-  # end
+  namespace :admin do
+    require 'resque/server'
+    mount Resque::Server, :at => "/resque"
+  end
 
   get '/development' => 'development#index'
   get '/demoauth' => 'demo_auth#index', as: 'demo_auth'
