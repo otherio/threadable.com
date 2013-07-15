@@ -41,11 +41,6 @@ gem 'uglifier', '>= 1.0.3'
 
 gem 'rails_12factor'
 
-group :development do
-  gem 'mailcatcher'
-  gem 'foreman'
-end
-
 group :development, :test do
   gem 'debugger'
   gem 'rspec-rails'
