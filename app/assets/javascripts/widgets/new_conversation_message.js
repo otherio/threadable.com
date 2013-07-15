@@ -3,6 +3,8 @@ Rails.widget('new_conversation_message', function(Widget){
   Widget.initialize = function(page){
     page.on('click',        Widget.selector+' .attach-files', attachFiles);
     page.on('click',        Widget.selector+' .attachment-preview .remove', removeAttachment);
+    page.on('ajax:before',  Widget.selector+' form', beforeSubmit);
+    page.on('submit',       Widget.selector+' form', beforeSubmit);
     page.on('ajax:success', Widget.selector+' form', resetForm);
   };
 
@@ -10,13 +12,18 @@ Rails.widget('new_conversation_message', function(Widget){
 
   this.initialize = function(){
     ATTACHMENT_PREVIEW_TEMPLATE = this.node.find('.hidden.attachment-preview').remove().removeClass('hidden');
-    this.node.find('input[type=submit]').attr('disabled', true);
-    var textarea = this.node.find('textarea');
-    textarea.trigger('keyup');
+
+    this.submit_button = this.node.find('input.btn[type=submit]').attr('disabled', true);
+    this.subject_input = this.node.find('.subject_field :input');
+    this.message_body_textarea = this.node.find('textarea').trigger('keyup');
+
+    this.subject_input.on('keyup change', onChange.bind(this));
+    this.message_body_textarea.on('keyup change', onChange.bind(this));
+
     if (this.data.auto_show_right_text){
-      setupNewMessageInput(textarea);
+      setupNewMessageInput.apply(this);
     }else{
-      textarea.click(function() { setupNewMessageInput(textarea); });
+      textarea.click(setupNewMessageInput.bind(this));
     }
   };
 
@@ -51,13 +58,29 @@ Rails.widget('new_conversation_message', function(Widget){
     this.node.find('form .attachments').append(nodes);
   };
 
+  this.isValid = function() {
+    return (
+      !this.message_body.editor.isEmpty() &&
+      !!this.subject_input.val()
+    );
+  };
+
   // private
 
-  function setupNewMessageInput(target){
-    var $target = $(target);
-    $target.css('height', '200px');
-    $target.wysihtml5({'image': false});
-    $target.closest('form').find('input[type=submit]').attr('disabled', false);
+  function setupNewMessageInput(){
+    this.message_body_textarea.wysihtml5({'image': false});
+    this.message_body = this.message_body_textarea.data('wysihtml5');
+    this.message_body.editor.on("change", onChange.bind(this));
+    var editor = this.message_body.editor;
+    var textarea = this.message_body_textarea;
+    setInterval(function(){
+      editor.synchronizer.fromComposerToTextarea();
+      textarea.change();
+    }, 500);
+  }
+
+  function onChange() {
+    this.submit_button.attr('disabled', !this.isValid());
   }
 
   function attachFiles(event){
@@ -68,6 +91,14 @@ Rails.widget('new_conversation_message', function(Widget){
   function removeAttachment(event){
     event.preventDefault();
     $(this).closest('.attachment-preview').remove();
+  }
+
+  function beforeSubmit(event) {
+    var widget = $(this).widget(Widget);
+    if (!widget.isValid()){
+      event.preventDefault();
+      Covered.page.flash.notice('your message must contain a subject and a body');
+    }
   }
 
   function resetForm(){

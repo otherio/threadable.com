@@ -125,11 +125,11 @@ Rails.widget('tasks_sidebar', function(Widget){
   }
 
   function onTaskMouseEnter(event){
-    this.page().trigger('conversation_mouse_enter', $(this).data('conversation-id'));
+    Covered.page.trigger('conversation_mouse_enter', $(this).data('conversation-id'));
   }
 
   function onTaskMouseLeave(event){
-    this.page().trigger('conversation_mouse_leave', $(this).data('conversation-id'));
+    Covered.page.trigger('conversation_mouse_leave', $(this).data('conversation-id'));
   }
 
   function onSortupdate(event, data){
