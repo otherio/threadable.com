@@ -43,6 +43,7 @@ gem 'uglifier', '>= 1.0.3'
 
 group :development do
   gem 'mailcatcher'
+  gem 'foreman'
 end
 
 group :development, :test do
