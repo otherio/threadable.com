@@ -40,6 +40,7 @@ gem 'sass-rails'
 gem 'font-awesome-sass-rails'
 gem 'uglifier', '>= 1.0.3'
 
+gem 'rails_12factor'
 
 group :development do
   gem 'mailcatcher'
