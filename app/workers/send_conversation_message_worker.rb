@@ -13,4 +13,5 @@ class SendConversationMessageWorker < ResqueWorker.new(:params)
       ConversationMailer.conversation_message(@message, user).deliver
     end
   end
+
 end

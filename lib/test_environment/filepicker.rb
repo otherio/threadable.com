@@ -27,11 +27,24 @@ module TestEnvironment::Filepicker
 
     expected_file.seek(0) if expected_file.respond_to? :seek
 
-    stub_request(:get, response["url"]).
-      to_return(:status => 200, :body => expected_file.read, :headers => {
-        'Content-Type' => content_type
-      })
+    stub_filepicker_get_request({
+      url: url,
+      content_type: content_type,
+      body: expected_file.read,
+    })
+  end
 
+  # stub_filepicker_get_request({
+  #   url: url,
+  #   content_type: content_type,
+  #   body: body,
+  # })
+  def stub_filepicker_get_request(options)
+    stub_request(:get, options[:url]).to_return(
+      :status => 200,
+      :body => options[:body],
+      :headers => {'Content-Type' => options[:content_type]}
+    )
   end
 
 end

@@ -10,7 +10,7 @@ class ConversationMessageCreator < MethodObject.new(:user, :conversation, :messa
 
     @message_attributes[:parent_message] = @conversation.messages.last
 
-    attachments = Array(@message_attributes.try(:delete, :attachments))
+    attachments = Array(@message_attributes.delete(:attachments))
     message = @conversation.messages.new(@message_attributes)
     message.user = @user
     message.from = @user.email

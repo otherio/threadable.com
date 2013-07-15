@@ -43,7 +43,9 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    message_attributes = params.require(:message).permit(:subject, :body)
+    params.require(:message).permit(:subject, :body, :attachments)
+    message_attributes = params[:message].slice(:subject, :body, :attachments)
+    message_attributes.permit!
 
     conversation_attributes = {
       creator: current_user,

@@ -26,7 +26,7 @@ class EmailProcessor < MethodObject.new(:incoming_email)
 
   let :attachments do
     email.attachments.map do |attachment|
-      StoreIncomingAttachment.call(project.slug, attachment)
+      StoreIncomingAttachment.call(attachment)
     end
   end
 

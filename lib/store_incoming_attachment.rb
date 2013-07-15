@@ -1,4 +1,4 @@
-class StoreIncomingAttachment < MethodObject.new(:project_slug, :file)
+class StoreIncomingAttachment < MethodObject.new(:file)
 
   def call
     filename        = @file.filename
