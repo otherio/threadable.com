@@ -4,13 +4,12 @@ describeWidget("new_conversation_message", function(){
     {
       description: 'for an existing conversation: ',
       selector: '.existing-conversation',
-      shouldHaveSubject: false,
-      formShouldBeRemote: true
+      formShouldBeRemote: true,
+      makesTextAreaBigger: true
     },{
       description: 'for a new conversation: ',
       selector: '.new-conversation',
       shouldHaveSubject: true,
-      formShouldBeRemote: false
     }
   ];
 
@@ -58,19 +57,23 @@ describeWidget("new_conversation_message", function(){
           });
         });
 
-        it("makes the textarea bigger", function() {
-          runs(function(){
-            if (message_body_textarea().height() >= 50) debugger
-            expect( message_body_textarea().height() ).toBeLessThan('50');
-            message_body_textarea().click();
-          });
+        if (_context.makesTextAreaBigger){
 
-          waits(1);
+          it("makes the textarea bigger", function() {
+            waits(100);
 
-          runs(function(){
-            expect( message_body_textarea().height() ).toBeGreaterThan('199');
+            runs(function(){
+              expect( message_body_textarea().height() ).toBeLessThan('50');
+              message_body_textarea().click();
+            });
+
+            waits(1);
+
+            runs(function(){
+              expect( message_body_textarea().height() ).toBeGreaterThan('199');
+            });
           });
-        });
+        }
 
       });
 

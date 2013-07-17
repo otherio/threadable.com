@@ -7,30 +7,31 @@
 context = describe;
 
 beforeEach(function(){
-  form_submissions = [];
   localStorage.clear();
   jasmine.Ajax.useMock();
   $('.page').replaceWith( $('<div>').addClass('page') );
+
+  this.addMatchers({
+    toBeAnInstanceOf: function(clazz) {
+      return this.actual instanceof clazz;
+    },
+    toBeA: function(clazz) {
+      return this.actual instanceof clazz;
+    },
+    toBeAn: function(clazz) {
+      return this.actual instanceof clazz;
+    }
+  });
 });
 
 afterEach(function(){
+  $('.modal-backdrop').remove();
   $('.page').hide();
 });
-
-function lastFormSubmission() {
-  return form_submissions[form_submissions.length-1];
-}
 
 $(window).load(function() {
 
   $('.page').css({'position':'relative'});
-
-  form_submissions = [];
-  $(document).on('submit', 'form', function(event){
-    if (event.isDefaultPrevented()) return;
-    form_submissions.push({form: this, event: event});
-    event.preventDefault();
-  });
 
   setTimeout(function(){
     if (!window.jasmine) throw new Error('jasmine failed to load');
@@ -60,7 +61,7 @@ $(window).load(function() {
 function loadFixture(name, env){
   var fixture = fixtures[name];
   if (!fixture) throw new Error('fixtures '+name+' not found.');
-  $('.page').html(fixture);
+  $('.page').html(fixture).show();
   Covered.initialize(env || {});
   return Covered.page;
 }

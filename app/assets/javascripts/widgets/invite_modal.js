@@ -1,51 +1,64 @@
 Rails.widget('invite_modal', function(Widget){
 
   Widget.initialize = function(page){
-    page.on('shown',        Widget.selector,      onShown)
-    page.on('ajax:send',    Widget.selector+' form', onSend)
-    page.on('ajax:success', Widget.selector+' form', onSuccess)
-    page.on('ajax:error',   Widget.selector+' form', onError)
-
-    page.bind('show_invite_modal', function(event, options){
-      options || (options={});
-      var invite_modal = page.$('.invite_modal:first');
-      invite_modal.find('input[name="invite[name]"]').val(options.name);
-      invite_modal.find('input[name="invite[email]"]').val(options.email);
-      invite_modal.modal('show');
-      onNextSuccess(invite_modal, options.success);
-    });
+    page.on('shown',        Widget.selector,         onShown);
+    page.on('ajax:send',    Widget.selector+' form', onSend);
+    page.on('ajax:success', Widget.selector+' form', onSuccess);
+    page.on('ajax:error',   Widget.selector+' form', onError);
+    page.bind('show_invite_modal', showInviteModal);
   };
 
   this.initialize = function(){
-    this.flash = new Covered.Flash(this.node.find('.flash_messages'));
+    this.form           = this.$('form');
+    this.name_input     = this.$('input[name="invite[name]"]');
+    this.email_input    = this.$('input[name="invite[email]"]');
+    this.flash_messages = this.node.find('.flash_messages');
+    this.flash          = new Covered.Flash(this.flash_messages);
   }
+
+  this.show = function() {
+    this.node.modal('show');
+    return this;
+  };
+
+  this.hide = function(){
+    this.node.modal('hide');
+    this.reset();
+    this.$(':focus').blur();
+    return this;
+  };
 
   this.focus = function(){
     this.node.find('input:visible:first').focus();
+    return this;
   };
 
   this.reset = function(){
     this.flash.empty();
+    this.form[0].reset();
     this.focus();
-    this.node.find('form')[0].reset();
     return this;
   };
 
-  this.close = function(){
-    this.node.modal('hide');
-    this.reset();
-  };
+  function showInviteModal(event, options){
+     options || (options={});
+     var widget = this.$('.invite_modal:first').widget();
+     widget.name_input.val(options.name);
+     widget.email_input.val(options.email);
+     widget.node.modal('show');
+     onNextSuccess(widget, options.success);
+   }
 
-  function onNextSuccess(invite_modal, callback){
+  function onNextSuccess(widget, callback){
     if (!callback) return
-    invite_modal.one('ajax:success', callback);
-    invite_modal.one('ajax:complete', function(){
-      invite_modal.unbind('ajax:success', callback);
+    widget.form.one('ajax:success', callback);
+    widget.form.one('ajax:complete', function(){
+      widget.form.unbind('ajax:success', callback);
     });
   }
 
   function onShown(event){
-    $(this).find('input:visible:first').focus();
+    $(this).widget(Widget).focus();
   }
 
   function onSend(event){
@@ -54,7 +67,7 @@ Rails.widget('invite_modal', function(Widget){
 
   function onSuccess(event, user, status, xhr){
     var widget = $(this).widget(Widget)
-    widget.close();
+    widget.hide();
     widget.page().flash.message(user.name+' <'+user.email+'> was added to this project.');
   }
 
@@ -65,7 +78,7 @@ Rails.widget('invite_modal', function(Widget){
     }else{
       widget.page().flash.alert('Oops! Something went wrong. Please try again later.');
     }
-    widget.close();
+    widget.hide();
   }
 
 });

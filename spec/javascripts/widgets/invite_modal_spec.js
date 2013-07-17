@@ -1,135 +1,167 @@
 describeWidget("invite_modal", function(){
 
-  // function open_invite_modal(){
-  //   $('.invite_modal').modal('show');
-  // }
+  beforeEach(function() {
+    this.expectModalToBeVisible = function() {
+      expect( this.widget.node.is(':visible') ).toBe(true);
+    };
+    this.expectModalNotToBeVisible = function() {
+      expect( this.widget.node.is(':visible') ).not.toBe(true);
+    };
+  });
 
-  // function submit_invite(){
-  //   $('.invite_modal input[name="invite[name]"]').val('Steve Jobs');
-  //   $('.invite_modal input[name="invite[email]"]').val('steve@apple.com');
-  //   $('.invite_modal input[type=submit]').focus().click();
-  // }
+  function showModal(callback) {
+    runs(function() {
+      expect( this.widget.node.is(':visible') ).toBe(false);
+      this.widget.show();
+    });
+    waits(300); // bootstrap animation time
+    if (callback) runs(callback);
+  }
 
-  // // this was failing intermitantly on CI. Not worth it.
-  // // function expectFirstInputToBeFocused(){
-  // //   var activeElement = document.activeElement;
-  // //   var the_first_input = $('.invite_modal input:visible:first')[0];
-  // //   debugger
-  // //   expect(document.activeElement).toEqual(the_first_input);
-  // // }
 
-  // context('when the server responds with a 200', function(){
-  //   it("calls a passed in success function", function() {
-  //     var spy = jasmine.createSpy('successFunction');
+  describe("initialize", function(){
+    it("should find the expected elements", function(){
+      expect( this.widget.flash       ).toBeA(Covered.Flash);
+      expect( this.widget.form[0]     ).toBe( this.page.$('form')[0] );
+      expect( this.widget.name_input  ).toBe( this.page.$('input[name="invite[name]"]')[0] );
+      expect( this.widget.email_input ).toBe( this.page.$('input[name="invite[email]"]')[0] );
+    });
+  });
 
-  //     runs(function() {
-  //       this.page().trigger('show_invite_modal', {name: 'some guy', email: 'foo@foo.foo', success: spy});
-  //     });
+  describe("show", function(){
+    it("should show the invite modal", function() {
+      showModal(function() {
+        this.expectModalToBeVisible(this);
+        expect( $(':focus')[0] ).toBe( this.widget.name_input[0] );
+      });
+    });
+  });
 
-  //     waits(300);
+  describe("hide", function(){
+    it("should hide and reset the invite modal", function() {
+      showModal();
+      runs(function() {
+        this.expectModalToBeVisible(this);
+        expect( $(':focus')[0] ).toBe( this.widget.name_input[0] );
+        this.widget.hide();
+      });
+      waits(300); // bootstrap animation time
+      runs(function() {
+        expect( this.widget.node.is(':visible') ).toBe(false);
+        expect( $(':focus')[0] ).not.toBe( this.widget.name_input[0] );
+      });
+    });
+  });
 
-  //     runs(function(){
-  //       $('.modal-footer input').click();
-  //       mostRecentAjaxRequest().response({
-  //         status: 200,
-  //         responseText: '{"name":"Ballzonya", "email":"ballz@ya.org"}'
-  //       });
-  //       expect(spy).toHaveBeenCalledWith({name: "Ballzonya", email: "ballz@ya.org"});
-  //     });
-  //   });
+  describe("focus", function(){
+    it("should focus the first visible input", function() {
+      showModal(function() {
+        $(':input:last').focus();
+        expect( $(':focus')[0] ).not.toBe( this.widget.name_input[0] );
+        this.widget.focus();
+        expect( $(':focus')[0] ).toBe( this.widget.name_input[0] );
+      });
+    });
+  });
 
-  //   it("should show a flash message saying the user has been added", function(){
+  describe("reset", function(){
+    it("should empty the flash, reset the form and focus the first visible element", function() {
+      showModal(function() {
+        this.widget.name_input.val('some value');
+        this.widget.email_input.val('some value');
+        $(':input:last').focus();
+        this.widget.flash.notice('asdsa');
 
-  //     runs(function(){
-  //       spyOn(Covered.Flash, 'message');
-  //       open_invite_modal();
-  //     });
+        expect( this.widget.name_input.val()                 ).not.toEqual('');
+        expect( this.widget.email_input.val()                ).not.toEqual('');
+        expect( $(':focus')[0]                               ).not.toBe( this.widget.name_input[0] );
+        expect( this.widget.flash_messages.children().length ).not.toBe(0);
 
-  //     waits(400);
+        this.widget.reset();
 
-  //     runs(function(){
-  //       submit_invite();
-  //       var request = mostRecentAjaxRequest();
-  //       var expected_url = $('.invite_modal form').attr('action');
-  //       expect(request.url).toEqual(expected_url);
-  //       expect(request.method).toEqual("POST");
-  //       request.response({
-  //         status: 200,
-  //         responseText: '{"name":"Ballzonya", "email":"ballz@ya.org"}'
-  //       });
-  //     });
+        expect( this.widget.name_input.val()                 ).toEqual('');
+        expect( this.widget.email_input.val()                ).toEqual('');
+        expect( $(':focus')[0]                               ).toBe( this.widget.name_input[0] );
+        expect( this.widget.flash_messages.children().length ).toBe(0);
+      });
+    });
+  });
 
-  //     waits(400);
+  describe("triggering show_invite_modal on page", function(){
 
-  //     runs(function(){
-  //       // TODO: for some reason this happens two times in test.
-  //       // probably points to a deeper test pollution problem, so is worth finding out why
-  //       //expect(Covered.Flash.message.calls.length).toEqual(1);
-  //       var element = Covered.Flash.message.mostRecentCall.args[0]
-  //       var html = element.clone().appendTo('<div>').parent().html();
-  //       expect(html).toEqual("<span>Ballzonya &lt;ballz@ya.org&gt; was added to this project.</span>");
-  //     });
-  //   });
-  // });
+    it("should show the invite modal using the given options", function() {
+      var successCalled = false;
+      runs(function() {
+        this.page.trigger('show_invite_modal', {
+          name: 'Steve Jobs',
+          email: 'steve@apple.com',
+          success: function(){ successCalled = true; }
+        });
+      });
+      waits(300);
+      runs(function() {
+        this.expectModalToBeVisible(this);
+        expect( this.widget.name_input.val()  ).toEqual('Steve Jobs');
+        expect( this.widget.email_input.val() ).toEqual('steve@apple.com');
+        this.widget.form.trigger('ajax:success', {});
+      });
+      waits(300);
+      runs(function() {
+        this.expectModalNotToBeVisible();
+        expect(successCalled).toBe(true);
+      });
+    });
+  });
 
-  // context('when the server responds with a 400', function(){
-  //   it("should close the modal and flash a message saying the user is already a member of this project", function(){
+  context("when the `shown' event is triggered", function(){
+    it("should call focus on the widget", function() {
+      var focus = spyOn(this.widget,'focus');
+      this.widget.trigger('shown');
+      expect(focus).toHaveBeenCalled()
+    });
+  });
 
-  //     runs(function(){
-  //       spyOn(Covered.Flash, 'notice');
-  //       open_invite_modal();
-  //     });
+  context("when the `ajax:send' event is triggered on the form", function(){
+    it("should call focus on the widget", function() {
+      var reset = spyOn(this.widget,'reset');
+      this.widget.form.trigger('ajax:send');
+      expect(reset).toHaveBeenCalled()
+    });
+  });
 
-  //     waits(400);
+  context("when the `ajax:success' event is triggered on the form", function(){
+    it("should call focus on the widget", function() {
+      var hide = spyOn(this.widget,'hide');
+      var flash_message = spyOn(this.page.flash,'message');
+      user = {
+        name: 'Steve Jobs',
+        email: 'steve@apple.com',
+      };
+      this.widget.form.trigger('ajax:success', [user, "ok", {}]);
+      expect(hide).toHaveBeenCalled()
+      expect(flash_message).toHaveBeenCalledWith('Steve Jobs <steve@apple.com> was added to this project.');
+    });
+  });
 
-  //     runs(function(){
-  //       submit_invite();
+  context("when the `ajax:error' event is triggered on the form", function(){
 
-  //       mostRecentAjaxRequest().response({
-  //         status: 400,
-  //         responseText: ''
-  //       });
-  //     });
+    it("should call focus on the widget", function() {
+      var hide = spyOn(this.widget,'hide');
+      var flash_alert = spyOn(this.page.flash,'alert');
+      this.widget.form.trigger('ajax:error', [{}, "ok", {}]);
+      expect(hide).toHaveBeenCalled()
+      expect(flash_alert).toHaveBeenCalledWith('Oops! Something went wrong. Please try again later.');
+    });
 
-  //     waits(400);
-
-  //     runs(function(){
-  //       expect($('.modal:visible').length).toBe(0);
-  //       expect(Covered.Flash.notice).toHaveBeenCalledWith('That user is already a member of this project.');
-  //     });
-
-  //   });
-  // });
-
-  // context('when the server responds with a 500', function(){
-  //   it("should close the modal and flash a message saying the user is already a member of this project", function(){
-
-  //     runs(function(){
-  //       spyOn(Covered.Modal.Flash, 'alert');
-  //       spyOn(Covered.Flash, 'notice');
-  //       open_invite_modal();
-  //     });
-
-  //     waits(400);
-
-  //     runs(function(){
-  //       submit_invite();
-
-  //       mostRecentAjaxRequest().response({
-  //         status: 500,
-  //         responseText: ''
-  //       });
-  //     });
-
-  //     waits(400);
-
-  //     runs(function(){
-  //       expect($('.modal:visible').length).toBe(1);
-  //       // expectFirstInputToBeFocused();
-  //       expect(Covered.Modal.Flash.alert).toHaveBeenCalledWith('Oops! Something went wrong. Please try again later.');
-  //     });
-
-  //   });
-  // });
+    context("when the status code is 400", function() {
+      it("should call focus on the widget", function() {
+        var hide = spyOn(this.widget,'hide');
+        var flash_notice = spyOn(this.page.flash,'notice');
+        this.widget.form.trigger('ajax:error', [{status:400}, "not found", {}]);
+        expect(hide).toHaveBeenCalled()
+        expect(flash_notice).toHaveBeenCalledWith('That user is already a member of this project.');
+      });
+    });
+  });
 
 });
