@@ -5,23 +5,8 @@ class MessagesController < ApplicationController
   # POST /:project_id/conversations/:conversation_id/messages
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create
-    message_attributes = params.require(:message).permit(
-      :conversation_id,
-      :user_id,
-      :body_plain,
-      :reply,
-      :from,
-      :subject,
-      :children,
-      :parent_id,
-      :message_id_header,
-      :references_header,
-      :shareworthy,
-      :knowledge,
-      :stripped_plain,
-      :stripped_html,
-      :body
-    )
+    message_attributes = params.require(:message).permit(:body, :attachments)
+    message_attributes[:attachments] = params[:message][:attachments]
 
     @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
 

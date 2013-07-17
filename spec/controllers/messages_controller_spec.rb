@@ -6,10 +6,25 @@ describe MessagesController do
   let(:current_user){ project.members.first }
   let!(:conversation) { FactoryGirl.create(:conversation, project: project) }
 
-  let(:valid_attributes) do
-    from_factory = message.attributes.dup
-    from_factory["body"] = from_factory.delete("body_html")
-    from_factory
+  def valid_attributes
+    {
+      "body" => "<b>hello</b><span>there people</span>",
+      "attachments"=> [
+        {
+          "url"=>"https://www.filepicker.io/api/file/g88HcWEkSN68EwKKIBTm",
+          "filename"=>"2013-06-14 13.05.02.jpg",
+          "mimetype"=>"image/jpeg",
+          "size"=> 1830234,
+          "writeable"=>true,
+        },{
+          "url"=>"https://www.filepicker.io/api/file/SavvNKdkTI2fDlyNKbab",
+          "filename"=>"4816514863_20dc8027c6_o.jpg",
+          "mimetype"=>"image/jpeg",
+          "size"=> 3733625,
+          "writeable"=>true,
+        }
+      ]
+    }
   end
 
   before(:each) do
@@ -25,7 +40,6 @@ describe MessagesController do
   end
 
   describe "POST create" do
-    let(:message) { FactoryGirl.build(:message, subject: nil, conversation: conversation) }
 
     def request!
       xhr :post, :create, valid_params.merge(message: valid_attributes)
@@ -34,40 +48,32 @@ describe MessagesController do
     it "creates a new Message" do
       expect{ request! }.to change(conversation.messages, :count).by(1)
       response.status.should == 201
-    end
-
-    it "sets the subject" do
-      request!
-      assigns(:message).subject.should == conversation.subject
-    end
-
-    it "has no parent message" do
-      request!
-      assigns(:message).parent_message.should be_nil
-    end
-
-    it "has a body_plain and a stripped_plain" do
-      request!
-      assigns(:message).body_html.should == message.body_html
-      assigns(:message).stripped_html.should == message.body_html
-      assigns(:message).body_plain.should == message.body_plain
-      assigns(:message).stripped_plain.should == message.body_plain
+      message = assigns(:message)
+      expect(message.subject).to eq(conversation.subject)
+      expect(message.parent_message).to be_nil
+      expect(message.body_html).to      eq(valid_attributes["body"])
+      expect(message.stripped_html).to  eq(valid_attributes["body"])
+      expect(message.body_plain).to     eq("hellothere people")
+      expect(message.stripped_plain).to eq("hellothere people")
+      attachments = message.attachments.map do |attachment|
+        attachment.attributes.slice(*%w{url filename mimetype size writeable})
+      end
+      expect(attachments).to eq(valid_attributes["attachments"])
     end
 
     context "with special characters in the message" do
-      let(:message) do
-        FactoryGirl.build(:message,
-          subject: nil,
-          conversation: conversation,
-          body_plain: 'foo & bar',
-          body_html: '<b>foo &amp; bar</b>'
-        )
+
+      def valid_attributes
+        super.merge("body" => '<b>foo &amp; bar</b>')
       end
 
       it "transforms entities for the text part" do
         request!
-        assigns(:message).body_html.should == message.body_html
-        assigns(:message).body_plain.should == message.body_plain
+        message = assigns(:message)
+        expect(message.body_html).to      eq(valid_attributes["body"])
+        expect(message.stripped_html).to  eq(valid_attributes["body"])
+        expect(message.body_plain).to     eq("foo & bar")
+        expect(message.stripped_plain).to eq("foo & bar")
       end
     end
 
