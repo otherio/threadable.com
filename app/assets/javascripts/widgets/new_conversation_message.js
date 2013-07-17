@@ -13,7 +13,7 @@ Rails.widget('new_conversation_message', function(Widget){
   this.initialize = function(){
     ATTACHMENT_PREVIEW_TEMPLATE = this.node.find('.hidden.attachment-preview').remove().removeClass('hidden');
 
-    this.submit_button = this.node.find('input.btn[type=submit]').attr('disabled', true);
+    this.send_button = this.node.find('input.btn[type=submit]').attr('disabled', true);
     this.subject_input = this.node.find('.subject_field :input');
     this.message_body_textarea = this.node.find('textarea').trigger('keyup');
 
@@ -23,8 +23,24 @@ Rails.widget('new_conversation_message', function(Widget){
     if (this.data.auto_show_right_text){
       setupNewMessageInput.apply(this);
     }else{
-      textarea.click(setupNewMessageInput.bind(this));
+      this.message_body_textarea.click(setupNewMessageInput.bind(this));
     }
+  };
+
+  this.getMessageBody = function(){
+    return this.message_body ?
+      this.message_body.editor.composer.getValue() :
+      this.message_body_textarea.val();
+  };
+
+  this.setMessageBody = function(value) {
+    if (this.message_body){
+      this.message_body.editor.composer.setValue(value);
+    }else{
+      this.message_body_textarea.val(value);
+    }
+    this.message_body_textarea.change();
+    return this;
   };
 
   this.pickFiles = function(){
@@ -59,10 +75,11 @@ Rails.widget('new_conversation_message', function(Widget){
   };
 
   this.isValid = function() {
-    return (
-      !this.message_body.editor.isEmpty() &&
-      !!this.subject_input.val()
-    );
+    if (this.subject_input.length === 0){
+      return !!this.getMessageBody()
+    }else{
+      return !!this.getMessageBody() && !!this.subject_input.val();
+    }
   };
 
   // private
@@ -71,16 +88,23 @@ Rails.widget('new_conversation_message', function(Widget){
     this.message_body_textarea.wysihtml5({'image': false});
     this.message_body = this.message_body_textarea.data('wysihtml5');
     this.message_body.editor.on("change", onChange.bind(this));
-    var editor = this.message_body.editor;
-    var textarea = this.message_body_textarea;
-    setInterval(function(){
-      editor.synchronizer.fromComposerToTextarea();
-      textarea.change();
-    }, 500);
+    detectChangeInEditor.apply(this);
+  }
+
+  function detectChangeInEditor() {
+    // if we're no longer in the DOM stop.
+    if (this.node.parents('html').length === 0) return;
+    // copy content from the WYSIWYG editor to the textarea
+    if (this.message_body.editor.synchronizer){
+      this.message_body.editor.synchronizer.fromComposerToTextarea();
+      // trigger a change event
+      this.message_body_textarea.change();
+    }
+    setTimeout(detectChangeInEditor.bind(this), 500);
   }
 
   function onChange() {
-    this.submit_button.attr('disabled', !this.isValid());
+    this.send_button.attr('disabled', !this.isValid());
   }
 
   function attachFiles(event){

@@ -7,6 +7,7 @@
 context = describe;
 
 beforeEach(function(){
+  form_submissions = [];
   localStorage.clear();
   jasmine.Ajax.useMock();
   $('.page').replaceWith( $('<div>').addClass('page') );
@@ -16,9 +17,20 @@ afterEach(function(){
   $('.page').hide();
 });
 
+function lastFormSubmission() {
+  return form_submissions[form_submissions.length-1];
+}
+
 $(window).load(function() {
 
   $('.page').css({'position':'relative'});
+
+  form_submissions = [];
+  $(document).on('submit', 'form', function(event){
+    if (event.isDefaultPrevented()) return;
+    form_submissions.push({form: this, event: event});
+    event.preventDefault();
+  });
 
   setTimeout(function(){
     if (!window.jasmine) throw new Error('jasmine failed to load');
@@ -54,7 +66,7 @@ function loadFixture(name, env){
 }
 
 function describeWidget(widget_name, block){
-  describe(widget_name+" widget", function(){
+  describe(widget_name+" widget: ", function(){
 
     beforeEach(function(){
       this.Widget = Rails.widget(widget_name);
@@ -65,3 +77,5 @@ function describeWidget(widget_name, block){
     block.call(this);
   });
 }
+
+

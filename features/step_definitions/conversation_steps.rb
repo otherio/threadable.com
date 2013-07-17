@@ -5,8 +5,10 @@ When /^I show the quoted text for the message containing "(.*?)"$/ do |contents|
 end
 
 When /^I send the message "(.*?)"$/ do |value|
-  # this is sort of shitty to work around capybara's broken iframe handling
-  fill_in 'Add your voice...', with: value
-  page.execute_script( "$('form.new_message').submit();" )
+  find_field('Add your voice...').click
+  page.execute_script <<-JS
+    $('.new_conversation_message').widget().setMessageBody(#{value.inspect});
+  JS
+  click_button 'Send'
 end
 

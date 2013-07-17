@@ -23,7 +23,7 @@ describe "new_conversation_message" do
 
   describe "return_value" do
     subject{ return_value }
-    it { should include 'From: FROM NAME' }
+    it { should include 'MESSAGE SUBJECT' }
     it { should include 'MESSAGE BODY' }
   end
 

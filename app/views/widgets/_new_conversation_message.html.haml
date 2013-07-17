@@ -3,7 +3,7 @@
     .subject_field
       = f.input :subject, label: false, autofocus: autofocus, placeholder: 'subject'
   .body_field
-    = f.input :body, as: :text, label: false, input_html: {cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."}
+    = f.input :body, as: :text, label: false, input_html: {cols: nil, rows: nil, placeholder: "Add your voice..."}
   .attachments
     .hidden.attachment-preview
       %a.remove{href:""}

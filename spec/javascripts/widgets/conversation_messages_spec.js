@@ -36,40 +36,6 @@ describeWidget("conversation_messages", function(){
         expect(timeagoSpy).toHaveBeenCalled();
       });
 
-      it("resets the form after sending", function() {
-        expect(this.submit_button.is(':disabled')).toBe(true);
-        this.widget.$('textarea').click();
-        expect(this.submit_button.is(':disabled')).toBe(false);
-        this.submit_button.click();
-        mostRecentAjaxRequest().response({status: 200, responseText: '{}'});
-        expect(this.submit_button.is(':disabled')).toBe(true);
-        expect(this.widget.$('ul.wysihtml5-toolbar').html()).toBe(undefined);
-        expect(this.widget.$('iframe.wysihtml5-sandbox').html()).toBe(undefined);
-        expect(this.widget.$('textarea').css('height')).toEqual('40px');
-        expect(this.widget.$('textarea')).toBeVisible();
-      });
-    });
-  });
-
-  describe("setupNewMessageInput", function() {
-    beforeEach(function() {
-      this.textarea = this.widget.$('textarea');
-    });
-
-    it("adds html controls", function() {
-      var wysispy = spyOn($.prototype, 'wysihtml5');
-      this.textarea.click();
-      expect(wysispy).toHaveBeenCalled();
-    });
-
-    it("makes the textarea bigger", function() {
-      this.textarea.click();
-      expect(this.textarea.css('height')).toEqual('200px');
-    });
-
-    it("enables the send button", function() {
-      this.textarea.click();
-      expect(this.submit_button.is(':disabled')).toBe(false);
     });
   });
 

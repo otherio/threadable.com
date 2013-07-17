@@ -5457,9 +5457,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
       iframeDocument.close();
 
       this.getWindow = function() { return iframe.contentWindow; };
-      this.getDocument = function() {
-        return iframe.contentWindow && iframe.contentWindow.document;
-      };
+      this.getDocument = function() { return this.getWindow().document; };
 
       // Catch js errors and pass them to the parent's onerror event
       // addEventListener("error") doesn't work properly in some browsers
@@ -8050,10 +8048,12 @@ wysihtml5.views.View = Base.extend(
     },
 
     _create: function() {
+
       var that = this;
 
-      this.doc                = this.sandbox.getDocument();
-      if (!this.doc) return;
+      this.window             = this.sandbox.getWindow();
+      if (!this.window) return;
+      this.doc                = this.window.document;
       this.element            = this.doc.body;
       this.textarea           = this.parent.textarea;
       this.element.innerHTML  = this.textarea.getValue(true);

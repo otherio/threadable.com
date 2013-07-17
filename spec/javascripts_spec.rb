@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'javascript specs', type: :request do
+describe 'javascript specs', type: :request, driver: :selenium do
 
   it "should all pass" do
     visit javascript_tests_path
@@ -14,6 +14,7 @@ describe 'javascript specs', type: :request do
     unless results['passed']
       specs = specs_for(results).reject{|spec| spec["passed"] }
       failures = specs.map{ |spec| "  "+ spec["description"] }.join("\n")
+      binding.pry
       raise "The following Javascript specs failed:\n#{failures}\n\n#{page.text}"
     end
   end
