@@ -92,6 +92,9 @@ GEM
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
+    dotenv (0.8.0)
+    dotenv-rails (0.8.0)
+      dotenv (= 0.8.0)
     encryptor (1.1.3)
     erubis (2.7.0)
     excon (0.23.0)
@@ -319,6 +322,7 @@ DEPENDENCIES
   database_cleaner
   debugger
   devise
+  dotenv-rails
   encryptor
   factory_girl_rails
   ffaker

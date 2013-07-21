@@ -42,6 +42,7 @@ gem 'uglifier', '>= 1.0.3'
 gem 'rails_12factor'
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'debugger'
   gem 'rspec-rails'
   gem 'pry-rails'
