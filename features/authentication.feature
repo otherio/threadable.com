@@ -1,8 +1,9 @@
 Feature: Authentication
-  As a user
-  I should be able to login
+  As a user with an account and a password
+  I should be able to login with any of my email addresses
+  And recover my password with any of my email addresses
 
-Scenario: Logging in
+Scenario: A user with an account and a password can sign in
   In order to use the site
   I'd like to keep my data associated with me
   Given I am not logged in
@@ -13,7 +14,7 @@ Scenario: Logging in
    Then I should be on the home page
     And I should be logged in as "Alice Neilson"
 
-Scenario: Logging in with both of my emails
+Scenario: A user with an account and a password can sign in with any of their email addresses
   As a user with multiple email addresses
   I should be able to login with any of them.
   Given I am not logged in

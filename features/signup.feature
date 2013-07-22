@@ -1,6 +1,6 @@
 Feature: Signup
-  As a random person
-  I want to be able to sign up
+  As a new user
+  I should be able to signup
 
 Scenario: Signing up
   When I signup with the following information:
@@ -31,3 +31,24 @@ Scenario: Account creation fails if email is already used
     And I fill in "Email" with "alice@ucsd.covered.io"
     And I click "Sign up"
    Then I should see "Email has already been taken"
+
+
+
+
+  Scenario: A new user can request an invite to create a project via the website
+
+  Scenario: A new user can accept an invite to create a project
+
+  Scenario: A new user can accept an invite to join a project
+
+  Scenario: A new user can signup via their facebook account
+
+  Scenario: A new user can signup via their google account
+
+  Scenario: A new user can confirm their email during the signup process
+
+  Scenario: A new user that accepts an invitiation to a project can choose to signup via the confirmation page ("you can do this at any time!")
+
+  Scenario: An email-only user can set a password by following any covered link in their email.
+
+  Scenario: An email-only user can set a password via the website
