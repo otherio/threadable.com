@@ -1,12 +1,1 @@
 = render_widget :new_conversation_message, @conversation, from: current_user
-
-- if false
-  - url = project_conversations_path(@conversation.project)
-  = form_for @conversation, url: url do |c|
-    .fields
-      = c.text_field :subject, placeholder: 'Subject'
-      = c.fields_for :messages do |m|
-        = m.text_area :body, cols: nil, rows: nil, growing: "y", placeholder: "Add your voice..."
-    .pull-right
-      %input.btn{type: 'submit', value: 'Send'}
-

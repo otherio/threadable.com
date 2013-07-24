@@ -1,6 +1,18 @@
 &
   +clearfix
 
+  .recipients, .attachments, .controls
+    display: none
+
+  &.expanded
+    .recipients, .attachments, .controls
+      display: block
+
+  .recipients
+    font-size: 0
+    .avatar
+      display: inline-block
+      margin: 2px
 
   .message_subject, .message_body
     margin-right: 14px

@@ -20,11 +20,19 @@ Rails.widget('new_conversation_message', function(Widget){
     this.subject_input.on('keyup change', onChange.bind(this));
     this.message_body_textarea.on('keyup change', onChange.bind(this));
 
-    if (this.data.auto_show_right_text){
-      setupNewMessageInput.apply(this);
+    this.node.find('.recipients .avatar').tooltip();
+
+    if (this.data.autoexpand){
+      this.expand().focus();
     }else{
-      this.message_body_textarea.click(setupNewMessageInput.bind(this));
+      this.message_body_textarea.click(this.expand.bind(this));
     }
+  };
+
+  this.expand = function() {
+    this.node.addClass('expanded');
+    setupNewMessageInput.apply(this);
+    return this;
   };
 
   this.getMessageBody = function(){

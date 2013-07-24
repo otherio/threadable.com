@@ -10,9 +10,9 @@ module RescueFromExceptionsConcern
 
 
   included do
-    # unless Rails.application.config.consider_all_requests_local
+    unless Rails.application.config.consider_all_requests_local
       rescue_from Exception, with: :rescue_from_exception
-    # end
+    end
   end
 
   private

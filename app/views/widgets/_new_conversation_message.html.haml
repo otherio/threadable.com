@@ -1,9 +1,17 @@
 = simple_form_for message, as: :message, url: url, remote: remote do |f|
+  %p.recipients
+    - conversation.recipients.each do |recipient|
+      %a.avatar{href: "", title: recipient.name, data:{ toggle: "tooltip", placement: "bottom"} }
+        = image_tag(recipient.avatar_url)
+
   - if show_subject
     .subject_field
       = f.input :subject, label: false, autofocus: autofocus, placeholder: 'subject'
+
+
   .body_field
     = f.input :body, as: :text, label: false, input_html: {cols: nil, rows: nil, placeholder: "Add your voice..."}
+
   .attachments
     .hidden.attachment-preview
       %a.remove{href:""}
@@ -17,9 +25,9 @@
       %input{type:'hidden', class: 'size',      name:'message[attachments][][size]'}
       %input{type:'hidden', class: 'writeable', name:'message[attachments][][writeable]'}
 
-
-  .pull-right
+  .controls.pull-right
     %input.cloaked{type: 'submit'}
     %input.btn{type: 'submit', value: 'Send'}
 
-  %button.attach-files.btn Attach Files
+  .controls
+    %button.attach-files.btn Attach Files

@@ -1,9 +1,9 @@
 class Message < ActiveRecord::Base
 
-  belongs_to :conversation, :counter_cache => true
-  has_one :project, :through => :conversation
-  belongs_to :parent_message, :class_name => 'Message', :foreign_key => 'parent_id'
+  belongs_to :conversation, counter_cache: true
+  belongs_to :parent_message, class_name: 'Message', foreign_key: 'parent_id'
   belongs_to :user
+  has_one :project, through: :conversation
   has_and_belongs_to_many :attachments
 
   scope :by_created_at, ->{ order('messages.created_at DESC') }
@@ -29,7 +29,7 @@ class Message < ActiveRecord::Base
   end
 
   def html?
-    ! body_html.empty?
+    !body_html.empty?
   end
 
   private

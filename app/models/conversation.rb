@@ -5,6 +5,8 @@ class Conversation < ActiveRecord::Base
   has_many :messages, -> { order 'messages.created_at ASC' }
   has_many :events
   has_many :participants, through: :messages, source: :user # TODO: uniq
+  # TODO recipients will eventually have a scope that removes members who have muted this conversation
+  has_many :recipients, through: :project, class_name: 'User', source: 'members_who_get_email'
 
   default_scope -> { order('conversations.updated_at DESC') }
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }

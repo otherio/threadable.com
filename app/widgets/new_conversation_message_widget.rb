@@ -2,12 +2,12 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
 
   arguments :conversation
 
-  def new_conversation?
-    conversation.new_record?
+  def init
+    @html_options.add_classname('expanded') if autoexpand
   end
 
-  html_option 'data-auto_show_right_text' do
-    new_conversation?
+  def new_conversation?
+    conversation.new_record?
   end
 
   option :from do
@@ -19,7 +19,7 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
   end
 
   option :message do
-    conversation.messages.build
+    conversation.messages.build(conversation: conversation)
   end
 
   option :url do
@@ -38,8 +38,16 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
     new_conversation?
   end
 
+  option :autoexpand do
+    new_conversation?
+  end
+
   option :remote do
     !new_conversation?
+  end
+
+  html_option 'data-autoexpand' do
+    autoexpand
   end
 
 end
