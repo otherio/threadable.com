@@ -36,7 +36,17 @@ Rails.widget('invite_modal', function(Widget){
   this.reset = function(){
     this.flash.empty();
     this.form[0].reset();
-    this.focus();
+    this.enable().focus();
+    return this;
+  };
+
+  this.disable = function(){
+    this.form.find(':input').attr('disabled',true);
+    return this;
+  };
+
+  this.enable = function(){
+    this.form.find(':input').attr('disabled',false);
     return this;
   };
 
@@ -62,23 +72,26 @@ Rails.widget('invite_modal', function(Widget){
   }
 
   function onSend(event){
-    $(this).widget(Widget).reset();
+    var widget = $(this).widget(Widget);
+    widget.flash.empty();
+    widget.disable();
   }
 
   function onSuccess(event, user, status, xhr){
     var widget = $(this).widget(Widget)
-    widget.hide();
+    widget.hide().reset();
     widget.page().flash.message(user.name+' <'+user.email+'> was added to this project.');
   }
 
   function onError(event, xhr, status, error){
     var widget = $(this).widget(Widget);
     if (xhr.status === 400){
-      widget.page().flash.notice('That user is already a member of this project.');
+      widget.flash.notice('That user is already a member of this project.');
+      widget.enable();
     }else{
-      widget.page().flash.alert('Oops! Something went wrong. Please try again later.');
+      widget.flash.alert('Oops! Something went wrong. Please try again later.');
+      widget.enable();
     }
-    widget.hide();
   }
 
 });
