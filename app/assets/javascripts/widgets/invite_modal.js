@@ -78,7 +78,7 @@ Rails.widget('invite_modal', function(Widget){
   }
 
   function onSuccess(event, user, status, xhr){
-    var widget = $(this).widget(Widget)
+    var widget = $(this).widget(Widget);
     widget.hide().reset();
     widget.page().flash.message(user.name+' <'+user.email+'> was added to this project.');
   }
