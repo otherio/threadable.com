@@ -57,9 +57,9 @@ module Covered
     end
 
     # login is enabled by default, but can be disabled
-    config.login_enabled = ENV["COVERED_DISABLE_LOGIN"] ? false : true
+    config.login_enabled = ENV.key? "COVERED_DISABLE_LOGIN"
 
-    config.filepicker_rails.api_key = ENV['COVERED_FILEPICKER_API_KEY']
+    config.filepicker_rails.api_key = ENV.fetch('COVERED_FILEPICKER_API_KEY')
 
     config.redis = Redis.current.client.instance_variable_get(:@options).slice(:scheme, :host, :port, :path, :password, :db)
   end

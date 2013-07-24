@@ -91,9 +91,9 @@ Covered::Application.configure do
   config.unsubscribe_token_key = 'staging unsubscribe key so there'
 
   config.storage = {
-    s3_access_key_id:     ENV['COVERED_S3_ACCESS_KEY_ID'],
-    s3_secret_access_key: ENV['COVERED_S3_SECRET_ACCESS_KEY'],
-    bucket_name:          ENV['COVERED_S3_BUCKET_NAME'],
+    s3_access_key_id:     ENV.fetch('COVERED_S3_ACCESS_KEY_ID'),
+    s3_secret_access_key: ENV.fetch('COVERED_S3_SECRET_ACCESS_KEY'),
+    bucket_name:          ENV.fetch('COVERED_S3_BUCKET_NAME'),
   }
 
   config.redis = Heroku.redis_config
