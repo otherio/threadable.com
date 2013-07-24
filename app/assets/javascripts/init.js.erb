@@ -13,19 +13,16 @@
   // this prevents link clicks and form submissions before out JS is loaded
 
   preventEverything = function(){
-    console.log('preventing eventhing');
     bind('click',  preventDefault);
     bind('submit', preventDefault);
   };
 
   function unpreventEverything(){
-    console.log('unpreventing eventhing');
     unbind('click',  preventDefault);
     unbind('submit', preventDefault);
   };
 
   function preventDefault(event) {
-    console.log('EVENING IS PREVENRT');
     if (!event) return;
     if (event.preventDefault){
       event.preventDefault();
