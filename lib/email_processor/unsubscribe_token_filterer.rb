@@ -1,3 +1,10 @@
 EmailProcessor::UnsubscribeTokenFilterer = proc do |body|
-  body.to_s.gsub(%r{(https?://[\w\-\.]*covered\.io/[\w\-\.]+/unsubscribe)/[\w=]+}m, '\1')
+  body = body.to_s.gsub(%r{(https?://(?:[\w\-]+\.)?covered\.io/[\w\-]+/unsubscribe)/(.+?)(?=<|")}m) do
+    url, token = $1, $2
+    token =~ /=\n/ ? "#{url}=\n" : "#{url}"
+  end
+
+  body.to_s.gsub(%r{(https?://(?:[\w\-]+\.)?covered\.io/[\w\-]+/unsubscribe)/[\w=]+}m) do
+    $1
+  end
 end

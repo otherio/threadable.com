@@ -2,10 +2,61 @@ require 'spec_helper'
 
 describe 'EmailProcessor::UnsubscribeTokenFilterer' do
 
-  context "when given plain text" do
+  def self.texts
+    [
+      [
+      # ------------------------------------------------------------------------
+<<-BEFORE,
+BEFORE
+      # ------------------------------------------------------------------------
+<<-AFTER
+AFTER
+      # ------------------------------------------------------------------------
+      ],
 
-   let :input do
-<<-TEXT
+      # ========================================================================
+
+      [
+      # ------------------------------------------------------------------------
+<<-BEFORE,
+<div><br></div><div><br></div></div>
+
+
+<pre>_____
+View on Covered: <a href=3D"http://beta.covered.io/covered/conversations/=
+show-dont-tell" target=3D"_blank">http://beta.covered.io/covered/conversa=
+tions/show-dont-tell</a>
+Unsubscribe:  <a href=3D"http://beta.covered.io/covered/unsubscribe" targ=
+et=3D"_blank">http://beta.covered.io/covered/unsubscribe/jqxMBUz0fz_8Majl=
+KaPbf9E=</a>
+</pre>
+
+</blockquote></div><br></div>
+BEFORE
+      # ------------------------------------------------------------------------
+<<-AFTER
+<div><br></div><div><br></div></div>
+
+
+<pre>_____
+View on Covered: <a href=3D"http://beta.covered.io/covered/conversations/=
+show-dont-tell" target=3D"_blank">http://beta.covered.io/covered/conversa=
+tions/show-dont-tell</a>
+Unsubscribe:  <a href=3D"http://beta.covered.io/covered/unsubscribe" targ=
+et=3D"_blank">http://beta.covered.io/covered/unsubscribe=
+</a>
+</pre>
+
+</blockquote></div><br></div>
+AFTER
+      # ------------------------------------------------------------------------
+      ],
+
+      # ========================================================================
+
+      [
+      # ------------------------------------------------------------------------
+<<-BEFORE,
 "Sorry I sent that blank mail. Shouldn't be possible in the future. derp.
 
 
@@ -23,20 +74,18 @@ On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
 > > http://beta.covered.io/covered-testing/conversations/testing
 > > Unsubscribe:
 > >
-> http://beta.covered.io/covered-testing/unsubscribe/jrFFF0z_f2O7M6K6eqPdf94=
+> http://beta.covered.io/covered-testing/unsubscribe
 > >
 > >
 > _____
 > View on Covered:
 > http://beta.covered.io/covered-testing/conversations/testing
 > Unsubscribe:
-> http://beta.covered.io/covered-testing/unsubscribe/jrFFF0qqfzWrYOzqJ6Pdf90=
+> http://beta.covered.io/covered-testing/unsubscribe/jqxMBUz0fz_8MajlKaPbf9E=
 >
-TEXT
-   end
-
-   let :expected_output do
-<<-TEXT
+BEFORE
+      # ------------------------------------------------------------------------
+<<-AFTER
 "Sorry I sent that blank mail. Shouldn't be possible in the future. derp.
 
 
@@ -63,28 +112,17 @@ On Sun, Apr 21, 2013 at 5:58 PM, Ian Baker <ian@sonic.net> wrote:
 > Unsubscribe:
 > http://beta.covered.io/covered-testing/unsubscribe
 >
-TEXT
-   end
+AFTER
+      # ------------------------------------------------------------------------
+      ]
 
-    it "should filter the unsubscribe tokens out of any unsibscribe links found in the given text" do
-      expect(EmailProcessor::UnsubscribeTokenFilterer.call(input)).to eq(expected_output)
-    end
+    ]
   end
 
-  context "when given html" do
-
-    let :input do
-<<-HTML
-HTML
-    end
-
-    let :expected_output do
-<<-HTML
-HTML
-    end
-
-    pending "should filter the unsubscribe tokens out of any unsibscribe links found in the given text" do
-      expect(EmailProcessor::UnsubscribeTokenFilterer.call(input)).to eq(expected_output)
+  texts.each_with_index do |(before, expected_after), index|
+    it "should should be able to strip the unsubscribe token from example #{index}" do
+      after = EmailProcessor::UnsubscribeTokenFilterer.call(before)
+      expect(after).to eq expected_after
     end
   end
 
