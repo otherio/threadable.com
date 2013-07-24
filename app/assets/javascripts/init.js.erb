@@ -1,8 +1,49 @@
 //= require modernizr
 
-yepnope({
-  load: <%= [javascript_path('application')].to_json %>,
-  callback: function(){
-    Covered.initialize(ENV);
+!function() {
+
+  yepnope({
+    load: <%= [javascript_path('application')].to_json %>,
+    callback: function(){
+      unpreventEverything();
+      Covered.initialize(ENV);
+    }
+  });
+
+  // this prevents link clicks and form submissions before out JS is loaded
+
+  preventEverything = function(){
+    console.log('preventing eventhing');
+    bind('click',  preventDefault);
+    bind('submit', preventDefault);
+  };
+
+  function unpreventEverything(){
+    console.log('unpreventing eventhing');
+    unbind('click',  preventDefault);
+    unbind('submit', preventDefault);
+  };
+
+  function preventDefault(event) {
+    console.log('EVENING IS PREVENRT');
+    if (!event) return;
+    if (event.preventDefault){
+      event.preventDefault();
+    }else{
+      event.returnValue = false;
+    }
   }
-});
+
+  function bind(type, handler){
+    document.body.addEventListener ?
+      document.body.addEventListener(type, handler, false) :
+      document.body.attachEvent('on'+type, handler);
+  }
+
+  function unbind(type, handler){
+    document.body.addEventListener ?
+      document.body.removeEventListener(type, handler, false) :
+      document.body.detachEvent('on'+type, handler);
+  }
+
+}();

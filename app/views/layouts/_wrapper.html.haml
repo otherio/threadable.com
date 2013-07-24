@@ -5,15 +5,20 @@
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_tag %(ENV = #{javascript_env.to_json};)
     = javascript_include_tag "init"
-    = filepicker_js_include_tag
-    :javascript
-      filepicker.setKey("#{Rails.application.config.filepicker_rails.api_key}")
     = csrf_meta_tags
 
   %body
+    :javascript
+      preventEverything();
+
     .page
       = render_widget :page_navigation, current_user: current_user, current_project: @project
       .content
         = yield
       .flash_messages
       = render_widget :page_footer
+
+
+    = filepicker_js_include_tag
+    :javascript
+      filepicker.setKey("#{Rails.application.config.filepicker_rails.api_key}")
