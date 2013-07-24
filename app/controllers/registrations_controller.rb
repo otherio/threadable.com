@@ -1,5 +1,10 @@
 class RegistrationsController < Devise::RegistrationsController
 
+  def new
+    return super if Rails.configuration.login_enabled
+    redirect_to "http://signup.other.io"
+  end
+
   # POST /resource
   def create
     build_resource params.require(:user).permit(:name, :email)
@@ -14,11 +19,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def thanks
-  end
-
-  def new
-    return super if Rails.configuration.login_enabled
-    redirect_to "http://signup.other.io"
   end
 
 end
