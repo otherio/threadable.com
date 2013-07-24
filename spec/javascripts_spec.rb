@@ -14,7 +14,6 @@ describe 'javascript specs', type: :request, driver: :selenium do
     unless results['passed']
       specs = specs_for(results).reject{|spec| spec["passed"] }
       failures = specs.map{ |spec| "  "+ spec["description"] }.join("\n")
-      binding.pry
       raise "The following Javascript specs failed:\n#{failures}\n\n#{page.text}"
     end
   end
