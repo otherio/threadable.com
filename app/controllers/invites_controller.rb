@@ -12,6 +12,7 @@ class InvitesController < ApplicationController
     @user = User.with_email(email).first_or_initialize(name: name, email: email)
 
     if @user.new_record?
+      @user.skip_confirmation_notification!
       @user.password_required = false
       @user.save!
     end

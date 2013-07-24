@@ -25,6 +25,7 @@ class EmailSubscriptionsController < ApplicationController
   def subscribe
     @project_membership.gets_email = true
     @project_membership.save!
+    @user.confirm!
   end
 
   private
