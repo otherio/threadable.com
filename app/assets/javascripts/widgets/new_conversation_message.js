@@ -14,9 +14,11 @@ Rails.widget('new_conversation_message', function(Widget){
   this.initialize = function(){
     ATTACHMENT_PREVIEW_TEMPLATE = this.node.find('.hidden.attachment-preview').remove().removeClass('hidden');
 
-    this.send_button = this.node.find('input.btn[type=submit]').attr('disabled', true);
-    this.subject_input = this.node.find('.subject_field :input');
-    this.message_body_textarea = this.node.find('textarea').trigger('keyup');
+    this.form = this.node.find('form');
+    this.attachments = this.form.find('.attachments');
+    this.send_button = this.form.find('input.btn[type=submit]').attr('disabled', true);
+    this.subject_input = this.form.find('.subject_field :input');
+    this.message_body_textarea = this.form.find('textarea').trigger('keyup');
 
     this.subject_input.on('keyup change', onChange.bind(this));
     this.message_body_textarea.on('keyup change', onChange.bind(this));
@@ -40,14 +42,14 @@ Rails.widget('new_conversation_message', function(Widget){
   };
 
   this.reset = function(){
-    this.reset();
-    var form = $(this);
-
-    form.find('.attachments').empty();
-    $('ul.wysihtml5-toolbar').remove();
-    $('iframe.wysihtml5-sandbox').off('onload').remove();
-    form.find('textarea').css('height', '40px').show();
-    form.find('input[type=submit]').attr('disabled', true);
+    this.node.removeClass('expanded');
+    this.attachments.empty();
+    this.node.find('ul.wysihtml5-toolbar').remove();
+    this.node.find('iframe.wysihtml5-sandbox').off('onload').remove();
+    delete this.message_body;
+    this.message_body_textarea.val('').show();
+    onChange.apply(this);
+    return this;
   };
 
   this.getMessageBody = function(){
@@ -94,7 +96,7 @@ Rails.widget('new_conversation_message', function(Widget){
       }
       nodes = nodes.add(node);
     });
-    this.node.find('form .attachments').append(nodes);
+    this.attachments.append(nodes);
   };
 
   this.isValid = function() {
@@ -119,7 +121,7 @@ Rails.widget('new_conversation_message', function(Widget){
     // if we're no longer in the DOM stop.
     if (this.node.parents('html').length === 0) return;
     // copy content from the WYSIWYG editor to the textarea
-    if (this.message_body.editor.synchronizer){
+    if (this.message_body && this.message_body.editor.synchronizer){
       this.message_body.editor.synchronizer.fromComposerToTextarea();
       // trigger a change event
       this.message_body_textarea.change();
