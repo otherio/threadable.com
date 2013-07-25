@@ -36,3 +36,5 @@ public/storage
 .env
 
 .libpeerconnection.log
+
+lib/test_environment/fixtures/*.yml

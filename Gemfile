@@ -48,6 +48,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'pry-rails'
   gem 'pry-debugger'
+  gem 'activerecord-fixture_builder'
 end
 
 group :test do
@@ -62,8 +63,6 @@ group :test do
   gem 'resque_unit'
   gem 'factory_girl_rails'
   gem 'ffaker'
-  gem 'database_cleaner'
-  gem 'fixture_builder'
   gem 'minitest', require: nil
   gem 'webmock'
 end

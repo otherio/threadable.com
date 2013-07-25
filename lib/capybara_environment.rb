@@ -11,8 +11,8 @@ module CapybaraEnvironment
     include "CapybaraEnvironment::#{File.basename(path, '.rb').camelize}".constantize
   end
 
-  def database_cleaner_strategy
-    :truncation
+  def use_test_transaction?
+    false
   end
 
   def before_suite!
@@ -27,8 +27,6 @@ module CapybaraEnvironment
     Capybara.default_wait_time      = 5
     Capybara.server_port = Rails.configuration.action_mailer.default_url_options[:port]
     Capybara.server_host = Rails.configuration.action_mailer.default_url_options[:host]
-
-    WebMock.disable_net_connect!(:allow_localhost => true)
     super
   end
 

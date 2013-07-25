@@ -1,5 +1,4 @@
 require 'factory_girl'
-require 'database_cleaner'
 
 module TestEnvironment
 
@@ -10,16 +9,17 @@ module TestEnvironment
     include extension unless extension.is_a? Class
   end
 
-  def database_cleaner_strategy
-    :transaction
+  def use_test_transaction?
+    true
   end
 
   def before_suite!
     # this keeps minitest from running at_exit like a dick
     test_storage = Rails.root.join('public/storage/test')
     test_storage.rmtree if test_storage.exist?
-    ::TestEnvironment::Fixtures.configure_fixture_builder!
-    # WebMock.disable_net_connect!(:allow_localhost => true)
+    ActiveRecord::FixtureBuilder.build_fixtures!
+    ActiveRecord::FixtureBuilder.write_fixtures!
+    WebMock.disable_net_connect!(:allow_localhost => true)
   end
 
   extend self
