@@ -23,7 +23,7 @@ Rails.widget('new_conversation_message', function(Widget){
     this.node.find('.recipients .avatar').tooltip();
 
     if (this.data.autoexpand){
-      this.expand().focus();
+      this.focus();
     }else{
       this.message_body_textarea.click(this.expand.bind(this));
     }
@@ -32,6 +32,12 @@ Rails.widget('new_conversation_message', function(Widget){
   this.expand = function() {
     this.node.addClass('expanded');
     setupNewMessageInput.apply(this);
+    return this;
+  };
+
+  this.focus = function(){
+    this.expand();
+    if (this.subject_input.length) this.subject_input.focus();
     return this;
   };
 
@@ -93,6 +99,7 @@ Rails.widget('new_conversation_message', function(Widget){
   // private
 
   function setupNewMessageInput(){
+    if (this.message_body) return;
     this.message_body_textarea.wysihtml5({'image': false});
     this.message_body = this.message_body_textarea.data('wysihtml5');
     this.message_body.editor.on("change", onChange.bind(this));

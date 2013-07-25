@@ -115,7 +115,7 @@ describeWidget("invite_modal", function(){
 
   context("when the `shown' event is triggered", function(){
     it("should call focus on the widget", function() {
-      var focus = spyOn(this.widget,'focus');
+      var focus = spyOn(this.widget,'focus').andReturn(this.widget);
       this.widget.trigger('shown');
       expect(focus).toHaveBeenCalled()
     });
@@ -123,8 +123,8 @@ describeWidget("invite_modal", function(){
 
   context("when the `ajax:send' event is triggered on the form", function(){
     it("should call focus on the widget", function() {
-      var disable = spyOn(this.widget,'disable');
-      var empty   = spyOn(this.widget.flash,'empty');
+      var disable = spyOn(this.widget,'disable').andReturn(this.widget);
+      var empty   = spyOn(this.widget.flash,'empty').andReturn(this.widget);
       this.widget.form.trigger('ajax:send');
       expect(disable).toHaveBeenCalled();
       expect(empty).toHaveBeenCalled();
@@ -150,8 +150,8 @@ describeWidget("invite_modal", function(){
   context("when the `ajax:error' event is triggered on the form", function(){
 
     it("should call focus on the widget", function() {
-      var enable = spyOn(this.widget,'enable');
-      var flash_alert = spyOn(this.widget.flash,'alert');
+      var enable = spyOn(this.widget,'enable').andReturn(this.widget);
+      var flash_alert = spyOn(this.widget.flash,'alert').andReturn(this.widget);
       this.widget.form.trigger('ajax:error', [{}, "ok", {}]);
       expect(enable).toHaveBeenCalled();
       expect(flash_alert).toHaveBeenCalledWith('Oops! Something went wrong. Please try again later.');
@@ -159,8 +159,8 @@ describeWidget("invite_modal", function(){
 
     context("when the status code is 400", function() {
       it("should call focus on the widget", function() {
-        var enable = spyOn(this.widget,'enable');
-        var flash_notice = spyOn(this.widget.flash,'notice');
+        var enable = spyOn(this.widget,'enable').andReturn(this.widget);
+        var flash_notice = spyOn(this.widget.flash,'notice').andReturn(this.widget);
         this.widget.form.trigger('ajax:error', [{status:400}, "not found", {}]);
         expect(enable).toHaveBeenCalled();
         expect(flash_notice).toHaveBeenCalledWith('That user is already a member of this project.');
