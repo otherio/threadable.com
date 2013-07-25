@@ -1,6 +1,7 @@
 //= require jasmine
 //= require jasmine-html
 //= require jasmine-jsreporter
+//= require jasmine-console_reporter
 //= require mock-ajax
 //= require jasmine-jquery
 
@@ -40,11 +41,13 @@ $(window).load(function() {
     var jasmineEnv = jasmine.getEnv();
     jasmineEnv.updateInterval = 1000;
 
-    jasmineEnv.htmlReporter = new jasmine.HtmlReporter();
-    jasmineEnv.jsReporter = new jasmine.JSReporter();
+    jasmineEnv.htmlReporter    = new jasmine.HtmlReporter();
+    jasmineEnv.jsReporter      = new jasmine.JSReporter();
+    jasmineEnv.consoleReporter = new jasmine.ConsoleReporter();
 
     jasmineEnv.addReporter(jasmineEnv.htmlReporter);
     jasmineEnv.addReporter(jasmineEnv.jsReporter);
+    jasmineEnv.addReporter(jasmineEnv.consoleReporter);
     // this is not the best.
     //jasmineEnv.addReporter(new jasmine.ConsoleReporter);
 
