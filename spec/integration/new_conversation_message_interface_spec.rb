@@ -14,18 +14,19 @@ describe 'new conversaion message interface' do
 
     expect_widget_to_be_expanded!
     expect_subject_input_to_be_focused!
-    within '.new_conversation_message' do
-      fill_in 'subject', with: 'we did it'
-      fill_in_wysiwyg 'our kickstarter is funded.'
-      click_on 'Send'
-    end
+
+    fill_in_new_conversation_message(
+      subject: 'we did it',
+      body: 'our kickstarter is funded.',
+      send: true,
+    )
 
     expect(page).to have_content 'we did it'
     expect(page).to have_content 'our kickstarter is funded.'
 
     expect_widget_not_to_be_expanded!
 
-    find_field('Add your voice...').click
+    focus_new_conversation_message_body!
     expect_widget_to_be_expanded!
     expect_subject_input_not_to_be_visible!
 
@@ -102,19 +103,12 @@ describe 'new conversaion message interface' do
     expect_selector_not_to_be_visible! body_wysiwyg_selector
   end
 
-
   def expect_selector_to_be_visible! selector
     expect(page).to have_selector selector
   end
 
   def expect_selector_not_to_be_visible! selector
     expect(page).not_to have_selector selector
-  end
-
-  def fill_in_wysiwyg value
-    page.execute_script <<-JS
-      $('.wysihtml5-sandbox:first').contents().find("body").html(#{value.inspect});
-    JS
   end
 
 end
