@@ -34,13 +34,11 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
     new_conversation?
   end
 
-  option :autofocus do
-    new_conversation?
-  end
-
   option :autoexpand do
     new_conversation?
   end
+
+  option :autofocus, false
 
   option :remote do
     !new_conversation?
@@ -48,6 +46,10 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
 
   html_option 'data-autoexpand' do
     autoexpand
+  end
+
+  html_option 'data-autofocus' do
+    autofocus
   end
 
 end

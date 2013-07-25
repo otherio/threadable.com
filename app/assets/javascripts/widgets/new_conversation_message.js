@@ -23,11 +23,8 @@ Rails.widget('new_conversation_message', function(Widget){
 
     this.node.find('.recipients .avatar').tooltip();
 
-    if (this.data.autoexpand){
-      this.focus();
-    }else{
-      this.message_body_textarea.click(this.expand.bind(this));
-    }
+    if (this.data.autofocus ) this.focus();
+    else if (this.data.autoexpand) this.expand();
   };
 
   this.expand = function() {
