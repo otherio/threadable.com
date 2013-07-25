@@ -1,11 +1,12 @@
 Rails.widget('new_conversation_message', function(Widget){
 
   Widget.initialize = function(page){
-    page.on('click',        Widget.selector+' .attach-files', attachFiles);
+    page.on('click',        Widget.selector+' .attach-files', this.curry('attachFiles', true));
     page.on('click',        Widget.selector+' .attachment-preview .remove', removeAttachment);
+    page.on('click',        Widget.selector+' .body_field textarea', this.curry('focus', true));
     page.on('ajax:before',  Widget.selector+' form', beforeSubmit);
     page.on('submit',       Widget.selector+' form', beforeSubmit);
-    page.on('ajax:success', Widget.selector+' form', resetForm);
+    page.on('ajax:success', Widget.selector+' form', this.curry('reset'));
   };
 
   var ATTACHMENT_PREVIEW_TEMPLATE;
@@ -41,6 +42,17 @@ Rails.widget('new_conversation_message', function(Widget){
     return this;
   };
 
+  this.reset = function(){
+    this.reset();
+    var form = $(this);
+
+    form.find('.attachments').empty();
+    $('ul.wysihtml5-toolbar').remove();
+    $('iframe.wysihtml5-sandbox').off('onload').remove();
+    form.find('textarea').css('height', '40px').show();
+    form.find('input[type=submit]').attr('disabled', true);
+  };
+
   this.getMessageBody = function(){
     return this.message_body ?
       this.message_body.editor.composer.getValue() :
@@ -57,7 +69,7 @@ Rails.widget('new_conversation_message', function(Widget){
     return this;
   };
 
-  this.pickFiles = function(){
+  this.attachFiles = function(){
     filepicker.pickAndStore({multiple:true}, {}, function(fpfiles){
       this.addFiles(fpfiles);
     }.bind(this));
@@ -122,11 +134,6 @@ Rails.widget('new_conversation_message', function(Widget){
     this.send_button.attr('disabled', !this.isValid());
   }
 
-  function attachFiles(event){
-    event.preventDefault();
-    $(this).widget(Widget).pickFiles();
-  }
-
   function removeAttachment(event){
     event.preventDefault();
     $(this).closest('.attachment-preview').remove();
@@ -138,17 +145,6 @@ Rails.widget('new_conversation_message', function(Widget){
       event.preventDefault();
       Covered.page.flash.notice('your message must contain a subject and a body');
     }
-  }
-
-  function resetForm(){
-    this.reset();
-    var form = $(this);
-
-    form.find('.attachments').empty();
-    $('ul.wysihtml5-toolbar').remove();
-    $('iframe.wysihtml5-sandbox').off('onload').remove();
-    form.find('textarea').css('height', '40px').show();
-    form.find('input[type=submit]').attr('disabled', true);
   }
 
 });
