@@ -22,6 +22,10 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
     conversation.messages.build(conversation: conversation)
   end
 
+  option :recipients do
+    conversation.recipients
+  end
+
   option :url do
     if new_conversation?
       @view.project_conversations_path(project)
