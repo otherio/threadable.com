@@ -12,11 +12,10 @@ gem 'pg'
 gem 'honeybadger'
 gem 'resque'
 
-gem 'stringex'  # for url slugs
-gem 'devise' #, github: 'plataformatec/devise', branch: 'rails4'    # authentication
+gem 'stringex'
+gem 'devise'
 gem 'method_object'
 gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
-# gem 'rails-widgets', path: "/Users/deadlyicon/Projects/rails-widgets"
 gem 'js-routes'
 gem 'incoming', '0.1.4'
 gem 'mail'
