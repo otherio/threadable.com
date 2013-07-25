@@ -38,7 +38,9 @@ gem 'sass-rails'
 gem 'font-awesome-sass-rails'
 gem 'uglifier', '>= 1.0.3'
 
-gem 'rails_12factor'
+group :production do
+  gem 'rails_12factor'
+end
 
 group :development, :test do
   gem 'dotenv-rails'
