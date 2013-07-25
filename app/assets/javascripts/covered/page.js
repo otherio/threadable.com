@@ -4,17 +4,16 @@
 !function(){
 
   Covered.Page = function(env){
-    var page = this;
-    page.env = env;
-    page.name = env.page_name;
+    this.env = env;
+    this.name = env.page_name;
 
-    page.current_project      = env.current_project;
-    page.current_conversation = env.current_conversation;
-    page.current_task         = env.current_task;
-    page.current_task_doers   = env.current_task_doers;
-    page.current_user         = env.current_user;
+    this.current_project      = env.current_project;
+    this.current_conversation = env.current_conversation;
+    this.current_task         = env.current_task;
+    this.current_task_doers   = env.current_task_doers;
+    this.current_user         = env.current_user;
 
-    page.bind('domready', onDomready);
+    this.bind('domready', onDomready);
   };
 
   Object.extend(Covered.Page.prototype, Covered.Routes);
