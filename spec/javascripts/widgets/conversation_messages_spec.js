@@ -27,7 +27,8 @@ describeWidget("conversation_messages", function(){
         this.triggerSuccess();
 
         expect(this.messages().length).toEqual(3);
-        expect(this.messages().filter(':last').html()).toEqual(this.message.as_html);
+        var message = $(this.message.as_html);
+        expect(this.messages().filter(':last').text()).toEqual(message.text());
       });
 
       it("refreshes the times", function() {
