@@ -5,8 +5,13 @@ Rails.widget('sign_in_form', function(Widget){
     page.on('ajax:complete', Widget.selector+' form', onComplete);
   };
 
+  this.initialize = function() {
+    this.flash_messages = this.node.find('.flash_messages');
+    this.flash          = new Covered.Flash(this.flash_messages);
+  };
+
   function onBefore() {
-    Covered.page.flash.empty();
+    $(this).widget(Widget).flash.empty();
   }
 
   function onComplete(event, xhr){
@@ -16,8 +21,7 @@ Rails.widget('sign_in_form', function(Widget){
     }
     var widget = $(this).widget(Widget);
     var data = JSON.parse(xhr.responseText);
-    widget.page().flash.empty();
-    widget.page().flash.error(data.error);
+    widget.flash.empty().error(data.error);
     widget.node.animation('shake', '1s');
   }
 
