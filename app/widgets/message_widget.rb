@@ -6,6 +6,10 @@ class MessageWidget < Rails::Widget::Presenter
     true if message.shareworthy?
   end
 
+  html_option :id do
+    "message-#{message.id}"
+  end
+
   html_option :knowledge do
     true if message.knowledge?
   end

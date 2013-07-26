@@ -1,27 +1,32 @@
-&
-  ol
-    padding-left: 20px
-    padding-right: 20px
-    list-style-type: none
-    margin: 0
-    > li
-      &.with_event
-        color: #999999
-        padding: 0
-        margin-left: 1em
-        font-size: 0.85em
-      &.with_message
-        border-top: 1px
-        border-bottom: 1px
-        border-left: 0
-        border-right: 0
-        border-color: gainsboro
-        border-style: solid
-        padding: 5px
-        &:first-child, + .with_message
-          border-top: none
-        &:first-child
-          padding-top: 0
+ol
+  padding-left: 20px
+  padding-right: 20px
+  list-style-type: none
+  margin: 0
+  > li
+    &.with_event
+      color: #999999
+      padding: 0
+      margin-left: 1em
+      font-size: 0.85em
+    &.with_message
+      border-top: 1px
+      border-bottom: 1px
+      border-left: 0
+      border-right: 0
+      border-color: gainsboro
+      border-style: solid
+      padding: 5px
+      &:first-child, + .with_message
+        border-top: none
+      &:first-child
+        padding-top: 0
 
-  .new_conversation_message
-    margin-top: 2em
+.new_conversation_message
+  margin-top: 2em
+
+.message
+  &.tada
+    +animate(tada, 1s, .2s)
+  &.highlight
+    +animate(flash, 1s, .2s)

@@ -1,0 +1,6 @@
+= @message.body_html.html_safe
+
+.covered-footer.well{style:"font-size: 80%; margin: 3em 5em; background-color: #F5F5F5; border: 1px solid #E3E3E3; padding: 1em;"}
+  #{link_to 'This message', @message_url} was sent to #{mail_to @recipient.email}.
+  You are receiving this email because you are a member of the #{link_to @project.name, project_url(@project)} project.
+  If you would prefer not to receive future communications from #{link_to 'Covered.io', root_url} you may #{link_to 'unsubscribe', @unsubscribe_url}.

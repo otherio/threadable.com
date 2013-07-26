@@ -1,4 +1,4 @@
 <%= @message.body_plain.html_safe %>
 _____
-View on Covered: <%= project_conversation_url(@message.project.slug, @message.conversation.slug) %>
+View on Covered: <%= project_conversation_url(@message.project, @message.conversation) %>
 Unsubscribe:  <%= @unsubscribe_url %>

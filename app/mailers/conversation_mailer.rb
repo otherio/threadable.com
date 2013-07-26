@@ -4,6 +4,8 @@ class ConversationMailer < ActionMailer::Base
 
   def conversation_message(message, recipient)
     @message, @recipient = message, recipient
+    @project = @message.project
+    @conversation = @message.conversation
     subject_tag = message.project.subject_tag
 
     subject = message.subject
@@ -24,6 +26,8 @@ class ConversationMailer < ActionMailer::Base
         :content   => attachment.content,
       }
     end
+
+    @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
 
     mail(
       :'to'          => %(#{recipient.name.inspect} <#{recipient.email}>),
