@@ -14,6 +14,7 @@ describe MessageWidget do
 
   let(:message)   {
     double(:message,
+      id: 2131,
       shareworthy?: true,
       knowledge?: true,
       conversation: conversation,
@@ -50,6 +51,7 @@ describe MessageWidget do
     subject{ presenter.html_options }
     it do
       should == {
+        id: "message-2131",
         class: "message custom_class",
         widget: "message",
         shareworthy: true,
