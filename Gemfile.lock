@@ -45,6 +45,8 @@ GEM
     acts_as_list (0.2.0)
       activerecord (>= 3.0)
     addressable (2.3.5)
+    animate-sass (0.1.1)
+      compass (>= 0.11.5)
     arel (4.0.0)
     atomic (1.1.10)
     bcrypt-ruby (3.1.1)
@@ -313,6 +315,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-fixture_builder
   acts_as_list
+  animate-sass
   bootstrap-wysihtml5-rails
   capybara (>= 2.0.2)
   capybara-webkit

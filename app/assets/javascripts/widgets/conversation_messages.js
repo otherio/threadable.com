@@ -20,7 +20,7 @@ Rails.widget('conversation_messages', function(Widget){
     var message = $(message.as_html);
     var li = $('<li>').addClass('with_message').html(message);
     widget.node.find('> ol').append(li);
-    message.addClass('tada');
+    message.addClass('animate-in');
     message.widget('initialize');
   }
 

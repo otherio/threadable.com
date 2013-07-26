@@ -37,6 +37,7 @@ gem 'compass-rails', github: "milgner/compass-rails", branch: "rails4"
 gem 'sass-rails'
 gem 'font-awesome-sass-rails'
 gem 'uglifier', '>= 1.0.3'
+gem 'animate-sass'
 
 group :production do
   gem 'rails_12factor'
