@@ -5,6 +5,7 @@
 //= require jquery.rails_widgets
 //= require jquery.growing-inputs
 //= require jquery.sortable
+//= require jquery.animation
 //= require timeago
 //= require bootstrap
 //= require bootstrap-wysihtml5

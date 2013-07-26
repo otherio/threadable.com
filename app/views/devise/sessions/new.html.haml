@@ -1,13 +1,3 @@
 .fluid-columns
   .row
-    .span9.offset3.well
-      %h2 Sign in
-
-      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-        = f.input :email, :required => false, :autofocus => true
-        = f.input :password, :required => false
-        = f.input :remember_me, :as => :boolean, label_html:{style:'display: inline'}
-        %br/
-        = f.button :submit, "Sign in", class: 'btn'
-
-      = render "devise/shared/links"
+    = render_widget :sign_in_form, resource

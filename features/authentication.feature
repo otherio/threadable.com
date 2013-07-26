@@ -11,7 +11,8 @@ Scenario: A user with an account and a password can sign in
     And I fill in "Email" with "alice@ucsd.covered.io"
     And I fill in "user_password" with "password"
     And I click the "Sign in" button
-   Then I should be on the home page
+   Then I should see "Projects"
+    And I should be on the home page
     And I should be logged in as "Alice Neilson"
 
 Scenario: A user with an account and a password can sign in with any of their email addresses
@@ -23,7 +24,8 @@ Scenario: A user with an account and a password can sign in with any of their em
     And I fill in "Email" with "ray@gmail.covered.io"
     And I fill in "user_password" with "password"
     And I click the "Sign in" button
-   Then I should be on the home page
+   Then I should see "Projects"
+    And I should be on the home page
     And I should be logged in as "Ray Arvidson"
 
 Scenario: Failing to log in

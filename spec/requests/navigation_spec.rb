@@ -14,7 +14,6 @@ describe "Navbar" do
     end
 
     it "should include the project name" do
-
       page.should have_content project.name
     end
 

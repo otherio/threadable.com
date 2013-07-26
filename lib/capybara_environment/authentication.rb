@@ -25,6 +25,7 @@ module CapybaraEnvironment::Authentication
       fill_in 'Password', :with => 'password'
       click_on 'Sign in'
     end
+    expect(page).to have_content('Projects')
   end
 
 end
