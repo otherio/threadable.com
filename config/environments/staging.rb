@@ -4,7 +4,10 @@ Covered::Application.configure do
 
   config.log_level = :debug
 
-  config.action_mailer.smtp_settings[:user_name] = 'postmaster@staging.covered.io'
+  config.action_mailer.smtp_settings.merge!(
+    :user_name => 'postmaster@staging.covered.io',
+    :domain => 'staging.covered.io',
+  )
 
   config.action_controller.default_url_options = { :host => 'www-staging.covered.io' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
