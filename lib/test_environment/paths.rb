@@ -12,10 +12,13 @@ module TestEnvironment::Paths
       project_path Project.where(name: $1)
     when /^the project conversations page for "(.+?)"$/
       project_conversations_path Project.where(name: $1).first!
-    when /^the "(.+?)" conversation page$/
-      task = Task.where(subject: $1).first!
-      project_conversation_path task.project, task
-    when /^the "(.+?)" conversation for the "(.+?)" project$/
+    # when /^the "(.+?)" task page$/
+    #   task = Task.where(subject: $1).first!
+    #   project_task_path task.project, task
+    when /^the "(.+?)" (conversation|task) page$/
+      conversation = Conversation.where(subject: $1).first!
+      project_conversation_path conversation.project, conversation
+    when /^the "(.+?)" (conversation|task) for the "(.+?)" project$/
       message_name, project_name = $1, $2
       project = Project.where(name: $2).first!
       conversation = project.conversations.find_by_subject($1)

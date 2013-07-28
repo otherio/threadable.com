@@ -47,9 +47,15 @@ Feature: Projects and Tasks
 
   Scenario: A signed in user can create a task via the website
 
-  Scenario: A signed in user can add or remove themselves from a talk via email
+  Scenario: A signed in user can add or remove themselves from a task via email
 
-  Scenario: A signed in user can add or remove themselves from a talk via website
+  Scenario: A signed in user can add or remove themselves from a task via website
+    Given I am "Alice Neilson"
+      And I go to the "install mirrors" task page
+      And I click "sign me up"
+     Then I should see "you have been added as a doer"
+     When I click "remove me"
+     Then I should see "you have been removed as a doer"
 
   Scenario: A signed in user can mark a task done or undone from via email
 
