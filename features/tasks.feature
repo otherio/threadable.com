@@ -54,8 +54,14 @@ Feature: Projects and Tasks
       And I go to the "install mirrors" task page
       And I click "sign me up"
      Then I should see "you have been added as a doer"
+      And I should see "Alice Neilson" as a doer of the task
+     When I reload the page
+     Then I should see "Alice Neilson added Alice Neilson as a doer"
      When I click "remove me"
      Then I should see "you have been removed as a doer"
+      And I should not see "Alice Neilson" as a doer of the task
+     When I reload the page
+     Then I should see "Alice Neilson removed Alice Neilson as a doer"
 
   Scenario: A signed in user can mark a task done or undone from via email
 
