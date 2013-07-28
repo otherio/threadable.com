@@ -72,9 +72,17 @@ Rails.widget('tasks_sidebar', function(Widget){
     return widget;
   };
 
+  this.options = function(){
+    return {
+      conversations: this.data.conversations,
+      with_title: this.data.with_title,
+    }
+  };
+
   this.reload = function(){
     return $.ajax({
       url:      this.node.find('form').attr('action'),
+      data:     this.options(),
       type:     'GET',
       dataType: 'html',
       success:  this.replace.bind(this)

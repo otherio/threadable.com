@@ -78,7 +78,6 @@ Rails.widget('task_metadata', function(Widget){
       this.page().flash.error('Opps. Something went wrong trying to '+verb+' '+member_name+' as a doer.');
     });
 
-
     request.always(function(){
       page.node.find('.tasks_sidebar').widget('reload');
       this.node.find('.doers i.icon-spinner').remove();

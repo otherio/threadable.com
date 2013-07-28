@@ -78,12 +78,10 @@ class TasksController < ApplicationController
   end
 
   def render_widget
-    conversations = params[:conversations] == "false" ? false : nil
-    with_title = params[:with_title] == "true" ? true : nil
-    render text: view_context.render_widget(:tasks_sidebar, project,
-      conversations: conversations,
-      with_title: with_title
-    )
+    options = {}
+    options[:with_title]    = true  if params[:with_title] == "true"
+    options[:conversations] = false if params[:conversations] == "false"
+    render text: view_context.render_widget(:tasks_sidebar, project, options)
   end
 
 end

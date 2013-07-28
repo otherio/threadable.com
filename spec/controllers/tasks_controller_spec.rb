@@ -22,6 +22,36 @@ describe TasksController do
     }
   end
 
+  describe "GET index" do
+    context "when xhr" do
+      it "should render the tasks sidebar widget html" do
+        xhr :get, :index, valid_params
+        html = Nokogiri::HTML.fragment(response.body)
+        expect(html.children.length).to eq 1
+        widget = html.children.first
+        expect(widget[:class].split(/\s+/)).to include "tasks_sidebar"
+        expect(widget['data-conversations']).to eq "true"
+        expect(widget['data-with_title']).to eq "false"
+      end
+      context "when given conversations=false" do
+        it "should render the tasks sidebar widget html without the conversations tab" do
+          xhr :get, :index, valid_params.merge("conversations" => "false")
+          widget = Nokogiri::HTML.fragment(response.body).children.first
+          expect(widget['data-conversations']).to eq "false"
+          expect(widget['data-with_title']).to eq "false"
+        end
+      end
+      context "when given with_title=true" do
+        it "should render the tasks sidebar widget html without the conversations tab" do
+          xhr :get, :index, valid_params.merge("with_title" => "true")
+          widget = Nokogiri::HTML.fragment(response.body).children.first
+          expect(widget['data-conversations']).to eq "true"
+          expect(widget['data-with_title']).to eq "true"
+        end
+      end
+    end
+  end
+
   describe "POST create" do
 
     def valid_params
@@ -84,11 +114,10 @@ describe TasksController do
           view_context = double(:view_context)
           controller.stub(:view_context).and_return(view_context)
 
+          options = {}
+
           view_context.should_receive(:render_widget).
-            with(:tasks_sidebar, project,
-              conversations: nil,
-              with_title: nil
-            ).and_return("FAKE TASKS SIDEBAR WIDGET")
+            with(:tasks_sidebar, project, options).and_return("FAKE TASKS SIDEBAR WIDGET")
 
           expect { xhr :post, :create, valid_params }.to change(Task, :count).by(1)
           assigns(:task).should be_a(Task)
