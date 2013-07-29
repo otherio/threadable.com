@@ -1,0 +1,7 @@
+.user-list
+  %ul
+    - @members.each do |member|
+      %li
+        %span.avatar
+          = image_tag(member.avatar_url, :class => 'avatar-small', alt: member.name)
+        %span.name= link_to member.name, "mailto:#{member.email}"
