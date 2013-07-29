@@ -17,11 +17,17 @@ describe Project::MembersController do
   end
 
   describe "GET index" do
-    it "returns a list of users that are members of the project" do
+    it "returns a list of users that are members of the project as json" do
       xhr :get, :index, valid_params
       response.should be_success
       # this is fucking stupid
       JSON.parse(response.body).should =~ JSON.parse(project.members.to_json)
+    end
+
+    it "shows a list of users that are members of the project" do
+      get :index, project_id: project.to_param
+      response.should be_success
+      assigns(:members).should =~ project.members
     end
   end
 

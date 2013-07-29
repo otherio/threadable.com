@@ -35,7 +35,7 @@ Then /^I should be on (.+)$/ do |name|
   page.current_path.should == path_to(name)
 end
 
-When /^I click "(.*?)"$/ do |name|
+When /^I click [on]*"(.*?)"$/ do |name|
   click_on name
 end
 

@@ -4,10 +4,16 @@ class Project::MembersController < ApplicationController
 
   respond_to :json
 
+
   # GET /projects/make-a-tank/members
   # GET /projects/make-a-tank/members.json
   def index
-    respond_with(members)
+    @members = project.members
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @members }
+    end
   end
 
   # POST /projects/make-a-tank/members.json
@@ -31,10 +37,6 @@ class Project::MembersController < ApplicationController
 
   def project
     @project ||= current_user.projects.where(slug: params[:project_id]).first!
-  end
-
-  def members
-    project.members
   end
 
 
