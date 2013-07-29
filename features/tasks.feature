@@ -46,6 +46,13 @@ Feature: Projects and Tasks
   Scenario: A signed in user can create a task via email
 
   Scenario: A signed in user can create a task via the website
+    Given I am "Tom Canver"
+     When I go to the project conversations page for "UCSD Electric Racing"
+      And I add a new task titled "Research carbon fiber techniques"
+     Then I should see "Research carbon fiber techniques" within the not done tasks list
+     When I click "Research carbon fiber techniques" within the not done tasks list
+     Then I should be on the "Research carbon fiber techniques" conversation page
+
 
   Scenario: A signed in user can add or remove themselves from a task via email
 
@@ -66,3 +73,13 @@ Feature: Projects and Tasks
   Scenario: A signed in user can mark a task done or undone from via email
 
   Scenario: A signed in user can mark a task done or undone from via the website
+    Given I am "Tom Canver"
+     When I go to the "trim body panels" task page
+     Then I should be on the "trim body panels" conversation page
+     When I click "mark as done"
+     Then I should see "Task was successfully updated"
+      And I should see "trim body panels" within the done tasks list
+     When I click "mark as not done"
+     Then I should see "Task was successfully updated"
+      And I should see "trim body panels" within the not done tasks list
+
