@@ -1,0 +1,4 @@
+= form_tag(request.url, method:"post", id:"auto_post") do
+  = hidden_field_tag(:token, @token)
+:javascript
+  auto_post.submit();

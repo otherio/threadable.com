@@ -32,7 +32,9 @@ describe ConversationMailer do
 
     let(:recipient){ project.members.with_email("bethany@ucsd.covered.io").first! }
 
-    subject(:mail) { ConversationMailer.conversation_message(message, recipient) }
+    let(:project_membership){ recipient.project_memberships.where(project: project).first! }
+
+    subject(:mail) { ConversationMailer.conversation_message(message, project_membership) }
 
     let(:mail_headers){
       Hash[mail.header_fields.map{|hf| [hf.name, hf.value] }]
@@ -57,7 +59,7 @@ describe ConversationMailer do
       unsubscribe_token = $1
       unsubscribe_token.should_not be_blank
       unsubscribe_token = URI.decode(unsubscribe_token)
-      UnsubscribeToken.decrypt(unsubscribe_token).should == [project.id, recipient.id]
+      ProjectUnsubscribeToken.decrypt(unsubscribe_token).should == project_membership.id
 
       mail.header[:'Reply-To'].to_s.should == project.formatted_email_address
       mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]

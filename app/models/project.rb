@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   has_many :conversations, -> { order "updated_at DESC" }
   has_many :tasks, -> { order "position" }
   has_many :project_memberships
+  has_many :memberships, class_name: 'ProjectMembership'
   has_many :members, :through => :project_memberships, :source => 'user' do
     def who_get_email
       where project_memberships: {gets_email:true}

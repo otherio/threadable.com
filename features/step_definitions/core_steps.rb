@@ -48,7 +48,7 @@ When /^I click the "(.*?)" button$/ do |name|
 end
 
 When /^I fill in "(.*?)" with "(.*?)"$/ do |field, value|
-  fill_in field, with: value
+  fill_in field, with: value, :match => :prefer_exact
 end
 
 When /^I scroll to the bottom of the page$/ do
@@ -78,4 +78,13 @@ end
 
 When /^I reload the page$/ do
   visit page.current_path
+end
+
+
+Then(/^the "(.*?)" field should be filled in with "(.*?)"$/) do |field, value|
+  expect(find_field(field, :match => :prefer_exact).value).to eq value
+end
+
+Then(/^the "(.*?)" field should be blank$/) do |field|
+  expect(find_field(field, :match => :prefer_exact).value).to be_blank
 end

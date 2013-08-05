@@ -1,0 +1,8 @@
+.row-fluid
+  .span8.offset2.well.text-center
+    %h1 Welcome aboard!
+
+    %p.lead We just subscribed #{@member.name} to #{@project.name}
+
+    - if !@member.web_enabled?
+      %p= link_to 'Click here to set a password!'

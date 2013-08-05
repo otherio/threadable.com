@@ -43,29 +43,19 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    params.require(:message).permit(:subject, :body, :attachments)
-    message_attributes = params[:message].slice(:subject, :body, :attachments)
-    message_attributes.permit!
+    message = params.require(:message).slice(:subject, :body, :attachments)
+    message.permit!
+    subject = message.delete(:subject)
 
-    conversation_attributes = {
-      creator: current_user,
-      subject: message_attributes.delete(:subject),
-    }
-
-    Conversation.transaction do
-      @conversation = project.conversations.new(conversation_attributes)
-      @conversation.save or raise ActiveRecord::Rollback
-      @message = ConversationMessageCreator.call(current_user, @conversation, message_attributes)
-      raise ActiveRecord::Rollback unless @message.persisted?
-    end
+    conversation = ConversationCreator.call(project, current_user, subject, message)
 
     respond_to do |format|
-      if @conversation.persisted?
-        format.html { redirect_to project_conversation_url(project, @conversation), notice: 'Conversation was successfully created.' }
-        format.json { render json: @conversation, status: :created, location: project_conversation_url(project, @conversation) }
+      if conversation.persisted?
+        format.html { redirect_to project_conversation_url(project, conversation), notice: 'Conversation was successfully created.' }
+        format.json { render json: conversation, status: :created, location: project_conversation_url(project, conversation) }
       else
         format.html { render action: "new" }
-        format.json { render json: @conversation.errors, status: :unprocessable_entity }
+        format.json { render json: conversation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -128,7 +118,7 @@ class ConversationsController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.where(slug: params[:project_id]).includes(:tasks).first!
+    @project ||= current_user.projects.where(slug: params.require(:project_id)).includes(:tasks).first!
   end
 
 end

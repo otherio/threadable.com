@@ -33,20 +33,31 @@ class TestEnvironment::FixtureBuilder
   end
 
   def create_user name, email
-    users[name] = FactoryGirl.create(:user, email: email, name: name, password: 'password')
+    users[name] = FactoryGirl.create(:user, email: email, name: name)
   end
 
-  def invite_user name, email
-    create_user name, email
+  def sign_up name, email, password
+    users[name] = FactoryGirl.create(:user,
+      email: email,
+      name: name,
+      password: password,
+      password_confirmation: password,
+      confirmed_at: Time.now,
+    )
+  end
+
+  def add_user name, email
+    project.members << create_user(name, email)
   end
 
   def set_avatar email, filename
     User.with_email(email).first!.update_attribute(:avatar_url, "/assets/fixtures/#{filename}")
   end
 
-  def accept_invite name
-    user(name).confirm!
-    project.members << user(name)
+  def web_enable name, password
+    user = user(name)
+    user.confirm!
+    user.update_attribute(:password, password)
   end
 
   def send_message(attributes)

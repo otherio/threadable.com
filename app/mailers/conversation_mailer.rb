@@ -2,9 +2,11 @@
 
 class ConversationMailer < ActionMailer::Base
 
-  def conversation_message(message, recipient)
-    @message, @recipient = message, recipient
+  def conversation_message(message, project_membership)
+    @message, @project_membership = message, project_membership
+    @recipient = @project_membership.user
     @project = @message.project
+    @project_membership = @project.project_memberships.where(user: @recipient).first!
     @conversation = @message.conversation
     subject_tag = message.project.subject_tag
 
@@ -13,11 +15,11 @@ class ConversationMailer < ActionMailer::Base
     # add a check mark to the subect if the conversation is a task, and if the subject doesn't already include one
     subject = "✔ #{subject}" if message.conversation.task? && !subject.include?("✔")
 
-    from = message.user == recipient ?
+    from = message.user == @recipient ?
       message.project.formatted_email_address :
       message.user.formatted_email_address
 
-    unsubscribe_token = UnsubscribeToken.encrypt(message.project.id, recipient.id)
+    unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project_membership.id)
     @unsubscribe_url = project_unsubscribe_url(message.project.slug, unsubscribe_token)
 
     message.attachments.each do |attachment|
@@ -30,7 +32,7 @@ class ConversationMailer < ActionMailer::Base
     @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
 
     mail(
-      :'to'          => %(#{recipient.name.inspect} <#{recipient.email}>),
+      :'to'          => %(#{@recipient.name.inspect} <#{@recipient.email}>),
       :'subject'     => subject,
       :'from'        => from,
       :'Reply-To'    => message.project.formatted_email_address,

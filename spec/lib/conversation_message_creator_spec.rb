@@ -36,12 +36,17 @@ describe ConversationMessageCreator do
     HTMLEntities.new.decode Sanitize.clean(html.gsub(%r{<br/?>}, "\n"))
   end
 
+  def message_attributes
+    {
+      "subject" => "hey fellas",
+      "body" => "Hey, <i>Anyone</i> want some <strong>cake</strong>?",
+    }.with_indifferent_access
+  end
+
 
   context "when given attachments" do
     def message_attributes
-      {
-        "subject" => "hey fellas",
-        "body" => "Hey, <i>Anyone</i> want some <strong>cake</strong>?",
+      super.merge(
         "attachments"=> [
           {
             "url"=>"https://www.filepicker.io/api/file/g88HcWEkSN68EwKKIBTm",
@@ -57,18 +62,22 @@ describe ConversationMessageCreator do
             "writeable"=>true,
           }
         ]
-      }.with_indifferent_access
+      )
     end
     test!
   end
 
   context "when given no attachments" do
-    def message_attributes
-      {
-        "subject" => "hey fellas",
-        "body" => "Hey, <i>Anyone</i> want some <strong>cake</strong>?",
-      }.with_indifferent_access
-    end
     test!
+  end
+
+  context "when given no subject" do
+    def message_attributes
+      super.slice!(:subject)
+    end
+    it "should use the conversation's subject" do
+      message = ConversationMessageCreator.call(user, conversation, message_attributes)
+      expect(message.subject).to eq conversation.subject
+    end
   end
 end

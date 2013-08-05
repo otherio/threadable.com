@@ -3,31 +3,20 @@ require 'spec_helper'
 describe "Conversations" do
   describe "GET /conversations" do
 
-    let!(:current_user){ create(:user) }
-    let!(:project){ create(:project) }
+    let!(:current_user){ User.where(name: 'Alice Neilson').first! }
+    let!(:project){ current_user.projects.first! }
 
     before do
-      project.members << current_user
-      post(new_user_session_path,
-        user: {
-          email: current_user.email,
-          password: 'password',
-          remember_me: 0,
-        },
-        commit: 'Sign in',
-      )
-      response.should be_redirect
+      login_as current_user
     end
 
     it "displays tasks as tasks" do
       task = create(:task, project: project)
 
-      get project_conversation_path({project_id: project.to_param, id: task.to_param})
-      response.should be_success
+      visit project_conversation_path(project, task)
 
-      response.body.should =~ /icon-ok/
-      response.body.should =~ /doers:/
-      response.body.should =~ /mark as done/
+      expect(page).to have_content 'doers:'
+      expect(page).to have_content 'mark as done'
     end
 
   end

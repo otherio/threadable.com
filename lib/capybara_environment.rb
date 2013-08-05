@@ -20,6 +20,7 @@ module CapybaraEnvironment
       Capybara::Selenium::Driver.new(app, browser: :chrome)
     end
 
+    Capybara.exact_options          = true
     Capybara.ignore_hidden_elements = true
     Capybara.default_driver         = ENV['SELENIUM'] == 'true' ? :selenium : :webkit
     Capybara.javascript_driver      = ENV['SELENIUM'] == 'true' ? :selenium : :webkit

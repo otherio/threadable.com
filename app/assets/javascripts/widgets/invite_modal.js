@@ -10,8 +10,8 @@ Rails.widget('invite_modal', function(Widget){
 
   this.initialize = function(){
     this.form           = this.$('form');
-    this.name_input     = this.$('input[name="invite[name]"]');
-    this.email_input    = this.$('input[name="invite[email]"]');
+    this.name_input     = this.$('input[name="member[name]"]');
+    this.email_input    = this.$('input[name="member[email]"]');
     this.flash_messages = this.node.find('.flash_messages');
     this.flash          = new Covered.Flash(this.flash_messages);
   }
@@ -77,15 +77,15 @@ Rails.widget('invite_modal', function(Widget){
     widget.disable();
   }
 
-  function onSuccess(event, user, status, xhr){
+  function onSuccess(event, member, status, xhr){
     var widget = $(this).widget(Widget);
     widget.hide().reset();
-    widget.page().flash.message(user.name+' <'+user.email+'> was added to this project.');
+    widget.page().flash.message(member.name+' <'+member.email+'> was added to this project.');
   }
 
   function onError(event, xhr, status, error){
     var widget = $(this).widget(Widget);
-    if (xhr.status === 400){
+    if (xhr.status === 422){
       widget.flash.notice('That user is already a member of this project.');
       widget.enable();
     }else{

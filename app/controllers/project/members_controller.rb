@@ -2,9 +2,6 @@ class Project::MembersController < ApplicationController
 
   before_filter :authenticate_user!
 
-  respond_to :json
-
-
   # GET /projects/make-a-tank/members
   # GET /projects/make-a-tank/members.json
   def index
@@ -18,13 +15,19 @@ class Project::MembersController < ApplicationController
 
   # POST /projects/make-a-tank/members.json
   def create
-    member = User.where(id: params[:member][:id]).first
-    return head :not_found if member.blank?
-    if project.members << member
-      respond_with member, status: :created
-    else
-      respond_with member, status: :unprocessable_entity
-    end
+    member_params = params.require(:member).permit(:id,:name,:email,:message)
+
+    member = AddMemberToProject.call(
+      actor:   current_user,
+      project: project,
+      member:  member_params.slice(:id, :name,:email),
+      message: member_params[:message],
+    )
+    render json: member, status: :created
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "unable to find user"}, status: :unprocessable_entity
+  rescue AddMemberToProject::UserAlreadyAMemberOfProjectError
+    render json: {error: "user is already a member"}, status: :unprocessable_entity
   end
 
   # DELETE /projects/make-a-tank/members.json

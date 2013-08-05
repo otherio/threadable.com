@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Project::MembersController do
 
   let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
-  let(:user)    { project.members.first }
+  let(:current_user)    { project.members.first }
 
   before do
-    sign_in user
+    sign_in current_user
   end
 
   def valid_params
@@ -32,24 +32,65 @@ describe Project::MembersController do
   end
 
   describe "POST create" do
-    describe "when given a valid user id" do
-      let(:other_user){ (User.all - project.members).first }
-      it "creates a new project membership" do
-        post :create, valid_params.merge(:member => {id: other_user.id})
-        response.should be_success
-        response.body.should == other_user.to_json
-        project.members.reload.should include other_user
+
+    def valid_params
+      super.merge(
+        member: {
+          name:  'Steve Bushebi',
+          email: 'steve@bushebi.me',
+          message: 'yo join this, dawg',
+        }
+      )
+    end
+
+    def expected_arguments
+      {
+        actor:   current_user,
+        project: project,
+        member:  {
+          "name" =>  'Steve Bushebi',
+          "email" => 'steve@bushebi.me',
+        },
+        message: 'yo join this, dawg',
+      }
+    end
+
+
+    context "when AddMemberToProject succeeds" do
+      let(:member){ User.where(name:"Ray Arvidson").first! }
+      before do
+        expect(AddMemberToProject).to receive(:call).with(expected_arguments).and_return(member)
+      end
+      it "should render the member as json with a created status" do
+        post :create, valid_params
+        expect(response.status).to eq 201
+        expect(response.body).to eq member.to_json
       end
     end
 
-    describe "when given an invalid user id" do
-      it "does not create a new project membership" do
-        members = project.members.dup
-        post :create, valid_params.merge(:member => {id: 'jon-varvatos'})
-        response.should be_not_found
-        response.body.should be_blank
-        project.members.reload.should =~ members
+    context "when AddMemberToProject raises an ActiveRecord::RecordNotFound error" do
+      before do
+        expect(AddMemberToProject).to receive(:call).with(expected_arguments).and_raise(ActiveRecord::RecordNotFound)
       end
+      it "should render an error in json with an unprocessable entity status" do
+        post :create, valid_params
+        expect(response.status).to eq 422
+        expect(response.body).to eq '{"error":"unable to find user"}'
+      end
+
+    end
+
+    context "when AddMemberToProject raises an AddMemberToProject::UserAlreadyAMemberOfProjectError" do
+      before do
+        expect(AddMemberToProject).to receive(:call).with(expected_arguments).and_raise(AddMemberToProject::UserAlreadyAMemberOfProjectError.new(nil, nil))
+      end
+
+      it "should render an error in json with an unprocessable entity status" do
+        post :create, valid_params
+        expect(response.status).to eq 422
+        expect(response.body).to eq '{"error":"user is already a member"}'
+      end
+
     end
 
   end

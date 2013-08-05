@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Navbar" do
   context "with projects" do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user, web_enabled: true) }
     let(:project) { create(:project) }
     let(:project2) { create(:project) }
 

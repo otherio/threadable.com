@@ -25,6 +25,7 @@ Covered::Application.routes.draw do
     put "/users/confirm" => "confirmations#confirm", as: 'user_confirm'
   end
 
+  get   '/setup' => 'users#setup', as: 'user_setup'
 
   get   '/projects'      => 'projects#index'
   get   '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
@@ -35,7 +36,6 @@ Covered::Application.routes.draw do
 
 
   resources :users do
-  #   resources :tasks
   end
 
   resources :projects, except: [:show, :update, :patch] do
@@ -46,19 +46,22 @@ Covered::Application.routes.draw do
 
   scope '/:project_id', :as => 'project' do
     resources :members, :only => [:index, :create, :destroy], controller: 'project/members'
+
     resources :conversations, :except => [:edit] do
       member do
         put :mute
       end
       resources :messages, :only => [:create, :update]
     end
-    resources :invites, :only => [:create]
+
+    # resources :invites, :only => [:create]
+
     resources :tasks, :only => [:index, :create, :update] do
       resources :doers, :only => [:create, :destroy], controller: 'task/doers'
     end
-    get '/unsubscribe/:token' => 'email_subscriptions#unsubscribe', as: 'unsubscribe'
-    post '/process_unsubscribe' => 'email_subscriptions#process_unsubscribe'
-    get '/subscribe/:token' => 'email_subscriptions#subscribe', as: 'subscribe'
+
+    match '/unsubscribe/:token' => 'project/email_subscriptions#unsubscribe', as: 'unsubscribe', via: [:get, :post]
+    match '/resubscribe/:token' => 'project/email_subscriptions#resubscribe', as: 'resubscribe', via: [:get, :post]
   end
 
   resources :emails, :only => :create

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe ConversationsController do
 
-  let(:project){ Project.first }
-  let(:current_user){ project.members.first }
+  let(:project){ Project.first! }
+  let(:current_user){ project.members.first! }
 
   before(:each) do
     @request.env["devise.mapping"] = Devise.mappings[:user]
@@ -63,80 +63,90 @@ describe ConversationsController do
 
   describe "POST create" do
 
-    def valid_create_params
-      {
-        "message" => {
-          "subject" => valid_attributes["subject"],
-          "body"    => "I think we should use wood.",
-          "attachments"=> [
-            {
-              "url"=>"https://www.filepicker.io/api/file/g88HcWEkSN68EwKKIBTm",
-              "filename"=>"2013-06-14 13.05.02.jpg",
-              "mimetype"=>"image/jpeg",
-              "size"=>"1830234",
-              "writeable"=>"true",
-            },{
-              "url"=>"https://www.filepicker.io/api/file/SavvNKdkTI2fDlyNKbab",
-              "filename"=>"4816514863_20dc8027c6_o.jpg",
-              "mimetype"=>"image/jpeg",
-              "size"=>"3733625",
-              "writeable"=>"true",
-            }
-          ]
-        }
-      }
-    end
-
-    let(:conversation){ double(:conversation, :persisted? => conversation_saves) }
-
-    before do
-      message_attributes = valid_create_params["message"]
-
-      conversations = double(:conversations)
-      Project.any_instance.should_receive(:conversations).and_return(conversations)
-
-      conversation_attributes = {
-        creator: current_user,
-        subject: message_attributes.delete("subject"),
-      }
-      conversations.should_receive(:new).with(conversation_attributes).and_return(conversation)
-      conversation.should_receive(:save).and_return(conversation_saves)
-
-      message = double(:message, :persisted? => message_saves)
-
-      if conversation_saves
-        ConversationMessageCreator.should_receive(:call).
-          with(current_user, conversation, message_attributes).
-          and_return(message)
-      else
-        ConversationMessageCreator.should_not_receive(:call)
+    context "when given invalid params" do
+      it "should raise an error" do
+        expect{ post :create, {project_id: project.to_param} }.to raise_error(ActionController::ParameterMissing)
       end
     end
 
-    [true, false].each do |conversation_saves|
+    context "when given valid params" do
+      let(:subject){ 'we need more wood' }
+      let(:body   ){ 'hey guys are are going to need like 10x more wood. '}
+      let(:attachments){
+        [
+          uploaded_file("some.gif", 'image/gif',  true),
+          uploaded_file("some.jpg", 'image/jpeg', true),
+        ]
+      }
+      def params
+        {
+          format: format,
+          project_id: project.to_param,
+          message: {
+            subject: subject,
+            body: body,
+            attachments: attachments,
+          }
+        }
+      end
 
-      context conversation_saves ? "when the conversation saves" : "when the conversation fails to save" do
-        let(:conversation_saves){ message_saves && conversation_saves }
+      before do
+        expect(ConversationCreator).to \
+          receive(:call). \
+          with{|_project, _current_user, _subject, _message|
+            expect(_project               ).to eq project
+            expect(_current_user          ).to eq current_user
+            expect(_subject               ).to eq subject
+            expect(_message["body"]       ).to eq body
+            expect(_message["attachments"]).to eq attachments
+          }. \
+          and_return(conversation)
+      end
 
-        [true, false].each do |message_saves|
 
-          context message_saves ? "and the message saves" : "but the message fails to save" do
-            let(:message_saves){ message_saves }
+      context "when the format is html" do
+        let(:format){ :html }
+        context "and the conversation saves successfully" do
+          let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: true) }
 
-            it "creates a new Conversation, assigns a newly created conversation as @conversation, and redirects to the created conversation" do
-              post :create, valid_params.merge(valid_create_params)
-              assigns(:conversation).should eq(conversation)
-              if conversation_saves && message_saves
-                response.should redirect_to project_conversation_url(project, conversation)
-              else
-                response.should render_template("new")
-              end
-            end
-
+          it "should redirect to the project conversation url with a successfull flash notice" do
+            post :create, params
+            expect(response).to redirect_to project_conversation_url(project, conversation)
+            expect(flash[:notice]).to eq 'Conversation was successfully created.'
           end
-
         end
 
+        context "but the conversation doesnt save successfully" do
+          let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: false) }
+          it "should render the new action" do
+            post :create, params
+            expect(response).to render_template :new
+          end
+        end
+      end
+
+      context "when the format is json" do
+        let(:format){ :json }
+        context "and the conversation saves successfully" do
+          let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: true) }
+
+          it "should redirect to the project conversation url with a successfull flash notice" do
+            post :create, params
+            expect(response.status).to eq 201
+            expect(response.body).to eq conversation.to_json
+            expect(response.location).to eq project_conversation_url(project, conversation)
+          end
+        end
+
+        context "but the conversation doesnt save successfully" do
+          let(:errors){ {conversation_errors: 942} }
+          let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: false, errors: errors) }
+          it "should render the new action" do
+            post :create, params
+            expect(response.body).to eq errors.to_json
+            expect(response.status).to eq 422
+          end
+        end
       end
 
     end

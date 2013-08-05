@@ -23,8 +23,8 @@ describeWidget("invite_modal", function(){
     it("should find the expected elements", function(){
       expect( this.widget.flash       ).toBeA(Covered.Flash);
       expect( this.widget.form[0]     ).toBe( this.page.$('form')[0] );
-      expect( this.widget.name_input  ).toBe( this.page.$('input[name="invite[name]"]')[0] );
-      expect( this.widget.email_input ).toBe( this.page.$('input[name="invite[email]"]')[0] );
+      expect( this.widget.name_input  ).toBe( this.page.$('input[name="member[name]"]')[0] );
+      expect( this.widget.email_input ).toBe( this.page.$('input[name="member[email]"]')[0] );
     });
   });
 
@@ -157,11 +157,11 @@ describeWidget("invite_modal", function(){
       expect(flash_alert).toHaveBeenCalledWith('Oops! Something went wrong. Please try again later.');
     });
 
-    context("when the status code is 400", function() {
+    context("when the status code is 422", function() {
       it("should call focus on the widget", function() {
         var enable = spyOn(this.widget,'enable').andReturn(this.widget);
         var flash_notice = spyOn(this.widget.flash,'notice').andReturn(this.widget);
-        this.widget.form.trigger('ajax:error', [{status:400}, "not found", {}]);
+        this.widget.form.trigger('ajax:error', [{status:422}, "not found", {}]);
         expect(enable).toHaveBeenCalled();
         expect(flash_notice).toHaveBeenCalledWith('That user is already a member of this project.');
       });

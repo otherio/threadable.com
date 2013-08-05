@@ -12,7 +12,7 @@ describe "invite_modal" do
 
   it "should have a form that posts to the project invites url" do
     form = html.css('form').first
-    form[:action].should == project_invites_url(project)
+    form[:action].should == project_members_url(project)
     form[:method].should == 'post'
   end
 

@@ -45,7 +45,7 @@ Covered::Application.configure do
   }
 
   config.action_mailer.smtp_settings = {
-    :domain => 'coveredapp.test',
+    :domain => 'localhost',
   }
 
   # enables the load of javascript specs

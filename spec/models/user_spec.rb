@@ -17,58 +17,90 @@ describe User do
     FactoryGirl.build(:user, password: password, password_confirmation: password)
   end
 
-  it "should validate uniqness of email" do
-    existing_email = User.last.email
-    user = FactoryGirl.build(:user, email: existing_email)
-    user.should_not be_valid
-    user.errors.messages[:email].should be_present
-    user.errors.messages[:email].should include "has already been taken"
-  end
-
   context "devise options" do
     subject { described_class }
     it { should include Devise::Models::Registerable }
   end
 
-  context "when confirmed" do
-    def build_user_with_password password
-      super.tap{|user| user.confirmed_at = Time.now }
-    end
-    it "should validate the length of password" do
-      build_user_with_password("").should_not be_valid
-      build_user_with_password("boo").should_not be_valid
-      build_user_with_password("booyakasha").should be_valid
+  describe "password validations" do
+    def user_attributes
+      {}
     end
 
-    it "should validate that password and password_confirmation match" do
-      FactoryGirl.build(:user,
-        password: 'abcdefgh',
-        password_confirmation: 'ijklmnop',
-        confirmed_at: Time.now
-      ).should_not be_valid
+    let(:user){ build(:user, user_attributes) }
 
-      FactoryGirl.build(:user,
-        password: 'abcdefgh',
-        password_confirmation: 'abcdefgh',
-        confirmed_at: Time.now
-      ).should be_valid
+    subject{ user.errors_on(:password) }
+
+    before{ user.valid? }
+
+    it { should be_empty }
+
+    context "when password_required! has been called" do
+
+      before{ user.password_required!; user.valid? }
+
+      context "when password is nil" do
+        def user_attributes
+          { password: nil, password_confirmation: nil }
+        end
+        it { should eq ["can't be blank"] }
+      end
+
+      context "when password is too short" do
+        def user_attributes
+          { password: "123", password_confirmation: "123" }
+        end
+        it { should eq ["is too short (minimum is 6 characters)"] }
+      end
+
+      context "when passwords do not match" do
+        subject{ user.errors_on(:password_confirmation) }
+        def user_attributes
+          { password: "asjkdhjksadhjksa", password_confirmation: "2348392489320890" }
+        end
+        it { should eq ["doesn't match Password"] }
+      end
+
     end
   end
 
-  it "should have a valid factory" do
-    FactoryGirl.build(:user).should be_valid
+  describe "factory" do
+    def factory_options
+      {email: 'foo@example.com'}
+    end
+
+    subject(:user){ build(:user, factory_options) }
+
+    it "should have a valid factory" do
+      expect(user).to be_valid
+    end
+
+    it "should include an auth token" do
+      user.save!
+      expect(user.authentication_token).to be_true
+    end
+
+
+    it "should use the gravatar as the default avatar when none is supplied" do
+      expect(user.avatar_url).to eq 'http://gravatar.com/avatar/b48def645758b95537d4424c84d1a9ff.png?s=48&d=retro'
+    end
+
+    it "should not have a password" do
+      expect(user.password).to be_nil
+    end
+
+    context "when web_enabled is true" do
+      def factory_options
+        super.merge(web_enabled: true)
+      end
+      it "should have a password" do
+        expect(user.encrypted_password).to be_present
+      end
+    end
+
   end
 
-  it "should include an auth token" do
-    FactoryGirl.create(:user).authentication_token.should be_true
-  end
-
-  it "should use the gravatar as the default avatar when none is supplied" do
-    user = FactoryGirl.create(:user, email: 'foo@example.com', avatar_url: nil)
-    user.avatar_url.should == 'http://gravatar.com/avatar/b48def645758b95537d4424c84d1a9ff.png?s=48&d=retro'
-  end
-
-  context do
+  describe "email addresses" do
 
     let(:user){ User.new }
 
@@ -105,32 +137,27 @@ describe User do
   end
 
   describe "password_required?" do
-    context "when confirmed" do
-      let(:user){ User.where('confirmed_at IS NOT NULL').first }
+    subject(:user){ User.new }
+    it "should be false by default" do
+      expect(user.password_required?).to be_false
+    end
+
+    context "when password_required! is called" do
+      before do
+        user.password_required!
+      end
       it "should be true" do
-        user.send(:password_required?).should be_true
+        expect(user.password_required?).to be_true
       end
     end
-    context "when not confirmed" do
-      let(:user){ FactoryGirl.create(:user, confirmed_at: nil) }
-      it "should be false" do
-        user.send(:password_required?).should be_false
-      end
-    end
-    context "when @password_required is truthy" do
-      let(:user){ User.new }
-      before{ user.password_required = 42 }
-      it "should be true" do
-        user.send(:password_required?).should be_true
-      end
-    end
-    context "when @password_required is false" do
-      let(:user){ User.new }
-      before{ user.password_required = false }
-      it "should be true" do
-        user.send(:password_required?).should be_false
-      end
-    end
+  end
+
+
+  it "should validate_email_address_is_not_already_taken" do
+    taken_email_address = EmailAddress.first.address
+    user = User.new(email: taken_email_address)
+    expect(user).to be_invalid
+    expect(user.errors[:email]).to eq ["has already been taken"]
   end
 
 end

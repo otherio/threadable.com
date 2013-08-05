@@ -24,7 +24,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     if self.resource.nil?
       return redirect_to root_path, status: :not_found
     end
-    resource.password_required = true
+    resource.password_required!
     resource.password = params[resource_name][:password]
     resource.password_confirmation = params[resource_name][:password_confirmation]
 

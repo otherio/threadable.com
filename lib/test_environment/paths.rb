@@ -8,8 +8,10 @@ module TestEnvironment::Paths
       new_user_registration_path
     when 'the sign in page'
       new_user_session_path
+    when 'the user setup page'
+      user_setup_path
     when /^the project page for "(.+?)"$/
-      project_path Project.where(name: $1)
+      project_path Project.where(name: $1).first!
     when /^the project conversations page for "(.+?)"$/
       project_conversations_path Project.where(name: $1).first!
     # when /^the "(.+?)" task page$/

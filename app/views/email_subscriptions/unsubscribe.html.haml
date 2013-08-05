@@ -1,4 +1,0 @@
-= form_tag("/#{@project_id}/process_unsubscribe", method: "post", class: "unsubscribe_form") do
-  = hidden_field_tag(:token, @token)
-  = submit_tag("Unsubscribe")
-= javascript_tag "var form = document.getElementsByClassName('unsubscribe_form')[0]; form.visibility = 'hidden'; form.submit();"

@@ -50,6 +50,11 @@ GEM
     arel (4.0.0)
     atomic (1.1.10)
     bcrypt-ruby (3.1.1)
+    better_errors (0.9.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     bootstrap-wysihtml5-rails (0.3.1.20)
       railties (>= 3.0)
     builder (3.1.4)
@@ -83,6 +88,7 @@ GEM
       capybara (>= 1.1.2)
       cucumber (>= 1.1.8)
       nokogiri (>= 1.5.0)
+    debug_inspector (0.0.2)
     debugger (1.6.1)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -316,6 +322,8 @@ DEPENDENCIES
   activerecord-fixture_builder
   acts_as_list
   animate-sass
+  better_errors
+  binding_of_caller
   bootstrap-wysihtml5-rails
   capybara (>= 2.0.2)
   capybara-webkit

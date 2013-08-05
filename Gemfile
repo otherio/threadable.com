@@ -50,6 +50,8 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-debugger'
   gem 'activerecord-fixture_builder'
+  gem 'binding_of_caller'
+  gem 'better_errors'
 end
 
 group :test do

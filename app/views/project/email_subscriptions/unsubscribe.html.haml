@@ -1,0 +1,10 @@
+.row-fluid
+  .span8.offset2.well.text-center
+
+    %h1 Awww!
+
+    %p.lead We just unsubscribed #{@member.name} from #{@project.name}
+
+    %p
+      They'll miss you! If you hit this by mistake,
+      = link_to 'click here to resubscribe!', project_resubscribe_path(@project, @resubscribe_token)

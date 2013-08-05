@@ -5,28 +5,28 @@ TestEnvironment::FixtureBuilder.new do
   # http://marsrover.nasa.gov/journal/
 
   # John from NASA signs up
-  create_user 'John Callas', 'john-callas@nasa.covered.io'
+  sign_up 'John Callas', 'john-callas@nasa.covered.io', 'password'
 
-  # Alice creates a project
+  # John creates a project
   @project = Project.create!(
     name: 'Mars Exploration Rover',
     description: 'Put a robot on mars.',
   )
   project.members << user('John Callas')
 
-  invite_user 'Bruce Banerdt',  'bruce-banerdt@nasa.covered.io'
-  invite_user 'Diana Blaney',   'diana-blaney@nasa.covered.io'
-  invite_user 'Larry Bryant',   'larry-bryant@nasa.covered.io'
-  invite_user 'Steven Squyres', 'steven-squyres@nasa.covered.io'
-  invite_user 'Ray Arvidson',   'ray-arvidson@nasa.covered.io'
+  add_user 'Bruce Banerdt',  'bruce-banerdt@nasa.covered.io'
+  add_user 'Diana Blaney',   'diana-blaney@nasa.covered.io'
+  add_user 'Larry Bryant',   'larry-bryant@nasa.covered.io'
+  add_user 'Steven Squyres', 'steven-squyres@nasa.covered.io'
+  add_user 'Ray Arvidson',   'ray-arvidson@nasa.covered.io'
 
   users['Ray Arvidson'].email_addresses.create! address: 'ray@gmail.covered.io'
 
-  accept_invite 'Bruce Banerdt'
-  accept_invite 'Diana Blaney'
-  # accept_invite 'Larry Bryant' # he never accepted his invite
-  accept_invite 'Steven Squyres'
-  accept_invite 'Ray Arvidson'
+  web_enable 'Bruce Banerdt', 'password'
+  web_enable 'Diana Blaney', 'password'
+  # web_enable 'Larry Bryant' # he never accepted his invite, 'password'
+  web_enable 'Steven Squyres', 'password'
+  web_enable 'Ray Arvidson', 'password'
 
   send_message(
     user: 'John Callas',

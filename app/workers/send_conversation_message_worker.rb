@@ -7,10 +7,16 @@ class SendConversationMessageWorker < ResqueWorker.new(:params)
     @message = Message.find(@params['message_id'])
     @project = @message.conversation.project
 
-    @project.members_who_get_email.each do |user|
-      next if !@params['email_sender'] && user.id == @message.user.id
+    memberships = @project.memberships.that_get_email.includes(:user)
 
-      ConversationMailer.conversation_message(@message, user).deliver
+    if !@params['email_sender']
+      memberships.reject! do |membership|
+        membership.user == @message.user
+      end
+    end
+
+    memberships.each do |membership|
+      ConversationMailer.conversation_message(@message, membership).deliver
     end
   end
 

@@ -1,7 +1,7 @@
 TestEnvironment::FixtureBuilder.new do
 
   # Alice signs up
-  create_user('Alice Neilson', 'alice@ucsd.covered.io')
+  sign_up 'Alice Neilson', 'alice@ucsd.covered.io', 'password'
 
   # Alice creates a project
   @project = Project.create!(
@@ -11,18 +11,19 @@ TestEnvironment::FixtureBuilder.new do
   project.members << user('Alice Neilson')
 
   # Alice invites her project mates
-  invite_user 'Tom Canver',      'tom@ucsd.covered.io'
-  invite_user 'Yan Hzu',         'yan@ucsd.covered.io'
-  invite_user 'Bethany Pattern', 'bethany@ucsd.covered.io'
-  invite_user 'Bob Cauchois',    'bob@ucsd.covered.io'
-  invite_user 'Jonathan Spray',  'jonathan@ucsd.covered.io'
+  add_user 'Tom Canver',      'tom@ucsd.covered.io'
+  add_user 'Yan Hzu',         'yan@ucsd.covered.io'
+  add_user 'Bethany Pattern', 'bethany@ucsd.covered.io'
+  add_user 'Bob Cauchois',    'bob@ucsd.covered.io'
+  add_user 'Jonathan Spray',  'jonathan@ucsd.covered.io'
 
   # Alice's project mates all accept their invites
-  accept_invite 'Tom Canver'
-  accept_invite 'Yan Hzu'
-  accept_invite 'Bethany Pattern'
-  accept_invite 'Bob Cauchois'
-  accept_invite 'Jonathan Spray'
+  web_enable 'Tom Canver', 'password'
+  web_enable 'Yan Hzu', 'password'
+  web_enable 'Bethany Pattern', 'password'
+  web_enable 'Bob Cauchois', 'password'
+  # web_enable 'Jonathan Spray', 'password'
+
 
   # Jonathan hates email
   unsubscribe_from_project_email 'Jonathan Spray'

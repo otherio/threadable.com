@@ -1,7 +1,5 @@
 class User < ActiveRecord::Base
 
-  before_create :default_values
-
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -25,12 +23,15 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
-  validates_presence_of     :name, :email
-  validates_presence_of     :password, if: :password_required?
-  validates_confirmation_of :password, if: :password_required?
-  validates_length_of       :password, allow_blank: true, minimum: 6, maximum: 128
-  validate                  :validate_email_is_unique
-  validates_associated      :email_addresses
+  validates_presence_of :name, :email
+  validates_length_of   :password, allow_blank: true, minimum: 6, maximum: 128
+  validates_associated  :email_addresses
+  validate :validate_email_address_is_not_already_taken!
+
+  with_options if: :password_required? do |o|
+    o.validates_presence_of     :password
+    o.validates_confirmation_of :password
+  end
 
   # make sure the user has an auth token
   before_save :ensure_authentication_token
@@ -62,8 +63,17 @@ class User < ActiveRecord::Base
     end
   end
 
-  def password_required= password_required
-    @password_required = password_required
+  def password_required!
+    @password_required = true
+  end
+
+  def password_required?
+    return @password_required if defined?(@password_required)
+    encrypted_password.present?
+  end
+
+  def web_enabled?
+    encrypted_password.present?
   end
 
   def primary_email_address
@@ -91,28 +101,17 @@ class User < ActiveRecord::Base
     "#{name} <#{email}>"
   end
 
+  def avatar_url
+    read_attribute(:avatar_url) || gravatar_url
+  end
+
   private
-
-  def password_required?
-    return @password_required unless @password_required.nil?
-    confirmed?
-  end
-
-  def default_values
-    self.avatar_url ||= gravatar_url
-  end
 
   def gravatar_url
     # change this when we have a default image other than gravatar's
     #"http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=#{CGI.escape(default_avatar_url)}"
     gravatar_id = Digest::MD5.hexdigest(email.downcase) if email.present?
     "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
-  end
-
-  def validate_email_is_unique
-    if email_addresses.any?(&:has_taken_error?)
-      errors.add(:email, I18n.t('errors.messages.taken'))
-    end
   end
 
   def self.find_for_database_authentication(user)
@@ -124,6 +123,14 @@ class User < ActiveRecord::Base
     user = with_email(attributes[:email]).first_or_initialize(attributes)
     user.send_reset_password_instructions if user.persisted?
     user
+  end
+
+  def validate_email_address_is_not_already_taken!
+    return if primary_email_address.nil?
+    return if primary_email_address.errors[:address].blank?
+    if primary_email_address.errors[:address].include? "has already been taken"
+      errors.add(:email, "has already been taken")
+    end
   end
 
 end

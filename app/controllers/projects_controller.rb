@@ -72,6 +72,12 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # GET /projects/make-like-a-tree-and/join
+  # GET /projects/make-like-a-tree-and/join.json
+  def join
+    flash[:notice] = "Welcome aboard! You're now a memeber of the #{project.name} project."
+  end
+
   # PUT /projects/make-like-a-tree-and/leave
   # PUT /projects/make-like-a-tree-and/leave.json
   def leave
