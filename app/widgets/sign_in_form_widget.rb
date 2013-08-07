@@ -2,9 +2,7 @@ class SignInFormWidget < Rails::Widget::Presenter
 
   arguments :user
 
-  def init
-    @html_options.add_classname('well')
-  end
+  classname('well well-centered')
 
   option :form_options do
     {
