@@ -43,7 +43,6 @@ class Message < ActiveRecord::Base
     if self.parent_message
       self.references_header = "#{parent_message.references_header} #{parent_message.message_id_header}"
     end
-    true
   end
 
 end

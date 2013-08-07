@@ -13,20 +13,12 @@ describe ConversationMailer do
 
     let(:parent_message){ conversation.messages.last }
 
-    let(:references){
-      %W(
-        <j34h2jkh423jk4h32jk4h23jk42jk3h4@somewhere.io>
-        <ovcbivcb0vc9v09v0b9bv0bv0@anotherpla.ce>
-      )
-    }
-
     let(:message){
-      conversation.messages.new(
-        user: project.members.with_email("jonathan@ucsd.covered.io").first!,
+      conversation.messages.create!(
+        creator: project.members.with_email("jonathan@ucsd.covered.io").first!,
         subject: conversation.subject,
         body_plain: 'This is the best project everz.',
         parent_message: parent_message,
-        references_header: references.join(" ")
       )
     }
 
@@ -64,7 +56,10 @@ describe ConversationMailer do
       mail.header[:'Reply-To'].to_s.should == project.formatted_email_address
       mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]
       mail.message_id.should == message.message_id_header[1..-2]
-      mail.references.should == references.map{|r| r[1..-2] }
+      mail.references.should == [
+        parent_message.references_header.scan(/<(.+)>/).first.first,
+        parent_message.message_id_header.scan(/<(.+)>/).first.first
+      ]
     end
 
     it "returns a mail message as expected" do

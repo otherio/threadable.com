@@ -18,6 +18,7 @@ describe EmailProcessor do
   let(:message_headers) do
     {'Message-Id' => '<3j4hjk35hk4h32423k@hackers.io>', 'In-Reply-To' => in_reply_to_header}
   end
+
   let(:params) do
     create_incoming_email_params(
       'message-headers' => message_headers,
@@ -102,9 +103,6 @@ describe EmailProcessor do
   end
 
   def self.it_should_not_create_a_conversation!
-    let(:expected_conversation_subject){ conversation.subject }
-    let(:expected_conversation_creator){ conversation.creator }
-    # it_should_upload_attachments!
     it "should not create a conversation" do
       call!
       expect(Conversation.count).to eq original_conversation_count
@@ -160,6 +158,7 @@ describe EmailProcessor do
   end
 
   def validate_conversation!
+    expect(@message.conversation.task?).to eq conversation_should_be_a_task
     expect(@message.conversation.subject).to eq expected_conversation_subject
     expect(@message.conversation.creator).to eq expected_conversation_creator
     expect(@message.conversation.project).to eq project
@@ -171,31 +170,33 @@ describe EmailProcessor do
   let(:expected_parent_message){ parent_message }
   let(:expected_sender){ sender }
   let(:expected_sender_email){ sender.email }
-
+  let(:conversation_should_be_a_task){ false }
 
   context "when the message is sent to a known project" do
     context "and the message is not a reply" do
       let(:parent_message){ nil }
-
       it_should_create_a_message_and_a_conversation!
-
-      # it_should_create_a_message!
-      # it_should_create_a_conversation!
+      context "and the subject starts with 'task: '" do
+        let(:conversation_should_be_a_task){ true }
+        before{ params["subject"] = 'Task: create a jig' }
+        it_should_create_a_message_and_a_conversation!
+      end
+      context "and the subject starts with '✔ '" do
+        let(:conversation_should_be_a_task){ true }
+        before{ params["subject"] = '✔ create a jig' }
+        it_should_create_a_message_and_a_conversation!
+      end
     end
 
     context "and the message is a reply" do
       context "to an unknown conversation" do
         in_reply_to_an_unknown_conversation!
         it_should_create_a_message_and_a_conversation!
-        # it_should_create_a_message!
-        # it_should_create_a_conversation!
       end
 
       context "to an known conversation" do
         in_reply_to_a_known_conversation!
         it_should_create_a_message_but_not_a_conversation!
-        # it_should_create_a_message!
-        # it_should_not_create_a_conversation!
       end
 
       context "to a message of another project" do
@@ -204,18 +205,13 @@ describe EmailProcessor do
         let(:expected_parent_message){ nil }
         let(:in_reply_to_header){ parent_message.message_id_header }
         it_should_create_a_message_and_a_conversation!
-        # it_should_create_a_message!
-        # it_should_create_a_conversation!
       end
-
     end
   end
 
   context "when the message is sent to a unknown project" do
     let(:recipient_param){ 'Unknown Project <some-bullshit-email-address@covered.io>' }
     it_should_not_create_a_message_or_a_conversation!
-    # it_should_not_create_a_message!
-    # it_should_not_create_a_conversation!
   end
 
   context "when the message is sent by an unknown user" do

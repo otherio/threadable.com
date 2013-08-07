@@ -62,8 +62,21 @@ class EmailProcessor < MethodObject.new(:incoming_email)
     parent_message.conversation if parent_message
   end
 
+  let :type do
+    if pre_existing_conversation
+      pre_existing_conversation.task? ? :task : :conversation
+    else
+      email.subject =~ /^(task:|✔)/i ? :task : :conversation
+    end
+  end
+
   let :conversation do
-    pre_existing_conversation || project.conversations.create(subject: email.subject, creator: user)
+    pre_existing_conversation || case type
+    when :task
+      project.tasks.create(subject: email.subject, creator: user)
+    when :conversation
+      project.conversations.create(subject: email.subject, creator: user)
+    end
   end
 
   let :message do
