@@ -50,5 +50,5 @@ Covered::Application.configure do
 
   config.storage = {local:'development'}
 
-  config.redis[:db] = 1
+  config.redis = ENV["REDIS_CLOUD_HOST"] ? Nitrous.redis_config : { db: 1 }
 end
