@@ -1,7 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
 
   def new
-    return super if Rails.configuration.login_enabled
+    return super if Rails.configuration.signup_enabled
     redirect_to "http://signup.other.io"
   end
 

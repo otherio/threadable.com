@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RegistrationsController do
   context "with login disabled" do
     before do
-      Rails.configuration.stub(:login_enabled).and_return(false)
+      Rails.configuration.stub(signup_enabled: false)
     end
 
     describe "GET new" do
@@ -16,7 +16,7 @@ describe RegistrationsController do
 
   context "with login enabled" do
     before do
-      Rails.configuration.stub(:login_enabled).and_return(true)
+      Rails.configuration.stub(signup_enabled: true)
     end
 
     describe "GET new" do
