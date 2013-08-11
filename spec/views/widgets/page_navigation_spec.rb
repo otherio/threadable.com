@@ -41,10 +41,10 @@ describe "page_navigation" do
           end
 
           expected_project_links = projects.map do |project|
-            [project.name, view.project_conversations_url(project)]
+            [project.name, view.project_conversations_path(project)]
           end
 
-          expected_project_links << ["All Projects", root_url]
+          expected_project_links << ["All Projects", root_path]
 
           project_links.should == expected_project_links
         end
@@ -63,7 +63,7 @@ describe "page_navigation" do
     let(:current_user){ nil }
     it "should just have a login link" do
       link = html.css('ul.nav.pull-right > li > a').first
-      link[:href].should == view.new_user_session_url
+      link[:href].should == view.new_user_session_path
       link.text .should == 'Login'
     end
   end

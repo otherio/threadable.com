@@ -4,12 +4,12 @@
 
       - if current_project.present?
         = render_widget :invite_modal, current_project
-        = link_to current_project.name, project_conversations_url(current_project), class: 'brand'
+        = link_to current_project.name, project_conversations_path(current_project), class: 'brand'
         %a(href="" role="button" class="btn btn-text-thin" data-toggle="modal" data-target=".invite_modal")
           %i.icon-plus
           Invite
         %ul.nav
-          %li= link_to 'Members', project_members_url(current_project)
+          %li= link_to 'Members', project_members_path(current_project)
 
       - else
         = link_to "Covered", covered_link_url, class: 'brand'
@@ -23,21 +23,22 @@
                 .caret
               %ul.dropdown-menu
                 - projects.each do |project|
-                  %li= link_to project.name, project_conversations_url(project)
+                  %li= link_to project.name, project_conversations_path(project)
                 %li.divider
-                %li= link_to 'All Projects', root_url
+                %li= link_to 'All Projects', root_path
 
           %li.current_user.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
               = current_user.name
               .caret
             %ul.dropdown-menu
-              %li= link_to 'Profile', user_url(current_user)
+              %li= link_to 'Profile', user_path(current_user)
               %li.divider
-              %li= link_to 'Logout', destroy_user_session_url, :method => :delete
+              %li= link_to 'Logout', destroy_user_session_path, :method => :delete
 
       - else
         %ul.nav.pull-right
-          %li= link_to 'Login', new_user_session_url
+          %li= link_to 'Login', new_user_session_path
+          %li= link_to 'Sign up', new_user_registration_path
 
 
