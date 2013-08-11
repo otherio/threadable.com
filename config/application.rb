@@ -57,7 +57,7 @@ module Covered
     end
 
     # login is enabled by default, but can be disabled
-    config.signup_enabled = ENV["COVERED_SIGNUP_ENABLED"] == "true"
+    config.signup_enabled = ENV["COVERED_SIGNUP_ENABLED"] != "false"
 
     config.filepicker_rails.api_key = ENV.fetch('COVERED_FILEPICKER_API_KEY')
 
