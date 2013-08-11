@@ -42,7 +42,10 @@ class User < ActiveRecord::Base
   default_scope -> { includes(:email_addresses) }
 
   scope :with_email, ->(address){
-    joins(:email_addresses).where(email_addresses: {address: address}).limit(1)
+    readonly(false). \
+    joins(:email_addresses). \
+    where(email_addresses: {address: address}). \
+    limit(1)
   }
 
   class << self

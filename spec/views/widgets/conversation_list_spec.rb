@@ -32,15 +32,15 @@ describe "conversation_list" do
     conversation_elements = html.css('.conversation')
     conversation_elements.size.should == 3
 
-    conversation_elements[0].css('td.participants').first.text.should == "\nuser0, user1, user2\n(10)\n"
+    conversation_elements[0].css('td.participants').first.text.should == "\n\nuser0\nuser1\nuser2\n\n(10)\n"
     conversation_elements[0].css('a').first[:href].should == "/some-project/conversations/conversation-one"
     conversation_elements[0].css('.datetime').first.text.strip.should == conversations[0].updated_at.strftime('%l:%M %p').strip
 
-    conversation_elements[1].css('td.participants').first.text.should == "\nuser3, user4\n(11)\n"
+    conversation_elements[1].css('td.participants').first.text.should == "\n\nuser3\nuser4\n\n(11)\n"
     conversation_elements[1].css('a').first[:href].should == "/some-project/conversations/conversation-two"
     conversation_elements[1].css('.datetime').first.text.strip.should == conversations[1].updated_at.strftime('%b %-d').strip
 
-    conversation_elements[2].css('td.participants').first.text.should == "\nuser5\n(12)\n"
+    conversation_elements[2].css('td.participants').first.text.should == "\n\nuser5\n\n(12)\n"
     conversation_elements[2].css('a').first[:href].should == "/some-project/conversations/conversation-three"
     conversation_elements[2].css('.datetime').first.text.strip.should == conversations[2].updated_at.strftime('%-m/%-d/%Y').strip
   end

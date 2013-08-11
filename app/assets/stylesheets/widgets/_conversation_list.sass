@@ -1,0 +1,11 @@
+td.participants
+  span.names
+    overflow: hidden
+    text-overflow: ellipsis
+    display: inline-block
+    max-width: 80%
+    cursor: pointer
+    span:after
+      content: ", "
+    span:last-child:after
+      content: ""

@@ -7,6 +7,10 @@ describe ConversationListWidget do
   let(:custom_conversations)  { double(:custom_conversations) }
   let(:arguments)             { [project] }
 
+  before do
+    project_conversations.stub(:includes => project_conversations)
+  end
+
   def html_options
     {class: 'custom_class'}
   end
