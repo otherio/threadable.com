@@ -33,6 +33,7 @@ class Project < ActiveRecord::Base
     return if short_name.blank?
     short_name = short_name.gsub(/[\W]+/, ' ').strip
     self.subject_tag = short_name
+    self.slug = nil
     self.email_address_username = short_name.downcase.gsub(/\W+/,'.')
   end
 

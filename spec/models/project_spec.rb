@@ -82,4 +82,13 @@ describe Project do
     end
   end
 
+  describe "#slug" do
+    it "should be generated from the short name" do
+      project = Project.create(name: 'Fly to the moon', short_name: 'Moon Mission')
+      expect(project.slug).to eq 'moon-mission'
+      project.update_attributes(short_name: 'Mission to Moon')
+      expect(project.slug).to eq 'mission-to-moon'
+    end
+  end
+
 end
