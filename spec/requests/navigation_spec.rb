@@ -13,8 +13,8 @@ describe "Navbar" do
       visit project_path(project)
     end
 
-    it "should include the project name" do
-      page.should have_content project.name
+    it "should include the project email" do
+      page.should have_content project.email
     end
 
     it "should include a dropdown with the other projects" do

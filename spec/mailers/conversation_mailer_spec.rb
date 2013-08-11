@@ -36,8 +36,8 @@ describe ConversationMailer do
     let(:expected_from){ message.user.email }
 
     def validate_mail!
-      mail.subject.should include "[ucsd-el] #{conversation.subject}"
-      mail.subject.scan('ucsd-el').size.should == 1
+      mail.subject.should include "[RaceTeam] #{conversation.subject}"
+      mail.subject.scan('RaceTeam').size.should == 1
       mail.to.should == [recipient.email]
       mail.from.should == [expected_from]
 
@@ -68,7 +68,7 @@ describe ConversationMailer do
 
     context "when the subject is a reply" do
       before do
-        message.subject = "RE: Re: [ucsd-el] #{conversation.subject}"
+        message.subject = "RE: Re: [RaceTeam] #{conversation.subject}"
       end
       it "should parse and construct the correct subject" do
         validate_mail!

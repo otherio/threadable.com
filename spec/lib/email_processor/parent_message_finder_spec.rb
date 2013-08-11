@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe EmailProcessor::ParentMessageFinder do
 
-  let(:project){ Project.find_by_slug!('ucsd-electric-racing') }
+  let(:project){ Project.find_by_slug!('raceteam') }
   let(:conversation){ project.conversations.last }
   let(:headers){ {'In-Reply-To' => in_reply_to, 'References' => references } }
 

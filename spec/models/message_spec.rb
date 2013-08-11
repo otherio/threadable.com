@@ -11,7 +11,7 @@ describe Message do
   end
 
   context "with a parent message" do
-    let(:parent_message) { FactoryGirl.create(:message, references_header: '<more-message-ids@foo.com>') }
+    let(:parent_message) { create(:message, references_header: '<more-message-ids@foo.com>') }
     subject(:message) { Message.new(parent_message: parent_message) }
 
     it "inherits references from it parent message, and adds the parent's message id to references" do
@@ -25,10 +25,11 @@ describe Message do
   end
 
   context "with an html part" do
-    subject(:message) { FactoryGirl.create(:message, body_html: 'foo', stripped_html: 'foo stripped') }
+    subject(:message) { create(:message, body_html: 'foo', stripped_html: 'foo stripped') }
 
     it "detects the presence of an html part" do
-      message.html?.should be_true
+      # message.html?.should be_true
+      expect(message).to be_html
     end
   end
 

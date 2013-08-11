@@ -10,14 +10,14 @@ Scenario: Signing up
    And I should see "We just sent you an email with a link to confirm your email address and set a password for your account."
    And I a confirmation link should have been sent to "weird.al@yankovik.com"
   When I click the validation link sent to "weird.al@yankovik.com"
-  Then I should see "You're almost done! Now create a password to securely access your account."
-  When I click "Confirm Account"
+  Then I should see "You're almost done!"
+  When I click the "Sign in" button
   Then I should see "Password can't be blank"
   When I fill in the password fields with "ilovepizza" and "ilovepizz"
-  When I click "Confirm Account"
+  When I click the "Sign in" button
   Then I should see "Password confirmation doesn't match Password"
   When I fill in the password fields with "ilovepizza"
-   And I click "Confirm Account"
+   And I click the "Sign in" button
   Then I should see "Your account was successfully confirmed. You are now signed in."
    And I should be logged in as "Weird Al Yankovik"
 
@@ -29,7 +29,7 @@ Scenario: Account creation fails if email is already used
     And I go to the join page
     And I fill in "Name" with "Alice Neilson"
     And I fill in "Email" with "alice@ucsd.covered.io"
-    And I click "Sign up"
+    And I click the "Sign up" button
    Then I should see "Email has already been taken"
 
 

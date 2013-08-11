@@ -1,11 +1,8 @@
-.fluid-columns
-  .row
-    .span7.offset4.well
+.well.well-centered.well-centered-wide
+  %h2= @project.name
 
-      %h1= @project.name
+  = render 'form'
 
-      = render 'form'
-
-      = link_to 'Show', @project
-      \|
-      = link_to 'Back', projects_path
+  = link_to 'Show', @project
+  \|
+  = link_to 'Back', projects_path

@@ -86,7 +86,7 @@ describe "email" do
           {
             from: "alice@ucsd.covered.io",
             to: [mail_recipient.email],
-            subject: "✔ [ucsd-el] this is the subject",
+            subject: "✔ [RaceTeam] this is the subject",
           }
         end.to_set
 
@@ -140,7 +140,7 @@ describe "email" do
         ActionMailer::Base.deliveries.each do |email|
           email.text_part.body.should include body
           email.html_part.body.should include body
-          email.subject.should == "✔ [ucsd-el] #{conversation.subject}"
+          email.subject.should == "✔ [RaceTeam] #{conversation.subject}"
         end
 
       end

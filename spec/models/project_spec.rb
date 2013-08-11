@@ -28,45 +28,58 @@ describe Project do
     end
   end
 
-  context "when given a slug" do
-    it "should take that slug" do
-      project = Project.create(name: 'Fall down a hole', slug: 'hole-faller')
-      project.slug.should == 'hole-faller'
+  describe "#short_name=" do
+
+    context "when the name is 'Langworth, Barton and Strosin ™'" do
+      let(:project){ Project.create(name: name, short_name: short_name) }
+      let(:name){ "Langworth, Barton and Strosin ™" }
+      context "and the short_name is nil" do
+        let(:short_name){ nil }
+        describe "#slug" do
+          subject{ project.slug }
+          it { should == 'langworth-barton-and-strosin'}
+        end
+        describe "#subject_tag" do
+          subject{ project.subject_tag }
+          it { should == 'Langworth Barton and Strosin'}
+        end
+        describe "#email_address_username" do
+          subject{ project.email_address_username }
+          it { should == 'langworth.barton.and.strosin'}
+        end
+      end
+
+      context "and the short_name is 'LBS'" do
+        let(:short_name){ "LBS ™" }
+        describe "#slug" do
+          subject{ project.slug }
+          it { should == 'lbs'}
+        end
+        describe "#subject_tag" do
+          subject{ project.subject_tag }
+          it { should == 'LBS'}
+        end
+        describe "#email_address_username" do
+          subject{ project.email_address_username }
+          it { should == 'lbs'}
+        end
+      end
     end
   end
 
   describe "#email_address" do
     it "should return a email address" do
-      project = Project.create(name: 'Bob', slug: 'hole-faller')
+      project = Project.create(name: 'Bob', short_name: 'hole-faller')
       smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
-      project.email_address.should == "hole-faller@#{smtp_domain}"
+      project.email_address.should == "hole.faller@#{smtp_domain}"
     end
   end
 
   describe "#formatted_email_address" do
     it "should return a formatted email address" do
-      project = Project.create(name: 'Bob', slug: 'hole-faller')
+      project = Project.create(name: 'Bob', short_name: 'hole-faller')
       project.formatted_email_address.should == "Bob <#{project.email_address}>"
     end
-  end
-
-  describe "#subject_tag" do
-    context "when the project has a defined subject tag" do
-      let(:project) { Project.create(subject_tag: 'i am a tag', name: "Baby's First Project")}
-
-      it "returns the defined subject tag" do
-        project.subject_tag.should == 'i am a tag'
-      end
-    end
-
-    context "when the project has no custom subject tag" do
-      let(:project) { Project.create(name: "Baby's First Project")}
-
-      it "returns the default subject tag" do
-        project.subject_tag.should == 'babys-f'
-      end
-    end
-
   end
 
 end

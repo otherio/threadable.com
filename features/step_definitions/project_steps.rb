@@ -5,8 +5,7 @@ Then /^I should be able to edit the "(.*?)" project$/ do |project_name|
     click_on 'Edit'
   end
   fill_in "Name", with: 'UCSD Steam Powered Racing'
-  fill_in "Slug", with: 'ucsd-steam-powered-racing'
-  fill_in "Subject tag", with: 'ucsd-steam'
+  fill_in "Short name", with: 'UCSD Steam'
   fill_in "Description", with: 'Steam all the things!'
   click_on 'Save'
   page.should have_content('Notice! UCSD Steam Powered Racing was successfully updated.')
@@ -17,8 +16,7 @@ Then /^I should be able to edit the "(.*?)" project$/ do |project_name|
   end
 
   find_field('Name').value.should == 'UCSD Steam Powered Racing'
-  find_field('Slug').value.should == 'ucsd-steam-powered-racing'
-  find_field('Subject tag').value.should == 'ucsd-steam'
+  find_field('Short name').value.should == 'UCSD Steam'
   find_field('Description').value.should == 'Steam all the things!'
 end
 

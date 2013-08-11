@@ -12,7 +12,7 @@ describe EmailProcessor do
   let(:project){ Project.where(name: "UCSD Electric Racing").first! }
   let(:sender){ User.with_email('alice@ucsd.covered.io').first! }
   let(:in_reply_to_header){ nil }
-  let(:recipient_param){ 'UCSD Electric Racing <ucsd-electric-racing@covered.io>' }
+  let(:recipient_param){ 'UCSD Electric Racing <raceteam@covered.io>' }
   let(:from_param){ 'Alice Neilson <alice@ucsd.covered.io>' }
 
   let(:message_headers) do

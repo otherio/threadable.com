@@ -2,7 +2,7 @@ When /^I signup with the following information:$/ do |table|
   values = table.transpose.hashes.first
   visit new_user_registration_path
   values.each{|name, value| fill_in name, with: value }
-  click_on 'Sign up'
+  click_button 'Sign up'
 end
 
 def find_validation_email(email_address)

@@ -16,19 +16,33 @@ class Project < ActiveRecord::Base
   validates_uniqueness_of :name, :slug
   validates_format_of :subject_tag, with: /\A[\w -]+\z/
 
-  acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
+  acts_as_url :short_name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
+
+  def name= name
+    self.short_name = name if short_name.blank?
+    super
+  end
+
+  def short_name
+    self.short_name = name if subject_tag.blank?
+    subject_tag
+  end
+
+  def short_name= short_name
+    short_name = short_name.presence || name
+    return if short_name.blank?
+    short_name = short_name.gsub(/[\W]+/, ' ').strip
+    self.subject_tag = short_name
+    self.email_address_username = short_name.downcase.gsub(/\W+/,'.')
+  end
 
   def to_param
     slug
   end
 
-  def subject_tag
-    read_attribute(:subject_tag).presence || slug[0..6]
-  end
-
   def email_address
     smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
-    "#{slug}@#{smtp_domain}"
+    "#{email_address_username}@#{smtp_domain}"
   end
   alias_method :email, :email_address
 

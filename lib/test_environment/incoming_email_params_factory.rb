@@ -22,7 +22,7 @@ class TestEnvironment::IncomingEmailParamsFactory < MethodObject.new(:overides)
       'signature'        => MailgunSignature.encode(timestamp, token),
       'message-headers'  => message_headers.to_a.to_json,
       'from'             => 'Alice Neilson <alice@ucsd.covered.io>',
-      'recipient'        => 'UCSD Electric Racing <ucsd-electric-racing@covered.io>',
+      'recipient'        => 'UCSD Electric Racing <raceteam@covered.io>',
       'subject'          => 'this is the subject',
       'body-html'        => body_html,
       'stripped-html'    => stripped_html,

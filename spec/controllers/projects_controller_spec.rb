@@ -20,8 +20,7 @@ describe ProjectsController do
     {
       "project" => {
         "name"        => valid_attributes["name"],
-        "slug"        => "make-robot-cats",
-        "subject_tag" => "ROBOCATZ",
+        "short_name"  => "robo cats",
         "description" => "make some roboty kitties",
       }
     }
@@ -31,7 +30,7 @@ describe ProjectsController do
     {
       "project" => {
         "name"        => "",
-        "slug"        => "",
+        "short_name"  => "",
         "subject_tag" => "",
         "description" => "",
       }

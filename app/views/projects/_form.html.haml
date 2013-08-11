@@ -1,9 +1,11 @@
 = simple_form_for @project do |f|
-
   = f.error_notification
-
   = f.input :name
-  = f.input :slug
-  = f.input :subject_tag, input_html:{value: @project.subject_tag}
+  = f.input :short_name
+  =# f.input :subject_tag
+  =# f.input :email_address_username
+  %p= project_url(@project.slug)
+  %p= @project.formatted_email_address
+  %p RE: [#{@project.subject_tag}] hello people
   = f.input :description
   = f.submit 'Save', class: 'btn btn-primary'
