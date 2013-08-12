@@ -13,11 +13,16 @@ describe ConversationMailer do
 
     let(:parent_message){ conversation.messages.last }
 
+    let(:creator){ project.members.with_email("jonathan@ucsd.covered.io").first! }
+
+    let(:from){ creator.try(:formatted_email_address) }
+
     let(:message){
       conversation.messages.create!(
-        creator: project.members.with_email("jonathan@ucsd.covered.io").first!,
-        subject: conversation.subject,
-        body_plain: 'This is the best project everz.',
+        from:           from,
+        creator:        creator,
+        subject:        conversation.subject,
+        body_plain:     'This is the best project everz.',
         parent_message: parent_message,
       )
     }
@@ -79,6 +84,15 @@ describe ConversationMailer do
       let(:recipient){ message.user }
       let(:expected_from){ project.email }
       it "should set the from address as the project instead of the sender" do
+        validate_mail!
+      end
+    end
+
+    context "when given a message without a user" do
+      let(:creator){ nil }
+      let(:from){ 'larry@bird.com' }
+      let(:expected_from){ from }
+      it "should set the from address to the incomming messages's from address" do
         validate_mail!
       end
     end

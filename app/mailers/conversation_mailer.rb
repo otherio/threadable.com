@@ -5,10 +5,6 @@ class ConversationMailer < ActionMailer::Base
   add_template_helper EmailHelper
 
   def conversation_message(message, project_membership)
-    if message.creator.nil?
-      raise "why does this message not have a creator? #{@message.inspect}"
-    end
-
     @message, @project_membership = message, project_membership
     @recipient = @project_membership.user
     @project = @message.project
@@ -21,9 +17,8 @@ class ConversationMailer < ActionMailer::Base
     # add a check mark to the subject if the conversation is a task, and if the subject doesn't already include one
     subject = "✔ #{subject}" if @message.conversation.task? && !subject.include?("✔")
 
-    from = @message.creator == @recipient ?
-      @message.project.formatted_email_address :
-      @message.creator.formatted_email_address
+    from = @message.creator.present? && @message.creator == @recipient ?
+      @message.project.formatted_email_address : @message.from
 
     unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project_membership.id)
     @unsubscribe_url = project_unsubscribe_url(@message.project.slug, unsubscribe_token)
