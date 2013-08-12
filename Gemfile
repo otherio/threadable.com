@@ -38,6 +38,7 @@ gem 'sass-rails'
 gem 'font-awesome-sass-rails'
 gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
+gem 'roadie'
 
 group :production do
   gem 'rails_12factor'
@@ -52,6 +53,7 @@ group :development, :test do
   gem 'activerecord-fixture_builder'
   gem 'binding_of_caller'
   gem 'better_errors'
+  gem "mail_view"
 end
 
 group :test do

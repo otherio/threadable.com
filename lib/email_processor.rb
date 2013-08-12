@@ -38,8 +38,8 @@ class EmailProcessor < MethodObject.new(:incoming_email)
     MailgunRequestToEmailStripped.new(incoming_email).message
   end
 
-  let :covered_project_slug do
-    EmailProcessor::ProjectSlugFinder.call(email.to) or raise "No project slug"
+  let :project_email_address_username do
+    EmailProcessor::ProjectEmailAddressUsernameFinder.call(email.to)
   end
 
   let :from do
@@ -47,7 +47,8 @@ class EmailProcessor < MethodObject.new(:incoming_email)
   end
 
   let :project do
-    Project.where(slug: covered_project_slug).first
+    Project.where(email_address_username: project_email_address_username).first if \
+      project_email_address_username.present?
   end
 
   let :user do

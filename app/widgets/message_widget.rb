@@ -49,6 +49,7 @@ class MessageWidget < Rails::Widget::Presenter
   end
 
   def clean_html(html)
+    return nil if html.nil?
     Sanitize.clean(html, Sanitize::Config::RELAXED).html_safe
   end
 

@@ -30,7 +30,7 @@ class Message < ActiveRecord::Base
   end
 
   def html?
-    !body_html.empty?
+    body_html.present?
   end
 
   private

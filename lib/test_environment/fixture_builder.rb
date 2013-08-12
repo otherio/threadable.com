@@ -68,6 +68,10 @@ class TestEnvironment::FixtureBuilder
       creator: creator,
     )
     conversation or raise "cant find conversation by subject: #{subject}"
+    attributes[:body_plain]     ||= attributes[:stripped_plain]
+    attributes[:stripped_plain] ||= attributes[:body_plain]
+    attributes[:body_html]      ||= attributes[:stripped_html]
+    attributes[:stripped_html]  ||= attributes[:body_html]
     message = conversation.messages.create!(attributes)
     messages << messages
     message

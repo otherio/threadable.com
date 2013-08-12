@@ -45,7 +45,7 @@ describe ConversationMailer do
       mail_as_text.should =~ /References:/
       mail_as_text.should =~ /Message-ID:/
       mail_as_text.should include 'This is the best project everz.'
-      mail_as_text.should include "View on Covered: #{project_conversation_url(project, conversation)}"
+      mail_as_text.should include "View on Covered:\r\n#{project_conversation_url(project, conversation)}"
       mail_as_text =~ /\/#{Regexp.escape(project.slug)}\/unsubscribe\/(\S+)/
 
       unsubscribe_token = $1

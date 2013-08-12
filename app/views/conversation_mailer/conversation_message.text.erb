@@ -1,4 +1,15 @@
 <%= @message.body_plain.html_safe %>
+
+
 _____
-View on Covered: <%= project_conversation_url(@message.project, @message.conversation) %>
-Unsubscribe:  <%= @unsubscribe_url %>
+View on Covered:
+<%= project_conversation_url(@message.project, @message.conversation) %>
+
+Start a new conversation:
+<%= mail_to_href @project.email_address %>
+
+Start a new task:
+<%= mail_to_href @project.email_address, subject: "✔ " %>
+
+Unsubscribe:
+<%= @unsubscribe_url %>

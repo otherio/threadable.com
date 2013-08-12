@@ -7,6 +7,7 @@ Covered::Application.routes.draw do
   namespace :admin do
     require 'resque/server'
     mount Resque::Server, :at => "/resque"
+    mount MailPreview => '/mail_preview'
   end
 
   get '/development' => 'development#index'

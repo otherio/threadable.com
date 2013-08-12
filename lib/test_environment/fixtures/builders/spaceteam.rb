@@ -10,6 +10,7 @@ TestEnvironment::FixtureBuilder.new do
   # John creates a project
   @project = Project.create!(
     name: 'Mars Exploration Rover',
+    short_name: 'Spaceteam',
     description: 'Put a robot on mars.',
   )
   project.members << user('John Callas')

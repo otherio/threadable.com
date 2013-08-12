@@ -1,6 +1,19 @@
-= @message.body_html.html_safe
+- if @message.html?
+  = @message.body_html.html_safe
+- else
+  .plain-text= @message.body_plain
 
-.covered-footer.well{style:"font-size: 80%; margin: 3em 5em; background-color: #F5F5F5; border: 1px solid #E3E3E3; padding: 1em;"}
-  #{link_to 'This message', @message_url} was sent to #{mail_to @recipient.email}.
-  You are receiving this email because you are a member of the #{link_to @project.name, project_url(@project)} project.
-  If you would prefer not to receive future communications from #{link_to 'Covered.io', root_url} you may #{link_to 'unsubscribe', @unsubscribe_url}.
+%div.covered-content
+  %span{style:"display:none"} COVERED CONTENT START
+
+  .actions
+    = link_to @project.email_address, project_url(@project), class: 'project'
+    = link_to 'View on Covered', @message_url
+    = mail_to @project.email_address, 'Start a new conversation'
+    = mail_to @project.email_address, 'Start a new task', subject: "✔ "
+  .footer
+    #{link_to 'This message', @message_url} was sent to #{mail_to @recipient.email}.
+    You are receiving this email because you are a member of the #{link_to @project.name, project_url(@project)} project.
+    If you would prefer not to receive future communications from #{link_to 'Covered.io', root_url} you may #{link_to 'unsubscribe', @unsubscribe_url}.
+
+  %span{style:"display:none"} COVERED CONTENT END

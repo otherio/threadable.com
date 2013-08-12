@@ -1,4 +1,4 @@
-class EmailProcessor::ProjectSlugFinder < MethodObject.new(:to)
+class EmailProcessor::ProjectEmailAddressUsernameFinder < MethodObject.new(:to)
 
   def call
     @to.map do |email_address|

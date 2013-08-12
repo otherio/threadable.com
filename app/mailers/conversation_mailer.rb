@@ -2,6 +2,8 @@
 
 class ConversationMailer < ActionMailer::Base
 
+  add_template_helper EmailHelper
+
   def conversation_message(message, project_membership)
     if message.creator.nil?
       raise "why does this message not have a creator? #{@message.inspect}"
@@ -36,6 +38,7 @@ class ConversationMailer < ActionMailer::Base
     @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
 
     mail(
+      :css           => 'email',
       :'to'          => %(#{@recipient.name.inspect} <#{@recipient.email}>),
       :'subject'     => subject,
       :'from'        => from,
