@@ -4,8 +4,7 @@
   .plain-text= @message.body_plain
 
 %div.covered-content
-  %span{style:"display:none"} COVERED CONTENT START
-
+  .marker COVERED CONTENT
   .actions
     = link_to @project.email_address, project_url(@project), class: 'project'
     = link_to 'View on Covered', @message_url
@@ -15,5 +14,3 @@
     #{link_to 'This message', @message_url} was sent to #{mail_to @recipient.email}.
     You are receiving this email because you are a member of the #{link_to @project.name, project_url(@project)} project.
     If you would prefer not to receive future communications from #{link_to 'Covered.io', root_url} you may #{link_to 'unsubscribe', @unsubscribe_url}.
-
-  %span{style:"display:none"} COVERED CONTENT END
