@@ -1,7 +1,7 @@
-= form_for :member, url: project_members_url(project), html: {class: 'form-horizontal'}, remote: true, :html => {:'data-type' => 'json'} do |f|
+= form_for :member, url: project_members_url(project), remote: true, :html => {class: 'form-horizontal', :'data-type' => 'json'} do |f|
   .modal-header
     %button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
-    %h3 Invite
+    %h3 Add a member
 
   .modal-body
     .flash_messages
@@ -16,23 +16,17 @@
         = f.text_field :email, placeholder: 'Email', type: 'email', required: true
 
     %label.control-group
-      .control-label Invitation
+      .control-label Message
       .controls
-        .invite-content
-          - custom_invitation = capture do
-            Hey there!
-            I'm inviting you to our #{project.name} project on Covered.
-            Covered is a super rad conversation platform, that I (your cohort/friend/lover) am using to make #{project.name} more awesome!
-            If you're interested in hearing about how we (your accomplices/pals/sweethearts) are making #{project.name} happen, you should join up!
-          = f.text_area :message, class: 'custom-message', cols: nil, rows: nil, required: true, value: custom_invitation
-          .static_invitation
-            %p
-              Click here to join the conversation about #{project.name} on Covered!
-            %p
-              (imagine this is a link)
-            %p
-              If you feel you've received this message in error, don't worry. Covered won't send you any more email about this project until you click the link.
+        = f.text_area :message, class: 'custom-message', cols: nil, rows: nil, placeholder: "Hey!", value: ""
 
+        %p
+          You've been added to the #{project.name} project on Covered!
+
+        %p
+          Covered is a magical mailing list that helps you and your friends get more done.
+          It works just like any mailing list you've ever used, but has awesome features
+          to help you organize!
 
   .modal-footer
-    = f.submit :Invite, class: 'btn btn-primary'
+    = f.submit 'Add member', class: 'btn btn-primary'

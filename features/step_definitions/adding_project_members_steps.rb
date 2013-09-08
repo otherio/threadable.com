@@ -3,13 +3,13 @@ When(/^I add "(.*?)", "(.*?)" to the "(.*?)" project$/) do |name, email, project
   visit project_path(project)
 
   within selector_for('the navbar') do
-    click_on 'Invite'
+    click_on 'Add'
   end
 
   within selector_for('the modal') do
     fill_in 'Name', with: name
     fill_in 'Email', with: email
-    click_on 'Invite'
+    click_on 'Add member'
   end
 end
 
