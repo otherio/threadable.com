@@ -63,27 +63,37 @@ class EmailProcessor < MethodObject.new(:incoming_email)
     parent_message.conversation if parent_message
   end
 
+  TASK_SUBJECT_PREFIX_REGEXP = /^(task:|✔)\s*/i
+
   let :type do
     if pre_existing_conversation
       pre_existing_conversation.task? ? :task : :conversation
     else
-      email.subject =~ /^(task:|✔)/i ? :task : :conversation
+      email.subject =~ TASK_SUBJECT_PREFIX_REGEXP ? :task : :conversation
+    end
+  end
+
+  let :subject do
+    if type == :task
+      email.subject.sub(TASK_SUBJECT_PREFIX_REGEXP, '')
+    else
+      email.subject
     end
   end
 
   let :conversation do
     pre_existing_conversation || case type
     when :task
-      project.tasks.create(subject: email.subject, creator: user)
+      project.tasks.create(subject: subject, creator: user)
     when :conversation
-      project.conversations.create(subject: email.subject, creator: user)
+      project.conversations.create(subject: subject, creator: user)
     end
   end
 
   let :message do
     conversation.messages.create!(
       message_id_header: email.header['Message-ID'].to_s,
-      subject: email.subject,
+      subject: subject,
       parent_message: parent_message,
       user: user,
       from: from,

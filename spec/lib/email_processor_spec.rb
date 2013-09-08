@@ -93,7 +93,6 @@ describe EmailProcessor do
 
   def self.it_should_create_a_conversation!
     let(:conversation){ nil }
-    let(:expected_conversation_subject){ params['subject'] }
     let(:expected_conversation_creator){ sender }
     it "should create a conversation" do
       call!
@@ -141,7 +140,7 @@ describe EmailProcessor do
     assert_queued SendConversationMessageWorker, [{message_id: @message.id}]
 
     expect(@message.message_id_header).to     eq message_headers['Message-Id']
-    expect(@message.subject).to               eq params['subject']
+    expect(@message.subject).to               eq expected_subject
     expect(@message.parent_message).to        eq expected_parent_message
     expect(@message.user).to                  eq expected_sender
     expect(@message.from).to                  eq expected_sender_email
@@ -159,7 +158,7 @@ describe EmailProcessor do
 
   def validate_conversation!
     expect(@message.conversation.task?).to eq conversation_should_be_a_task
-    expect(@message.conversation.subject).to eq expected_conversation_subject
+    expect(@message.conversation.subject).to eq expected_subject
     expect(@message.conversation.creator).to eq expected_conversation_creator
     expect(@message.conversation.project).to eq project
   end
@@ -167,6 +166,7 @@ describe EmailProcessor do
 
   # Tests
 
+  let(:expected_subject){ params['subject'] }
   let(:expected_parent_message){ parent_message }
   let(:expected_sender){ sender }
   let(:expected_sender_email){ sender.email }
@@ -175,14 +175,17 @@ describe EmailProcessor do
   context "when the message is sent to a known project" do
     context "and the message is not a reply" do
       let(:parent_message){ nil }
+
       it_should_create_a_message_and_a_conversation!
       context "and the subject starts with 'task: '" do
         let(:conversation_should_be_a_task){ true }
+        let(:expected_subject){ 'create a jig' }
         before{ params["subject"] = 'Task: create a jig' }
         it_should_create_a_message_and_a_conversation!
       end
       context "and the subject starts with '✔ '" do
         let(:conversation_should_be_a_task){ true }
+        let(:expected_subject){ 'create a jig' }
         before{ params["subject"] = '✔ create a jig' }
         it_should_create_a_message_and_a_conversation!
       end
