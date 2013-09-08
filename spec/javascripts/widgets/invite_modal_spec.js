@@ -14,7 +14,7 @@ describeWidget("invite_modal", function(){
       expect( this.widget.node.is(':visible') ).toBe(false);
       this.widget.show();
     });
-    waits(300); // bootstrap animation time
+    waits(400); // bootstrap animation time
     if (callback) runs(callback);
   }
 
