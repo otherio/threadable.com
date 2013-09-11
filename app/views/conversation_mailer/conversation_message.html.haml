@@ -4,13 +4,78 @@
   .plain-text= @message.body_plain
 
 %div.covered-content
-  = image_tag '1x1.png', height: 0, width: 0
-  .actions
-    = link_to @project.email_address, project_url(@project), class: 'project'
-    = link_to 'View on Covered', @message_url
-    = mail_to @project.email_address, 'Start a new conversation'
-    = mail_to @project.email_address, 'Start a new task', subject: "✔ "
-  .footer
-    #{link_to 'This message', @message_url} was sent to #{mail_to @recipient.email}.
-    You are receiving this email because you are a member of the #{link_to @project.name, project_url(@project)} project.
-    If you would prefer not to receive future communications from #{link_to 'Covered.io', root_url} you may #{link_to 'unsubscribe', @unsubscribe_url}.
+  %div{:style => "display:none; display:none !important;"}
+    = @message.id
+
+  %table.covered_controls{:border => "0", :cellpadding => "0", :color => "dark grey", :style => "font-weight: 200", :width => "480"}
+    %tr
+      %td
+        - if @message.conversation.task?
+          %table.covered_button_table{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :height => "27", :width => "234"}
+            %tr
+              %td
+                %div
+                  /[if mso]
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://emailbtn.net/do_this_task" style="height:25px;v-text-anchor:middle;width:115px;" arcsize="10%" stroke="f" fillcolor="#1abc9c">
+                    <w:anchorlock/>
+                    <center>
+                  %a.covered_button{:href => "http://emailbtn.net/do_this_task", :style => "background-color:#1abc9c;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px;-webkit-text-size-adjust:none;"} I\'ll do this!
+                  /[if mso]
+                    </center>
+                    </v:roundrect>
+              %td
+                %div
+                  /[if mso]
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://emailbtn.net/mark_task_done" style="height:25px;v-text-anchor:middle;width:115px;" arcsize="10%" stroke="f" fillcolor="#1abc9c">
+                    <w:anchorlock/>
+                    <center>
+                  %a.covered_button{:href => "http://emailbtn.net/mark_task_done", :style => "background-color:#1abc9c;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px;-webkit-text-size-adjust:none;"} Mark as done
+                  /[if mso]
+                    </center>
+                    </v:roundrect>
+
+        %table.covered_button_table{:align => (@message.conversation.task? ? 'right':'left'), :border => "0", :cellpadding => "2", :cellspacing => "0", :height => "27", :width => "234"}
+          %tr
+            %td
+              %div
+                /[if mso]
+                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="mailto:#{@project.email_address}" style="height:25px;v-text-anchor:middle;width:115px;" arcsize="10%" stroke="f" fillcolor="#16A085">
+                  <w:anchorlock/>
+                  <center>
+                %a.covered_button{:href => "mailto:#{@project.email_address}", :style => "background-color:#16A085;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px;-webkit-text-size-adjust:none;"} New conversation
+                /[if mso]
+                  </center>
+                  </v:roundrect>
+            %td
+              %div
+                /[if mso]
+                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="mailto:#{@project.email_address}?subject=✔+" style="height:25px;v-text-anchor:middle;width:115px;" arcsize="10%" stroke="f" fillcolor="#16A085">
+                  <w:anchorlock/>
+                  <center>
+                %a.covered_button{:href => "mailto:#{@project.email_address}?subject=✔+", :style => "background-color:#16A085;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px;-webkit-text-size-adjust:none;"} New task
+                /[if mso]
+                  </center>
+                  </v:roundrect>
+    %tr
+      %td
+        %table.covered_button_table{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "115"}
+          %tr
+            %td
+              %div
+                /[if mso]
+                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#{@message_url}" style="height:25px;v-text-anchor:middle;width:115px;" arcsize="10%" stroke="f" fillcolor="#7F8C8D">
+                  <w:anchorlock/>
+                  <center>
+                %a.covered_button{:href => @message_url, :style => "background-color:#7F8C8D;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px;-webkit-text-size-adjust:none;"} View on Covered
+                /[if mso]
+                  </center>
+                  </v:roundrect>
+        %table.covered_details{:align => "right", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "357"}
+          %tr
+            %td.covered_details_inner{:style => "color: #95A5A6; text-align: right;"}
+              .covered_project{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+                = link_to @project.name, project_url(@project)
+                |
+                = mail_to @project.email_address, @project.email_address
+              .covered_unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
+                sent to #{@recipient.email} | mute conversation | #{link_to 'unsubscribe', @unsubscribe_url}
