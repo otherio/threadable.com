@@ -33,6 +33,11 @@ class Message < ActiveRecord::Base
     body_html.present?
   end
 
+  def unique_id
+    message_id_header =~ /\<(.*?)@/;
+    $1
+  end
+
   private
 
   def touch_conversation_update_at

@@ -5,7 +5,7 @@
 
 %div.covered-content
   %div{:style => "display:none; display:none !important;"}
-    = @message.id
+    = "##CovMid: #{@message.unique_id} ##"
 
   %table.covered_controls{:border => "0", :cellpadding => "0", :color => "dark grey", :style => "font-weight: 200", :width => "480"}
     %tr
@@ -79,3 +79,6 @@
                 = mail_to @project.email_address, @project.email_address
               .covered_unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
                 sent to #{@recipient.email} | mute conversation | #{link_to 'unsubscribe', @unsubscribe_url}
+
+  %div{:style => "display:none; display:none !important;"}
+    = "##CovMid: #{@message.unique_id} ##"

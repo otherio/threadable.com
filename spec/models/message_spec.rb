@@ -39,4 +39,13 @@ describe Message do
       message.body.should == message.body_plain
     end
   end
+
+  describe "#unique_id" do
+    it "returns the message id, minus the host part" do
+      message = subject
+      message.message_id_header = '<foo_bar_baz@example.com>'
+      message.unique_id.should == 'foo_bar_baz'
+    end
+  end
+
 end

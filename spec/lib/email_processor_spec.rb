@@ -38,8 +38,9 @@ describe EmailProcessor do
     @message = EmailProcessor.call(incoming_email)
   end
 
-  def filter_unsubscribe_token(body)
-    EmailProcessor::UnsubscribeTokenFilterer.call(body)
+  def filter_message(body)
+    body = EmailProcessor::UnsubscribeTokenFilterer.call(body)
+    EmailProcessor::FooterFilterer.call(body)
   end
 
   def attachments
@@ -144,10 +145,10 @@ describe EmailProcessor do
     expect(@message.parent_message).to        eq expected_parent_message
     expect(@message.user).to                  eq expected_sender
     expect(@message.from).to                  eq expected_sender_email
-    expect(@message.body_plain).to            eq filter_unsubscribe_token(params['body-plain'])
-    expect(@message.body_html).to             eq filter_unsubscribe_token(params['body-html'])
-    expect(@message.stripped_plain).to        eq filter_unsubscribe_token(params['stripped-text'])
-    expect(@message.stripped_html).to         eq filter_unsubscribe_token(params['stripped-html'])
+    expect(@message.body_plain).to            eq filter_message(params['body-plain'])
+    expect(@message.body_html).to             eq filter_message(params['body-html'])
+    expect(@message.stripped_plain).to        eq filter_message(params['stripped-text'])
+    expect(@message.stripped_html).to         eq filter_message(params['stripped-html'])
     expect(@message.conversation).to          be_present
     expect(@message.conversation.project).to  eq project
 

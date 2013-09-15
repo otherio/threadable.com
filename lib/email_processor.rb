@@ -108,7 +108,8 @@ class EmailProcessor < MethodObject.new(:incoming_email)
   private
 
   def filter_unsubscribe_token(part)
-    EmailProcessor::UnsubscribeTokenFilterer.call(part.body)
+    body = EmailProcessor::UnsubscribeTokenFilterer.call(part.body)
+    EmailProcessor::FooterFilterer.call(body)
   end
 
 end
