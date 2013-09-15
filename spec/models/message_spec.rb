@@ -46,6 +46,12 @@ describe Message do
       message.message_id_header = '<foo_bar_baz@example.com>'
       message.unique_id.should == 'foo_bar_baz'
     end
+
+    it "filters out weird characters" do
+      message = subject
+      message.message_id_header = '<foo-bar+!*%-baz@example.com>'
+      message.unique_id.should == 'foo-bar-baz'
+    end
   end
 
 end

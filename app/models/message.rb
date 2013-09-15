@@ -35,7 +35,7 @@ class Message < ActiveRecord::Base
 
   def unique_id
     message_id_header =~ /\<(.*?)@/;
-    $1
+    $1.gsub(/[^\w-]/, '')
   end
 
   private
