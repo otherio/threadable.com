@@ -13,8 +13,8 @@ class Covered::Operations::CreateMessageFromIncomingEmail < Covered::Operation
   end
 
   let :attachments do
-    @email.attachments.map do |attachment|
-      StoreIncomingAttachment.call(attachment)
+    @email.attachments.map do |file|
+      Attachment.create_from_file! file
     end
   end
 
