@@ -18,3 +18,10 @@ CapybaraEnvironment.before_suite!
 Before do
   reload_fixtures!
 end
+
+Around('@email') do |scenario, block|
+  ActionMailer::Base.delivery_method = :test
+  ActionMailer::Base.perform_deliveries = true
+  ActionMailer::Base.deliveries.clear
+  block.call
+end

@@ -32,23 +32,25 @@ Scenario: Account creation fails if email is already used
     And I click the "Sign up" button
    Then I should see "Email has already been taken"
 
+@email
+Scenario: When added to a project, a new user receives a welcome email
+  Given I am "Alice Neilson"
+    And I invite "Bob", "bob@example.com" to the "UCSD Electric Racing" project
+   Then "bob@example.com" should have received an email containing the text: "You've been added to the UCSD Electric Racing project on Covered"
 
 
+Scenario: A new user can request an invite to create a project via the website
 
-  Scenario: A new user can request an invite to create a project via the website
+Scenario: A new user can accept an invite to create a project
 
-  Scenario: A new user can accept an invite to create a project
+Scenario: A new user can signup via their facebook account
 
-  Scenario: A new user can accept an invite to join a project
+Scenario: A new user can signup via their google account
 
-  Scenario: A new user can signup via their facebook account
+Scenario: A new user can confirm their email during the signup process
 
-  Scenario: A new user can signup via their google account
+Scenario: A new user that accepts an invitiation to a project can choose to signup via the confirmation page ("you can do this at any time!")
 
-  Scenario: A new user can confirm their email during the signup process
+Scenario: An email-only user can set a password by following any covered link in their email.
 
-  Scenario: A new user that accepts an invitiation to a project can choose to signup via the confirmation page ("you can do this at any time!")
-
-  Scenario: An email-only user can set a password by following any covered link in their email.
-
-  Scenario: An email-only user can set a password via the website
+Scenario: An email-only user can set a password via the website
