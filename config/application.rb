@@ -16,17 +16,6 @@ if defined?(Bundler)
 end
 
 module Covered
-
-  @config = {}
-  def self.config name
-    @config[name.to_sym] ||= begin
-      config = Rails.root.join("config/#{name}.yml").read
-      config = ERB.new(config).result
-      config = YAML.load(config)
-      config.has_key?(Rails.env) ? config[Rails.env] : config
-    end
-  end
-
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -65,6 +54,7 @@ module Covered
   end
 end
 
+require 'covered'
 require 'wtf'
 require 'active_record_read_only'
 require 'ruby_template_handler'
