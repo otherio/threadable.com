@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'EmailProcessor::UnsubscribeTokenFilterer' do
+describe UnsubscribeTokenFilterer do
 
   def self.texts
     [
@@ -121,7 +121,7 @@ AFTER
 
   texts.each_with_index do |(before, expected_after), index|
     it "should should be able to strip the unsubscribe token from example #{index}" do
-      after = EmailProcessor::UnsubscribeTokenFilterer.call(before)
+      after = UnsubscribeTokenFilterer.call(before)
       expect(after).to eq expected_after
     end
   end

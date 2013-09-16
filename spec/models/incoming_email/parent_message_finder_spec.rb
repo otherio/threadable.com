@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EmailProcessor::ParentMessageFinder do
+describe IncomingEmail::ParentMessageFinder do
 
   let(:project){ Project.find_by_slug!('raceteam') }
   let(:conversation){ project.conversations.last }
@@ -10,7 +10,7 @@ describe EmailProcessor::ParentMessageFinder do
 
   def self.it_should_find_the_parent_message!
     it "should find the parent message" do
-      message = EmailProcessor::ParentMessageFinder.call(project.id, headers)
+      message = IncomingEmail::ParentMessageFinder.call(project.id, headers)
       expect(message).to eql parent_message
     end
   end
@@ -38,7 +38,7 @@ describe EmailProcessor::ParentMessageFinder do
     let(:in_reply_to){ "abcd" }
     let(:references ){ "efgh ijkl mnop" }
     it "should not find a parent message" do
-      message = EmailProcessor::ParentMessageFinder.call(project.id, headers)
+      message = IncomingEmail::ParentMessageFinder.call(project.id, headers)
       expect(message).to be_nil
     end
   end

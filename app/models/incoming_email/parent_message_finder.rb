@@ -1,4 +1,4 @@
-class EmailProcessor::ParentMessageFinder < MethodObject.new(:project_id, :headers)
+class IncomingEmail::ParentMessageFinder < MethodObject.new(:project_id, :headers)
 
   def call
     in_reply_to = @headers['In-Reply-To'].to_s
@@ -14,11 +14,11 @@ class EmailProcessor::ParentMessageFinder < MethodObject.new(:project_id, :heade
 
     # try the more complicated query
     potential_parents = find(references)
-
     references.reverse.each do |reference|
-      parent_message ||= potential_parents.find do |message|
+      parent_message = potential_parents.find do |message|
         message.message_id_header == reference
       end
+      break if parent_message.present?
     end
 
     return parent_message

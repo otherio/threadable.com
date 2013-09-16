@@ -14,7 +14,7 @@ describe "email" do
   context "recieving from mailgun" do
 
     def filter_token(body)
-      EmailProcessor::UnsubscribeTokenFilterer.call(body)
+      UnsubscribeTokenFilterer.call(body)
     end
 
     let(:parent_message){ conversation.messages.first! }

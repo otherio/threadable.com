@@ -4,7 +4,7 @@ class ProcessEmailWorker < ResqueWorker.new(:params)
 
   def call
     incoming_email = IncomingEmail.find(@params['incoming_email_id'])
-    EmailProcessor.call(incoming_email)
+    Covered.process_incoming_email(:email => incoming_email)
   end
 
 end

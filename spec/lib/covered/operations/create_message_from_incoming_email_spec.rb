@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EmailProcessor do
+describe Covered::Operations::CreateMessageFromIncomingEmail do
 
   before do
     FilepickerUploader::Uploader.should_not_receive(:perform_request)
@@ -35,12 +35,11 @@ describe EmailProcessor do
   # Helpers
 
   def call!
-    @message = EmailProcessor.call(incoming_email)
+    @message = Covered::Operations::CreateMessageFromIncomingEmail.call(:email => incoming_email)
   end
 
-  def filter_message(body)
-    body = EmailProcessor::UnsubscribeTokenFilterer.call(body)
-    EmailProcessor::FooterFilterer.call(body)
+  def strip_body(body)
+    Covered.strip_user_specific_content_from_email_message_body(:body => body)
   end
 
   def attachments
@@ -145,10 +144,10 @@ describe EmailProcessor do
     expect(@message.parent_message).to        eq expected_parent_message
     expect(@message.user).to                  eq expected_sender
     expect(@message.from).to                  eq expected_sender_email
-    expect(@message.body_plain).to            eq filter_message(params['body-plain'])
-    expect(@message.body_html).to             eq filter_message(params['body-html'])
-    expect(@message.stripped_plain).to        eq filter_message(params['stripped-text'])
-    expect(@message.stripped_html).to         eq filter_message(params['stripped-html'])
+    expect(@message.body_plain).to            eq strip_body(params['body-plain'])
+    expect(@message.body_html).to             eq strip_body(params['body-html'])
+    expect(@message.stripped_plain).to        eq strip_body(params['stripped-text'])
+    expect(@message.stripped_html).to         eq strip_body(params['stripped-html'])
     expect(@message.conversation).to          be_present
     expect(@message.conversation.project).to  eq project
 
