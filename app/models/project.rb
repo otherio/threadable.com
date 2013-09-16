@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
   has_many :members_who_get_email, -> { where project_memberships: {gets_email:true} }, :through => :project_memberships, :source => 'user'
   has_many :events, -> { order "created_at" }
 
-  validates_presence_of :name, :slug
+  validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :name, :slug
   validates_format_of :subject_tag, with: /\A[\w -]+\z/
 
@@ -49,6 +49,15 @@ class Project < ActiveRecord::Base
 
   def formatted_email_address
     "#{name} <#{email_address}>"
+  end
+
+  def list_id
+    smtp_domain = Rails.application.config.action_mailer.smtp_settings[:domain]
+    "#{email_address_username}.#{smtp_domain}"
+  end
+
+  def formatted_list_id
+    "#{name} <#{list_id}>"
   end
 
 end

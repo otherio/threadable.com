@@ -51,7 +51,7 @@ describe ConversationMailer do
       mail_as_text.should =~ /Message-ID:/
       mail_as_text.should include 'This is the best project everz.'
       mail_as_text.should include "View on Covered:\r\n#{project_conversation_url(project, conversation)}"
-      mail_as_text =~ /\/#{Regexp.escape(project.slug)}\/unsubscribe\/(\S+)/
+      mail_as_text =~ /\/#{Regexp.escape(project.slug)}\/unsubscribe\/([^>\s]+)/ #the list-unsubscribe in the header is wrapped in <>
 
       unsubscribe_token = $1
       unsubscribe_token.should_not be_blank
@@ -59,6 +59,7 @@ describe ConversationMailer do
       ProjectUnsubscribeToken.decrypt(unsubscribe_token).should == project_membership.id
 
       mail.header[:'Reply-To'].to_s.should == project.formatted_email_address
+      mail.header[:'List-ID'].to_s.should == project.formatted_list_id
       mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]
       mail.message_id.should == message.message_id_header[1..-2]
       mail.references.should == [

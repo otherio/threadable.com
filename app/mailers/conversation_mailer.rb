@@ -33,14 +33,19 @@ class ConversationMailer < ActionMailer::Base
     @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
 
     mail(
-      :css           => 'email',
-      :'to'          => %(#{@recipient.name.inspect} <#{@recipient.email}>),
-      :'subject'     => subject,
-      :'from'        => from,
-      :'Reply-To'    => @message.project.formatted_email_address,
-      :'Message-ID'  => @message.message_id_header,
-      :'In-Reply-To' => @message.parent_message.try(:message_id_header),
-      :'References'  => @message.references_header,
+      :css                 => 'email',
+      :'to'                => %(#{@recipient.name.inspect} <#{@recipient.email}>),
+      :'subject'           => subject,
+      :'from'              => from,
+      :'Reply-To'          => @message.project.formatted_email_address,
+      :'Message-ID'        => @message.message_id_header,
+      :'In-Reply-To'       => @message.parent_message.try(:message_id_header),
+      :'References'        => @message.references_header,
+      :'List-ID'           => @message.project.formatted_list_id,
+      :'List-Archive'      => "<#{project_conversations_url(@message.project)}>",
+      :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",
+      :'List-Post'         => "<mailto:#{@message.project.email_address}>, <#{new_project_conversation_url(@message.project)}>"
+
     )
   end
 
