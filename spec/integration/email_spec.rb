@@ -13,8 +13,8 @@ describe "email" do
 
   context "recieving from mailgun" do
 
-    def filter_token(body)
-      UnsubscribeTokenFilterer.call(body)
+    def filter_body(body)
+      Covered.strip_user_specific_content_from_email_message_body(body: body)
     end
 
     let(:parent_message){ conversation.messages.first! }
@@ -45,7 +45,7 @@ describe "email" do
         end
       end
 
-      pending "should create a message" do
+      it "should create a message" do
         expect{
           post '/emails', params
         }.to change{ IncomingEmail.count }.by(1)
@@ -64,10 +64,10 @@ describe "email" do
         expect(message.parent_message).to        eq parent_message
         expect(message.user).to                  eq sender
         expect(message.from).to                  eq sender.email
-        expect(message.body_plain).to            eq filter_token(params['body-plain'])
-        expect(message.body_html).to             eq filter_token(params['body-html'])
-        expect(message.stripped_plain).to        eq filter_token(params['stripped-text'])
-        expect(message.stripped_html).to         eq filter_token(params['stripped-html'])
+        expect(message.body_plain).to            eq filter_body(params['body-plain'])
+        expect(message.body_html).to             eq filter_body(params['body-html'])
+        expect(message.stripped_plain).to        eq filter_body(params['stripped-text'])
+        expect(message.stripped_html).to         eq filter_body(params['stripped-html'])
         expect(message.conversation).to          eq conversation
         expect(message.conversation.project).to  eq project
 
