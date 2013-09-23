@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "spec_helper"
 
 describe ConversationMailer do
@@ -8,21 +9,18 @@ describe ConversationMailer do
     end
 
     let(:project){ Project.where(name: 'UCSD Electric Racing').first }
-
     let(:conversation){ project.conversations.find_by_subject('layup body carbon') }
-
     let(:parent_message){ conversation.messages.last }
-
     let(:creator){ project.members.with_email("jonathan@ucsd.covered.io").first! }
-
     let(:from){ creator.try(:formatted_email_address) }
+    let(:body_plain) { 'This is the best project everz.' }
 
     let(:message){
       conversation.messages.create!(
         from:           from,
         creator:        creator,
         subject:        conversation.subject,
-        body_plain:     'This is the best project everz.',
+        body_plain:     body_plain,
         parent_message: parent_message,
       )
     }
@@ -37,6 +35,7 @@ describe ConversationMailer do
       Hash[mail.header_fields.map{|hf| [hf.name, hf.value] }]
     }
     let(:mail_as_text){ mail.to_s }
+    let(:html_body) { mail.html_part.body.to_s }
 
     let(:expected_from){ message.user.email }
 
@@ -97,6 +96,22 @@ describe ConversationMailer do
         validate_mail!
       end
     end
-  end
 
+    context "message summary" do
+      let(:body_plain) { "Everybody, yeah Rock your body, yeah Everybody, yeah Rock your body right Backstreet's back, alright Hey, yeah Oh my God, we're back again Brothers, sisters, everybody sing Gonna bring the flavor, show you how Gotta question for you better answer now, yeah"}
+
+      it "returns the first bunch of characters of the summary, with an umbrella" do
+        mail
+        html_body.should =~ /☂ Everybody, yeah Rock your body, yeah Everybody, yeah Rock your body right Backstreet's back, alright Hey, yeah Oh my God, we're back again Brothers, sisters,/
+      end
+
+      context "with a short message" do
+        let(:body_plain) { "Everybody, please." }
+        it "pads the remaining characters with spaces when the message is short" do
+          mail
+          html_body.should =~ /☂ Everybody, please.\s{150}/
+        end
+      end
+    end
+  end
 end
