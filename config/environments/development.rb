@@ -35,11 +35,9 @@ Covered::Application.configure do
   #   :port                 => 587,
   #   :domain               => 'covered.io',
   #   :user_name            => 'multifytest@gmail.com',
-  #   :password             => 'secondarypacking',
+  #   :password             => 'xxxxx',
   #   :authentication       => 'plain',
   #   :enable_starttls_auto => true  }
-
-
 
   # Do not compress assets
   config.assets.compress = false

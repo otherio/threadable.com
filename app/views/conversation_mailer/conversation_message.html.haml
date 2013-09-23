@@ -1,21 +1,22 @@
+%style{data: {immutable: true}}=Rails.application.assets['email_mobile.css']
 - button_defaults = { border: '#cccccc', background: '#fcfcfc', text: '#1abc9c'}
 %div.covered-content
   %div{:style => "display:none; display:none !important;"}
     = @message_summary
     = "##CovMid: #{@message.unique_id} ##"
 
-  %table.covered_controls{:border => "0", :cellpadding => "0", :color => "dark grey", :style => "font-weight: 300", :width => "480"}
+  %table.covered-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "480"}
     %tr
       %td
-        %table.covered_button_table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :height => "20", :width => "480"}
+        %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :height => "20", :width => "480"}
           %tr
             - if @message.conversation.task?
-              = render partial: 'email_button', locals: button_defaults.merge({ content: "I'll do it!", link: 'http://emailbtn.net/do_this_task' })
-              = render partial: 'email_button', locals: button_defaults.merge({ content: "Mark as done", link: 'http://emailbtn.net/mark_task_done' })
-            = render partial: 'email_button', locals: button_defaults.merge({ text: '#16A085', content: "New conversation", link: "mailto:#{@project.email_address}" })
-            = render partial: 'email_button', locals: button_defaults.merge({ text: '#16A085', content: "New task", link: "mailto:#{@project.email_address}?subject=✔+" })
-            = render partial: 'email_button', locals: button_defaults.merge({ text: '#7F8C8D', content: "View on Covered", link: "#{@message_url}" })
-            = render partial: 'email_button', locals: button_defaults.merge({ text: '#2980B9', content: "Mute", link: "#{@message_url}" })
+              = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'task-button', content: "I'll do it!", link: 'http://emailbtn.net/do_this_task' })
+              = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'task-button', content: "Mark as done", link: 'http://emailbtn.net/mark_task_done' })
+            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'compose-button', content: "New conversation", link: "mailto:#{@project.email_address}" })
+            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'compose-button', content: "New task", link: "mailto:#{@project.email_address}?subject=✔+" })
+            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'view-button', content: "View on Covered", link: "#{@message_url}" })
+            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'mute-button', content: "Mute", link: "#{@message_url}" })
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
 
@@ -28,14 +29,14 @@
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
 
-  %table.covered_details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "357"}
+  %table.covered-details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "357"}
     %tr
-      %td.covered_details_inner{:style => "color: #95A5A6; text-align: left;"}
-        .covered_project{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+      %td.covered-details-inner{:style => "color: #95A5A6; text-align: left;"}
+        .covered-project{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
           = link_to @project.name, project_url(@project)
           |
           = mail_to @project.email_address, @project.email_address
-        .covered_unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
+        .covered-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
           sent to #{@recipient.email} | #{link_to 'unsubscribe', @unsubscribe_url}
 
   %div{:style => "display:none; display:none !important;"}

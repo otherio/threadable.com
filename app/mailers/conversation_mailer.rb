@@ -1,7 +1,6 @@
 # Encoding: UTF-8
 
 class ConversationMailer < ActionMailer::Base
-
   add_template_helper EmailHelper
 
   def conversation_message(message, project_membership)

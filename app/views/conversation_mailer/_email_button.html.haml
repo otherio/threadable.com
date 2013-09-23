@@ -1,10 +1,9 @@
 %td
-  %div
-    /[if mso]
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#{link}" style="height:18px;v-text-anchor:middle;" arcsize="10%" strokecolor="#{border}" fillcolor="#{background}">
-      <w:anchorlock/>
-      <center>
-    %a.covered_button{:href => "#{link}", :style => "background-color:#{background};border:1px solid #{border};border-radius:3px;color:#{text} !important;display:inline-block;font-family:sans-serif !important;font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important;font-size:11px !important;line-height:18px;text-align:center;text-decoration:none;-webkit-text-size-adjust:none;"} &nbsp;&nbsp;#{content}&nbsp;&nbsp;
-    /[if mso]
-      </center>
-      </v:roundrect>
+  /[if mso]
+    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#{link}" style="height:18px;v-text-anchor:middle;" arcsize="10%" strokecolor="#cccccc" fillcolor="#fcfcfc">
+    <w:anchorlock/>
+    <center>
+  %a.covered-button{:href => "#{link}", :class => "#{button_class}"} &nbsp;&nbsp;#{content}&nbsp;&nbsp;
+  /[if mso]
+    </center>
+    </v:roundrect>
