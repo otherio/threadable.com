@@ -11,9 +11,10 @@ class ConversationMailer < ActionMailer::Base
     @project_membership = @project.project_memberships.where(user: @recipient).first!
     @conversation = @message.conversation
     subject_tag = @message.project.subject_tag
+
     buffer_length = 200 - message.body_plain.length
     buffer_length = 0 if buffer_length < 0
-    @message_summary = "☂ #{message.body_plain[0,200]}#{' ' * buffer_length}"
+    @message_summary = "⌁ #{message.body_plain.to_s[0,200]}#{' ' * buffer_length}"
 
     subject = @message.subject
     subject = "[#{subject_tag}] #{subject}" unless subject.include?("[#{subject_tag}]")

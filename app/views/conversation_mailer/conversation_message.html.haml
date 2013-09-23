@@ -1,7 +1,6 @@
 - button_defaults = { border: '#cccccc', background: '#fcfcfc', text: '#1abc9c'}
 %div.covered-content
   %div{:style => "display:none; display:none !important;"}
-    - message_length = @message.body_plain.length
     = @message_summary
     = "##CovMid: #{@message.unique_id} ##"
 

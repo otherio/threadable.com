@@ -102,14 +102,14 @@ describe ConversationMailer do
 
       it "returns the first bunch of characters of the summary, with an umbrella" do
         mail
-        html_body.should =~ /☂ Everybody, yeah Rock your body, yeah Everybody, yeah Rock your body right Backstreet's back, alright Hey, yeah Oh my God, we're back again Brothers, sisters,/
+        html_body.should =~ /⌁ Everybody, yeah Rock your body, yeah Everybody, yeah Rock your body right Backstreet's back, alright Hey, yeah Oh my God, we're back again Brothers, sisters,/
       end
 
       context "with a short message" do
         let(:body_plain) { "Everybody, please." }
         it "pads the remaining characters with spaces when the message is short" do
           mail
-          html_body.should =~ /☂ Everybody, please.\s{150}/
+          html_body.should =~ /⌁ Everybody, please.\s{150}/
         end
       end
     end
