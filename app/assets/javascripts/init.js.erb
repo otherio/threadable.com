@@ -1,5 +1,10 @@
 //= require modernizr
 
+whenReady = function(callback) {
+  whenReady.callbacks.push(callback);
+};
+whenReady.callbacks = [];
+
 !function() {
 
   yepnope({
@@ -7,6 +12,9 @@
     callback: function(){
       unpreventEverything();
       Covered.initialize(ENV);
+      var whenReady_callbacks = whenReady.callbacks;
+      whenReady = $;
+      whenReady_callbacks.forEach($);
     }
   });
 
