@@ -24,9 +24,8 @@
       %input{type:'hidden', class: 'size',      name:'message[attachments][][size]'}
       %input{type:'hidden', class: 'writeable', name:'message[attachments][][writeable]'}
 
-  .controls.pull-right
-    %input.cloaked{type: 'submit'}
-    %input.btn{type: 'submit', value: 'Send'}
-
   .controls
+    .pull-right
+      %input.cloaked{type: 'submit'}
+      %input.btn{type: 'submit', value: 'Send'}
     %button.attach-files.btn Attach Files

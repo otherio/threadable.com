@@ -21,9 +21,13 @@
     textarea
       min-height: 40px
 
+  .attachments
+    margin-bottom: 10px
+    +clearfix
+
   .attachment-preview
     position: relative
-    display: inline-block
+    float: left
     margin-right: 0.25em
 
     border: 1px solid grey
@@ -53,6 +57,9 @@
     &:hover
       a.remove
         display: block
+
+  .controls
+    margin-bottom: 1px
 
   .subject_field, .body_field
     input, textarea

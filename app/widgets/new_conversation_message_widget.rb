@@ -28,7 +28,7 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
 
   option :url do
     if new_conversation?
-      @view.project_conversations_path(project)
+      @view.project_conversations_path(project, format: :json)
     else
       @view.project_conversation_messages_path(project, conversation)
     end
