@@ -4,7 +4,7 @@ module Token
   TypeMismatch = Class.new(Invalid)
 
   def self.encrypt(type, payload)
-    cleartext_token = Marshal.dump([random_string, type, payload])
+    cleartext_token = Marshal.dump([random, type, payload])
     token = Base64.urlsafe_encode64(Encryptor.encrypt(cleartext_token, key: key, algorithm: 'bf-ofb'))
     return token
   end
@@ -24,8 +24,8 @@ module Token
     @key ||= Digest::SHA256.hexdigest(Covered::Application.config.unsubscribe_token_key)
   end
 
-  def self.random_string
-    SecureRandom.urlsafe_base64
+  def self.random
+    rand(9999)
   end
 
 end
