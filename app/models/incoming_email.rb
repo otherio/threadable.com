@@ -28,19 +28,19 @@ class IncomingEmail < ActiveRecord::Base
   }, to: :mail_message
 
   def text_part
-    mail_message.text_part.body.raw_source
+    get_raw_source :text
   end
 
   def html_part
-    mail_message.html_part.body.raw_source
+    get_raw_source :html
   end
 
   def text_part_stripped
-    mail_message_stripped.text_part.body.raw_source
+    get_raw_source :text, stripped: true
   end
 
   def html_part_stripped
-    mail_message_stripped.html_part.body.raw_source
+    get_raw_source :html, stripped: true
   end
 
   def project_email_address_username
@@ -60,6 +60,15 @@ class IncomingEmail < ActiveRecord::Base
 
   def conversation
     parent_message.try(:conversation)
+  end
+
+  private
+
+  def get_raw_source content_type, stripped: false
+    message = stripped ? mail_message_stripped : mail_message
+    part = message.public_send("#{content_type}_part")
+    body = (part || message).try(:body)
+    body.try(:raw_source) || ""
   end
 
 end
