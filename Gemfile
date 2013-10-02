@@ -11,6 +11,7 @@ gem 'redis'
 gem 'pg'
 gem 'honeybadger'
 gem 'resque'
+gem 'resque-honeybadger'
 
 gem 'stringex'
 gem 'devise'
