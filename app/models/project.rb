@@ -12,6 +12,10 @@ class Project < ActiveRecord::Base
   has_many :members_who_get_email, -> { where project_memberships: {gets_email:true} }, :through => :project_memberships, :source => 'user'
   has_many :events, -> { order "created_at" }
 
+  scope :with_members, ->{ includes(:project_memberships).where('project_memberships.id IS NOT NULL').references(:project_memberships) }
+  scope :without_members, ->{ includes(:project_memberships).where(project_memberships:{id:nil}).references(:project_memberships) }
+
+
   validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :name, :slug
   validates_format_of :subject_tag, with: /\A[\w -]+\z/

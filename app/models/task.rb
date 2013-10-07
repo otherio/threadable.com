@@ -12,8 +12,11 @@ class Task < Conversation
 
   scope :done, ->{ where('conversations.done_at IS NOT NULL') }
   scope :not_done, ->{ where('conversations.done_at IS NULL') }
-  scope :with_doers, ->{ joins(:doers).where('task_doers.id IS NOT NULL') }
-  scope :without_doers, ->{ where('task_doers.id IS NULL') }
+  scope :with_doers, ->{ includes(:doers).where('task_doers.id IS NOT NULL').references(:doers) }
+  scope :without_doers, ->{
+    joins('LEFT JOIN task_doers ON task_doers.task_id = conversations.id').
+      where('task_doers.task_id IS NULL')
+  }
 
   before_validation :set_position
 
