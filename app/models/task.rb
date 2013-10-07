@@ -46,16 +46,38 @@ class Task < Conversation
     true
   end
 
-  private
-
-  def create_done_event!
-    if done_at_changed?
-      (done? ? DoneEvent : UndoneEvent).create!(task: self, project: project, user: @current_user)
+  def add_doers current_user, *doers
+    transaction do
+      self.doers += doers
+      events = doers.map do |doer|
+        {
+          type: 'Task::AddedDoerEvent',
+          user: current_user,
+          doer: doer,
+        }
+      end
+      self.events.create!(events)
     end
   end
 
+  def remove_doers current_user, *doers
+    transaction do
+      self.doers -= doers
+      events = doers.map do |doer|
+        {
+          type: 'Task::RemovedDoerEvent',
+          user: current_user,
+          doer: doer,
+        }
+      end
+      self.events.create!(events)
+    end
+  end
+
+  private
+
   def set_position
-    self.position ||= project.tasks.count + 1 if project.present?
+    self.position ||= project.tasks.count + 1 if project
   end
 
 end

@@ -1,6 +1,7 @@
 # Encoding: UTF-8
 
 class ConversationMailer < ActionMailer::Base
+
   add_template_helper EmailHelper
 
   def conversation_message(message, project_membership)
@@ -9,6 +10,7 @@ class ConversationMailer < ActionMailer::Base
     @project = @message.project
     @project_membership = @project.project_memberships.where(user: @recipient).first!
     @conversation = @message.conversation
+    @task = @conversation if @conversation.task?
     subject_tag = @message.project.subject_tag
 
     buffer_length = 200 - message.body_plain.length

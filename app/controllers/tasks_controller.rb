@@ -3,6 +3,7 @@ class TasksController < ApplicationController
   layout false
 
   before_filter :authenticate_user!
+  before_action :find_task!, except: [:index,:create]
 
   respond_to :html, :json
 
@@ -27,11 +28,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.save
         format.html {
-          if request.xhr?
-            render_widget
-          else
-            redirect_to project_conversation_url(project, @task)
-          end
+          request.xhr? ? render_widget : redirect_to_show
         }
         format.json {
           render json: @task, status: :created, location: project_task_url(project, @task)
@@ -50,11 +47,7 @@ class TasksController < ApplicationController
   # PUT /:project_id/tasks/:id
   # PUT /:project_id/tasks/:id.json
   def update
-    params.require(:id)
     task_params = params.require(:task).permit(:subject, :done, :done_at)
-
-    @task = project.tasks.where(slug: params[:id]).first!
-    @task.current_user = current_user
 
     if task_params && done = task_params.delete(:done)
       task_params[:done_at] = done == "true" ? Time.now : nil
@@ -62,13 +55,41 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.update_attributes(task_params)
-        format.html { redirect_to project_conversation_url(project, @task), notice: 'Task was successfully updated.' }
+        format.html { redirect_to_show notice: 'Task was successfully updated.' }
         format.json { render json: @task, status: :ok }
       else
-        format.html { redirect_to project_conversation_url(project, @task), error: 'We were unable to update your task. Please try again later.' }
+        format.html { redirect_to_show error: 'We were unable to update your task. Please try again later.' }
         format.json { render json: @task, status: :unprocessable_entity }
       end
     end
+  end
+
+  include ForwardGetRequestsAsPostsConcern
+  before_action :forward_get_requests_as_posts!, only: %w{
+    ill_do_it
+    remove_me
+    mark_as_done
+    mark_as_undone
+  }
+
+  def ill_do_it
+    @task.add_doers(current_user, current_user)
+    redirect_to_show notice: 'You have been added as a doer of this task.'
+  end
+
+  def remove_me
+    @task.remove_doers(current_user, current_user)
+    redirect_to_show notice: 'You have been removed from the doers of this task.'
+  end
+
+  def mark_as_done
+    @task.done!(current_user)
+    redirect_to_show notice: 'Task marked as done.'
+  end
+
+  def mark_as_undone
+    @task.undone!(current_user)
+    redirect_to_show notice: 'Task marked as not done.'
   end
 
   private
@@ -82,6 +103,16 @@ class TasksController < ApplicationController
     options[:with_title]    = true  if params[:with_title] == "true"
     options[:conversations] = false if params[:conversations] == "false"
     render text: view_context.render_widget(:tasks_sidebar, project, options)
+  end
+
+  def find_task!
+    slug = params[:task_id] || params[:id]
+    @task = project.tasks.where(slug: slug).first!
+    @task.current_user = current_user
+  end
+
+  def redirect_to_show options={}
+    redirect_to project_conversation_url(project, @task), options
   end
 
 end

@@ -20,41 +20,48 @@ describe Task do
   end
 
   describe "#done!" do
-    let(:task){ create(:task) }
-    it "should set done_at to Time.now and save!" do
-      time = Time.at(2132132131)
-      Time.stub(:now).and_return(time)
 
-      task.done_at.should be_nil
-      task.should_not be_done
-      Task::DoneEvent.should_receive(:create!)
-      task.done! User.new
-      task.should be_done
-      task.done_at.should == time
-      Task::UndoneEvent.should_receive(:create!)
-      task.undone! User.new
-      task.done_at.should be_nil
-      task.should_not be_done
+    let(:current_user){ task.doers.first! }
+    let(:now){ Time.at(2132132131) }
+
+    before{ Time.stub(:now).and_return(now) }
+
+    context "when the task is done" do
+
+      let(:task){ Task.with_doers.done.first! }
+
+      it "should do nothing" do
+        expect(task).to_not receive :transaction
+        expect(task).to_not receive :update!
+        expect(task).to_not receive :save!
+        expect{
+          task.done! current_user
+        }.to_not change{ Event.count }
+      end
+
     end
 
-    it 'is idempotent' do
-      Task::DoneEvent.should_receive(:create!).once
-      user = User.new
+    context "when the task is not done" do
 
-      Time.stub(:now).and_return(Time.at(2132132131))
-      task.done! user
+      let(:task){ Task.with_doers.not_done.first! }
 
-      Time.stub(:now).and_return(Time.at(2132132133))
-      task.done! user
+      it "should update done_at => Time.now and create a Task::DoneEvent record" do
+        expect{
+          task.done! current_user
+        }.to change{ Event.count }.by(1)
 
-      Task.any_instance.should_receive(:save!).once
 
-      Time.stub(:now).and_return(Time.at(2132132135))
-      task.undone! user
+        expect(task).to be_done
+        expect(task.done_at).to eq now
 
-      Time.stub(:now).and_return(Time.at(2132132137))
-      task.undone! user
+        event = Event.last
+
+        expect(event).to be_a Task::DoneEvent
+        expect(event.task).to eq task
+        expect(event.user).to eq current_user
+      end
     end
+
   end
 
 end

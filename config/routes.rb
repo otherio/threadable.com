@@ -59,6 +59,12 @@ Covered::Application.routes.draw do
 
     resources :tasks, :only => [:index, :create, :update] do
       resources :doers, :only => [:create, :destroy], controller: 'task/doers'
+
+
+      match 'ill_do_it', via: [:get, :post]
+      match 'remove_me', via: [:get, :post]
+      match 'mark_as_done', via: [:get, :post]
+      match 'mark_as_undone', via: [:get, :post]
     end
 
     match '/unsubscribe/:token' => 'project/email_subscriptions#unsubscribe', as: 'unsubscribe', via: [:get, :post]

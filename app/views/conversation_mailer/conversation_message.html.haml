@@ -10,13 +10,20 @@
       %td
         %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :height => "20", :width => "480"}
           %tr
-            - if @message.conversation.task?
-              = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'task-button', content: "I'll do it!", link: 'http://emailbtn.net/do_this_task' })
-              = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'task-button', content: "Mark as done", link: 'http://emailbtn.net/mark_task_done' })
-            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'compose-button', content: "New conversation", link: "mailto:#{@project.email_address}" })
-            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'compose-button', content: "New task", link: "mailto:#{@project.email_address}?subject=✔+" })
-            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'view-button', content: "View on Covered", link: "#{@message_url}" })
-            = render partial: 'email_button', locals: button_defaults.merge({ button_class: 'mute-button', content: "Mute", link: "#{@message_url}" })
+            - if @task
+              - if @task.doers.include? @recipient
+                = email_button "Remove me", project_task_remove_me_url(@project, @task)
+              - else
+                = email_button "I'll do it!", project_task_ill_do_it_url(@project, @task)
+              - if @task.done?
+                = email_button "Mark as undone", project_task_mark_as_undone_url(@project, @task)
+              - else
+                = email_button "Mark as done", project_task_mark_as_done_url(@project, @task)
+
+            = email_button "New conversation", "mailto:#{@project.email_address}",            class: 'compose-button'
+            = email_button "New task",         "mailto:#{@project.email_address}?subject=✔+", class: 'compose-button'
+            = email_button "View on Covered",  "#{@message_url}",                             class: 'view-button'
+            = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
 
