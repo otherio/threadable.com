@@ -1,10 +1,6 @@
 class Event < ActiveRecord::Base
 
-  def type
-    self.class.name.underscore.gsub('/','_').to_sym
-  end
-
-  serialize :content
+  serialize :content, Hash
 
   belongs_to :project
   belongs_to :user

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130811202620) do
+ActiveRecord::Schema.define(version: 20131007000050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,8 +72,12 @@ ActiveRecord::Schema.define(version: 20130811202620) do
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "incoming_emails", force: true do |t|
-    t.binary   "params",     null: false
-    t.datetime "created_at", null: false
+    t.binary   "params",       null: false
+    t.datetime "created_at",   null: false
+    t.string   "type"
+    t.integer  "message_id"
+    t.integer  "from_user_id"
+    t.datetime "processed_at"
   end
 
   create_table "messages", force: true do |t|

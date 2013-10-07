@@ -1,4 +1,6 @@
 class Task < Conversation
+
+  has_many :events, class_name: 'Task::Event', foreign_key: 'conversation_id'
   has_and_belongs_to_many :doers, class_name: 'User', join_table: 'task_doers'
 
   validates_presence_of :position
@@ -13,23 +15,24 @@ class Task < Conversation
   scope :with_doers, ->{ joins(:doers).where('task_doers.id IS NOT NULL') }
   scope :without_doers, ->{ where('task_doers.id IS NULL') }
 
-  after_save :create_done_event!
   before_validation :set_position
 
   attr_accessor :current_user
 
   def done! current_user, at=Time.now
     return if done?
-    @current_user = current_user
-    self.done_at = at
-    save!
+    transaction do
+      update! done_at: at
+      events.create! type: 'Task::DoneEvent', user: current_user
+    end
   end
 
   def undone! current_user
     return unless done?
-    @current_user = current_user
-    self.done_at = nil
-    save!
+    transaction do
+      update! done_at: nil
+      events.create! type: 'Task::UndoneEvent', user: current_user
+    end
   end
 
   def done?

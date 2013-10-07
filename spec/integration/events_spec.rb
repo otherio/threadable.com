@@ -12,7 +12,7 @@ describe "events" do
     #
     project.conversations.create! subject: 'Welcome Everyone', creator: project.members.first
 
-    expected_event_types << :conversation_created_event
+    expected_event_types << "Conversation::CreatedEvent"
     project.events.reload
     project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Conversation::CreatedEvent
@@ -21,7 +21,7 @@ describe "events" do
     #
     project.tasks.create! subject: 'buy some cereal', creator: project.members.second
 
-    expected_event_types << :task_created_event
+    expected_event_types << "Task::CreatedEvent"
     project.events.reload
     project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::CreatedEvent
@@ -31,7 +31,7 @@ describe "events" do
     project.tasks.last.done! project.members.first
     project.tasks.last.done! project.members.first # idempotent
 
-    expected_event_types << :task_done_event
+    expected_event_types << "Task::DoneEvent"
     project.events.reload
     project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::DoneEvent
@@ -41,7 +41,7 @@ describe "events" do
     project.tasks.last.undone! project.members.first
     project.tasks.last.undone! project.members.first # idempotent
 
-    expected_event_types << :task_undone_event
+    expected_event_types << "Task::UndoneEvent"
 
     project.events.reload
     project.events.map(&:type).should == expected_event_types
@@ -52,7 +52,7 @@ describe "events" do
     # task done event
     project.tasks.last.done! project.members.first
 
-    expected_event_types << :task_done_event
+    expected_event_types << "Task::DoneEvent"
     project.events.reload
     project.events.map(&:type).should == expected_event_types
     project.events.last.class.should == Task::DoneEvent
