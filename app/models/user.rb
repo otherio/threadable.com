@@ -48,6 +48,10 @@ class User < ActiveRecord::Base
     limit(1)
   }
 
+  scope :with_password, ->{
+    where('users.encrypted_password IS NOT NULL').where("users.encrypted_password <> ''")
+  }
+
   class << self
 
     def find_for_authentication(conditions={})
