@@ -1,7 +1,0 @@
-.well.well-centered
-  %h3 You're almost done!
-  = simple_form_for(resource, :as => resource_name, :url => send(:"#{resource_name}_confirm_path"), :method => 'PUT') do |form|
-    = form.input :password, :input_html => {:autofocus => true}
-    = form.input :password_confirmation
-    = form.input :confirmation_token, :as => :hidden
-    = form.submit 'Sign in', class: 'btn'

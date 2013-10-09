@@ -49,7 +49,6 @@ GEM
       compass (>= 0.11.5)
     arel (4.0.0)
     atomic (1.1.14)
-    bcrypt-ruby (3.1.1)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -97,11 +96,6 @@ GEM
       debugger-ruby_core_source (~> 1.2.3)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.3)
-    devise (3.0.0)
-      bcrypt-ruby (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
-      warden (~> 1.2.3)
     diff-lcs (1.2.4)
     dotenv (0.8.0)
     dotenv-rails (0.8.0)
@@ -145,7 +139,6 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
-    hashie (2.0.5)
     hike (1.2.3)
     honeybadger (1.7.0)
       json
@@ -191,10 +184,6 @@ GEM
     net-ssh (2.6.8)
     newrelic_rpm (3.6.5.130)
     nokogiri (1.5.10)
-    omniauth (1.1.4)
-      hashie (>= 1.2, < 3)
-      rack
-    orm_adapter (0.4.0)
     pg (0.15.1)
     polyglot (0.3.3)
     postmark-mitt (0.0.11)
@@ -318,8 +307,6 @@ GEM
       raindrops (~> 0.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
-    warden (1.2.3)
-      rack (>= 1.0)
     webmock (1.12.3)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
@@ -342,7 +329,6 @@ DEPENDENCIES
   compass-rails!
   cucumber-rails
   debugger
-  devise
   dotenv-rails
   encryptor
   factory_girl_rails
@@ -364,7 +350,6 @@ DEPENDENCIES
   method_object
   minitest
   newrelic_rpm
-  omniauth
   pg
   pry-debugger
   pry-rails

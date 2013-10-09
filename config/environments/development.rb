@@ -45,8 +45,7 @@ Covered::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = false
 
-  # devise wants this
-  config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
+  # config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
 
   # enables the load of javascript specs
   config.assets.paths << Rails.root.join("spec", "javascripts")

@@ -39,13 +39,6 @@ RSpec.configure do |config|
     end
   end
 
-  config.with_options :type => :controller do |controller_specs|
-    controller_specs.include Devise::TestHelpers
-    controller_specs.before do
-      request.env["devise.mapping"] = Devise.mappings[:user]
-    end
-  end
-
   config.infer_base_class_for_anonymous_controllers = true
 
   config.order = "random"

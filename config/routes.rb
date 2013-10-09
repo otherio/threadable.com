@@ -13,19 +13,6 @@ Covered::Application.routes.draw do
   get '/development' => 'development#index'
   get '/demoauth' => 'demo_auth#index', as: 'demo_auth'
 
-  # get "users/confirmation" => "confirmations#show", as: 'user_confirmation'
-  devise_for :users, :controllers => {
-    :registrations => 'registrations',
-    :confirmations => 'confirmations',
-    :omniauth_callbacks => "users/omniauth_callbacks",
-    :registrations => "registrations"
-  }
-
-  devise_scope :user do
-    get '/thanks-for-signing-up' => 'registrations#thanks', as: 'thanks_for_signing_up'
-    put "/users/confirm" => "confirmations#confirm", as: 'user_confirm'
-  end
-
   get   '/setup' => 'users#setup', as: 'user_setup'
 
   get   '/projects'      => 'projects#index'

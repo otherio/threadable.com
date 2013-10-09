@@ -17,11 +17,6 @@ describe User do
     FactoryGirl.build(:user, password: password, password_confirmation: password)
   end
 
-  context "devise options" do
-    subject { described_class }
-    it { should include Devise::Models::Registerable }
-  end
-
   describe "password validations" do
     def user_attributes
       {}
