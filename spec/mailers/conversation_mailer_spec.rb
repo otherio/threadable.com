@@ -107,9 +107,9 @@ describe ConversationMailer do
 
       context "with a short message" do
         let(:body_plain) { "Everybody, please." }
-        it "pads the remaining characters with spaces when the message is short" do
+        it "pads the remaining characters with underscores when the message is short" do
           mail
-          html_body.should =~ /⌁ Everybody, please.\s{150}/
+          html_body.should =~ /⌁ Everybody, please._{150}/
         end
       end
     end
