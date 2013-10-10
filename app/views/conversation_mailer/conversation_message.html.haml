@@ -4,7 +4,6 @@
   %div{:style => "display:none; display:none !important;"}
     = @message_summary
     = "##CovMid: #{@message.unique_id} ##"
-
   %table.covered-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "480"}
     %tr
       %td
@@ -26,6 +25,7 @@
             = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
+  %br
 
 - if @message.html?
   = @message.body_html.html_safe
@@ -34,7 +34,7 @@
 
 %div.covered-content
   %div{:style => "display:none; display:none !important;"}
-    = "##CovMid: #{@message.unique_id} ##"
+    = "##CovMid: footer ##"
 
   %table.covered-details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "357"}
     %tr
@@ -47,4 +47,4 @@
           sent to #{@recipient.email} | #{link_to 'unsubscribe', @unsubscribe_url}
 
   %div{:style => "display:none; display:none !important;"}
-    = "##CovMid: #{@message.unique_id} ##"
+    = "##CovMid: footer ##"
