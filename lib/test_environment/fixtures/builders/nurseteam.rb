@@ -1,7 +1,7 @@
 TestEnvironment::FixtureBuilder.new do
 
   # Amy signs up (we do this since this fixutre might run first)
-  sign_up 'Amy Wong',  'amy@sfhealth.example.com', 'password'
+  sign_up 'Amy Wong',  'amywong.phd@gmail.com', 'password'
 
   # Amy creates a project
   @project = Project.create!(
@@ -12,7 +12,7 @@ TestEnvironment::FixtureBuilder.new do
   project.members << user('Amy Wong')
 
   # Amy invites her project mates
-  add_user 'Sandeep Prakash',  'sandeep@sfhealth.example.com'
+  add_user 'Sandeep Prakash',  'SFmedstudent@gmail.com'
   add_user 'Yan Hzu',          'yan@sfhealth.example.com'
   add_user 'Elizabeth Tapp',   'elizabeth@sfhealth.example.com'
   add_user 'Anil Kapoor',        'anil@sfhealth.example.com'
