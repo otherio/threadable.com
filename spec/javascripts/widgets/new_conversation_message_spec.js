@@ -20,7 +20,7 @@ describeWidget("new_conversation_message", function(){
       var widget;
 
       function message_body_textarea() {
-        return widget.node.find('.body_field').find('textarea, iframe').filter(':visible');
+        return widget.node.find('.body_field').find('textarea, iframe').filter(':visible').first();
       }
 
       beforeEach(function() {
@@ -49,7 +49,7 @@ describeWidget("new_conversation_message", function(){
             message_body_textarea().click();
           });
 
-          waits(1);
+          waits(200);
 
           runs(function(){
             expect( message_body_textarea() ).toBeVisible();
@@ -63,11 +63,11 @@ describeWidget("new_conversation_message", function(){
             waits(100);
 
             runs(function(){
-              expect( message_body_textarea().height() ).toBeLessThan('50');
+              expect( message_body_textarea().height() ).toBeLessThan('56');
               message_body_textarea().click();
             });
 
-            waits(1);
+            waits(100);
 
             runs(function(){
               expect( message_body_textarea().height() ).toBeGreaterThan('199');
