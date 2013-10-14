@@ -6,7 +6,7 @@
       %tr.conversation{"data-conversation-id" => conversation.id}
         %td.participants
           %span.names
-            - conversation.participants.each do |participant|
+            - participants_or_creator(conversation).each do |participant|
               %span= participant.name.split(/\s+/).first
           %span.count= "(#{conversation.messages.count})" if conversation.messages.count > 1
         %td.subject
