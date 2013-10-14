@@ -12,7 +12,7 @@ TestEnvironment::FixtureBuilder.new do
   project.members << user('Amy Wong')
 
   # Amy invites her project mates
-  add_user 'Sandeep Prakash',  'SFmedstudent@gmail.com'
+  add_user 'Sandeep Prakash',  'sfmedstudent@gmail.com'
   add_user 'Yan Hzu',          'yan@sfhealth.example.com'
   add_user 'Elizabeth Tapp',   'elizabeth@sfhealth.example.com'
   add_user 'Anil Kapoor',        'anil@sfhealth.example.com'
@@ -77,7 +77,10 @@ TestEnvironment::FixtureBuilder.new do
   unsubscribe_from_project_email 'Zachary Smith'
 
   # everyone gets an avatar photo (except not because we don't have them yet)
-  #set_avatar 'sandeep@sfhealth.example.com', ''
+  set_avatar 'sfmedstudent@gmail.com', 'sandeep.jpg'
+  set_avatar 'amywong.phd@gmail.com', 'amy.jpg'
+  set_avatar 'yuriz@sfhealth.example.com', 'yuri.jpg'
+
   #set_avatar 'yan@sfhealth.example.com', ''
   #set_avatar 'elizabeth@sfhealth.example.com', ''
   #set_avatar 'anil@sfhealth.example.com', ''
@@ -93,7 +96,6 @@ TestEnvironment::FixtureBuilder.new do
   #set_avatar 'drnick@sfhealth.example.com', ''
   #set_avatar 'kpulaski@sfhealth.example.com', ''
   #set_avatar 'abby@sfhealth.example.com', ''
-  #set_avatar 'yuriz@sfhealth.example.com', ''
   #set_avatar 'zarkov@sfhealth.example.com', ''
   #set_avatar 'ecto@sfhealth.example.com', ''
   #set_avatar 'jack@sfhealth.example.com', ''
@@ -104,7 +106,6 @@ TestEnvironment::FixtureBuilder.new do
   #set_avatar 'deb@sfhealth.example.com', ''
   #set_avatar 'elizabethcorday@sfhealth.example.com', ''
   #set_avatar 'rk@sfhealth.example.com', ''
-  #set_avatar 'amy_wong@sfhealth.example.com', ''
   #set_avatar 'smith@sfhealth.example.com', ''
 
   # Let's make some messages!
@@ -190,17 +191,37 @@ TestEnvironment::FixtureBuilder.new do
   create_task 'Yan Hzu',        'Review our intake policies'
   create_task 'B.J. Hunnicutt', 'Update EMS forms to new version'
   create_task 'Anil Kapoor',    'Replace the power cord for vitals monitor #4'
+
+  create_task 'Elizabeth Tapp', 'Improve triage SpO2 monitoring'  #triage
+  create_task 'Yan Hzu', 'New triage desk vitals monitor'  #triage
+
   create_task 'Amy Wong',  'Order more glucose monitoring supplies'
+
+  create_task 'Yan Hzu', 'Write current EMS practice review'  #triage
+
   create_task 'Yan Hzu',        'Print new info signs for the front desk'
   create_task 'Anil Kapoor',    'Review literature on DVT prevention'
   create_task 'Amy Wong',  'Revise PA paging procedures'
+
+  create_task 'B.J. Hunnicutt', 'Review triage ECG procedures'  #triage
+  create_task 'Anil Kapoor', 'Review standing orders for ASA and CP'  #triage
+
   create_task 'Elizabeth Tapp', 'Calibrate the 2nd-floor blanket warmer'
   create_task 'Amy Wong',  'Review shift-change procedures'
   create_task 'Yuri Zhivago',  'Present our new central line system to the department'
   create_task 'Peter Venkman',  'Set up conference room for orientation'
+
+  create_task 'Amy Wong', 'Write new intake form'  #triage
+
   create_task 'Yan Hzu',  'Pick up bagels for orientation'
   create_task 'Elizabeth Tapp',  'Remind the QuickPharm rep to only come by Tuesdays'
   create_task 'Amy Wong',  'Pick up decorations for the halloween party'
+
+  create_task 'Amy Wong', 'Compare waiting times to acuity'  #triage
+  create_task 'B.J. Hunnicutt', 'Schedule a triage retrospective'  #triage
+  create_task 'Anil Kapoor', 'Meet with SJ clinic about trauma classification'  #triage
+  create_task 'Amy Wong', 'Summarize triage review findings for board'  #triage
+
 
   # fill out those tasks with some messages
   send_message(
@@ -258,12 +279,21 @@ TestEnvironment::FixtureBuilder.new do
   )
 
   # Demo thread.  Put this at the end so it shows up near the top of the list
-  send_message(
-    user: 'Yuri Zhivago',
-    reply: false,
-    subject: 'Hypertension literature review',
-    stripped_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
-    body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
-  )
+  create_task 'Yuri Zhivago', 'Hypertension literature review'
+  complete_task 'Yan Hzu', 'Hypertension literature review'
+
+  # send_message(
+  #   user: 'Yuri Zhivago',
+  #   reply: false,
+  #   subject: 'Hypertension literature review',
+  #   stripped_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
+  #   body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
+  # )
+
+  complete_task 'Yan Hzu', 'Call X-ray machine maintenance company'
+  complete_task 'Yan Hzu', 'Check in with IV supplies vendor'
+  complete_task 'Yan Hzu', 'Review our intake policies'
+
+
 
 end
