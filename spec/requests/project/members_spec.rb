@@ -6,7 +6,7 @@ describe "project members", driver: :rack_test do
   let(:user)    { project.members.first }
 
   before do
-    login_as user
+    sign_in_as user
   end
 
   describe "reading members of a project" do

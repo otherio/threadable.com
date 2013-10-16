@@ -6,5 +6,5 @@ export SELENIUM=false
 
 bundle check || bundle install
 bundle exec rake --trace --verbose db:schema:load || exit 1
-bundle exec rspec --format documentation --order random && \
+bundle exec rspec --format documentation --order random || exit 1
 bundle exec cucumber

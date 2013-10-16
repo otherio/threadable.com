@@ -1,24 +1,21 @@
 When /^I signup with the following information:$/ do |table|
   values = table.transpose.hashes.first
-  visit new_user_registration_path
+  visit sign_up_path
   values.each{|name, value| fill_in name, with: value }
   click_button 'Sign up'
 end
 
 def find_validation_email(email_address)
-  ActionMailer::Base.deliveries.find{|email|
-    email.to.include?(email_address) && \
-    email.body.include?('You can confirm your account email through the link below')
-  }
+  sent_emails.to(email_address).containing('Please visit this url confirm your account').first
 end
 
-Then /^I a confirmation link should have been sent to "(.*?)"$/ do |email_address|
+Then(/^"(.*?)" should have a confirmation email$/) do |email_address|
   find_validation_email(email_address).should be_present
 end
 
-When /^I click the validation link sent to "(.*?)"$/ do |email_address|
+When(/^I click the account confirmation link sent to "(.*?)"$/) do |email_address|
   email = find_validation_email(email_address)
-  url = URI.extract(email.to_s, ['http']).find{|url| url.include? 'confirmation_token' }
+  url = email.urls.find{|url| url =~ %r{users/confirm} }
   visit url
 end
 

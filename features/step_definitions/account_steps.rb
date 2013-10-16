@@ -18,7 +18,7 @@
 #   click_on 'Join'
 # end
 
-# Then /^I should be logged in as "(.*?)"$/ do |name|
+# Then /^I should be signed in as "(.*?)"$/ do |name|
 #   page.should have_content("#{name}")
 # end
 
@@ -26,7 +26,7 @@
 #   # TODO: clear cookies or whatever
 # end
 
-# When /^I login with the following information:$/ do |table|
+# When /^I sign in with the following information:$/ do |table|
 #   info = table.hashes.first
 
 #   visit '/'

@@ -1,11 +1,21 @@
-= simple_form_for @project do |f|
-  = f.error_notification
-  = f.input :name
-  = f.input :short_name
-  =# f.input :subject_tag
-  =# f.input :email_address_username
-  %p= project_url(@project.slug)
-  %p= @project.formatted_email_address
-  %p RE: [#{@project.subject_tag}] hello people
-  = f.input :description
-  = f.submit 'Save', class: 'btn btn-primary'
+.well.well-centered
+  %h2= @project.new_record? ? 'New Project' : @project.name
+  = simple_form_for @project do |f|
+    = f.error_notification
+    = f.input :name, required: true, autofocus: true
+    = f.input :short_name, required: false
+    - if @project.slug.present?
+      .input
+        %label Url
+        %p
+          %strong= project_url(@project.slug)
+      .input
+        %label Email address
+        %p
+          %strong= @project.formatted_email_address
+      .input
+        %label Example subject
+        %p
+          %strong RE: [#{@project.subject_tag}] anyone up for lunch?
+    = f.input :description
+    = f.submit class: 'btn btn-primary'

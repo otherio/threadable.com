@@ -49,8 +49,10 @@ describe ProjectMembershipMailer do
 
         user_setup_url = URI.extract(email.body.encoded).find{|link| link =~ %r(/setup) }
         expect(user_setup_url).to be_present
-        token = Rack::Utils.parse_query(URI(user_setup_url).query)["token"]
+
+        token = URI.parse(user_setup_url).path[%r{/users/setup/(?<token>.*)}, :token]
         expect(token).to be_present
+
         user_id, destination_url = UserSetupToken.decrypt(token)
         expect(user_id).to eq user.id
         expect(destination_url).to eq project_path(project)

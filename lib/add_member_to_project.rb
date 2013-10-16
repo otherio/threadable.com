@@ -48,13 +48,11 @@ class AddMemberToProject < MethodObject.new(:options)
     when @member.key?(:email)
       @member = User.with_email(@member[:email]).first_or_initialize(@member)
     else
-      raise ArgumentError, 'member option should be a user or a has with either an :id or :email key'
+      raise ArgumentError, "unexpected :member options #{@member.inspect}"
     end
   end
 
   def save_member!
-    return if @member.persisted?
-    @member.skip_confirmation_notification!
     @member.save!
   end
 

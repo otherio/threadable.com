@@ -12,7 +12,7 @@ class Db::Populate < MethodObject
         email: email,
         name: name,
         password: 'password',
-      ).confirm!
+      )
     end
 
   end

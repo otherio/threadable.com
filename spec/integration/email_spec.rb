@@ -107,7 +107,7 @@ describe "email" do
   context "recieving from the website" do
 
     before do
-      login_via_post_as sender
+      sign_in_via_post_as sender
     end
 
     context "replying to an existing conversation" do

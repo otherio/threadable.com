@@ -43,4 +43,8 @@ RSpec.configure do |config|
 
   config.order = "random"
 
+  config.include ControllerAuthenticationHelpers, :type => :controller, :example_group => {
+    :file_path => config.escaped_path(%w[spec controllers])
+  }
+
 end

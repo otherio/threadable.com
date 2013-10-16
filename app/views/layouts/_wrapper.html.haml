@@ -22,3 +22,7 @@
     = filepicker_js_include_tag
     :javascript
       filepicker.setKey("#{Rails.application.config.filepicker_rails.api_key}")
+
+
+    %form
+      %input{type:"hidden", value:"0", id: :page_loaded_from_back_button_detection}

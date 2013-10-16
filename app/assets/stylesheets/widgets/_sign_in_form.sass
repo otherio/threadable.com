@@ -1,3 +1,33 @@
 &
+  visibility: hidden
   width: 300px
   margin: 0 auto
+
+  input[type="submit"]
+    margin-top: 1em
+
+  .sign-in-form, .recover-password-form, .done
+    display: none
+
+&[state="sign in"]
+  .sign-in-form
+    display: block
+
+  .recover-password-form, .done
+    display: none
+
+&[state="recover password"]
+
+  .sign-in-form, .done
+    display: none
+
+  .recover-password-form
+    display: block
+
+&[state="done"]
+
+  .sign-in-form, .recover-password-form
+    display: none
+
+  .done
+    display: block

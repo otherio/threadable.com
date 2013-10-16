@@ -28,7 +28,7 @@ describe MessagesController do
   end
 
   before(:each) do
-    sign_in current_user
+    sign_in_as current_user
   end
 
   def valid_params

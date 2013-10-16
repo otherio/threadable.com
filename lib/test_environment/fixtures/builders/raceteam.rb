@@ -2,6 +2,7 @@ TestEnvironment::FixtureBuilder.new do
 
   # Alice signs up
   sign_up 'Alice Neilson', 'alice@ucsd.covered.io', 'password'
+  confirm_account 'Alice Neilson'
 
   # Alice creates a project
   @project = Project.create!(
@@ -17,6 +18,10 @@ TestEnvironment::FixtureBuilder.new do
   add_user 'Bethany Pattern', 'bethany@ucsd.covered.io'
   add_user 'Bob Cauchois',    'bob@ucsd.covered.io'
   add_user 'Jonathan Spray',  'jonathan@ucsd.covered.io'
+
+  confirm_account 'Tom Canver'
+  confirm_account 'Yan Hzu'
+  confirm_account 'Bob Cauchois'
 
   # Alice's project mates all accept their invites
   web_enable 'Tom Canver', 'password'

@@ -2,7 +2,7 @@ class TasksController < ApplicationController
 
   layout false
 
-  before_filter :authenticate_user!
+  before_filter :require_user_be_signed_in!
   before_action :find_task!, except: [:index,:create]
 
   respond_to :html, :json

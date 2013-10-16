@@ -1,13 +1,19 @@
 Given /^I am not logged in$/ do
-  visit new_user_session_path
-  page.should have_content('Covered')
+  sign_out!
 end
 
 Given /^I am "(.*?)"$/ do |name|
   @user = User.where(name: name).first!
-  login_as(@user)
+  sign_in_as(@user)
 end
 
-Then /^I should be logged in as "(.*?)"$/ do |name|
+Then /^I should be signed in as "(.*?)"$/ do |name|
   find('.page_navigation .current_user a').should have_content name
+end
+
+Then /^I should not be signed in$/ do
+  within_element 'the navbar' do
+    expect(page).to have_content 'Sign in'
+    expect(page).to have_content 'Sign up'
+  end
 end

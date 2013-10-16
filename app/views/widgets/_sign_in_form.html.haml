@@ -1,12 +1,26 @@
-%h2 Sign in
-.flash_messages
-= simple_form_for(user, form_options) do |f|
-  = f.input :email, :required => false, :autofocus => true
-  = f.input :password, :required => false
-  = f.input :remember_me, :as => :boolean, label_html:{style:'display: inline'}
-  %br/
-  = f.button :submit, "Sign in", class: 'btn'
-%div= link_to "Sign up", new_registration_path(:user)
-%div= link_to "No password? Forgot your password?", new_password_path(:user)
-%div= link_to "Didn't receive confirmation instructions?", new_confirmation_path(:user)
+%input.state{type:"hidden", value:""}
 
+.sign-in-form
+  %h2 Sign in
+  .flash_messages
+  = simple_form_for authentication, url: sign_in_path, remote: true, html: {:'data-type' => 'json'} do |f|
+    = f.input :email, :autofocus => authentication.email.blank?
+    = f.input :password, :autofocus => authentication.email.present?
+    = f.input :remember_me, :as => :boolean, label_html:{style:'display: inline'}
+    = f.button :submit, "Sign in", class: 'btn'
+  %div= link_to "Sign up", sign_up_path
+  %div= link_to "Forgot password", "", class: 'recover-password'
+
+.recover-password-form
+  %h2 Recover password
+  .flash_messages
+  = simple_form_for password_recovery, url: recover_password_path, remote: true, html: {:'data-type' => 'json'} do |f|
+    = f.input :email, :required => false, :autofocus => true
+    = f.button :submit, "Recover", class: 'btn'
+  %div= link_to "Sign up", sign_up_path
+  %div= link_to "Sign in", "", class: 'sign-in'
+
+.done
+  %h1 Thanks!
+  %h4.message
+  %input.message-store{type:"hidden", value:""}

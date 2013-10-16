@@ -31,6 +31,6 @@ end
 
 When(/^I click the project link in the join notice email sent to "(.*?)" for the "(.*?)" project$/) do |to_address, project_name|
   email = sent_emails.join_notices(project_name).sent_to(to_address).first
-  expect(email.user_setup_link).to be_present
-  visit email.user_setup_link
+  expect(email.user_setup_url).to be_present
+  visit email.user_setup_url
 end

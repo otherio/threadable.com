@@ -30,33 +30,29 @@ describe User do
 
     it { should be_empty }
 
-    context "when password_required! has been called" do
-
-      before{ user.password_required!; user.valid? }
-
-      context "when password is nil" do
-        def user_attributes
-          { password: nil, password_confirmation: nil }
-        end
-        it { should eq ["can't be blank"] }
+    context "when password is too short" do
+      def user_attributes
+        { password: "123", password_confirmation: "123" }
       end
-
-      context "when password is too short" do
-        def user_attributes
-          { password: "123", password_confirmation: "123" }
-        end
-        it { should eq ["is too short (minimum is 6 characters)"] }
-      end
-
-      context "when passwords do not match" do
-        subject{ user.errors_on(:password_confirmation) }
-        def user_attributes
-          { password: "asjkdhjksadhjksa", password_confirmation: "2348392489320890" }
-        end
-        it { should eq ["doesn't match Password"] }
-      end
-
+      it { should eq ["is too short (minimum is 6 characters)"] }
     end
+
+    context "when passwords do not match" do
+      subject{ user.errors_on(:password_confirmation) }
+      def user_attributes
+        { password: "asjkdhjksadhjksa", password_confirmation: "2348392489320890" }
+      end
+      it { should eq ["doesn't match Password"] }
+    end
+
+    context "when password is present but password_confirmation is blank" do
+      subject{ user.errors_on(:password_confirmation) }
+      def user_attributes
+        { password: "asjkdhjksadhjksa" }
+      end
+      it { should eq ["can't be blank"] }
+    end
+
   end
 
   describe "factory" do
@@ -69,12 +65,6 @@ describe User do
     it "should have a valid factory" do
       expect(user).to be_valid
     end
-
-    it "should include an auth token" do
-      user.save!
-      expect(user.authentication_token).to be_true
-    end
-
 
     it "should use the gravatar as the default avatar when none is supplied" do
       expect(user.avatar_url).to eq 'http://gravatar.com/avatar/b48def645758b95537d4424c84d1a9ff.png?s=48&d=retro'
@@ -130,23 +120,6 @@ describe User do
       user.as_json['email'].should == user.email
     end
   end
-
-  describe "password_required?" do
-    subject(:user){ User.new }
-    it "should be false by default" do
-      expect(user.password_required?).to be_false
-    end
-
-    context "when password_required! is called" do
-      before do
-        user.password_required!
-      end
-      it "should be true" do
-        expect(user.password_required?).to be_true
-      end
-    end
-  end
-
 
   it "should validate_email_address_is_not_already_taken" do
     taken_email_address = EmailAddress.first.address

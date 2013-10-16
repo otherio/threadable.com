@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe 'new conversaion message interface' do
+
+  # HEY! NOTICE!! - if this test fails try increasing the timeout below in incraments of 100ms - Jared
   around :each do |example|
-    Capybara.using_wait_time(0.5) do
+    Capybara.using_wait_time(0.7) do
       example.run
     end
   end
 
   it "" do
-    login_as User.where(name: "Alice Neilson").first!
+    sign_in_as User.where(name: "Alice Neilson").first!
     click_on 'UCSD Electric Racing'
     click_on 'Compose'
 
@@ -20,7 +22,6 @@ describe 'new conversaion message interface' do
       body: 'our kickstarter is funded.',
       send: true,
     )
-
     expect(page).to have_content 'we did it'
     expect(page).to have_content 'our kickstarter is funded.'
 

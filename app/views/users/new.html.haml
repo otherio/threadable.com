@@ -1,0 +1,8 @@
+.well.well-centered
+  %h2 Get Covered!
+  .flash_messages
+  = simple_form_for @user do |f|
+    = f.error_notification
+    = f.input :name, as: :string, autofocus: true
+    = f.input :email
+    = f.button :submit, @user.new_record? ? 'Sign up' : 'Update', class: 'btn btn-primary'

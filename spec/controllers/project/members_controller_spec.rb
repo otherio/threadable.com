@@ -6,7 +6,7 @@ describe Project::MembersController do
   let(:current_user)    { project.members.first }
 
   before do
-    sign_in current_user
+    sign_in_as current_user
   end
 
   def valid_params

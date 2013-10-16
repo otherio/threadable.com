@@ -1,51 +1,54 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, except: [:setup, :update]
-  before_filter :authenticate_user!, only:   [:setup, :update], unless: :valid_user_setup_token_present?
+  before_filter :require_user_not_be_signed_in!, only: [:create, :new]
+  before_filter :require_user_be_signed_in!,     only: [:show, :edit, :update]
 
-  # def edit
-  # end
+  def index
+    unauthorized!
+  end
 
-  def setup
-    @user = User.find(@user_id)
+  def create
+    @user = UserCreator.call(user_params)
+    if @user.errors.present?
+      render :new
+      return
+    end
+    UserMailer.sign_up_confirmation(@user).deliver!
+  end
+
+  def new
+    unauthorized! unless Rails.configuration.signup_enabled
+    @user = User.new
+  end
+
+  def edit
+    unauthorized! if current_user != user
+  end
+
+  def show
+    user
   end
 
   def update
-    user_attributes = params.require(:user).permit(:name, :password, :password_confirmation)
-    @user = User.where(slug: params[:id]).first!
-    @user.password_required!
-
-    if !@user.update_attributes(user_attributes)
-      render user_setup_token.present? ? :setup : :edit
-      return
-    end
-
-    if user_setup_token.present?
-      @user.confirm!
-      sign_in @user
-      redirect_to @destination_path
+    if user.update_attributes(user_params)
+      redirect_to user_path(user)
     else
-      redirect_to user_path(@user)
+      render :edit
     end
+  end
+
+  def destroy
+
   end
 
   private
 
-  def user_setup_token
-    return if params[:token].blank?
-    if !defined?(@user_setup_token)
-      @user_setup_token = params[:token]
-      begin
-        @user_id, @destination_path = UserSetupToken.decrypt(@user_setup_token)
-      rescue Invalid::Token
-        @user_setup_token = nil
-      end
-    end
-    @user_setup_token
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
-  def valid_user_setup_token_present?
-    user_setup_token.present?
+  def user
+    @user ||= User.where(slug: params[:id]).first!
   end
 
 end

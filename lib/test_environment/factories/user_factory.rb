@@ -9,7 +9,6 @@ FactoryGirl.define do
     email                 {|user| "#{user.name.gsub(/\s+/,'_')}@example.com"}
     password              { 'password' if web_enabled }
     password_confirmation { 'password' if web_enabled }
-    confirmed_at          { Time.now }
 
   end
 end

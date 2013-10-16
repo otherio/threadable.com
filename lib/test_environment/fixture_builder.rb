@@ -54,9 +54,13 @@ class TestEnvironment::FixtureBuilder
     User.with_email(email).first!.update_attribute(:avatar_url, "/assets/fixtures/#{filename}")
   end
 
-  def web_enable name, password
+  def confirm_account name
     user = user(name)
     user.confirm!
+  end
+
+  def web_enable name, password
+    user = user(name)
     user.update_attribute(:password, password)
   end
 

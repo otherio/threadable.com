@@ -2,7 +2,7 @@
 
   $.fn.animation = function(name, time, motion){
     var elements = this;
-    animation(elements, '','','');
+    animation(elements, false, false, false);
     setTimeout(function() { animation(elements, name, time, motion) });
     return this;
   };

@@ -6,27 +6,24 @@ Scenario: Signing up
   When I signup with the following information:
     | Name  | Weird Al Yankovik     |
     | Email | weird.al@yankovik.com |
-  Then I should see "Thanks for signing up!"
-   And I should see "We just sent you an email with a link to confirm your email address and set a password for your account."
-   And I a confirmation link should have been sent to "weird.al@yankovik.com"
-  When I click the validation link sent to "weird.al@yankovik.com"
-  Then I should see "You're almost done!"
-  When I click the "Sign in" button
-  Then I should see "Password can't be blank"
+  Then I should see "You're Covered!"
+   And I should see "We just sent you an email with a link to confirm your email address and let you set a password for your account."
+   And "weird.al@yankovik.com" should have a confirmation email
+  When I click the account confirmation link sent to "weird.al@yankovik.com"
+  Then I should see "You're almost in!"
   When I fill in the password fields with "ilovepizza" and "ilovepizz"
-  When I click the "Sign in" button
-  Then I should see "Password confirmation doesn't match Password"
+  When I click the "Setup my account" button
+  Then I should see "doesn't match Password"
   When I fill in the password fields with "ilovepizza"
-   And I click the "Sign in" button
-  Then I should see "Your account was successfully confirmed. You are now signed in."
-   And I should be logged in as "Weird Al Yankovik"
-
+  When I click the "Setup my account" button
+  Then I should see "You're all setup! Welcome to Covered."
+   And I should be signed in as "Weird Al Yankovik"
 
 Scenario: Account creation fails if email is already used
   If an account already exists for this email address
   I should not be able to create another one
   Given I am not logged in
-    And I go to the join page
+    And I go to the sign up page
     And I fill in "Name" with "Alice Neilson"
     And I fill in "Email" with "alice@ucsd.covered.io"
     And I click the "Sign up" button

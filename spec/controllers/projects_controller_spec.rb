@@ -6,7 +6,7 @@ describe ProjectsController do
   let(:project){ user.projects.create! valid_attributes }
 
   before do
-    sign_in user
+    sign_in_as user
   end
 
   def valid_attributes

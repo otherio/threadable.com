@@ -9,7 +9,7 @@ class ProjectMembershipMailer < ActionMailer::Base
     @subject = "You've been added to #{@project.name}"
     @project_url = project_url(@project)
     user_setup_token = UserSetupToken.encrypt(@user.id, project_path(@project))
-    @user_setup_url  = user_setup_url(token: user_setup_token)
+    @user_setup_url  = setup_users_url(user_setup_token)
     project_unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project_membership.id)
     @project_unsubscribe_url  = project_unsubscribe_url(@project, project_unsubscribe_token)
 

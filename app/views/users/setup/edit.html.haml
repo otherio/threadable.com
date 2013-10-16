@@ -1,0 +1,9 @@
+.well.well-centered.well-centered-wide
+  %h1 You're almost in!
+  = simple_form_for @user, url: setup_users_path() do |f|
+    = hidden_field_tag :token, @user_setup_token
+    = f.input :email, as: :string, disabled: true
+    = f.input :name, as: :string
+    = f.input :password, required: true
+    = f.input :password_confirmation, required: true
+    = f.submit 'Setup my account', class: 'btn btn-primary'

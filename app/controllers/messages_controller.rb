@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :require_user_be_signed_in!
 
   # POST /:project_id/conversations/:conversation_id/messages
   # POST /:project_id/conversations/:conversation_id/messages.json

@@ -6,7 +6,7 @@ describe ConversationsController do
   let(:current_user){ project.members.first! }
 
   before(:each) do
-    sign_in current_user
+    sign_in_as current_user
   end
 
 

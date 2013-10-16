@@ -49,6 +49,8 @@ GEM
       compass (>= 0.11.5)
     arel (4.0.0)
     atomic (1.1.14)
+    backports (3.3.5)
+    bcrypt-ruby (3.0.1)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -96,6 +98,7 @@ GEM
       debugger-ruby_core_source (~> 1.2.3)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.3)
+    descendants_tracker (0.0.3)
     diff-lcs (1.2.4)
     dotenv (0.8.0)
     dotenv-rails (0.8.0)
@@ -265,10 +268,10 @@ GEM
       railties (>= 4.0.0.beta, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
-    selenium-webdriver (2.33.0)
+    selenium-webdriver (2.35.1)
       childprocess (>= 0.2.5)
       multi_json (~> 1.0)
-      rubyzip
+      rubyzip (< 1.0.0)
       websocket (~> 1.0.4)
     shoulda-matchers (2.2.0)
       activesupport (>= 3.0.0)
@@ -307,6 +310,9 @@ GEM
       raindrops (~> 0.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    virtus (0.5.5)
+      backports (~> 3.3)
+      descendants_tracker (~> 0.0.1)
     webmock (1.12.3)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
@@ -321,6 +327,7 @@ DEPENDENCIES
   activerecord-fixture_builder
   acts_as_list
   animate-sass
+  bcrypt-ruby (~> 3.0.0)
   better_errors
   binding_of_caller
   bootstrap-wysihtml5-rails
@@ -372,4 +379,5 @@ DEPENDENCIES
   timecop
   uglifier (>= 1.0.3)
   unicorn
+  virtus
   webmock

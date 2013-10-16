@@ -9,7 +9,7 @@ describe "Navbar" do
     before do
       project.members << user
       project2.members << user
-      login_as user
+      sign_in_as user
       visit project_path(project)
     end
 

@@ -7,7 +7,7 @@ describe "Conversations" do
     let!(:project){ current_user.projects.first! }
 
     before do
-      login_as current_user
+      sign_in_as current_user
     end
 
     it "displays tasks as tasks" do

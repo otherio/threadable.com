@@ -12,4 +12,8 @@ class MailPreview < MailView
     ConversationMailer.conversation_message(message, project_membership)
   end
 
+  def sign_up_confirmation
+    UserMailer.sign_up_confirmation User.last!
+  end
+
 end

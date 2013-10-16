@@ -7,7 +7,7 @@ Then /^I should be able to edit the "(.*?)" project$/ do |project_name|
   fill_in "Name", with: 'UCSD Steam Powered Racing'
   fill_in "Short name", with: 'UCSD Steam'
   fill_in "Description", with: 'Steam all the things!'
-  click_on 'Save'
+  click_on 'Update'
   page.should have_content('Notice! UCSD Steam Powered Racing was successfully updated.')
 
   within find('table.projects tr', text: "UCSD Steam Powered Racing") do

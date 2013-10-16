@@ -2,7 +2,7 @@
   .navbar-inner
     .navbar-content
 
-      - if current_project.present?
+      - if current_project.present? && current_project.persisted?
         = render_widget :invite_modal, current_project
         = render_widget :compose_conversation_message_modal, current_project
         = link_to current_project.email_address, project_conversations_path(current_project), class: 'brand'
@@ -39,11 +39,11 @@
             %ul.dropdown-menu
               %li= link_to 'Profile', user_path(current_user)
               %li.divider
-              %li= link_to 'Logout', destroy_user_session_path, :method => :delete
+              %li= link_to 'Sign out', sign_out_path
 
       - else
         %ul.nav.pull-right
-          %li= link_to 'Login', new_user_session_path
-          %li= link_to 'Sign up', new_user_registration_path
+          %li= link_to 'Sign in', sign_in_path
+          %li= link_to 'Sign up', sign_up_path
 
 

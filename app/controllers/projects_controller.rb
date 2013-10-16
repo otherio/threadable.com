@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :require_user_be_signed_in!
 
   # GET /projects
   # GET /projects.json

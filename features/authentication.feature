@@ -1,6 +1,6 @@
 Feature: Authentication
   As a user with an account and a password
-  I should be able to login with any of my email addresses
+  I should be able to sign in with any of my email addresses
   And recover my password with any of my email addresses
 
 Scenario: A user with an account and a password can sign in
@@ -9,48 +9,55 @@ Scenario: A user with an account and a password can sign in
   Given I am not logged in
     And I go to the sign in page
     And I fill in "Email" with "alice@ucsd.covered.io"
-    And I fill in "user_password" with "password"
+    And I fill in "Password" with "password"
     And I click the "Sign in" button
    Then I should see "Projects"
     And I should be on the home page
-    And I should be logged in as "Alice Neilson"
+    And I should be signed in as "Alice Neilson"
 
 Scenario: A user with an account and a password can sign in with any of their email addresses
   As a user with multiple email addresses
-  I should be able to login with any of them.
+  I should be able to sign in with any of them.
   Given I am not logged in
-    And I go to the sign in page
-    And I click "Login"
+   When I go to the sign in page
     And I fill in "Email" with "ray@gmail.covered.io"
-    And I fill in "user_password" with "password"
+    And I fill in "Password" with "password"
     And I click the "Sign in" button
    Then I should see "Projects"
     And I should be on the home page
-    And I should be logged in as "Ray Arvidson"
+    And I should be signed in as "Ray Arvidson"
 
 Scenario: Failing to log in
   Given I am not logged in
     And I go to the sign in page
-    And I click "Login"
     And I fill in "Email" with "alice@ucsd.covered.io"
-    And I fill in "user_password" with "bullshitpassword"
+    And I fill in "Password" with "bullshitpassword"
     And I click the "Sign in" button
-   Then I should see "Invalid email or password"
+   Then I should see the sign in form shake
 
-Scenario: Existing user forgot their password
+Scenario: Existing user with a password forgot their password
   Given I am not logged in
    When I go to the sign in page
-    And I click "Login"
-    And I click "Forgot your password"
-    And I fill in "Email" with "alice@ucsd.covered.io"
-    And I click "Send me reset password instructions"
-   Then I should see "You will receive an email with instructions about how to reset your password"
+    And I click "Forgot password"
+   Then I should see "Recover password"
+   When I fill in "Email" with "alice@ucsd.covered.io"
+    And I click the "Recover" button
+   Then I should see "We've emailed you a password recovery link. Please check your email."
 
-Scenario: Forgot password form should say it sent password reset instructions even if the email given doesnt exist
+Scenario: Existing user without a password forgot their password
+  Given I am not logged in
+   When I go to the sign in page
+    And I click "Forgot password"
+   Then I should see "Recover password"
+   When I fill in "Email" with "jonathan@ucsd.covered.io"
+    And I click the "Recover" button
+   Then I should see "We've emailed you a link to setup your account. Please check your email."
+
+Scenario: Unknown user forgot their password
   Given I am not a member
    When I go to the sign in page
-    And I click "Login"
-    And I click "Forgot your password"
-    And I fill in "Email" with "fakeuser@gmail.com"
-    And I click "Send me reset password instructions"
-   Then I should see "Notice! You will receive an email with instructions about how to reset your password in a few minutes."
+    And I click "Forgot password"
+   Then I should see "Recover password"
+   When I fill in "Email" with "fakeuser@gmail.com"
+    And I click the "Recover" button
+   Then I should see "Error! No account found with that email address"

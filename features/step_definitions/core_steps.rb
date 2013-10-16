@@ -8,7 +8,7 @@
 # TODO: Simulate actual mouseover. Fire event via page.evaluate_script()?
 #
 # Examples:
-#   When I click "Login" within the nav bar
+#   When I click "Sign in" within the nav bar
 #   Then I should see "something" within the footer
 Then %r{^(.*?) within ([^"'].+[^:])$} do |step_string, element|
   within(selector_for(element)){ step step_string }
@@ -32,7 +32,13 @@ When /^I go to (.+)$/ do |name|
 end
 
 Then /^I should be on (.+)$/ do |name|
-  page.current_path.should == path_to(name)
+  current_uri = URI.parse(current_url)
+  expected_path = path_to(name)
+  if URI.parse(expected_path).query.present?
+    expect("#{current_uri.path}?#{current_uri.query}").to eq expected_path
+  else
+    expect(current_uri.path).to eq expected_path
+  end
 end
 
 When /^I click [on]*"(.*?)"$/ do |name|

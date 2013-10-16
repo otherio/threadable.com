@@ -16,6 +16,14 @@ if defined?(Bundler)
 end
 
 module Covered
+
+  class AuthorizationError < StandardError
+    def initialize message=nil
+      @message = message
+    end
+    attr_reader :message
+  end
+
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -45,7 +53,7 @@ module Covered
       c.performance_tool :rspec
     end
 
-    # login is enabled by default, but can be disabled
+    # sign in is enabled by default, but can be disabled
     config.signup_enabled = ENV["COVERED_SIGNUP_ENABLED"] != "false"
 
     config.filepicker_rails.api_key = ENV.fetch('COVERED_FILEPICKER_API_KEY')

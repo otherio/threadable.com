@@ -2,7 +2,7 @@ class ConversationsController < ApplicationController
 
   layout 'conversations'
 
-  before_filter :authenticate_user!
+  before_filter :require_user_be_signed_in!
 
   # GET /conversations
   # GET /conversations.json

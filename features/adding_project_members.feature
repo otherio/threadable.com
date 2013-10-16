@@ -25,7 +25,6 @@ Feature: Adding project members
     When I click the project link in the join notice email sent to "archimedes@ucsd.covered.io" for the "UCSD Electric Racing" project
     Then I should be on the user setup page
      And I should see "You're almost in!"
-     And I should see "archimedes@ucsd.covered.io"
      And the "Name" field should be filled in with "Archimedes Vanderhimen"
      And the "Password" field should be blank
      And the "Password confirmation" field should be blank
@@ -34,4 +33,4 @@ Feature: Adding project members
      And I fill in "Password confirmation" with "password"
      And I click "Setup my account"
     Then I should be on the project conversations page for "UCSD Electric Racing"
-     And I should be logged in as "Archimedes Van-Dérhimen"
+     And I should be signed in as "Archimedes Van-Dérhimen"

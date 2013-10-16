@@ -67,7 +67,7 @@ describeWidget("new_conversation_message", function(){
               message_body_textarea().click();
             });
 
-            waits(100);
+            waits(500);
 
             runs(function(){
               expect( message_body_textarea().height() ).toBeGreaterThan('199');

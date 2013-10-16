@@ -1,6 +1,6 @@
 class Task::DoersController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :require_user_be_signed_in!
 
   # POST /conversations/1/add_doer
   # POST /conversations/1/add_doer.json

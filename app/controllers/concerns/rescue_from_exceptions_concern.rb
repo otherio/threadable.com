@@ -19,10 +19,8 @@ module RescueFromExceptionsConcern
 
   def rescue_from_exception exception
     status = case exception
-    when 5 #*NOT_FOUND_EXCEPTIONS
-      404
-    else
-      500
+    when ActiveRecord::RecordNotFound; 404
+    else; 500
     end
     respond_to do |format|
       format.html { render template: "errors/error_#{status}", layout: 'layouts/error', status: status }

@@ -11,6 +11,7 @@ Covered = {
 
   initialize: function(env){
     Covered.page = new Covered.Page(env);
+
     $(function(){
       Covered.page.trigger('domready');
     });

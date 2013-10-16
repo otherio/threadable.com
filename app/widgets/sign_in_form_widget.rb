@@ -1,16 +1,23 @@
 class SignInFormWidget < Rails::Widget::Presenter
 
-  arguments :user
+  arguments :email
 
   classname('well well-centered')
 
   option :form_options do
     {
-      :as => :user,
-      :url => @view.session_path(:user),
-      remote: true,
-      :html => {:'data-type' => 'json'},
+      :url    => @view.sign_in_path,
+      :remote => true,
+      :html   => {:'data-type' => 'json'},
     }
+  end
+
+  option :authentication do
+    Authentication.new(email: email)
+  end
+
+  option :password_recovery do
+    PasswordRecovery.new(email: email)
   end
 
 end

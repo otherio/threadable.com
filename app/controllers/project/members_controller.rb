@@ -1,6 +1,6 @@
 class Project::MembersController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :require_user_be_signed_in!
 
   # GET /projects/make-a-tank/members
   # GET /projects/make-a-tank/members.json

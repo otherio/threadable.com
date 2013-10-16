@@ -7,7 +7,7 @@ describe "Email actions" do
   let(:current_user){ task.doers.with_password.first! }
 
   before do
-    login_as current_user
+    sign_in_as current_user
   end
 
   describe "ill do it" do

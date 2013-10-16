@@ -61,10 +61,10 @@ describe "page_navigation" do
 
   context "when not given a current_user" do
     let(:current_user){ nil }
-    it "should just have a login link" do
+    it "should just have a sign in link" do
       link = html.css('ul.nav.pull-right > li > a').first
-      link[:href].should == view.new_user_session_path
-      link.text .should == 'Login'
+      link[:href].should == view.sign_in_path
+      link.text .should == 'Sign in'
     end
   end
 

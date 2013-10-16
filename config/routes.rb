@@ -13,22 +13,18 @@ Covered::Application.routes.draw do
   get '/development' => 'development#index'
   get '/demoauth' => 'demo_auth#index', as: 'demo_auth'
 
-  get   '/setup' => 'users#setup', as: 'user_setup'
+  get  '/sign_up'  => 'users#new',              as: 'sign_up'
+  get  '/sign_in'  => 'authentication#new',     as: 'sign_in'
+  post '/sign_in'  => 'authentication#create'
+  get  '/sign_out' => 'authentication#destroy', as: 'sign_out'
 
-  get   '/projects'      => 'projects#index'
-  get   '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
-  get   '/:id'           => 'projects#show',      :as => 'project'
-  put   '/:id'           => 'projects#update'
-  patch '/:id'           => 'projects#update'
-  get   '/:id/user_list' => 'projects#user_list', :as => 'user_list'
+  post '/recover_password' => 'password#recover', as: 'recover_password'
 
-
-  resources :users do
-  end
-
-  resources :projects, except: [:show, :update, :patch] do
-    member do
-      put :leave
+  resources :users, except: [:new, :destroy] do
+    collection do
+      get   'setup/:token' => 'users/setup#edit', as: 'setup'
+      patch 'setup/:token' => 'users/setup#update'
+      get   'confirm/:token' => 'users/confirm#confirm', as: 'confirm'
     end
   end
 
@@ -59,6 +55,19 @@ Covered::Application.routes.draw do
   end
 
   resources :emails, :only => :create
+
+  get   '/projects'      => 'projects#index'
+  get   '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
+  get   '/:id'           => 'projects#show',      :as => 'project'
+  put   '/:id'           => 'projects#update'
+  patch '/:id'           => 'projects#update'
+  get   '/:id/user_list' => 'projects#user_list', :as => 'user_list'
+
+  resources :projects, except: [:show, :update, :patch] do
+    member do
+      put :leave
+    end
+  end
 
   root :to => 'homepage#show'
 

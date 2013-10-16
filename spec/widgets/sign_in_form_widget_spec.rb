@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe SignInFormWidget do
 
-  let(:user){ User.last }
-  let(:arguments){ [user] }
+  let(:email){ 'bob@bob.com' }
+  let(:arguments){ [email] }
+
+  let(:authentication){ Authentication.new(email: email) }
+  let(:password_recovery){ PasswordRecovery.new(email: email) }
 
   def html_options
     {class: 'custom_class'}
@@ -17,12 +20,13 @@ describe SignInFormWidget do
       should == {
         block: nil,
         presenter: presenter,
-        user: user,
+        email: email,
+        authentication: authentication,
+        password_recovery: password_recovery,
         form_options: {
-          :as => :user,
-          :url => view.session_path(:user),
+          url: view.sign_in_path,
           remote: true,
-          :html => {:'data-type' => 'json'},
+          html: {:'data-type' => 'json'},
         }
       }
     end

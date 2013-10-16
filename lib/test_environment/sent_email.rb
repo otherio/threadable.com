@@ -13,6 +13,13 @@ module TestEnvironment::SentEmail
         email.to.include?(to_address)
       end
     end
+    alias_method :to, :sent_to
+
+    def containing content
+      find_all do |email|
+        email.content.include? content
+      end
+    end
 
     def find_all
       self.class.new super
@@ -22,16 +29,38 @@ module TestEnvironment::SentEmail
 
   class Email < SimpleDelegator
 
+    def text_content
+      return text_part.try(:body).to_s if multipart?
+      return body.to_s if content_type.include? 'text/plain;'
+    end
+
+    def html_content
+      return html_part.try(:body).try(:to_s) if multipart?
+      return body.to_s if content_type.include? 'text/html;'
+    end
+
+    def content
+      "#{text_content}\n\n\n\n#{html_content}"
+    end
+
+    def urls
+      URI.extract(content)
+    end
+
+    def html
+      Nokogiri.parse(html_content.to_s)
+    end
+
     def links
-      URI.extract(body.to_s)
+      html.css('a[href]')
     end
 
-    def project_unsubscribe_link
-      links.find{|link| link =~ %r(/unsubscribe/) }
+    def project_unsubscribe_url
+      urls.find{|url| url =~ %r(/unsubscribe/) }
     end
 
-    def user_setup_link
-      links.find{|link| link =~ %r(/setup) }
+    def user_setup_url
+      urls.find{|url| url =~ %r(/setup) }
     end
 
   end
