@@ -13,7 +13,7 @@ TestEnvironment::FixtureBuilder.new do
 
   # Amy invites her project mates
   add_user 'Sandeep Prakash',  'sfmedstudent@gmail.com'
-  add_user 'Yan Hzu',          'yan@sfhealth.example.com'
+  add_user 'Yan Baker',          'yan@sfhealth.example.com'
   add_user 'Elizabeth Tapp',   'elizabeth@sfhealth.example.com'
   add_user 'Anil Kapoor',        'anil@sfhealth.example.com'
   add_user 'Trapper John',   'trapper@sfhealth.example.com'
@@ -45,7 +45,7 @@ TestEnvironment::FixtureBuilder.new do
 
   # Amy's project mates all accept their invites
   web_enable 'Sandeep Prakash', 'password'
-  web_enable 'Yan Hzu', 'password'
+  web_enable 'Yan Baker', 'password'
   web_enable 'Elizabeth Tapp', 'password'
   web_enable 'Anil Kapoor', 'password'
   web_enable 'Trapper John', 'password'
@@ -135,7 +135,7 @@ TestEnvironment::FixtureBuilder.new do
   )
 
   send_message(
-    user: 'Yan Hzu',
+    user: 'Yan Baker',
     reply: false,
     subject: 'Free calendars & pen sets in the 2nd floor lunch room',
     stripped_plain: "The rep for Replexafil dropped off some 2014 Replexafil calendars and pen sets for us. They're in the 2nd floor lunch room if anyone wants one. Help yourself.",
@@ -156,7 +156,7 @@ TestEnvironment::FixtureBuilder.new do
     body_plain: "That would be me. Haven't quite gotten the hang of my iPad yet. I'm afraid I'll still be using traditional scheduling tools for some time to come. Indeed, if anyone wishes to contact me, I'd encourage you to do so in person, as I hardly even have time to check my electronic mail these days. My sincere apologies.",
   )
   send_message(
-    user: 'Yan Hzu',
+    user: 'Yan Baker',
     reply: true,
     subject: 'RE: Free calendars & pen sets in the 2nd floor lunch room',
     stripped_plain: "Noted, Doc. I'll grab one of the calendars for you at lunch, and drop it by your office later.",
@@ -188,18 +188,18 @@ TestEnvironment::FixtureBuilder.new do
   # make some tasks
   create_task 'Amy Wong',  'Call X-ray machine maintenance company'
   create_task 'Elizabeth Tapp', 'Check in with IV supplies vendor'
-  create_task 'Yan Hzu',        'Review our intake policies'
+  create_task 'Yan Baker',        'Review our intake policies'
   create_task 'B.J. Hunnicutt', 'Update EMS forms to new version'
   create_task 'Anil Kapoor',    'Replace the power cord for vitals monitor #4'
 
   create_task 'Elizabeth Tapp', 'Improve triage SpO2 monitoring'  #triage
-  create_task 'Yan Hzu', 'New triage desk vitals monitor'  #triage
+  create_task 'Yan Baker', 'New triage desk vitals monitor'  #triage
 
   create_task 'Amy Wong',  'Order more glucose monitoring supplies'
 
-  create_task 'Yan Hzu', 'Write current EMS practice review'  #triage
+  create_task 'Yan Baker', 'Write current EMS practice review'  #triage
 
-  create_task 'Yan Hzu',        'Print new info signs for the front desk'
+  create_task 'Yan Baker',        'Print new info signs for the front desk'
   create_task 'Anil Kapoor',    'Review literature on DVT prevention'
   create_task 'Amy Wong',  'Revise PA paging procedures'
 
@@ -213,7 +213,7 @@ TestEnvironment::FixtureBuilder.new do
 
   create_task 'Amy Wong', 'Write new intake form'  #triage
 
-  create_task 'Yan Hzu',  'Pick up bagels for orientation'
+  create_task 'Yan Baker',  'Pick up bagels for orientation'
   create_task 'Elizabeth Tapp',  'Remind the QuickPharm rep to only come by Tuesdays'
   create_task 'Amy Wong',  'Pick up decorations for the halloween party'
 
@@ -242,7 +242,7 @@ TestEnvironment::FixtureBuilder.new do
     subject: 'RE: Call X-ray machine maintenance company',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
-    user: 'Yan Hzu',
+    user: 'Yan Baker',
     reply: true,
   )
 
@@ -250,7 +250,7 @@ TestEnvironment::FixtureBuilder.new do
     subject: 'Review our intake policies',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
-    user: 'Yan Hzu',
+    user: 'Yan Baker',
     reply: true,
   )
   send_message(
@@ -261,13 +261,13 @@ TestEnvironment::FixtureBuilder.new do
     reply: true,
   )
 
-  add_doer_to_task 'Yan Hzu', 'Review our intake policies'
+  add_doer_to_task 'Yan Baker', 'Review our intake policies'
 
-  complete_task 'Yan Hzu', 'Review our intake policies'
-  complete_task 'Yan Hzu', 'Call X-ray machine maintenance company'
-  complete_task 'Yan Hzu', 'Print new info signs for the front desk'
-  complete_task 'Yan Hzu', 'Pick up bagels for orientation'
-  complete_task 'Yan Hzu', 'Set up conference room for orientation'
+  complete_task 'Yan Baker', 'Review our intake policies'
+  complete_task 'Yan Baker', 'Call X-ray machine maintenance company'
+  complete_task 'Yan Baker', 'Print new info signs for the front desk'
+  complete_task 'Yan Baker', 'Pick up bagels for orientation'
+  complete_task 'Yan Baker', 'Set up conference room for orientation'
 
   # More email conversations
   send_message(
@@ -280,7 +280,7 @@ TestEnvironment::FixtureBuilder.new do
 
   # Demo thread.  Put this at the end so it shows up near the top of the list
   create_task 'Yuri Zhivago', 'Hypertension literature review'
-  complete_task 'Yan Hzu', 'Hypertension literature review'
+  complete_task 'Yan Baker', 'Hypertension literature review'
 
   # send_message(
   #   user: 'Yuri Zhivago',
@@ -290,9 +290,9 @@ TestEnvironment::FixtureBuilder.new do
   #   body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
   # )
 
-  complete_task 'Yan Hzu', 'Call X-ray machine maintenance company'
-  complete_task 'Yan Hzu', 'Check in with IV supplies vendor'
-  complete_task 'Yan Hzu', 'Review our intake policies'
+  complete_task 'Yan Baker', 'Call X-ray machine maintenance company'
+  complete_task 'Yan Baker', 'Check in with IV supplies vendor'
+  complete_task 'Yan Baker', 'Review our intake policies'
 
 
 
