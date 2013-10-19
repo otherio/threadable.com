@@ -35,7 +35,7 @@ gem 'httmultiparty'
 gem 'rails_autolink'
 gem 'let'
 
-gem 'compass-rails', github: "milgner/compass-rails", branch: "rails4"
+gem "compass-rails", "~> 2.0.alpha.0"
 gem 'sass-rails'
 gem 'font-awesome-sass-rails'
 gem 'uglifier', '>= 1.0.3'

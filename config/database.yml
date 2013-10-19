@@ -3,13 +3,9 @@ development:
   encoding: utf8
   database: covered_development
   pool: 5
-  username: postgres
-  password: password
 
 test:
   adapter: postgresql
   encoding: utf8
   database: covered_test
   pool: 5
-  username: postgres
-  password: password
