@@ -9,9 +9,7 @@ gem 'unicorn'
 
 gem 'redis'
 gem 'pg'
-gem 'honeybadger'
 gem 'resque'
-gem 'resque-honeybadger'
 gem 'newrelic_rpm'
 
 gem 'bcrypt-ruby', '~> 3.0.0'
@@ -44,6 +42,8 @@ gem 'roadie'
 
 group :production do
   gem 'rails_12factor'
+  gem 'honeybadger'
+  gem 'resque-honeybadger'
 end
 
 group :development, :test do

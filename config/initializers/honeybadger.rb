@@ -1,3 +1,5 @@
-Honeybadger.configure do |config|
-  config.api_key = ENV['HONEYBADGER_API_KEY']
+if defined? Honeybadger
+  Honeybadger.configure do |config|
+    config.api_key = ENV['HONEYBADGER_API_KEY']
+  end
 end
