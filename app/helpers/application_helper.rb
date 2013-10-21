@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def current_url
+    request.url
+  end
+
   def current_project
     @project
   end

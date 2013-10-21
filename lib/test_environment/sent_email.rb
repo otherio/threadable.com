@@ -21,6 +21,12 @@ module TestEnvironment::SentEmail
       end
     end
 
+    def with_subject subject
+      find_all do |email|
+        email.subject == subject
+      end
+    end
+
     def find_all
       self.class.new super
     end
@@ -51,8 +57,14 @@ module TestEnvironment::SentEmail
       Nokogiri.parse(html_content.to_s)
     end
 
-    def links
-      html.css('a[href]')
+    def links text_content=nil
+      links = html.css('a[href]')
+      links = links.find_all{|link| link.text == text_content } if text_content.present?
+      links
+    end
+
+    def link text_content
+      links(text_content).first
     end
 
     def project_unsubscribe_url

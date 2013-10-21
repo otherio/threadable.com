@@ -18,7 +18,10 @@ Covered::Application.routes.draw do
   post '/sign_in'  => 'authentication#create'
   get  '/sign_out' => 'authentication#destroy', as: 'sign_out'
 
-  post '/recover_password' => 'password#recover', as: 'recover_password'
+
+  get   '/reset_password/:token' => 'users/reset_password#show', as: 'reset_password'
+  patch '/reset_password/:token' => 'users/reset_password#reset'
+  post  '/reset_password'        => 'users/reset_password#request_link', as: 'request_reset_password_link'
 
   resources :users, except: [:new, :destroy] do
     collection do
@@ -42,7 +45,6 @@ Covered::Application.routes.draw do
 
     resources :tasks, :only => [:index, :create, :update] do
       resources :doers, :only => [:create, :destroy], controller: 'task/doers'
-
 
       match 'ill_do_it', via: [:get, :post]
       match 'remove_me', via: [:get, :post]
