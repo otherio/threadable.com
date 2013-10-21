@@ -1,9 +1,7 @@
 class DemoAuthController < ApplicationController
   # GET /demo
   def index
-    user = User.where(name: 'Alice Neilson').first!
-    sign_in! user
-
+    sign_in! User.with_email('amywong.phd@gmail.com').first!
     redirect_to project_conversations_path(current_user.projects.first)
   end
 end
