@@ -40,8 +40,11 @@ gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
 gem 'roadie'
 
-group :production do
+group :production, :staging do
   gem 'rails_12factor'
+end
+
+group :production do
   gem 'honeybadger'
   gem 'resque-honeybadger'
 end
