@@ -17,8 +17,11 @@ class UsersController < ApplicationController
   end
 
   def new
-    unauthorized! unless Rails.configuration.signup_enabled
-    @user = User.new
+    if signup_enabled?
+      @user = User.new
+    else
+      redirect_to root_url
+    end
   end
 
   def edit

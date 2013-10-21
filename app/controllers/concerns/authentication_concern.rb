@@ -5,7 +5,7 @@ module AuthenticationConcern
   AuthorizationError = Covered::AuthorizationError
 
   included do
-    helper_method :current_user
+    helper_method :current_user, :signup_enabled?
     rescue_from AuthorizationError, with: :rescue_from_authorization_error
   end
 
@@ -41,6 +41,10 @@ module AuthenticationConcern
 
   def signed_in?
     current_user_id.present?
+  end
+
+  def signup_enabled?
+    Rails.configuration.signup_enabled
   end
 
   def unauthorized! message=nil
