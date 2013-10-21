@@ -100,7 +100,7 @@ Covered::Application.configure do
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday
-  config.unsubscribe_token_key = 'correct horse staple production key frobozz wtf bagel'
+  config.token_key = 'correct horse staple production key frobozz wtf bagel'
 
   config.storage = {
     s3_access_key_id:     ENV.fetch('COVERED_S3_ACCESS_KEY_ID'),

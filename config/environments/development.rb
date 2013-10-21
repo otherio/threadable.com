@@ -53,7 +53,7 @@ Covered::Application.configure do
   config.action_controller.default_url_options = { host: 'localhost', port: 5000 }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
-  config.unsubscribe_token_key = 'dev key'
+  config.token_key = 'dev key'
 
   config.storage = {local:'development'}
 
