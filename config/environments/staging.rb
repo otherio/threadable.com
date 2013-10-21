@@ -2,6 +2,8 @@ load File.expand_path('../production.rb', __FILE__)
 
 Covered::Application.configure do
 
+  config.consider_all_requests_local = ENV['CONSIDER_ALL_REQUESTS_LOCAL'] == 'true'
+
   config.log_level = :debug
 
   config.action_mailer.smtp_settings.merge!(
