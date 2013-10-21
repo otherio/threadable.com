@@ -13,75 +13,89 @@ TestEnvironment::FixtureBuilder.new do
 
   # Amy invites her project mates
   add_user 'Sandeep Prakash',  'sfmedstudent@gmail.com'
-  add_user 'Yan Baker',          'yan@sfhealth.example.com'
-  add_user 'Elizabeth Tapp',   'elizabeth@sfhealth.example.com'
+  add_user 'Lilith Sternin',   'lilith@sfhealth.example.com'
   add_user 'Anil Kapoor',        'anil@sfhealth.example.com'
   add_user 'Trapper John',   'trapper@sfhealth.example.com'
+  add_user 'Marcus Welby',   'marcus@sfhealth.example.com'
+  add_user 'Michaela Quinn',   'mquinn@sfhealth.example.com'
   add_user 'B.J. Hunnicutt',   'bj@sfhealth.example.com'
   add_user 'Stephen Maturin',   'smaturin@sfhealth.example.com'
   add_user 'Lisa Cuddy',   'lcuddy@sfhealth.example.com'
   add_user 'Gregory House',   'house@sfhealth.example.com'
   add_user 'Ritsuko Akagi',   'ritsuko@sfhealth.example.com'
-  add_user 'Peter Capaldi',   'who@sfhealth.example.com'
-  add_user 'Victor Ehrlich',   'victor@sfhealth.example.com'
-  add_user 'Sara Sitarides',   'sara@sfhealth.example.com'
-  add_user 'Nick Riviera',   'drnick@sfhealth.example.com'
-  add_user 'Katherine Pulaski',   'kpulaski@sfhealth.example.com'
-  add_user 'Abigail Bartlet',   'abby@sfhealth.example.com'
   add_user 'Yuri Zhivago',   'yuriz@sfhealth.example.com'
   add_user 'Hans Zarkov',   'zarkov@sfhealth.example.com'
   add_user 'Peter Venkman',   'ecto@sfhealth.example.com'
-  add_user 'Jack Griffin',   'jack@sfhealth.example.com'
-  add_user 'Lilith Sternin',   'lilith@sfhealth.example.com'
-  add_user 'Douglas Howser',   'doogie@sfhealth.example.com'
-  add_user 'Doug Ross',   'doug@sfhealth.example.com'
-  add_user 'Peter Benton',   'peter@sfhealth.example.com'
-  add_user 'Jing-Mei Chen',   'deb@sfhealth.example.com'
-  add_user 'Elizabeth Corday',   'elizabethcorday@sfhealth.example.com'
-  add_user 'Richard Kimble',   'rk@sfhealth.example.com'
-  add_user 'Zachary Smith',   'smith@sfhealth.example.com'
-  add_user 'Marcus Welby',   'marcus@sfhealth.example.com'
-  add_user 'Michaela Quinn',   'mquinn@sfhealth.example.com'
+
+  # add_user 'Peter Capaldi',   'who@sfhealth.example.com'
+  # add_user 'Victor Ehrlich',   'victor@sfhealth.example.com'
+  # add_user 'Sara Sitarides',   'sara@sfhealth.example.com'
+  # add_user 'Nick Riviera',   'drnick@sfhealth.example.com'
+  # add_user 'Katherine Pulaski',   'kpulaski@sfhealth.example.com'
+  # add_user 'Abigail Bartlet',   'abby@sfhealth.example.com'
+  # add_user 'Jack Griffin',   'jack@sfhealth.example.com'
+  # add_user 'Douglas Howser',   'doogie@sfhealth.example.com'
+  # add_user 'Doug Ross',   'doug@sfhealth.example.com'
+  # add_user 'Peter Benton',   'peter@sfhealth.example.com'
+  # add_user 'Jing-Mei Chen',   'deb@sfhealth.example.com'
+  # add_user 'Elizabeth Corday',   'elizabethcorday@sfhealth.example.com'
+  # add_user 'Richard Kimble',   'rk@sfhealth.example.com'
+  # add_user 'Zachary Smith',   'smith@sfhealth.example.com'
 
   # Amy's project mates all accept their invites
   web_enable 'Sandeep Prakash', 'password'
-  web_enable 'Yan Baker', 'password'
-  web_enable 'Elizabeth Tapp', 'password'
+  web_enable 'Lilith Sternin', 'password'
   web_enable 'Anil Kapoor', 'password'
   web_enable 'Trapper John', 'password'
+  web_enable 'Marcus Welby', 'password'
+  web_enable 'Michaela Quinn', 'password'
   web_enable 'B.J. Hunnicutt', 'password'
   web_enable 'Stephen Maturin', 'password'
   web_enable 'Lisa Cuddy', 'password'
   web_enable 'Gregory House', 'password'
   web_enable 'Ritsuko Akagi', 'password'
-  web_enable 'Peter Capaldi', 'password'
-  web_enable 'Victor Ehrlich', 'password'
-  web_enable 'Sara Sitarides', 'password'
-  web_enable 'Nick Riviera', 'password'
-  web_enable 'Katherine Pulaski', 'password'
-  web_enable 'Abigail Bartlet', 'password'
   web_enable 'Yuri Zhivago', 'password'
   web_enable 'Hans Zarkov', 'password'
   web_enable 'Peter Venkman', 'password'
-  web_enable 'Jack Griffin', 'password'
-  web_enable 'Lilith Sternin', 'password'
-  web_enable 'Douglas Howser', 'password'
-  web_enable 'Doug Ross', 'password'
-  web_enable 'Peter Benton', 'password'
-  web_enable 'Jing-Mei Chen', 'password'
-  web_enable 'Elizabeth Corday', 'password'
-  web_enable 'Richard Kimble', 'password'
+
+  # web_enable 'Peter Capaldi', 'password'
+  # web_enable 'Victor Ehrlich', 'password'
+  # web_enable 'Sara Sitarides', 'password'
+  # web_enable 'Nick Riviera', 'password'
+  # web_enable 'Katherine Pulaski', 'password'
+  # web_enable 'Abigail Bartlet', 'password'
+  # web_enable 'Jack Griffin', 'password'
+  # web_enable 'Lilith Sternin', 'password'
+  # web_enable 'Douglas Howser', 'password'
+  # web_enable 'Doug Ross', 'password'
+  # web_enable 'Peter Benton', 'password'
+  # web_enable 'Jing-Mei Chen', 'password'
+  # web_enable 'Elizabeth Corday', 'password'
+  # web_enable 'Richard Kimble', 'password'
   #web_enable 'Zachary Smith', 'password'
 
   # Zachary hates email
-  unsubscribe_from_project_email 'Zachary Smith'
+  # unsubscribe_from_project_email 'Zachary Smith'
 
   # everyone gets an avatar photo (except not because we don't have them yet)
   set_avatar 'sfmedstudent@gmail.com', 'sandeep.jpg'
   set_avatar 'amywong.phd@gmail.com', 'amy.jpg'
   set_avatar 'yuriz@sfhealth.example.com', 'yuri.jpg'
 
-  #set_avatar 'yan@sfhealth.example.com', ''
+  set_avatar 'lilith@sfhealth.example.com', 'lilith.jpg'
+  set_avatar 'anil@sfhealth.example.com', 'anil.jpg'
+  set_avatar 'trapper@sfhealth.example.com', 'trapper.jpg'
+  set_avatar 'marcus@sfhealth.example.com', 'marcus.jpg'
+  set_avatar 'mquinn@sfhealth.example.com', 'mquinn.jpg'
+  set_avatar 'bj@sfhealth.example.com', 'bj.jpg'
+  set_avatar 'smaturin@sfhealth.example.com', 'stephen.jpg'
+  set_avatar 'lcuddy@sfhealth.example.com', 'lisa.jpg'
+  set_avatar 'house@sfhealth.example.com', 'house.jpg'
+  set_avatar 'ritsuko@sfhealth.example.com', 'ritsuko.jpg'
+  set_avatar 'zarkov@sfhealth.example.com', 'zarkov.gif'
+  set_avatar 'ecto@sfhealth.example.com', 'venkman.jpg'
+
+
   #set_avatar 'elizabeth@sfhealth.example.com', ''
   #set_avatar 'anil@sfhealth.example.com', ''
   #set_avatar 'trapper@sfhealth.example.com', ''
@@ -135,7 +149,7 @@ TestEnvironment::FixtureBuilder.new do
   )
 
   send_message(
-    user: 'Yan Baker',
+    user: 'Lilith Sternin',
     reply: false,
     subject: 'Free calendars & pen sets in the 2nd floor lunch room',
     stripped_plain: "The rep for Replexafil dropped off some 2014 Replexafil calendars and pen sets for us. They're in the 2nd floor lunch room if anyone wants one. Help yourself.",
@@ -156,7 +170,7 @@ TestEnvironment::FixtureBuilder.new do
     body_plain: "That would be me. Haven't quite gotten the hang of my iPad yet. I'm afraid I'll still be using traditional scheduling tools for some time to come. Indeed, if anyone wishes to contact me, I'd encourage you to do so in person, as I hardly even have time to check my electronic mail these days. My sincere apologies.",
   )
   send_message(
-    user: 'Yan Baker',
+    user: 'Lilith Sternin',
     reply: true,
     subject: 'RE: Free calendars & pen sets in the 2nd floor lunch room',
     stripped_plain: "Noted, Doc. I'll grab one of the calendars for you at lunch, and drop it by your office later.",
@@ -164,7 +178,7 @@ TestEnvironment::FixtureBuilder.new do
   )
 
   send_message(
-    user: 'Nick Riviera',
+    user: 'Peter Venkman',
     reply: false,
     subject: "2014 International Diagnostics Conference -- Who's going?",
     stripped_plain: "Registration for the 2013 IDCC is coming up. Is anyone planning on attending?",
@@ -178,7 +192,7 @@ TestEnvironment::FixtureBuilder.new do
     body_plain: "Where is it being held this year?",
   )
   send_message(
-    user: 'Nick Riviera',
+    user: 'Peter Venkman',
     reply: true,
     subject: "RE: 2014 International Diagnostics Conference -- Who's going?",
     stripped_plain: "In Seattle. Here's the conference website: http://www.idcconference.com",
@@ -186,35 +200,32 @@ TestEnvironment::FixtureBuilder.new do
   )
 
   # make some tasks
-  create_task 'Amy Wong',  'Call X-ray machine maintenance company'
-  create_task 'Elizabeth Tapp', 'Check in with IV supplies vendor'
-  create_task 'Yan Baker',        'Review our intake policies'
+  create_task 'Amy Wong',       'Call X-ray machine maintenance company'
+  create_task 'Lilith Sternin', 'Review our intake policies'
   create_task 'B.J. Hunnicutt', 'Update EMS forms to new version'
   create_task 'Anil Kapoor',    'Replace the power cord for vitals monitor #4'
 
-  create_task 'Elizabeth Tapp', 'Improve triage SpO2 monitoring'  #triage
-  create_task 'Yan Baker', 'New triage desk vitals monitor'  #triage
+  create_task 'Lilith Sternin', 'New triage desk vitals monitor'  #triage
 
   create_task 'Amy Wong',  'Order more glucose monitoring supplies'
 
-  create_task 'Yan Baker', 'Write current EMS practice review'  #triage
+  create_task 'Lilith Sternin', 'Write current EMS practice review'  #triage
 
-  create_task 'Yan Baker',        'Print new info signs for the front desk'
+  create_task 'Lilith Sternin',        'Print new info signs for the front desk'
   create_task 'Anil Kapoor',    'Review literature on DVT prevention'
+  create_task 'Anil Kapoor',    'Check in with IV supplies vendor'
   create_task 'Amy Wong',  'Revise PA paging procedures'
 
   create_task 'B.J. Hunnicutt', 'Review triage ECG procedures'  #triage
   create_task 'Anil Kapoor', 'Review standing orders for ASA and CP'  #triage
 
-  create_task 'Elizabeth Tapp', 'Calibrate the 2nd-floor blanket warmer'
   create_task 'Amy Wong',  'Review shift-change procedures'
   create_task 'Yuri Zhivago',  'Present our new central line system to the department'
   create_task 'Peter Venkman',  'Set up conference room for orientation'
 
   create_task 'Amy Wong', 'Write new intake form'  #triage
 
-  create_task 'Yan Baker',  'Pick up bagels for orientation'
-  create_task 'Elizabeth Tapp',  'Remind the QuickPharm rep to only come by Tuesdays'
+  create_task 'Lilith Sternin',  'Pick up bagels for orientation'
   create_task 'Amy Wong',  'Pick up decorations for the halloween party'
 
   create_task 'Amy Wong', 'Compare waiting times to acuity'  #triage
@@ -228,21 +239,19 @@ TestEnvironment::FixtureBuilder.new do
     subject: 'Call X-ray machine maintenance company',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
-    user: 'Elizabeth Tapp',
     reply: false,
   )
   send_message(
     subject: 'RE: Call X-ray machine maintenance company',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
-    user: 'Elizabeth Tapp',
     reply: true,
   )
   send_message(
     subject: 'RE: Call X-ray machine maintenance company',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
-    user: 'Yan Baker',
+    user: 'Lilith Sternin',
     reply: true,
   )
 
@@ -250,7 +259,7 @@ TestEnvironment::FixtureBuilder.new do
     subject: 'Review our intake policies',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
-    user: 'Yan Baker',
+    user: 'Lilith Sternin',
     reply: true,
   )
   send_message(
@@ -261,13 +270,13 @@ TestEnvironment::FixtureBuilder.new do
     reply: true,
   )
 
-  add_doer_to_task 'Yan Baker', 'Review our intake policies'
+  add_doer_to_task 'Lilith Sternin', 'Review our intake policies'
 
-  complete_task 'Yan Baker', 'Review our intake policies'
-  complete_task 'Yan Baker', 'Call X-ray machine maintenance company'
-  complete_task 'Yan Baker', 'Print new info signs for the front desk'
-  complete_task 'Yan Baker', 'Pick up bagels for orientation'
-  complete_task 'Yan Baker', 'Set up conference room for orientation'
+  complete_task 'Lilith Sternin', 'Review our intake policies'
+  complete_task 'Lilith Sternin', 'Call X-ray machine maintenance company'
+  complete_task 'Lilith Sternin', 'Print new info signs for the front desk'
+  complete_task 'Lilith Sternin', 'Pick up bagels for orientation'
+  complete_task 'Lilith Sternin', 'Set up conference room for orientation'
 
   # More email conversations
   send_message(
@@ -280,7 +289,7 @@ TestEnvironment::FixtureBuilder.new do
 
   # Demo thread.  Put this at the end so it shows up near the top of the list
   create_task 'Yuri Zhivago', 'Hypertension literature review'
-  complete_task 'Yan Baker', 'Hypertension literature review'
+  complete_task 'Lilith Sternin', 'Hypertension literature review'
 
   # send_message(
   #   user: 'Yuri Zhivago',
@@ -290,10 +299,8 @@ TestEnvironment::FixtureBuilder.new do
   #   body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
   # )
 
-  complete_task 'Yan Baker', 'Call X-ray machine maintenance company'
-  complete_task 'Yan Baker', 'Check in with IV supplies vendor'
-  complete_task 'Yan Baker', 'Review our intake policies'
-
-
+  complete_task 'Lilith Sternin', 'Call X-ray machine maintenance company'
+  complete_task 'Lilith Sternin', 'Check in with IV supplies vendor'
+  complete_task 'Lilith Sternin', 'Review our intake policies'
 
 end
