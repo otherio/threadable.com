@@ -1,5 +1,7 @@
 = simple_form_for message, as: :message, url: url, remote: remote do |f|
   %p.recipients
+    %span.recipients-label
+      Recipients:
     - recipients.each do |recipient|
       %a.avatar{href: "", title: recipient.name, data:{ toggle: "tooltip", placement: "bottom"} }
         = image_tag(recipient.avatar_url)
