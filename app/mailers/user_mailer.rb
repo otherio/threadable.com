@@ -28,7 +28,10 @@ class UserMailer < ActionMailer::Base
   end
 
   def host_with_port
-    @host_with_port ||= url_options.values_at(:host, :port).join(':')
+    @host_with_port ||= begin
+      host, port = url_options.values_at(:host, :port)
+      port.present? ? "#{host}:#{port}" : host
+    end
   end
 
 end
