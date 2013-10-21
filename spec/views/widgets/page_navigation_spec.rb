@@ -15,6 +15,10 @@ describe "page_navigation" do
     }
   end
 
+  before do
+    view.stub(:signup_enabled?).and_return(true)
+  end
+
   describe "the brand link" do
     subject{ html.css('a.brand').first[:href] }
     it { should == locals[:covered_link_url] }
