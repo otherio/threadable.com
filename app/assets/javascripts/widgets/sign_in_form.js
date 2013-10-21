@@ -19,7 +19,7 @@ Rails.widget('sign_in_form', function(Widget){
 
     this.node.find('.done .message').text( this.node.find('.done .message-store').val() );
 
-    this.node.css({visibility: 'visible'})
+    this.node.css({visibility: 'visible'});
   };
 
   this.state = function(state){

@@ -8,7 +8,7 @@ whenReady.callbacks = [];
 !function() {
 
   yepnope({
-    load: <%= [javascript_path('application')].to_json %>,
+    load: ENV.application_js_url,
     callback: function(){
       unpreventEverything();
       Covered.initialize(ENV);
@@ -60,5 +60,5 @@ whenReady.callbacks = [];
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', <%= ENV['COVERED_GOOGLE_ANALYTICS_TRACKING_ID'].to_s.to_json %>, 'covered.io');
+ga('create', ENV.google_analytics_tracking_id, 'covered.io');
 ga('send', 'pageview');
