@@ -9,7 +9,7 @@ class Users::ResetPasswordController < ApplicationController
       UserMailer.reset_password(user).deliver!
       render json: {done: "We've emailed you an account recovery link. Please check your email."}
     when user
-      UserMailer.sign_up_confirmation(user).deliver!
+      UserMailer.reset_password(user).deliver!
       render json: {done: "We've emailed you a link to setup your account. Please check your email."}
     else
       render json: {error: "No account found with that email address"}
