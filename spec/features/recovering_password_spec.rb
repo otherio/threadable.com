@@ -10,7 +10,7 @@ feature "recovering password" do
     click_link 'Forgot password'
     fill_in 'Email', with: user.email
     click_button 'Recover'
-    expect(page).to have_content "Thanks! We've emailed you an account recovery link. Please check your email."
+    expect(page).to have_content "Thanks! We've emailed you a password reset link. Please check your email."
 
     email = sent_emails.to(user.email).with_subject("Reset your password!").first
     expect(email).to be_present

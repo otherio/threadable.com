@@ -7,7 +7,7 @@ class Users::ResetPasswordController < ApplicationController
     case
     when user && user.has_password?
       UserMailer.reset_password(user).deliver!
-      render json: {done: "We've emailed you an account recovery link. Please check your email."}
+      render json: {done: "We've emailed you a password reset link. Please check your email."}
     when user
       UserMailer.reset_password(user).deliver!
       render json: {done: "We've emailed you a link to setup your account. Please check your email."}

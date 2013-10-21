@@ -42,7 +42,7 @@ Scenario: Existing user with a password forgot their password
    Then I should see "Recover password"
    When I fill in "Email" with "alice@ucsd.covered.io"
     And I click the "Recover" button
-   Then I should see "We've emailed you a password recovery link. Please check your email."
+   Then I should see "We've emailed you a password reset link. Please check your email."
 
 Scenario: Existing user without a password forgot their password
   Given I am not logged in
