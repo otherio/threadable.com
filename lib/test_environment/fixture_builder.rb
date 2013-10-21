@@ -51,7 +51,7 @@ class TestEnvironment::FixtureBuilder
   end
 
   def set_avatar email, filename
-    User.with_email(email).first!.update_attribute(:avatar_url, "/assets/fixtures/#{filename}")
+    User.with_email(email).first!.update_attribute(:avatar_url, "/fixture_images/#{filename}")
   end
 
   def confirm_account name
