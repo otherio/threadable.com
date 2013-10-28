@@ -289,16 +289,64 @@ TestEnvironment::FixtureBuilder.new do
 
   # Demo thread.  Put this at the end so it shows up near the top of the list
   create_task 'Yuri Zhivago', 'Hypertension literature review'
+
+
+  send_message(
+    user: 'Yuri Zhivago',
+    reply: false,
+    subject: 'Hypertension literature review',
+    stripped_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
+    body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
+  )
+
+  send_message(
+    user: 'Amy Wong',
+    reply: false,
+    subject: 'RE: Hypertension literature review',
+    stripped_plain: "Google Scholar is great for this. I'll see what I can find.",
+    body_plain: "Google Scholar is great for this. I'll see what I can find.",
+  )
+
+  send_message(
+    user: 'Amy Wong',
+    reply: false,
+    subject: 'RE: Hypertension literature review',
+    stripped_plain: "I found a paper that looks promising, but I don't have access to the full text. Can anyone help me find it? Here's the citation:<br><br>Emergency Room Management of Hypertensive Urgencies and Emergencies<br>Donald G. Vidt MD<br>DOI: 10.1111/j.1524-6175.2001.00449.x",
+    body_plain: "I found a paper that looks promising, but I don't have access to the full text. Can anyone help me find it? Here's the citation:
+
+Emergency Room Management of Hypertensive Urgencies and Emergencies
+Donald G. Vidt MD
+DOI: 10.1111/j.1524-6175.2001.00449.x",
+  )
+
+  add_doer_to_task 'Amy Wong', 'Hypertension literature review'
+  send_message(
+    user: 'Sandeep Prakash',
+    reply: false,
+    subject: 'RE: Hypertension literature review',
+    stripped_plain: "Oh, I have journal access here at the university. I'll see if I can track it down.<br><br>~Sandeep",
+    body_plain: "Oh, I have journal access here at the university. I'll see if I can track it down.
+
+~Sandeep",
+  )
+
+  send_message(
+    user: 'Sandeep Prakash',
+    reply: false,
+    subject: 'RE: Hypertension literature review',
+    stripped_plain: "I found it. Looks like Groups I and II both start at 180/110 mmHg. I've attached the PDF.",
+    body_plain: "I found it. Looks like Groups I and II both start at 180/110 mmHg. I've attached the PDF.",
+  )
+
+  send_message(
+    user: 'Amy Wong',
+    reply: false,
+    subject: 'RE: Hypertension literature review',
+    stripped_plain: "That looks great! Thanks, Sandeep!",
+    body_plain: "That looks great! Thanks, Sandeep!",
+  )
+
   complete_task 'Lilith Sternin', 'Hypertension literature review'
-
-  # send_message(
-  #   user: 'Yuri Zhivago',
-  #   reply: false,
-  #   subject: 'Hypertension literature review',
-  #   stripped_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
-  #   body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our standing order for antihypertensives.",
-  # )
-
   complete_task 'Lilith Sternin', 'Call X-ray machine maintenance company'
   complete_task 'Lilith Sternin', 'Check in with IV supplies vendor'
   complete_task 'Lilith Sternin', 'Review our intake policies'
