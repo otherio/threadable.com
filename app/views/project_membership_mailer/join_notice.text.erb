@@ -8,12 +8,12 @@ Covered is a magical mailing list that helps you and your friends get more done.
 It works just like any mailing list you've ever used, but has awesome features
 to help you organize!
 
-<% if @user.web_enabled? %>
+<% if @recipient.web_enabled? %>
 You can view this project on covered.io here: <%= @project_url.html_safe %>
 <% else %>
 Covered also has a beautiful web view, which lets you see the entire project
 archive, view the member roster, and organize conversations! Click here to set
-up a password for Covered.io: <%= @user_setup_url.html_safe %>
+up a password for Covered.io: <%= @recipient_setup_url.html_safe %>
 <% end %>
 
 

@@ -2,7 +2,7 @@ require "spec_helper"
 
 feature "web enabling account" do
 
-  let(:user){ User.without_password.first! }
+  let(:user){ Covered::User.without_password.first! }
 
   scenario "Users who are not web enabled should be able web enable their account" do
     visit '/'
@@ -11,6 +11,11 @@ feature "web enabling account" do
     fill_in 'Email', with: user.email
     click_button 'Recover'
     expect(page).to have_content "Thanks! We've emailed you a link to setup your account. Please check your email."
+
+    assert_background_job_enqueued(covered, :send_email,
+      type: :reset_password, options: {recipient_id: user.id}
+    )
+    run_background_jobs!
 
     email = sent_emails.to(user.email).with_subject("Reset your password!").first
     expect(email).to be_present

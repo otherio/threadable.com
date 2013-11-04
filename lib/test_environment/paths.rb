@@ -11,22 +11,22 @@ module TestEnvironment::Paths
     when 'the user setup page'
       setup_users_path params_for_current_path[:token]
     when /^the project page for "(.+?)"$/
-      project_path Project.where(name: $1).first!
+      project_path Covered::Project.where(name: $1).first!
     when /^the project conversations page for "(.+?)"$/
-      project_conversations_path Project.where(name: $1).first!
+      project_conversations_path Covered::Project.where(name: $1).first!
     # when /^the "(.+?)" task page$/
-    #   task = Task.where(subject: $1).first!
+    #   task = Covered::Task.where(subject: $1).first!
     #   project_task_path task.project, task
 
     when /the sign in page prefilled with "(.+?)"/
       sign_in_path(email: $1)
 
     when /^the "(.+?)" (?:conversation|task) page$/
-      conversation = Conversation.where(subject: $1).first!
+      conversation = Covered::Conversation.where(subject: $1).first!
       project_conversation_path conversation.project, conversation
     when /^the "(.+?)" (?:conversation|task) for the "(.+?)" project$/
       message_name, project_name = $1, $2
-      project = Project.where(name: $2).first!
+      project = Covered::Project.where(name: $2).first!
       conversation = project.conversations.find_by_subject($1)
       project_conversation_path(project, conversation)
     else

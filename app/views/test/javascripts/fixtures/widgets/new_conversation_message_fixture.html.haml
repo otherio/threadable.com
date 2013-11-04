@@ -1,5 +1,5 @@
 .new-conversation
-  = render_widget :new_conversation_message, Project.last.conversations.new, from: User.last
+  = render_widget :new_conversation_message, Covered::Project.last.conversations.new, from: Covered::User.last
 
 .existing-conversation
-  = render_widget :new_conversation_message, Conversation.last, from: User.last
+  = render_widget :new_conversation_message, Covered::Conversation.last, from: Covered::User.last

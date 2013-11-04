@@ -6,15 +6,16 @@ gem 'rails', '4.0.0'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'unicorn'
+gem 'sinatra'
+gem 'sidekiq'
 
 gem 'redis'
 gem 'pg'
-gem 'resque'
 gem 'newrelic_rpm'
 
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'stringex'
-gem 'method_object'
+# gem 'method_object'
 gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
 gem 'js-routes'
 gem 'incoming', '0.1.4'
@@ -46,7 +47,6 @@ end
 
 group :production do
   gem 'honeybadger'
-  gem 'resque-honeybadger'
 end
 
 group :development, :test do
@@ -67,10 +67,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'cucumber-rails', require: nil
-  # gem 'resque_spec'
   gem 'timecop'
   gem 'launchy'
-  gem 'resque_unit'
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'minitest', require: nil

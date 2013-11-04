@@ -2,39 +2,38 @@ module AuthenticationConcern
 
   extend ActiveSupport::Concern
 
-  AuthorizationError = Covered::AuthorizationError
-
   included do
     helper_method :current_user, :signup_enabled?
-    rescue_from AuthorizationError, with: :rescue_from_authorization_error
+    rescue_from Covered::AuthorizationError,  with: :rescue_from_authorization_error
+    rescue_from Covered::CurrentUserNotFound, with: :rescue_from_current_user_not_found
   end
-
-  private
 
   def current_user_id
     session[:user_id] ||= decrypt_remember_me_cookie!
   end
 
   def current_user
-    @current_user ||= User.where(id: current_user_id).first! if signed_in?
-  rescue ActiveRecord::RecordNotFound
-    sign_out!
-    unauthorized!
+    covered.current_user
+  end
+
+  def covered
+    @covered ||= Covered.new(current_user_id: current_user_id, host: request.host, port: request.port)
   end
 
   def sign_in! user, remember_me: false
     user_id = case user
-    when User; user.id
+    when Covered::User; user.id
     when Integer; user
     else raise ArgumentError, "invalid user #{user.inspect}"
     end
+    @covered = nil
     session[:user_id] = user_id
     cookies.permanent[:remember_me] = RememberMeToken.encrypt(user_id) if remember_me
     true
   end
 
   def sign_out!
-    @current_user = nil
+    @covered = nil
     session.delete(:user_id)
     cookies.delete(:remember_me)
   end
@@ -48,7 +47,7 @@ module AuthenticationConcern
   end
 
   def unauthorized! message=nil
-    raise AuthorizationError, message
+    raise Covered::AuthorizationError, message
   end
 
   def require_user_be_signed_in!
@@ -81,6 +80,11 @@ module AuthenticationConcern
     else
       redirect_to sign_in_path(r:request.url)
     end
+  end
+
+  def rescue_from_current_user_not_found exception
+    sign_out!
+    unauthorized!
   end
 
 end

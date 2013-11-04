@@ -5,21 +5,20 @@ class Project::EmailSubscriptionsController < ApplicationController
   # GET /:project_id/unsubscribe/:token
   def unsubscribe
     project_membership_id = ProjectUnsubscribeToken.decrypt(params.require(:token))
-    project_membership = ProjectMembership.find(project_membership_id)
+    project_membership = Covered::ProjectMembership.find(project_membership_id)
     @project = project_membership.project
     @member = project_membership.user
     @resubscribe_token = ProjectResubscribeToken.encrypt(project_membership.id)
     if project_membership.gets_email?
       project_membership.update_attribute(:gets_email, false)
-      # TODO background this shit
-      ProjectMembershipMailer.unsubscribe_notice(project_membership).deliver
+      covered.send_email(:unsubscribe_notice, project_id: @project.id, recipient_id: @member.id)
     end
   end
 
   # GET /:project_id/resubscribe/:token
   def resubscribe
     project_membership_id = ProjectResubscribeToken.decrypt(params.require(:token))
-    project_membership = ProjectMembership.find(project_membership_id)
+    project_membership = Covered::ProjectMembership.find(project_membership_id)
     @project = project_membership.project
     @member = project_membership.user
     project_membership.update_attribute(:gets_email, true) unless project_membership.gets_email?

@@ -4,7 +4,7 @@ TestEnvironment::FixtureBuilder.new do
   sign_up 'Amy Wong',  'amywong.phd@gmail.com', 'password'
 
   # Amy creates a project
-  @project = Project.create!(
+  create_project!(
     name: 'SF Health Center',
     short_name: 'SFHealth',
     description: 'San Francisco Health Center',

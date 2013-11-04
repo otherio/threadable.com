@@ -1,15 +1,17 @@
-class TestEnvironment::IncomingEmailParamsFactory < MethodObject.new(:overides)
+class TestEnvironment::IncomingEmailParamsFactory < MethodObject
+
+  option :overides, default: ->{ Hash.new }
 
   # http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
   def call
-    overides  = @overides.dup
+    @overides = @overides.dup
     timestamp = (overides.delete("timestamp") || Time.now.to_i - rand(10000)).to_s
-    token     = overides.delete("token")     || SecureRandom.uuid
+    token     = overides.delete("token")      || SecureRandom.uuid
 
     message_headers = {
       'Message-Id' => '<3j4hjk35hk4h32423k@hackers.io>',
       # 'In-Reply-To' => parent_message.message_id_header,
-    }.merge! overides.delete('message-headers') || {}
+    }.merge overides.delete('message-headers') || {}
 
     body_html     = Faker::Email.html_body
     stripped_html = Sanitize.clean(body_html)

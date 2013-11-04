@@ -5,15 +5,21 @@ class MessagesController < ApplicationController
   # POST /:project_id/conversations/:conversation_id/messages
   # POST /:project_id/conversations/:conversation_id/messages.json
   def create
-    message_attributes = params.require(:message).permit(:body, :attachments)
-    message_attributes[:attachments] = params[:message][:attachments]
+    message_attributes = params.require(:message).permit(:body).symbolize_keys
+    message_attributes[:attachments] = Array(params[:message][:attachments]).map do |attachment|
+      attachment.slice(:url, :filename, :mimetype, :size, :writeable).symbolize_keys
+    end
 
-    @message = ConversationMessageCreator.call(current_user, conversation, message_attributes)
+    message = covered.messages.create(
+      project_slug:       project_slug,
+      conversation_slug:  conversation_slug,
+      message_attributes: message_attributes
+    )
 
-    if @message.persisted?
-      render status: :created, location: project_conversation_messages_path(conversation.project, conversation)
+    if message.errors.present?
+      render json: message.errors, status: :unprocessable_entity
     else
-      render json: @message.errors, status: :unprocessable_entity
+      render json: message_as_json(message), status: :created, location: project_conversation_messages_path(project_slug, conversation_slug)
     end
   end
 
@@ -21,26 +27,32 @@ class MessagesController < ApplicationController
   # PUT /:project_id/conversations/:conversation_id/messages/:id
   # PUT /:project_id/conversations/:conversation_id/messages/:id.json
   def update
-    @message = conversation.messages.find(params[:id])
-    message_params = params.require(:message).permit(:shareworthy, :knowledge)
+    attributes = params.require(:message).permit(:shareworthy, :knowledge).symbolize_keys
+    message = covered.messages.update(id: message_id, attributes: attributes)
 
-    if @message.update_attributes(message_params)
-      json = @message.as_json
-      json[:as_html] = view_context.render_widget :message, @message
-      render json: json
+    if message.errors.present?
+      render json: message.errors, status: :unprocessable_entity
     else
-      render json: @message.errors, status: :unprocessable_entity
+      render json: message_as_json(message)
     end
   end
 
   private
 
-  def project
-    @project ||= current_user.projects.where(slug: params[:project_id]).first!
+  def project_slug
+    params.require(:project_id)
   end
 
-  def conversation
-    @conversation ||= project.conversations.where(slug: params[:conversation_id]).first!
+  def conversation_slug
+    params.require(:conversation_id)
+  end
+
+  def message_id
+    params.require(:id)
+  end
+
+  def message_as_json message
+    message.as_json.merge(as_html: view_context.render_widget(:message, message))
   end
 
 end

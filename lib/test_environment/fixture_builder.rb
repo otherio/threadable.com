@@ -8,6 +8,10 @@ class TestEnvironment::FixtureBuilder
     instance_eval(&block) if block_given?
   end
 
+  def create_project! *args
+    @project = Covered::Project.create! *args
+  end
+
   def project
     @project or raise "please define a project first"
   end
@@ -51,7 +55,7 @@ class TestEnvironment::FixtureBuilder
   end
 
   def set_avatar email, filename
-    User.with_email(email).first!.update_attribute(:avatar_url, "/fixture_images/#{filename}")
+    Covered::User.with_email(email).first!.update_attribute(:avatar_url, "/fixture_images/#{filename}")
   end
 
   def confirm_account name

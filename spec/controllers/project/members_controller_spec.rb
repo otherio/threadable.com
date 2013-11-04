@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project::MembersController do
 
-  let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
+  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").includes(:members).first! }
   let(:current_user)    { project.members.first }
 
   before do
@@ -45,7 +45,6 @@ describe Project::MembersController do
 
     def expected_arguments
       {
-        actor:   current_user,
         project: project,
         member:  {
           "name" =>  'Steve Bushebi',
@@ -56,10 +55,10 @@ describe Project::MembersController do
     end
 
 
-    context "when AddMemberToProject succeeds" do
-      let(:member){ User.where(name:"Ray Arvidson").first! }
+    context "when adding the member succeeds" do
+      let(:member){ Covered::User.where(name:"Ray Arvidson").first! }
       before do
-        expect(AddMemberToProject).to receive(:call).with(expected_arguments).and_return(member)
+        expect(covered).to receive(:add_member_to_project).with(expected_arguments).and_return(member)
       end
       it "should render the member as json with a created status" do
         post :create, valid_params
@@ -68,9 +67,9 @@ describe Project::MembersController do
       end
     end
 
-    context "when AddMemberToProject raises an ActiveRecord::RecordNotFound error" do
+    context "when adding the member raises an ActiveRecord::RecordNotFound error" do
       before do
-        expect(AddMemberToProject).to receive(:call).with(expected_arguments).and_raise(ActiveRecord::RecordNotFound)
+        expect(covered).to receive(:add_member_to_project).with(expected_arguments).and_raise(ActiveRecord::RecordNotFound)
       end
       it "should render an error in json with an unprocessable entity status" do
         post :create, valid_params
@@ -80,9 +79,9 @@ describe Project::MembersController do
 
     end
 
-    context "when AddMemberToProject raises an AddMemberToProject::UserAlreadyAMemberOfProjectError" do
+    context "when adding the member raises an Covered::UserAlreadyAMemberOfProjectError" do
       before do
-        expect(AddMemberToProject).to receive(:call).with(expected_arguments).and_raise(AddMemberToProject::UserAlreadyAMemberOfProjectError.new(nil, nil))
+        expect(covered).to receive(:add_member_to_project).with(expected_arguments).and_raise(Covered::UserAlreadyAMemberOfProjectError.new(nil, nil))
       end
 
       it "should render an error in json with an unprocessable entity status" do

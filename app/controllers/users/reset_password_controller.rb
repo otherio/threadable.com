@@ -2,14 +2,14 @@ class Users::ResetPasswordController < ApplicationController
 
   def request_link
     email = params.require(:password_recovery).require(:email)
-    user = User.with_email(email).first
+    user = Covered::User.with_email(email).first
 
     case
     when user && user.has_password?
-      UserMailer.reset_password(user).deliver!
+      covered.send_email(:reset_password, recipient_id: user.id)
       render json: {done: "We've emailed you a password reset link. Please check your email."}
     when user
-      UserMailer.reset_password(user).deliver!
+      covered.send_email(:reset_password, recipient_id: user.id)
       render json: {done: "We've emailed you a link to setup your account. Please check your email."}
     else
       render json: {error: "No account found with that email address"}
@@ -17,7 +17,7 @@ class Users::ResetPasswordController < ApplicationController
   end
 
   def show
-    user = User.where(id: user_id_from_token).first
+    user = Covered::User.where(id: user_id_from_token).first
     if user.nil?
       redirect_to root_url
     else

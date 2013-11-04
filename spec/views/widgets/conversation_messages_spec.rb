@@ -21,13 +21,13 @@ describe "conversation_messages" do
 
   let :items do
     [
-      [:event,   create_event(0, 'Conversation::CreatedEvent')],
+      [:event,   create_event(0, 'Covered::Conversation::CreatedEvent')],
       [:message, create_message(0)],
-      [:event,   create_event(1, 'Task::CreatedEvent')],
+      [:event,   create_event(1, 'Covered::Task::CreatedEvent')],
       [:message, create_message(1)],
-      [:event,   create_event(2, 'Task::DoneEvent')],
+      [:event,   create_event(2, 'Covered::Task::DoneEvent')],
       [:message, create_message(2)],
-      [:event,   create_event(3, 'Task::UndoneEvent')],
+      [:event,   create_event(3, 'Covered::Task::UndoneEvent')],
     ]
   end
 

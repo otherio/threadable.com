@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'javascript specs', type: :request, driver: :selenium do
+describe 'javascript specs', type: :feature, driver: :selenium do
 
   it "should all pass" do
     visit javascript_tests_path

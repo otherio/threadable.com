@@ -8,31 +8,32 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = UserCreator.call(user_params)
+    @user = covered.users.create(user_params)
     if @user.errors.present?
       render :new
-      return
+    else
+      covered.send_email(:sign_up_confirmation, recipient_id: user.id)
     end
-    UserMailer.sign_up_confirmation(@user).deliver!
   end
 
   def new
     if signup_enabled?
-      @user = User.new
+      @user = covered.users.new
     else
       redirect_to root_url
     end
-  end
-
-  def edit
-    unauthorized! if current_user != user
   end
 
   def show
     user
   end
 
+  def edit
+    unauthorized! if current_user != user
+  end
+
   def update
+    unauthorized! if current_user != user
     if user.update_attributes(user_params)
       redirect_to root_path
     else
@@ -51,7 +52,7 @@ class UsersController < ApplicationController
   end
 
   def user
-    @user ||= User.where(slug: params[:id]).first!
+    @user ||= covered.users.get(slug: params[:id])
   end
 
 end

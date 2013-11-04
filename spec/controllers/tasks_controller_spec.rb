@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TasksController do
 
-  let(:project){ Project.first }
+  let(:project){ Covered::Project.first }
   let(:current_user){ project.members.first }
 
   before(:each) do
@@ -58,9 +58,9 @@ describe TasksController do
     end
 
     describe "with valid params" do
-      it "creates a new Task, assigns a newly created task as @task, and redirects to the created task" do
-        expect { post :create, valid_params }.to change(Task, :count).by(1)
-        assigns(:task).should be_a(Task)
+      it "creates a new Covered::Task, assigns a newly created task as @task, and redirects to the created task" do
+        expect { post :create, valid_params }.to change(Covered::Task, :count).by(1)
+        assigns(:task).should be_a(Covered::Task)
         assigns(:task).should be_persisted
         response.should redirect_to project_conversation_url(project, assigns(:task))
       end
@@ -69,11 +69,11 @@ describe TasksController do
     describe "with invalid params" do
       before do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        Covered::Task.any_instance.stub(:save).and_return(false)
       end
       it "assigns a newly created but unsaved task as @task, and re-renders the 'new' template" do
         post :create, valid_params
-        assigns(:task).should be_a_new(Task)
+        assigns(:task).should be_a_new(Covered::Task)
         response.body.should be_blank
         response.should be_unprocessable
       end
@@ -84,9 +84,9 @@ describe TasksController do
         super.merge(format: 'json')
       end
       describe "with valid params" do
-        it "creates a new Task, assigns a newly created task as @task, and redirects to the created task" do
-          expect { post :create, valid_params }.to change(Task, :count).by(1)
-          assigns(:task).should be_a(Task)
+        it "creates a new Covered::Task, assigns a newly created task as @task, and redirects to the created task" do
+          expect { post :create, valid_params }.to change(Covered::Task, :count).by(1)
+          assigns(:task).should be_a(Covered::Task)
           assigns(:task).should be_persisted
           response.body.should == assigns(:task).to_json
           response.should be_success
@@ -96,11 +96,11 @@ describe TasksController do
       describe "with invalid params" do
         before do
           # Trigger the behavior that occurs when invalid params are submitted
-          Task.any_instance.stub(:save).and_return(false)
+          Covered::Task.any_instance.stub(:save).and_return(false)
         end
         it "assigns a newly created but unsaved task as @task, and re-renders the 'new' template" do
           post :create, valid_params
-          assigns(:task).should be_a_new(Task)
+          assigns(:task).should be_a_new(Covered::Task)
           response.should be_unprocessable
           response.body.should == assigns(:task).errors.to_json
         end
@@ -109,7 +109,7 @@ describe TasksController do
 
     context "when request is an xhr" do
       describe "with valid params" do
-        it "creates a new Task, assigns a newly created task as @task, and redirects to the created task" do
+        it "creates a new Covered::Task, assigns a newly created task as @task, and redirects to the created task" do
           view_context = double(:view_context)
           controller.stub(:view_context).and_return(view_context)
 
@@ -118,8 +118,8 @@ describe TasksController do
           view_context.should_receive(:render_widget).
             with(:tasks_sidebar, project, options).and_return("FAKE TASKS SIDEBAR WIDGET")
 
-          expect { xhr :post, :create, valid_params }.to change(Task, :count).by(1)
-          assigns(:task).should be_a(Task)
+          expect { xhr :post, :create, valid_params }.to change(Covered::Task, :count).by(1)
+          assigns(:task).should be_a(Covered::Task)
           assigns(:task).should be_persisted
           response.should be_success
           response.body.should == "FAKE TASKS SIDEBAR WIDGET"
@@ -135,13 +135,13 @@ describe TasksController do
       super.merge(task: valid_attributes)
     end
 
-    let!(:task){ Task.create!(valid_attributes.merge(project:project, creator: current_user)) }
+    let!(:task){ Covered::Task.create!(valid_attributes.merge(project:project, creator: current_user)) }
 
     describe "with valid params" do
       it "updates the requested task" do
         now = Time.now
         Time.stub(:now).and_return(now)
-        Task.any_instance.should_receive(:update_attributes).with({
+        Covered::Task.any_instance.should_receive(:update_attributes).with({
           "subject" => "How aren't we going to build this thing?",
           "done_at" => Time.now,
         })
@@ -171,14 +171,14 @@ describe TasksController do
       end
       it "assigns the task as @task" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        Covered::Task.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
         assigns(:task).should eq(task)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        Covered::Task.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
         response.should redirect_to project_conversation_url(project, task)
       end

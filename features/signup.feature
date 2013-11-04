@@ -3,6 +3,7 @@ Feature: Signup
   I should be able to signup
 
 Scenario: Signing up
+ Given signups are enabled
   When I signup with the following information:
     | Name  | Weird Al Yankovik     |
     | Email | weird.al@yankovik.com |
@@ -22,7 +23,8 @@ Scenario: Signing up
 Scenario: Account creation fails if email is already used
   If an account already exists for this email address
   I should not be able to create another one
-  Given I am not logged in
+  Given signups are enabled
+    And I am not logged in
     And I go to the sign up page
     And I fill in "Name" with "Alice Neilson"
     And I fill in "Email" with "alice@ucsd.covered.io"
@@ -31,7 +33,8 @@ Scenario: Account creation fails if email is already used
 
 @email
 Scenario: When added to a project, a new user receives a welcome email
-  Given I am "Alice Neilson"
+  Given signups are enabled
+    And I am "Alice Neilson"
     And I invite "Bob", "bob@example.com" to the "UCSD Electric Racing" project
    Then "bob@example.com" should have received an email containing the text: "You've been added to the UCSD Electric Racing project on Covered"
 

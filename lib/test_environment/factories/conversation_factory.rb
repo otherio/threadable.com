@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :conversation do
+  factory :conversation, :class => "Covered::Conversation" do
     subject { Faker::Company.bs }
     project
     creator {

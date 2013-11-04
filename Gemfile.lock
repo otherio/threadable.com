@@ -60,6 +60,8 @@ GEM
     capybara-webkit (1.0.0)
       capybara (~> 2.0, >= 2.0.2)
       json
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     chunky_png (1.2.9)
@@ -71,6 +73,7 @@ GEM
       sass (~> 3.1)
     compass-rails (2.0.alpha.0)
       compass (>= 0.12.2, < 0.14)
+    connection_pool (1.1.0)
     crack (0.4.0)
       safe_yaml (~> 0.9.0)
     css_parser (1.3.5)
@@ -166,12 +169,9 @@ GEM
       treetop (~> 1.4.8)
     mail_view (2.0.1)
       tilt
-    method_object (0.0.3)
-      simple_struct
     method_source (0.8.1)
     mime-types (1.25)
     minitest (4.7.5)
-    mono_logger (1.1.0)
     multi_json (1.7.9)
     multi_test (0.0.1)
     multi_xml (0.5.4)
@@ -196,7 +196,7 @@ GEM
     pry-rails (0.3.1)
       pry (>= 0.9.10)
     rack (1.5.2)
-    rack-protection (1.5.0)
+    rack-protection (1.5.1)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -223,19 +223,8 @@ GEM
     raindrops (0.11.0)
     rake (10.1.0)
     redis (3.0.4)
-    redis-namespace (1.3.0)
+    redis-namespace (1.3.1)
       redis (~> 3.0.0)
-    resque (1.24.1)
-      mono_logger (~> 1.0)
-      multi_json (~> 1.0)
-      redis-namespace (~> 1.2)
-      sinatra (>= 0.9.2)
-      vegas (~> 0.1.2)
-    resque-honeybadger (1.0.2)
-      honeybadger
-      resque (>= 1.8.0)
-    resque_unit (0.4.4)
-      json (>= 1.4.6)
     roadie (2.4.1)
       actionmailer (> 3.0.0, < 5.0.0)
       css_parser (~> 1.3.4)
@@ -269,9 +258,14 @@ GEM
       websocket (~> 1.0.4)
     shoulda-matchers (2.2.0)
       activesupport (>= 3.0.0)
+    sidekiq (2.15.2)
+      celluloid (>= 0.15.2)
+      connection_pool (>= 1.0.0)
+      json
+      redis (>= 3.0.4)
+      redis-namespace (>= 1.3.1)
     simple_form (1.4.1)
-    simple_struct (0.0.4)
-    sinatra (1.4.3)
+    sinatra (1.4.4)
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
@@ -291,6 +285,7 @@ GEM
       atomic
     tilt (1.4.1)
     timecop (0.6.1)
+    timers (1.1.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -302,8 +297,6 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    vegas (0.1.11)
-      rack (>= 1.0.0)
     virtus (0.5.5)
       backports (~> 3.3)
       descendants_tracker (~> 0.0.1)
@@ -348,7 +341,6 @@ DEPENDENCIES
   let
   mail
   mail_view
-  method_object
   minitest
   newrelic_rpm
   pg
@@ -359,16 +351,15 @@ DEPENDENCIES
   rails_12factor
   rails_autolink
   redis
-  resque
-  resque-honeybadger
-  resque_unit
   roadie
   rspec-rails
   sanitize
   sass-rails
   selenium-webdriver
   shoulda-matchers
+  sidekiq
   simple_form
+  sinatra
   stringex
   timecop
   uglifier (>= 1.0.3)

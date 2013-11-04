@@ -8,7 +8,7 @@ describe ConversationMailer do
       Rails.application.routes.default_url_options[:host] = 'covered.io'
     end
 
-    let(:project){ Project.where(name: 'UCSD Electric Racing').first }
+    let(:project){ Covered::Project.where(name: 'UCSD Electric Racing').first }
     let(:conversation){ project.conversations.find_by_subject('layup body carbon') }
     let(:parent_message){ conversation.messages.last }
     let(:creator){ project.members.with_email("jonathan@ucsd.covered.io").first! }
@@ -25,11 +25,15 @@ describe ConversationMailer do
       )
     }
 
-    let(:recipient){ project.members.with_email("bethany@ucsd.covered.io").first! }
-
     let(:project_membership){ recipient.project_memberships.where(project: project).first! }
 
-    subject(:mail) { ConversationMailer.conversation_message(message, project_membership) }
+    let(:recipient){ project.members.with_email("bethany@ucsd.covered.io").first! }
+
+    subject(:mail) {
+      covered.generate_email(type: :conversation_message, options: {
+        message_id: message.id, recipient_id: recipient.id
+      })
+    }
 
     let(:mail_headers){
       Hash[mail.header_fields.map{|hf| [hf.name, hf.value] }]

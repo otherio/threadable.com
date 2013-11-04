@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe "task_metadata" do
 
-  let(:user) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:task) }
+  let(:user) { create(:user) }
+  let(:task) { create(:task) }
 
   def locals
     {

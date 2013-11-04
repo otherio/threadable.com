@@ -7,7 +7,7 @@ class ConversationsController < ApplicationController
   # GET /conversations
   # GET /conversations.json
   def index
-    @conversations = project.conversations.includes(events: :user, messages: :user).load
+    @conversations = covered.conversations.find(project_slug: project.slug)
 
     respond_to do |format|
       format.html { render layout: 'application' }
@@ -43,11 +43,14 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    message = params.require(:message).slice(:subject, :body, :attachments)
-    message.permit!
-    subject = message.delete(:subject)
+    subject, body, attachments = params.require(:message).values_at(:subject, :body, :attachments)
 
-    conversation = ConversationCreator.call(project, current_user, subject, message)
+    conversation = covered.conversations.create(
+      project_slug: params[:project_id],
+      subject:      subject,
+      body:         body,
+      attachments:  attachments,
+    )
 
     respond_to do |format|
       if conversation.persisted?
@@ -118,7 +121,7 @@ class ConversationsController < ApplicationController
   private
 
   def project
-    @project ||= current_user.projects.where(slug: params.require(:project_id)).includes(:tasks).first!
+    @project ||= covered.projects.get(slug: params.require(:project_id)) or raise Covered::RecordNotFound
   end
 
 end

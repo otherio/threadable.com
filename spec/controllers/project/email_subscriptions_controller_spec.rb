@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project::EmailSubscriptionsController do
 
-  let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
+  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").includes(:members).first! }
   let(:user)    { project.members.first! }
   let(:project_membership){ user.project_memberships.where(project_id: project.id).first! }
   let(:email)   { double(:email) }
@@ -23,8 +23,7 @@ describe Project::EmailSubscriptionsController do
 
     let(:token) { ProjectUnsubscribeToken.encrypt(project_membership.id) }
     it "should disable emails for the project memebership" do
-      expect(ProjectMembershipMailer).to receive(:unsubscribe_notice).with(project_membership).and_return(email)
-      expect(email).to receive(:deliver)
+      expect(covered).to receive(:send_email).with(:unsubscribe_notice, project_id: project.id, recipient_id: user.id)
 
       post :unsubscribe, project_id: project.slug, token: token
       project_membership.reload

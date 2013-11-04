@@ -7,14 +7,14 @@ describe "email" do
     ActionMailer::Base.stub(:default_url_options).and_return(host: 'covered.io')
   end
 
-  let(:project) { Project.where(name: "UCSD Electric Racing").first! }
-  let(:sender){ User.with_email('alice@ucsd.covered.io').first! }
+  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").first! }
+  let(:sender){ Covered::User.with_email('alice@ucsd.covered.io').first! }
   let(:conversation){ project.conversations.where(subject: 'layup body carbon').first! }
 
   context "recieving from mailgun" do
 
     def filter_body(body)
-      Covered.strip_user_specific_content_from_email_message_body(body: body)
+      controller.covered.operations.strip_user_specific_content_from_email_message_body(body: body)
     end
 
     let(:parent_message){ conversation.messages.first! }
@@ -48,16 +48,15 @@ describe "email" do
       it "should create a message" do
         expect{
           post '/emails', params
-        }.to change{ IncomingEmail.count }.by(1)
+        }.to change{ Covered::IncomingEmail.count }.by(1)
         expect(response).to be_success
 
-        incoming_email_id = IncomingEmail.last.id
-        assert_queued ProcessEmailWorker, [{incoming_email_id: incoming_email_id}]
+        incoming_email_id = Covered::IncomingEmail.last.id
 
-        ->{ Resque.run! }.should change{ Message.count }.by(1)
-        message = Message.last
+        assert_background_job_enqueued(controller.covered, :process_incoming_email, incoming_email_id: incoming_email_id)
 
-        assert_queued SendConversationMessageWorker, [{message_id: message.id}]
+        ->{ run_background_jobs! }.should change{ Covered::Message.count }.by(1)
+        message = Covered::Message.last
 
         expect(message.message_id_header).to     eq message_headers['Message-Id']
         expect(message.subject).to               eq params['subject']
@@ -78,7 +77,9 @@ describe "email" do
         # TODO this should check file contents but encoding is hard :(
         expect(attachment_filenames).to eq expected_attachment_filenames
 
-        Resque.run!
+        assert_background_job_enqueued(controller.covered, :send_conversation_message, message_id: message.id)
+
+        run_background_jobs!
 
         mail_recipients = (project.members_who_get_email - [message.user])
 
@@ -107,7 +108,7 @@ describe "email" do
   context "recieving from the website" do
 
     before do
-      sign_in_via_post_as sender
+      sign_in_as sender
     end
 
     context "replying to an existing conversation" do
@@ -119,25 +120,31 @@ describe "email" do
         ->{
           xhr :post, project_conversation_messages_path(project, conversation), params
           response.should be_success
-        }.should change{ Message.count }.by(1)
+        }.should change{ Covered::Message.count }.by(1)
 
-
-        message = Message.last
+        message = Covered::Message.last
         message.from.should == sender.email
         message.user_id.should == sender.id
         message.subject.should == conversation.subject
         message.body_plain.should == body
         message.message_id_header.should be_present
 
+        assert_background_job_enqueued(controller.covered, :send_conversation_message, message_id: message.id, email_sender: true)
+
+        run_background_jobs!
+
         project.members_who_get_email.each do |recipient|
-          assert_queued(SendConversationMessageWorker, [{message_id: message.id, email_sender: true}])
+          assert_background_job_enqueued(controller.covered, :send_email,
+            type: 'conversation_message',
+            options: {message_id: message.id, recipient_id: recipient.id}
+          )
         end
 
-        Resque.run!
+        run_background_jobs!
 
-        ActionMailer::Base.deliveries.size.should == 5
+        expect(sent_emails.size).to eq 5
 
-        ActionMailer::Base.deliveries.each do |email|
+        sent_emails.each do |email|
           email.text_part.body.should include body
           email.html_part.body.should include body
           email.subject.should == "✔ [RaceTeam] #{conversation.subject}"

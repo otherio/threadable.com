@@ -1,26 +1,26 @@
 # Encoding: UTF-8
 
-class ConversationMailer < ActionMailer::Base
+class ConversationMailer < Covered::Mailer
 
   add_template_helper EmailHelper
 
-  def conversation_message(message, project_membership)
-    @message, @project_membership = message, project_membership
-    @recipient = @project_membership.user
-    @project = @message.project
+  def conversation_message(options)
+    @message   = Covered::Message.find options[:message_id]
+    @recipient = Covered::User.find options[:recipient_id]
+    @project   = @message.project
     @project_membership = @project.project_memberships.where(user: @recipient).first!
     @conversation = @message.conversation
     @task = @conversation if @conversation.task?
-    subject_tag = @message.project.subject_tag
 
-    buffer_length = 200 - message.body_plain.length
+    subject_tag = @message.project.subject_tag
+    buffer_length = 200 - @message.body_plain.length
     buffer_length = 0 if buffer_length < 0
-    @message_summary = "⌁ #{message.body_plain.to_s[0,200]}#{'_' * buffer_length}"
+    @message_summary = "⌁ #{@message.body_plain.to_s[0,200]}#{'_' * buffer_length}"
 
     subject = @message.subject
     subject = "[#{subject_tag}] #{subject}" unless subject.include?("[#{subject_tag}]")
     # add a check mark to the subject if the conversation is a task, and if the subject doesn't already include one
-    subject = "✔ #{subject}" if @message.conversation.task? && !subject.include?("✔")
+    subject = "✔ #{subject}" if @task && !subject.include?("✔")
 
     from = @message.creator.present? && @message.creator == @recipient ?
       @message.project.formatted_email_address : @message.from
@@ -50,7 +50,6 @@ class ConversationMailer < ActionMailer::Base
       :'List-Archive'      => "<#{project_conversations_url(@message.project)}>",
       :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",
       :'List-Post'         => "<mailto:#{@message.project.email_address}>, <#{new_project_conversation_url(@message.project)}>"
-
     )
   end
 

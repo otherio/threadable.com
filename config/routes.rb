@@ -5,8 +5,8 @@ Covered::Application.routes.draw do
   end
 
   namespace :admin do
-    require 'resque/server'
-    mount Resque::Server, :at => "/resque"
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/background_jobs'
     mount MailPreview => '/mail_preview' if defined?(MailView)
   end
 

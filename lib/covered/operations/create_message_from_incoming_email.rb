@@ -1,33 +1,41 @@
-class Covered::Operations::CreateMessageFromIncomingEmail < Covered::Operation
+Covered::Operations.define :create_message_from_incoming_email do
+
+  option :incoming_email_id, required: true
+
+  let(:incoming_email){ Covered::IncomingEmail.find incoming_email_id }
 
   def call
-    return if @email.project.nil?
-    return if user.nil? && pre_existing_conversation.nil?
+    if incoming_email.project.nil?
+      raise "unabled to find project for incoming email #{incoming_email.id}"
+    end
+    if user.nil? && pre_existing_conversation.nil?
+      raise "unable to find a user or a pre existing conversation for incoming email #{incoming_email.id}"
+    end
 
     send_message!
-    return message
+    message
   end
 
   def send_message!
-    SendConversationMessageWorker.enqueue(message_id: message.id)
+    covered.background_jobs.enqueue(:send_conversation_message, message_id: message.id)
   end
 
   let :attachments do
-    @email.attachments.map do |file|
-      Attachment.create_from_file! file
+    incoming_email.attachments.map do |file|
+      Covered::Attachment.create_from_file! file
     end
   end
 
   let :from do
-    @email.from.first
+    incoming_email.from.first
   end
 
   let :user do
-    @email.project.members.with_email(from).first
+    incoming_email.project.members.with_email(from).first
   end
 
   let :pre_existing_conversation do
-    @email.conversation
+    incoming_email.conversation
   end
 
   TASK_SUBJECT_PREFIX_REGEXP = /^(task:|✔)\s*/i
@@ -36,44 +44,44 @@ class Covered::Operations::CreateMessageFromIncomingEmail < Covered::Operation
     if pre_existing_conversation
       pre_existing_conversation.task? ? :task : :conversation
     else
-      @email.subject =~ TASK_SUBJECT_PREFIX_REGEXP ? :task : :conversation
+      incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP ? :task : :conversation
     end
   end
 
   let :subject do
     if type == :task
-      @email.subject.sub(TASK_SUBJECT_PREFIX_REGEXP, '')
+      incoming_email.subject.sub(TASK_SUBJECT_PREFIX_REGEXP, '')
     else
-      @email.subject
+      incoming_email.subject
     end
   end
 
   let :conversation do
     pre_existing_conversation || case type
     when :task
-      @email.project.tasks.create(subject: subject, creator: user)
+      incoming_email.project.tasks.create(subject: subject, creator: user)
     when :conversation
-      @email.project.conversations.create(subject: subject, creator: user)
+      incoming_email.project.conversations.create(subject: subject, creator: user)
     end
   end
 
   let :message do
     conversation.messages.create!(
-      message_id_header: @email.header['Message-ID'].to_s,
+      message_id_header: incoming_email.header['Message-ID'].to_s,
       subject:           subject,
-      parent_message:    @email.parent_message,
+      parent_message:    incoming_email.parent_message,
       user:              user,
       from:              from,
-      body_plain:        strip_body(@email.text_part),
-      body_html:         strip_body(@email.html_part),
-      stripped_plain:    strip_body(@email.text_part_stripped),
-      stripped_html:     strip_body(@email.html_part_stripped),
+      body_plain:        strip_body(incoming_email.text_part),
+      body_html:         strip_body(incoming_email.html_part),
+      stripped_plain:    strip_body(incoming_email.text_part_stripped),
+      stripped_html:     strip_body(incoming_email.html_part_stripped),
       attachments:       attachments,
     )
   end
 
   def strip_body(body)
-    Covered.strip_user_specific_content_from_email_message_body(:body => body)
+    covered.strip_user_specific_content_from_email_message_body(:body => body)
   end
 
 end

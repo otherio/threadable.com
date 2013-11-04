@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "invite_modal" do
 
-  let(:project){ Project.last }
+  let(:project){ Covered::Project.last }
 
   def locals
     {

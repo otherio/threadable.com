@@ -17,8 +17,7 @@ class Project::MembersController < ApplicationController
   def create
     member_params = params.require(:member).permit(:id,:name,:email,:message)
 
-    member = AddMemberToProject.call(
-      actor:   current_user,
+    member = covered.add_member_to_project(
       project: project,
       member:  member_params.slice(:id, :name,:email),
       message: member_params[:message],
@@ -26,7 +25,7 @@ class Project::MembersController < ApplicationController
     render json: member, status: :created
   rescue ActiveRecord::RecordNotFound
     render json: {error: "unable to find user"}, status: :unprocessable_entity
-  rescue AddMemberToProject::UserAlreadyAMemberOfProjectError
+  rescue Covered::UserAlreadyAMemberOfProjectError
     render json: {error: "user is already a member"}, status: :unprocessable_entity
   end
 

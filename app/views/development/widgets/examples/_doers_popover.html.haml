@@ -3,7 +3,7 @@
     %a{href:"", onclick:'showDoersPopover(this);'} Show Doers Popover
     = render_widget :doers_popover
 
-- task = Task.with_doers.first
+- task = Covered::Task.with_doers.first
 - doers = task.doers
 - project_members = task.project.members
 

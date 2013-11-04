@@ -2,11 +2,18 @@ require 'spec_helper'
 
 describe "Email actions" do
 
-  let(:project) { Project.where(name: "UCSD Electric Racing").first! }
+  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").first! }
   let(:recipient){ project.members.who_get_email.first! }
   let(:sender){ (project.members.who_get_email - [recipient]).first }
-  let(:message){ ConversationMessageCreator.call(sender, conversation, body: "hello there") }
-  let(:email){ message; Resque.run!; sent_emails.sent_to(recipient.email).last or binding.pry }
+  let(:current_user){ sender }
+  let(:message){
+    covered.messages.create(
+      project_slug:      project.slug,
+      conversation_slug: conversation.slug,
+      message_attributes: {body: "hello there"},
+    )
+  }
+  let(:email){ sent_emails.sent_to(recipient.email).last }
   let(:html_part){ Nokogiri::HTML.fragment email.html_part.body.to_s }
   let(:text_part){ email.text_part.body.to_s }
 
@@ -19,9 +26,14 @@ describe "Email actions" do
     end.to_set
   end
 
+  before do
+    message # create message
+    drain_background_jobs!
+  end
+
   def covered_button name
     href = case name
-    when "I'll do it";        project_task_ill_do_it_url(project, conversation)
+    when "I'll do it";       project_task_ill_do_it_url(project, conversation)
     when "Remove me";        project_task_remove_me_url(project, conversation)
     when "Mark as done";     project_task_mark_as_done_url(project, conversation)
     when "Mark as undone";   project_task_mark_as_undone_url(project, conversation)

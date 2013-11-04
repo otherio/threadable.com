@@ -8,19 +8,19 @@
       %li.with_event
         %span.event
           - case item.type
-          - when 'Conversation::CreatedEvent'
+          - when 'Covered::Conversation::CreatedEvent'
             #{strong(item.user.name)} started this conversation
-          - when 'Task::CreatedEvent'
+          - when 'Covered::Task::CreatedEvent'
             #{strong(item.user.name)} created this task
-          - when 'Task::DoneEvent'
+          - when 'Covered::Task::DoneEvent'
             %i.icon-ok.finished-check
             #{strong(item.user.name)} marked this task as done
-          - when 'Task::UndoneEvent'
+          - when 'Covered::Task::UndoneEvent'
             %i.icon-ok.unfinished-check
             #{strong(item.user.name)} marked this task as not done
-          - when 'Task::AddedDoerEvent'
+          - when 'Covered::Task::AddedDoerEvent'
             #{strong(item.user.name)} added #{strong(item.doer.name)} as a doer
-          - when 'Task::RemovedDoerEvent'
+          - when 'Covered::Task::RemovedDoerEvent'
             #{strong(item.user.name)} removed #{strong(item.doer.name)} as a doer
           - else
             - raise "unknown type #{item.type.inspect}"

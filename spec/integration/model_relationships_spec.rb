@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'model relationships' do
 
-  let!(:project){ Project.where(name: "UCSD Electric Racing").first! }
+  let!(:project){ Covered::Project.where(name: "UCSD Electric Racing").first! }
 
   def member(email)
     project.members.with_email(email).first!
@@ -17,7 +17,7 @@ describe 'model relationships' do
   end
 
   it "should work" do
-    project.should be_a Project
+    project.should be_a Covered::Project
 
     project.name.should == 'UCSD Electric Racing'
     project.description.should == 'Senior engineering electric race team!'

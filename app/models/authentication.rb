@@ -6,7 +6,7 @@ class Authentication
   def persisted?; false; end
   include Virtus
 
-  attribute :user,        User
+  attribute :user,        Covered::User
   attribute :email,       String
   attribute :password,    String
   attribute :remember_me, Boolean, :default => false
@@ -18,7 +18,7 @@ class Authentication
       errors.add(:base, 'please enter an email address and password')
       return false
     end
-    user = User.with_email(email.downcase).first
+    user = Covered::User.with_email(email.downcase).first
     if user.nil? || !user.authenticate(password)
       return false
     end

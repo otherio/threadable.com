@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user do
+  factory :user, :class => "Covered::User" do
 
     ignore do
       web_enabled false

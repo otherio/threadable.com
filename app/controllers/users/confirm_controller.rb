@@ -28,7 +28,7 @@ class Users::ConfirmController < ApplicationController
   end
 
   def user
-    @user ||= User.where(id: user_id).first! if user_id
+    @user ||= Covered::User.where(id: user_id).first! if user_id
   end
 
 end

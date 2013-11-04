@@ -17,6 +17,8 @@ CapybaraEnvironment.before_suite!
 
 Before do
   reload_fixtures!
+  Sidekiq.redis{|r| r.flushdb}
+  Covered::BackgroundJobs::Worker.jobs.clear
 end
 
 Around('@email') do |scenario, block|

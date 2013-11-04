@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ConversationsController do
 
-  let(:project){ Project.first! }
+  let(:project){ Covered::Project.first! }
   let(:current_user){ project.members.first! }
 
   before(:each) do
@@ -42,7 +42,7 @@ describe ConversationsController do
   describe "GET new" do
     it "assigns a new conversation as @conversation" do
       get :new, valid_params
-      assigns(:conversation).should be_a(Conversation)
+      assigns(:conversation).should be_a(Covered::Conversation)
       assigns(:conversation).should_not be_persisted
     end
   end
@@ -90,16 +90,12 @@ describe ConversationsController do
       end
 
       before do
-        expect(ConversationCreator).to \
-          receive(:call). \
-          with{|_project, _current_user, _subject, _message|
-            expect(_project               ).to eq project
-            expect(_current_user          ).to eq current_user
-            expect(_subject               ).to eq subject
-            expect(_message["body"]       ).to eq body
-            expect(_message["attachments"]).to eq attachments
-          }. \
-          and_return(conversation)
+        expect(covered.conversations).to receive(:create).with(
+          project_slug: project.slug,
+          subject:      subject,
+          body:         body,
+          attachments:  attachments,
+        ).and_return(conversation)
       end
 
 
@@ -154,7 +150,7 @@ describe ConversationsController do
 
 
   describe "PUT update" do
-    let!(:conversation){ Conversation.create!(valid_attributes.merge(project:project, creator: current_user)) }
+    let!(:conversation){ Covered::Conversation.create!(valid_attributes.merge(project:project, creator: current_user)) }
 
     def valid_update_params
       {
@@ -166,7 +162,7 @@ describe ConversationsController do
       it "updates the requested conversation" do
         now = Time.now
         Time.stub(:now).and_return(now)
-        Conversation.any_instance.should_receive(:update_attributes).with({
+        Covered::Conversation.any_instance.should_receive(:update_attributes).with({
           "subject" => "How aren't we going to build this thing?",
           "done_at" => Time.now,
         })
@@ -199,14 +195,14 @@ describe ConversationsController do
 
       it "assigns the conversation as @conversation" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Conversation.any_instance.stub(:save).and_return(false)
+        Covered::Conversation.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
         assigns(:conversation).should eq(conversation)
       end
 
       it "redirect to the project conversation page" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Conversation.any_instance.stub(:save).and_return(false)
+        Covered::Conversation.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
         response.should redirect_to project_conversation_url(project, conversation)
       end

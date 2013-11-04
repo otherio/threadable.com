@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = current_user.projects.to_a
+    @projects = covered.projects.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   # GET /make-a-tank
   # GET /make-a-tank.json
   def show
-    @project = current_user.projects.find_by_slug!(params.require(:id))
+    @project = covered.projects.get slug: params[:id]
 
     respond_to do |format|
       format.html { redirect_to project_conversations_url(@project) }
@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   # GET /projects/new.json
   def new
-    @project = current_user.projects.new
+    @project = covered.projects.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -37,17 +37,17 @@ class ProjectsController < ApplicationController
 
   # GET /projects/edit
   def edit
-    @project = current_user.projects.find_by_slug!(params.require(:id))
+    @project = covered.projects.get slug: params[:id]
   end
 
   # POST /projects
   # POST /projects.json
   def create
-    @project = current_user.projects.new(project_params)
+    @project = covered.projects.create attributes: project_params
 
     respond_to do |format|
-      if @project.save && @project.members << current_user
-        format.html { redirect_to @project, notice: "#{@project.name} was successfully created." }
+      if @project.persisted? && @project.members << current_user
+        format.html { redirect_to project_url(@project), notice: "#{@project.name} was successfully created." }
         format.json { render json: @project, status: :created, location: @project }
       else
         format.html { render action: "new" }

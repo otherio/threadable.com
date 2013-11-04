@@ -50,7 +50,16 @@ module TestEnvironment::SentEmail
     end
 
     def urls
-      URI.extract(content)
+      urls = []
+      URI.extract(content).each do |url|
+        begin
+          url = URI.parse(url)
+          next if url.host == "www.w3.org"
+          urls << url if URI::HTTP === url
+        rescue URI::InvalidURIError
+        end
+      end
+      urls
     end
 
     def html
@@ -72,7 +81,7 @@ module TestEnvironment::SentEmail
     end
 
     def user_setup_url
-      urls.find{|url| url =~ %r(/setup) }
+      urls.find{|url| url.to_s =~ %r(/setup) }
     end
 
   end

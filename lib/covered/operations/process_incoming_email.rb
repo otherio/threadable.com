@@ -1,9 +1,17 @@
-class Covered::Operations::ProcessIncomingEmail < Covered::Operation
+Covered::Operations.define :process_incoming_email do
 
-  require_option :email
+  option :incoming_email_id, required: true
+
+  let(:incoming_email){ Covered::IncomingEmail.find incoming_email_id }
 
   def call
-    Covered.create_message_from_incoming_email(:email => @email)
+    case
+    when incoming_email.conversation_message?
+      covered.create_message_from_incoming_email(:incoming_email_id => incoming_email.id)
+    else
+      raise "unknown incoming email type"
+    end
   end
 
 end
+

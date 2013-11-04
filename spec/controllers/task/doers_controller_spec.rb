@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Task::DoersController do
 
-  let(:project){ Project.first }
+  let(:project){ Covered::Project.first }
   let(:current_user){ project.members.first }
 
   before(:each) do

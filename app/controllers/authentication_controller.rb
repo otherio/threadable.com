@@ -18,7 +18,7 @@ class AuthenticationController < ApplicationController
       sign_in! authentication.user, remember_me: authentication.remember_me
       render json: {redirect_to: redirect_url!}
     else
-      render json: {fail: true, error: authentication.errors.full_messages.to_sentence}
+      render json: {fail: true, error: authentication.errors.full_messages.to_sentence}, status: :unauthorized
     end
   end
 

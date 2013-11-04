@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :task do
+  factory :task, class: 'Covered::Task' do
     subject { Faker::Company.catch_phrase }
 
     project

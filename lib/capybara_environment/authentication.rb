@@ -1,32 +1,6 @@
 module CapybaraEnvironment::Authentication
 
-  def sign_out!
-    visit sign_out_path
-    visit root_path
-    page.should have_content('Sign in')
-  end
-
-  def sign_in_as user
-    case Capybara.current_driver
-    when :rack_test
-      sign_in_via_post_as user
-    else
-      sign_in_via_capybara_as user
-    end
-  end
-
-  def sign_in_via_post_as user, remember_me: false
-    post sign_in_path, {
-      "authentication" => {
-        "email"       => user.email,
-        "password"    => "password",
-        "remember_me" => remember_me ? 0 : 1
-      },
-    }
-    expect(response).to be_success
-  end
-
-  def sign_in_via_capybara_as user, remember_me: false
+  def sign_in_as user, remember_me: false
     sign_out!
     visit sign_in_path
     within_element 'the sign in form' do
@@ -35,7 +9,21 @@ module CapybaraEnvironment::Authentication
       check 'Remember me' if remember_me
       click_on 'Sign in'
     end
-    expect(page).to have_content('Projects')
+    # not sure why we see this error sometimes but retrying seems to fix it - Jared
+    begin
+      expect(page).to have_content('Projects')
+    rescue Capybara::Webkit::InvalidResponseError
+      raise if @capybara_webkit_invalid_response_error_seen
+      @capybara_webkit_invalid_response_error_seen = true
+      retry
+    end
+    covered.env["current_user_id"] = user.id
+  end
+
+  def sign_out!
+    visit sign_out_path
+    visit root_path
+    page.should have_content('Sign in')
   end
 
 end

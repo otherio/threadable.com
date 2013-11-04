@@ -1,5 +1,5 @@
 When(/^I invite "(.*?)", "(.*?)" to the "(.*?)" project$/) do |name, email, project|
-  project = Project.where(name: project).first!
+  project = Covered::Project.where(name: project).first!
   visit project_path(project)
 
   within selector_for('the navbar') do
@@ -17,8 +17,7 @@ When(/^I invite "(.*?)", "(.*?)" to the "(.*?)" project$/) do |name, email, proj
 end
 
 Then(/^"(.*?)" should have received an email containing the text: "(.*?)"$/) do |to_address, email_body|
-  ActionMailer::Base.deliveries.last.should be
-  email = ActionMailer::Base.deliveries.last
-  email.to.should include to_address
-  email.body.should include email_body
+  drain_background_jobs!
+  email = sent_emails.to(to_address).find{|e| e.body.include? email_body}
+  expect(email).to be_present
 end

@@ -1,12 +1,12 @@
-class EmailsController < ActionController::Base
+class EmailsController < ApplicationController
 
   before_filter :authenticate
 
   # POST /emails
   def create
     email_params = request.params.dup.slice!("controller", "action")
-    incoming_email = IncomingEmail.create!(params: email_params)
-    ProcessEmailWorker.enqueue(incoming_email_id: incoming_email.id)
+    incoming_email = Covered::IncomingEmail.create!(params: email_params)
+    covered.background_jobs.enqueue(:process_incoming_email, incoming_email_id: incoming_email.id)
     render nothing: true, status: :ok
   end
 

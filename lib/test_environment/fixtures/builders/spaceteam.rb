@@ -8,7 +8,7 @@ TestEnvironment::FixtureBuilder.new do
   sign_up 'John Callas', 'john-callas@nasa.covered.io', 'password'
 
   # John creates a project
-  @project = Project.create!(
+  create_project!(
     name: 'Mars Exploration Rover',
     short_name: 'Spaceteam',
     description: 'Put a robot on mars.',

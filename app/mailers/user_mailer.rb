@@ -1,21 +1,24 @@
-class UserMailer < ActionMailer::Base
+class UserMailer < Covered::Mailer
 
-  def sign_up_confirmation user
-    user_confirmation_token = UserConfirmationToken.encrypt(user.id)
+  def sign_up_confirmation(options)
+    @recipient = Covered::User.find options[:recipient_id]
+    user_confirmation_token = UserConfirmationToken.encrypt(@recipient.id)
     @account_confirmation_url = confirm_users_url(user_confirmation_token)
 
     mail(
-      to:      user.formatted_email_address,
+      to:      @recipient.formatted_email_address,
       from:    from_address,
       subject: "Welcome to Covered!",
     )
   end
 
-  def reset_password user
-    reset_password_token = ResetPasswordToken.encrypt(user.id)
+  def reset_password(options)
+    @recipient = Covered::User.find options[:recipient_id]
+    reset_password_token = ResetPasswordToken.encrypt(@recipient.id)
     @reset_password_url = reset_password_url(reset_password_token)
+
     mail(
-      to:      user.formatted_email_address,
+      to:      @recipient.formatted_email_address,
       from:    from_address,
       subject: "Reset your password!",
     )

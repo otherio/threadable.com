@@ -5,7 +5,7 @@ TestEnvironment::FixtureBuilder.new do
   confirm_account 'Alice Neilson'
 
   # Alice creates a project
-  @project = Project.create!(
+  create_project!(
     name: 'UCSD Electric Racing',
     short_name: 'RaceTeam',
     description: 'Senior engineering electric race team!',

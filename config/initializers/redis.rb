@@ -1,2 +1,4 @@
 Redis.current = Redis.new Rails.application.config.redis
-Resque.redis = Redis.current
+Sidekiq.redis = { url: Redis.current.client.id }
+
+

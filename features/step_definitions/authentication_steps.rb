@@ -3,7 +3,7 @@ Given /^I am not logged in$/ do
 end
 
 Given /^I am "(.*?)"$/ do |name|
-  @user = User.where(name: name).first!
+  @user = Covered::User.where(name: name).first!
   sign_in_as(@user)
 end
 

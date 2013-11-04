@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "project members", driver: :rack_test do
 
-  let(:project) { Project.where(name: "UCSD Electric Racing").includes(:members).first! }
+  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").includes(:members).first! }
   let(:user)    { project.members.first }
 
   before do
@@ -18,7 +18,7 @@ describe "project members", driver: :rack_test do
   end
 
   describe "adding a member to a project" do
-    let(:other_user){ (User.all - project.members).first }
+    let(:other_user){ (Covered::User.all - project.members).first }
     it "should work" do
       post project_members_url(project, format: :json), {member: { id: other_user.id }}
       response.should be_success
