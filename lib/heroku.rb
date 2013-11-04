@@ -2,12 +2,7 @@ module Heroku
 
   def self.redis_config
     if ENV.has_key? "REDISCLOUD_URL"
-      uri = URI.parse(ENV["REDISCLOUD_URL"])
-      {
-        :host => uri.host,
-        :port => uri.port,
-        :password => uri.password
-      }
+      {url: ENV["REDISCLOUD_URL"]}
     else
       {}
     end
