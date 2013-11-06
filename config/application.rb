@@ -50,6 +50,8 @@ module Covered
     config.redis = Redis.current.client.instance_variable_get(:@options).slice(:scheme, :host, :port, :path, :password, :db)
 
     config.roadie.enabled = true
+
+    config.force_ssl = false
   end
 end
 

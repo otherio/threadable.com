@@ -2,6 +2,8 @@ load File.expand_path('../production.rb', __FILE__)
 
 Covered::Application.configure do
 
+  config.force_ssl = false
+
   config.log_level = :debug
 
   config.action_mailer.smtp_settings.merge!(
