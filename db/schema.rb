@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20131104060910) do
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "incoming_emails", force: true do |t|
-    t.binary   "params",     null: false
+    t.text     "params",     null: false
     t.datetime "created_at", null: false
   end
 
