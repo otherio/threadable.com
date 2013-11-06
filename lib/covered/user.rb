@@ -85,7 +85,7 @@ class Covered::User < ActiveRecord::Base
     # change this when we have a default image other than gravatar's
     #"http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=#{CGI.escape(default_avatar_url)}"
     gravatar_id = Digest::MD5.hexdigest(email.downcase) if email.present?
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
+    "//gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
   end
 
   def validate_email_address_is_not_already_taken!
