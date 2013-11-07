@@ -35,19 +35,22 @@ describe ConversationMailer do
       })
     }
 
-    let(:mail_headers){
-      Hash[mail.header_fields.map{|hf| [hf.name, hf.value] }]
-    }
     let(:mail_as_text){ mail.to_s }
     let(:html_body) { mail.html_part.body.to_s }
 
-    let(:expected_from){ message.user.email }
+    let(:expected_to           ){ project.email_address }
+    let(:expected_from         ){ creator.email_address }
+    let(:expected_envelope_to  ){ recipient.email_address }
+    let(:expected_envelope_from){ project.email_address }
 
     def validate_mail!
       mail.subject.should include "[RaceTeam] #{conversation.subject}"
       mail.subject.scan('RaceTeam').size.should == 1
-      mail.to.should == [recipient.email]
-      mail.from.should == [expected_from]
+
+      mail.to.should                 == [expected_to]
+      mail.from.should               == [expected_from]
+      mail.smtp_envelope_to.should   == [expected_envelope_to]
+      mail.smtp_envelope_from.should == expected_envelope_from
 
       mail_as_text.should =~ /In-Reply-To:/
       mail_as_text.should =~ /References:/

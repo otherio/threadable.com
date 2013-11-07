@@ -13,7 +13,7 @@ describe "Email actions" do
       message_attributes: {body: "hello there"},
     )
   }
-  let(:email){ sent_emails.sent_to(recipient.email).last }
+  let(:email){ sent_emails.sent_to(recipient.email).last or raise "sent email to #{recipient.email} not found"}
   let(:html_part){ Nokogiri::HTML.fragment email.html_part.body.to_s }
   let(:text_part){ email.text_part.body.to_s }
 

@@ -49,6 +49,7 @@ class Covered::User < ActiveRecord::Base
   def email
     primary_email_address.try(:address)
   end
+  alias_method :email_address, :email
 
   def email= address
     (primary_email_address || email_addresses.build(user:self)).address = address
@@ -59,12 +60,14 @@ class Covered::User < ActiveRecord::Base
   end
 
   def as_json options={}
-    options[:methods] ||= 'email'
+    options[:methods] ||= []
+    options[:methods] << :email_address
+    options[:methods] << :email
     super
   end
 
   def formatted_email_address
-    "#{name} <#{email}>"
+    "#{name} <#{email_address}>"
   end
 
   def avatar_url

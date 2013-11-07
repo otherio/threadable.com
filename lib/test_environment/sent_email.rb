@@ -10,7 +10,7 @@ module TestEnvironment::SentEmail
 
     def sent_to(to_address)
       find_all do |email|
-        email.to.include?(to_address)
+        (email.smtp_envelope_to + email.to).include?(to_address)
       end
     end
     alias_method :to, :sent_to
