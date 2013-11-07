@@ -35,9 +35,9 @@ Covered::Application.routes.draw do
     resources :members, :only => [:index, :create, :destroy], controller: 'project/members'
 
     resources :conversations, :except => [:edit] do
-      member do
-        put :mute
-      end
+      # member do
+      #   put :mute
+      # end
       resources :messages, :only => [:create, :update]
     end
 

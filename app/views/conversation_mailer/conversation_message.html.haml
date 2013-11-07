@@ -22,7 +22,7 @@
             = email_button "New conversation", "mailto:#{@project.email_address}",            class: 'compose-button'
             = email_button "New task",         "mailto:#{@project.email_address}?subject=✔+", class: 'compose-button'
             = email_button "View on Covered",  "#{@message_url}",                             class: 'view-button'
-            = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
+            -# = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
   %br

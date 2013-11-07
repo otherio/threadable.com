@@ -54,7 +54,7 @@ describe "Email actions" do
         expect(covered_buttons).to include covered_button "New conversation"
         expect(covered_buttons).to include covered_button "New task"
         expect(covered_buttons).to include covered_button "View on Covered"
-        expect(covered_buttons).to include covered_button "Mute"
+        # expect(covered_buttons).to include covered_button "Mute"
       end
     end
 
@@ -70,7 +70,7 @@ describe "Email actions" do
           expect(covered_buttons).to include covered_button "New conversation"
           expect(covered_buttons).to include covered_button "New task"
           expect(covered_buttons).to include covered_button "View on Covered"
-          expect(covered_buttons).to include covered_button "Mute"
+          # expect(covered_buttons).to include covered_button "Mute"
         end
       end
 
@@ -82,7 +82,7 @@ describe "Email actions" do
           expect(covered_buttons).to include covered_button "New conversation"
           expect(covered_buttons).to include covered_button "New task"
           expect(covered_buttons).to include covered_button "View on Covered"
-          expect(covered_buttons).to include covered_button "Mute"
+          # expect(covered_buttons).to include covered_button "Mute"
         end
       end
 
@@ -94,7 +94,7 @@ describe "Email actions" do
           expect(covered_buttons).to include covered_button "New conversation"
           expect(covered_buttons).to include covered_button "New task"
           expect(covered_buttons).to include covered_button "View on Covered"
-          expect(covered_buttons).to include covered_button "Mute"
+          # expect(covered_buttons).to include covered_button "Mute"
         end
       end
 
@@ -105,7 +105,7 @@ describe "Email actions" do
           expect(covered_buttons).to include covered_button "New conversation"
           expect(covered_buttons).to include covered_button "New task"
           expect(covered_buttons).to include covered_button "View on Covered"
-          expect(covered_buttons).to include covered_button "Mute"
+          # expect(covered_buttons).to include covered_button "Mute"
         end
       end
 

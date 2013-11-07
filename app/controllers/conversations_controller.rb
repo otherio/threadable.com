@@ -102,22 +102,6 @@ class ConversationsController < ApplicationController
     end
   end
 
-  # PUT /conversations/1/mute
-  # PUT /conversations/1/mute.json
-  def mute
-    @conversation = project.conversations.with_slug(params[:id]).first!
-
-    respond_to do |format|
-      if @conversation.mute!
-        format.html { redirect_to conversation_url(project, @conversation), notice: 'Conversation was successfully muted.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @conversation.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   private
 
   def project
