@@ -9,4 +9,9 @@ module TestEnvironment::Fixtures
     ActiveRecord::FixtureBuilder.load_fixtures!
   end
 
+  def rebuild_fixtures!
+    ActiveRecord::FixtureBuilder.database.truncate_all_tables!
+    ActiveRecord::FixtureBuilder.build_fixtures!
+    ActiveRecord::FixtureBuilder.write_fixtures!
+  end
 end
