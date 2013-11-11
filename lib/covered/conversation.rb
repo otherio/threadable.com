@@ -10,7 +10,7 @@ class Covered::Conversation < ActiveRecord::Base
 
   default_scope -> { order('conversations.updated_at DESC') }
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
-  scope :task, ->{ where(type: 'Task') }
+  scope :task, ->{ where(type: 'Covered::Task') }
   scope :not_task, ->{ where(type: nil) }
 
   acts_as_url :subject, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
