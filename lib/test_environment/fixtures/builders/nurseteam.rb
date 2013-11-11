@@ -233,18 +233,22 @@ TestEnvironment::FixtureBuilder.new do
   create_task 'Anil Kapoor', 'Meet with SJ clinic about trauma classification'  #triage
   create_task 'Amy Wong', 'Summarize triage review findings for board'  #triage
 
+  create_task 'Amy Wong', 'Calibrate the 2nd-floor blanket warmer'  #triage
+
 
   # fill out those tasks with some messages
   send_message(
     subject: 'Call X-ray machine maintenance company',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
+    user: 'B.J. Hunnicutt',
     reply: false,
   )
   send_message(
     subject: 'RE: Call X-ray machine maintenance company',
     stripped_plain: "Lorem ipsum dolor sit amet",
     body_plain: "Lorem ipsum dolor sit amet",
+    user: 'B.J. Hunnicutt',
     reply: true,
   )
   send_message(
@@ -270,7 +274,7 @@ TestEnvironment::FixtureBuilder.new do
     reply: true,
   )
 
-  add_doer_to_task 'Lilith Sternin', 'Review our intake policies'
+  add_doer_to_task 'Lilith Sternin', 'Lilith Sternin', 'Review our intake policies'
 
   complete_task 'Lilith Sternin', 'Review our intake policies'
   complete_task 'Lilith Sternin', 'Call X-ray machine maintenance company'
@@ -287,6 +291,11 @@ TestEnvironment::FixtureBuilder.new do
     body_plain: 'Lorem upsum dolor sit amet'
   )
 
+  add_doer_to_task 'Amy Wong', 'Amy Wong', 'Update EMS forms to new version'
+  add_doer_to_task 'Amy Wong', 'Amy Wong', 'Call X-ray machine maintenance company'
+  add_doer_to_task 'Amy Wong', 'Amy Wong', 'Calibrate the 2nd-floor blanket warmer'
+
+
   # Demo thread.  Put this at the end so it shows up near the top of the list
   create_task 'Amy Wong', 'Hypertension literature review'
 
@@ -298,6 +307,8 @@ TestEnvironment::FixtureBuilder.new do
     stripped_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our procedures.",
     body_plain: "We've been missing high blood pressure pretty often in triage lately.  Per our discussion at the weekly meeting, let's do a literature review and see if we can update our procedures.",
   )
+  add_doer_to_task 'Amy Wong', 'Amy Wong', 'Hypertension literature review'
+
 
   send_message(
     user: 'Yuri Zhivago',
@@ -311,8 +322,6 @@ Donald G. Vidt MD
 DOI: 10.1111/j.1524-6175.2001.00449.x",
   )
 
-
-  add_doer_to_task 'Sandeep Prakash', 'Hypertension literature review'
   send_message(
     user: 'Sandeep Prakash',
     reply: false,
@@ -322,6 +331,7 @@ DOI: 10.1111/j.1524-6175.2001.00449.x",
 
 Sandeep",
   )
+  add_doer_to_task 'Sandeep Prakash', 'Sandeep Prakash', 'Hypertension literature review'
 
   send_message(
     user: 'Sandeep Prakash',

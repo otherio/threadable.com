@@ -93,8 +93,8 @@ class TestEnvironment::FixtureBuilder
     tasks[subject] = task
   end
 
-  def add_doer_to_task user_name, subject
-    tasks[subject].doers << user(user_name)
+  def add_doer_to_task user_name, doer_name, subject
+    tasks[subject].add_doers user(user_name), user(doer_name)
   end
 
   def complete_task user_name, subject

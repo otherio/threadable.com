@@ -91,7 +91,7 @@ TestEnvironment::FixtureBuilder.new do
     user: 'Tom Canver',
     reply: true,
   )
-  add_doer_to_task 'Tom Canver', 'layup body carbon'
+  add_doer_to_task 'Tom Canver', 'Tom Canver', 'layup body carbon'
 
   create_task 'Alice Neilson', 'get epoxy'
   create_task 'Alice Neilson', 'get release agent'
@@ -104,13 +104,13 @@ TestEnvironment::FixtureBuilder.new do
     user: 'Yan Hzu',
     reply: true,
   )
-  add_doer_to_task 'Yan Hzu', 'layup body carbon'
+  add_doer_to_task 'Yan Hzu', 'Yan Hzu', 'layup body carbon'
 
-  add_doer_to_task 'Tom Canver', 'get epoxy'
-  add_doer_to_task 'Tom Canver', 'get release agent'
-  add_doer_to_task 'Yan Hzu',    'get release agent'
-  add_doer_to_task 'Tom Canver', 'get carbon and fiberglass'
-  add_doer_to_task 'Tom Canver', 'trim body panels'
+  add_doer_to_task 'Tom Canver', 'Tom Canver', 'get epoxy'
+  add_doer_to_task 'Tom Canver', 'Tom Canver', 'get release agent'
+  add_doer_to_task 'Yan Hzu',    'Yan Hzu',    'get release agent'
+  add_doer_to_task 'Tom Canver', 'Tom Canver', 'get carbon and fiberglass'
+  add_doer_to_task 'Tom Canver', 'Tom Canver', 'trim body panels'
 
   complete_task 'Tom Canver', 'get epoxy'
   complete_task 'Tom Canver', 'get release agent'
