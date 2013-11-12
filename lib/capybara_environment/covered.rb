@@ -5,7 +5,7 @@ module CapybaraEnvironment::Covered
     uri = URI.parse(page.current_url)
     host, port = uri.host, uri.port
     @covered = nil if @covered && (@covered.host != host || @covered.port != port)
-    @covered ||= Covered.new(host: host, port: port)
+    @covered ||= Covered.new(host: host, port: port, protocol: 'http')
     binding.pry if @covered.nil?
     @covered
   end

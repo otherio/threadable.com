@@ -4,9 +4,10 @@ module RequestExampleGroup
 
   included do
     let(:current_user){ nil }
-    let(:covered){ Covered.new(host: host, port: port, current_user: current_user) }
+    let(:covered){ Covered.new(host: host, port: port, current_user: current_user, protocol: protocol) }
     let(:host){ URI.parse(root_url).host }
     let(:port){ URI.parse(root_url).port }
+    let(:protocol) { 'http' }
   end
 
   def sign_in_as user, remember_me: false

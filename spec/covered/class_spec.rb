@@ -7,32 +7,40 @@ describe Covered::Class do
   let(:user){ Covered::User.first! }
 
   describe "new" do
-    it "should take current_user, host and port as options" do
+    it "should take current_user, host, port, and protocol as options" do
       expect{ Covered.new                                                      }.to     raise_error ArgumentError
       expect{ Covered.new host: 'example.com'                                  }.to     raise_error ArgumentError
-      expect{ Covered.new host: 'example.com', port: 3000                      }.to_not raise_error
-      expect{ Covered.new host: 'example.com', port: 3000, current_user_id: 14 }.to_not raise_error
-      expect{ Covered.new host: 'example.com', port: 3000, current_user: user  }.to_not raise_error
+      expect{ Covered.new host: 'example.com', port: 3000                      }.to     raise_error ArgumentError
+      expect{ Covered.new host: 'example.com', port: 3000, protocol: 'http'                      }.to_not raise_error
+      expect{ Covered.new host: 'example.com', port: 3000, protocol: 'http', current_user_id: 14 }.to_not raise_error
+      expect{ Covered.new host: 'example.com', port: 3000, protocol: 'http', current_user: user  }.to_not raise_error
 
-      covered = Covered.new(host: 'example.com', port: 3000, current_user_id: user.id)
+      covered = Covered.new(host: 'example.com', port: 3000, current_user_id: user.id, protocol: 'http')
       expect( covered.host            ).to eq 'example.com'
       expect( covered.port            ).to eq 3000
+      expect( covered.protocol        ).to eq 'http'
       expect( covered.current_user_id ).to eq user.id
       expect( covered.current_user    ).to eq user
 
-      covered = Covered.new(host: 'example.com', port: 3000, current_user: user)
+      covered = Covered.new(host: 'example.com', port: 3000, current_user: user, protocol: 'http')
       expect( covered.current_user_id ).to eq user.id
       expect( covered.current_user    ).to eq user
+
+      covered = Covered.new(host: 'example.com', port: 3000, current_user_id: user.id, protocol: 'https')
+      expect( covered.host            ).to eq 'example.com'
+      expect( covered.port            ).to eq 3000
+      expect( covered.protocol        ).to eq 'https'
     end
   end
 
   describe "#env" do
     it "should return the expected env hash" do
-      covered = Covered.new(host: 'example.com', port: 3000, current_user: user)
+      covered = Covered.new(host: 'example.com', port: 3000, current_user: user, protocol: 'http')
       expect(covered.env).to eq(
         "host"            => 'example.com',
         "port"            => 3000,
         "current_user_id" => user.id,
+        "protocol"        => 'http'
       )
     end
   end

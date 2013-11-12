@@ -9,7 +9,7 @@ class Covered::Mailer < ActionMailer::Base
   def initialize(covered)
     super()
     self.covered = covered
-    self.default_url_options = {host: covered.host, port: covered.port}
+    self.default_url_options = {host: covered.host, port: covered.port, protocol: covered.protocol}
   end
 
   def generate method_name, *args

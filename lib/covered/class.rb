@@ -12,6 +12,7 @@ class Covered::Class
     @env = env.with_indifferent_access.delete_if{|k,v| v.nil?}
     @env[:host].present? or raise ArgumentError, 'host is required'
     @env[:port].present? or raise ArgumentError, 'port is required'
+    @env[:protocol].present? or raise ArgumentError, 'protocol is required'
     if @current_user = @env.delete(:current_user)
       @env[:current_user_id] = @current_user.id
     end
@@ -20,7 +21,7 @@ class Covered::Class
 
   attr_reader :env
 
-  %w{current_user_id host port}.each do |key|
+  %w{current_user_id host port protocol}.each do |key|
     define_method(key){ @env[key] }
   end
 

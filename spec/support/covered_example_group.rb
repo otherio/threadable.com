@@ -4,7 +4,7 @@ module CoveredExampleGroup
 
   included do
     let(:current_user){ nil }
-    let(:covered){ Covered.new current_user: current_user, host: host, port: port }
+    let(:covered){ Covered.new current_user: current_user, host: host, port: port, protocol: 'http' }
     let(:host){ 'test-covered.io' }
     let(:port){ 80 }
   end

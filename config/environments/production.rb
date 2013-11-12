@@ -98,7 +98,7 @@ Covered::Application.configure do
     :enable_starttls_auto => true
   }
 
-  config.action_controller.default_url_options = { :host => 'beta.covered.io' }
+  config.action_controller.default_url_options = { :host => 'beta.covered.io', :protocol => 'https' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday

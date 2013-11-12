@@ -17,7 +17,7 @@ module AuthenticationConcern
   end
 
   def covered
-    @covered ||= Covered.new(current_user_id: current_user_id, host: request.host, port: request.port)
+    @covered ||= Covered.new(current_user_id: current_user_id, host: request.host, port: request.port, protocol: clean_protocol)
   end
 
   def sign_in! user, remember_me: false
@@ -85,6 +85,12 @@ module AuthenticationConcern
   def rescue_from_current_user_not_found exception
     sign_out!
     unauthorized!
+  end
+
+  private
+
+  def clean_protocol
+    request.protocol.gsub(%r{://}, '')
   end
 
 end
