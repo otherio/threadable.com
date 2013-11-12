@@ -4,12 +4,19 @@
   %div{:style => "display:none; display:none !important;"}
     = @message_summary
     = "##CovMid: #{@message.unique_id} ##"
-  %table.covered-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "480"}
+  %table.covered-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "100%"}
     %tr
       %td
-        %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :height => "20", :width => "480"}
+        %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
           %tr
-            - if @task
+            = email_button "New conversation", "mailto:#{@project.email_address}",            class: 'compose-button'
+            = email_button "New task",         "mailto:#{@project.email_address}?subject=✔+", class: 'compose-button'
+            = email_button "View on Covered",  "#{@message_url}",                             class: 'view-button'
+            -# = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
+
+        %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
+          - if @task
+            %tr
               - if @task.doers.include? @recipient
                 = email_button "Remove me", project_task_remove_me_url(@project, @task)
               - else
@@ -18,11 +25,8 @@
                 = email_button "Mark as undone", project_task_mark_as_undone_url(@project, @task)
               - else
                 = email_button "Mark as done", project_task_mark_as_done_url(@project, @task)
+              %td
 
-            = email_button "New conversation", "mailto:#{@project.email_address}",            class: 'compose-button'
-            = email_button "New task",         "mailto:#{@project.email_address}?subject=✔+", class: 'compose-button'
-            = email_button "View on Covered",  "#{@message_url}",                             class: 'view-button'
-            -# = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
   %br
@@ -36,7 +40,7 @@
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: footer ##"
 
-  %table.covered-details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "357"}
+  %table.covered-details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "100%"}
     %tr
       %td.covered-details-inner{:style => "color: #95A5A6; text-align: left;"}
         .covered-project{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
