@@ -27,14 +27,7 @@ class UserMailer < Covered::Mailer
   private
 
   def from_address
-    "no-reply@#{host_with_port}"
-  end
-
-  def host_with_port
-    @host_with_port ||= begin
-      host, port = url_options.values_at(:host, :port)
-      port.present? ? "#{host}:#{port}" : host
-    end
+    "no-reply@#{url_options[:host]}"
   end
 
 end
