@@ -11,7 +11,6 @@ class Covered::CurrentUser::Project::Task::Doer
     to_param
     name
     email_address
-    formatted_email_address
     slug
     avatar_url
   }, to: :user_record
@@ -31,6 +30,16 @@ class Covered::CurrentUser::Project::Task::Doer
 
   def inspect
     %(#<#{self.class} task_id: #{task.id} user_id: #{id}>)
+  end
+
+  def as_json options=nil
+    {
+      id: id,
+      params: to_param,
+      name: name,
+      email_address: email_address,
+      avatar_url: avatar_url,
+    }
   end
 
 end

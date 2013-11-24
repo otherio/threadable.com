@@ -44,6 +44,7 @@ class Covered::CurrentUser::Project::Task::Doers
       events = doer_user_ids.map do |user_id|
         {
           type: 'Task::RemovedDoerEvent',
+          project_id: task.project.id,
           user_id: covered.current_user.id,
           doer_id: user_id,
         }
