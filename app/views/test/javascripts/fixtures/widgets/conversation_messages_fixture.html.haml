@@ -1,4 +1,1 @@
-- project = Covered::Project.where(name: "UCSD Electric Racing").includes(:members).first!
-- user    = project.members.first
-- conversation = project.conversations.find_by_subject('Welcome to our new Covered project!')
-= render_widget :conversation_messages, conversation, from: user
+= render_widget :conversation_messages, @conversation

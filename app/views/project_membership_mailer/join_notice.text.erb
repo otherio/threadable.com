@@ -1,7 +1,8 @@
-<%= @message.html_safe %>
+<% if @personal_message %>
+<%= @personal_message.html_safe %>
 
 --------
-
+<% end %>
 You've been added to the <%= @project.name.html_safe %> project on Covered!
 
 Covered is a magical mailing list that helps you and your friends get more done.

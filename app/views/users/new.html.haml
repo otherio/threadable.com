@@ -4,5 +4,7 @@
   = simple_form_for @user do |f|
     = f.error_notification
     = f.input :name, as: :string, autofocus: true
-    = f.input :email
+    = f.input :email_address
+    = f.input :password
+    = f.input :password_confirmation
     = f.button :submit, @user.new_record? ? 'Sign up' : 'Update', class: 'btn btn-primary'

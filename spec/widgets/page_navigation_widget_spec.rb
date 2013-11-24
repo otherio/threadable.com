@@ -23,8 +23,10 @@ describe PageNavigationWidget do
 
     context "when given a user" do
 
-      let(:projects){ 8.times.map{|i| double("project#{i}", :persisted? => i%2==0) } }
-      let(:persisted_projects){ projects.select(&:persisted?) }
+      let(:projects){
+        projects = 8.times.map{|i| double("project#{i}", :persisted? => i%2==0) }
+        double(:projects, all: projects)
+      }
       let(:current_user){ double(:current_user, projects: projects) }
 
       def html_options
@@ -38,13 +40,13 @@ describe PageNavigationWidget do
           current_user: current_user,
           current_project: nil,
           covered_link_url: view.root_url,
-          projects: persisted_projects,
+          projects: projects.all,
         }
       end
 
       context "when given a project" do
 
-        let(:current_project){ persisted_projects.sample }
+        let(:current_project){ projects.all.sample }
 
         def html_options
           super.merge(current_project: current_project)
@@ -57,7 +59,7 @@ describe PageNavigationWidget do
             current_user: current_user,
             current_project: current_project,
             covered_link_url: view.project_conversations_url(current_project),
-            projects: persisted_projects,
+            projects: projects.all,
           }
         end
 

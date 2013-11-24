@@ -1,14 +1,11 @@
-require 'wtf'
-require 'active_record_read_only'
-
-require 'covered/config'
-
 module Covered
 
   CoveredError        = Class.new(StandardError)
   RecordNotFound      = Class.new(CoveredError)
+  RecordInvalid       = Class.new(CoveredError)
   CurrentUserNotFound = Class.new(RecordNotFound)
   AuthorizationError  = Class.new(CoveredError)
+  UserAlreadyAMemberOfProjectError = Class.new(CoveredError)
 
   extend ActiveSupport::Autoload
 
@@ -22,5 +19,6 @@ module Covered
 
 end
 
+require 'covered/config'
 require 'covered/class'
 

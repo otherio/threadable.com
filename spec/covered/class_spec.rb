@@ -2,63 +2,36 @@ require 'spec_helper'
 
 describe Covered::Class do
 
+  let(:user_record){ Factories.create(:user) }
+  let(:covered){ Covered.new(host: 'example.com', port: 3000, current_user_id: user_record.id) }
   subject{ covered }
 
-  let(:user){ Covered::User.first! }
-
   describe "new" do
-    it "should take current_user, host, port, and protocol as options" do
-      expect{ Covered.new                                                      }.to     raise_error ArgumentError
-      expect{ Covered.new host: 'example.com'                                  }.to     raise_error ArgumentError
-      expect{ Covered.new host: 'example.com', port: 3000                      }.to     raise_error ArgumentError
-      expect{ Covered.new host: 'example.com', port: 3000, protocol: 'http'                      }.to_not raise_error
-      expect{ Covered.new host: 'example.com', port: 3000, protocol: 'http', current_user_id: 14 }.to_not raise_error
-      expect{ Covered.new host: 'example.com', port: 3000, protocol: 'http', current_user: user  }.to_not raise_error
-
-      covered = Covered.new(host: 'example.com', port: 3000, current_user_id: user.id, protocol: 'http')
-      expect( covered.host            ).to eq 'example.com'
-      expect( covered.port            ).to eq 3000
-      expect( covered.protocol        ).to eq 'http'
-      expect( covered.current_user_id ).to eq user.id
-      expect( covered.current_user    ).to eq user
-
-      covered = Covered.new(host: 'example.com', port: 3000, current_user: user, protocol: 'http')
-      expect( covered.current_user_id ).to eq user.id
-      expect( covered.current_user    ).to eq user
-
-      covered = Covered.new(host: 'example.com', port: 3000, current_user_id: user.id, protocol: 'https')
-      expect( covered.host            ).to eq 'example.com'
-      expect( covered.port            ).to eq 3000
-      expect( covered.protocol        ).to eq 'https'
+    it "should require host and optionally take port and current_user_id" do
+      expect{ Covered.new                                                                  }.to     raise_error ArgumentError
+      expect{ Covered.new host: 'example.com'                                              }.to_not raise_error
+      expect{ Covered.new host: 'example.com', port: 3000                                  }.to_not raise_error
+      expect{ Covered.new host: 'example.com', port: 3000, current_user_id: user_record.id }.to_not raise_error
+      expect{ Covered.new host: 'example.com', port: 3000, current_user_id: user_record.id, protocol: 'https' }.to_not raise_error
     end
   end
 
-  describe "#env" do
-    it "should return the expected env hash" do
-      covered = Covered.new(host: 'example.com', port: 3000, current_user: user, protocol: 'http')
-      expect(covered.env).to eq(
-        "host"            => 'example.com',
-        "port"            => 3000,
-        "current_user_id" => user.id,
-        "protocol"        => 'http'
-      )
-    end
-  end
+  its(:protocol        ){ should eq 'http'  }
+  its(:host            ){ should eq 'example.com'  }
+  its(:port            ){ should eq 3000           }
+  its(:current_user_id ){ should eq user_record.id }
+  its(:current_user    ){ should be_a Covered::CurrentUser }
+  its(:env             ){ should eq(
+    "protocol" => 'http',
+    "host" => 'example.com',
+    "port" => 3000,
+    "current_user_id" => user_record.id,
+  )}
 
   describe "#==" do
     it "should be equal if the other object is an instance of Covered and the env hashes are equal" do
       expect( covered ).to     eq Covered.new(covered.env)
       expect( covered ).to_not eq Covered.new(covered.env.merge(port: 34543))
-    end
-  end
-
-  %w{operations background_jobs users projects}.each do |dependant|
-    _class = Object.const_get "Covered::#{dependant.to_s.camelize}", false
-    describe "##{dependant}" do
-      it "should return an instance of #{_class}" do
-        expect(subject.send(dependant)).to be_a _class
-        expect(subject.send(dependant).covered).to eq subject
-      end
     end
   end
 

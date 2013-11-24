@@ -8,12 +8,16 @@ describe "conversation_list" do
 
   let(:creator) { double(:creator,  name: "creator") }
 
+  def participants_double *indexies
+    double(:participants, all: indexies.empty? ? [] : participants[*indexies])
+  end
+
   let(:conversations){
     [
-      double(:conversation1, id: 1, to_param: 'conversation-one',   subject: 'conversation one',   participants: participants[0,3], updated_at: 1.hour.ago),
-      double(:conversation2, id: 2, to_param: 'conversation-two',   subject: 'conversation two',   participants: participants[3,2], updated_at: 2.months.ago),
-      double(:conversation3, id: 3, to_param: 'conversation-three', subject: 'conversation three', participants: participants[5,1], updated_at: 13.months.ago),
-      double(:conversation4, id: 4, to_param: 'conversation-four',  subject: 'conversation four',  participants: nil, updated_at: 15.months.ago, creator: creator),
+      double(:conversation1, id: 1, to_param: 'conversation-one',   subject: 'conversation one',   participants: participants_double(0,3), updated_at: 1.hour.ago),
+      double(:conversation2, id: 2, to_param: 'conversation-two',   subject: 'conversation two',   participants: participants_double(3,2), updated_at: 2.months.ago),
+      double(:conversation3, id: 3, to_param: 'conversation-three', subject: 'conversation three', participants: participants_double(5,1), updated_at: 13.months.ago),
+      double(:conversation4, id: 4, to_param: 'conversation-four',  subject: 'conversation four',  participants: participants_double, updated_at: 15.months.ago, creator: creator),
     ]
   }
   let(:project){ double(:project, to_param: 'some-project') }

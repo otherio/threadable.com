@@ -1,2 +1,2 @@
-- conversation = Covered::Conversation.last
-= render_widget :new_conversation_message, conversation, from: conversation.project.members.last
+- conversation = current_user.projects.all.first.conversations.newest
+= render_widget :new_conversation_message, conversation, from: conversation.project.members.all.last

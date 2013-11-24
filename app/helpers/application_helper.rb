@@ -45,6 +45,14 @@ module ApplicationHelper
     CGI.unescapeHTML("#{string}").html_safe
   end
 
+  def clean_html(html)
+    Sanitize.clean(html.to_s, Sanitize::Config::RELAXED).html_safe
+  end
+
+  def htmlify(string)
+    h(clean_html(auto_link(string.to_s))).gsub(/\n/, "<br/>").html_safe
+  end
+
 end
 
 

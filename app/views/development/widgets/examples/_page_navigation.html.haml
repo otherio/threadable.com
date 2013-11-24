@@ -2,8 +2,8 @@
 = render_widget :page_navigation
 
 %h4 Logged in
-= render_widget :page_navigation, current_user: Covered::User.last!
+= render_widget :page_navigation, current_user: current_user
 
 %h4 Logged in viewing a project
-= render_widget :page_navigation, current_user: Covered::User.last!, current_project: Covered::Project.last!
+= render_widget :page_navigation, current_user: current_user, current_project: current_user.projects.all.first
 

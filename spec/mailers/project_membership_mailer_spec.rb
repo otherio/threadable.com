@@ -2,86 +2,60 @@
 require "spec_helper"
 
 describe ProjectMembershipMailer do
-  let(:project){ find_project('raceteam') }
-  let(:current_user){ find_user("alice-neilson") }
-  let(:user){ project.members.first }
-  let(:project_membership){ project.memberships.where(user:user).first! }
+
+  signed_in_as 'bethany@ucsd.covered.io'
+
+  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:conversation){ project.conversations.find_by_slug! 'layup-body-carbon' }
+  let(:message){ conversation.messages.newest }
+  let(:text_part){ mail.body.encoded }
 
   describe "join_notice" do
-    let(:adder){ current_user }
-    let(:message){ "yo dude, I added you to the project. Thanks for the help!" }
-    subject(:email) do
-      covered.generate_email(type: :join_notice, options: {
-        project_id:   project.id,
-        recipient_id: user.id,
-        message:      message,
-      })
+    let(:personal_message){ "yo dude, I added you to the project. Thanks for the help!" }
+    let(:mail){ ProjectMembershipMailer.new(covered).generate(:join_notice, project, recipient, personal_message) }
+
+    before do
+      expect(mail.subject).to eq "You've been added to #{project.name}"
+      expect(mail.to     ).to eq [recipient.email_address]
+      expect(mail.from   ).to eq ['bethany@ucsd.covered.io']
+      expect(text_part   ).to include personal_message
+      expect(text_part   ).to include project_url(project)
+
+      project_unsubscribe_token = extract_project_unsubscribe_token(text_part)
+      expect( ProjectUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
     end
 
     context "when the recipient is a web enabled user" do
-      # we know Yan Hzu is member of the "UCSD Electric Racing" project and is web enabled
-      let(:user){ Covered::User.where(name:'Yan Hzu').first! }
+      let(:recipient){ project.members.all.find(&:web_enabled?) }
 
-      it "should return the expected message" do
-        expect(email.subject     ).to eq "You've been added to #{project.name}"
-        expect(email.to          ).to eq [user.email]
-        expect(email.from        ).to eq [adder.email]
-        expect(email.body.encoded).to include message
-
-        project_unsubscribe_link = URI.extract(email.body.encoded).find{|link| link =~ %r(/unsubscribe/) }
-        expect(project_unsubscribe_link).to be_present
-
-        expect(email.body.encoded).to include project_url(project)
-
-        user_setup_url = URI.extract(email.body.encoded).find{|link| link =~ %r(/setup) }
-        expect(user_setup_url).not_to be_present
-
+      it "should not have a user setup link" do
+        user_setup_token = extract_user_setup_token(text_part)
+        expect( user_setup_token ).to be_nil
       end
     end
 
     context "when the recipient is not a web enabled user" do
-      # we know Jonathan Spray is member of the "UCSD Electric Racing" project but not web enabled
-      let(:user){ Covered::User.where(name:'Jonathan Spray').first! }
+      let(:recipient){ project.members.all.reject(&:web_enabled?).first }
 
-      it "should return the expected message" do
-        expect(email.subject     ).to eq "You've been added to #{project.name}"
-        expect(email.to          ).to eq [user.email]
-        expect(email.from        ).to eq [adder.email]
-        expect(email.body.encoded).to include message
-
-        project_unsubscribe_link = URI.extract(email.body.encoded).find{|link| link =~ %r(/unsubscribe/) }
-        expect(project_unsubscribe_link).to be_present
-
-        user_setup_url = URI.extract(email.body.encoded).find{|link| link =~ %r(/setup) }
-        expect(user_setup_url).to be_present
-
-        token = URI.parse(user_setup_url).path[%r{/users/setup/(?<token>.*)}, :token]
-        expect(token).to be_present
-
-        user_id, destination_url = UserSetupToken.decrypt(token)
-        expect(user_id).to eq user.id
-        expect(destination_url).to eq project_path(project)
+      it "should have a user setup link" do
+        user_setup_token = extract_user_setup_token(text_part)
+        expect(UserSetupToken.decrypt(user_setup_token)).to eq [recipient.id, project_path(project)]
       end
     end
 
   end
 
   describe "unsubscribe_notice" do
-    subject(:email) {
-      covered.generate_email(type: :unsubscribe_notice, options: {
-        project_id:   project.id,
-        recipient_id: user.id,
-      })
-    }
+    let(:member){ project.members.find_by_user_id!(covered.current_user.id) }
+    let(:mail){ ProjectMembershipMailer.new(covered).generate(:unsubscribe_notice, project, member) }
     it "should return the expected message" do
-      expect(email.subject      ).to eq "You've been unsubscribed from #{project.name}"
-      expect(email.to           ).to eq [user.email]
-      expect(email.from         ).to eq [project.email_address]
-      expect(email.body.encoded).to include \
-        %(You've been unsubscribed from the "#{project.name}" project on Covered.)
+      expect(mail.subject ).to eq "You've been unsubscribed from #{project.name}"
+      expect(mail.to      ).to eq ['bethany@ucsd.covered.io']
+      expect(mail.from    ).to eq [project.email_address]
+      expect(text_part    ).to include %(You've been unsubscribed from the "#{project.name}" project on Covered.)
 
-      project_resubscribe_url = URI.extract(email.body.encoded).find{|link| link =~ %r(/resubscribe/) }
-      expect(project_resubscribe_url).to be_present
+      project_resubscribe_token = extract_project_resubscribe_token(text_part)
+      expect( ProjectResubscribeToken.decrypt(project_resubscribe_token) ).to eq [project.id, current_user.id]
     end
   end
 

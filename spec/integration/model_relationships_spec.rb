@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe 'model relationships' do
 
-  let!(:project){ Covered::Project.where(name: "UCSD Electric Racing").first! }
+  let!(:project){ Project.where(name: "UCSD Electric Racing").first! }
 
   def member(email)
-    project.members.with_email(email).first!
+    project.members.with_email_address(email).first!
   end
 
   def conversation(subject)
@@ -17,7 +17,7 @@ describe 'model relationships' do
   end
 
   it "should work" do
-    project.should be_a Covered::Project
+    project.should be_a Project
 
     project.name.should == 'UCSD Electric Racing'
     project.description.should == 'Senior engineering electric race team!'
@@ -86,10 +86,10 @@ describe 'model relationships' do
 
     alice = member('alice@ucsd.covered.io')
     alice.name.should == 'Alice Neilson'
-    alice.email.should == 'alice@ucsd.covered.io'
+    alice.email_address.should == 'alice@ucsd.covered.io'
     alice.project_memberships.count.should == 1
     alice.projects.should == [project]
-    alice.messages.count.should == 3
+    alice.messages.count.should == 11
     alice.conversations.to_set.should == Set[
       conversation('Welcome to our new Covered project!'),
       conversation('How are we going to build the body?'),
@@ -124,7 +124,7 @@ describe 'model relationships' do
 
     message = conversation.messages.first
     message.conversation.should == conversation
-    message.user.should == alice
+    message.creator.should == alice
     message.reply.should be_false
   end
 

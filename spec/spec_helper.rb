@@ -1,13 +1,17 @@
 ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../lib/fix_minitest", __FILE__)
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'factories'
 require 'rails/widgets/rspec'
-require 'capybara_environment'
 require 'webmock/rspec'
+require 'sidekiq/testing'
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Sidekiq::Testing.fake!
+WebMock.disable_net_connect!(:allow_localhost => true)
+
+module RSpec::Support; end
+Dir[Rails.root.join("spec/support/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
 
@@ -15,31 +19,42 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = true
   config.order = "random"
 
-  config.include TestEnvironment
-  config.include FindHelpers
-  config.include CapybaraEnvironment, :type => :acceptance
-  config.include CapybaraEnvironment, :type => :feature
+  config.include RSpec::Support::Fixtures
+  config.include RSpec::Support::Transactions
+  config.include RSpec::Support::Finders
+  config.include RSpec::Support::BackgroundJobs
+  config.include RSpec::Support::Attachments
+  config.include RSpec::Support::IncomingEmailParams
+  config.include RSpec::Support::SentEmail
 
-  config.before :suite do
-    CapybaraEnvironment.before_suite!
-  end
-
-  config.before :each do |spec|
-    begin_test_transaction! if use_test_transaction? && spec.example.metadata[:transaction] != false
+  config.before :each do
     ActionMailer::Base.deliveries.clear
-    Rails.application.routes.stub(:default_url_options).and_return(Rails.application.routes.default_url_options.try(:dup) || {})
-    Rails.configuration.action_controller.stub(:default_url_options).and_return({})
-    Rails.configuration.action_mailer.stub(:default_url_options).and_return({})
-    Sidekiq.redis{|r| r.flushdb}
-    Covered::BackgroundJobs::Worker.jobs.clear
+    SendEmailWorker.jobs.clear
   end
 
-  config.after :each do |spec|
-    if test_transaction_open?
-      end_test_transaction!
+  config.around :each do |example|
+    use_fixtures    = example.metadata[:fixtures] != false
+    use_transaction = example.metadata[:transaction] != false
+
+    ensure_no_open_transactions!
+
+    load_fixtures! if use_fixtures
+
+    if use_transaction
+      test_transaction do
+        truncate_all_tables! if !use_fixtures
+        example.call
+      end
     else
-      reload_fixtures!
+      truncate_all_tables! if !use_fixtures
+      begin
+        example.call
+      ensure
+        truncate_all_tables!
+      end
     end
+
+    ensure_no_open_transactions!
   end
 
 end

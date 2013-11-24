@@ -9,7 +9,7 @@ class PageNavigationWidget < Rails::Widget::Presenter
   end
 
   option :projects do
-    current_user.projects.select(&:persisted?) if current_user
+    current_user.projects.all if current_user
   end
 
 end

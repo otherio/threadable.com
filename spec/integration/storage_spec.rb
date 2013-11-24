@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'storage' do
 
   it "should write a file that is readable" do
-    gif = fixtures_path.join('attachments/some.gif')
+    gif = attachments_path.join('some.gif')
     file = Storage.files.create(
       key: "#{SecureRandom.uuid}/some.gif",
       body: gif.read,

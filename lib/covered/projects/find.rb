@@ -1,4 +1,4 @@
-class Covered::Projects::Find < Covered::Resource::Action
+class Projects::Find < Covered::Resource::Action
 
   option :first, default: false
   option :slug

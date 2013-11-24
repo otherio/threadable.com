@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe TaskMetadataWidget do
 
-  let(:project_members) { double(:project_members, to_json:'[project_members]') }
-  let(:task_doers) { double(:task_doers, to_json:'[task_doers]') }
+  let(:project_members) { double(:project_members, all: double(:all_project_members, to_json:'[project_members]')) }
+  let(:task_doers) { double(:task_doers, all: double(:all_task_doers, to_json:'[task_doers]')) }
   let(:project) { double(:project, members: project_members) }
   let(:task) { double(:task, project: project, doers: task_doers) }
   let(:user) { double(:user) }

@@ -2,7 +2,7 @@ Covered::Operations.define :process_incoming_email do
 
   option :incoming_email_id, required: true
 
-  let(:incoming_email){ Covered::IncomingEmail.find incoming_email_id }
+  let(:incoming_email){ IncomingEmail.find incoming_email_id }
 
   def call
     case

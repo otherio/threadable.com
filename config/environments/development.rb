@@ -45,13 +45,8 @@ Covered::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = false
 
-  # config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
-
   # enables the load of javascript specs
   config.assets.paths << Rails.root.join("spec", "javascripts")
-
-  config.action_controller.default_url_options = { host: 'localhost', port: 5000 }
-  config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   config.token_key = 'dev key'
 

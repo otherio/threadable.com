@@ -39,14 +39,6 @@ Covered::Application.configure do
 
   # Our Customizations
 
-  config.action_mailer.default_url_options = {
-    :host => 'localhost',
-    :port => 3010,
-  }
-
-  config.action_mailer.smtp_settings = {
-    :domain => 'localhost',
-  }
 
   # enables the load of javascript specs
   config.assets.paths << Rails.root.join("spec", "javascripts")

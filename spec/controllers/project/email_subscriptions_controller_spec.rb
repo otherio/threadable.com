@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Project::EmailSubscriptionsController do
 
-  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").includes(:members).first! }
-  let(:user)    { project.members.first! }
-  let(:project_membership){ user.project_memberships.where(project_id: project.id).first! }
-  let(:email)   { double(:email) }
+  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+
+  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:member){ project.members.find_by_user_id! current_user.id }
 
   %w(unsubscribe resubscribe).each do |action|
     describe "GET #{action}" do
@@ -17,33 +17,65 @@ describe Project::EmailSubscriptionsController do
   end
 
   describe "POST unsubscribe" do
-    before do
-      project_membership.update_attribute(:gets_email, true)
+    let(:token) { ProjectUnsubscribeToken.encrypt(project.id, current_user.id) }
+
+    context "when the member gets email for the project" do
+      # bob gets emails for the raceteam project
+      before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+
+      it "should disable emails for the project memebership" do
+        expect(member).to be_subscribed
+        expect(covered.emails).to receive(:send_email_async).with(:unsubscribe_notice, project.id, member.id)
+        post :unsubscribe, project_id: project.slug, token: token
+        member.reload
+        expect(member).to_not be_subscribed
+        expect(response).to render_template(:unsubscribe)
+      end
     end
 
-    let(:token) { ProjectUnsubscribeToken.encrypt(project_membership.id) }
-    it "should disable emails for the project memebership" do
-      expect(covered).to receive(:send_email).with(:unsubscribe_notice, project_id: project.id, recipient_id: user.id)
+    context "when the member doesnt get email for the project" do
+      # jonathan doesnt get emails for the raceteam project
+      before{ sign_in! find_user_by_email_address('jonathan@ucsd.covered.io') }
 
-      post :unsubscribe, project_id: project.slug, token: token
-      project_membership.reload
-      expect(project_membership.gets_email?).to be_false
-      expect(response).to render_template(:unsubscribe)
+      it "should do nothing but look like it unsubscribed you" do
+        expect(member).to_not be_subscribed
+        expect(covered.emails).to_not receive(:send_email_async)
+        post :unsubscribe, project_id: project.slug, token: token
+        expect(response).to render_template(:unsubscribe)
+        member.reload
+        expect(member).to_not be_subscribed
+      end
     end
+
   end
 
   describe "POST resubscribe" do
-    before do
-      project_membership.update_attribute(:gets_email, false)
+    let(:token) { ProjectResubscribeToken.encrypt(project.id, current_user.id) }
+
+    context "when the member gets email for the project" do
+      # bob gets emails for the raceteam project
+      before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+      it "should do nothing but look like it resubscribed you" do
+        expect(member).to be_subscribed
+        post :resubscribe, project_id: project.slug, token: token
+        member.reload
+        expect(member).to be_subscribed
+        expect(response).to render_template(:resubscribe)
+      end
     end
 
-    let(:token) { ProjectResubscribeToken.encrypt(project_membership.id) }
-    it "should disable emails for the project memebership" do
-      post :resubscribe, project_id: project.slug, token: token
-      project_membership.reload
-      expect(project_membership.gets_email?).to be_true
-      expect(response).to render_template(:resubscribe)
+    context "when the member doesnt get email for the project" do
+      # jonathan doesnt get emails for the raceteam project
+      before{ sign_in! find_user_by_email_address('jonathan@ucsd.covered.io') }
+      it "should disable emails for the project memebership" do
+        expect(member).to_not be_subscribed
+        post :resubscribe, project_id: project.slug, token: token
+        member.reload
+        expect(member).to be_subscribed
+        expect(response).to render_template(:resubscribe)
+      end
     end
+
   end
 
 end

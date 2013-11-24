@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Covered::UsersController do
+describe UsersController do
 
   context 'when not signed in' do
     before { sign_out! }
@@ -16,23 +16,23 @@ describe Covered::UsersController do
 
       def valid_params
         {
-          'user' => {
-            'name'                  => 'Bob Saget',
-            'email'                 => 'bob@sagetyourself.io',
-            'password'              => 'password',
-            'password_confirmation' => 'password',
+          user: {
+            name:                  'Bob Saget',
+            email_address:         'bob@sagetyourself.io',
+            password:              'password',
+            password_confirmation: 'password',
           }
         }
       end
 
       before do
-        expect(covered.users).to receive(:create).with(valid_params['user']).and_return(fake_user)
+        expect(covered).to receive(:sign_up).with(valid_params[:user]).and_return(fake_user)
       end
 
       context 'when the users is created successfully' do
-        let(:fake_user){ double(:user, id: 456, errors: []) }
+        let(:fake_user){ double(:user, id: 456, email_address: 'a@a.io', errors: []) }
         it "should redirect to home page" do
-          expect(covered).to receive(:send_email).with(:sign_up_confirmation, recipient_id: fake_user.id)
+          expect(covered.emails).to receive(:send_email_async).with(:sign_up_confirmation, fake_user.id)
           post :create, valid_params
           expect(response).to render_template(:create)
         end
@@ -52,7 +52,9 @@ describe Covered::UsersController do
         before{ expect(controller).to receive(:signup_enabled?).and_return(true) }
         it "should create a new user and render the new template" do
           get :new
-          expect(assigns[:user]).to be_a Covered::User
+          expect(assigns[:user].id           ).to be_nil
+          expect(assigns[:user].email_address).to be_nil
+          expect(assigns[:user].slug         ).to be_nil
           expect(response).to render_template(:new)
         end
       end
@@ -90,8 +92,8 @@ describe Covered::UsersController do
 
 
   context 'when signed in' do
-    before { sign_in_as find_user("alice-neilson") }
-    let(:john){ find_user 'john-callas' }
+    before { sign_in! find_user_by_slug("alice-neilson") }
+    let(:john){ find_user_by_slug 'bob-cauchois' }
 
     describe 'GET index' do
       it "should redirect to the sign in page" do
@@ -118,7 +120,7 @@ describe Covered::UsersController do
 
       it "should redirect to the sign in page" do
         get :show, id: john.slug
-        expect(assigns[:user]).to eq john
+        expect(assigns[:user].id).to eq john.id
         expect(response).to render_template :show
       end
     end
@@ -127,14 +129,14 @@ describe Covered::UsersController do
       context 'when editing someone else' do
         it "should redirect me to the home page" do
           get :edit, id: john.slug
-          expect(assigns[:user]).to eq john
+          expect(assigns[:user].id).to eq john.id
           expect(response).to redirect_to root_path
         end
       end
       context 'when editing myself' do
         it "should render the edit template" do
           get :edit, id: current_user.slug
-          expect(assigns[:user]).to eq current_user
+          expect(assigns[:user].id).to eq current_user.id
           expect(response).to render_template :edit
         end
       end
@@ -144,10 +146,10 @@ describe Covered::UsersController do
 
       def user_params
         {
-          'name'                  => 'Bob Saget',
-          'email'                 => 'bob@sagetyourself.io',
-          'password'              => 'password',
-          'password_confirmation' => 'password',
+          name:                  'Bob Saget',
+          email_address:         'bob@sagetyourself.io',
+          password:              'password',
+          password_confirmation: 'password',
         }
       end
 
@@ -155,7 +157,7 @@ describe Covered::UsersController do
 
         it "should redirect me to the home page" do
           get :update, id: john.slug, user: user_params
-          expect(assigns[:user]).to eq john
+          expect(assigns[:user].id).to eq john.id
           expect(response).to redirect_to root_path
         end
 
@@ -165,24 +167,24 @@ describe Covered::UsersController do
 
         context 'and the update is successfull' do
           before do
-            expect_any_instance_of(Covered::User).to receive(:update_attributes).with(user_params).and_return(true)
+            expect(current_user).to receive(:update!).with(user_params).and_return(true)
           end
 
           it "should render the edit template" do
             put :update, id: current_user.slug, user: user_params
-            expect(assigns[:user]).to eq current_user
+            expect(assigns[:user].id).to eq current_user.id
             expect(response).to redirect_to root_path
           end
         end
 
         context 'and the update fails' do
           before do
-            expect_any_instance_of(Covered::User).to receive(:update_attributes).with(user_params).and_return(false)
+            expect(current_user).to receive(:update!).with(user_params).and_return(false)
           end
 
           it "should render the edit template" do
             put :update, id: current_user.slug, user: user_params
-            expect(assigns[:user]).to eq current_user
+            expect(assigns[:user].id).to eq current_user.id
             expect(response).to render_template :edit
           end
         end

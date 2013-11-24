@@ -2,7 +2,7 @@
   %h2 Reset your password
 
   .flash_messages
-  = simple_form_for current_user, url: current_url do |f|
+  = simple_form_for current_user, url: current_url, method: 'patch' do |f|
     = f.input :password, :required => true, :autofocus => true
     = f.input :password_confirmation, :required => true
     = f.submit 'Update', class: 'btn btn-primary'

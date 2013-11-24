@@ -10,7 +10,7 @@ describe 'new conversaion message interface' do
   end
 
   it "should work" do
-    sign_in_as Covered::User.where(name: "Alice Neilson").first!
+    sign_in_as 'alice@ucsd.covered.io'
     click_on 'UCSD Electric Racing'
     click_on 'Compose'
 

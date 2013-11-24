@@ -8,29 +8,29 @@ describe ConversationMessagesWidget do
   end
 
   let :events do
-    [
+    double(:events, all: [
       double(:event0, created_at: 9.minutes.ago),
       double(:event1, created_at: 7.minutes.ago),
       double(:event2, created_at: 5.minutes.ago),
       double(:event3, created_at: 3.minutes.ago),
-    ]
+    ])
   end
 
   let :messages do
-    [
+    double(:messages, all: [
       double(:message0, created_at: 8.minutes.ago),
       double(:message1, created_at: 6.minutes.ago),
       double(:message2, created_at: 4.minutes.ago),
       double(:message3, created_at: 2.minutes.ago),
-    ]
+    ])
   end
 
   let :items do
     [
-      [:event, events[0]], [:message, messages[0]],
-      [:event, events[1]], [:message, messages[1]],
-      [:event, events[2]], [:message, messages[2]],
-      [:event, events[3]], [:message, messages[3]],
+      [:event, events.all[0]], [:message, messages.all[0]],
+      [:event, events.all[1]], [:message, messages.all[1]],
+      [:event, events.all[2]], [:message, messages.all[2]],
+      [:event, events.all[3]], [:message, messages.all[3]],
     ]
   end
 

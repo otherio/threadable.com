@@ -2,7 +2,7 @@ class HomepageController < ApplicationController
 
   def show
     if signed_in?
-      @projects = covered.projects.all
+      @projects = current_user.projects.all
       render template: 'projects/index'
     end
   end

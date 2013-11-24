@@ -18,7 +18,7 @@ module LayoutHelper
       current_project: current_project,
       current_conversation: current_conversation,
       current_task: current_task,
-      current_task_doers: current_task.try(:doers),
+      current_task_doers: current_task.try(:doers).try(:all),
     }
   end
 

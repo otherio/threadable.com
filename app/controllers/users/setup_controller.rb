@@ -3,7 +3,7 @@ class Users::SetupController < ApplicationController
   before_filter :require_valid_token!
 
   def edit
-    @user = Covered::User.find(@user_id)
+    @user = User.find(@user_id)
   end
 
   def update
@@ -35,7 +35,7 @@ class Users::SetupController < ApplicationController
   end
 
   def user
-    @user ||= Covered::User.find(@user_id)
+    @user ||= User.find(@user_id)
   end
 
 end

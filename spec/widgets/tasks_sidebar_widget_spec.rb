@@ -15,7 +15,7 @@ describe TasksSidebarWidget do
   }
 
   let(:conversations){
-    [
+    double(:conversations, all: [
       double(:"conversation0", :task? => false),
       double(:"conversation1", :task? => true, :done? => false, :doers => []),
       double(:"conversation2", :task? => true, :done? => true,  :doers => [current_user]),
@@ -26,11 +26,11 @@ describe TasksSidebarWidget do
       double(:"conversation7", :task? => false),
       double(:"conversation8", :task? => true, :done? => true,  :doers => [current_user]),
       double(:"conversation9", :task? => true, :done? => false, :doers => []),
-    ]
+    ])
   }
 
   let(:tasks){
-    conversations.select(&:task?)
+    double(:tasks, all: conversations.all.select(&:task?))
   }
 
   def html_options
@@ -49,18 +49,17 @@ describe TasksSidebarWidget do
     subject{ presenter.locals }
     it do
       should == {
-        block: nil,
-        presenter: presenter,
-        project: project,
-
-        conversations: conversations,
-        tasks: tasks,
-        my_tasks: [conversations[2], conversations[5], conversations[8]],
-        done_tasks: [conversations[2], conversations[6], conversations[8]],
-        not_done_tasks: [conversations[1], conversations[3], conversations[5], conversations[9]],
-        my_done_tasks: [conversations[2], conversations[8]],
-        my_not_done_tasks: [conversations[5]],
-        with_title: false,
+        block:             nil,
+        presenter:         presenter,
+        project:           project,
+        conversations:     conversations.all,
+        tasks:             tasks.all,
+        my_tasks:          [conversations.all[2], conversations.all[5], conversations.all[8]],
+        done_tasks:        [conversations.all[2], conversations.all[6], conversations.all[8]],
+        not_done_tasks:    [conversations.all[1], conversations.all[3], conversations.all[5], conversations.all[9]],
+        my_done_tasks:     [conversations.all[2], conversations.all[8]],
+        my_not_done_tasks: [conversations.all[5]],
+        with_title:        false,
       }
     end
   end

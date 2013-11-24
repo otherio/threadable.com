@@ -49,7 +49,7 @@ describeWidget("new_conversation_message", function(){
             message_body_textarea().click();
           });
 
-          waits(200);
+          waits(1500);
 
           runs(function(){
             expect( message_body_textarea() ).toBeVisible();

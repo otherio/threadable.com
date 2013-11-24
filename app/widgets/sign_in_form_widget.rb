@@ -1,6 +1,6 @@
 class SignInFormWidget < Rails::Widget::Presenter
 
-  arguments :email
+  arguments :authentication, :password_recovery
 
   classname('well well-centered')
 
@@ -10,14 +10,6 @@ class SignInFormWidget < Rails::Widget::Presenter
       :remote => true,
       :html   => {:'data-type' => 'json'},
     }
-  end
-
-  option :authentication do
-    Authentication.new(email: email)
-  end
-
-  option :password_recovery do
-    PasswordRecovery.new(email: email)
   end
 
 end

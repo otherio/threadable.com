@@ -2,22 +2,19 @@ require "spec_helper"
 
 feature "recovering password" do
 
-  let(:user){ Covered::User.with_password.first! }
-
   scenario "Users who loose their password should be able recover their account" do
+    i_am 'alice@ucsd.covered.io'
+
     visit '/'
     click_link 'Sign in'
     click_link 'Forgot password'
-    fill_in 'Email', with: user.email
+    fill_in 'Email', with: current_user.email_address
     click_button 'Recover'
     expect(page).to have_content "Thanks! We've emailed you a password reset link. Please check your email."
 
-    assert_background_job_enqueued(covered, :send_email,
-      type: :reset_password, options: {recipient_id: user.id}
-    )
-    run_background_jobs!
+    drain_background_jobs!
 
-    email = sent_emails.to(user.email).with_subject("Reset your password!").first
+    email = sent_emails.to(current_user.email_address).with_subject("Reset your password!").first
     expect(email).to be_present
 
     link = email.link("Click here to reset your password")
@@ -35,14 +32,14 @@ feature "recovering password" do
     click_button 'Update'
     expect(page).to have_text "Notice! Your password has been updated"
 
-    click_link user.name
+    click_link current_user.name
     click_link 'Sign out'
     click_link 'Sign in'
-    fill_in 'Email', with: user.email
+    fill_in 'Email', with: current_user.email_address
     fill_in 'Password', with: 'p@$$w0rd'
     click_button 'Sign in'
 
-    find('.page_navigation .current_user a').should have_text user.name
+    find('.page_navigation .current_user a').should have_text current_user.name
   end
 
 end

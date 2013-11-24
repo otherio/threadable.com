@@ -3,10 +3,10 @@ require 'spec_helper'
 describe SignInFormWidget do
 
   let(:email){ 'bob@bob.com' }
-  let(:arguments){ [email] }
-
-  let(:authentication){ Authentication.new(email: email) }
+  let(:covered){ double(:covered) }
+  let(:authentication){ Authentication.new(covered, email: email) }
   let(:password_recovery){ PasswordRecovery.new(email: email) }
+  let(:arguments){ [authentication, password_recovery] }
 
   def html_options
     {class: 'custom_class'}
@@ -20,7 +20,6 @@ describe SignInFormWidget do
       should == {
         block: nil,
         presenter: presenter,
-        email: email,
         authentication: authentication,
         password_recovery: password_recovery,
         form_options: {

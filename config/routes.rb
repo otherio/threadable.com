@@ -58,14 +58,13 @@ Covered::Application.routes.draw do
 
   resources :emails, :only => :create
 
-  get   '/projects'      => 'projects#index'
   get   '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
   get   '/:id'           => 'projects#show',      :as => 'project'
   put   '/:id'           => 'projects#update'
   patch '/:id'           => 'projects#update'
   get   '/:id/user_list' => 'projects#user_list', :as => 'user_list'
 
-  resources :projects, except: [:show, :update, :patch] do
+  resources :projects, except: [:index, :show, :update, :patch] do
     member do
       put :leave
     end

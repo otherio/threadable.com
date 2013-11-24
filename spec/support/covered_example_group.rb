@@ -1,18 +1,21 @@
-module CoveredExampleGroup
+module RSpec::Support::CoveredExampleGroup
 
   extend ActiveSupport::Concern
 
   included do
-    let(:current_user){ nil }
-    let(:covered){ Covered.new current_user: current_user, host: host, port: port, protocol: 'http' }
-    let(:host){ 'test-covered.io' }
-    let(:port){ 80 }
+    metadata[:fixtures] = false
+    let(:covered_current_user_record){ nil }
+    let(:covered_current_user_id){ covered_current_user_record.try(:id) }
+    let(:covered_host){ Capybara.server_host }
+    let(:covered_port){ Capybara.server_port }
+    let(:covered){ Covered.new(host: covered_host, port: covered_port, current_user_id: covered_current_user_id) }
   end
 
-end
+  delegate :current_user, to: :covered
 
-RSpec::configure do |c|
-  c.include CoveredExampleGroup, :type => :covered, :example_group => {
-    :file_path => c.escaped_path(%w[spec covered])
+  RSpec.configuration.include self, :type => :covered, :example_group => {
+    :file_path => %r{spec[\\/]covered[\\/]}
   }
+
+  RSpec.configuration.include FactoryGirl::Syntax::Methods, :type => :covered
 end

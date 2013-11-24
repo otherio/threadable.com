@@ -2,12 +2,10 @@ require 'spec_helper'
 
 describe ConversationsController do
 
-  let(:project){ Covered::Project.first! }
-  let(:current_user){ project.members.first! }
+  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
-  before(:each) do
-    sign_in_as current_user
-  end
+  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:conversation) { project.conversations.oldest }
 
 
   def valid_attributes
@@ -18,9 +16,7 @@ describe ConversationsController do
   end
 
   def valid_params
-    {
-      project_id: project.to_param
-    }
+    {project_id: project.to_param}
   end
 
   def xhr_valid_params
@@ -33,29 +29,23 @@ describe ConversationsController do
 
   describe "GET index" do
     it "assigns all conversations as @conversations" do
-      conversation = project.conversations.create! valid_attributes
       get :index, valid_params
-      assigns(:conversations).should eq(project.conversations)
+      assigns(:conversations).should eq(project.conversations.all)
+      assigns(:tasks).should eq(project.tasks.all)
     end
   end
 
   describe "GET new" do
     it "assigns a new conversation as @conversation" do
       get :new, valid_params
-      assigns(:conversation).should be_a(Covered::Conversation)
+      assigns(:conversation).should be_a Covered::CurrentUser::Project::Conversation
       assigns(:conversation).should_not be_persisted
     end
   end
 
   describe "GET show" do
-
-    # context "with a regular conversation" do
-    subject { get :show, valid_params.merge(:id => conversation.to_param) }
-    let!(:conversation) { project.conversations.create! valid_attributes }
-    let(:message) { create(:message, conversation: conversation) }
-
     it "assigns the requested conversation as @conversation" do
-      subject
+      get :show, valid_params.merge(:id => conversation.to_param)
       assigns(:conversation).should eq(conversation)
     end
   end
@@ -73,8 +63,19 @@ describe ConversationsController do
       let(:body   ){ 'hey guys are are going to need like 10x more wood. '}
       let(:attachments){
         [
-          uploaded_file("some.gif", 'image/gif',  true),
-          uploaded_file("some.jpg", 'image/jpeg', true),
+          {
+            url:       "https://www.filepicker.io/api/file/JCYexCRERtybKeRozhAC",
+            filename:  "some.gif",
+            mimetype:  "image/gif",
+            size:      "376649",
+            writeable: "true",
+          }, {
+            url:        "https://www.filepicker.io/api/file/JCYexCRERtybKeRozhAC",
+            filename:   "some.jpg",
+            mimetype:   "image/jpeg",
+            size:       "376649",
+            writeable:  "true",
+          },
         ]
       }
       def params
@@ -90,13 +91,18 @@ describe ConversationsController do
       end
 
       before do
-        expect(covered.conversations).to receive(:create).with(
-          project_slug: project.slug,
-          subject:      subject,
-          body:         body,
-          attachments:  attachments,
-        ).and_return(conversation)
+        expect_any_instance_of(Covered::CurrentUser::Project::Conversations).to receive(:create).
+          with(subject: subject).
+          and_return(conversation)
+
+        if conversation.persisted?
+          messages_double = double(:messages)
+          expect(conversation).to receive(:messages).and_return(messages_double)
+          expect(messages_double).to receive(:create).with(html: body, attachments: attachments).and_return(message)
+        end
       end
+
+      let(:message){ double(:message, persisted?: true) }
 
 
       context "when the format is html" do
@@ -108,6 +114,14 @@ describe ConversationsController do
             post :create, params
             expect(response).to redirect_to project_conversation_url(project, conversation)
             expect(flash[:notice]).to eq 'Conversation was successfully created.'
+          end
+
+          context "but the message doesnt save successfully" do
+            let(:message){ double(:message, persisted?: false) }
+            it "should render the new action" do
+              post :create, params
+              expect(response).to render_template :new
+            end
           end
         end
 
@@ -131,15 +145,25 @@ describe ConversationsController do
             expect(response.body).to eq conversation.to_json
             expect(response.location).to eq project_conversation_url(project, conversation)
           end
+
+          context "but the message doesnt save successfully" do
+            let(:errors){ {message_errors: 942} }
+            let(:message){ double(:message, persisted?: false, errors: errors) }
+            it "should render the message errors" do
+              post :create, params
+              expect(response.status).to eq 422
+              expect(response.body).to eq errors.to_json
+            end
+          end
         end
 
         context "but the conversation doesnt save successfully" do
           let(:errors){ {conversation_errors: 942} }
           let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: false, errors: errors) }
-          it "should render the new action" do
+          it "should render the conversation errors" do
             post :create, params
-            expect(response.body).to eq errors.to_json
             expect(response.status).to eq 422
+            expect(response.body).to eq errors.to_json
           end
         end
       end
@@ -150,7 +174,7 @@ describe ConversationsController do
 
 
   describe "PUT update" do
-    let!(:conversation){ Covered::Conversation.create!(valid_attributes.merge(project:project, creator: current_user)) }
+    # let!(:conversation){ Conversation.create!(valid_attributes.merge(project:project, creator: current_user)) }
 
     def valid_update_params
       {
@@ -162,7 +186,7 @@ describe ConversationsController do
       it "updates the requested conversation" do
         now = Time.now
         Time.stub(:now).and_return(now)
-        Covered::Conversation.any_instance.should_receive(:update_attributes).with({
+        Conversation.any_instance.should_receive(:update_attributes).with({
           "subject" => "How aren't we going to build this thing?",
           "done_at" => Time.now,
         })
@@ -195,14 +219,14 @@ describe ConversationsController do
 
       it "assigns the conversation as @conversation" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Covered::Conversation.any_instance.stub(:save).and_return(false)
+        Conversation.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
         assigns(:conversation).should eq(conversation)
       end
 
       it "redirect to the project conversation page" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Covered::Conversation.any_instance.stub(:save).and_return(false)
+        Conversation.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
         response.should redirect_to project_conversation_url(project, conversation)
       end

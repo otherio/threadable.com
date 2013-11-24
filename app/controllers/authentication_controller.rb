@@ -7,13 +7,14 @@ class AuthenticationController < ApplicationController
     if signed_in?
       redirect_to redirect_url!
     else
-      @email = params[:email]
+      @authentication    = Authentication.new(covered, email: params[:email])
+      @password_recovery = PasswordRecovery.new(email: params[:email])
     end
   end
 
   def create
     authentication_params = params.require(:authentication).permit(:email, :password, :remember_me)
-    authentication = Authentication.new(authentication_params)
+    authentication = Authentication.new(covered, authentication_params)
     if authentication.valid?
       sign_in! authentication.user, remember_me: authentication.remember_me
       render json: {redirect_to: redirect_url!}

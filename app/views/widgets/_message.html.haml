@@ -1,8 +1,8 @@
 .message-head
-  - if message.user.present?
-    = image_tag(message.user.avatar_url, :class => 'avatar-small', alt: message.user.name)
+  - if message.creator.present?
+    = image_tag(message.creator.avatar_url, :class => 'avatar-small', alt: message.creator.name)
     %strong
-      = message.user.name
+      = message.creator.name
   - else
     %strong
       = message.from
@@ -10,13 +10,25 @@
     = timeago message.created_at
 
 .message-body
-  .message-text<= message.html? ? html_unescape(stripped_html) : stripped_plain
-  - if hide_quoted_text
-    .message-text-full<= message.html? ? html_unescape(body_html) : body_plain
+  - if message.stripped_body.present?
+    - if message.stripped_body.html?
+      .message-text.html<= message.stripped_body
+    - else
+      .message-text.plain<= htmlify message.stripped_body
+
+    - if message.body.html?
+      .message-text-full.html<= message.body
+    - else
+      .message-text-full.plain<= htmlify message.body
     %button.btn.btn-small.show-quoted-text{:alt => "show quoted text"} &middot; &middot; &middot;
+  - else
+    - if message.body.html?
+      .message-text.html<= message.body
+    - else
+      .message-text.plain<= htmlify message.body
 
 .message-attachments
-  - message.attachments.each do |attachment|
+  - message.attachments.all.each do |attachment|
     = render_widget :attachment_preview, attachment
 
 .message-actions

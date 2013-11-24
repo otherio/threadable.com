@@ -12,7 +12,7 @@ describe "conversation_messages" do
       index: index,
       type: type,
       created_at: generate_created_at,
-      user: double(:user, name:"[event#{index} user name]"), )
+      actor: double(:actor, name:"[event#{index} user name]"), )
   end
 
   def create_message index
@@ -21,13 +21,13 @@ describe "conversation_messages" do
 
   let :items do
     [
-      [:event,   create_event(0, 'Covered::Conversation::CreatedEvent')],
+      [:event,   create_event(0, 'Conversation::CreatedEvent')],
       [:message, create_message(0)],
-      [:event,   create_event(1, 'Covered::Task::CreatedEvent')],
+      [:event,   create_event(1, 'Task::CreatedEvent')],
       [:message, create_message(1)],
-      [:event,   create_event(2, 'Covered::Task::DoneEvent')],
+      [:event,   create_event(2, 'Task::DoneEvent')],
       [:message, create_message(2)],
-      [:event,   create_event(3, 'Covered::Task::UndoneEvent')],
+      [:event,   create_event(3, 'Task::UndoneEvent')],
     ]
   end
 

@@ -4,13 +4,12 @@ class Covered::Mailer < ActionMailer::Base
     public :new
   end
 
-  include Covered::Dependant::AccessorMethods
-
   def initialize(covered)
     super()
-    self.covered = covered
+    @covered = covered
     self.default_url_options = {host: covered.host, port: covered.port, protocol: covered.protocol}
   end
+  attr_reader :covered
 
   def generate method_name, *args
     process(method_name, *args)

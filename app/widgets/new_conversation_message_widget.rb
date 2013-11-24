@@ -19,11 +19,11 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
   end
 
   option :message do
-    conversation.messages.build(conversation: conversation)
+    conversation.messages.build
   end
 
   option :recipients do
-    conversation.recipients
+    conversation.recipients.all
   end
 
   option :url do

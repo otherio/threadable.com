@@ -37,7 +37,7 @@ Rails.widget('new_conversation_message', function(Widget){
 
   this.focus = function(){
     this.expand();
-    if (this.subject_input.length) this.subject_input.focus();
+    // if (this.subject_input.length) this.subject_input.focus();
     return this;
   };
 

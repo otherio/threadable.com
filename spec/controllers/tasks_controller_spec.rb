@@ -2,186 +2,156 @@ require 'spec_helper'
 
 describe TasksController do
 
-  let(:project){ Covered::Project.first }
-  let(:current_user){ project.members.first }
+  # let(:project){ find_project('raceteam') }
 
-  before(:each) do
-    sign_in_as current_user
-  end
+  when_not_signed_in do
 
-  def valid_attributes
-    {
-      "subject" => "Pickup a case of duct tape from Home Depot.",
-    }
-  end
-
-  def valid_params
-    {
-      project_id: project.to_param
-    }
-  end
-
-  describe "GET index" do
-    context "when xhr" do
-      it "should render the tasks sidebar widget html" do
-        xhr :get, :index, valid_params
-        html = Nokogiri::HTML.fragment(response.body)
-        expect(html.children.length).to eq 1
-        widget = html.children.first
-        expect(widget[:class].split(/\s+/)).to include "tasks_sidebar"
-        expect(widget['data-conversations']).to eq "true"
-        expect(widget['data-with_title']).to eq "false"
-      end
-      context "when given conversations=false" do
-        it "should render the tasks sidebar widget html without the conversations tab" do
-          xhr :get, :index, valid_params.merge("conversations" => "false")
-          widget = Nokogiri::HTML.fragment(response.body).children.first
-          expect(widget['data-conversations']).to eq "false"
-          expect(widget['data-with_title']).to eq "false"
-        end
-      end
-      context "when given with_title=true" do
-        it "should render the tasks sidebar widget html without the conversations tab" do
-          xhr :get, :index, valid_params.merge("with_title" => "true")
-          widget = Nokogiri::HTML.fragment(response.body).children.first
-          expect(widget['data-conversations']).to eq "true"
-          expect(widget['data-with_title']).to eq "true"
-        end
-      end
-    end
-  end
-
-  describe "POST create" do
-
-    def valid_params
-      super.merge(task: valid_attributes)
-    end
-
-    describe "with valid params" do
-      it "creates a new Covered::Task, assigns a newly created task as @task, and redirects to the created task" do
-        expect { post :create, valid_params }.to change(Covered::Task, :count).by(1)
-        assigns(:task).should be_a(Covered::Task)
-        assigns(:task).should be_persisted
-        response.should redirect_to project_conversation_url(project, assigns(:task))
+    describe "GET index" do
+      it "should redirect me to the sign in page" do
+        get :index, project_id: 'raceteam'
+        expect(response).to redirect_to sign_in_path(r: request.url)
       end
     end
 
-    describe "with invalid params" do
-      before do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Covered::Task.any_instance.stub(:save).and_return(false)
-      end
-      it "assigns a newly created but unsaved task as @task, and re-renders the 'new' template" do
-        post :create, valid_params
-        assigns(:task).should be_a_new(Covered::Task)
-        response.body.should be_blank
-        response.should be_unprocessable
+    describe "POST create" do
+      it "should redirect me to the sign in page" do
+        post :create, project_id: 'raceteam'
+        expect(response).to redirect_to sign_in_path(r: request.url)
       end
     end
 
-    context "when the format is json" do
-      def valid_params
-        super.merge(format: 'json')
+    describe "PATCH update" do
+      it "should redirect me to the sign in page" do
+        patch :update, project_id: 'raceteam', id: 1
+        expect(response).to redirect_to sign_in_path(r: request.url)
       end
-      describe "with valid params" do
-        it "creates a new Covered::Task, assigns a newly created task as @task, and redirects to the created task" do
-          expect { post :create, valid_params }.to change(Covered::Task, :count).by(1)
-          assigns(:task).should be_a(Covered::Task)
-          assigns(:task).should be_persisted
-          response.body.should == assigns(:task).to_json
-          response.should be_success
+    end
+
+    describe "PUT update" do
+      it "should redirect me to the sign in page" do
+        patch :update, project_id: 'raceteam', id: 1
+        expect(response).to redirect_to sign_in_path(r: request.url)
+      end
+    end
+
+    %w{ill_do_it remove_me mark_as_done mark_as_undone}.each do |action|
+      describe "GET #{action}" do
+        it "should redirect me to the sign in page" do
+          get action, project_id: 'raceteam', task_id: 1
+          expect(response).to redirect_to sign_in_path(r: request.url)
         end
       end
 
-      describe "with invalid params" do
+      describe "POST #{action}" do
+        it "should redirect me to the sign in page" do
+          post action, project_id: 'raceteam', task_id: 1
+          expect(response).to redirect_to sign_in_path(r: request.url)
+        end
+      end
+    end
+
+  end
+
+  when_signed_in_as 'alice@ucsd.covered.io' do
+
+    describe "GET index" do
+      it "should render a 404" do
+        get :index, project_id: 'raceteam'
+        expect(response.status).to eq 404
+      end
+    end
+
+    describe "XHR GET index" do
+      it "should render the tasks_sidebar widget" do
+        expect(controller).to receive(:render_widget) do |widget_name, project, options|
+          expect(widget_name).to eq :tasks_sidebar
+          expect(project.slug).to eq 'raceteam'
+          expect(options).to eq({})
+        end
+        xhr :get, :index, project_id: 'raceteam'
+      end
+    end
+
+    describe 'create' do
+
+      def xhr?
+        false
+      end
+
+      def request! options={}
+        options = {project_id: 'raceteam'}.merge(options)
+        if xhr?
+          xhr :post, :create, options
+        else
+          post :create, options
+        end
+      end
+
+      shared_context 'creating a task' do
+        let(:project_double){ double(:project, to_param: 'raceteam') }
+        let(:tasks_double)  { double(:tasks)   }
+        let(:task_double)   { double(:task, persisted?: task_persisted, to_param: 'poop-on-a-cat') }
+
         before do
-          # Trigger the behavior that occurs when invalid params are submitted
-          Covered::Task.any_instance.stub(:save).and_return(false)
-        end
-        it "assigns a newly created but unsaved task as @task, and re-renders the 'new' template" do
-          post :create, valid_params
-          assigns(:task).should be_a_new(Covered::Task)
-          response.should be_unprocessable
-          response.body.should == assigns(:task).errors.to_json
-        end
-      end
-    end
-
-    context "when request is an xhr" do
-      describe "with valid params" do
-        it "creates a new Covered::Task, assigns a newly created task as @task, and redirects to the created task" do
-          view_context = double(:view_context)
-          controller.stub(:view_context).and_return(view_context)
-
-          options = {}
-
-          view_context.should_receive(:render_widget).
-            with(:tasks_sidebar, project, options).and_return("FAKE TASKS SIDEBAR WIDGET")
-
-          expect { xhr :post, :create, valid_params }.to change(Covered::Task, :count).by(1)
-          assigns(:task).should be_a(Covered::Task)
-          assigns(:task).should be_persisted
-          response.should be_success
-          response.body.should == "FAKE TASKS SIDEBAR WIDGET"
+          expect(current_user.projects).to receive(:find_by_slug!).with('raceteam').and_return(project_double)
+          expect(project_double).to receive(:tasks).and_return(tasks_double)
+          expect(tasks_double).to receive(:create).with(subject: "poop on a cat").and_return(task_double)
+          #
         end
       end
 
-    end
-  end
-
-
-  describe "PUT update" do
-    def valid_params
-      super.merge(task: valid_attributes)
-    end
-
-    let!(:task){ Covered::Task.create!(valid_attributes.merge(project:project, creator: current_user)) }
-
-    describe "with valid params" do
-      it "updates the requested task" do
-        now = Time.now
-        Time.stub(:now).and_return(now)
-        Covered::Task.any_instance.should_receive(:update_attributes).with({
-          "subject" => "How aren't we going to build this thing?",
-          "done_at" => Time.now,
-        })
-        put :update, valid_params.merge(:id => task.to_param, :task => {
-          "subject" => "How aren't we going to build this thing?",
-          "done" => "true",
-        })
+      shared_context "when the task[subject] param is missing" do
+        it "should raise some error" do
+          expect{ request!               }.to raise_error ActionController::ParameterMissing, 'param not found: task'
+          expect{ request! task: {foo:1} }.to raise_error ActionController::ParameterMissing, 'param not found: subject'
+        end
       end
 
-      it "assigns the requested task as @task" do
-        put :update, valid_params.merge(:id => task.to_param, :task => valid_attributes)
-        assigns(:task).should eq(task)
+      shared_examples "when the task creation failes" do
+        context "when the task creation failes" do
+          include_context 'creating a task'
+          let(:task_persisted){ false }
+          it "should redering nothing 422 " do
+            request! task: {subject: "poop on a cat"}
+            expect(response.body).to be_blank
+            expect(response.status).to eq 422
+          end
+        end
       end
 
-      it "redirects to the task" do
-        put :update, valid_params.merge(:id => task.to_param, :task => valid_attributes)
-        response.should redirect_to project_conversation_url(project, task)
-      end
-    end
-
-    describe "with invalid params" do
-      def invalid_params
-        {
-          id: task.to_param,
-          task: {position: ""}
-        }
-      end
-      it "assigns the task as @task" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Covered::Task.any_instance.stub(:save).and_return(false)
-        put :update, valid_params.update(invalid_params)
-        assigns(:task).should eq(task)
+      describe "POST" do
+        include_context "when the task[subject] param is missing"
+        it_behaves_like "when the task creation failes"
+        context "when the task creation succeeds" do
+          include_context 'creating a task'
+          let(:task_persisted){ true }
+          it "should redirect me to the show page" do
+            request! task: {subject: "poop on a cat"}
+            expect(response).to redirect_to project_conversation_url('raceteam', 'poop-on-a-cat')
+          end
+        end
       end
 
-      it "re-renders the 'edit' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Covered::Task.any_instance.stub(:save).and_return(false)
-        put :update, valid_params.update(invalid_params)
-        response.should redirect_to project_conversation_url(project, task)
+      describe "XHR POST" do
+        def xhr?
+          true
+        end
+        include_context "when the task[subject] param is missing"
+        it_behaves_like "when the task creation failes"
+        context "when the task creation succeeds" do
+          include_context 'creating a task'
+          let(:task_persisted){ true }
+          it "should render the tasks_sidebar widget" do
+            expect(controller).to receive(:render_widget) do |widget_name, project, options|
+              expect(widget_name).to eq :tasks_sidebar
+              expect(project).to eq project_double
+              expect(options).to eq({})
+            end
+            request! task: {subject: "poop on a cat"}
+          end
+        end
       end
+
     end
 
   end

@@ -21,11 +21,7 @@ module AuthenticationConcern
   end
 
   def sign_in! user, remember_me: false
-    user_id = case user
-    when Covered::User; user.id
-    when Integer; user
-    else raise ArgumentError, "invalid user #{user.inspect}"
-    end
+    user_id = case user; when Integer, String; user; else; user.id; end
     @covered = nil
     session[:user_id] = user_id
     cookies.permanent[:remember_me] = RememberMeToken.encrypt(user_id) if remember_me

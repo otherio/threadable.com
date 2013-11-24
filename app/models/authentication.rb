@@ -6,7 +6,13 @@ class Authentication
   def persisted?; false; end
   include Virtus
 
-  attribute :user,        Covered::User
+  def initialize covered, atrributes
+    @covered = covered
+    super(atrributes)
+  end
+  attr_reader :covered
+
+  attribute :user,        User
   attribute :email,       String
   attribute :password,    String
   attribute :remember_me, Boolean, :default => false
@@ -18,11 +24,14 @@ class Authentication
       errors.add(:base, 'please enter an email address and password')
       return false
     end
-    user = Covered::User.with_email(email.downcase).first
-    if user.nil? || !user.authenticate(password)
+    user = covered.users.find_by_email_address(email.downcase)
+    if user.nil? || !user.web_enabled? || !user.authenticate(password)
       return false
     end
-    !!self.user = user
+    self.user = user
+    return true
+  rescue BCrypt::Errors::InvalidHash
+    return false
   end
 
   def errors

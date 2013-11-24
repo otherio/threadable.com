@@ -1,71 +1,67 @@
-require 'wtf'
-require 'active_record_read_only'
-
 class Covered::Class
 
-  require 'covered/dependant'
-  extend Covered::Dependant::ClassMethods
-
-  dependant :operations, :background_jobs, :users, :projects, :conversations, :messages
-
-  def initialize env={}
-    @env = env.with_indifferent_access.delete_if{|k,v| v.nil?}
-    @env[:host].present? or raise ArgumentError, 'host is required'
-    @env[:port].present? or raise ArgumentError, 'port is required'
-    @env[:protocol].present? or raise ArgumentError, 'protocol is required'
-    if @current_user = @env.delete(:current_user)
-      @env[:current_user_id] = @current_user.id
-    end
-    # @env[:current_user_id].present? or raise ArgumentError, 'current_user or current_user_id is required'
+  def initialize options={}
+    options = options.symbolize_keys
+    @host            = options.fetch(:host){ raise ArgumentError, 'required options: :host' }
+    @port            = options.fetch(:port){ 80 }
+    @protocol        = options.fetch(:protocol){ 'http' }
+    @current_user_id = options[:current_user_id]
   end
 
-  attr_reader :env
+  attr_reader :protocol, :host, :port, :current_user_id
 
-  %w{current_user_id host port protocol}.each do |key|
-    define_method(key){ @env[key] }
+  def current_user_id= user_id
+    @current_user_id = user_id
+    @current_user = nil
   end
 
   def current_user
-    return nil unless current_user_id.present?
-    @current_user = nil if @current_user && @current_user.id != current_user_id
-    @current_user ||= Covered::User.find(current_user_id)
-  rescue ActiveRecord::RecordNotFound
-    raise Covered::CurrentUserNotFound, "id => #{current_user_id}"
+    return nil if @current_user_id.nil?
+    @current_user ||= Covered::CurrentUser.new(self, @current_user_id)
+  end
+
+  def env
+    {
+      protocol:        protocol,
+      host:            host,
+      port:            port,
+      current_user_id: current_user_id,
+    }.as_json
   end
 
   def == other
     self.class === other && self.env == other.env
   end
 
-  def background operation_name, options={}
-    background_jobs.enqueue(operation_name, options)
+  def users
+    @users ||= Covered::Users.new(self)
   end
 
-  def method_missing method, *args, &block
-    return operations.public_send(method, *args) if operations.respond_to? method
-    super
+  def sign_up attributes
+    Covered::SignUp.call(attributes.merge(covered: self))
   end
 
-  def respond_to? method, include_all=false
-    operations.respond_to?(method, include_all) or super
+  def emails
+    @emails ||= Covered::Emails.new(self)
+  end
+
+  def enqueue background_job_name, *args
+    background_jobs.respond_to?(background_job_name) or raise ArgumentError, "invalid background job: #{background_job_name}"
+    Covered::Worker.enqueue_async(covered.env, background_job_name, *args)
+  end
+
+  def process_incoming_email incoming_email
+    Covered::ProcessIncomingEmail.call(self, incoming_email)
   end
 
   def inspect
     %(#<#{self.class} #{env.inspect}>)
   end
 
-  def signed_in?
-    current_user.present?
-  end
-
-  def signed_in!
-    signed_in? or raise Covered::AuthorizationError
-  end
-
-  # covered.send_email(:conversation_message, message_id: message, project_id: project.id)
-  def send_email type, options={}
-    background_jobs.enqueue(:send_email, type: type, options: options)
-  end
-
 end
 
+require 'covered/worker'
+require 'covered/users'
+require 'covered/current_user'
+require 'covered/emails'
+require 'covered/sign_up'

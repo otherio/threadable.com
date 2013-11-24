@@ -2,8 +2,26 @@ require 'spec_helper'
 
 describe "task_metadata" do
 
-  let(:user) { create(:user) }
-  let(:task) { create(:task) }
+  let(:user   ) { double(:user) }
+  # let(:members) { double(:members) }
+  let(:project) { double(:project) } #, members: members) }
+
+  let(:doers){ double :doers, all: all_doers }
+  let(:all_doers){
+    [
+      double(:doer1, id: 41, name: 'steve', avatar_url: '//foo.jif'),
+      double(:doer1, id: 42, name: 'laura', avatar_url: '//foo.ping')
+    ]
+  }
+
+  let :task do
+    double(:task,
+      subject: "eat a live goat",
+      project: project,
+      done?: true,
+      doers: doers,
+    )
+  end
 
   def locals
     {
@@ -12,24 +30,10 @@ describe "task_metadata" do
     }
   end
 
-  before do
-    task.project.members << user
-  end
-
-  context "when the current user is not a doer" do
-    it "shows a sign me up link" do
-      return_value.should =~ /sign me up/
-    end
-  end
-
-  context "when the current user is a doer" do
-    before do
-      task.doers << user
-    end
-
-    it "shows a remove me link" do
-      return_value.should =~ /remove me/
-    end
+  it "renders each doer's avatar" do
+    avatars = html.css('.avatar')
+    expect( avatars.map(&:text)                        ).to eq all_doers.map(&:name)
+    expect( avatars.map{|a| a.css('img').first[:src] } ).to eq all_doers.map(&:avatar_url)
   end
 
 end

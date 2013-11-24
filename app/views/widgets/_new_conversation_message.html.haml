@@ -8,10 +8,10 @@
 
   - if show_subject
     .subject_field
-      = f.input :subject, label: false, placeholder: 'subject'
+      = f.input :subject, label: false, placeholder: 'subject', required: false
 
   .body_field
-    = f.input :body, as: :text, label: false, input_html: {cols: nil, rows: nil, placeholder: "Add your voice..."}
+    = f.input :body, as: :text, label: false, input_html: {cols: nil, rows: nil, placeholder: "Add your voice..."}, required: false
 
   .attachments
     .hidden.attachment-preview

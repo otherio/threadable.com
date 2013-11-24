@@ -5,8 +5,8 @@ class EmailsController < ApplicationController
   # POST /emails
   def create
     email_params = request.params.dup.slice!("controller", "action")
-    incoming_email = Covered::IncomingEmail.create!(params: email_params)
-    covered.background_jobs.enqueue(:process_incoming_email, incoming_email_id: incoming_email.id)
+    incoming_email = IncomingEmail.create!(params: email_params)
+    ProcessIncomingEmailWorker.perform_async(covered.env, incoming_email.id)
     render nothing: true, status: :ok
   end
 

@@ -8,11 +8,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = covered.users.create(user_params)
+    @user = covered.sign_up(user_params)
     if @user.errors.present?
       render :new
     else
-      covered.send_email(:sign_up_confirmation, recipient_id: user.id)
+      covered.emails.send_email_async(:sign_up_confirmation, @user.id)
+      render :create
     end
   end
 
@@ -29,12 +30,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    unauthorized! if current_user != user
+    unauthorized! if current_user.id != user.id
   end
 
   def update
-    unauthorized! if current_user != user
-    if user.update_attributes(user_params)
+    unauthorized! if current_user.id != user.id
+    if current_user.update!(user_params)
       redirect_to root_path
     else
       render :edit
@@ -48,11 +49,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email_address, :password, :password_confirmation).symbolize_keys
   end
 
   def user
-    @user ||= covered.users.get(slug: params[:id])
+    @user ||= covered.users.find_by_slug!(params[:id])
   end
 
 end

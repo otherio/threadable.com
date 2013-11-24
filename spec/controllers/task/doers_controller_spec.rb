@@ -2,143 +2,149 @@ require 'spec_helper'
 
 describe Task::DoersController do
 
-  let(:project){ Covered::Project.first }
-  let(:current_user){ project.members.first }
+  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
-  before(:each) do
-    sign_in_as current_user
-  end
-
-  def valid_attributes
-    {
-      "subject" => "how are we going to build this thing?",
-      "creator" => current_user,
-    }
-  end
-
-  def valid_params
-    {
-      project_id: project.to_param
-    }
-  end
-
-  def xhr_valid_params
-    return valid_params.merge({format: 'json'})
-  end
-
-  def expected_conversation
-    project.conversations.find_by_subject(valid_attributes["subject"])
-  end
-
+  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:task   ){ project.tasks.find_by_slug! 'layup-body-carbon' }
 
   describe "POST create" do
-    let(:doer) { create(:user) }
-    let(:task) { project.tasks.create! valid_attributes }
 
-    before do
-      project.members << doer
+    let(:user_id){ member.user_id }
+
+    def params
+      {
+        project_id: project.to_param,
+        task_id: task.to_param,
+        user_id: user_id,
+      }
     end
 
-    context "with valid params" do
-      def post!
-        post :create, valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} )
+    def create! params={}
+      post :create, self.params.merge(params)
+    end
+
+    context "when the user is a member of the project and not a doer of the task" do
+      let(:member) { project.members.find_by_user_slug!('alice-neilson') }
+
+      it "adds the user as a member to the task and redirects back to the task show page" do
+        expect{ expect{ create! }.to change{ task.events.count }.by(1) }.to change{ task.doers.count }.by(1)
+        expect(task.events.newest.as_json).to eq(
+          type:     'added doer',
+          actor_id: current_user.id,
+          doer_id:  member.id,
+          task_id:  task.id,
+        )
+        expect(response).to redirect_to project_conversation_url(project, task)
       end
 
-      it "adds a doer" do
-        expect { post! }.to change(task.doers, :count).by(1)
-      end
-
-      it "redirects back to the task" do
-        post!
-        response.should redirect_to project_conversation_url(project, expected_conversation)
-      end
-
-      context "when called with xhr" do
-        it "returns :created" do
-          xhr :post, :create, xhr_valid_params.merge( {:task_id => task.to_param, :doer_id => doer.id} )
-          response.response_code.should == 201
+      context "when format is json" do
+        it "returns the member as json" do
+          create!(format: :json)
+          expect(response.response_code).to eq 201
+          expect(response.body).to eq member.to_json
         end
       end
     end
 
-    context "with a user who doesn't exist" do
-      subject { post :create, valid_params.merge( {:task_id => task.to_param, :doer_id => 12345} ) }
-
+    context "when the user doesn't exist" do
+      let(:user_id){ 2837283718 }
       it "raises a not found error" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ create! }.to raise_error(Covered::RecordNotFound)
       end
     end
 
-    context "with a user who isn't part of the project" do
-      let(:non_member_doer) { create(:user) }
-      subject { post :create, valid_params.merge( {:task_id => task.to_param, :doer_id => non_member_doer.id} ) }
-
+    context "when the user is not a member of the project" do
+      let(:user_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
       it "raises a not found error" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ create! }.to raise_error(Covered::RecordNotFound)
       end
     end
+
+    context "when the user is already a doer of this task" do
+      let(:member){ project.members.find_by_user_slug!('tom-canver') }
+      it "it looks as if you've added them" do
+        expect{ expect{ create! }.to change{ task.events.count }.by(0) }.to change{ task.doers.count }.by(0)
+        expect(response).to redirect_to project_conversation_url(project, task)
+      end
+      context "when format is json" do
+        it "returns the member as json" do
+          create!(format: :json)
+          expect(response.response_code).to eq 201
+          expect(response.body).to eq member.to_json
+        end
+      end
+    end
+
   end
 
   describe "DELETE destroy" do
-    let(:doer) { create(:user) }
-    let(:task) { project.tasks.create! valid_attributes }
 
-    before do
-      project.members << doer
-      task.doers << doer
+    let(:user_id){ member.user_id }
+
+    def params
+      {
+        project_id: project.to_param,
+        task_id: task.to_param,
+        id: user_id,
+      }
     end
 
-    context "with valid params" do
-      def post!
-        delete :destroy, valid_params.merge( {:task_id => task.to_param, :id => doer.id} )
+    def destroy! params={}
+      delete :destroy, self.params.merge(params)
+    end
+
+    context "when the user is a member of the project and a doer of the task" do
+      let(:member){ project.members.find_by_user_slug!('tom-canver') }
+
+      it "removes the user from the task's doers and redirects back to the task show page" do
+        expect{ expect{ destroy! }.to change{ task.events.count }.by(1) }.to change{ task.doers.count }.by(-1)
+        expect(task.events.newest.as_json).to eq(
+          type:     'removed doer',
+          actor_id: current_user.id,
+          doer_id:  member.id,
+          task_id:  task.id,
+        )
+        expect(response).to redirect_to project_conversation_url(project, task)
       end
 
-      it "adds a doer" do
-        expect { post! }.to change(task.doers, :count).by(-1)
-      end
-
-      it "redirects back to the task" do
-        post!
-        response.should redirect_to project_conversation_url(project, expected_conversation)
-      end
-
-      context "when called with xhr" do
-        it "returns :deleted" do
-          xhr :delete, :destroy, xhr_valid_params.merge( {:task_id => task.to_param, :id => doer.id} )
-          response.response_code.should == 204
+      context "when format is json" do
+        it "returns the member as json" do
+          destroy!(format: :json)
+          expect(response).to be_ok
+          expect(response.body).to eq member.to_json
         end
       end
     end
 
-    context "with a user who doesn't exist" do
-      subject { delete :destroy, valid_params.merge( {:task_id => task.to_param, :id => 12345} ) }
-
+    context "when the user doesn't exist" do
+      let(:user_id){ 2837283718 }
       it "raises a not found error" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ destroy! }.to raise_error(Covered::RecordNotFound)
       end
     end
 
-    context "with a user who isn't part of the project" do
-      let(:non_member_doer) { create(:user) }
-      subject { delete :destroy, valid_params.merge( {:task_id => task.to_param, :id => non_member_doer.id} ) }
-
+    context "when the user is not a member of the project" do
+      let(:user_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
       it "raises a not found error" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ destroy! }.to raise_error(Covered::RecordNotFound)
       end
     end
-    context "with a user who isn't a doer of that task" do
-      let(:non_task_doer) { create(:user) }
 
-      before do
-        project.members << non_task_doer
+    context "when the user is not a doer of this task" do
+      let(:member) { project.members.find_by_user_slug!('alice-neilson') }
+      it "it looks as if you've removed them" do
+        expect{ expect{ destroy! }.to change{ task.events.count }.by(0) }.to change{ task.doers.count }.by(0)
+        expect(response).to redirect_to project_conversation_url(project, task)
       end
-
-      subject { delete :destroy, valid_params.merge( {:task_id => task.to_param, :id => non_task_doer.id} ) }
-
-      it "raises a not found error" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      context "when format is json" do
+        it "returns the member as json" do
+          destroy!(format: :json)
+          expect(response.response_code).to eq 200
+          expect(response.body).to eq member.to_json
+        end
       end
     end
+
   end
 
 end

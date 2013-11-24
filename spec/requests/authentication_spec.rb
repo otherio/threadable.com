@@ -4,49 +4,34 @@ describe "Authentication" do
 
   describe "sign in/out" do
 
-    let!(:user){ Covered::User.where(name: "Alice Neilson").first! }
+    let(:alice){ find_user_by_email_address 'alice@ucsd.covered.io' }
 
     it "I can sign in and sign out" do
 
       post sign_in_path, {
         "authentication" => {
-          "email"       => user.email,
+          "email"       => 'alice@ucsd.covered.io',
           "password"    => "password",
         },
       }
       expect(response).to be_success
-      expect( controller.current_user ).to eq user
-      expect( controller.covered      ).to eq Covered.new(current_user_id: user.id, host: request.host, port: request.port, protocol: 'http')
+      expect( controller.current_user.id ).to eq alice.id
+      expect( controller.covered         ).to eq Covered.new(protocol: 'http', host: request.host, port: request.port, current_user_id: alice.id)
 
       get sign_out_path
       expect(response).to redirect_to root_url
-      expect( controller.current_user ).to be_nil
-      expect( controller.covered      ).to eq Covered.new(current_user_id: nil, host: request.host, port: request.port, protocol: 'http')
-
+      expect( controller.current_user    ).to be_nil
+      expect( controller.covered         ).to eq Covered.new(protocol: 'http', host: request.host, port: request.port)
 
       post sign_in_path, {
         "authentication" => {
-          "email"       => user.email,
+          "email"       => 'alice@ucsd.covered.io',
           "password"    => "WRONG PASSWORD",
         },
       }
       expect(response).to_not be_success
       expect( controller.current_user ).to be_nil
-      expect( controller.covered      ).to eq Covered.new(current_user_id: nil, host: request.host, port: request.port, protocol: 'http')
-
-
-      # visit sign_in_path
-      # fill_in 'Email', with: user.email
-      # fill_in 'Password', with: 'password'
-      # click_button 'Sign in'
-      # page.should have_content user.name
-      # page.current_path.should == root_path
-      # within selector_for('the navbar') do
-      #   click_on user.name
-      #   click_on 'Sign out'
-      # end
-      # page.should_not have_content user.name
-      # page.current_path.should == root_path
+      expect( controller.covered      ).to eq Covered.new(protocol: 'http', host: request.host, port: request.port)
     end
 
   end

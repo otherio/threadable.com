@@ -22,11 +22,11 @@ describeWidget("conversation_messages", function(){
       });
 
       it("should append the given message to the message list", function(){
-        expect(this.messages().length).toEqual(2);
+        expect(this.messages().length).toEqual(8);
 
         this.triggerSuccess();
 
-        expect(this.messages().length).toEqual(3);
+        expect(this.messages().length).toEqual(9);
         var message = $(this.message.as_html);
         expect(this.messages().filter(':last').text()).toEqual(message.text());
       });

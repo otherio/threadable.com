@@ -24,7 +24,7 @@ describeWidget("invite_modal", function(){
       expect( this.widget.flash       ).toBeA(Covered.Flash);
       expect( this.widget.form[0]     ).toBe( this.page.$('form')[0] );
       expect( this.widget.name_input  ).toBe( this.page.$('input[name="member[name]"]')[0] );
-      expect( this.widget.email_input ).toBe( this.page.$('input[name="member[email]"]')[0] );
+      expect( this.widget.email_input ).toBe( this.page.$('input[name="member[email_address]"]')[0] );
     });
   });
 
@@ -138,7 +138,7 @@ describeWidget("invite_modal", function(){
       var flash_message = spyOn(this.page.flash,'message');
       user = {
         name: 'Steve Jobs',
-        email: 'steve@apple.com',
+        email_address: 'steve@apple.com',
       };
       this.widget.form.trigger('ajax:success', [user, "ok", {}]);
       expect(hide).toHaveBeenCalled();

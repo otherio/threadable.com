@@ -4,11 +4,8 @@ class ConversationMailer < Covered::Mailer
 
   add_template_helper EmailHelper
 
-  def conversation_message(options)
-    @message   = Covered::Message.find options[:message_id]
-    @recipient = Covered::User.find options[:recipient_id]
-    @project   = @message.project
-    @project_membership = @project.project_memberships.where(user: @recipient).first!
+  def conversation_message(project, message, recipient)
+    @project, @message, @recipient = project, message, recipient
     @conversation = @message.conversation
     @task = @conversation if @conversation.task?
 
@@ -25,10 +22,10 @@ class ConversationMailer < Covered::Mailer
     from = @message.creator.present? && @message.creator == @recipient ?
       @project.formatted_email_address : @message.from
 
-    unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project_membership.id)
+    unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project.id, @recipient.id)
     @unsubscribe_url = project_unsubscribe_url(@project.slug, unsubscribe_token)
 
-    @message.attachments.each do |attachment|
+    @message.attachments.all.each do |attachment|
       attachments[attachment.filename] = {
         :mime_type => attachment.mimetype,
         :content   => attachment.content,

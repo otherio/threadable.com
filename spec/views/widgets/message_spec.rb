@@ -2,20 +2,24 @@ require 'spec_helper'
 
 describe "message" do
 
-  let(:user){
-    double(:user,
+  let(:creator){
+    double(:creator,
       name: 'USER NAME',
       avatar_url: 'USER AVATAR URL',
     )
   }
 
+  let(:body         ){ double(:body,          html?: false, html_safe?: false, empty?: false, to_s: "BODY") }
+  let(:stripped_body){ double(:stripped_body, html?: false, html_safe?: false, empty?: false, to_s: "STRIPPED BODY") }
+
   let(:message){
     double(:message,
-     from: 'MESSAGE FROM',
-     user: user,
-     created_at: 'MESSAGE CREATED AT',
-     html?: has_html,
-     attachments: [],
+     from:          'MESSAGE FROM',
+     creator:       creator,
+     created_at:    'MESSAGE CREATED AT',
+     body:          body,
+     stripped_body: stripped_body,
+     attachments:   double(:attachments, all:[]),
     )
   }
 
@@ -30,11 +34,6 @@ describe "message" do
     {
       message: message,
       presenter: presenter,
-      stripped_plain: 'STRIPPED PLAIN',
-      body_plain: 'BODY PLAIN',
-      stripped_html: stripped_html,
-      body_html: body_html,
-      hide_quoted_text: hide_quoted_text,
     }
   end
 
@@ -47,63 +46,61 @@ describe "message" do
   it "should render the message with the user's info" do
     return_value.should be_a String
     return_value.should include 'USER NAME'
-    return_value.should include 'STRIPPED PLAIN'
+    return_value.should include 'STRIPPED BODY'
   end
 
-  context "when the message has no user" do
-    let(:user){ nil }
+  context "when the message has no creator" do
+    let(:creator){ nil }
     it "should render the message with the message's from info" do
       return_value.should include 'MESSAGE FROM'
-      return_value.should include 'STRIPPED PLAIN'
+      return_value.should include 'STRIPPED BODY'
     end
   end
 
-  context "when the message does not have quoted text" do
-    it "should not render the truncated and full message contents and the show quoted text button" do
-      html.css('.message-text-full').should_not be_present
-      html.css('button.show-quoted-text').should_not be_present
-    end
-  end
-
-  context "when the message has quoted text" do
-    let(:hide_quoted_text){ true }
-    it "should render the truncated and full message contents and the show quoted text button" do
-      html.css('.message-text-full').should be_present
-      html.css('button.show-quoted-text').should be_present
-    end
-  end
-
-  context "with no html part" do
-    context "when the message does not have quoted text" do
-      it "should show the plain message with quoted text removed" do
-        html.css('.message-text').text.should == 'STRIPPED PLAIN'
+  context "when the message has a stripped body" do
+    context "that is html" do
+      let(:body         ){ double(:body,          html?: true, html_safe?: true, empty?: false, to_s: "BODY") }
+      let(:stripped_body){ double(:stripped_body, html?: true, html_safe?: true, empty?: false, to_s: "STRIPPED BODY") }
+      it "should render both the body and the stripped body as html" do
+        expect(html.css('.message-text.html'     ).first.text).to eq "STRIPPED BODY"
+        expect(html.css('.message-text-full.html').first.text).to eq "BODY"
       end
     end
 
-    context "when the message has quoted text" do
-      let(:hide_quoted_text){ true }
-      it "should show the complete plain message" do
-        html.css('.message-text-full').text.should == 'BODY PLAIN'
+    context "that is not html" do
+      let(:body         ){ double(:body,          html?: false, html_safe?: false, empty?: false, to_s: "BODY") }
+      let(:stripped_body){ double(:stripped_body, html?: false, html_safe?: false, empty?: false, to_s: "STRIPPED BODY") }
+      it "should render both the body and the stripped body as plain text" do
+        expect(html.css('.message-text.plain'     ).first.text).to eq "STRIPPED BODY"
+        expect(html.css('.message-text-full.plain').first.text).to eq "BODY"
       end
     end
   end
 
-  context "with an html part" do
-    let(:stripped_html) { 'STRIPPED HTML' }
-    let(:body_html) { 'BODY HTML' }
-    let(:has_html) { true }
-
-    context "when the message does not have quoted text" do
-      it "should show the html message with quoted text removed" do
-        html.css('.message-text').text.should == 'STRIPPED HTML'
+  context "when the message has no stripped body" do
+    let(:stripped_body){ nil }
+    context "that is html" do
+      let(:body){ double(:body, html?: true, html_safe?: true, empty?: false, to_s: "BODY") }
+      it "should render both the body and the stripped body as html" do
+        expect(html.css('.message-text.html'       ).first.text).to eq "BODY"
+        expect(html.css('.message-text-full.plain')).to be_empty
       end
     end
 
-    context "when the message has quoted text" do
-      let(:hide_quoted_text){ true }
-      it "should show the complete html message" do
-        html.css('.message-text-full').text.should == 'BODY HTML'
+    context "that is not html" do
+      let(:body){ double(:body, html?: false, html_safe?: false, empty?: false, to_s: "BODY") }
+      it "should render both the body and the stripped body as plain text" do
+        expect(html.css('.message-text.plain'     ).first.text).to eq "BODY"
+        expect(html.css('.message-text-full.plain')).to be_empty
       end
+    end
+  end
+
+  context "when the message body is plain with urls" do
+    let(:stripped_body){ nil }
+    let(:body){ double(:body, html?: false, html_safe?: false, empty?: false, to_s: "go to http://www.google.com ok?") }
+    it "should render those urls as links" do
+      expect( html.css('a[href="http://www.google.com"]') ).to be_present
     end
   end
 

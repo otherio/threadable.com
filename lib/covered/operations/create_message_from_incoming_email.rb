@@ -2,7 +2,7 @@ Covered::Operations.define :create_message_from_incoming_email do
 
   option :incoming_email_id, required: true
 
-  let(:incoming_email){ Covered::IncomingEmail.find incoming_email_id }
+  let(:incoming_email){ IncomingEmail.find incoming_email_id }
 
   def call
     if incoming_email.project.nil?
@@ -22,7 +22,7 @@ Covered::Operations.define :create_message_from_incoming_email do
 
   let :attachments do
     incoming_email.attachments.map do |file|
-      Covered::Attachment.create_from_file! file
+      Attachment.create_from_file! file
     end
   end
 

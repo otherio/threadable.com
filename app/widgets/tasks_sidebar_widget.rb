@@ -5,11 +5,11 @@ class TasksSidebarWidget < Rails::Widget::Presenter
   option :with_title, false
 
   option :conversations do
-    project.conversations.includes(:project)
+    project.conversations.all # includes(:project)
   end
 
   option :tasks do
-    project.tasks.includes(:doers)
+    project.tasks.all
   end
 
   option :my_tasks do

@@ -7,8 +7,8 @@ class Db::Populate < MethodObject
     developers.each do |name|
       first, last = name.scan(/^(.+?) (.+)/).first
       email = "#{first.downcase}@other.io"
-      next if Covered::User.by_email(email).exists?
-      Covered::User.create!(
+      next if User.by_email(email).exists?
+      User.create!(
         email: email,
         name: name,
         password: 'password',

@@ -1,3 +1,5 @@
-# Sidekiq.configure_server do |config|
-#   config.redis = = {url:Redis.current.client.id}
-# end
+Sidekiq.instance_variable_set(:@redis, nil)
+Sidekiq.configure_server do |config|
+  config.redis = Rails.application.config.redis
+  config.failures_max_count = 5000
+end

@@ -11,7 +11,7 @@
     %span.doers
       %i.icon-bolt
       doers:
-      - task.doers.each do |doer|
+      - task.doers.all.each do |doer|
         %span.avatar.has-tooltip{:"data-user" => doer.id, :"data-toggle" => "tooltip", title: doer.name}<>
           = image_tag(doer.avatar_url, :class => 'avatar-tiny', alt: doer.name)
           %span.name<>= doer.name

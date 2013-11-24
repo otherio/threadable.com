@@ -5,4 +5,9 @@ class ApplicationController < ActionController::Base
   include AuthenticationConcern
   include RescueFromExceptionsConcern
 
+  private
+
+  delegate :render_widget, to: :view_context
+
+
 end

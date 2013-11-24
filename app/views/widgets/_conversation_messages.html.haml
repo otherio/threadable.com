@@ -8,20 +8,20 @@
       %li.with_event
         %span.event
           - case item.type
-          - when 'Covered::Conversation::CreatedEvent'
-            #{strong(item.user.name)} started this conversation
-          - when 'Covered::Task::CreatedEvent'
-            #{strong(item.user.name)} created this task
-          - when 'Covered::Task::DoneEvent'
+          - when 'Conversation::CreatedEvent'
+            #{strong(item.actor.name)} started this conversation
+          - when 'Task::CreatedEvent'
+            #{strong(item.actor.name)} created this task
+          - when 'Task::DoneEvent'
             %i.icon-ok.finished-check
-            #{strong(item.user.name)} marked this task as done
-          - when 'Covered::Task::UndoneEvent'
+            #{strong(item.actor.name)} marked this task as done
+          - when 'Task::UndoneEvent'
             %i.icon-ok.unfinished-check
-            #{strong(item.user.name)} marked this task as not done
-          - when 'Covered::Task::AddedDoerEvent'
-            #{strong(item.user.name)} added #{strong(item.doer.name)} as a doer
-          - when 'Covered::Task::RemovedDoerEvent'
-            #{strong(item.user.name)} removed #{strong(item.doer.name)} as a doer
+            #{strong(item.actor.name)} marked this task as not done
+          - when 'Task::AddedDoerEvent'
+            #{strong(item.actor.name)} added #{strong(item.doer.name)} as a doer
+          - when 'Task::RemovedDoerEvent'
+            #{strong(item.actor.name)} removed #{strong(item.doer.name)} as a doer
           - else
             - raise "unknown type #{item.type.inspect}"
 

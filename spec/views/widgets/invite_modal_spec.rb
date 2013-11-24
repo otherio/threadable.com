@@ -2,12 +2,10 @@ require 'spec_helper'
 
 describe "invite_modal" do
 
-  let(:project){ Covered::Project.last }
+  let(:project){ Factories.build(:project) }
 
   def locals
-    {
-      project: project
-    }
+    {project: project}
   end
 
   it "should have a form that posts to the project invites url" do

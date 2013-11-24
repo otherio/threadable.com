@@ -31,10 +31,10 @@
     = "##CovMid: #{@message.unique_id} ##"
   %br
 
-- if @message.html?
-  = @message.body_html.html_safe
+- if @message.body.html?
+  = @message.body
 - else
-  .plain-text= @message.body_plain
+  .plain-text= @message.body
 
 %div.covered-content
   %div{:style => "display:none; display:none !important;"}
@@ -48,7 +48,7 @@
           |
           = mail_to @project.email_address, @project.email_address
         .covered-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
-          = "sent to #{mail_to @recipient.email, @recipient.email} | #{link_to 'unsubscribe', @unsubscribe_url}".html_safe
+          = "sent to #{mail_to @recipient.email_address, @recipient.email_address} | #{link_to 'unsubscribe', @unsubscribe_url}".html_safe
 
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: footer ##"

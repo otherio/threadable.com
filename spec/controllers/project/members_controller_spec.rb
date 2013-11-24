@@ -2,12 +2,9 @@ require 'spec_helper'
 
 describe Project::MembersController do
 
-  let(:project) { Covered::Project.where(name: "UCSD Electric Racing").includes(:members).first! }
-  let(:current_user)    { project.members.first }
+  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
-  before do
-    sign_in_as current_user
-  end
+  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
 
   def valid_params
     {
@@ -17,17 +14,19 @@ describe Project::MembersController do
   end
 
   describe "GET index" do
-    it "returns a list of users that are members of the project as json" do
-      xhr :get, :index, valid_params
-      response.should be_success
-      # this is fucking stupid
-      JSON.parse(response.body).should =~ JSON.parse(project.members.to_json)
-    end
-
     it "shows a list of users that are members of the project" do
       get :index, project_id: project.to_param
       response.should be_success
-      assigns(:members).should =~ project.members
+      assigns(:members).should =~ project.members.all
+    end
+
+    context "when XHR" do
+      it "returns a list of users that are members of the project as json" do
+        xhr :get, :index, valid_params
+        response.should be_success
+        # this is fucking stupid
+        JSON.parse(response.body).should =~ JSON.parse(project.members.to_json)
+      end
     end
   end
 
@@ -37,28 +36,29 @@ describe Project::MembersController do
       super.merge(
         member: {
           name:  'Steve Bushebi',
-          email: 'steve@bushebi.me',
+          email_address: 'steve@bushebi.me',
           message: 'yo join this, dawg',
         }
       )
     end
 
-    def expected_arguments
+    def member_hash
       {
-        project: project,
-        member:  {
-          "name" =>  'Steve Bushebi',
-          "email" => 'steve@bushebi.me',
-        },
-        message: 'yo join this, dawg',
+        name:          valid_params[:member][:name],
+        email_address: valid_params[:member][:email_address],
       }
     end
 
+    def personal_message
+      valid_params[:member][:message]
+    end
+
+    let(:member){ double(:member) }
 
     context "when adding the member succeeds" do
-      let(:member){ Covered::User.where(name:"Ray Arvidson").first! }
       before do
-        expect(covered).to receive(:add_member_to_project).with(expected_arguments).and_return(member)
+        expect_any_instance_of(Covered::CurrentUser::Project::Members).to receive(:add).
+          with(member_hash, personal_message).and_return(member)
       end
       it "should render the member as json with a created status" do
         post :create, valid_params
@@ -67,21 +67,24 @@ describe Project::MembersController do
       end
     end
 
-    context "when adding the member raises an ActiveRecord::RecordNotFound error" do
+    context "when adding the member raises a Covered::RecordInvalid" do
       before do
-        expect(covered).to receive(:add_member_to_project).with(expected_arguments).and_raise(ActiveRecord::RecordNotFound)
+        expect_any_instance_of(Covered::CurrentUser::Project::Members).to receive(:add).
+          with(member_hash, personal_message).and_raise(Covered::RecordInvalid)
       end
+
       it "should render an error in json with an unprocessable entity status" do
         post :create, valid_params
         expect(response.status).to eq 422
-        expect(response.body).to eq '{"error":"unable to find user"}'
+        expect(response.body).to eq '{"error":"unable to create user"}'
       end
 
     end
 
-    context "when adding the member raises an Covered::UserAlreadyAMemberOfProjectError" do
+    context "when adding the member raises a Covered::UserAlreadyAMemberOfProjectError" do
       before do
-        expect(covered).to receive(:add_member_to_project).with(expected_arguments).and_raise(Covered::UserAlreadyAMemberOfProjectError.new(nil, nil))
+        expect_any_instance_of(Covered::CurrentUser::Project::Members).to receive(:add).
+          with(member_hash, personal_message).and_raise(Covered::UserAlreadyAMemberOfProjectError)
       end
 
       it "should render an error in json with an unprocessable entity status" do

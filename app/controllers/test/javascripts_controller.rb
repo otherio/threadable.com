@@ -11,6 +11,13 @@ class Test::JavascriptsController < TestController
       Pathname(spec).relative_path_from(SPECS_PATH).to_s.sub(/_spec\.js$/,'')
     end
 
+    sign_in! User.with_email_address('tom@ucsd.covered.io').first!
+
+    @project = current_user.projects.find_by_slug! 'raceteam'
+    @task = @project.tasks.newest
+    @conversation = @project.conversations.find_by_slug! "layup-body-carbon"
+    @message = @conversation.messages.find_by_id! @conversation.conversation_record.messages.where("body_plain != stripped_plain").last!.id
+
     @fixtures = {}
     Dir[FIXTURES.join("**/*")].each do |path|
       path = Pathname(path)

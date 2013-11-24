@@ -2,10 +2,8 @@ require 'spec_helper'
 
 describe "compose_conversation_message_modal example" do
 
-  before do
-    view.stub(:current_user).and_return(Covered::User.first!)
+  when_signed_in_as 'alice@ucsd.covered.io' do
+    it_should_behave_like "a widget example"
   end
-
-  it_should_behave_like "a widget example"
 
 end

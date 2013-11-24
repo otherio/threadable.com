@@ -3,7 +3,7 @@ Covered::Operations.define :send_conversation_message do
   option :message_id, required: true
   option :email_sender, default: false
 
-  let(:message){ Covered::Message.find message_id }
+  let(:message){ Message.find message_id }
   let(:project){ message.conversation.project }
   let(:memberships){ project.memberships.that_get_email.includes(:user) }
 

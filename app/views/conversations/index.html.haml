@@ -1,7 +1,7 @@
 .tasks-and-conversations-layout
   .left
     .padding
-      = render_widget :tasks_sidebar, @project, conversations: false, with_title: true
+      = render_widget :tasks_sidebar, @project, conversations: false, with_title: true, tasks: @tasks
   .right
     .padding
       = render_widget :conversation_list, @project, conversations: @conversations

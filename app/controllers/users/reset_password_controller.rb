@@ -2,14 +2,14 @@ class Users::ResetPasswordController < ApplicationController
 
   def request_link
     email = params.require(:password_recovery).require(:email)
-    user = Covered::User.with_email(email).first
+    user = User.with_email_address(email).first
 
     case
     when user && user.has_password?
-      covered.send_email(:reset_password, recipient_id: user.id)
+      covered.emails.send_email_async(:reset_password, user.id)
       render json: {done: "We've emailed you a password reset link. Please check your email."}
     when user
-      covered.send_email(:reset_password, recipient_id: user.id)
+      covered.emails.send_email_async(:reset_password, user.id)
       render json: {done: "We've emailed you a link to setup your account. Please check your email."}
     else
       render json: {error: "No account found with that email address"}
@@ -17,7 +17,7 @@ class Users::ResetPasswordController < ApplicationController
   end
 
   def show
-    user = Covered::User.where(id: user_id_from_token).first
+    user = User.where(id: user_id_from_token).first
     if user.nil?
       redirect_to root_url
     else
@@ -28,7 +28,7 @@ class Users::ResetPasswordController < ApplicationController
   def reset
     unauthorized! if current_user_id != user_id_from_token
     attributes = params.require(:user).permit(:password, :password_confirmation)
-    if current_user.update_attributes(attributes)
+    if current_user.update(attributes)
       flash[:notice] = 'Your password has been updated'
       redirect_to root_path
     else
