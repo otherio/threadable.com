@@ -47,5 +47,6 @@ Covered::Application.configure do
 
   config.storage = {local:'test'}
 
+  config.redis = Redis.current.client.instance_variable_get(:@options).slice(:scheme, :host, :port, :path, :password, :db)
   config.redis[:db] = 2
 end
