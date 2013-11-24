@@ -47,8 +47,6 @@ module Covered
 
     config.filepicker_rails.api_key = ENV.fetch('COVERED_FILEPICKER_API_KEY')
 
-    config.redis = Redis.current.client.instance_variable_get(:@options).slice(:scheme, :host, :port, :path, :password, :db)
-
     config.roadie.enabled = true
 
     config.force_ssl = false
