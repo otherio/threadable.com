@@ -18,6 +18,15 @@ describe User do
     FactoryGirl.build(:user, password: password, password_confirmation: password)
   end
 
+  it "should ensure the user has a primary email address" do
+    user = User.new
+    user.valid?
+    expect(user).to have(1).errors_on(:email_address)
+    user = User.new email_address: 'love@it.com'
+    user.valid?
+    expect(user).to have(0).errors_on(:email_address)
+  end
+
   describe "password validations" do
     def user_attributes
       {}

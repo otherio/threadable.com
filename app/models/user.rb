@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
   validates :name, presence: true
+  validates :email_address, presence: true
   validates_associated :email_addresses
 
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
@@ -56,8 +57,6 @@ class User < ActiveRecord::Base
     @email_address ||= email_addresses.primary.try(:address)
   end
 
-
-
   def avatar_url
     read_attribute(:avatar_url) || gravatar_url
   end
@@ -75,6 +74,5 @@ class User < ActiveRecord::Base
     gravatar_id = Digest::MD5.hexdigest(email_address.downcase)
     "//gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
   end
-
 
 end
