@@ -37,7 +37,7 @@ class Covered::CurrentUser::Projects
 
   def find_by_email_address email_address
     email_address_username, host = email_address.split('@')
-    return nil if covered.host != host
+    # return nil if covered.host != host
     project_for (scope.where(email_address_username: email_address_username).first or return)
   end
 
