@@ -154,6 +154,43 @@ describe TasksController do
 
     end
 
+    describe "PUT update" do
+      let(:project_slug) { 'yourmom' }
+      let(:project){ double(:project) }
+      let(:task_slug){ 'send-mom-a-chicken' }
+      let(:tasks){ double(:tasks) }
+      let(:task){ double(:task) }
+      before do
+        expect(current_user.projects).to receive(:find_by_slug!).with(project_slug).and_return(project)
+        expect(project).to receive(:tasks).and_return(tasks)
+        expect(tasks).to receive(:find_by_slug!).with(task_slug).and_return(task)
+      end
+
+      context "when the update is successful" do
+        before do
+          expect(task).to receive(:update).with("position" => 99).and_return(true)
+        end
+        it "updates the task's position" do
+          patch :update, project_id: 'yourmom', id: task_slug, task: {position: 99, something: 'else'}, format: :json
+          expect(response).to be_successful
+          expect(response.body).to eq task.to_json
+        end
+      end
+
+      context "when the update is not successful" do
+        before do
+          expect(task).to receive(:update).with("position" => 99).and_return(false)
+        end
+        it "updates renders an error" do
+          patch :update, project_id: 'yourmom', id: task_slug, task: {position: 99, something: 'else'}, format: :json
+          expect(response).to_not be_successful
+          expect(response.body).to eq task.to_json
+        end
+      end
+
+
+    end
+
   end
 
 end

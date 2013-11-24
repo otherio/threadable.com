@@ -44,21 +44,12 @@ class TasksController < ApplicationController
   # PUT /:project_id/tasks/:id
   # PUT /:project_id/tasks/:id.json
   def update
-    task
-    task_params = params.require(:task).permit(:subject, :done, :done_at)
+    task_params = params.require(:task).permit(:position)
 
-    if task_params && done = task_params.delete(:done)
-      task_params[:done_at] = done == "true" ? Time.now : nil
-    end
-
-    respond_to do |format|
-      if task.update(task_params)
-        format.html { redirect_to_show notice: 'Task was successfully updated.' }
-        format.json { render json: @task, status: :ok }
-      else
-        format.html { redirect_to_show error: 'We were unable to update your task. Please try again later.' }
-        format.json { render json: @task, status: :unprocessable_entity }
-      end
+    if task.update(task_params)
+      render json: @task, status: :ok
+    else
+      render json: @task, status: :unprocessable_entity
     end
   end
 
