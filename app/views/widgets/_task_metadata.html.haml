@@ -42,8 +42,8 @@
 
   &#183;
 
-  - url = project_task_path(task.project, task, task: {done:!task.done?})
-  = link_to url, method: 'PUT', class: 'control-link text-info toggle-done' do
+  - url = task.done? ? project_task_mark_as_undone_path(task.project, task) : project_task_mark_as_done_path(task.project, task)
+  = link_to url, method: 'post', class: 'control-link text-info toggle-done' do
     - if task.done?
       %i.icon-ok
       mark as not done

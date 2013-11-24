@@ -5,7 +5,7 @@ class Task::DoersController < ApplicationController
   # POST /conversations/1/add_doer
   # POST /conversations/1/add_doer.json
   def create
-    member = project.members.find_by_user_id!(params[:user_id])
+    member = project.members.find_by_user_id!(params[:doer_id])
     task.doers.add(member)
 
     respond_to do |format|

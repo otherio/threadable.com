@@ -9,13 +9,13 @@ describe Task::DoersController do
 
   describe "POST create" do
 
-    let(:user_id){ member.user_id }
+    let(:doer_id){ member.user_id }
 
     def params
       {
         project_id: project.to_param,
         task_id: task.to_param,
-        user_id: user_id,
+        doer_id: doer_id,
       }
     end
 
@@ -47,14 +47,14 @@ describe Task::DoersController do
     end
 
     context "when the user doesn't exist" do
-      let(:user_id){ 2837283718 }
+      let(:doer_id){ 2837283718 }
       it "raises a not found error" do
         expect{ create! }.to raise_error(Covered::RecordNotFound)
       end
     end
 
     context "when the user is not a member of the project" do
-      let(:user_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
+      let(:doer_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
       it "raises a not found error" do
         expect{ create! }.to raise_error(Covered::RecordNotFound)
       end
@@ -79,13 +79,13 @@ describe Task::DoersController do
 
   describe "DELETE destroy" do
 
-    let(:user_id){ member.user_id }
+    let(:doer_id){ member.user_id }
 
     def params
       {
         project_id: project.to_param,
         task_id: task.to_param,
-        id: user_id,
+        id: doer_id,
       }
     end
 
@@ -117,14 +117,14 @@ describe Task::DoersController do
     end
 
     context "when the user doesn't exist" do
-      let(:user_id){ 2837283718 }
+      let(:doer_id){ 2837283718 }
       it "raises a not found error" do
         expect{ destroy! }.to raise_error(Covered::RecordNotFound)
       end
     end
 
     context "when the user is not a member of the project" do
-      let(:user_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
+      let(:doer_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
       it "raises a not found error" do
         expect{ destroy! }.to raise_error(Covered::RecordNotFound)
       end

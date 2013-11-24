@@ -95,7 +95,7 @@ Rails.widget('doers_popover', function(Widget){
 
   function member_doesnt_match_search_term(member, search_term){
     if (!search_term) return false;
-    var email = member.email.toLowerCase();
+    var email = member.email_address.toLowerCase();
     var name  = member.name.toLowerCase();
     // if the search term and it does not exist in this users email or name
     return email.indexOf(search_term) === -1 && name.indexOf(search_term) === -1;
@@ -118,7 +118,7 @@ Rails.widget('doers_popover', function(Widget){
 
       var li = popover.widget.user_template.clone();
       var name = member.name; // TODO html escape
-      var email = member.email;
+      var email = member.email_address;
 
       if (search_term) {
         email = boldSearchTerm(email, search_term);
