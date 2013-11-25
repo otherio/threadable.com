@@ -10,9 +10,9 @@ class ConversationMailer < Covered::Mailer
     @task = @conversation if @conversation.task?
 
     subject_tag = @project.subject_tag
-    buffer_length = 80 - @message.body_plain.length
+    buffer_length = 100 - @message.body_plain.length
     buffer_length = 0 if buffer_length < 0
-    @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'.' * buffer_length}"
+    @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
     subject = @message.subject
     subject = "[#{subject_tag}] #{subject}" unless subject.include?("[#{subject_tag}]")

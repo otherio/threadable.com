@@ -97,7 +97,7 @@ describe ConversationMailer do
       context "with a short message" do
         let(:body){ "Everybody, please." }
         it "pads the remaining characters with spaces and then periods when the message is short" do
-          mail.html_part.body.to_s.should include "Everybody, please.#{' '*62}#{'.'*62}"
+          mail.html_part.body.to_s.should include "Everybody, please.#{' '*82}#{'_'*82}"
         end
       end
     end
