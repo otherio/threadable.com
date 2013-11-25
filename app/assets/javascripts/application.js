@@ -9,11 +9,12 @@
 //= require timeago
 //= require bootstrap
 //= require bootstrap-wysihtml5
-
+//= require uservoice
 
 //= require covered
 //= require_tree ./behaviors
 //= require_tree ./widgets
+//= require logged_in_init
 
 
 Object.extend = function(object, extension){
