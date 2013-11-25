@@ -31,6 +31,13 @@ describe IncomingEmail do
     end
   end
 
+  describe "from_email_address" do
+    it 'should curry params["from"]' do
+      expect(subject.params).to receive(:[]).with('from')
+      subject.from_email_address
+    end
+  end
+
   describe "subject" do
     it 'should curry params["subject"]' do
       expect(subject.params).to receive(:[]).with('subject')

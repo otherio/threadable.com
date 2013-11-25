@@ -14,6 +14,10 @@ class IncomingEmail < ActiveRecord::Base
     params["sender"]
   end
 
+  def from_email_address
+    params["from"]
+  end
+
   def subject
     params["subject"]
   end

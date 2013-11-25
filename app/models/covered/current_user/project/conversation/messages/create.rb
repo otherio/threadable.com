@@ -50,7 +50,7 @@ class Covered::CurrentUser::Project::Conversation::Messages::Create < MethodObje
   end
 
   let :from do
-    @attributes.given?(:from) ? @attributes.from : @covered.current_user.try(:email_address)
+    @attributes.given?(:from) ? @attributes.from : @covered.current_user.try(:formatted_email_address)
   end
 
   let :creator_id do

@@ -14,7 +14,7 @@ describe ConversationMailer do
     let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, project, message, recipient) }
 
     let(:expected_to           ){ project.email_address }
-    let(:expected_from         ){ message.creator.email_address }
+    let(:expected_from         ){ message.creator.formatted_email_address }
     let(:expected_envelope_to  ){ recipient.email_address }
     let(:expected_envelope_from){ project.email_address }
 
@@ -26,10 +26,10 @@ describe ConversationMailer do
       mail.subject.should include "[RaceTeam] #{conversation.subject}"
       mail.subject.scan('RaceTeam').size.should == 1
 
-      mail.to.should                 == [expected_to]
-      mail.from.should               == [expected_from]
-      mail.smtp_envelope_to.should   == [expected_envelope_to]
-      mail.smtp_envelope_from.should == expected_envelope_from
+      mail.to.should                    == [expected_to]
+      mail.header['From'].to_s.should   == expected_from
+      mail.smtp_envelope_to.should      == [expected_envelope_to]
+      mail.smtp_envelope_from.should    == expected_envelope_from
 
       mail_as_string.should =~ /In-Reply-To:/
       mail_as_string.should =~ /References:/
@@ -65,7 +65,7 @@ describe ConversationMailer do
 
     context "when we send a message to the message creator" do
       let(:recipient){ message.creator }
-      let(:expected_from){ project.email_address }
+      let(:expected_from){ project.formatted_email_address }
       it "should set the from address as the project instead of the sender" do
         validate_mail!
       end
@@ -73,7 +73,7 @@ describe ConversationMailer do
 
     context "when given a message without a user" do
       let(:expected_from){ message.from }
-      it "should set the from address to the incomming messages's from address" do
+      it "should set the from address to the incoming messages's from address" do
         message.stub(creator: nil)
         validate_mail!
       end

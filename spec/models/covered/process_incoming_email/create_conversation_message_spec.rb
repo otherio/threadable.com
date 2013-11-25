@@ -9,6 +9,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     double(:incoming_email,
       recipient_email_address: recipient_email_address,
       sender_email_address:    sender_email_address,
+      from_email_address:      from_email_address,
       subject:                 subject,
       body_plain:              body_plain,
       body_html:               body_html,
@@ -22,6 +23,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
 
   let(:recipient_email_address) { 'poopatron@covered.io' }
   let(:sender_email_address)    { 'smelly@poopatron.com' }
+  let(:from_email_address)      { 'fromguy@poopatron.com' }
   let(:subject)                 { 'we need coffee' }
   let(:body_html)               { "<p>hey people,</p>\n<p>Who drank all the coffee!?</p><blockquote>the previous message</blockquote>"}
   let(:body_plain)              { "hey people,\n\nWho drank all the coffee!?\n\n> the previous message" }
@@ -49,7 +51,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
 
   let(:expected_message_id_header) { 'FAKE MESSAGE ID' }
   let(:expected_subject)           { "we need coffee" }
-  let(:expected_from)              { 'smelly@poopatron.com' }
+  let(:expected_from)              { 'fromguy@poopatron.com' }
   let(:expected_parent_message)    { parent_message }
   let(:expected_creator_id)        { 89 }
   let(:expected_body_html)         { "<p>hey people,</p>\n<p>Who drank all the coffee!?</p><blockquote>the previous message</blockquote>"}
@@ -59,7 +61,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:expected_attachments)       { [] }
 
   before do
-    expect(covered.users   ).to receive(:find_by_email_address!      ).with(sender_email_address   ).and_return(creator)
+    expect(covered.users   ).to receive(:find_by_email_address       ).with(sender_email_address   ).and_return(creator)
     expect(covered         ).to receive(:current_user_id=            ).with(89)
     expect(covered         ).to receive(:current_user                ).and_return(current_user)
     expect(current_user.projects).to receive(:find_by_email_address!      ).with(recipient_email_address).and_return(project)
@@ -130,8 +132,42 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
       let(:expected_subject){ 'buy some coffee' }
       it_should_create_a_new_conversation_message!
     end
-
   end
 
+  describe "#creator" do
+    let(:parent_message){ nil }
+    let(:expected_parent_message_id){ nil }
+    let(:project_conversations){ double(:project_conversations) }
+
+    before do
+      expect(project).to receive(:conversations).and_return(project_conversations)
+      expect(project_conversations).to receive(:create).with(subject: expected_subject).and_return(conversation)
+    end
+
+    context "when the envelope sender is a user" do
+      before do
+        covered.users.stub(:find_by_email_address!).with(sender_email_address).and_return(creator)
+      end
+      it_should_create_a_new_conversation_message!
+    end
+
+    context "when the envelope sender is not a user, but the from address is" do
+      before do
+        covered.users.stub(:find_by_email_address).with(sender_email_address).and_return(nil)
+        covered.users.stub(:find_by_email_address!).with(from_email_address).and_return(creator)
+      end
+      it_should_create_a_new_conversation_message!
+    end
+
+    context "when neither envelope nor from are users" do
+      before do
+        # expect(covered.users).to receive(:find_by_email_address!).with(sender_email_address).and_return(nil)
+        # expect(covered.users).to receive(:find_by_email_address!).with(from_email_address).and_raise()
+      end
+
+      it 'bounces the message or sticks it into some queue or something useful like that'
+
+    end
+  end
 
 end
