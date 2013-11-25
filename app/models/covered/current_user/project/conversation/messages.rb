@@ -1,5 +1,9 @@
 class Covered::CurrentUser::Project::Conversation::Messages
 
+  extend ActiveSupport::Autoload
+
+  autoload :Create
+
   def initialize conversation
     @conversation = conversation
   end
@@ -65,6 +69,3 @@ class Covered::CurrentUser::Project::Conversation::Messages
   end
 
 end
-
-require 'covered/current_user/project/conversation/messages/create'
-require 'covered/current_user/project/conversation/message'

@@ -54,12 +54,3 @@ class Covered::CurrentUser::Project::Conversation::Events
   end
 
 end
-
-require 'covered/current_user/project/conversation/event'
-require 'covered/current_user/project/conversation/created_event'
-require 'covered/current_user/project/task/event'
-require 'covered/current_user/project/task/created_event'
-require 'covered/current_user/project/task/done_event'
-require 'covered/current_user/project/task/undone_event'
-require 'covered/current_user/project/task/added_doer_event'
-require 'covered/current_user/project/task/removed_doer_event'

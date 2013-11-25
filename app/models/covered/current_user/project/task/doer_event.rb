@@ -1,5 +1,3 @@
-require 'covered/current_user/project/task/event'
-
 module Covered::CurrentUser::Project::Task::DoerEvent
 
   def doer_id

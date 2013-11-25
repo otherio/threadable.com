@@ -1,5 +1,16 @@
 class Covered::CurrentUser::Project
 
+  extend ActiveSupport::Autoload
+
+  autoload :Members
+  autoload :Member
+  autoload :Conversations
+  autoload :Conversation
+  autoload :Messages
+  autoload :Message
+  autoload :Tasks
+  autoload :Task
+
   def self.model_name
     ::Project.model_name
   end
@@ -94,8 +105,3 @@ class Covered::CurrentUser::Project
   end
 end
 
-require 'covered/current_user/project/members'
-require 'covered/current_user/project/conversations'
-require 'covered/current_user/project/messages'
-require 'covered/current_user/project/tasks'
-require 'covered/current_user/project/messages'

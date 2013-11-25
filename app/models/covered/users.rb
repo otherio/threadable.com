@@ -62,35 +62,4 @@ class Covered::Users
     Covered::User.new(covered, user_record)
   end
 
-  # def find_by_email_address email_address
-  #   user = User.find_by_email_address(email_address) or raise Covered::RecordNotFound
-  #   Covered::CurrentUser.new(user)
-
-  # end
-
-
-  # def create options
-  #   scope.create(options)
-  # end
-
-  # def find options
-  #   scope.where(options)
-  # end
-
-  # def get options
-  #   find(slug: options.fetch(:slug)).first or raise Covered::RecordNotFound
-  # end
-
-  # def new
-  #   scope.new
-  # end
-
-  # private
-
-  # def scope
-  #   User
-  # end
-
 end
-
-require 'covered/user'

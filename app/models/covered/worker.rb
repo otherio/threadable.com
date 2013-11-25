@@ -1,3 +1,5 @@
+require 'sidekiq/worker'
+
 class Covered::Worker
 
   include Sidekiq::Worker

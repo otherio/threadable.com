@@ -1,5 +1,9 @@
 class Covered::CurrentUser::Project::Conversations
 
+  extend ActiveSupport::Autoload
+
+  autoload :Create
+
   def initialize project
     @project = project
   end

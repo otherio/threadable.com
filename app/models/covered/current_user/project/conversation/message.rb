@@ -1,5 +1,11 @@
 class Covered::CurrentUser::Project::Conversation::Message
 
+  extend ActiveSupport::Autoload
+
+  autoload :Attachments
+  autoload :Attachment
+  autoload :Body
+
   def self.model_name
     ::Message.model_name
   end

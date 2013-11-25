@@ -14,7 +14,7 @@ module RSpec::Support::CoveredExampleGroup
   delegate :current_user, to: :covered
 
   RSpec.configuration.include self, :type => :covered, :example_group => {
-    :file_path => %r{spec[\\/]covered[\\/]}
+    :file_path => %r{spec[\\/]models[\\/]covered[\\/]}
   }
 
   RSpec.configuration.include FactoryGirl::Syntax::Methods, :type => :covered

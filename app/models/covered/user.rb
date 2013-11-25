@@ -1,5 +1,7 @@
 class Covered::User
 
+  extend ActiveSupport::Autoload
+
   def self.model_name
     ::User.model_name
   end

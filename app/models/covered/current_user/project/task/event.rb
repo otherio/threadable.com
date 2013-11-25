@@ -1,6 +1,3 @@
-require 'covered/current_user/project/conversation/event'
-require 'covered/current_user/project/task'
-
 class Covered::CurrentUser::Project::Task::Event < Covered::CurrentUser::Project::Conversation::Event
 
   alias_method :task, :conversation

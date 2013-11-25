@@ -1,5 +1,18 @@
 class Covered::CurrentUser::Project::Conversation
 
+  extend ActiveSupport::Autoload
+
+  autoload :Creator
+  autoload :Events
+  autoload :Event
+  autoload :CreatedEvent
+  autoload :Messages
+  autoload :Message
+  autoload :Recipients
+  autoload :Recipient
+  autoload :Participants
+  autoload :Participant
+
   include Let
 
   def initialize project, conversation_record
@@ -58,9 +71,3 @@ class Covered::CurrentUser::Project::Conversation
     self.class === other && other.id == id
   end
 end
-
-require 'covered/current_user/project/conversation/creator'
-require 'covered/current_user/project/conversation/events'
-require 'covered/current_user/project/conversation/messages'
-require 'covered/current_user/project/conversation/recipients'
-require 'covered/current_user/project/conversation/participants'

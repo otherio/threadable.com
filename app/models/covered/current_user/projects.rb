@@ -1,5 +1,10 @@
 class Covered::CurrentUser::Projects
 
+  extend ActiveSupport::Autoload
+
+  autoload :Create
+
+
   def initialize current_user
     @current_user = current_user
   end

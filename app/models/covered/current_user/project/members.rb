@@ -88,5 +88,3 @@ class Covered::CurrentUser::Project::Members
   end
 
 end
-
-require 'covered/current_user/project/member'

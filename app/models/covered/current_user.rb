@@ -2,6 +2,13 @@ require 'covered/user'
 
 class Covered::CurrentUser < Covered::User
 
+  autoload :EmailAddresses
+  autoload :EmailAddress
+  autoload :Projects
+  autoload :Project
+  autoload :Messages
+  autoload :Message
+
   def initialize covered, user_id
     @covered, @user_id = covered, user_id
   end
@@ -52,6 +59,3 @@ class Covered::CurrentUser < Covered::User
   end
 
 end
-
-require 'covered/current_user/project'
-require 'covered/current_user/projects'

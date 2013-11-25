@@ -69,5 +69,3 @@ class Covered::CurrentUser::Project::Task::Doers
   end
 
 end
-
-require 'covered/current_user/project/task/doer'

@@ -1,5 +1,9 @@
 class Covered::CurrentUser::Project::Messages
 
+  extend ActiveSupport::Autoload
+
+  autoload :FindByChildHeader
+
   def initialize project
     @project = project
   end

@@ -1,0 +1,2 @@
+class Covered::Project
+end

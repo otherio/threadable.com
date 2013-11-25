@@ -1,6 +1,6 @@
-require 'covered/current_user/project/conversations'
-
 class Covered::CurrentUser::Project::Tasks < Covered::CurrentUser::Project::Conversations
+
+  autoload :Create
 
   def find_by_slug! slug
     find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find Task with slug #{slug.inspect}"
@@ -25,6 +25,3 @@ class Covered::CurrentUser::Project::Tasks < Covered::CurrentUser::Project::Conv
   alias_method :task_for, :conversation_for
 
 end
-
-require 'covered/current_user/project/task'
-require 'covered/current_user/project/tasks/create'

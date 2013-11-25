@@ -1,6 +1,12 @@
-require 'covered/current_user/project/conversation'
-
 class Covered::CurrentUser::Project::Task < Covered::CurrentUser::Project::Conversation
+
+  autoload :Event
+  autoload :CreatedEvent
+  autoload :DoneEvent
+  autoload :UndoneEvent
+  autoload :AddedDoerEvent
+  autoload :RemovedDoerEvent
+  autoload :Doers
 
   def initialize project, conversation_record
     super
@@ -34,5 +40,3 @@ class Covered::CurrentUser::Project::Task < Covered::CurrentUser::Project::Conve
   end
 
 end
-
-require 'covered/current_user/project/task/doers'

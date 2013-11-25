@@ -1,7 +1,11 @@
 class Covered::ProcessIncomingEmail < MethodObject
 
+  extend ActiveSupport::Autoload
+
+  autoload :CreateConversationMessage
+
   def call covered, incoming_email
-    Covered::ProcessIncomingEmail::CreateConversationMessage.call(covered, incoming_email)
+    CreateConversationMessage.call(covered, incoming_email)
 
     # # if incoming_email.recipient_username.to_s == 'new'
     # #   covered.create_project_from_incoming_email(incoming_email)
@@ -24,5 +28,3 @@ class Covered::ProcessIncomingEmail < MethodObject
   end
 
 end
-
-require 'covered/process_incoming_email/create_conversation_message'
