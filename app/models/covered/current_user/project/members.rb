@@ -1,42 +1,9 @@
-class Covered::CurrentUser::Project::Members
-
-  def initialize project
-    @project = project
-  end
-  attr_reader :project
-  delegate :covered, to: :project
-
-  def all
-    scope.map{|membership| member_for membership }
-  end
-
-  def that_get_email
-    scope.that_get_email.map{|membership| member_for membership }
-  end
-
-  def find_by_user_id id
-    member_for (scope.where(users:{id:id}).first or return)
-  end
-
-  def find_by_user_id! id
-    member = find_by_user_id(id)
-    member or raise Covered::RecordNotFound, "unable to find project member with id: #{id}"
-    member
-  end
-
-  def find_by_user_slug slug
-    member_for (scope.where(users:{slug:slug}).first or return)
-  end
-
-  def find_by_user_slug! slug
-    member = find_by_user_slug(slug)
-    member or raise Covered::RecordNotFound, "unable to find project member with slug: #{slug}"
-    member
-  end
+class Covered::CurrentUser::Project::Members < Covered::Project::Members
 
   def me
     find_by_user_id! project.current_user.id
   end
+
 
   def add user, personal_message=nil
     user_id = if user.is_a? Hash
@@ -65,23 +32,7 @@ class Covered::CurrentUser::Project::Members
     self
   end
 
-  def include? member
-    !!scope.where(:user_id => member.user_id).exists?
-  end
-
-  def as_json options=nil
-    all.as_json(options)
-  end
-
-  def inspect
-    %(#<#{self.class} project_id: #{project.id.inspect}>)
-  end
-
   private
-
-  def scope
-    project.project_record.memberships.includes(:user)
-  end
 
   def member_for project_membership_record
     Covered::CurrentUser::Project::Member.new(project, project_membership_record)

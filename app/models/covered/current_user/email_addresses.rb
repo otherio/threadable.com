@@ -43,5 +43,3 @@ class Covered::CurrentUser::EmailAddresses
   end
 
 end
-
-require 'covered/current_user/email_address'

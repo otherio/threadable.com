@@ -1,22 +1,4 @@
-class Covered::CurrentUser::Project::Task::Doers
-
-  def initialize task
-    @task = task
-  end
-  attr_reader :task
-  delegate :covered, to: :task
-
-  def all
-    scope.map{ |doer| doer_for doer }
-  end
-
-  def count
-    scope.count
-  end
-
-  def include? member
-    !!scope.where(users: {id: member.user_id}).exists?
-  end
+class Covered::CurrentUser::Project::Task::Doers < Covered::Project::Task::Doers
 
   def add *doers
     doer_user_ids = (doers.map(&:user_id) - task.task_record.doer_ids).uniq
@@ -54,15 +36,7 @@ class Covered::CurrentUser::Project::Task::Doers
     self
   end
 
-  def inspect
-    %(#<#{self.class}>)
-  end
-
   private
-
-  def scope
-    task.task_record.doers
-  end
 
   def doer_for user_record
     Covered::CurrentUser::Project::Task::Doer.new(task, user_record)

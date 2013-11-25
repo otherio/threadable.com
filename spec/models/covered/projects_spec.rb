@@ -1,10 +1,8 @@
 require 'spec_helper'
 
-describe Covered::CurrentUser::Projects do
+describe Covered::Projects do
 
-  before{ covered.current_user_id = create(:user).id }
-
-  subject{ covered.current_user.projects }
+  subject{ covered.projects }
 
   %w{
     Create
@@ -16,14 +14,14 @@ describe Covered::CurrentUser::Projects do
 
   describe 'new' do
     it 'returns a Covered::Project' do
-      expect(subject.new.class).to eq Covered::CurrentUser::Project
+      expect(subject.new.class).to eq Covered::Project
     end
   end
 
   describe 'create' do
     it 'should attempt to create a project and return a Covered::Project' do
       project = subject.create(name: 'pet a kitten')
-      expect(project.class).to eq Covered::CurrentUser::Project
+      expect(project.class).to eq Covered::Project
       expect(project.project_record).to be_a ::Project
     end
   end

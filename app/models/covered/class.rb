@@ -1,5 +1,7 @@
 class Covered::Class
 
+  include Let
+
   def initialize options={}
     options = options.symbolize_keys
     @host            = options.fetch(:host){ raise ArgumentError, 'required options: :host' }
@@ -10,6 +12,7 @@ class Covered::Class
 
   attr_reader :protocol, :host, :port, :current_user_id
 
+
   def current_user_id= user_id
     @current_user_id = user_id
     @current_user = nil
@@ -19,6 +22,20 @@ class Covered::Class
     return nil if @current_user_id.nil?
     @current_user ||= Covered::CurrentUser.new(self, @current_user_id)
   end
+
+
+  let(:emails  ){ Covered::Emails.new(self) }
+  let(:users   ){ Covered::Users.new(self) }
+  let(:projects){ Covered::Projects.new(self) }
+
+  def sign_up attributes
+    Covered::SignUp.call(attributes.merge(covered: self))
+  end
+
+  def process_incoming_email incoming_email
+    Covered::ProcessIncomingEmail.call(self, incoming_email)
+  end
+
 
   def env
     {
@@ -31,27 +48,6 @@ class Covered::Class
 
   def == other
     self.class === other && self.env == other.env
-  end
-
-  def users
-    @users ||= Covered::Users.new(self)
-  end
-
-  def sign_up attributes
-    Covered::SignUp.call(attributes.merge(covered: self))
-  end
-
-  def emails
-    @emails ||= Covered::Emails.new(self)
-  end
-
-  def enqueue background_job_name, *args
-    background_jobs.respond_to?(background_job_name) or raise ArgumentError, "invalid background job: #{background_job_name}"
-    Covered::Worker.enqueue_async(covered.env, background_job_name, *args)
-  end
-
-  def process_incoming_email incoming_email
-    Covered::ProcessIncomingEmail.call(self, incoming_email)
   end
 
   def inspect

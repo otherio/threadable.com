@@ -21,6 +21,9 @@ describe Covered::Class do
   its(:port            ){ should eq 3000           }
   its(:current_user_id ){ should eq user_record.id }
   its(:current_user    ){ should be_a Covered::CurrentUser }
+  its(:projects        ){ should be_a Covered::Projects }
+  its(:users           ){ should be_a Covered::Users }
+  its(:emails          ){ should be_a Covered::Emails }
   its(:env             ){ should eq(
     "protocol" => 'http',
     "host" => 'example.com',
@@ -33,6 +36,14 @@ describe Covered::Class do
       expect( covered ).to     eq Covered.new(covered.env)
       expect( covered ).to_not eq Covered.new(covered.env.merge(port: 34543))
     end
+  end
+
+  it "should work" do
+    expect(covered.projects.new).to be_a Covered::Project
+    expect(covered.users.new   ).to be_a Covered::User
+
+    expect(covered.projects.new.covered).to eq covered
+    expect(covered.users.new.covered   ).to eq covered
   end
 
 end

@@ -70,14 +70,49 @@ describe Covered, :type => :covered do
       Covered::Users
       Covered::Users::Create
       Covered::User
-      Covered::Projects
-      Covered::Project
       Covered::Emails
       Covered::Mailer
       Covered::Worker
       Covered::ProcessIncomingEmail
       Covered::ProcessIncomingEmail::CreateConversationMessage
       Covered::SignUp
+
+
+      Covered::Projects
+      Covered::Projects::Create
+      Covered::Project
+      Covered::Project::Conversations
+      Covered::Project::Conversation
+      Covered::Project::Conversation::CreatedEvent
+      Covered::Project::Conversation::Creator
+      Covered::Project::Conversation::Events
+      Covered::Project::Conversation::Event
+      Covered::Project::Conversation::Messages
+      Covered::Project::Conversation::Message
+      Covered::Project::Conversation::Message::Body
+      Covered::Project::Conversation::Message::Attachments
+      Covered::Project::Conversation::Message::Attachment
+      Covered::Project::Conversation::Participants
+      Covered::Project::Conversation::Participant
+      Covered::Project::Conversation::Recipients
+      Covered::Project::Conversation::Recipient
+      Covered::Project::Member
+      Covered::Project::Members
+      Covered::Project::Messages
+      Covered::Project::Messages::FindByChildHeader
+      Covered::Project::Tasks
+      Covered::Project::Task
+      Covered::Project::Task::Doers
+      Covered::Project::Task::Doer
+      Covered::Project::Task::DoerEvent
+      Covered::Project::Task::RemovedDoerEvent
+      Covered::Project::Task::Event
+      Covered::Project::Task::CreatedEvent
+      Covered::Project::Task::DoneEvent
+      Covered::Project::Task::UndoneEvent
+      Covered::Project::Task::AddedDoerEvent
+      Covered::Project::Task::RemovedDoerEvent
+
       Covered::CurrentUser::EmailAddress
       Covered::CurrentUser::EmailAddresses
       Covered::CurrentUser::Projects
