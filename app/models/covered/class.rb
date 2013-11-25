@@ -1,5 +1,10 @@
 class Covered::Class
 
+  EMAIL_HOSTS = {
+    'beta.covered.io' => 'covered.io',
+    'www-staging.covered.io' => 'staging.covered.io'
+  }
+
   include Let
 
   def initialize options={}
@@ -36,6 +41,9 @@ class Covered::Class
     Covered::ProcessIncomingEmail.call(self, incoming_email)
   end
 
+  def email_host
+    Covered::Class::EMAIL_HOSTS[host] || host
+  end
 
   def env
     {

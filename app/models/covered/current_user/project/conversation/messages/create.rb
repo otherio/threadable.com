@@ -58,7 +58,7 @@ class Covered::CurrentUser::Project::Conversation::Messages::Create < MethodObje
   end
 
   let :message_id_header do
-    @attributes.message_id_header || "<#{Mail.random_tag}@#{@covered.host}>"
+    @attributes.message_id_header || "<#{Mail.random_tag}@#{@covered.email_host}>"
   end
 
   let :references_header do

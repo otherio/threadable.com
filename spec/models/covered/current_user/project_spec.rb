@@ -38,10 +38,10 @@ describe Covered::CurrentUser::Project do
     end
   end
 
-  its(:email_address){ should eq "#{project_record.email_address_username}@#{covered.host}" }
-  its(:formatted_email_address){ should eq "#{project_record.name} <#{project_record.email_address_username}@#{covered.host}>" }
-  its(:list_id){ should eq "#{project_record.email_address_username}.#{covered.host}" }
-  its(:formatted_list_id){ "#{project_record.name} <#{project_record.email_address_username}.#{covered.host}>" }
+  its(:email_address){ should eq "#{project_record.email_address_username}@#{covered.email_host}" }
+  its(:formatted_email_address){ should eq "#{project_record.name} <#{project_record.email_address_username}@#{covered.email_host}>" }
+  its(:list_id){ should eq "#{project_record.email_address_username}.#{covered.email_host}" }
+  its(:formatted_list_id){ "#{project_record.name} <#{project_record.email_address_username}.#{covered.email_host}>" }
 
 
   its(:members      ){ should be_a Covered::CurrentUser::Project::Members       }

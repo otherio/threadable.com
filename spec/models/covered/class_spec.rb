@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Covered::Class do
 
   let(:user_record){ Factories.create(:user) }
-  let(:covered){ Covered.new(host: 'example.com', port: 3000, current_user_id: user_record.id) }
+  let(:host) { 'example.com' }
+  let(:covered){ Covered.new(host: host, port: 3000, current_user_id: user_record.id) }
   subject{ covered }
 
   describe "new" do
@@ -44,6 +45,25 @@ describe Covered::Class do
 
     expect(covered.projects.new.covered).to eq covered
     expect(covered.users.new.covered   ).to eq covered
+  end
+
+  describe 'email_host' do
+    before do
+      stub_const('Covered::Class::EMAIL_HOSTS', {'example.com' => 'mail.example.com'})
+    end
+
+    context 'when the host has an email host associated' do
+      it 'returns the email host' do
+        expect(covered.email_host).to eq 'mail.example.com'
+      end
+    end
+
+    context 'when no email host is present' do
+      let(:host) { 'notpresent.example.com' }
+      it 'returns the web host' do
+        expect(covered.email_host).to eq 'notpresent.example.com'
+      end
+    end
   end
 
 end

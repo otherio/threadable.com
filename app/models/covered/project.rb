@@ -37,7 +37,7 @@ class Covered::Project
   end
 
   def email_address
-    "#{project_record.email_address_username}@#{covered.host}"
+    "#{project_record.email_address_username}@#{covered.email_host}"
   end
 
   def formatted_email_address
@@ -45,7 +45,7 @@ class Covered::Project
   end
 
   def list_id
-    "#{project_record.email_address_username}.#{covered.host}"
+    "#{project_record.email_address_username}.#{covered.email_host}"
   end
 
   def formatted_list_id
