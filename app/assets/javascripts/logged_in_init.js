@@ -23,7 +23,7 @@ whenReady(function() {
     }]);
 
     // Add default trigger to the bottom-right corner of the window:
-    UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'bottom-right' }]);
+    UserVoice.push(['addTrigger', { mode: 'contact', trigger_style: 'tab', trigger_position: 'left' }]);
   }
 
 });
