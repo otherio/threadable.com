@@ -55,8 +55,6 @@ describe Covered, :type => :covered do
 
     expect(project.members.all).to_not include covered.current_user
     expect(project.members.all).to include ian
-
-
   end
 
   describe "autoloading constants" do
