@@ -61,6 +61,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'better_errors'
   gem "mail_view"
+  gem 'fuubar'
 end
 
 group :test do
