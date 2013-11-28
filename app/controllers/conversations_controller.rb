@@ -56,6 +56,7 @@ class ConversationsController < ApplicationController
       if conversation.persisted?
 
         message = conversation.messages.create(
+          send_email_to_message_creator: true,
           html:         body,
           attachments:  attachments,
         )

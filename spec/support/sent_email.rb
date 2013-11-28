@@ -59,6 +59,7 @@ module RSpec::Support::SentEmail
       message_id
       header
       date
+      to_s
     }, to: :mail_message
 
     def text_content
@@ -111,7 +112,7 @@ module RSpec::Support::SentEmail
     end
 
     def inspect
-      %(#<#{self.class} from: #{from.inspect}, to: #{to.inspect} subject: #{subject.inspect}>)
+      %(#<#{self.class} from: #{from.inspect}, smtp_envelope_to: #{smtp_envelope_to.inspect}, to: #{to.inspect} subject: #{subject.inspect}>)
     end
 
   end
