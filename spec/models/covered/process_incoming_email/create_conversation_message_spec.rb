@@ -7,6 +7,9 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
 
   let :incoming_email do
     double(:incoming_email,
+      message_id_header:       message_id_header,
+      references_header:       references_header,
+      date_header:             date_header,
       recipient_email_address: recipient_email_address,
       sender_email_address:    sender_email_address,
       from_email_address:      from_email_address,
@@ -20,7 +23,9 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     )
   end
 
-
+  let(:message_id_header)       { '<dsjsjakdjksahk@asdsadsad.com>' }
+  let(:references_header)       { '<ytutyu@yuiuy.com> <opopop@opopop.com> <fgfgfg@fgfgf.com>' }
+  let(:date_header)             { 18.days.ago.rfc2822 }
   let(:recipient_email_address) { 'poopatron@covered.io' }
   let(:sender_email_address)    { 'smelly@poopatron.com' }
   let(:from_email_address)      { 'fromguy@poopatron.com' }
@@ -49,7 +54,9 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:new_message   ){ double(:new_message) }
 
 
-  let(:expected_message_id_header) { 'FAKE MESSAGE ID' }
+  let(:expected_message_id_header) { '<dsjsjakdjksahk@asdsadsad.com>' }
+  let(:expected_references_header) { '<ytutyu@yuiuy.com> <opopop@opopop.com> <fgfgfg@fgfgf.com>' }
+  let(:expected_date_header)       { 18.days.ago.rfc2822 }
   let(:expected_subject)           { "we need coffee" }
   let(:expected_from)              { 'fromguy@poopatron.com' }
   let(:expected_parent_message)    { parent_message }
@@ -64,11 +71,14 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     expect(covered.users   ).to receive(:find_by_email_address       ).with(sender_email_address   ).and_return(creator)
     expect(covered         ).to receive(:current_user_id=            ).with(89)
     expect(covered         ).to receive(:current_user                ).and_return(current_user)
-    expect(current_user.projects).to receive(:find_by_email_address!      ).with(recipient_email_address).and_return(project)
+    expect(current_user.projects).to receive(:find_by_email_address  ).with(recipient_email_address).and_return(project)
     expect(project.messages).to receive(:find_by_child_message_header).with(header                 ).and_return(parent_message)
 
     expect(conversation.messages).to receive(:create!).with(
+
       message_id_header: expected_message_id_header,
+      references_header: expected_references_header,
+      date_header:       expected_date_header,
       subject:           expected_subject,
       parent_message:    expected_parent_message,
       from:              expected_from,

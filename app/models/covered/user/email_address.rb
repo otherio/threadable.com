@@ -1,4 +1,4 @@
-class Covered::CurrentUser::EmailAddress
+class Covered::User::EmailAddress
 
   def initialize current_user, email_address_record
     @current_user, @email_address_record = current_user, email_address_record

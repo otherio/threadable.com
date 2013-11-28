@@ -43,7 +43,7 @@ class Covered::Users
   alias_method :build, :new
 
   def create attributes={}
-    user_for Create.call(covered, attributes)
+    Create.call(covered, attributes)
   end
 
   def create! attributes={}

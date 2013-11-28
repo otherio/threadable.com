@@ -1,4 +1,4 @@
-class Covered::CurrentUser::EmailAddresses
+class Covered::User::EmailAddresses
 
   def initialize current_user
     @current_user = current_user
@@ -39,7 +39,7 @@ class Covered::CurrentUser::EmailAddresses
   end
 
   def email_address_for email_address_record
-    Covered::CurrentUser::EmailAddress.new(current_user, email_address_record)
+    Covered::User::EmailAddress.new(current_user, email_address_record)
   end
 
 end

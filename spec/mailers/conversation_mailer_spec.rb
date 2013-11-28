@@ -19,8 +19,8 @@ describe ConversationMailer do
     let(:expected_envelope_from){ project.email_address }
 
     let(:mail_as_string){ mail.to_s }
-    let(:text_part){ mail.text_part.to_s }
-    let(:html_part){ mail.html_part.to_s }
+    let(:text_part){ mail.text_part.body.to_s }
+    let(:html_part){ mail.html_part.body.to_s }
 
     def validate_mail!
       mail.subject.should include "[RaceTeam] #{conversation.subject}"
@@ -35,8 +35,9 @@ describe ConversationMailer do
       mail_as_string.should =~ /References:/
       mail_as_string.should =~ /Message-ID:/
 
-      text_part.should include message.body.gsub(/\n/,"\r\n")
-      text_part.should include "View on Covered:\r\n#{project_conversation_url(project, conversation)}"
+      text_part.should include message.body_plain
+      html_part.gsub(/\n/,'').should include message.body_html.gsub(/\n/,'')
+      text_part.should include "View on Covered:\n#{project_conversation_url(project, conversation)}"
 
 
       project_unsubscribe_token = extract_project_unsubscribe_token(text_part)

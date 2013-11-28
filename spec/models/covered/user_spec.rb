@@ -20,7 +20,24 @@ describe Covered::User do
   its(:persisted?    ){ should eq user_record.persisted?    }
   its(:avatar_url    ){ should eq user_record.avatar_url    }
 
-  its(:inspect       ){ should eq %(#<Covered::User id: #{user_record.id}>) }
+  its(:inspect       ){ should eq %(#<Covered::User user_id: #{user_record.id}>) }
+
+  %w{
+    id
+    to_param
+    name
+    email_address
+    slug
+    errors
+    new_record?
+    persisted?
+    avatar_url
+    authenticate
+  }.each do |method|
+    describe "##{method}" do
+      specify{ expect(user).to delegate(method).to(:user_record) }
+    end
+  end
 
   describe "to_key" do
     subject{ user.to_key }
@@ -44,5 +61,27 @@ describe Covered::User do
 
   it { should eq described_class.new(covered, user_record) }
 
+
+  describe 'web_enabled?' do
+    it 'should return the presense of a password' do
+      user_record.stub encrypted_password: 'FSDFDSFDSFDS'
+      expect(user).to be_web_enabled
+      user_record.stub encrypted_password: nil
+      expect(user).to_not be_web_enabled
+    end
+  end
+
+  describe 'requires_setup?' do
+    it 'should return the the oposite of requires_setup?' do
+      user.stub web_enabled?: false
+      expect(user.requires_setup?).to be_true
+      user.stub web_enabled?: true
+      expect(user.requires_setup?).to be_false
+    end
+  end
+
+  describe 'confirm!' do
+    it 'should update the confirmed_at field with the current time'
+  end
 
 end

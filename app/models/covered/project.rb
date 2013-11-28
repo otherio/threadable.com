@@ -7,6 +7,8 @@ class Covered::Project
   autoload :Member
   autoload :Conversations
   autoload :Conversation
+  # autoload :Messages
+  # autoload :Message
   autoload :Tasks
   autoload :Task
 
@@ -54,6 +56,7 @@ class Covered::Project
 
   let(:members){ Members.new(self) }
   let(:conversations){ Conversations.new(self) }
+  let(:messages){ Messages.new(self) }
   let(:tasks){ Tasks.new(self) }
 
   def as_json options=nil
@@ -66,6 +69,12 @@ class Covered::Project
       subject_tag: subject_tag,
       description: description,
     }
+  end
+
+
+  def leave!
+    return unless covered.current_user_id
+    project_record.memberships.where(user_id: covered.current_user_id).first.try(:delete)
   end
 
 

@@ -23,16 +23,10 @@ describe Message do
   end
 
   describe "#unique_id" do
-    it "returns the message id, minus the host part" do
+    it "returns the message_id_header url safe base 64 encoded" do
       message = subject
       message.message_id_header = '<foo_bar_baz@example.com>'
-      message.unique_id.should == 'foo_bar_baz'
-    end
-
-    it "filters out weird characters" do
-      message = subject
-      message.message_id_header = '<foo-bar+!*%-baz@example.com>'
-      message.unique_id.should == 'foo-bar-baz'
+      message.unique_id.should == Base64.urlsafe_encode64(message.message_id_header)
     end
   end
 

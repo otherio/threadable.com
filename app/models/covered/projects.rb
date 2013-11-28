@@ -38,6 +38,7 @@ class Covered::Projects
   end
 
   def find_by_email_address email_address
+    email_address.present? or return
     email_address_username, host = email_address.split('@')
     # return nil if covered.host != host
     project_for (scope.where(email_address_username: email_address_username).first or return)
@@ -53,7 +54,7 @@ class Covered::Projects
   alias_method :new, :build
 
   def create attributes
-    project_for Create.call(covered, attributes)
+    Create.call(self, attributes)
   end
 
   def create! attributes

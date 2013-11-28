@@ -52,5 +52,5 @@ Covered::Application.configure do
 
   config.storage = {local:'development'}
 
-  config.redis = ENV["REDIS_CLOUD_HOST"] ? Nitrous.redis_config : { db: 1 }
+  config.redis = ENV["REDIS_CLOUD_HOST"] ? Nitrous.redis_config : { url: 'redis://127.0.0.1:6379/1' }
 end

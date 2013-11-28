@@ -9,7 +9,7 @@ class SendEmailWorker < Covered::Worker
   end
 
   def conversation_message project_id, message_id, recipient_id
-    project   = current_user.projects.find_by_id! project_id
+    project   = covered.projects.find_by_id! project_id
     message   = project.messages.find_by_id! message_id
     recipient = project.members.find_by_user_id! recipient_id
     covered.emails.send_email(:conversation_message, project, message, recipient)

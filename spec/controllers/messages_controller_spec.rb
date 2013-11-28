@@ -47,8 +47,9 @@ describe MessagesController do
     end
 
     def request!
-      expect_any_instance_of(Covered::CurrentUser::Project::Conversation::Messages).to receive(:create).with(
-        html:        params[:message][:body],
+      expect_any_instance_of(Covered::Project::Conversation::Messages).to receive(:create).with(
+        send_email_to_message_creator: true,
+        body:        params[:message][:body],
         attachments: params[:message][:attachments],
       ).and_return(message)
 
@@ -95,7 +96,7 @@ describe MessagesController do
 
     let(:message){ double(:message, errors: message_errors, persisted?: message_errors.blank?) }
     before do
-      expect_any_instance_of(Covered::CurrentUser::Project::Conversation::Messages).to receive(:find_by_id!).with('1').and_return(message)
+      expect_any_instance_of(Covered::Project::Conversation::Messages).to receive(:find_by_id!).with('1').and_return(message)
       expect(message).to receive(:update).with(
         shareworthy: true,
         knowledge:   true,

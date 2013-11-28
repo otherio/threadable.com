@@ -47,7 +47,7 @@ describe ProjectsController do
   describe "GET new" do
     it "assigns a new project as @project" do
       get :new, {}
-      expect(assigns(:project)).to be_a(Covered::CurrentUser::Project)
+      expect(assigns(:project)).to be_a(Covered::Project)
       expect(assigns(:project)).to_not be_persisted
     end
   end
@@ -70,7 +70,7 @@ describe ProjectsController do
 
       it "assigns a newly created project as @project" do
         post :create, valid_params
-        expect(assigns(:project)).to be_a(Covered::CurrentUser::Project)
+        expect(assigns(:project)).to be_a(Covered::Project)
         expect(assigns(:project)).to be_persisted
         expect(assigns(:project).name       ).to eq valid_params["project"]["name"]
         expect(assigns(:project).short_name ).to eq valid_params["project"]["short_name"]
@@ -86,7 +86,7 @@ describe ProjectsController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved project as @project" do
         post :create, invalid_params
-        expect(assigns(:project)).to be_a(Covered::CurrentUser::Project)
+        expect(assigns(:project)).to be_a(Covered::Project)
         expect(assigns(:project)).to_not be_persisted
       end
 

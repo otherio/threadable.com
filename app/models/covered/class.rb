@@ -3,7 +3,7 @@ class Covered::Class
   EMAIL_HOSTS = {
     'beta.covered.io' => 'covered.io',
     'www-staging.covered.io' => 'staging.covered.io'
-  }
+  }.freeze
 
   include Let
 
@@ -21,6 +21,10 @@ class Covered::Class
   def current_user_id= user_id
     @current_user_id = user_id
     @current_user = nil
+  end
+
+  def current_user= user
+    self.current_user_id = user.id
   end
 
   def current_user
@@ -63,9 +67,3 @@ class Covered::Class
   end
 
 end
-
-require 'covered/worker'
-require 'covered/users'
-require 'covered/current_user'
-require 'covered/emails'
-require 'covered/sign_up'

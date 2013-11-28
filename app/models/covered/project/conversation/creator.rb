@@ -19,11 +19,11 @@ class Covered::Project::Conversation::Creator
   alias_method :user_id, :id
 
   def == other
-    self.class === other && other.id == id
+    other.respond_to?(:user_id) && self.user_id == other.user_id
   end
 
   def inspect
-    %(#<#{self.class}>)
+    %(#<#{self.class} user_id: #{user_id.inspect}>)
   end
 
 end

@@ -21,7 +21,6 @@ class ConversationMailer < Covered::Mailer
 
     from = @message.creator.present? && @message.creator == @recipient ?
       @project.formatted_email_address : @message.from
-
     unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project.id, @recipient.id)
     @unsubscribe_url = project_unsubscribe_url(@project.slug, unsubscribe_token)
 
@@ -41,8 +40,9 @@ class ConversationMailer < Covered::Mailer
       :'subject'           => subject,
       :'Reply-To'          => @project.formatted_email_address,
       :'Message-ID'        => @message.message_id_header,
-      :'In-Reply-To'       => @message.parent_message.try(:message_id_header),
       :'References'        => @message.references_header,
+      :'Date'              => @message.date_header,
+      :'In-Reply-To'       => @message.parent_message.try(:message_id_header),
       :'List-ID'           => @project.formatted_list_id,
       :'List-Archive'      => "<#{project_conversations_url(@project)}>",
       :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",

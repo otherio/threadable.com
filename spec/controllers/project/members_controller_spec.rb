@@ -57,8 +57,12 @@ describe Project::MembersController do
 
     context "when adding the member succeeds" do
       before do
-        expect_any_instance_of(Covered::CurrentUser::Project::Members).to receive(:add).
-          with(member_hash, personal_message).and_return(member)
+        expect_any_instance_of(Covered::Project::Members).to receive(:add).
+          with(
+            name: member_hash[:name],
+            email_address: member_hash[:email_address],
+            personal_message: personal_message,
+          ).and_return(member)
       end
       it "should render the member as json with a created status" do
         post :create, valid_params
@@ -69,8 +73,7 @@ describe Project::MembersController do
 
     context "when adding the member raises a Covered::RecordInvalid" do
       before do
-        expect_any_instance_of(Covered::CurrentUser::Project::Members).to receive(:add).
-          with(member_hash, personal_message).and_raise(Covered::RecordInvalid)
+        expect_any_instance_of(Covered::Project::Members).to receive(:add).and_raise(Covered::RecordInvalid)
       end
 
       it "should render an error in json with an unprocessable entity status" do
@@ -83,8 +86,7 @@ describe Project::MembersController do
 
     context "when adding the member raises a Covered::UserAlreadyAMemberOfProjectError" do
       before do
-        expect_any_instance_of(Covered::CurrentUser::Project::Members).to receive(:add).
-          with(member_hash, personal_message).and_raise(Covered::UserAlreadyAMemberOfProjectError)
+        expect_any_instance_of(Covered::Project::Members).to receive(:add).and_raise(Covered::UserAlreadyAMemberOfProjectError)
       end
 
       it "should render an error in json with an unprocessable entity status" do

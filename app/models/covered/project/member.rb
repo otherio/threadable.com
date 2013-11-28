@@ -46,8 +46,7 @@ class Covered::Project::Member < Covered::User
   end
 
   def == other
-    self.class === other &&
-    other.project_membership_record == project_membership_record
+    self.class === other && self.user_id == other.user_id && self.project_id == other.project_id
   end
 
   def inspect

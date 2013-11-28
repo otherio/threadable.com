@@ -1,4 +1,4 @@
-class Covered::CurrentUser::Project::Conversations::Create < MethodObject
+class Covered::Project::Conversations::Create < MethodObject
 
   OPTIONS = Class.new OptionsHash do
     required :subject
@@ -19,15 +19,13 @@ class Covered::CurrentUser::Project::Conversations::Create < MethodObject
   end
 
   def object
-    @options.task ?
-      Covered::CurrentUser::Project::Task :
-      Covered::CurrentUser::Project::Conversation
+    @options.task ? Covered::Project::Task : Covered::Project::Conversation
   end
 
   def create_conversation!
     @conversation_record = scope.create(
       subject:    @options.subject,
-      creator_id: @covered.current_user.id,
+      creator_id: @covered.current_user_id,
     )
   end
 
@@ -35,7 +33,7 @@ class Covered::CurrentUser::Project::Conversations::Create < MethodObject
     @conversation_record.class::CreatedEvent.create!(
       conversation_id: @conversation_record.id,
       project_id: @project.id,
-      user_id: @covered.current_user.id,
+      user_id: @covered.current_user_id,
     )
   end
 

@@ -9,16 +9,15 @@ class Message < ActiveRecord::Base
   scope :by_created_at, ->{ order('messages.created_at DESC') }
 
   before_create :touch_conversation_update_at
-  before_validation :add_references, :only => :create
 
-  validates_presence_of :conversation, :body_plain #, :creator
+  validates_presence_of :conversation, :body_plain, :date_header, :message_id_header
 
   def creator_id
-   self.user_id
+    self.user_id
   end
 
   def creator_id= id
-   self.user_id= id
+    self.user_id= id
   end
 
   def parent_message_id
@@ -30,19 +29,13 @@ class Message < ActiveRecord::Base
   end
 
   def unique_id
-    message_id_header[/\<(.*?)@/,1].gsub(/[^\w-]/, '')
+    Base64.urlsafe_encode64 message_id_header
   end
 
   private
 
   def touch_conversation_update_at
     conversation.touch(:updated_at)
-  end
-
-  def add_references
-    if self.parent_message
-      self.references_header = "#{parent_message.references_header} #{parent_message.message_id_header}"
-    end
   end
 
 end

@@ -8,7 +8,7 @@ describe "Navbar" do
     before do
       covered.current_user_id = find_user_by_email_address('alice@ucsd.covered.io').id
       marcus = covered.users.find_by_email_address('marcus@sfhealth.example.com')
-      current_user.projects.find_by_slug('raceteam').members.add marcus
+      current_user.projects.find_by_slug('raceteam').members.add user: marcus
       sign_in_as 'marcus@sfhealth.example.com'
     end
 

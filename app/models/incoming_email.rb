@@ -38,6 +38,17 @@ class IncomingEmail < ActiveRecord::Base
     params["stripped-text"]
   end
 
+  def message_id_header
+    mail_message.header['Message-ID'].to_s
+  end
+
+  def references_header
+    mail_message.header['References'].to_s
+  end
+
+  def date_header
+    mail_message.header['Date'].to_s
+  end
 
   delegate *%w{header attachments}, to: :mail_message
 

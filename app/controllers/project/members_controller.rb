@@ -17,8 +17,9 @@ class Project::MembersController < ApplicationController
   def create
     member_params = params.require(:member).permit(:id,:name,:email_address,:message).symbolize_keys
 
-    personal_message = member_params.delete(:message)
-    member = project.members.add(member_params, personal_message)
+    member_params[:user_id]          = member_params.delete(:id)      if member_params.key? :id
+    member_params[:personal_message] = member_params.delete(:message) if member_params.key? :message
+    member = project.members.add(member_params)
 
     render json: member, status: :created
   rescue Covered::RecordInvalid
@@ -29,7 +30,7 @@ class Project::MembersController < ApplicationController
 
   # DELETE /projects/make-a-tank/members.json
   def destroy
-    project.members.remove(params[:id])
+    project.members.remove user_id: params[:id]
     head :no_content
   end
 

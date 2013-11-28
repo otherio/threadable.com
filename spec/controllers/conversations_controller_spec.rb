@@ -38,7 +38,7 @@ describe ConversationsController do
   describe "GET new" do
     it "assigns a new conversation as @conversation" do
       get :new, valid_params
-      assigns(:conversation).should be_a Covered::CurrentUser::Project::Conversation
+      assigns(:conversation).should be_a Covered::Project::Conversation
       assigns(:conversation).should_not be_persisted
     end
   end
@@ -91,7 +91,7 @@ describe ConversationsController do
       end
 
       before do
-        expect_any_instance_of(Covered::CurrentUser::Project::Conversations).to receive(:create).
+        expect_any_instance_of(Covered::Project::Conversations).to receive(:create).
           with(subject: subject).
           and_return(conversation)
 

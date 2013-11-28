@@ -1,6 +1,13 @@
 class Covered::User
 
+  include Let
+
   extend ActiveSupport::Autoload
+
+  autoload :EmailAddresses
+  autoload :EmailAddress
+  autoload :Projects
+  autoload :Messages
 
   def self.model_name
     ::User.model_name
@@ -11,11 +18,11 @@ class Covered::User
   end
   attr_reader :covered, :user_record
 
-
   delegate *%w{
     id
     to_param
     name
+    email_address
     slug
     errors
     new_record?
@@ -30,17 +37,40 @@ class Covered::User
     id ? [id] : nil
   end
 
+  let(:email_addresses){ EmailAddresses.new(self) }
+  let(:projects)       { Projects.new(self)     }
+  let(:messages)       { Messages.new(self)     }
+
   def web_enabled?
     user_record.encrypted_password.present?
   end
 
-  def email_address
-    user_record.email_address
+  def requires_setup?
+    !web_enabled?
   end
 
   def formatted_email_address
     "#{name} <#{email_address}>"
   end
+
+  def confirm!
+    !!update(confirmed_at: Time.now)
+  end
+
+  def confirmed?
+    user_record.confirmed_at.present?
+  end
+
+  def update attributes
+    !!user_record.update_attributes(attributes)
+  end
+
+  def update! attributes
+    update(attributes)
+    user_record.errors.empty? or
+    raise Covered::RecordInvalid, "User invalid: #{user_record.errors.full_messages.to_sentence}"
+  end
+
 
   def as_json options=nil
     {
@@ -53,12 +83,17 @@ class Covered::User
     }
   end
 
+  def same_user? user
+     user.respond_to?(:user_id) && self.user_id == user.user_id
+  end
+  alias_method :the_same_user_as?, :same_user?
+
   def == other
-    self.class === other && self.id == other.id
+    self.class === other && self.user_id == other.user_id
   end
 
   def inspect
-    %(#<#{self.class} id: #{id}>)
+    %(#<#{self.class} user_id: #{id}>)
     # %(#<#{self.class} id: #{id}, email_address: #{email_address.inspect}, slug: #{slug.inspect}>)
   end
 

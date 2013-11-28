@@ -34,35 +34,58 @@ class Covered::Project::Members
     member
   end
 
+  def me
+    find_by_user_id covered.current_user_id if covered.current_user_id
+  end
+
   def include? member
     !!scope.where(:user_id => member.user_id).exists?
   end
 
+  # add(user: user, send_join_notice: false)
+  # add(user: user, personal_message: "welcome!")
+  # add(name: 'Steve Waz', email_address: "steve@waz.io", personal_message: "welcome!")
+  def add options
+    send_join_notice = options.fetch(:send_join_notice){ true }
 
-  def add user, personal_message=nil
-    user_id = if user.is_a? Hash
-      if user[:email_address]
-        (covered.users.find_by_email_address(user[:email_address]) or covered.users.create!(user)).id
-      else
-        covered.users.exists! user[:id]
-      end
+    user_id = case
+    when options.key?(:email_address)
+      (
+        covered.users.find_by_email_address(options[:email_address]) or
+        covered.users.create!(name: options[:name], email_address: options[:email_address])
+      ).id
+    when options.key?(:user_id)
+      covered.users.exists! options[:user_id]
+    when options[:user].respond_to?(:user_id)
+      options[:user].user_id
     else
-      user.user_id
+      raise ArgumentError, "unable to determine user id from #{options.inspect}"
     end
+
     member = member_for scope.create!(user_id: user_id)
-    covered.emails.send_email_async(:join_notice, project.id, member.id, personal_message)
+
+    if send_join_notice
+      covered.emails.send_email_async(:join_notice, project.id, user_id, options[:personal_message])
+    end
+
     member
   rescue ActiveRecord::RecordNotUnique
     raise Covered::UserAlreadyAMemberOfProjectError
   end
 
-  def remove member
-    if member.respond_to?(:project_membership_id)
+  # remove(user: member)
+  # remove(user: user)
+  # remove(user_id: user_id)
+  def remove options
+    if options.key?(:user) && options[:user].respond_to?(:project_membership_id)
       scope.delete(project_membership_id)
-    else
-      user_id = member.respond_to?(:user_id) ? member.user_id : member
-      scope.where(user_id: user_id).delete_all
+      return self
     end
+
+    user_id = options[:user_id] || options[:user].try(:user_id) or
+      raise ArgumentError, "unable to determine user id from #{options.inspect}"
+
+    scope.where(user_id: user_id).delete_all
     self
   end
 

@@ -30,14 +30,14 @@ describe SendEmailWorker do
   describe 'conversation_message' do
     let(:arguments){ [:conversation_message, project_id, message_id, recipient_id] }
     it "should find all the records and call covered.emails.send_email" do
-      expect(current_user  ).to receive(:projects        ).and_return(projects)
-      expect(projects      ).to receive(:find_by_id!     ).with(project_id).and_return(project)
+      expect_any_instance_of(Covered::Class).to receive(:projects).and_return(projects)
+      expect(projects).to receive(:find_by_id!     ).with(project_id).and_return(project)
 
-      expect(project       ).to receive(:messages        ).and_return(messages)
-      expect(messages      ).to receive(:find_by_id!     ).with(message_id).and_return(message)
+      expect(project ).to receive(:messages        ).and_return(messages)
+      expect(messages).to receive(:find_by_id!     ).with(message_id).and_return(message)
 
-      expect(project       ).to receive(:members         ).and_return(members)
-      expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
+      expect(project ).to receive(:members         ).and_return(members)
+      expect(members ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
       expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:conversation_message, project, message, recipient)
 

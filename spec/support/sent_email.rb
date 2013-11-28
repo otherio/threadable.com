@@ -2,6 +2,11 @@ module RSpec::Support::SentEmail
 
   class Emails < Array
 
+    def clear
+      super
+      ActionMailer::Base.deliveries.clear
+    end
+
     def join_notices(project_name)
       find_all do |email|
         email.subject == "You've been added to #{project_name}"
@@ -33,7 +38,28 @@ module RSpec::Support::SentEmail
 
   end
 
-  class Email < SimpleDelegator
+  class Email
+
+    def initialize mail_message
+      @mail_message = mail_message
+    end
+    attr_reader :mail_message
+
+    delegate *%w{
+      to
+      smtp_envelope_to
+      from
+      smtp_envelope_from
+      subject
+      text_part
+      html_part
+      body
+      multipart?
+      content_type
+      message_id
+      header
+      date
+    }, to: :mail_message
 
     def text_content
       return text_part.try(:body).to_s if multipart?
@@ -77,11 +103,15 @@ module RSpec::Support::SentEmail
     end
 
     def project_unsubscribe_url
-      urls.find{|url| url =~ %r(/unsubscribe/) }
+      urls.find{|url| url.to_s =~ %r(/unsubscribe/) }
     end
 
     def user_setup_url
       urls.find{|url| url.to_s =~ %r(/setup) }
+    end
+
+    def inspect
+      %(#<#{self.class} from: #{from.inspect}, to: #{to.inspect} subject: #{subject.inspect}>)
     end
 
   end

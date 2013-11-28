@@ -2,6 +2,8 @@ class Covered::Project::Conversations
 
   extend ActiveSupport::Autoload
 
+  autoload :Create
+
   def initialize project
     @project = project
   end
@@ -39,7 +41,20 @@ class Covered::Project::Conversations
   end
 
 
+  def build attributes={}
+    conversation_for scope.build(attributes)
+  end
+  alias_method :new, :build
 
+  def create attributes={}
+    Create.call project, attributes
+  end
+
+  def create! attributes={}
+    conversation = create(attributes)
+    conversation.persisted? or raise Covered::RecordInvalid, "Conversation invalid: #{conversation.errors.full_messages.to_sentence}"
+    conversation
+  end
 
 
   def inspect

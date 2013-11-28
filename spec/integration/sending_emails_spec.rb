@@ -25,6 +25,21 @@ describe 'sending emails' do
       def expect_email!
         email = sent_emails.to(recipient.email_address).with_subject("✔ [RaceTeam] layup body carbon").first
         expect(email).to be_present
+        expect( email.header['From'].to_s        ).to eq 'Alice Neilson <alice@ucsd.covered.io>'
+        expect( email.header['Reply-To'].to_s    ).to eq 'UCSD Electric Racing <raceteam@127.0.0.1>'
+        expect( email.header['To'].to_s          ).to eq 'UCSD Electric Racing <raceteam@127.0.0.1>'
+        expect( email.header['Date'].to_s        ).to eq message.date_header.sub('-','+')
+        expect( email.header['Message-ID'].to_s  ).to eq message.message_id_header
+        expect( email.header['In-Reply-To'].to_s ).to eq message.parent_message.message_id_header
+        expect( email.header['References'].to_s  ).to eq message.references_header
+        expect( email.header['Subject'].to_s     ).to eq "✔ [RaceTeam] layup body carbon"
+
+
+        expect( email.header['List-ID'].to_s      ).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
+        expect( email.header['List-Archive'].to_s ).to eq "<#{project_conversations_url(project)}>"
+
+        expect( email.header["List-Unsubscribe"].to_s ).to match %r{/raceteam/unsubscribe/}
+        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{new_project_conversation_url(project)}>"
       end
 
       context "sync" do

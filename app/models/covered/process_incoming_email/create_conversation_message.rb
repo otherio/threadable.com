@@ -6,20 +6,24 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
 
   def call covered, incoming_email
     @covered, @incoming_email = covered, incoming_email
+    return bounce_message! if project.nil?
+    return hold_message!   if creator.nil? && parent_message.nil?
     create_message!
   end
   attr_reader :covered, :incoming_email
 
 
   let :creator do
-    user = covered.users.find_by_email_address incoming_email.sender_email_address
-    user = covered.users.find_by_email_address! incoming_email.from_email_address unless user
-    covered.current_user_id = user.id
-    covered.current_user
+    user = covered.users.find_by_email_address(incoming_email.sender_email_address)
+    user ||= covered.users.find_by_email_address(incoming_email.from_email_address)
+    if user
+      covered.current_user_id = user.id
+      covered.current_user
+    end
   end
 
   let :project do
-    creator.projects.find_by_email_address! incoming_email.recipient_email_address
+    (creator || covered).projects.find_by_email_address incoming_email.recipient_email_address
   end
 
   let :parent_message do
@@ -73,7 +77,9 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
 
   def create_message!
     conversation.messages.create!(
-      message_id_header: incoming_email.header['Message-ID'].to_s,
+      message_id_header: incoming_email.message_id_header,
+      references_header: incoming_email.references_header,
+      date_header:       incoming_email.date_header,
       subject:           subject,
       parent_message:    parent_message,
       from:              incoming_email.from_email_address,
@@ -83,6 +89,14 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
       stripped_html:     stripped_html,
       attachments:       attachments,
     )
+  end
+
+  def bounce_message!
+    # covered.emails.send_email(:bounce)
+  end
+
+  def hold_message!
+    # TODO
   end
 
   def strip_user_specific_content body

@@ -31,16 +31,27 @@ module RSpec::Support::BackgroundJobs
     run_background_jobs! until background_jobs.empty?
   end
 
-  def assert_background_job_enqueued covered, operation_name, options={}
-    job = {
-      'env' => covered.env,
-      'operation_name' => operation_name,
-      'options' => options,
-    }
+  def find_background_jobs worker, options={}
+    unknown_options = options.keys - [:args]
+    raise ArgumentError, "unknown options #{unknown_options.inspect}" unless unknown_options.empty?
 
-    job = MultiJson.decode MultiJson.encode job
+    background_jobs.find_all do |job|
+      job["class"] == worker.name or next false
+      if options.has_key? :args
+        job["args"] == options[:args] or next false
+      end
+      next true
+    end
+  end
 
-    expect(background_jobs).to include job
+  def assert_background_job_enqueued worker, options={}
+    find_background_jobs(worker, options).present? or raise RSpec::Expectations::ExpectationNotMetError,
+      "expected to find background job\n#{worker.inspect}\n#{options.inspect}\nin\n#{background_jobs.inspect}", caller(1)
+  end
+
+  def assert_background_job_not_enqueued worker, options={}
+    find_background_jobs(worker, options).empty? or raise RSpec::Expectations::ExpectationNotMetError,
+      "expected not to find background job\n#{worker.inspect}\n#{options.inspect}\nin\n#{background_jobs.inspect}", caller(1)
   end
 
 end

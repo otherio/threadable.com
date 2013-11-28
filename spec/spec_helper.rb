@@ -28,6 +28,7 @@ RSpec.configure do |config|
   config.include RSpec::Support::SentEmail
 
   config.before :each do
+    Timecop.return
     ActionMailer::Base.deliveries.clear
     SendEmailWorker.jobs.clear
   end

@@ -19,21 +19,22 @@ class Covered::Project::Conversation::Message
   delegate *%w{
     id
     unique_id
+    parent_message_id
     to_param
     from
     subject
     message_id_header
     references_header
+    date_header
     shareworthy?
     knowledge?
-    html?
-    created_at
-    persisted?
-    errors
     body_html
     body_plain
     stripped_html
     stripped_plain
+    created_at
+    persisted?
+    errors
   }, to: :message_record
 
   def body
@@ -44,6 +45,10 @@ class Covered::Project::Conversation::Message
     Body.call(stripped_html, stripped_plain)
   end
 
+  def html?
+    body.html?
+  end
+
   def root?
     parent_message.nil?
   end
@@ -51,21 +56,32 @@ class Covered::Project::Conversation::Message
 
   def as_json options=nil
     {
-      id:             id,
-      param:          to_param,
-      subject:        subject,
-      body:           body,
-      stripped_body:  stripped_body,
-      root:           root?,
-      shareworthy:    shareworthy?,
-      knowledge:      knowledge?,
-      created_at:     created_at,
+      id:                id,
+      unique_id:         unique_id,
+      parent_message_id: parent_message_id,
+      param:             to_param,
+      from:              from,
+      subject:           subject,
+      html:              html?,
+      body:              body,
+      stripped_body:     stripped_body,
+      body_html:         body_html,
+      body_plain:        body_plain,
+      stripped_html:     stripped_html,
+      stripped_plain:    stripped_plain,
+      root:              root?,
+      shareworthy:       shareworthy?,
+      knowledge:         knowledge?,
+      message_id_header: message_id_header,
+      references_header: references_header,
+      date_header:       date_header,
+      created_at:        created_at,
     }
   end
 
   def parent_message
-    return unless message_record.parent_message_id
-    @parent_message ||= conversation.messages.find_by_id!(message_record.parent_message_id)
+    return unless parent_message_id
+    @parent_message ||= conversation.messages.find_by_id!(parent_message_id)
   end
 
   def creator
@@ -90,7 +106,7 @@ class Covered::Project::Conversation::Message
   end
 
   def inspect
-    %(#<#{self.class}>)
+    %(#<#{self.class} message_id: #{id}>)
   end
 
 end

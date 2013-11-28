@@ -17,7 +17,11 @@ feature "Adding project members" do
   scenario %(being added to a project) do
     i_am 'alice@ucsd.covered.io'
     project = current_user.projects.find_by_slug! 'raceteam'
-    project.members.add({name: 'Archimedes Vanderhimen', email_address: 'archimedes@ucsd.covered.io'}, 'We need your sick driving skills!')
+    project.members.add(
+      name: 'Archimedes Vanderhimen',
+      email_address: 'archimedes@ucsd.covered.io',
+      personal_message: 'We need your sick driving skills!'
+    )
     drain_background_jobs!
 
     email = sent_emails.join_notices("UCSD Electric Racing").sent_to('archimedes@ucsd.covered.io').first
