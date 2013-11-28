@@ -100,7 +100,7 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
   end
 
   def strip_user_specific_content body
-    StripUserSpecificContentFromEmailMessageBody.call body
+    StripUserSpecificContentFromEmailMessageBody.call(body) unless body.nil?
   end
 
 end

@@ -10,7 +10,7 @@ class Message < ActiveRecord::Base
 
   before_create :touch_conversation_update_at
 
-  validates_presence_of :conversation, :body_plain, :date_header, :message_id_header
+  validates_presence_of :conversation_id, :date_header, :message_id_header
 
   def creator_id
     self.user_id
