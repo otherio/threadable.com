@@ -4,16 +4,10 @@ describe 'rspec configuration' do
 
   def transaction_should_not_be_open!
     expect(ActiveRecord::Base.connection.transaction_open?).to be_false
-  rescue
-    binding.pry
-    raise
   end
 
   def transaction_should_be_open!
     expect(ActiveRecord::Base.connection.transaction_open?).to be_true
-  rescue
-    binding.pry
-    raise
   end
 
   def fixtures_should_be_loaded!

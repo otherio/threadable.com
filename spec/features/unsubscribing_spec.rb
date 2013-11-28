@@ -5,7 +5,6 @@ feature "Unsubscribing" do
   # scenario "Users who are not web enabled should be able web enable their account" do
   #   i_am 'yan@ucsd.covered.io'
   #   visit project_unsubscribe_url_for 'raceteam'
-  #   binding.pry
   #   expect(page).to have_text "We just unsubscribed Alice Neilson from UCSD Electric Racing"
   #   click_link "click here to resubscribe!"
   #   expect(page).to have_text "We just subscribed Alice Neilson to UCSD Electric Racing"
