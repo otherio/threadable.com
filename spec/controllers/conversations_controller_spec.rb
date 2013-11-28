@@ -98,7 +98,11 @@ describe ConversationsController do
         if conversation.persisted?
           messages_double = double(:messages)
           expect(conversation).to receive(:messages).and_return(messages_double)
-          expect(messages_double).to receive(:create).with(html: body, attachments: attachments).and_return(message)
+          expect(messages_double).to receive(:create).with(
+            send_email_to_message_creator: true,
+            html: body,
+            attachments: attachments
+          ).and_return(message)
         end
       end
 
