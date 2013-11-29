@@ -84,19 +84,6 @@ describe Project::MembersController do
 
     end
 
-    context "when adding the member raises a Covered::UserAlreadyAMemberOfProjectError" do
-      before do
-        expect_any_instance_of(Covered::Project::Members).to receive(:add).and_raise(Covered::UserAlreadyAMemberOfProjectError)
-      end
-
-      it "should render an error in json with an unprocessable entity status" do
-        post :create, valid_params
-        expect(response.status).to eq 422
-        expect(response.body).to eq '{"error":"user is already a member"}'
-      end
-
-    end
-
   end
 
 end

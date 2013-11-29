@@ -42,6 +42,10 @@ class Covered::Project::Members
     !!scope.where(:user_id => member.user_id).exists?
   end
 
+  def new
+    member_for scope.new(user: ::User.new)
+  end
+
   # add(user: user, send_join_notice: false)
   # add(user: user, personal_message: "welcome!")
   # add(name: 'Steve Waz', email_address: "steve@waz.io", personal_message: "welcome!")
@@ -49,28 +53,28 @@ class Covered::Project::Members
     send_join_notice = options.fetch(:send_join_notice){ true }
 
     user_id = case
+    when options.key?(:user_id)
+      covered.users.exists! options[:user_id]
     when options.key?(:email_address)
       (
         covered.users.find_by_email_address(options[:email_address]) or
         covered.users.create!(name: options[:name], email_address: options[:email_address])
       ).id
-    when options.key?(:user_id)
-      covered.users.exists! options[:user_id]
     when options[:user].respond_to?(:user_id)
       options[:user].user_id
     else
       raise ArgumentError, "unable to determine user id from #{options.inspect}"
     end
 
-    member = member_for scope.create!(user_id: user_id)
+    unless member = scope.where(user_id: user_id).first
+      member = scope.create!(user_id: user_id, gets_email: options[:gets_email] != false)
 
-    if send_join_notice
-      covered.emails.send_email_async(:join_notice, project.id, user_id, options[:personal_message])
+      if send_join_notice
+        covered.emails.send_email_async(:join_notice, project.id, user_id, options[:personal_message])
+      end
     end
 
-    member
-  rescue ActiveRecord::RecordNotUnique
-    raise Covered::UserAlreadyAMemberOfProjectError
+    member_for member
   end
 
   # remove(user: member)
@@ -78,7 +82,7 @@ class Covered::Project::Members
   # remove(user_id: user_id)
   def remove options
     if options.key?(:user) && options[:user].respond_to?(:project_membership_id)
-      scope.delete(project_membership_id)
+      scope.delete options[:user].project_membership_id
       return self
     end
 
@@ -88,7 +92,6 @@ class Covered::Project::Members
     scope.where(user_id: user_id).delete_all
     self
   end
-
 
 
   def as_json options=nil

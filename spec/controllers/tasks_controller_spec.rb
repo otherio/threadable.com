@@ -2,50 +2,48 @@ require 'spec_helper'
 
 describe TasksController do
 
-  # let(:project){ find_project('raceteam') }
-
   when_not_signed_in do
 
     describe "GET index" do
-      it "should redirect me to the sign in page" do
+      it 'should render a 404' do
         get :index, project_id: 'raceteam'
-        expect(response).to redirect_to sign_in_path(r: request.url)
+        expect(response).to render_template "errors/error_404"
       end
     end
 
     describe "POST create" do
-      it "should redirect me to the sign in page" do
+      it 'should render a 404' do
         post :create, project_id: 'raceteam'
-        expect(response).to redirect_to sign_in_path(r: request.url)
+        expect(response).to render_template "errors/error_404"
       end
     end
 
     describe "PATCH update" do
-      it "should redirect me to the sign in page" do
+      it 'should render a 404' do
         patch :update, project_id: 'raceteam', id: 1
-        expect(response).to redirect_to sign_in_path(r: request.url)
+        expect(response).to render_template "errors/error_404"
       end
     end
 
     describe "PUT update" do
-      it "should redirect me to the sign in page" do
+      it 'should render a 404' do
         patch :update, project_id: 'raceteam', id: 1
-        expect(response).to redirect_to sign_in_path(r: request.url)
+        expect(response).to render_template "errors/error_404"
       end
     end
 
     %w{ill_do_it remove_me mark_as_done mark_as_undone}.each do |action|
       describe "GET #{action}" do
-        it "should redirect me to the sign in page" do
+        it 'should render a 404' do
           get action, project_id: 'raceteam', task_id: 1
-          expect(response).to redirect_to sign_in_path(r: request.url)
+          expect(response).to render_template "errors/error_404"
         end
       end
 
       describe "POST #{action}" do
-        it "should redirect me to the sign in page" do
+        it 'should render a 404' do
           post action, project_id: 'raceteam', task_id: 1
-          expect(response).to redirect_to sign_in_path(r: request.url)
+          expect(response).to render_template "errors/error_404"
         end
       end
     end
@@ -101,7 +99,7 @@ describe TasksController do
       end
 
       shared_context "when the task[subject] param is missing" do
-        it "should raise some error" do
+        it "should raise a ActionController::ParameterMissing error" do
           expect{ request!               }.to raise_error ActionController::ParameterMissing, 'param not found: task'
           expect{ request! task: {foo:1} }.to raise_error ActionController::ParameterMissing, 'param not found: subject'
         end

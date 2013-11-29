@@ -3,6 +3,7 @@ class Covered::Project
   include Let
   extend ActiveSupport::Autoload
 
+  autoload :Update
   autoload :Members
   autoload :Member
   autoload :Conversations
@@ -27,6 +28,7 @@ class Covered::Project
     name
     short_name
     slug
+    email_address_username
     subject_tag
     description
     errors
@@ -71,15 +73,13 @@ class Covered::Project
     }
   end
 
-
   def leave!
     return unless covered.current_user_id
     project_record.memberships.where(user_id: covered.current_user_id).first.try(:delete)
   end
 
-
   def update attributes
-    project_record.update_attributes(attributes)
+    Update.call(self, attributes)
   end
 
   def inspect

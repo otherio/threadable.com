@@ -5,6 +5,8 @@ class ProjectMembership < ActiveRecord::Base
 
   scope :that_get_email, ->{ where(gets_email: true) }
 
+  validates_inclusion_of :gets_email, :in => [ true, false ]
+
   def subscribed?
     gets_email?
   end

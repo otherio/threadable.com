@@ -2,145 +2,63 @@ require 'spec_helper'
 
 describe Task::DoersController do
 
-  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+  when_not_signed_in do
 
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
-  let(:task   ){ project.tasks.find_by_slug! 'layup-body-carbon' }
-
-  describe "POST create" do
-
-    let(:doer_id){ member.user_id }
-
-    def params
-      {
-        project_id: project.to_param,
-        task_id: task.to_param,
-        doer_id: doer_id,
-      }
-    end
-
-    def create! params={}
-      post :create, self.params.merge(params)
-    end
-
-    context "when the user is a member of the project and not a doer of the task" do
-      let(:member) { project.members.find_by_user_slug!('alice-neilson') }
-
-      it "adds the user as a member to the task and redirects back to the task show page" do
-        expect{ expect{ create! }.to change{ task.events.count }.by(1) }.to change{ task.doers.count }.by(1)
-        expect(task.events.newest.as_json).to eq(
-          type:     'added doer',
-          actor_id: current_user.id,
-          doer_id:  member.id,
-          task_id:  task.id,
-        )
-        expect(response).to redirect_to project_conversation_url(project, task)
-      end
-
-      context "when format is json" do
-        it "returns the member as json" do
-          create!(format: :json)
-          expect(response.response_code).to eq 201
-          expect(response.body).to eq member.to_json
-        end
+    describe 'PUT :create' do
+      it 'should render a 404' do
+        post :add, project_id: 'foo', task_id: 'bar'
+        expect(response).to render_template "errors/error_404"
       end
     end
 
-    context "when the user doesn't exist" do
-      let(:doer_id){ 2837283718 }
-      it "raises a not found error" do
-        expect{ create! }.to raise_error(Covered::RecordNotFound)
-      end
-    end
-
-    context "when the user is not a member of the project" do
-      let(:doer_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
-      it "raises a not found error" do
-        expect{ create! }.to raise_error(Covered::RecordNotFound)
-      end
-    end
-
-    context "when the user is already a doer of this task" do
-      let(:member){ project.members.find_by_user_slug!('tom-canver') }
-      it "it looks as if you've added them" do
-        expect{ expect{ create! }.to change{ task.events.count }.by(0) }.to change{ task.doers.count }.by(0)
-        expect(response).to redirect_to project_conversation_url(project, task)
-      end
-      context "when format is json" do
-        it "returns the member as json" do
-          create!(format: :json)
-          expect(response.response_code).to eq 201
-          expect(response.body).to eq member.to_json
-        end
+    describe 'DELETE :destroy' do
+      it 'should render a 404' do
+        delete :remove, project_id: 'foo', task_id: 'bar', user_id: 44
+        expect(response).to render_template "errors/error_404"
       end
     end
 
   end
 
-  describe "DELETE destroy" do
+  when_signed_in_as 'tom@ucsd.covered.io' do
 
-    let(:doer_id){ member.user_id }
+    let(:project){ double :project, tasks: double(:tasks), members: double(:members), to_param: 'raceteam' }
+    let(:task){ double :task, doers: double(:doers), to_param: 'layup-body-carbon' }
+    let(:user_id){ 489 }
+    let(:member){ double :member, name: 'Bobby Fisher', to_json: "MEMBER AS JSON" }
 
-    def params
-      {
-        project_id: project.to_param,
-        task_id: task.to_param,
-        id: doer_id,
-      }
+    before do
+      expect(current_user.projects).to receive(:find_by_slug!).with('raceteam').and_return(project)
+      expect(project.tasks).to receive(:find_by_slug!).with('layup-body-carbon').and_return(task)
+      expect(project.members).to receive(:find_by_user_id!).with(user_id).and_return(member)
     end
 
-    def destroy! params={}
-      delete :destroy, self.params.merge(params)
-    end
-
-    context "when the user is a member of the project and a doer of the task" do
-      let(:member){ project.members.find_by_user_slug!('tom-canver') }
-
-      it "removes the user from the task's doers and redirects back to the task show page" do
-        expect{ expect{ destroy! }.to change{ task.events.count }.by(1) }.to change{ task.doers.count }.by(-1)
-        expect(task.events.newest.as_json).to eq(
-          type:     'removed doer',
-          actor_id: current_user.id,
-          doer_id:  member.id,
-          task_id:  task.id,
-        )
-        expect(response).to redirect_to project_conversation_url(project, task)
+    describe 'PUT :create' do
+      before{ expect(task.doers).to receive(:add).with(member) }
+      it 'should add the user as a doer of the task' do
+        post :add, project_id: 'raceteam', task_id: 'layup-body-carbon', user_id: user_id
+        expect(response).to redirect_to project_conversation_url('raceteam', 'layup-body-carbon')
       end
-
       context "when format is json" do
-        it "returns the member as json" do
-          destroy!(format: :json)
-          expect(response).to be_ok
-          expect(response.body).to eq member.to_json
+        it 'should remove the user as a doer of the task' do
+          post :add, project_id: 'raceteam', task_id: 'layup-body-carbon', user_id: user_id, format: :json
+          expect(response.status).to eq 201
+          expect(response.body).to eq "MEMBER AS JSON"
         end
       end
     end
 
-    context "when the user doesn't exist" do
-      let(:doer_id){ 2837283718 }
-      it "raises a not found error" do
-        expect{ destroy! }.to raise_error(Covered::RecordNotFound)
-      end
-    end
-
-    context "when the user is not a member of the project" do
-      let(:doer_id) { find_user_by_email_address('lilith@sfhealth.example.com').id }
-      it "raises a not found error" do
-        expect{ destroy! }.to raise_error(Covered::RecordNotFound)
-      end
-    end
-
-    context "when the user is not a doer of this task" do
-      let(:member) { project.members.find_by_user_slug!('alice-neilson') }
-      it "it looks as if you've removed them" do
-        expect{ expect{ destroy! }.to change{ task.events.count }.by(0) }.to change{ task.doers.count }.by(0)
-        expect(response).to redirect_to project_conversation_url(project, task)
+    describe 'DELETE :destroy' do
+      before{ expect(task.doers).to receive(:remove).with(member) }
+      it 'should remove the user as a doer of the task' do
+        delete :remove, project_id: 'raceteam', task_id: 'layup-body-carbon', user_id: user_id
+        expect(response).to redirect_to project_conversation_url('raceteam', 'layup-body-carbon')
       end
       context "when format is json" do
-        it "returns the member as json" do
-          destroy!(format: :json)
-          expect(response.response_code).to eq 200
-          expect(response.body).to eq member.to_json
+        it 'should remove the user as a doer of the task' do
+          delete :remove, project_id: 'raceteam', task_id: 'layup-body-carbon', user_id: user_id, format: :json
+          expect(response.status).to eq 200
+          expect(response.body).to eq "MEMBER AS JSON"
         end
       end
     end

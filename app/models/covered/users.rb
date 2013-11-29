@@ -5,6 +5,10 @@ class Covered::Users
   end
   attr_reader :covered
 
+  def all
+    ::User.all.includes(:email_addresses).map{ |project| user_for project }
+  end
+
   def find_by_email_address email_address
     user_for (::User.find_by_email_address(email_address) or return)
   end

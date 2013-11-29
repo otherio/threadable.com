@@ -4,7 +4,17 @@ Covered::Application.routes.draw do
     get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'
   end
 
+  get '/admin' => 'admin#show'
   namespace :admin do
+    post   'projects/:project_id/members'          => 'project/members#add',    as: 'add_project_member'
+    patch  'projects/:project_id/members/:user_id' => 'project/members#update', as: 'update_project_member'
+    delete 'projects/:project_id/members/:user_id' => 'project/members#remove', as: 'remove_project_member'
+    get    'projects'          => 'projects#index',   as: 'projects'
+    post   'projects'          => 'projects#create'
+    get    'projects/new'      => 'projects#new',     as: 'new_project'
+    get    'projects/:id/edit' => 'projects#edit',    as: 'edit_project'
+    patch  'projects/:id'      => 'projects#update',  as: 'project'
+    delete 'projects/:id'      => 'projects#destroy'
     require 'sidekiq/web'
     mount Sidekiq::Web => '/background_jobs'
     mount MailPreview => '/mail_preview' if defined?(MailView)
@@ -44,7 +54,8 @@ Covered::Application.routes.draw do
     # resources :invites, :only => [:create]
 
     resources :tasks, :only => [:index, :create, :update] do
-      resources :doers, :only => [:create, :destroy], controller: 'task/doers'
+      post   'doers'          => 'task/doers#add',    as: 'doers'
+      delete 'doers/:user_id' => 'task/doers#remove', as: 'doer'
 
       match 'ill_do_it', via: [:get, :post]
       match 'remove_me', via: [:get, :post]

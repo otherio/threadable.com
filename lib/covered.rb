@@ -7,7 +7,6 @@ module Covered
   RecordInvalid       = Class.new(CoveredError)
   CurrentUserNotFound = Class.new(RecordNotFound)
   AuthorizationError  = Class.new(CoveredError)
-  UserAlreadyAMemberOfProjectError = Class.new(CoveredError)
 
   # Utilities
   autoload :Config

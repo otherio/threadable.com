@@ -24,6 +24,7 @@ class Covered::User
     name
     email_address
     slug
+    admin?
     errors
     new_record?
     persisted?

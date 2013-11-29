@@ -79,7 +79,6 @@ describe Covered, :type => :covered do
       Covered::RecordInvalid
       Covered::CurrentUserNotFound
       Covered::AuthorizationError
-      Covered::UserAlreadyAMemberOfProjectError
       Covered::CurrentUser
       Covered::Users
       Covered::User

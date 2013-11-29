@@ -19,13 +19,17 @@ class Project::MembersController < ApplicationController
 
     member_params[:user_id]          = member_params.delete(:id)      if member_params.key? :id
     member_params[:personal_message] = member_params.delete(:message) if member_params.key? :message
-    member = project.members.add(member_params)
 
+    if member_params[:email_address]
+      user = covered.users.find_by_email_address(member_params[:email_address])
+      if user && project.members.include?(user)
+        return render json: {error: "user is already a member"}, status: :unprocessable_entity
+      end
+    end
+    member = project.members.add(member_params)
     render json: member, status: :created
   rescue Covered::RecordInvalid
     render json: {error: "unable to create user"}, status: :unprocessable_entity
-  rescue Covered::UserAlreadyAMemberOfProjectError
-    render json: {error: "user is already a member"}, status: :unprocessable_entity
   end
 
   # DELETE /projects/make-a-tank/members.json

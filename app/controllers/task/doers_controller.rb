@@ -2,10 +2,8 @@ class Task::DoersController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 
-  # POST /conversations/1/add_doer
-  # POST /conversations/1/add_doer.json
-  def create
-    member = project.members.find_by_user_id!(params[:doer_id])
+  # POST /:project_id/tasks/:task_id/doers
+  def add
     task.doers.add(member)
 
     respond_to do |format|
@@ -14,8 +12,8 @@ class Task::DoersController < ApplicationController
     end
   end
 
-  def destroy
-    member = project.members.find_by_user_id!(params[:id])
+  # DELETE /:project_id/tasks/:task_id/doers/:user_id
+  def remove
     task.doers.remove(member)
 
     respond_to do |format|
@@ -32,6 +30,10 @@ class Task::DoersController < ApplicationController
 
   def task
     @task ||= project.tasks.find_by_slug!(params[:task_id])
+  end
+
+  def member
+    @member ||= project.members.find_by_user_id!(params.require(:user_id).to_i)
   end
 
 end

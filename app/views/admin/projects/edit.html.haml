@@ -1,0 +1,60 @@
+%h1 Edit project
+
+.edit-project-form
+  = render 'form'
+
+%h1 Project members
+
+%table.members.table.table-bordered
+  %thead
+    %tr
+      %th Name
+      %th Email sddress
+      %th Gets email?
+      %th Actions
+  %tbody
+    - if @members.present?
+      - @members.each do |member|
+        %tr
+          %td= member.name
+          %td= member.email_address
+          %td= member.gets_email? ? 'yes' : 'no'
+          %td= link_to 'remove', admin_remove_project_member_path(@project, member), :method => :delete, :data => { :confirm => 'Are you sure?' }
+    - else
+      %tr
+        %td{colspan: 2} This project has no members.
+
+- option_inputs = capture do
+  %label
+    %input{type: 'hidden', name:'user[gets_email]', value: "false"}
+    %input{type: 'checkbox', name:'user[gets_email]', checked: true, value: "true"}
+    Gets email?
+  %label
+    %input{type: 'hidden', name:'user[send_join_notice]', value: "false"}
+    %input{type: 'checkbox', name:'user[send_join_notice]', checked: true, value: "true"}
+    Send join notice?
+
+.add-existing-member-form
+  %h3 Add existing member
+  = form_tag admin_add_project_member_path(@project) do
+    .inputs
+      %select{name: 'user[id]'}
+        %option{selected: true}
+        - @all_users.each do |user|
+          - next if @members.map(&:id).include? user.id
+          %option{value: user.id}= user.formatted_email_address
+      = option_inputs
+    .actions
+      %input{type: 'submit', value: 'Add Member', class: 'btn btn-primary'}
+
+
+.add-new-member-form
+  %h3 Add new member
+  = simple_form_for [:admin, @project.members.new], url: admin_add_project_member_path(@project) do |f|
+    = f.error_notification
+    .inputs
+      = f.input :name, required: true
+      = f.input :email_address, as: :string, required: true
+      = option_inputs
+    .actions
+      = f.button :submit, value: 'Add Member', class: 'btn btn-primary'

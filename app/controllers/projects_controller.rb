@@ -2,7 +2,6 @@ class ProjectsController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 
-
   # GET /make-a-tank
   # GET /make-a-tank.json
   def show

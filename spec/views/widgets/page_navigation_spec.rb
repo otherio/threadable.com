@@ -25,7 +25,21 @@ describe "page_navigation" do
   end
 
   context "when given a current_user" do
-    let(:current_user){ double(:current_user, name: 'Jared', projects: projects) }
+    let(:current_user){ double(:current_user, name: 'Jared', projects: projects, admin?: false) }
+
+    context "and the current_user is an admin" do
+      let(:current_user){ double(:current_user, name: 'Jared', projects: projects, admin?: true) }
+      it "should have an admin link" do
+        expect( html.css(%(a[href="#{admin_path}"])) ).to be_present
+      end
+    end
+
+    context "and the current_user is not an admin" do
+      let(:current_user){ double(:current_user, name: 'Jared', projects: projects, admin?: false) }
+      it "should have an admin link" do
+        expect( html.css(%(a[href="#{admin_path}"])) ).to_not be_present
+      end
+    end
 
     context "and that current_user has projects" do
       let(:projects){

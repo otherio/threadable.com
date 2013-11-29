@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 20131125205739) do
     t.string   "avatar_url"
     t.string   "provider"
     t.string   "uid"
+    t.boolean  "admin"
   end
 
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

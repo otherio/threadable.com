@@ -9,9 +9,9 @@ describe EmailAddress do
   it { should validate_uniqueness_of :address }
 
   it "should validate that there is only one primary email address for any one user" do
-    user = User.create!(name: 'Jared Grippe', email_address: 'jared@other.io')
+    user = User.create!(name: 'Poop Popsicle', email_address: 'poop@popsicle.io')
     user.email_addresses.first.should be_primary
-    invalid_email = user.email_addresses.create(address: 'jared@deadlyicon.com', primary: true)
+    invalid_email = user.email_addresses.create(address: 'poop-popsicle@gmail.com', primary: true)
     invalid_email.errors.messages.should == {base: ["there can be only one primary email address"] }
   end
 

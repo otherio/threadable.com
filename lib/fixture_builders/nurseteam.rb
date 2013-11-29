@@ -1,4 +1,3 @@
-# User.delete_all; EmailAddress.delete_all; Project.delete_all
 FixtureBuilder.build do
 
   # Amy signs up (we do this since this fixutre might run first)

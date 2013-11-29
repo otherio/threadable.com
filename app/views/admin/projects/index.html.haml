@@ -1,0 +1,15 @@
+%h1 Projects
+
+.pull-right
+  = link_to 'New Project', admin_new_project_path
+
+
+%table.projects.table
+  %thead
+    %th Name
+    %th
+  %tbody
+    - @projects.each do |project|
+      %tr
+        %td= link_to project.name, admin_edit_project_path(project)
+        %td= link_to 'destroy', admin_project_path(project), method: :delete, confirm: 'Are you sure?'

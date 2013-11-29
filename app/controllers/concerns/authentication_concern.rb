@@ -38,6 +38,10 @@ module AuthenticationConcern
     current_user_id.present?
   end
 
+  def admin?
+    signed_in? && current_user.admin?
+  end
+
   def signup_enabled?
     Rails.configuration.signup_enabled
   end
@@ -48,6 +52,10 @@ module AuthenticationConcern
 
   def require_user_be_signed_in!
     unauthorized! unless signed_in?
+  end
+
+  def require_user_be_admin!
+    unauthorized! unless admin?
   end
 
   def require_user_not_be_signed_in!

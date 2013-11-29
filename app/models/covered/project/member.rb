@@ -23,6 +23,7 @@ class Covered::Project::Member < Covered::User
   }, to: :user_record
 
   delegate *%w{
+    gets_email?
     subscribed?
     subscribe!
     unsubscribe!

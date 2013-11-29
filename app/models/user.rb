@@ -54,7 +54,9 @@ class User < ActiveRecord::Base
   end
 
   def email_address
-    @email_address ||= email_addresses.primary.try(:address)
+    @email_address ||= email_addresses.loaded? ?
+      email_addresses.find(&:primary?).try(:address) :
+      email_addresses.primary.try(:address)
   end
 
   def avatar_url
