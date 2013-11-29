@@ -269,6 +269,10 @@ describe "processing incoming emails" do
         include_context 'the sender is not a project member'
         include_examples 'creates a new message without a creator'
         include_examples 'sends emails to all project members that get email'
+        context 'but the from address is a project member' do
+          let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
+          include_examples 'creates a new message with a creator'
+        end
       end
     end
 
@@ -285,9 +289,6 @@ describe "processing incoming emails" do
         include_context 'the sender is not a project member'
         include_examples 'creates a new message without a creator'
         include_examples 'sends emails to all project members that get email'
-        it "what works?" do
-          binding.pry
-        end
       end
     end
 

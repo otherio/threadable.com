@@ -14,8 +14,10 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
 
 
   let :creator do
-    user = covered.users.find_by_email_address(incoming_email.sender_email_address)
-    user ||= covered.users.find_by_email_address(incoming_email.from_email_address)
+    user = nil
+    incoming_email.from_email_addresses.find do |email_address|
+      user = covered.users.find_by_email_address(email_address)
+    end
     if user
       covered.current_user_id = user.id
       covered.current_user
