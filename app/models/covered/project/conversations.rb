@@ -15,6 +15,10 @@ class Covered::Project::Conversations
     scope.map{ |conversation| conversation_for conversation }
   end
 
+  def all_with_participants
+    scope.includes(:participants).map{ |conversation| conversation_for conversation }
+  end
+
   def find_by_id id
     conversation_for (scope.where(id: id).first or return)
   end

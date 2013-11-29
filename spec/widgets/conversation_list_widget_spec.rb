@@ -3,13 +3,9 @@ require 'spec_helper'
 describe ConversationListWidget do
 
   let(:project_conversations) { double(:project_conversations) }
-  let(:project)               { double(:project, conversations: project_conversations) }
+  let(:project)               { double(:project, conversations: double(:conversations, all_with_participants: project_conversations) ) }
   let(:custom_conversations)  { double(:custom_conversations) }
   let(:arguments)             { [project] }
-
-  before do
-    project_conversations.stub(:includes => project_conversations)
-  end
 
   def html_options
     {class: 'custom_class'}

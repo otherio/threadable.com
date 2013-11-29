@@ -1,3 +1,5 @@
-%div= render_widget :tasks_sidebar, User.first.projects.last
+- projects = covered.projects.all
 
-%div= render_widget :tasks_sidebar, User.last.projects.last
+%div= render_widget :tasks_sidebar, projects.first
+
+%div= render_widget :tasks_sidebar, projects.last
