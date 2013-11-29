@@ -13,6 +13,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
       recipient_email_address: recipient_email_address,
       sender_email_address:    sender_email_address,
       from_email_address:      from_email_address,
+      from_email_addresses:    from_email_addresses,
       subject:                 subject,
       body_plain:              body_plain,
       body_html:               body_html,
@@ -29,6 +30,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:recipient_email_address) { 'poopatron@covered.io' }
   let(:sender_email_address)    { 'smelly@poopatron.com' }
   let(:from_email_address)      { 'fromguy@poopatron.com' }
+  let(:from_email_addresses)    { [sender_email_address, from_email_address] }
   let(:subject)                 { 'we need coffee' }
   let(:body_html)               { "<p>hey people,</p>\n<p>Who drank all the coffee!?</p><blockquote>the previous message</blockquote>"}
   let(:body_plain)              { "hey people,\n\nWho drank all the coffee!?\n\n> the previous message" }
