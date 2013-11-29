@@ -1,27 +1,36 @@
 module RescueFromExceptionsConcern
   extend ActiveSupport::Concern
 
-  NOT_FOUND_EXCEPTIONS = [
-    ::ActionController::RoutingError,
-    ::ActionController::UnknownController,
-    ::AbstractController::ActionNotFound,
-    ::ActiveRecord::RecordNotFound,
-  ]
-
-
   included do
-    unless Rails.application.config.consider_all_requests_local
-      rescue_from Exception, with: :rescue_from_exception
-    end
+    rescue_from Exception, with: :rescue_from_exception
   end
 
   private
 
+  NOT_FOUND_EXCEPTION = [
+    ActionController::RoutingError,
+    ActionController::UnknownController,
+    AbstractController::ActionNotFound,
+    ActiveRecord::RecordNotFound,
+    Covered::RecordNotFound,
+    Covered::AuthorizationError,
+  ].freeze
+
   def rescue_from_exception exception
-    status = case exception
-    when ActiveRecord::RecordNotFound; 404
-    else; 500
+    logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
+    case exception
+    when Covered::CurrentUserNotFound
+      sign_out!
+      render_error_page 404
+    when *NOT_FOUND_EXCEPTION
+      render_error_page 404
+    else
+      raise exception if Rails.application.config.consider_all_requests_local
+      render_error_page 500
     end
+  end
+
+  def render_error_page status
     respond_to do |format|
       format.html { render template: "errors/error_#{status}", layout: 'layouts/error', status: status }
       format.all { render nothing: true, status: status }

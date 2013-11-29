@@ -3,9 +3,7 @@ module AuthenticationConcern
   extend ActiveSupport::Concern
 
   included do
-    helper_method :current_user, :signup_enabled?
-    rescue_from Covered::AuthorizationError,  with: :rescue_from_authorization_error
-    rescue_from Covered::CurrentUserNotFound, with: :rescue_from_current_user_not_found
+    helper_method :covered, :current_user, :signup_enabled?
   end
 
   def current_user_id
@@ -17,7 +15,7 @@ module AuthenticationConcern
   end
 
   def covered
-    @covered ||= Covered.new(current_user_id: current_user_id, host: request.host, port: request.port, protocol: clean_protocol)
+    @covered ||= Covered.new(current_user_id: current_user_id, host: request.host, port: request.port, protocol: request_protocol)
   end
 
   def sign_in! user, remember_me: false
@@ -59,7 +57,7 @@ module AuthenticationConcern
   end
 
   def require_user_not_be_signed_in!
-    redirect_to root_path if signed_in?
+    unauthorized! if signed_in?
   end
 
   def decrypt_remember_me_cookie!
@@ -74,26 +72,7 @@ module AuthenticationConcern
     sign_out! if signed_in?
   end
 
-  protected
-
-  def rescue_from_authorization_error exception
-    logger.debug "#{exception.class}, #{exception.message}"
-    if signed_in?
-      flash[:error] = exception.message || 'You are not authorized to do that.'
-      redirect_to root_path
-    else
-      redirect_to sign_in_path(r:request.url)
-    end
-  end
-
-  def rescue_from_current_user_not_found exception
-    sign_out!
-    unauthorized!
-  end
-
-  private
-
-  def clean_protocol
+  def request_protocol
     request.protocol.gsub(%r{://}, '')
   end
 
