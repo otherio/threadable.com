@@ -98,9 +98,7 @@ class Covered::Project::Conversation::Messages::Create < MethodObject
   end
 
   def create_attachments!
-    @message_record.attachments = Array(@options.attachments).map do |attachment|
-      ::Attachment.create!(attachment)
-    end
+    @message_record.attachments = @options.attachments if @options.attachments.present?
   end
 
   def send_emails!
