@@ -80,7 +80,7 @@ feature "Admin projects CRUD" do
       click_on 'Add Member'
     end
 
-    expect(members_table).to eq [
+    expect(members_table).to match_array [
       ["Nicole Aptekar", "nicole@other.io", "yes"],
       ["Ian Baker",      "ian@other.io",    "no" ],
     ]

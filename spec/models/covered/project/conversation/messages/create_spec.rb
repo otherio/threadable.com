@@ -18,8 +18,6 @@ describe Covered::Project::Conversation::Messages::Create do
     Mail.stub random_tag: '529695e5b8b3a_13b723fe73985e6d876688'
     Timecop.freeze Time.parse('October 26th 1985 1:22 AM PDT')
 
-    expect(message_record).to receive(:attachments=)
-
     expect(Covered::Project::Conversation::Message).to receive(:new).
       with(conversation, message_record).and_return(message)
   end
