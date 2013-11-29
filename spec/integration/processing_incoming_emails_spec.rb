@@ -157,7 +157,7 @@ describe "processing incoming emails" do
     let(:expected_message_count_change){ 1 }
   end
 
-  shared_examples 'it bounced the message' do
+  shared_examples 'it bounces the message' do
     let(:expected_conversation_count_change){ 0 }
     let(:expected_message_count_change){ 0 }
     it "bounces the message" do
@@ -219,22 +219,10 @@ describe "processing incoming emails" do
     end
   end
 
-  shared_examples 'it creates a message in an existing conversation' do
+  shared_context 'it creates a message in an existing conversation' do
     let(:message){ Message.last }
     let(:expected_conversation_count_change){ 0 }
     let(:expected_message_count_change){ 1 }
-
-    context "and the sender is a project member" do
-      include_context 'the sender is a project member'
-      include_examples 'creates a new message with a creator'
-      include_examples 'sends emails to all project members that get email'
-    end
-
-    context "and the sender is not a project member" do
-      include_context 'the sender is not a project member'
-      include_examples 'creates a new message without a creator'
-      include_examples 'sends emails to all project members that get email'
-    end
   end
 
   shared_examples 'creates a new conversation' do
@@ -262,7 +250,7 @@ describe "processing incoming emails" do
 
   context "when the project is not found" do
     include_context 'the email recipient is not a valid project'
-    include_examples 'it bounced the message'
+    include_examples 'it bounces the message'
   end
 
   context "when the project is found" do
@@ -270,12 +258,37 @@ describe "processing incoming emails" do
 
     context "and a parent message is found via the In-Reply-To header" do
       include_context "a parent message can be found via the In-Reply-To header"
-      include_examples 'it creates a message in an existing conversation'
+      include_context 'it creates a message in an existing conversation'
+      context "and the sender is a project member" do
+        include_context 'the sender is a project member'
+        include_examples 'creates a new message with a creator'
+        include_examples 'sends emails to all project members that get email'
+      end
+
+      context "and the sender is not a project member" do
+        include_context 'the sender is not a project member'
+        include_examples 'creates a new message without a creator'
+        include_examples 'sends emails to all project members that get email'
+      end
     end
 
     context "and the parent message is found via the References header" do
       include_context "a parent message can be found via the References header"
-      include_examples 'it creates a message in an existing conversation'
+      include_context 'it creates a message in an existing conversation'
+      context "and the sender is a project member" do
+        include_context 'the sender is a project member'
+        include_examples 'creates a new message with a creator'
+        include_examples 'sends emails to all project members that get email'
+      end
+
+      context "and the sender is not a project member" do
+        include_context 'the sender is not a project member'
+        include_examples 'creates a new message without a creator'
+        include_examples 'sends emails to all project members that get email'
+        it "what works?" do
+          binding.pry
+        end
+      end
     end
 
     context "and the parent message is not found" do
@@ -288,7 +301,7 @@ describe "processing incoming emails" do
 
       context "and the sender is not a project member" do
         include_context 'the sender is not a project member'
-        include_examples 'it bounced the message'
+        include_examples 'it bounces the message'
       end
 
       # include_context "when this message has CC recipients"
