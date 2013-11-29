@@ -41,10 +41,6 @@ module ApplicationHelper
     end
   end
 
-  def html_unescape(string)
-    CGI.unescapeHTML("#{string}").html_safe
-  end
-
   def clean_html(html)
     Sanitize.clean(html.to_s, Sanitize::Config::RELAXED).html_safe
   end
