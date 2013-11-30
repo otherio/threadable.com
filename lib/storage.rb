@@ -14,6 +14,10 @@ module Storage
     @local_root ||= Rails.root.join('public')
   end
 
+  def self.local_path
+    Pathname("/storage/#{config[:local]}")
+  end
+
   def self.service
     @service ||= if local?
       Fog::Storage.new({
@@ -32,7 +36,7 @@ module Storage
 
   def self.directory
     @directory ||= if local?
-      service.directories.create(key: "storage/#{config[:local]}")
+      service.directories.create(key: local_path.to_s)
     else
       service.directories.get(config[:bucket_name])
     end
@@ -40,6 +44,10 @@ module Storage
 
   def self.files
     directory.files
+  end
+
+  def self.pathname_for file
+    local_root.join URI.decode(file.public_url)[1..-1]
   end
 
 end

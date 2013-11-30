@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe Attachment do
+describe Attachment, fixtures: false do
+
+
 
   let(:mimetype){ "text/plain" }
 
@@ -25,29 +27,48 @@ describe Attachment do
     let(:uploadable_file){ double(:uploadable_file) }
     let(:attachment){ double(:attachment) }
 
-    it "should create an attachment" do
+    context "when Storage.local? is true " do
+      before{ Storage.stub local?: false }
+      it "uploads the attachment to file picker" do
 
-      StringIO.should_receive(:new).with(file_body_decoded).and_return(string_io_body)
-      UploadIO.should_receive(:new).with(string_io_body, 'image/jpeg', 'cat.jpg').and_return(uploadable_file)
+        StringIO.should_receive(:new).with(file_body_decoded).and_return(string_io_body)
+        UploadIO.should_receive(:new).with(string_io_body, 'image/jpeg', 'cat.jpg').and_return(uploadable_file)
 
-      filepicker_data = {
-        "url"      => "filepicker_data[url]",
-        "filename" => "filepicker_data[filename]",
-        "type"     => "filepicker_data[type]",
-        "size"     => "filepicker_data[size]",
-      }
+        filepicker_data = {
+          "url"      => "filepicker_data[url]",
+          "filename" => "filepicker_data[filename]",
+          "type"     => "filepicker_data[type]",
+          "size"     => "filepicker_data[size]",
+        }
 
-      FilepickerUploader.should_receive(:upload).with(uploadable_file).and_return(filepicker_data)
+        FilepickerUploader.should_receive(:upload).with(uploadable_file).and_return(filepicker_data)
 
-      described_class.should_receive(:create!).with(
-        url:      filepicker_data["url"],
-        filename: filepicker_data["filename"],
-        mimetype: filepicker_data["type"],
-        size:     filepicker_data["size"],
-      ).and_return(attachment)
+        described_class.should_receive(:create!).with(
+          url:      filepicker_data["url"],
+          filename: filepicker_data["filename"],
+          mimetype: filepicker_data["type"],
+          size:     filepicker_data["size"],
+        ).and_return(attachment)
 
 
-      expect(described_class.create_from_file!(file)).to be(attachment)
+        expect(described_class.create_from_file!(file)).to be(attachment)
+      end
+    end
+
+    context "when Storage.local? is true " do
+      before{ Storage.stub local?: true }
+      it "saves the attachment locally" do
+        expect(SecureRandom).to receive(:uuid).and_return('12345')
+        expect(file_body_decoded).to receive(:read).and_return('insert cat here')
+
+        attachment = described_class.create_from_file!(file)
+
+        expect(attachment.url      ).to eq Storage.local_path.join('12345/cat.jpg').to_s
+        expect(attachment.filename ).to eq 'cat.jpg'
+        expect(attachment.mimetype ).to eq 'image/jpeg'
+        expect(attachment.size     ).to eq 15
+        expect(attachment.writeable).to be_nil
+      end
     end
 
   end
