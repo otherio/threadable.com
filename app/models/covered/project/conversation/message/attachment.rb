@@ -12,6 +12,7 @@ class Covered::Project::Conversation::Message::Attachment
     mimetype
     size
     writeable?
+    content
   }, to: :attachment_record
 
   def == other
