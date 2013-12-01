@@ -5,7 +5,10 @@ class Covered::ProcessIncomingEmail < MethodObject
   autoload :CreateConversationMessage
 
   def call covered, incoming_email
-    CreateConversationMessage.call(covered, incoming_email)
+
+    ActiveRecord::Base.transaction do
+      CreateConversationMessage.call(covered, incoming_email)
+    end
 
     # # if incoming_email.recipient_username.to_s == 'new'
     # #   covered.create_project_from_incoming_email(incoming_email)
