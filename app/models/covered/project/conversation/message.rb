@@ -86,7 +86,7 @@ class Covered::Project::Conversation::Message
 
   def creator
     return unless message_record.creator_id
-    @creator ||= project.members.find_by_user_id!(message_record.creator_id)
+    @creator ||= covered.users.find_by_id!(message_record.creator_id)
   end
 
   def recipients
