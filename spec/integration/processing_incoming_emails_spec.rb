@@ -161,12 +161,6 @@ describe "processing incoming emails" do
     let(:envelope_from){ '<amywong.phd@gmail.com>' }
   end
 
-  shared_context 'it creates a message in a new conversation' do
-    let(:message){ Message.last }
-    let(:expected_conversation_count_change){ 1 }
-    let(:expected_message_count_change){ 1 }
-  end
-
   shared_examples 'it bounces the message' do
     let(:expected_conversation_count_change){ 0 }
     let(:expected_message_count_change){ 0 }
@@ -254,8 +248,6 @@ describe "processing incoming emails" do
     include_examples 'creates a new conversation'
     include_examples 'sends emails to all project members that get email'
   end
-
-
 
   # The actual tests :P - Jared
 
