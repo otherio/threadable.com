@@ -16,8 +16,15 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
   let :creator do
     user = nil
     incoming_email.from_email_addresses.find do |email_address|
-      user = covered.users.find_by_email_address(email_address)
+      user = project.members.find_by_email_address(email_address)
     end
+
+    if parent_message.present? && user.nil?
+      incoming_email.from_email_addresses.find do |email_address|
+        user = covered.users.find_by_email_address(email_address)
+      end
+    end
+
     if user
       covered.current_user_id = user.id
       covered.current_user
@@ -25,7 +32,7 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
   end
 
   let :project do
-    (creator || covered).projects.find_by_email_address incoming_email.recipient_email_address
+    covered.projects.find_by_email_address incoming_email.recipient_email_address
   end
 
   let :parent_message do
@@ -34,11 +41,6 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
 
   let :pre_existing_conversation do
     parent_message.conversation if parent_message
-  end
-
-
-  let :conversation do
-    pre_existing_conversation || create_conversation!
   end
 
   let :type do

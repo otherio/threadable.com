@@ -2,6 +2,7 @@ class ProjectMembership < ActiveRecord::Base
 
   belongs_to :project
   belongs_to :user
+  has_many :email_addresses, through: :user
 
   scope :that_get_email, ->{ where(gets_email: true) }
 

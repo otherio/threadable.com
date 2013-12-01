@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Covered::ProcessIncomingEmail::CreateConversationMessage do
 
-  let(:covered){ double(:covered, users: double(:users)) }
-  let(:current_user){ double(:current_user, projects: double(:projects)) }
+  let(:covered){ double(:covered, users: double(:users), projects: double(:projects)) }
+  let(:current_user){ double(:current_user, projects: double(:projects), id: 95) }
 
   let :incoming_email do
     double(:incoming_email,
@@ -27,8 +27,8 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:message_id_header)       { '<dsjsjakdjksahk@asdsadsad.com>' }
   let(:references_header)       { '<ytutyu@yuiuy.com> <opopop@opopop.com> <fgfgfg@fgfgf.com>' }
   let(:date_header)             { 18.days.ago.rfc2822 }
-  let(:recipient_email_address) { 'poopatron@covered.io' }
-  let(:sender_email_address)    { 'smelly@poopatron.com' }
+  let(:recipient_email_address) { 'recipient@covered.io' }
+  let(:sender_email_address)    { 'sender@poopatron.com' }
   let(:from_email_address)      { 'fromguy@poopatron.com' }
   let(:from_email_addresses)    { [sender_email_address, from_email_address] }
   let(:subject)                 { 'we need coffee' }
@@ -49,7 +49,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   end
 
   let(:creator       ){ double(:creator, id: 89, projects: double(:projects)) }
-  let(:project       ){ double(:project, messages: double(:project_messages)) }
+  let(:project       ){ double(:project, messages: double(:project_messages), members: double(:project_members)) }
 
   let(:conversation  ){ double(:conversation, messages: double(:conversation_messages), task?: task) }
   let(:task          ){ false }
@@ -70,10 +70,11 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:expected_attachments)       { [] }
 
   before do
-    expect(covered.users   ).to receive(:find_by_email_address       ).with(sender_email_address   ).and_return(creator)
-    expect(covered         ).to receive(:current_user_id=            ).with(89)
-    expect(covered         ).to receive(:current_user                ).and_return(current_user)
-    expect(current_user.projects).to receive(:find_by_email_address  ).with(recipient_email_address).and_return(project)
+    Timecop.freeze(Time.now)
+    covered.users.stub(:find_by_email_address).with(sender_email_address).and_return(creator)
+    covered.stub(:current_user_id=).with(89)
+    covered.stub(:current_user).and_return(current_user)
+    expect(covered.projects).to receive(:find_by_email_address       ).with(recipient_email_address).and_return(project)
     expect(project.messages).to receive(:find_by_child_message_header).with(header                 ).and_return(parent_message)
 
     expect(conversation.messages).to receive(:create!).with(
@@ -92,6 +93,10 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     ).and_return(new_message)
   end
 
+  after do
+    Timecop.return
+  end
+
   def call!
     described_class.call(covered, incoming_email)
   end
@@ -102,8 +107,24 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     end
   end
 
+  shared_context "it sets the current user" do
+    before do
+      expect(covered).to receive(:current_user_id=).with(creator.id)
+    end
+  end
+
+  shared_context "it does not set the current user" do
+    before do
+      expect(covered).to_not receive(:current_user_id=)
+    end
+  end
+
   context "when there is a parent message" do
     let(:parent_message){ double(:parent_message, id: 883, conversation: conversation) }
+
+    before do
+      project.members.stub(:find_by_email_address).with(sender_email_address).and_return(creator)
+    end
     it_should_create_a_new_conversation_message!
 
     context "when the conversation is a task" do
@@ -121,6 +142,8 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     let(:project_conversations){ double(:project_conversations) }
 
     before do
+      project.members.stub(:find_by_email_address).with(sender_email_address).and_return(creator)
+
       if task
         expect(project).to receive(:tasks).and_return(project_conversations)
       else
@@ -152,33 +175,57 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
     let(:project_conversations){ double(:project_conversations) }
 
     before do
-      expect(project).to receive(:conversations).and_return(project_conversations)
-      expect(project_conversations).to receive(:create).with(subject: expected_subject).and_return(conversation)
+      project.stub(:conversations).and_return(project_conversations)
+      project_conversations.stub(:create).with(subject: expected_subject).and_return(conversation)
     end
 
-    context "when the envelope sender is a user" do
+    context "when the envelope sender is a project member" do
       before do
-        covered.users.stub(:find_by_email_address!).with(sender_email_address).and_return(creator)
+        project.members.stub(:find_by_email_address).with(sender_email_address).and_return(creator)
       end
       it_should_create_a_new_conversation_message!
     end
 
-    context "when the envelope sender is not a user, but the from address is" do
+    context "when the envelope sender is not a project member" do
       before do
-        covered.users.stub(:find_by_email_address).with(sender_email_address).and_return(nil)
-        covered.users.stub(:find_by_email_address!).with(from_email_address).and_return(creator)
+        project.members.stub(:find_by_email_address).with(sender_email_address).and_return(nil)
       end
-      it_should_create_a_new_conversation_message!
+
+      context "but they are a covered user, and there is a parent message" do
+        let(:parent_message){ double(:parent_message, id: 883, conversation: conversation) }
+
+        before do
+          covered.users.stub(:find_by_email_address).with(sender_email_address).and_return(creator)
+          project.members.stub(:find_by_email_address).with(from_email_address).and_return(nil)
+        end
+        include_context "it sets the current user"
+        it_should_create_a_new_conversation_message!
+      end
+
+      context "and they are not a covered user, but the from address is a project member" do
+        before do
+          covered.users.stub(:find_by_email_address).with(sender_email_address).and_return(nil)
+          project.members.stub(:find_by_email_address).with(from_email_address).and_return(creator)
+        end
+        include_context "it sets the current user"
+        it_should_create_a_new_conversation_message!
+      end
+
+      context "and they are not covered users at all, but there is a parent message" do
+        let(:parent_message){ double(:parent_message, id: 883, conversation: conversation) }
+
+        before do
+          covered.users.stub(:find_by_email_address).with(sender_email_address).and_return(nil)
+          covered.users.stub(:find_by_email_address).with(from_email_address).and_return(nil)
+          project.members.stub(:find_by_email_address).with(from_email_address).and_return(nil)
+        end
+        include_context "it does not set the current user"
+        it_should_create_a_new_conversation_message!
+      end
     end
 
-    context "when neither envelope nor from are users" do
-      before do
-        # expect(covered.users).to receive(:find_by_email_address!).with(sender_email_address).and_return(nil)
-        # expect(covered.users).to receive(:find_by_email_address!).with(from_email_address).and_raise()
-      end
-
+    context "when neither envelope nor from are covered users, and there is no parent message" do
       it 'bounces the message or sticks it into some queue or something useful like that'
-
     end
   end
 

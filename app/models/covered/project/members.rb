@@ -34,6 +34,21 @@ class Covered::Project::Members
     member
   end
 
+  def find_by_email_address email_address
+    member_for (
+      scope.includes(:email_addresses)
+        .where(email_addresses:{address:email_address})
+        .references(:email_addresses)
+        .first or return
+    )
+  end
+
+  def find_by_email_address! email_address
+    member = find_by_user_email_address(email_address)
+    member or raise Covered::RecordNotFound, "unable to find project member with email_address: #{email_address}"
+    member
+  end
+
   def me
     find_by_user_id covered.current_user_id if covered.current_user_id
   end
