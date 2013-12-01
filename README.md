@@ -1,6 +1,5 @@
 # Covered
 [![Code Climate](https://codeclimate.com/repos/529ae91f13d6370300012943/badges/b09a4700ab1a7948a0d9/gpa.png)](https://codeclimate.com/repos/529ae91f13d6370300012943/feed)
-
 ## Install
 
 #### Install Redis
