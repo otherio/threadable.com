@@ -6,7 +6,7 @@ describe "page_footer" do
 
   describe "return value" do
     subject{ return_value }
-    it { should == "© Covered 2013\n" }
+    it { should include "© Covered 2013\n" }
   end
 
 end
