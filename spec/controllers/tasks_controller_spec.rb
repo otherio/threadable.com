@@ -5,45 +5,45 @@ describe TasksController do
   when_not_signed_in do
 
     describe "GET index" do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         get :index, project_id: 'raceteam'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     describe "POST create" do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         post :create, project_id: 'raceteam'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     describe "PATCH update" do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         patch :update, project_id: 'raceteam', id: 1
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     describe "PUT update" do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         patch :update, project_id: 'raceteam', id: 1
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     %w{ill_do_it remove_me mark_as_done mark_as_undone}.each do |action|
       describe "GET #{action}" do
-        it 'should render a 404' do
+        it 'should redirect to a sign in page' do
           get action, project_id: 'raceteam', task_id: 1
-          expect(response).to render_template "errors/error_404"
+          expect(response).to be_redirect
         end
       end
 
       describe "POST #{action}" do
-        it 'should render a 404' do
+        it 'should redirect to a sign in page' do
           post action, project_id: 'raceteam', task_id: 1
-          expect(response).to render_template "errors/error_404"
+          expect(response).to be_redirect
         end
       end
     end

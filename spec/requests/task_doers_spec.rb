@@ -5,16 +5,16 @@ describe "Task doers" do
   when_not_signed_in do
 
     describe 'adding a doer' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         post '/raceteam/tasks/layup-body-carbon/doers', user_id: 1234
-        expect(response.status).to eq 404
+        expect(response).to be_redirect
       end
     end
 
     describe 'removing a doer' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         delete '/raceteam/tasks/layup-body-carbon/doers/1234'
-        expect(response.status).to eq 404
+        expect(response).to be_redirect
       end
     end
 

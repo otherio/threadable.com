@@ -19,7 +19,7 @@ class Users::SetupController < ApplicationController
   private
 
   def require_valid_token!
-    unauthorized! unless token.present?
+    unauthenticated! unless token.present?
   end
 
   def token

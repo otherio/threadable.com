@@ -5,16 +5,16 @@ describe Task::DoersController do
   when_not_signed_in do
 
     describe 'PUT :create' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         post :add, project_id: 'foo', task_id: 'bar'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     describe 'DELETE :destroy' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         delete :remove, project_id: 'foo', task_id: 'bar', user_id: 44
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 

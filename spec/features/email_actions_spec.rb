@@ -25,6 +25,9 @@ describe "Email actions" do
     before{ sign_in_as email_address }
   end
 
+  define_state %(I am not signed in) do
+  end
+
   define_state %(I am a doer of the task) do
     import_state %(I am "tom@ucsd.covered.io")
   end
@@ -52,13 +55,15 @@ describe "Email actions" do
       let(:url){ project_task_ill_do_it_url(project_slug, task_slug) }
     when "remove me"
       let(:url){ project_task_remove_me_url(project_slug, task_slug) }
+    when "view on covered"
+      let(:url){ project_conversation_url(project_slug, task_slug) }
     end
     before{ visit url }
   end
 
   define_it_should "ask me to sign in" do
     expect(current_url).to eq sign_in_url(r:url)
-    sign_in!
+    sign_in_as 'bob@ucsd.covered.io'
   end
 
   define_it_should "not ask me to sign in" do
@@ -113,6 +118,14 @@ describe "Email actions" do
 
     state %(I am signed in as a non-doer of the task), %(I follow the "I'll do it" button in my email) do
       it_should(
+        %(show a notice saying "You have been added as a doer of this task."),
+        %(be on the task show page),
+      )
+    end
+
+    state %(I am not signed in), %(I follow the "I'll do it" button in my email) do
+      it_should(
+        %(ask me to sign in),
         %(show a notice saying "You have been added as a doer of this task."),
         %(be on the task show page),
       )
@@ -178,6 +191,21 @@ describe "Email actions" do
       end
     end
 
+  end
+
+  describe "view on covered" do
+    state %(I am signed in as "bob@ucsd.covered.io"), %(I follow the "view on covered" button in my email) do
+      it_should(
+        %(be on the task show page),
+      )
+    end
+
+    state %(I am not signed in), %(I follow the "view on covered" button in my email) do
+      it_should(
+        %(ask me to sign in),
+        %(be on the task show page),
+      )
+    end
   end
 
 end

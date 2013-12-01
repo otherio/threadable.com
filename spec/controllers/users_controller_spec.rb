@@ -67,23 +67,23 @@ describe UsersController do
     end
 
     describe 'GET :show' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         get :show, id: 'some-user-slug'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     describe 'GET :edit' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         get :edit, id: 'some-user-slug'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 
     describe 'PUT :update' do
-      it 'should render a 404' do
+      it 'should redirect to a sign in page' do
         put :update, id: 'some-user-slug'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to be_redirect
       end
     end
 

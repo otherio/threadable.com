@@ -48,8 +48,12 @@ module AuthenticationConcern
     raise Covered::AuthorizationError, message
   end
 
+  def unauthenticated! message=nil
+    raise Covered::AuthenticationError, message
+  end
+
   def require_user_be_signed_in!
-    unauthorized! unless signed_in?
+    unauthenticated! unless signed_in?
   end
 
   def require_user_be_admin!

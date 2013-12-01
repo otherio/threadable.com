@@ -26,7 +26,7 @@ class Users::ResetPasswordController < ApplicationController
   end
 
   def reset
-    unauthorized! if current_user_id != user_id_from_token
+    unauthenticated! if current_user_id != user_id_from_token
     attributes = params.require(:user).permit(:password, :password_confirmation)
     if current_user.update(attributes)
       flash[:notice] = 'Your password has been updated'

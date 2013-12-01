@@ -7,6 +7,11 @@ module RescueFromExceptionsConcern
 
   private
 
+  NOT_LOGGED_IN_EXCEPTION = [
+    Covered::AuthenticationError,
+    Covered::CurrentUserNotFound,
+  ].freeze
+
   NOT_FOUND_EXCEPTION = [
     ActionController::RoutingError,
     ActionController::UnknownController,
@@ -19,11 +24,11 @@ module RescueFromExceptionsConcern
   def rescue_from_exception exception
     logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
     case exception
-    when Covered::CurrentUserNotFound
-      sign_out!
-      render_error_page 404
     when *NOT_FOUND_EXCEPTION
       render_error_page 404
+    when *NOT_LOGGED_IN_EXCEPTION
+      sign_out!
+      redirect_to sign_in_path(r: request.original_url)
     else
       raise exception if Rails.application.config.consider_all_requests_local
       render_error_page 500
