@@ -12,6 +12,7 @@ describe Covered::Project::Conversation::Messages::Create do
       project: project,
       subject: 'I like your face',
       task?: false,
+      id: 1234,
     )
   end
 
@@ -58,10 +59,12 @@ describe Covered::Project::Conversation::Messages::Create do
 
       expect(covered).to receive(:track).with('Composed Message', {
         'Project' => project.id,
+        'Conversation' => conversation.id,
         'Project Name' => project.name,
         'Reply' => false,
         'Task' => false,
-        'Via' => 'email'
+        'Via' => 'email',
+        'Message ID' => expected_message_id_header,
       })
       expect( described_class.call(conversation, body: '<p>hi there</p>') ).to eq(message)
     end

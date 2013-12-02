@@ -97,10 +97,12 @@ class Covered::Project::Conversation::Messages::Create < MethodObject
 
     @covered.track("Composed Message", {
       'Project' => @conversation.project.id,
+      'Conversation' => @conversation.id,
       'Project Name' => @conversation.project.name,
       'Reply' => parent_message.try(:id) ? true : false,
       'Task' => @conversation.task?,
-      'Via' => @options.sent_via_web.present? ? 'web' : 'email'
+      'Via' => @options.sent_via_web.present? ? 'web' : 'email',
+      'Message ID' => message_id_header,
     })
     @message = Covered::Project::Conversation::Message.new(@conversation, @message_record)
   end
