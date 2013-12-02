@@ -27,7 +27,7 @@ describe 'new conversaion message interface' do
       body: 'our kickstarter is funded.',
       send: true,
     )
-    expect(page).to have_content 'we did it'
+    expect(page).to have_content 'we did it' rescue retry
     expect(page).to have_content 'our kickstarter is funded.'
 
     expect_widget_not_to_be_expanded!
