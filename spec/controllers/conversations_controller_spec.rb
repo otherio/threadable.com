@@ -99,7 +99,7 @@ describe ConversationsController do
           messages_double = double(:messages)
           expect(conversation).to receive(:messages).and_return(messages_double)
           expect(messages_double).to receive(:create).with(
-            send_email_to_message_creator: true,
+            sent_via_web: true,
             html: body,
             attachments: attachments
           ).and_return(message)

@@ -149,7 +149,7 @@ describe "covered", fixtures: false do
 
       date_header = 5.minutes.ago.rfc2822
       msg2 = fat_cops.messages.create!(
-        send_email_to_message_creator: true,
+        sent_via_web:      true,
         message_id_header: '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>',
         references_header: msg1.message_id_header,
         date_header:       date_header,

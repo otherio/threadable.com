@@ -7,7 +7,7 @@ class Covered::Project::Conversation::Messages::Create < MethodObject
     optional :body, :text, :html
     optional :body_plain, :body_html, :stripped_plain, :stripped_html
     optional :message_id_header, :references_header, :date_header
-    optional :send_email_to_message_creator, default: false
+    optional :sent_via_web, default: false
   end
 
   def call conversation, options
@@ -103,7 +103,7 @@ class Covered::Project::Conversation::Messages::Create < MethodObject
 
   def send_emails!
     @message.recipients.each do |recipient|
-      next if !@options.send_email_to_message_creator && recipient.same_user?(creator)
+      next if !@options.sent_via_web && recipient.same_user?(creator)
       @covered.emails.send_email_async(:conversation_message, @conversation.project.id, @message.id, recipient.id)
     end
   end

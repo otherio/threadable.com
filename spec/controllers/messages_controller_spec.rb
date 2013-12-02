@@ -48,7 +48,7 @@ describe MessagesController do
 
     def request!
       expect_any_instance_of(Covered::Project::Conversation::Messages).to receive(:create).with(
-        send_email_to_message_creator: true,
+        sent_via_web: true,
         body:        params[:message][:body],
         attachments: params[:message][:attachments],
       ).and_return(message)
