@@ -11,9 +11,10 @@ class MessagesController < ApplicationController
     end
 
     message = conversation.messages.create(
-      sent_via_web: true,
-      body:         body,
-      attachments:  attachments,
+      sent_via_web:   true,
+      body:           body,
+      attachments:    attachments,
+      parent_message: conversation.messages.latest,
     )
 
     if message.persisted?

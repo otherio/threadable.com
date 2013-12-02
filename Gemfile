@@ -42,6 +42,7 @@ gem 'font-awesome-sass-rails'
 gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
 gem 'roadie'
+gem 'mixpanel-ruby'
 
 group :production, :staging do
   gem 'rails_12factor'

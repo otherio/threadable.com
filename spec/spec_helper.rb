@@ -34,6 +34,10 @@ RSpec.configure do |config|
     Timecop.return
     ActionMailer::Base.deliveries.clear
     SendEmailWorker.jobs.clear
+    Mixpanel::Tracker.any_instance.stub(:track)
+    Mixpanel::Tracker.any_instance.stub(:alias)
+    Mixpanel::Tracker.any_instance.stub(:import)
+    Mixpanel::Tracker.any_instance.stub(:people)
   end
 
   config.around :each do |example|

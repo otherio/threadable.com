@@ -125,7 +125,7 @@ describe "covered", fixtures: false do
       fat_cops = htp.conversations.find_by_slug! fat_cops.slug
       expect( fat_cops.class ).to eq Covered::Project::Conversation
 
-      msg1 = fat_cops.messages.create! html: "<p>OMG I love their belly fat</p>", send_email_to_message_creator: true
+      msg1 = fat_cops.messages.create! html: "<p>OMG I love their belly fat</p>", sent_via_web: true
       expect( msg1.class             ).to eq Covered::Project::Conversation::Message
       expect( msg1.subject           ).to eq fat_cops.subject
       expect( msg1.body              ).to eq "<p>OMG I love their belly fat</p>"

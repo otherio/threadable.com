@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe MessagesController do
 
-  before { sign_in! find_user_by_email_address('tom@ucsd.covered.io') }
+  before do
+    sign_in! find_user_by_email_address('tom@ucsd.covered.io')
+  end
   let(:project){ current_user.projects.find_by_slug! 'raceteam' }
   let(:conversation) { project.conversations.find_by_slug! 'layup-body-carbon' }
 
@@ -48,9 +50,10 @@ describe MessagesController do
 
     def request!
       expect_any_instance_of(Covered::Project::Conversation::Messages).to receive(:create).with(
-        sent_via_web: true,
-        body:        params[:message][:body],
-        attachments: params[:message][:attachments],
+        sent_via_web:   true,
+        body:           params[:message][:body],
+        attachments:    params[:message][:attachments],
+        parent_message: conversation.messages.latest
       ).and_return(message)
 
       post :create, params

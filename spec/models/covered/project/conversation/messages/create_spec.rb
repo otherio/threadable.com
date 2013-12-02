@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Covered::Project::Conversation::Messages::Create do
 
-  let(:project){ double :project, id: 4855 }
+  let(:project){ double :project, id: 4855, name: 'Babys First Project' }
   let(:conversation_record){ double :conversation_record, messages: double(:messages)}
 
   let :conversation do
@@ -11,6 +11,7 @@ describe Covered::Project::Conversation::Messages::Create do
       conversation_record: conversation_record,
       project: project,
       subject: 'I like your face',
+      task?: false,
     )
   end
 
@@ -39,7 +40,7 @@ describe Covered::Project::Conversation::Messages::Create do
 
 
   context "when not given a date" do
-    it "sets the message date to now in the rfc2822 format" do
+    it "sends the message with the expected data, and tracks that it was done" do
 
       expect(conversation_record.messages).to receive(:create).with(
         parent_message_id: expected_parent_message_id,
@@ -55,6 +56,13 @@ describe Covered::Project::Conversation::Messages::Create do
         date_header:       expected_date_header,
       ).and_return(message_record)
 
+      expect(covered).to receive(:track).with('Composed Message', {
+        'Project' => project.id,
+        'Project Name' => project.name,
+        'Reply' => false,
+        'Task' => false,
+        'Via' => 'email'
+      })
       expect( described_class.call(conversation, body: '<p>hi there</p>') ).to eq(message)
     end
   end

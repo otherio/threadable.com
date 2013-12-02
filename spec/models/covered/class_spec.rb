@@ -4,8 +4,7 @@ describe Covered::Class do
 
   let(:user_record){ Factories.create(:user) }
   let(:host) { 'example.com' }
-  let(:covered){ Covered.new(host: host, port: 3000, current_user_id: user_record.id) }
-  subject{ covered }
+  subject(:covered){ Covered.new(host: host, port: 3000, current_user_id: user_record.id) }
 
   describe "new" do
     it "should require host and optionally take port and current_user_id" do
@@ -64,6 +63,21 @@ describe Covered::Class do
         expect(covered.email_host).to eq 'notpresent.example.com'
       end
     end
+  end
+
+  describe '#track' do
+    let(:people) { double(:people, set: double(:set)) }
+    let(:tracker) { double(:tracker, track: double(:track), people: people) }
+
+    before do
+      expect(Mixpanel::Tracker).to receive(:new).and_return(tracker)
+    end
+
+    it 'calls the mixpanel tracker' do
+      expect(tracker).to receive(:track).with(covered.current_user_id, 'foo')
+      covered.track('foo')
+    end
+
   end
 
 end

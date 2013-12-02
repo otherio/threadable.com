@@ -13,10 +13,10 @@ class Covered::Class
     @port            = options.fetch(:port){ 80 }
     @protocol        = options.fetch(:protocol){ 'http' }
     @current_user_id = options[:current_user_id]
+    @tracker         = Mixpanel::Tracker.new(ENV['MIXPANEL_TOKEN'])
   end
 
-  attr_reader :protocol, :host, :port, :current_user_id
-
+  attr_reader :protocol, :host, :port, :current_user_id, :tracker
 
   def current_user_id= user_id
     @current_user_id = user_id
@@ -47,6 +47,10 @@ class Covered::Class
 
   def email_host
     Covered::Class::EMAIL_HOSTS[host] || host
+  end
+
+  def track *args
+    tracker.track(current_user_id, *args)
   end
 
   def env

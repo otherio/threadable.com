@@ -15,6 +15,7 @@
 //= require_tree ./behaviors
 //= require_tree ./widgets
 //= require logged_in_init
+//= require mixpanel
 
 
 Object.extend = function(object, extension){

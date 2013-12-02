@@ -41,5 +41,13 @@ module Covered
     false
   end
 
+  def self.tracker= tracker
+    @@tracker = tracker
+  end
+
+  def self.tracker
+    @@tracker
+  end
+
 end
 

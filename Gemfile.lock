@@ -168,6 +168,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.25)
     minitest (4.7.5)
+    mixpanel-ruby (1.2.0)
     multi_json (1.7.9)
     multi_xml (0.5.4)
     multipart-post (1.2.0)
@@ -355,6 +356,7 @@ DEPENDENCIES
   mail_view
   method_object
   minitest
+  mixpanel-ruby
   newrelic_rpm
   options_hash-method_object
   pg
