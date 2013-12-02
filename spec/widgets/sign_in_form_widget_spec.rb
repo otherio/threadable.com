@@ -35,7 +35,7 @@ describe SignInFormWidget do
     subject{ presenter.html_options }
     it do
       should == {
-        class: "sign_in_form custom_class well well-centered",
+        class: "sign_in_form custom_class",
         widget: "sign_in_form",
       }
     end
