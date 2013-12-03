@@ -75,7 +75,8 @@ class Covered::Project
 
   def leave!
     return unless covered.current_user_id
-    project_record.memberships.where(user_id: covered.current_user_id).first.try(:delete)
+    project = covered.current_user.projects.find_by_id(project_record.id)
+    project.members.remove(user: covered.current_user)
   end
 
   def update attributes

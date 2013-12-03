@@ -89,6 +89,14 @@ class Covered::Project::Members
       end
     end
 
+    covered.track("Added User", {
+      'Invitee' => user_id,
+      'Project' => project.id,
+      'Project Name' => project.name,
+      'Sent Join Notice' => send_join_notice ? true : false,
+      'Sent Personal Message' => options[:personal_message].present?
+    })
+
     member_for member
   end
 
@@ -103,6 +111,12 @@ class Covered::Project::Members
 
     user_id = options[:user_id] || options[:user].try(:user_id) or
       raise ArgumentError, "unable to determine user id from #{options.inspect}"
+
+    covered.track("Removed User", {
+      'Removed User' => user_id,
+      'Project' => project.id,
+      'Project Name' => project.name,
+    })
 
     scope.where(user_id: user_id).delete_all
     self
