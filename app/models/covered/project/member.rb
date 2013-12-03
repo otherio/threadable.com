@@ -25,8 +25,6 @@ class Covered::Project::Member < Covered::User
   delegate *%w{
     gets_email?
     subscribed?
-    subscribe!
-    unsubscribe!
   }, to: :project_membership_record
 
   def to_param
@@ -44,6 +42,26 @@ class Covered::Project::Member < Covered::User
   def reload
     project_membership_record.reload
     self
+  end
+
+  def subscribe! track=false
+    if track
+      covered.track('Re-subscribed', {
+        'Project'      => project.id,
+        'Project Name' => project.name,
+      })
+    end
+
+    project_membership_record.subscribe!
+  end
+
+  def unsubscribe!
+    covered.track('Unsubscribed', {
+      'Project'      => project.id,
+      'Project Name' => project.name,
+    })
+
+    project_membership_record.unsubscribe!
   end
 
   def == other

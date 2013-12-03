@@ -21,7 +21,7 @@ class Project::EmailSubscriptionsController < ApplicationController
     covered.current_user_id ||= member_id
     @project = current_user.projects.find_by_id! project_id
     @member  = @project.members.me
-    @member.subscribe! unless @member.subscribed?
+    @member.subscribe!(true) unless @member.subscribed?
   end
 
   private
