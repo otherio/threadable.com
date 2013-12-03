@@ -98,7 +98,7 @@ feature "Admin projects CRUD" do
       click_on 'Add Member'
     end
 
-    expect(members_table).to eq [
+    expect(members_table).to match_array [
       ["Nicole Aptekar", "nicole@other.io", "yes"],
       ["Ian Baker",      "ian@other.io",    "no" ],
       ["You Face",       "you@face.io",     "yes"],
@@ -115,7 +115,7 @@ feature "Admin projects CRUD" do
       click_on 'Add Member'
     end
 
-    expect(members_table).to eq [
+    expect(members_table).to match_array [
       ["Nicole Aptekar", "nicole@other.io", "yes"],
       ["Ian Baker",      "ian@other.io",    "no" ],
       ["You Face",       "you@face.io",     "yes"],
@@ -130,7 +130,7 @@ feature "Admin projects CRUD" do
       accept_prompt!
     end
 
-    expect(members_table).to eq [
+    expect(members_table).to match_array [
       ["Ian Baker",      "ian@other.io",    "no" ],
       ["You Face",       "you@face.io",     "yes"],
       ["Someone Else",   "someone@else.io", "no" ],
