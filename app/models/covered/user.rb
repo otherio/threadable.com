@@ -78,7 +78,7 @@ class Covered::User
     covered.tracker.people.set(id, {
       '$name'        => name,
       '$email'       => email_address,
-      '$created'     => created_at.iso8601,
+      '$created'     => created_at.try(:iso8601),
     })
   end
 
