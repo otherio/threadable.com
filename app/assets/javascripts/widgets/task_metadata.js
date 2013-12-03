@@ -57,7 +57,7 @@ Rails.widget('task_metadata', function(Widget){
       page.project_task_doers_path(page.current_project.slug, page.current_task.slug) :
       page.project_task_doer_path(page.current_project.slug, page.current_task.slug, member.id);
 
-    data = add ? {doer_id: member.id} : {};
+    data = add ? {user_id: member.id} : {};
 
     method = add ? 'POST' : 'DELETE';
 
