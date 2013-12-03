@@ -36,6 +36,10 @@ describe Covered::Users do
   end
 
   describe '#create' do
+    before do
+      expect_any_instance_of(Covered::User).to receive(:update_mixpanel)
+    end
+
     subject{ users.create(name: 'Steve', email_address: 'steve@me.com') }
     it{ should be_a Covered::User }
     its(:name){ should == 'Steve' }

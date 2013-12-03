@@ -34,10 +34,10 @@ RSpec.configure do |config|
     Timecop.return
     ActionMailer::Base.deliveries.clear
     SendEmailWorker.jobs.clear
-    Mixpanel::Tracker.any_instance.stub(:track)
-    Mixpanel::Tracker.any_instance.stub(:alias)
-    Mixpanel::Tracker.any_instance.stub(:import)
-    Mixpanel::Tracker.any_instance.stub(:people)
+    stub_request(:any, 'https://api.mixpanel.com/track').to_return({ :body => '{"status": 1, "error": null}' })
+    stub_request(:any, 'https://api.mixpanel.com/people').to_return({ :body => '{"status": 1, "error": null}' })
+    stub_request(:any, 'https://api.mixpanel.com/engage').to_return({ :body => '{"status": 1, "error": null}' })
+    stub_request(:any, 'https://api.mixpanel.com/import').to_return({ :body => '{"status": 1, "error": null}' })
   end
 
   config.around :each do |example|

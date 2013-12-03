@@ -1,7 +1,9 @@
 class Covered::User::Update < MethodObject
 
-  def call user_record, attributes
-    !!user_record.update_attributes(attributes)
+  def call user, attributes
+    result = user.user_record.update_attributes(attributes)
+    user.update_mixpanel if result
+    !!result
   end
 
 end

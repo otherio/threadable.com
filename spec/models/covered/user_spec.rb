@@ -33,6 +33,7 @@ describe Covered::User do
     persisted?
     avatar_url
     authenticate
+    created_at
   }.each do |method|
     describe "##{method}" do
       specify{ expect(user).to delegate(method).to(:user_record) }
@@ -61,6 +62,23 @@ describe Covered::User do
 
   it { should eq described_class.new(covered, user_record) }
 
+  describe 'update' do
+    it 'updates mixpanel' do
+      expect(user).to receive(:update_mixpanel)
+      user.update(name: 'A. Person')
+    end
+  end
+
+  describe 'update_mixpanel' do
+    it 'sends the name and email to mixpanel' do
+      expect(covered.tracker.people).to receive(:set).with(user.id, {
+        '$name'        => user.name,
+        '$email'       => user.email_address,
+        '$created'     => user.created_at.iso8601,
+      })
+      user.update_mixpanel
+    end
+  end
 
   describe 'web_enabled?' do
     it 'should return the presense of a password' do

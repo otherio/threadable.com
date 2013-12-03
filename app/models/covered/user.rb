@@ -31,6 +31,7 @@ class Covered::User
     persisted?
     avatar_url
     authenticate
+    created_at
   }, to: :user_record
 
   alias_method :user_id, :id
@@ -64,7 +65,7 @@ class Covered::User
   end
 
   def update attributes
-    Update.call(user_record, attributes)
+    Update.call(self, attributes)
   end
 
   def update! attributes
@@ -73,6 +74,13 @@ class Covered::User
     raise Covered::RecordInvalid, "User invalid: #{user_record.errors.full_messages.to_sentence}"
   end
 
+  def update_mixpanel
+    covered.tracker.people.set(id, {
+      '$name'        => name,
+      '$email'       => email_address,
+      '$created'     => created_at.iso8601,
+    })
+  end
 
   def as_json options=nil
     {
