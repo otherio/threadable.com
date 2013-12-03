@@ -1,8 +1,8 @@
 whenReady(function() {
 
-  if(Covered.page.current_user) {
+  if (Covered.page.current_user) {
     var user = Covered.page.current_user;
-    var project = Covered.page.current_project;
+    var project = Covered.page.current_project || {};
     // Identify the user and pass traits
     // To enable, replace sample data with actual user traits and uncomment the line
     UserVoice.push(['identify', {
