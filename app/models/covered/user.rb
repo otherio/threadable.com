@@ -8,6 +8,7 @@ class Covered::User
   autoload :EmailAddress
   autoload :Projects
   autoload :Messages
+  autoload :Update
 
   def self.model_name
     ::User.model_name
@@ -63,7 +64,7 @@ class Covered::User
   end
 
   def update attributes
-    !!user_record.update_attributes(attributes)
+    Update.call(user_record, attributes)
   end
 
   def update! attributes

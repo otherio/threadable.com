@@ -1,5 +1,8 @@
 class Covered::Users
 
+  extend ActiveSupport::Autoload
+  autoload :Create
+
   def initialize covered
     @covered = covered
   end
