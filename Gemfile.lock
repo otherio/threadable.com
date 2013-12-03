@@ -379,6 +379,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-failures
   simple_form
+  simplecov
   sinatra
   stringex
   timecop

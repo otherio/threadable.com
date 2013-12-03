@@ -38,3 +38,5 @@ public/storage
 .libpeerconnection.log
 
 lib/test_environment/fixtures/*.yml
+
+/coverage
