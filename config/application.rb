@@ -50,6 +50,8 @@ module Covered
     config.roadie.enabled = true
 
     config.force_ssl = false
+
+    config.track_in_memory = false
   end
 end
 

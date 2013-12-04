@@ -13,7 +13,6 @@ class Covered::Class
     @port            = options.fetch(:port){ 80 }
     @protocol        = options.fetch(:protocol){ 'http' }
     @current_user_id = options[:current_user_id]
-    @tracker         = Mixpanel::Tracker.new(ENV['MIXPANEL_TOKEN'])
   end
 
   attr_reader :protocol, :host, :port, :current_user_id, :tracker
@@ -33,9 +32,17 @@ class Covered::Class
   end
 
 
-  let(:emails  ){ Covered::Emails.new(self) }
-  let(:users   ){ Covered::Users.new(self) }
-  let(:projects){ Covered::Projects.new(self) }
+  let :tracker do
+    Rails.application.config.track_in_memory ?
+      Covered::InMemoryTracker.new(self) :
+      Covered::MixpanelTracker.new(self)
+  end
+  delegate :track, to: :tracker
+
+  let(:emails         ){ Covered::Emails.new(self)         }
+
+  let(:users          ){ Covered::Users.new(self)          }
+  let(:projects       ){ Covered::Projects.new(self)       }
 
   def sign_up attributes
     Covered::SignUp.call(attributes.merge(covered: self))
@@ -47,10 +54,6 @@ class Covered::Class
 
   def email_host
     Covered::Class::EMAIL_HOSTS[host] || host
-  end
-
-  def track *args
-    tracker.track(current_user_id, *args)
   end
 
   def env

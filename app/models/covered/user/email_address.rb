@@ -20,7 +20,7 @@ class Covered::User::EmailAddress
       current_user.user_record.email_addresses.update_all(primary: false)
       email_address_record.update(primary: true)
     end
-    current_user.update_mixpanel
+    current_user.track_update!
     return true
   end
 

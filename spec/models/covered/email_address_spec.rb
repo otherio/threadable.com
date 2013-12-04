@@ -25,7 +25,7 @@ describe Covered::User::EmailAddress do
 
     context "when the address is not primary" do
       before do
-        user.stub(:update_mixpanel)
+        user.stub(:track_update!)
         email_address.stub(:primary?).and_return(false)
       end
 
@@ -36,7 +36,7 @@ describe Covered::User::EmailAddress do
       end
 
       it "updates mixpanel" do
-        expect(user).to receive(:update_mixpanel)
+        expect(user).to receive(:track_update!)
         subject.primary!
       end
     end

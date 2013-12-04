@@ -65,19 +65,6 @@ describe Covered::Class do
     end
   end
 
-  describe '#track' do
-    let(:people) { double(:people, set: double(:set)) }
-    let(:tracker) { double(:tracker, track: double(:track), people: people) }
-
-    before do
-      expect(Mixpanel::Tracker).to receive(:new).and_return(tracker)
-    end
-
-    it 'calls the mixpanel tracker' do
-      expect(tracker).to receive(:track).with(covered.current_user_id, 'foo')
-      covered.track('foo')
-    end
-
-  end
+  it { should delegate(:track).to(:tracker) }
 
 end

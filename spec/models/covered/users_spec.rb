@@ -37,7 +37,7 @@ describe Covered::Users do
 
   describe '#create' do
     before do
-      expect_any_instance_of(Covered::User).to receive(:update_mixpanel)
+      expect_any_instance_of(Covered::User).to receive(:track_update!)
     end
 
     subject{ users.create(name: 'Steve', email_address: 'steve@me.com') }

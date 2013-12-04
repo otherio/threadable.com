@@ -74,12 +74,8 @@ class Covered::User
     raise Covered::RecordInvalid, "User invalid: #{user_record.errors.full_messages.to_sentence}"
   end
 
-  def update_mixpanel
-    covered.tracker.people.set(id, {
-      '$name'        => name,
-      '$email'       => email_address,
-      '$created'     => created_at.try(:iso8601),
-    })
+  def track_update!
+    covered.tracker.track_user_change(self)
   end
 
   def as_json options=nil

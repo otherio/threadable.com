@@ -49,4 +49,6 @@ Covered::Application.configure do
 
   config.redis = Redis.current.client.instance_variable_get(:@options).slice(:scheme, :host, :port, :path, :password, :db)
   config.redis[:db] = 2
+
+  config.track_in_memory = true
 end

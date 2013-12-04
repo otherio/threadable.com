@@ -64,19 +64,15 @@ describe Covered::User do
 
   describe 'update' do
     it 'updates mixpanel' do
-      expect(user).to receive(:update_mixpanel)
+      expect(user).to receive(:track_update!)
       user.update(name: 'A. Person')
     end
   end
 
-  describe 'update_mixpanel' do
+  describe 'track_update!' do
     it 'sends the name and email to mixpanel' do
-      expect(covered.tracker.people).to receive(:set).with(user.id, {
-        '$name'        => user.name,
-        '$email'       => user.email_address,
-        '$created'     => user.created_at.iso8601,
-      })
-      user.update_mixpanel
+      expect(covered.tracker).to receive(:track_user_change).with(user)
+      user.track_update!
     end
   end
 
