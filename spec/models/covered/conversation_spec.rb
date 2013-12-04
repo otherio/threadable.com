@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Covered::Conversation do
 
-  let(:conversation_record){ double(:conversation_record, id: 2323) }
+  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false) }
   subject{ described_class.new(covered, conversation_record) }
 
   it { should have_constant :Creator      }
