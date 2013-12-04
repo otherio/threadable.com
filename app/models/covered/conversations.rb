@@ -53,11 +53,7 @@ class Covered::Conversations < Covered::Collection
   end
 
   def conversation_for conversation_record
-    if conversation_record.task?
-      Covered::Task.new(covered, conversation_record)
-    else
-      Covered::Conversation.new(covered, conversation_record)
-    end
+    Covered::Conversation.new(covered, conversation_record)
   end
 
 end

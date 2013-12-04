@@ -5,7 +5,7 @@ class Covered::Events < Covered::Collection
   end
 
 
-  def newest
+  def latest
     event_for (scope.last or return)
   end
 
@@ -13,9 +13,10 @@ class Covered::Events < Covered::Collection
     event_for (scope.first or return)
   end
 
-
   def build attributes={}
     event_for scope.build(attributes)
+  rescue ActiveRecord::SubclassNotFound
+    raise ArgumentError, "unknown even type found in #{attributes.inspect}"
   end
   alias_method :new, :build
 
@@ -27,15 +28,8 @@ class Covered::Events < Covered::Collection
   end
 
   def event_for event_record
-    case event_record.type
-    when "Conversation::CreatedEvent"; Covered::Conversation::CreatedEvent
-    when "Task::CreatedEvent";         Covered::Task::CreatedEvent
-    when "Task::DoneEvent";            Covered::Task::DoneEvent
-    when "Task::UndoneEvent";          Covered::Task::UndoneEvent
-    when "Task::AddedDoerEvent";       Covered::Task::AddedDoerEvent
-    when "Task::RemovedDoerEvent";     Covered::Task::RemovedDoerEvent
-    else; raise "unknown even type #{event_record.type.inspect}"
-    end.new(covered, event_record)
+    event_type = event_record.type || 'Event'
+    "Covered::#{event_type}".constantize.new(covered, event_record)
   end
 
 end

@@ -43,9 +43,7 @@ class Covered::Message < Covered::Model
 
   def conversation
     return unless message_record.conversation
-    @conversation ||= message_record.conversation.task? ?
-      Covered::Task.new(covered, message_record.conversation) :
-      Covered::Conversation.new(covered, message_record.conversation)
+    @conversation ||= Covered::Conversation.new(covered, message_record.conversation)
   end
 
   def parent_message

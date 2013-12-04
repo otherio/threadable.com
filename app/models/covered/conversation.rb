@@ -1,5 +1,16 @@
 class Covered::Conversation < Covered::Model
 
+  class << self
+    alias_method :__new__, :new
+    def new covered, conversation_record
+      conversation_record.task? ?
+        Covered::Task        .__new__(covered, conversation_record) :
+        Covered::Conversation.__new__(covered, conversation_record)
+    rescue
+      binding.pry
+    end
+  end
+
   autoload :Creator
   autoload :Events
   autoload :Event
