@@ -8,7 +8,8 @@ describe Covered::MixpanelTracker do
   subject{ covered_mixpanel_tracker }
 
   before do
-    expect(Mixpanel::Tracker).to receive(:new).and_return(mixpanel_tracker)
+    expect(ENV).to receive(:fetch).with('MIXPANEL_TOKEN').and_return('FAKE TOKEN')
+    expect(Mixpanel::Tracker).to receive(:new).with('FAKE TOKEN').and_return(mixpanel_tracker)
   end
 
   describe 'track' do
