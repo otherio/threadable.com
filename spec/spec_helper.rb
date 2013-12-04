@@ -34,6 +34,7 @@ RSpec.configure do |config|
     Timecop.return
     ActionMailer::Base.deliveries.clear
     SendEmailWorker.jobs.clear
+    Covered::InMemoryTracker.clear
     stub_request(:any, 'https://api.mixpanel.com/track').to_return({ :body => '{"status": 1, "error": null}' })
     stub_request(:any, 'https://api.mixpanel.com/people').to_return({ :body => '{"status": 1, "error": null}' })
     stub_request(:any, 'https://api.mixpanel.com/engage').to_return({ :body => '{"status": 1, "error": null}' })
