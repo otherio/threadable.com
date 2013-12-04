@@ -22,7 +22,7 @@ describe Covered::MixpanelTracker do
 
 
   describe 'track_user_change' do
-    let(:created_at){ Time.parse("2013-12-03T16:24:37-08:00") }
+    let(:created_at){ double(:created_at, iso8601: "2013-12-03T16:24:37-08:00") }
     let(:user){ double(:user, id: 833, name: 'steve', email_address: 'steve@steve.io', created_at: created_at) }
     let(:people){ double :people }
     it 'calls Mixpanel::Tracker#people.set' do
