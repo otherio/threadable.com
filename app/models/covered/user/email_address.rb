@@ -1,36 +1,20 @@
-class Covered::User::EmailAddress
+class Covered::User::EmailAddress < Covered::EmailAddress
 
-  def initialize current_user, email_address_record
-    @current_user, @email_address_record = current_user, email_address_record
+  def initialize user, email_address_record
+    super(user.covered, email_address_record)
+    @user = user
   end
-  attr_reader :current_user, :email_address_record
-  delegate :covered, to: :current_user
-
-  delegate *%w{
-    address
-    primary?
-    errors
-    persisted?
-  }, to: :email_address_record
-
+  attr_reader :user
 
   def primary!
     return false if primary?
-    current_user.user_record.transaction do
-      current_user.user_record.email_addresses.update_all(primary: false)
+    ::EmailAddress.transaction do
+      ::EmailAddress.where(user_id: user.id).update_all(primary: false)
       email_address_record.update(primary: true)
     end
-    current_user.track_update!
+    user.user_record.email_addresses.reload
+    user.track_update!
     return true
-  end
-
-
-  def inspect
-    %(#<#{self.class} user_id: #{current_user.id.inspect}, address: #{address.inspect} primary: #{primary?}>)
-  end
-
-  def == other
-    self.class === other && other.id == id
   end
 
 end

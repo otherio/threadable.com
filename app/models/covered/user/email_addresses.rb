@@ -1,24 +1,21 @@
-class Covered::User::EmailAddresses
+class Covered::User::EmailAddresses < Covered::EmailAddresses
 
-  def initialize current_user
-    @current_user = current_user
+  def initialize user
+    @user    = user
+    @covered = user.covered
   end
-  attr_reader :current_user
-  delegate :covered, to: :current_user
-
-  def all
-    scope.select(&:persisted?).map{|email_address_record| email_address_for email_address_record }
-  end
+  attr_reader :user
 
   def primary
-    email_address_for (scope.primary or return)
+    email_address_for (scope.primary.first or return)
   end
 
   def add email_address, primary=false
     scope.transaction do
-      scope.update_all(primary: false) if primary
-      email_address_for scope.create(address: email_address, primary: primary)
+      email_address = email_address_for create(address: email_address)
+      email_address.primary! if primary
     end
+    email_address
   end
 
   def add! email_address, primary=false
@@ -27,19 +24,18 @@ class Covered::User::EmailAddresses
     email_address
   end
 
-
   def inspect
-    %(#<#{self.class} current_user_id: #{current_user.id}>)
+    %(#<#{self.class} user_id: #{user.id}>)
   end
 
   private
 
   def scope
-    current_user.user_record.email_addresses
+    user.user_record.email_addresses
   end
 
   def email_address_for email_address_record
-    Covered::User::EmailAddress.new(current_user, email_address_record)
+    Covered::User::EmailAddress.new(user, email_address_record)
   end
 
 end

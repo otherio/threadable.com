@@ -1,0 +1,72 @@
+class Covered::Conversation < Covered::Model
+
+  autoload :Creator
+  autoload :Events
+  autoload :Event
+  autoload :CreatedEvent
+  autoload :Messages
+  autoload :Recipients
+  autoload :Recipient
+  autoload :Participants
+  autoload :Participant
+
+  self.model_name = ::Conversation.model_name
+
+  def initialize covered, conversation_record
+    @covered, @conversation_record = covered, conversation_record
+  end
+  attr_reader :conversation_record
+
+  delegate *%w{
+    id
+    to_param
+    slug
+    subject
+    task?
+    project_id
+    creator_id
+    created_at
+    updated_at
+    persisted?
+    new_record?
+    errors
+  }, to: :conversation_record
+
+  let(:project     ){ covered.projects.find_by_id(project_id) }
+
+  let(:creator     ){ Creator.new(self)      }
+  let(:events      ){ Events.new(self)       }
+  let(:messages    ){ Messages.new(self)     }
+  let(:recipients  ){ Recipients.new(self)   }
+  let(:participants){ Participants.new(self) }
+
+
+  def update attributes
+    !!conversation_record.update_attributes(attributes)
+  end
+
+  def update! attributes
+    update(attributes) or raise Covered::RecordInvalid, "Conversation invalid: #{errors.full_messages.to_sentence}"
+  end
+
+  def as_json options=nil
+    {
+      id:         id,
+      param:      to_param,
+      slug:       slug,
+      task:       task?,
+      created_at: created_at,
+      updated_at: updated_at,
+    }
+  end
+
+
+  def == other
+    self.class === other && other.id == id
+  end
+
+  def inspect
+    %(#<#{self.class} conversation_id: #{id.inspect}>)
+  end
+
+end

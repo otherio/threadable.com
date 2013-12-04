@@ -8,7 +8,7 @@ describe ConversationMailer do
 
     let(:project){ current_user.projects.find_by_slug! 'raceteam' }
     let(:conversation){ project.conversations.find_by_slug! 'layup-body-carbon' }
-    let(:message){ conversation.messages.newest }
+    let(:message){ conversation.messages.latest }
     let(:recipient){ project.members.all.last }
 
     let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, project, message, recipient) }

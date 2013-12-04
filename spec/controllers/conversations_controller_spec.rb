@@ -38,7 +38,7 @@ describe ConversationsController do
   describe "GET new" do
     it "assigns a new conversation as @conversation" do
       get :new, valid_params
-      assigns(:conversation).should be_a Covered::Project::Conversation
+      assigns(:conversation).should be_a Covered::Conversation
       assigns(:conversation).should_not be_persisted
     end
   end

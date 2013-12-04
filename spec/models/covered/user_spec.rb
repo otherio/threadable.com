@@ -7,6 +7,11 @@ describe Covered::User do
   let(:user){ described_class.new(covered, user_record) }
   subject{ user }
 
+  it { should have_constant :EmailAddresses }
+  it { should have_constant :EmailAddress }
+  it { should have_constant :Projects }
+  it { should have_constant :Messages }
+
   its(:covered       ){ should eq covered                   }
   its(:user_record   ){ should eq user_record               }
   its(:id            ){ should eq user_record.id            }
@@ -22,23 +27,17 @@ describe Covered::User do
 
   its(:inspect       ){ should eq %(#<Covered::User user_id: #{user_record.id}>) }
 
-  %w{
-    id
-    to_param
-    name
-    email_address
-    slug
-    errors
-    new_record?
-    persisted?
-    avatar_url
-    authenticate
-    created_at
-  }.each do |method|
-    describe "##{method}" do
-      specify{ expect(user).to delegate(method).to(:user_record) }
-    end
-  end
+  it { should delegate(:id           ).to(:user_record) }
+  it { should delegate(:to_param     ).to(:user_record) }
+  it { should delegate(:name         ).to(:user_record) }
+  it { should delegate(:email_address).to(:user_record) }
+  it { should delegate(:slug         ).to(:user_record) }
+  it { should delegate(:errors       ).to(:user_record) }
+  it { should delegate(:new_record?  ).to(:user_record) }
+  it { should delegate(:persisted?   ).to(:user_record) }
+  it { should delegate(:avatar_url   ).to(:user_record) }
+  it { should delegate(:authenticate ).to(:user_record) }
+  it { should delegate(:created_at   ).to(:user_record) }
 
   describe "to_key" do
     subject{ user.to_key }

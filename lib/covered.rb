@@ -13,13 +13,31 @@ module Covered
   autoload :Config
   autoload :Class
   autoload :CurrentUser
+  autoload :Tracker
+  autoload :InMemoryTracker
+  autoload :MixpanelTracker
+  autoload :Emails
 
   # resources
+  autoload :EmailAddresses
+  autoload :EmailAddress
   autoload :Users
   autoload :User
   autoload :Projects
   autoload :Project
-  autoload :Emails
+  autoload :Conversations
+  autoload :Conversation
+  autoload :Tasks
+  autoload :Task
+  autoload :Messages
+  autoload :Message
+  autoload :Attachments
+  autoload :Attachment
+  autoload :IncomingEmails
+  autoload :IncomingEmail
+  autoload :Events
+  autoload :Event
+
 
   # superclasses
   autoload :Mailer
@@ -29,7 +47,7 @@ module Covered
   autoload :ProcessIncomingEmail
   autoload :SignUp
 
-  def self.config name=nil
+  def self.config name
     Config[name]
   end
 
@@ -39,14 +57,6 @@ module Covered
 
   def self.use_relative_model_naming?
     false
-  end
-
-  def self.tracker= tracker
-    @@tracker = tracker
-  end
-
-  def self.tracker
-    @@tracker
   end
 
 end

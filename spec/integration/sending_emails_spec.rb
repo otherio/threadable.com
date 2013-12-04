@@ -17,7 +17,7 @@ describe 'sending emails' do
 
     let(:project     ){ current_user.projects.find_by_slug! 'raceteam' }
     let(:conversation){ project.conversations.find_by_slug! 'layup-body-carbon' }
-    let(:message     ){ conversation.messages.newest }
+    let(:message     ){ conversation.messages.latest }
     let(:recipient   ){ project.members.find_by_user_id! find_user_by_email_address('yan@ucsd.covered.io').id }
 
     describe 'conversation_message' do

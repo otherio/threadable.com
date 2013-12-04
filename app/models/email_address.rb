@@ -13,7 +13,7 @@ class EmailAddress < ActiveRecord::Base
     if: :address_changed?
 
   def self.primary
-    where(primary: true).first
+    where(primary: true)
   end
 
   scope :for_user, ->(user){

@@ -1,4 +1,4 @@
 - project = current_user.projects.all.first
-- conversation = project.conversations.newest
+- conversation = project.conversations.latest
 - member = project.members.all.first
 = render_widget :conversation_messages, conversation, from: member

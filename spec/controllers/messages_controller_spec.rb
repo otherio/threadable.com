@@ -49,7 +49,7 @@ describe MessagesController do
     end
 
     def request!
-      expect_any_instance_of(Covered::Project::Conversation::Messages).to receive(:create).with(
+      expect_any_instance_of(Covered::Conversation::Messages).to receive(:create).with(
         sent_via_web:   true,
         body:           params[:message][:body],
         attachments:    params[:message][:attachments],
@@ -99,7 +99,7 @@ describe MessagesController do
 
     let(:message){ double(:message, errors: message_errors, persisted?: message_errors.blank?) }
     before do
-      expect_any_instance_of(Covered::Project::Conversation::Messages).to receive(:find_by_id!).with('1').and_return(message)
+      expect_any_instance_of(Covered::Messages).to receive(:find_by_id!).with('1').and_return(message)
       expect(message).to receive(:update).with(
         shareworthy: true,
         knowledge:   true,

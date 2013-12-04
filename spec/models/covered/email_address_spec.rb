@@ -1,44 +1,28 @@
 require 'spec_helper'
 
-describe Covered::User::EmailAddress do
+describe Covered::EmailAddress do
 
-  let(:user_record){ Factories.create(:user) }
-  let(:email_address_record){ user_record.email_addresses.primary }
-
-  let(:user){ Covered::User.new(covered, user_record) }
-  let(:email_address){ described_class.new(user, email_address_record) }
-
-  subject { email_address }
-
-  its(:covered               ){ should eq covered                   }
-  its(:current_user          ){ should eq user                      }
-  its(:email_address_record  ){ should eq email_address_record      }
-
-  describe "#primary!" do
-    context "when the address is already the primary email" do
-      it "does not set itself to the primary email if it already is" do
-        expect(user_record.email_addresses).to_not receive(:update_all).with(primary: false)
-        expect(email_address_record).to_not receive(:update).with(primary: true)
-        subject.primary!
-      end
-    end
-
-    context "when the address is not primary" do
-      before do
-        user.stub(:track_update!)
-        email_address.stub(:primary?).and_return(false)
-      end
-
-      it "sets the primary email" do
-        expect(user_record.email_addresses).to receive(:update_all).with(primary: false)
-        expect(email_address_record).to receive(:update).with(primary: true)
-        subject.primary!
-      end
-
-      it "updates mixpanel" do
-        expect(user).to receive(:track_update!)
-        subject.primary!
-      end
-    end
+  let :email_address_record do
+    double(:email_address_record,
+      id: 3390,
+      address: 'foo@bar.io',
+      primary?: true,
+      errors: nil,
+    )
   end
+
+  let(:email_address){ described_class.new(covered, email_address_record) }
+  subject{ email_address }
+
+  it { should delegate(:id        ).to(:email_address_record) }
+  it { should delegate(:address   ).to(:email_address_record) }
+  it { should delegate(:primary?  ).to(:email_address_record) }
+  it { should delegate(:errors    ).to(:email_address_record) }
+  it { should delegate(:persisted?).to(:email_address_record) }
+
+  its(:covered             ){ should eq covered }
+  its(:email_address_record){ should eq email_address_record }
+  its(:inspect             ){ should eq %(#<Covered::EmailAddress address: "foo@bar.io", primary: true>) }
+  its(:to_s                ){ should eq 'foo@bar.io' }
+
 end

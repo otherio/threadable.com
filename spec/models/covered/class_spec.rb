@@ -20,10 +20,17 @@ describe Covered::Class do
   its(:host            ){ should eq 'example.com'  }
   its(:port            ){ should eq 3000           }
   its(:current_user_id ){ should eq user_record.id }
-  its(:current_user    ){ should be_a Covered::CurrentUser }
-  its(:projects        ){ should be_a Covered::Projects }
-  its(:users           ){ should be_a Covered::Users }
-  its(:emails          ){ should be_a Covered::Emails }
+
+  its(:emails          ){ should be_a Covered::Emails         }
+  its(:users           ){ should be_a Covered::Users          }
+  its(:projects        ){ should be_a Covered::Projects       }
+  its(:conversations   ){ should be_a Covered::Conversations  }
+  its(:tasks           ){ should be_a Covered::Tasks          }
+  its(:messages        ){ should be_a Covered::Messages       }
+  its(:attachments     ){ should be_a Covered::Attachments    }
+  its(:incoming_emails ){ should be_a Covered::IncomingEmails }
+
+
   its(:env             ){ should eq(
     "protocol" => 'http',
     "host" => 'example.com',

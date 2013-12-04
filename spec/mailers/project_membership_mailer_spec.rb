@@ -7,7 +7,7 @@ describe ProjectMembershipMailer do
 
   let(:project){ current_user.projects.find_by_slug! 'raceteam' }
   let(:conversation){ project.conversations.find_by_slug! 'layup-body-carbon' }
-  let(:message){ conversation.messages.newest }
+  let(:message){ conversation.messages.latest }
   let(:text_part){ mail.body.encoded }
 
   describe "join_notice" do

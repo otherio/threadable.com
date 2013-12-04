@@ -1,13 +1,6 @@
-class Covered::Projects
-
-  extend ActiveSupport::Autoload
+class Covered::Projects < Covered::Collection
 
   autoload :Create
-
-  def initialize covered
-    @covered = covered
-  end
-  attr_reader :covered
 
   def all
     scope.reload.map{ |project| project_for project }
@@ -61,10 +54,6 @@ class Covered::Projects
     project = create(attributes)
     project.persisted? or raise Covered::RecordInvalid, "Project invalid: #{project.errors.full_messages.to_sentence}"
     project
-  end
-
-  def inspect
-    %(#<#{self.class}>)
   end
 
   private

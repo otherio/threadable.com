@@ -1,4 +1,4 @@
-class Covered::Users
+class Covered::Users < Covered::Collection
 
   extend ActiveSupport::Autoload
   autoload :Create
@@ -9,11 +9,11 @@ class Covered::Users
   attr_reader :covered
 
   def all
-    ::User.all.includes(:email_addresses).map{ |project| user_for project }
+    scope.includes(:email_addresses).map{ |project| user_for project }
   end
 
   def find_by_email_address email_address
-    user_for (::User.find_by_email_address(email_address) or return)
+    user_for (scope.find_by_email_address(email_address) or return)
   end
 
   def find_by_email_address! email_address
@@ -21,7 +21,7 @@ class Covered::Users
   end
 
   def find_by_slug slug
-    user_for (::User.where(slug:slug).first or return)
+    user_for (scope.where(slug:slug).first or return)
   end
 
   def find_by_slug! slug
@@ -29,7 +29,7 @@ class Covered::Users
   end
 
   def find_by_id id
-    user_for (::User.where(id:id).first or return)
+    user_for (scope.where(id:id).first or return)
   end
 
   def find_by_id! id
@@ -37,7 +37,7 @@ class Covered::Users
   end
 
   def exists? id
-    User.exists?(id) ? id : false
+    scope.exists?(id) ? id : false
   end
 
   def exists! id
@@ -45,7 +45,7 @@ class Covered::Users
   end
 
   def new attributes={}
-    user_for ::User.new(attributes)
+    user_for scope.new(attributes)
   end
   alias_method :build, :new
 
@@ -64,6 +64,10 @@ class Covered::Users
   end
 
   private
+
+  def scope
+    ::User.all
+  end
 
   def user_for user_record
     Covered::User.new(covered, user_record)

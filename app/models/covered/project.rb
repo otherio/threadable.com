@@ -1,17 +1,11 @@
-class Covered::Project
-
-  include Let
-  extend ActiveSupport::Autoload
+class Covered::Project < Covered::Model
 
   autoload :Update
   autoload :Members
   autoload :Member
   autoload :Conversations
-  autoload :Conversation
-  # autoload :Messages
-  # autoload :Message
+  autoload :Messages
   autoload :Tasks
-  autoload :Task
 
   def self.model_name
     ::Project.model_name
@@ -20,7 +14,7 @@ class Covered::Project
   def initialize covered, project_record
     @covered, @project_record = covered, project_record
   end
-  attr_reader :covered, :project_record
+  attr_reader :project_record
 
   delegate *%w{
     id
@@ -61,6 +55,7 @@ class Covered::Project
   let(:messages){ Messages.new(self) }
   let(:tasks){ Tasks.new(self) }
 
+  # TODO remove me in favor of a rails json view file
   def as_json options=nil
     {
       id:          id,
@@ -73,11 +68,12 @@ class Covered::Project
     }
   end
 
-  def leave!
-    return unless covered.current_user_id
-    project = covered.current_user.projects.find_by_id(project_record.id)
-    project.members.remove(user: covered.current_user)
-  end
+  # TODO move to subclass
+  # def leave!
+  #   return unless covered.current_user_id
+  #   project = covered.current_user.projects.find_by_id(project_record.id)
+  #   project.members.remove(user: covered.current_user)
+  # end
 
   def update attributes
     Update.call(self, attributes)
@@ -87,8 +83,5 @@ class Covered::Project
     %(#<#{self.class} project_id: #{id.inspect}, name: #{name.inspect}>)
   end
 
-  def == other
-    self.class === other && other.id == id
-  end
 end
 

@@ -1,19 +1,26 @@
-class Covered::Project::Tasks < Covered::Project::Conversations
+class Covered::Project::Tasks < Covered::Tasks
 
-  autoload :Create
+  def initialize project
+    @project = project
+    @covered = project.covered
+  end
+  attr_reader :project
 
   def find_by_slug! slug
     find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find Task with slug #{slug.inspect}"
   end
 
-  def create attributes
-    Create.call project, attributes
+  def build attributes={}
+    conversation_for scope.build(attributes)
+  end
+  alias_method :new, :build
+
+  def create attributes={}
+    super attributes.merge(project: project)
   end
 
-  def create! attributes
-    task = create(attributes)
-    task.persisted? or raise Covered::RecordInvalid, "Task invalid: #{task.errors.full_messages.to_sentence}"
-    task
+  def inspect
+    %(#<#{self.class} project_id: #{project.id.inspect}>)
   end
 
   private
@@ -21,7 +28,5 @@ class Covered::Project::Tasks < Covered::Project::Conversations
   def scope
     project.project_record.tasks
   end
-
-  alias_method :task_for, :conversation_for
 
 end

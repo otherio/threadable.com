@@ -27,6 +27,63 @@ describe "covered", fixtures: false do
   #   expect(Project.last.members).to include frank.user_record
   # end
 
+  it 'email addresses' do
+    jared = covered.users.create! name: 'Jared Grippe', email_address: 'jared@other.io'
+    expect( jared                           ).to be_a Covered::User
+    expect( jared.email_address             ).to eq 'jared@other.io'
+    expect( jared.email_addresses           ).to be_a Covered::User::EmailAddresses
+    expect( jared.email_addresses.count     ).to eq 1
+
+    jared_at_other_io = jared.email_addresses.all.first
+    expect( jared_at_other_io         ).to be_a Covered::User::EmailAddress
+    expect( jared_at_other_io.address ).to eq 'jared@other.io'
+    expect( jared_at_other_io         ).to be_primary
+
+    jared.email_addresses.add('jared@deadlyicon.com')
+    expect( jared.email_address         ).to eq 'jared@other.io'
+    expect( jared.email_addresses.count ).to eq 2
+
+    jared_at_deadlyicon_dot_com = jared.email_addresses.all.last
+    expect( jared_at_deadlyicon_dot_com         ).to be_a Covered::User::EmailAddress
+    expect( jared_at_deadlyicon_dot_com.address ).to eq 'jared@deadlyicon.com'
+    expect( jared_at_deadlyicon_dot_com         ).to_not be_primary
+
+    jared_at_deadlyicon_dot_com.primary!
+    expect( jared.email_address ).to eq 'jared@deadlyicon.com'
+
+    expect( jared.email_addresses.all.map{|e| [e.address, e.primary?] } ).to eq [
+      ['jared@other.io',       false],
+      ['jared@deadlyicon.com', true ],
+    ]
+  end
+
+  it "x" do
+    expect( covered                 ).to be_a Covered::Class
+    expect( covered.protocol        ).to eq 'http'
+    expect( covered.host            ).to eq '127.0.0.1'
+    expect( covered.email_host      ).to eq '127.0.0.1'
+    expect( covered.port            ).to eq Capybara.server_port
+    expect( covered.tracker         ).to be_a Mixpanel::Tracker
+    expect( covered.current_user_id ).to be_nil
+    expect( covered.current_user    ).to be_nil
+
+    expect( covered.emails          ).to be_a Covered::Emails
+    expect( covered.email_addresses ).to be_a Covered::EmailAddresses
+    expect( covered.users           ).to be_a Covered::Users
+    expect( covered.projects        ).to be_a Covered::Projects
+    expect( covered.conversations   ).to be_a Covered::Conversations
+    expect( covered.tasks           ).to be_a Covered::Tasks
+    expect( covered.messages        ).to be_a Covered::Messages
+    expect( covered.attachments     ).to be_a Covered::Attachments
+    expect( covered.incoming_emails ).to be_a Covered::IncomingEmails
+
+
+
+
+
+
+  end
+
   def sign_up! options
     covered.current_user = covered.users.create! options
   end
@@ -46,6 +103,10 @@ describe "covered", fixtures: false do
       aaron  = other.members.add name: 'Aaron Muszalski', email_address: 'aaron@other.io'
       ian    = other.members.add name: 'Ian Baker',       email_address: 'ian@other.io'
 
+      expect(nicole).to be_a Covered::Project::Member
+      expect(aaron ).to be_a Covered::Project::Member
+      expect(ian   ).to be_a Covered::Project::Member
+
       assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", other.id, nicole.id, nil]
       assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", other.id, aaron.id, nil]
       assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", other.id, ian.id, nil]
@@ -56,7 +117,7 @@ describe "covered", fixtures: false do
       sent_emails.clear
 
       welcome_conversation = other.conversations.create! subject: 'Welcome to the new other mailing list'
-      expect( welcome_conversation.class       ).to eq Covered::Project::Conversation
+      expect( welcome_conversation.class       ).to eq Covered::Conversation
       expect( welcome_conversation.slug        ).to eq "welcome-to-the-new-other-mailing-list"
       expect( welcome_conversation.creator_id  ).to eq current_user.id
       expect( welcome_conversation.creator     ).to eq current_user
@@ -111,22 +172,22 @@ describe "covered", fixtures: false do
       expect( htp.members ).to include aaron
 
       fat_cops = htp.conversations.create! subject: 'fat cops are so squishy'
-      expect( fat_cops.class ).to eq Covered::Project::Conversation
+      expect( fat_cops.class ).to eq Covered::Conversation
       expect( fat_cops.slug  ).to eq "fat-cops-are-so-squishy"
       expect( fat_cops.task? ).to be_false
 
-      expect( fat_cops.creator.class      ).to eq Covered::Project::Conversation::Creator
-      expect( fat_cops.events.class       ).to eq Covered::Project::Conversation::Events
-      expect( fat_cops.messages.class     ).to eq Covered::Project::Conversation::Messages
-      expect( fat_cops.recipients.class   ).to eq Covered::Project::Conversation::Recipients
-      expect( fat_cops.participants.class ).to eq Covered::Project::Conversation::Participants
+      expect( fat_cops.creator.class      ).to eq Covered::Conversation::Creator
+      expect( fat_cops.events.class       ).to eq Covered::Conversation::Events
+      expect( fat_cops.messages.class     ).to eq Covered::Conversation::Messages
+      expect( fat_cops.recipients.class   ).to eq Covered::Conversation::Recipients
+      expect( fat_cops.participants.class ).to eq Covered::Conversation::Participants
 
       expect( htp.conversations.find_by_slug!(fat_cops.slug) ).to eq fat_cops
       fat_cops = htp.conversations.find_by_slug! fat_cops.slug
-      expect( fat_cops.class ).to eq Covered::Project::Conversation
+      expect( fat_cops.class ).to eq Covered::Conversation
 
       msg1 = fat_cops.messages.create! html: "<p>OMG I love their belly fat</p>", sent_via_web: true
-      expect( msg1.class             ).to eq Covered::Project::Conversation::Message
+      expect( msg1.class             ).to eq Covered::Message
       expect( msg1.subject           ).to eq fat_cops.subject
       expect( msg1.body              ).to eq "<p>OMG I love their belly fat</p>"
       expect( msg1.root?             ).to be_true

@@ -1,4 +1,7 @@
-class Covered::Project::Members
+class Covered::Project::Members < Covered::Collection
+
+  autoload :Add
+  autoload :Remove
 
   def initialize project
     @project = project
@@ -65,61 +68,15 @@ class Covered::Project::Members
   # add(user: user, personal_message: "welcome!")
   # add(name: 'Steve Waz', email_address: "steve@waz.io", personal_message: "welcome!")
   def add options
-    send_join_notice = options.fetch(:send_join_notice){ true }
-
-    user_id = case
-    when options.key?(:user_id)
-      covered.users.exists! options[:user_id]
-    when options.key?(:email_address)
-      (
-        covered.users.find_by_email_address(options[:email_address]) or
-        covered.users.create!(name: options[:name], email_address: options[:email_address])
-      ).id
-    when options[:user].respond_to?(:user_id)
-      options[:user].user_id
-    else
-      raise ArgumentError, "unable to determine user id from #{options.inspect}"
-    end
-
-    unless member = scope.where(user_id: user_id).first
-      member = scope.create!(user_id: user_id, gets_email: options[:gets_email] != false)
-
-      if send_join_notice
-        covered.emails.send_email_async(:join_notice, project.id, user_id, options[:personal_message])
-      end
-    end
-
-    covered.track("Added User", {
-      'Invitee' => user_id,
-      'Project' => project.id,
-      'Project Name' => project.name,
-      'Sent Join Notice' => send_join_notice ? true : false,
-      'Sent Personal Message' => options[:personal_message].present?
-    })
-
-    member_for member
+    member_for Add.call(self, options)
   end
 
   # remove(user: member)
   # remove(user: user)
   # remove(user_id: user_id)
   def remove options
-    if options.key?(:user) && options[:user].respond_to?(:project_membership_id)
-      scope.delete options[:user].project_membership_id
-      return self
-    end
-
-    user_id = options[:user_id] || options[:user].try(:user_id) or
-      raise ArgumentError, "unable to determine user id from #{options.inspect}"
-
-    covered.track("Removed User", {
-      'Removed User' => user_id,
-      'Project' => project.id,
-      'Project Name' => project.name,
-    })
-
-    scope.where(user_id: user_id).delete_all
-    self
+    Remove.call(self, options)
+    return self
   end
 
 
