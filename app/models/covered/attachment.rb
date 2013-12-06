@@ -11,6 +11,7 @@ class Covered::Attachment
     filename
     mimetype
     size
+    content
     writeable?
     created_at
     updated_at

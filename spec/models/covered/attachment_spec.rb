@@ -17,6 +17,7 @@ describe Covered::Attachment do
   it{ should delegate(:filename  ).to(:attachment_record) }
   it{ should delegate(:mimetype  ).to(:attachment_record) }
   it{ should delegate(:size      ).to(:attachment_record) }
+  it{ should delegate(:content   ).to(:attachment_record) }
   it{ should delegate(:writeable?).to(:attachment_record) }
   it{ should delegate(:created_at).to(:attachment_record) }
   it{ should delegate(:updated_at).to(:attachment_record) }
