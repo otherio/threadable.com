@@ -7,6 +7,7 @@ class Covered::User
   autoload :EmailAddresses
   autoload :EmailAddress
   autoload :Projects
+  autoload :Project
   autoload :Messages
   autoload :Update
 

@@ -17,4 +17,8 @@ class Covered::User::Projects < Covered::Projects
     user.user_record.projects
   end
 
+  def project_for project_record
+    Covered::User::Project.new(self, project_record)
+  end
+
 end

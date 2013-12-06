@@ -68,13 +68,6 @@ class Covered::Project < Covered::Model
     }
   end
 
-  # TODO move to subclass
-  # def leave!
-  #   return unless covered.current_user_id
-  #   project = covered.current_user.projects.find_by_id(project_record.id)
-  #   project.members.remove(user: covered.current_user)
-  # end
-
   def update attributes
     Update.call(self, attributes)
   end
