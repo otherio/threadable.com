@@ -122,7 +122,16 @@ class Covered::Messages::Create < MethodObject
   end
 
   def create_attachments!
-    @message_record.attachments = @options.attachments if @options.attachments.present?
+    return unless @options.attachments.present?
+
+    @message_record.attachments = @options.attachments.map do |attachment|
+      case attachment
+      when ::Attachment; attachment
+      when ::Covered::Attachment; attachment.attachment_record
+      when Hash
+        ::Attachment.create(attachment)
+      end
+    end
   end
 
   def send_emails!
