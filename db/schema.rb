@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131125205739) do
+ActiveRecord::Schema.define(version: 20131206043717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,11 @@ ActiveRecord::Schema.define(version: 20131125205739) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "attachments_incoming_emails", id: false, force: true do |t|
+    t.integer "incoming_email_id"
+    t.integer "attachment_id"
+  end
+
   create_table "attachments_messages", id: false, force: true do |t|
     t.integer "message_id"
     t.integer "attachment_id"
@@ -37,7 +42,7 @@ ActiveRecord::Schema.define(version: 20131125205739) do
     t.string   "type"
     t.string   "subject",                    null: false
     t.integer  "project_id",                 null: false
-    t.integer  "creator_id",                 null: false
+    t.integer  "creator_id"
     t.integer  "position"
     t.string   "slug",                       null: false
     t.datetime "done_at"
@@ -72,8 +77,19 @@ ActiveRecord::Schema.define(version: 20131125205739) do
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "incoming_emails", force: true do |t|
-    t.text     "params",     null: false
-    t.datetime "created_at", null: false
+    t.text     "params",            null: false
+    t.datetime "created_at",        null: false
+    t.string   "status"
+    t.integer  "creator_id"
+    t.integer  "project_id"
+    t.integer  "conversation_id"
+    t.integer  "parent_message_id"
+    t.integer  "message_id"
+  end
+
+  create_table "incoming_emails_messages", id: false, force: true do |t|
+    t.integer "incoming_email_id"
+    t.integer "attachment_id"
   end
 
   create_table "messages", force: true do |t|
@@ -98,10 +114,11 @@ ActiveRecord::Schema.define(version: 20131125205739) do
   end
 
   add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+  add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", unique: true, using: :btree
 
   create_table "project_memberships", force: true do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
+    t.integer  "project_id",                 null: false
+    t.integer  "user_id",                    null: false
     t.boolean  "can_write",  default: true
     t.boolean  "gets_email", default: true
     t.boolean  "moderator",  default: false
