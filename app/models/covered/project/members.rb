@@ -56,6 +56,12 @@ class Covered::Project::Members < Covered::Collection
     find_by_user_id covered.current_user_id if covered.current_user_id
   end
 
+  def email_addresses
+    EmailAddress.joins(:user => :projects).where(projects: {id: project.id}).each do |email_address_record|
+      Covered::EmailAddress.new(covered, email_address_record)
+    end
+  end
+
   def include? member
     !!scope.where(:user_id => member.user_id).exists?
   end

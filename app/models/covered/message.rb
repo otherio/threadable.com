@@ -20,6 +20,8 @@ class Covered::Message < Covered::Model
     subject
     message_id_header
     references_header
+    to_header
+    cc_header
     date_header
     shareworthy?
     knowledge?

@@ -84,6 +84,8 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
       message_id_header: incoming_email.message_id_header,
       references_header: incoming_email.references_header,
       date_header:       incoming_email.date_header,
+      to_header:         incoming_email.to_header,
+      cc_header:         incoming_email.cc_header,
       subject:           subject,
       parent_message:    parent_message,
       from:              incoming_email.from_email_address,

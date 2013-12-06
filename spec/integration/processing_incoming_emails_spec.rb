@@ -32,6 +32,7 @@ describe "processing incoming emails" do
       "Message-Id"       => message_id,
       "Subject"          => subject,
       "To"               => to,
+      "Cc"               => cc,
       "Content-Type"     => content_type,
       "message-headers"  => [
         ["X-Envelope-From", envelope_from],
@@ -43,6 +44,7 @@ describe "processing incoming emails" do
         ["Message-Id",      message_id],
         ["Subject",         subject],
         ["To",              to],
+        ["Cc",              cc],
         ["Content-Type",    content_type],
       ].to_json,
       "body-plain"    => body_plain,
@@ -56,7 +58,8 @@ describe "processing incoming emails" do
   let(:sender)            { 'yan@ucsd.covered.io' }
   let(:expected_creator)  { sender_user }
   let(:recipient)         { 'raceteam@127.0.0.1' }
-  let(:to)                { 'Race Team <raceteam@127.0.0.1>' }
+  let(:to)                { 'Race Team <raceteam@127.0.0.1>, Someone Else <someone@example.com>' }
+  let(:cc)                { 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
   let(:from)              { 'Yan Hzu <yan@ucsd.covered.io>' }
   let(:envelope_from)     { '<yan@ucsd.covered.io>' }
   let(:subject)           { 'OMG guys I love covered!' }
@@ -175,6 +178,8 @@ describe "processing incoming emails" do
     it 'creates a new message' do
       expect( message.conversation_id   ).to eq conversation.id
       expect( message.message_id_header ).to eq message_id
+      expect( message.to_header         ).to eq to
+      expect( message.cc_header         ).to eq cc
       expect( message.date_header       ).to eq date.rfc2822
       expect( message.references_header ).to eq references
       expect( message.subject           ).to eq subject

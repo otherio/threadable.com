@@ -57,6 +57,50 @@ describe 'sending emails' do
           expect_email!
         end
       end
+
+      context "when there are multiple people in the TO and CC headers" do
+        let(:conversation){ project.conversations.find_by_slug! 'who-wants-to-pick-up-lunch' }
+        it "should filter out project members from the TO and CC headers" do
+          covered.emails.send_email(:conversation_message, project, message, recipient)
+
+          email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up lunch?").first
+
+          expect( email.header['To'].to_s ).to_not be_blank
+          expect( email.header['To'].to_s ).to     include 'UCSD Electric Racing <raceteam@127.0.0.1>'
+          expect( email.header['To'].to_s ).to     include 'somebody@else.io'
+          expect( email.header['To'].to_s ).to_not include 'alice@ucsd.covered.io'
+          expect( email.header['To'].to_s ).to_not include 'bethany@ucsd.covered.io'
+
+          expect( email.header['Cc'].to_s ).to     include 'another@random-person.com'
+          expect( email.header['Cc'].to_s ).to_not include 'bob@ucsd.covered.io'
+        end
+      end
+
+      context 'when the project is in the CC header and there are multiple people in the TO and CC headers' do
+        let(:conversation){ project.conversations.find_by_slug! 'who-wants-to-pick-up-dinner' }
+
+        it "should include the project in the CC header" do
+          covered.emails.send_email(:conversation_message, project, message, recipient)
+
+          email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up dinner?").first
+
+          expect( email.header['To'].to_s ).to_not be_blank
+          expect( email.header['Cc'].to_s ).to include 'UCSD Electric Racing <raceteam@127.0.0.1>'
+        end
+      end
+      context 'when the project is in the BCC header and there are multiple people in the TO and CC headers' do
+        let(:conversation){ project.conversations.find_by_slug! 'who-wants-to-pick-up-breakfast' }
+
+        it "should not include the project email address in the TO or CC headers" do
+          covered.emails.send_email(:conversation_message, project, message, recipient)
+
+          email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up breakfast?").first
+
+          expect( email.header['To'].to_s ).to_not be_blank
+          expect( email.header['Cc'].to_s ).to_not include 'UCSD Electric Racing <raceteam@127.0.0.1>'
+          expect( email.header['To'].to_s ).to_not include 'UCSD Electric Racing <raceteam@127.0.0.1>'
+        end
+      end
     end
 
     describe 'join_notice' do

@@ -206,4 +206,27 @@ FixtureBuilder.build do
     mark_task_as_done @layup_body_carbon_task
   end
 
+
+  as 'tom@ucsd.covered.io' do
+    create_conversation(
+      to_header: %(#{project.formatted_email_address}, somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
+      cc_header: %("Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      subject:   %(Who wants to pick up lunch?),
+      text:      %(I like cheese. I think someone else likes cheese too.),
+    )
+    create_conversation(
+      to_header: %(),
+      cc_header: %(#{project.formatted_email_address}, "Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      subject:   %(Who wants to pick up dinner?),
+      text:      %(I like potatoes. I think someone else likes potatoes too.),
+    )
+    create_conversation(
+      to_header: %(somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
+      cc_header: %("Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      # bcc_header: project.formatted_email_address # <--- Let's assume the project was BCC'd
+      subject:   %(Who wants to pick up breakfast?),
+      text:      %(I like foodz. I've been here all night!!!!!),
+    )
+  end
+
 end

@@ -32,10 +32,24 @@ class ConversationMailer < Covered::Mailer
 
     @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
 
+    to = begin
+      to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
+      to_addresses = filter_out_project_members(to_addresses)
+      to_addresses.map(&:to_s).join(', ').presence || @project.formatted_email_address
+    end
+
+    cc = begin
+      cc_addresses = Mail::AddressList.new(@message.cc_header.to_s).addresses
+      cc_addresses = filter_out_project_members(cc_addresses)
+      cc_addresses.map(&:to_s).join(', ').presence || nil
+    end
+
+
     email = mail(
       :css                 => 'email',
       :'from'              => from,
-      :'to'                => @project.formatted_email_address,
+      :'to'                => to,
+      :'cc'                => cc,
       :'subject'           => subject,
       :'Reply-To'          => @project.formatted_email_address,
       :'Message-ID'        => @message.message_id_header,
@@ -52,6 +66,20 @@ class ConversationMailer < Covered::Mailer
     email.smtp_envelope_to = @recipient.email_address
 
     email
+  end
+
+  private
+
+  def project_member_emails_addresses
+    @project_member_emails_addresses ||= @project.members.email_addresses
+  end
+
+  def filter_out_project_members email_addresses
+    email_addresses.select do |email_address|
+      project_member_emails_addresses.none? do |member_email_address|
+        member_email_address.address == email_address.address
+      end
+    end
   end
 
 end

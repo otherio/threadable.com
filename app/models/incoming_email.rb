@@ -54,10 +54,26 @@ class IncomingEmail < ActiveRecord::Base
     mail_message.header['Date'].to_s
   end
 
+  def to_header
+    message_headers_as_hash['To']
+  end
+
+  def cc_header
+    message_headers_as_hash['Cc']
+  end
+
   delegate *%w{header attachments}, to: :mail_message
 
   def mail_message
     @mail_message ||= MailgunRequestToEmail.new(self).message
+  end
+
+  def message_headers
+    @message_headers ||= JSON.parse(params['message-headers'])
+  end
+
+  def message_headers_as_hash
+    @message_headers_as_hash ||= Hash[message_headers]
   end
 
 end

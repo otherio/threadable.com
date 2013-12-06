@@ -9,6 +9,7 @@ class Covered::Messages::Create < MethodObject
     optional :creator_id
     optional :body_plain, :body_html, :stripped_plain, :stripped_html
     optional :message_id_header, :references_header, :date_header
+    optional :to_header, :cc_header
     optional :sent_via_web, default: false
   end
 
@@ -83,6 +84,14 @@ class Covered::Messages::Create < MethodObject
     @options.references_header || (parent_message ? "#{parent_message.references_header} #{parent_message.message_id_header}" : nil)
   end
 
+  let :to_header do
+    @options.to_header
+  end
+
+  let :cc_header do
+    @options.cc_header
+  end
+
   def create_message!
     @message_record = @conversation.conversation_record.messages.create(
       parent_message_id: parent_message.try(:id),
@@ -95,6 +104,8 @@ class Covered::Messages::Create < MethodObject
       stripped_html:     stripped_html,
       message_id_header: message_id_header,
       references_header: references_header.try(:strip),
+      to_header:         to_header,
+      cc_header:         cc_header,
       date_header:       date_header,
     )
 
