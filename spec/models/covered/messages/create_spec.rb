@@ -5,7 +5,28 @@ describe Covered::Messages::Create do
   let(:messages){ double :messages, covered: covered }
   let(:project){ double :project, id: 4855, name: 'Babys First Project' }
   let(:conversation_record){ double :conversation_record, messages: double(:messages)}
-  let(:attachments){ double :attachments, present?: true }
+  let :attachment1 do
+    {
+      url:       'https://www.filepicker.io/api/file/fSCGhASDSADSAlyJLfmPU2tg',
+      filename:  'whoa now.jpg',
+      mimetype:  'image/jpeg',
+      size:      '733',
+      writeable: 'true',
+    }
+  end
+  let :attachment2 do
+    {
+      url:       'https://www.filepicker.io/api/file/fSCGhYEITlyJLfmPU2tg',
+      filename:  'working at the office_face0.jpg',
+      mimetype:  'image/jpeg',
+      size:      '7611',
+      writeable: 'true',
+    }
+  end
+  let(:attachment_record1){ double :attachment_record1 }
+  let(:attachment_record2){ double :attachment_record2 }
+  let(:attachments){ [attachment1, attachment2] }
+
 
   let :conversation do
     double(:conversation,
@@ -42,7 +63,10 @@ describe Covered::Messages::Create do
     expect(Covered::Message).to receive(:new).
       with(covered, message_record).and_return(message)
 
-    expect(message_record).to receive(:attachments=).with(attachments)
+    expect(::Attachment).to receive(:create).with(attachment1).and_return(attachment_record1)
+    expect(::Attachment).to receive(:create).with(attachment2).and_return(attachment_record2)
+
+    expect(message_record).to receive(:attachments=).with([attachment_record1, attachment_record2])
   end
 
   context "when not given a date" do
