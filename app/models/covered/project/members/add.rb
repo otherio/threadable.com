@@ -5,7 +5,6 @@ class Covered::Project::Members::Add < MethodObject
     @covered = members.covered
     @project = members.project
     @options = options
-    @scope   = @members.send(:scope)
     @send_join_notice = @options.fetch(:send_join_notice){ true }
     member or create_membership!
     track!
@@ -29,11 +28,14 @@ class Covered::Project::Members::Add < MethodObject
   end
 
   def member
-    @member ||= @scope.where(user_id: user_id).first
+    @member ||= @project.project_record.memberships.where(user_id: user_id).first
   end
 
   def create_membership!
-    @member = @scope.create!(user_id: user_id, gets_email: @options[:gets_email] != false)
+    @member = @project.project_record.memberships.create!(
+      user_id: user_id,
+      gets_email: @options[:gets_email] != false
+    )
 
     if @send_join_notice
       @covered.emails.send_email_async(:join_notice, @project.id, user_id, @options[:personal_message])
