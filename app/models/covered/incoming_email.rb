@@ -1,4 +1,4 @@
-class Covered::IncomingEmail
+class Covered::IncomingEmail < Covered::Model
 
   include Let
   extend ActiveSupport::Autoload
@@ -6,9 +6,7 @@ class Covered::IncomingEmail
   autoload :Creator
   autoload :Attachments
 
-  def self.model_name
-    ::IncomingEmail.model_name
-  end
+  self.model_name = ::IncomingEmail.model_name
 
   def initialize covered, incoming_email_record
     @covered, @incoming_email_record = covered, incoming_email_record
@@ -48,22 +46,22 @@ class Covered::IncomingEmail
 
   def project
     return unless project_id
-    @project ||= covered.projects.find_by_id(project_id)
+    @project ||= Covered::Project.new(covered, incoming_email_record.project)
   end
 
   def conversation
     return unless conversation_id
-    @conversation ||= covered.conversations.find_by_id(conversation_id)
+    @conversation ||= Covered::Conversation.new(covered, incoming_email_record.conversation)
   end
 
   def message
     return unless message_id
-    @message ||= covered.messages.find_by_id(message_id)
+    @message ||= Covered::Message.new(covered, incoming_email_record.message)
   end
 
   def parent_message
     return unless parent_message_id
-    @parent_message ||= covered.messages.find_by_id(parent_message_id)
+    @parent_message ||= Covered::Message.new(covered, incoming_email_record.parent_message)
   end
 
   def sender_email_address

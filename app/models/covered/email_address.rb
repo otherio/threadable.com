@@ -17,6 +17,10 @@ class Covered::EmailAddress < Covered::Model
     address
   end
 
+  def == other
+    self.class === other && (id.nil? ? other.id == id : other.address == address)
+  end
+
   def inspect
     %(#<#{self.class} address: #{address.inspect}, primary: #{primary?.inspect}>)
   end
