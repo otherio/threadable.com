@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20131206050534) do
   end
 
   add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
-  add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", unique: true, using: :btree
+  add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
 
   create_table "project_memberships", force: true do |t|
     t.integer  "project_id",                 null: false
