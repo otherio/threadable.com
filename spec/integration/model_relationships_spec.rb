@@ -32,6 +32,9 @@ describe 'model relationships' do
       conversation('get epoxy'),
       conversation('get release agent'),
       conversation('get carbon and fiberglass'),
+      conversation('Who wants to pick up lunch?'),
+      conversation('Who wants to pick up dinner?'),
+      conversation('Who wants to pick up breakfast?'),
     ]
 
     project.tasks.to_set.should == Set[
@@ -89,7 +92,7 @@ describe 'model relationships' do
     alice.email_address.should == 'alice@ucsd.covered.io'
     alice.project_memberships.count.should == 1
     alice.projects.should == [project]
-    alice.messages.count.should == 11
+    alice.messages.count.should == 14
     alice.conversations.to_set.should == Set[
       conversation('Welcome to our new Covered project!'),
       conversation('How are we going to build the body?'),
@@ -100,6 +103,9 @@ describe 'model relationships' do
       conversation('get epoxy'),
       conversation('get release agent'),
       conversation('get carbon and fiberglass'),
+      conversation('Who wants to pick up lunch?'),
+      conversation('Who wants to pick up dinner?'),
+      conversation('Who wants to pick up breakfast?'),
     ]
     alice.tasks.should == []
 

@@ -21,6 +21,8 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
       stripped_html:           stripped_html,
       header:                  header,
       attachments:             attachments,
+      to_header:               to,
+      cc_header:               cc,
     )
   end
 
@@ -37,6 +39,8 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:stripped_html)           { "<p>hey people,</p>\n<p>Who drank all the coffee!?</p>"}
   let(:stripped_plain)          { "hey people,\n\nWho drank all the coffee!?" }
   let(:header)                  {}
+  let(:to)                      { 'project@covered.io' }
+  let(:cc)                      { 'someone@place.com' }
 
   let :attachments do
     []
@@ -68,6 +72,8 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
   let(:expected_stripped_html)     { "<p>hey people,</p>\n<p>Who drank all the coffee!?</p>"}
   let(:expected_stripped_plain)    { "hey people,\n\nWho drank all the coffee!?" }
   let(:expected_attachments)       { [] }
+  let(:expected_to_header)         { 'project@covered.io' }
+  let(:expected_cc_header)         { 'someone@place.com' }
 
   before do
     Timecop.freeze(Time.now)
@@ -90,6 +96,8 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
       stripped_plain:    expected_stripped_plain,
       stripped_html:     expected_stripped_html,
       attachments:       expected_attachments,
+      to_header:         expected_to_header,
+      cc_header:         expected_cc_header,
     ).and_return(new_message)
   end
 

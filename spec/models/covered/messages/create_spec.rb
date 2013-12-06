@@ -29,6 +29,8 @@ describe Covered::Messages::Create do
   let(:expected_message_id_header)  { "<529695e5b8b3a_13b723fe73985e6d876688@127.0.0.1>" }
   let(:expected_references_header)  { nil }
   let(:expected_date_header)        { "Sat, 26 Oct 1985 08:22:00 -0000" }
+  let(:expected_to_header)          { nil }
+  let(:expected_cc_header)          { nil }
 
   let(:message_record){ double :message_record }
   let(:message){ double :message, persisted?: true, recipients: [] }
@@ -58,6 +60,8 @@ describe Covered::Messages::Create do
         message_id_header: expected_message_id_header,
         references_header: expected_references_header,
         date_header:       expected_date_header,
+        to_header:         expected_to_header,
+        cc_header:         expected_cc_header,
       ).and_return(message_record)
 
       expect(covered).to receive(:track).with('Composed Message', {
