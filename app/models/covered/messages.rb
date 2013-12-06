@@ -20,9 +20,7 @@ class Covered::Messages < Covered::Collection
   end
 
   def find_by_id! id
-    message = find_by_id(id)
-    message or raise Covered::RecordNotFound, "unable to find conversation message with id: #{id}"
-    message
+    find_by_id(id) or raise Covered::RecordNotFound, "unable to find conversation message with id: #{id}"
   end
 
   def find_by_message_id_header message_id_header
@@ -30,9 +28,8 @@ class Covered::Messages < Covered::Collection
   end
 
   def find_by_message_id_header! message_id_header
-    message = find_by_message_id_header(message_id_header)
-    message or raise Covered::RecordNotFound, "unable to find conversation message message id header: #{message_id_header}"
-    message
+    find_by_message_id_header(message_id_header) or
+      raise Covered::RecordNotFound, "unable to find conversation message message id header: #{message_id_header}"
   end
 
   def build attributes={}

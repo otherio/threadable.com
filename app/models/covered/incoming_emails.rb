@@ -6,8 +6,12 @@ class Covered::IncomingEmails < Covered::Collection
     scope.reload.map{ |incoming_email| incoming_email_for incoming_email }
   end
 
+  def find_by_id id
+    incoming_email_for (scope.find(id) or return)
+  end
+
   def find_by_id! id
-    incoming_email_for (scope.where(id: id).first or raise Covered::RecordNotFound, "unable to find incoming email with id #{id.inspect}")
+    find_by_id(id) or raise Covered::RecordNotFound, "unable to find incoming email with id #{id.inspect}"
   end
 
   def create attributes
