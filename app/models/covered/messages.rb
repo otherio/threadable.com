@@ -26,7 +26,7 @@ class Covered::Messages < Covered::Collection
   end
 
   def find_by_message_id_header message_id_header
-    message_for (Message.where(message_id_header: message_id_header).first or return)
+    message_for (scope.where(message_id_header: message_id_header).first or return)
   end
 
   def find_by_message_id_header! message_id_header
@@ -35,13 +35,8 @@ class Covered::Messages < Covered::Collection
     message
   end
 
-  def find_by_child_message_header header
-    message_for (FindByChildHeader.call(project.id, header) or return)
-  end
-
-
-  def build
-    message_for scope.build
+  def build attributes={}
+    message_for scope.build(attributes)
   end
 
   def create attributes
