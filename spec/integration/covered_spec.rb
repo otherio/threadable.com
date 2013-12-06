@@ -57,13 +57,13 @@ describe "covered", fixtures: false do
     ]
   end
 
-  it "x" do
+  it "has the expected accessors" do
     expect( covered                 ).to be_a Covered::Class
     expect( covered.protocol        ).to eq 'http'
     expect( covered.host            ).to eq '127.0.0.1'
     expect( covered.email_host      ).to eq '127.0.0.1'
     expect( covered.port            ).to eq Capybara.server_port
-    expect( covered.tracker         ).to be_a Mixpanel::Tracker
+    expect( covered.tracker         ).to be_a Covered::InMemoryTracker
     expect( covered.current_user_id ).to be_nil
     expect( covered.current_user    ).to be_nil
 
@@ -76,12 +76,6 @@ describe "covered", fixtures: false do
     expect( covered.messages        ).to be_a Covered::Messages
     expect( covered.attachments     ).to be_a Covered::Attachments
     expect( covered.incoming_emails ).to be_a Covered::IncomingEmails
-
-
-
-
-
-
   end
 
   def sign_up! options
