@@ -7,7 +7,7 @@ class Covered::Message::Body < MethodObject
     when plain.present?
       plain.extend(Plain)
     else
-      nil
+      ''.extend(Empty)
     end
   end
 
@@ -18,6 +18,12 @@ class Covered::Message::Body < MethodObject
   end
 
   module Plain
+    def html?
+      false
+    end
+  end
+
+  module Empty
     def html?
       false
     end

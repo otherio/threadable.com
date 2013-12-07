@@ -20,4 +20,10 @@ describe Covered::Message::Body do
     it { should_not be_html }
   end
 
+  context 'when given no content' do
+    subject{ described_class.call(nil, nil)}
+    it { should == '' }
+    it { should_not be_html }
+  end
+
 end
