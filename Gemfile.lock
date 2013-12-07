@@ -5,6 +5,15 @@ GIT
     rails-widgets (0.0.1)
       railties (>= 3.0, < 5.0)
 
+GIT
+  remote: https://github.com/getsentry/raven-ruby.git
+  revision: 3563a6b08bfde1d1b603b40cc092c0a75a2ab032
+  specs:
+    sentry-raven (0.7.1)
+      faraday (>= 0.7.6)
+      hashie (>= 1.1.0)
+      uuidtools
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -136,6 +145,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
+    hashie (2.0.5)
     hike (1.2.3)
     honeybadger (1.9.4)
       faraday (~> 0.7)
@@ -312,6 +322,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uuidtools (2.1.4)
     virtus (0.5.5)
       backports (~> 3.3)
       descendants_tracker (~> 0.0.1)
@@ -375,6 +386,7 @@ DEPENDENCIES
   sanitize
   sass-rails
   selenium-webdriver
+  sentry-raven!
   shoulda-matchers
   sidekiq
   sidekiq-failures

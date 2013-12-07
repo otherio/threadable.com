@@ -43,6 +43,7 @@ gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
 gem 'roadie'
 gem 'mixpanel-ruby'
+gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 
 group :production, :staging do
   gem 'rails_12factor'
