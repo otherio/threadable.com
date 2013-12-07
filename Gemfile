@@ -43,7 +43,6 @@ gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
 gem 'roadie'
 gem 'mixpanel-ruby'
-gem 'rollbar'
 
 group :production, :staging do
   gem 'rails_12factor'

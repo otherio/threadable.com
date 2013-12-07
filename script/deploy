@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 ENV=${1:-staging}
 SKIP_CI=${2:-nope}
@@ -18,3 +19,6 @@ git push $ENV master || exit
 git push --delete origin latest-$ENV
 git tag -f latest-$ENV
 git push --tags
+
+# tell honeybadger we deploy'd
+rake honeybadger:deploy TO=production REVISION=`git rev-parse HEAD` USER=`git config user.name`
