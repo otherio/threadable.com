@@ -72,6 +72,10 @@ class Covered::Project < Covered::Model
     Update.call(self, attributes)
   end
 
+  def destroy!
+    project_record.destroy!
+  end
+
   def inspect
     %(#<#{self.class} project_id: #{id.inspect}, name: #{name.inspect}>)
   end

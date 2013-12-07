@@ -4,7 +4,7 @@ class Conversation < ActiveRecord::Base
 
   belongs_to :project
   belongs_to :creator, :class_name => 'User'
-  has_many :messages, -> { order created_at: :asc }
+  has_many :messages, -> { order created_at: :asc }, dependent: :destroy
   has_many :events, class_name: 'Conversation::Event'
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   # TODO recipients will eventually have a scope that removes members who have muted this conversation

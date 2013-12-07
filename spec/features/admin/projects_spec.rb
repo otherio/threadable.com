@@ -130,6 +130,8 @@ feature "Admin projects CRUD" do
       accept_prompt!
     end
 
+    expect(page).to have_text 'Edit project'
+
     expect(members_table).to match_array [
       ["Ian Baker",      "ian@other.io",    "no" ],
       ["You Face",       "you@face.io",     "yes"],
@@ -137,6 +139,15 @@ feature "Admin projects CRUD" do
     ]
 
     expect( project.members ).to_not include nicole
+
+    visit admin_projects_url
+    within('.projects.table tbody tr', text: 'United Hations') do
+      click_on 'destroy'
+      accept_prompt!
+    end
+    expect(page).to have_text 'Projects'
+    expect(current_url).to eq admin_projects_url
+    expect(page).to_not have_text 'United Hations'
 
   end
 
