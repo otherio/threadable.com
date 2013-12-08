@@ -125,7 +125,7 @@ feature "Admin projects CRUD" do
     expect( someone_else.gets_email? ).to be_false
     assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, someone_else.id, nil]
 
-    within first('.members.table tbody tr') do
+    within first('.members.table tbody tr', text: 'Nicole Aptekar') do
       click_on 'remove'
       accept_prompt!
     end
