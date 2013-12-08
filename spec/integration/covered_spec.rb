@@ -43,7 +43,7 @@ describe "covered", fixtures: false do
     expect( jared.email_address         ).to eq 'jared@other.io'
     expect( jared.email_addresses.count ).to eq 2
 
-    jared_at_deadlyicon_dot_com = jared.email_addresses.all.last
+    jared_at_deadlyicon_dot_com = jared.email_addresses.all.find{|e| e.address == 'jared@deadlyicon.com' }
     expect( jared_at_deadlyicon_dot_com         ).to be_a Covered::User::EmailAddress
     expect( jared_at_deadlyicon_dot_com.address ).to eq 'jared@deadlyicon.com'
     expect( jared_at_deadlyicon_dot_com         ).to_not be_primary
@@ -51,7 +51,7 @@ describe "covered", fixtures: false do
     jared_at_deadlyicon_dot_com.primary!
     expect( jared.email_address ).to eq 'jared@deadlyicon.com'
 
-    expect( jared.email_addresses.all.map{|e| [e.address, e.primary?] } ).to eq [
+    expect( jared.email_addresses.all.map{|e| [e.address, e.primary?] }.to_set ).to eq Set[
       ['jared@other.io',       false],
       ['jared@deadlyicon.com', true ],
     ]
