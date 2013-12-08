@@ -29,8 +29,13 @@ describe TasksSidebarWidget do
     ])
   }
 
+  let(:tasks_all) { conversations.all.select(&:task?) }
+  let(:tasks_all_for_user) do
+    conversations.all.select(&:task?).select{ |t| t.doers == [current_user] }
+  end
+
   let(:tasks){
-    double(:tasks, all: conversations.all.select(&:task?))
+    double(:tasks, all_for_user: tasks_all_for_user, all: tasks_all)
   }
 
   def html_options

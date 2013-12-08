@@ -57,6 +57,7 @@ end
 
 group :development do
   gem 'meta_request'
+  gem 'active_record_query_trace'
 end
 
 group :development, :test do

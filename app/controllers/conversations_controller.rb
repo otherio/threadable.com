@@ -7,7 +7,7 @@ class ConversationsController < ApplicationController
   # GET /conversations
   # GET /conversations.json
   def index
-    @conversations = project.conversations.all
+    @conversations = project.conversations.all_with_participants
     @tasks         = project.tasks.all
 
     respond_to do |format|

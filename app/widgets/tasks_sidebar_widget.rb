@@ -13,9 +13,7 @@ class TasksSidebarWidget < Rails::Widget::Presenter
   end
 
   option :my_tasks do
-    tasks.select do |task|
-      task.doers.include? @view.current_user
-    end
+    project.tasks.all_for_user @view.current_user
   end
 
   option :done_tasks do

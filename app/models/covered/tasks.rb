@@ -20,6 +20,10 @@ class Covered::Tasks < Covered::Conversations
     task
   end
 
+  def all_for_user user
+    scope.joins(:doers).where('task_doers.id = ?', user.id)
+  end
+
   private
 
   def scope
