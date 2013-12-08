@@ -19,9 +19,3 @@ git push $ENV master || exit
 git push --delete origin latest-$ENV
 git tag -f latest-$ENV
 git push --tags
-
-# tell honeybadger we deploy'd
-rake honeybadger:deploy TO=production REVISION=`git rev-parse HEAD` USER=`git config user.name`
-
-# tell appsignal we deploy'd
-curl -X POST "https://push.appsignal.com/1/markers/heroku?api_key=69705a8e-7ac6-401b-97ce-30007d6c7835"

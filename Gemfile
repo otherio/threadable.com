@@ -43,6 +43,7 @@ gem 'animate-sass'
 gem 'roadie'
 gem 'mixpanel-ruby'
 
+gem 'newrelic_rpm'
 gem 'appsignal'
 gem 'oboe-heroku'
 
