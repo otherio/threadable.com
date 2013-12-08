@@ -124,7 +124,7 @@ class Covered::Messages::Create < MethodObject
   def create_attachments!
     return unless @options.attachments.present?
 
-    @message_record.attachments = @options.attachments.map do |attachment|
+    @message_record.attachments = @options.attachments.to_a.map do |attachment|
       case attachment
       when ::Attachment; attachment
       when ::Covered::Attachment; attachment.attachment_record

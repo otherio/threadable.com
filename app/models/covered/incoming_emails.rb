@@ -3,7 +3,7 @@ class Covered::IncomingEmails < Covered::Collection
   autoload :Create
 
   def all
-    scope.reload.map{ |incoming_email| incoming_email_for incoming_email }
+    incoming_emails_for scope.reload
   end
 
   def find_by_id id
@@ -14,8 +14,8 @@ class Covered::IncomingEmails < Covered::Collection
     find_by_id(id) or raise Covered::RecordNotFound, "unable to find incoming email with id #{id.inspect}"
   end
 
-  def create attributes
-    Create.call(self, attributes)
+  def create! mailgun_params
+    Create.call(self, mailgun_params)
   end
 
   def inspect
@@ -30,6 +30,10 @@ class Covered::IncomingEmails < Covered::Collection
 
   def incoming_email_for incoming_email_record
     Covered::IncomingEmail.new(covered, incoming_email_record)
+  end
+
+  def incoming_emails_for incoming_email_records
+    incoming_email_records.map{ |incoming_email_record| incoming_email_for incoming_email_record }
   end
 
 end

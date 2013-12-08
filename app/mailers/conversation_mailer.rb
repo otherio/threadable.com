@@ -14,14 +14,9 @@ class ConversationMailer < Covered::Mailer
     buffer_length = 0 if buffer_length < 0
     @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
-    subject = @message.subject
-
-    subject = "[#{subject_tag}] #{subject}" unless subject.include?("[#{subject_tag}]")
-
-    if @task && !subject.include?("✔")
-      # add a check mark to the subject if the conversation is a task, and if the subject doesn't already include one
-      subject.gsub!(/\[#{subject_tag}\]/, "[✔][#{subject_tag}]")
-    end
+    subject = StripEmailSubject.call(@project, @message.subject)
+    subject = "[#{subject_tag}] #{subject}"
+    subject = "[✔]#{subject}" if @task
 
     from = @message.from || @message.creator.try(:formatted_email_address ) || @project.formatted_email_address
     unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project.id, @recipient.id)
@@ -69,7 +64,7 @@ class ConversationMailer < Covered::Mailer
       :'List-Post'         => "<mailto:#{@project.email_address}>, <#{new_project_conversation_url(@project)}>"
     )
 
-    email.smtp_envelope_from = @project.email_address
+    email.smtp_envelope_from = @task ? @project.task_email_address : @project.email_address
     email.smtp_envelope_to = @recipient.email_address
 
     email

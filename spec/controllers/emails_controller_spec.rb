@@ -1,16 +1,23 @@
 require 'spec_helper'
 
-describe EmailsController do
+describe EmailsController, fixtures: false do
 
-  let(:params){ create_incoming_email_params }
-  let(:fake_incoming_email){ double(:fake_incoming_email, id: 45) }
+  let(:timestamp){ Time.now.to_i.to_s }
+  let(:token    ){ SecureRandom.uuid }
+  let(:signature){ MailgunSignature.encode(timestamp, token) }
+  let :params do
+    {
+      'signature' => signature,
+      'timestamp' => timestamp,
+      'token'     => token,
+    }
+  end
 
   describe "POST create" do
 
     context "when the post data has a valid signature" do
       it "should render succesfully" do
-        expect(IncomingEmail).to receive(:create!).with(params: params).and_return(fake_incoming_email)
-        expect(ProcessIncomingEmailWorker).to receive(:perform_async).with(covered.env, fake_incoming_email.id)
+        expect(covered.incoming_emails).to receive(:create!).with(params)
         post :create, params
         expect(response).to be_success
         expect(response.body).to be_blank
@@ -18,12 +25,22 @@ describe EmailsController do
     end
 
     context "when the post data does not have a valid signature" do
-      let(:params){ create_incoming_email_params.merge('signature' => 'badsignature') }
+      let(:signature){ 'badsignature' }
       it "should not render succesfully" do
-        expect(IncomingEmail).to_not receive(:create!)
-        expect(ProcessIncomingEmailWorker).to_not receive(:perform_async)
+        expect(covered.incoming_emails).to_not receive(:create!)
         post :create, params
         expect(response).to_not be_success
+        expect(response.body).to be_blank
+      end
+    end
+
+    context 'when the post fails to create an IncomingEmail' do
+      it "renders a 400" do
+        error = Covered::RecordInvalid.new('BAD!')
+        expect(covered.incoming_emails).to receive(:create!).and_raise(error)
+        expect(Honeybadger).to receive(:notify).with(error)
+        post :create, params
+        expect(response.status).to eq 400
         expect(response.body).to be_blank
       end
     end

@@ -92,6 +92,13 @@ describe "processing incoming emails" do
   let(:stripped_text)     {
     %(I think we should build it out of fiberglass and duck tape.)
   }
+  let(:expected_to                     ){ ['raceteam@127.0.0.1', 'someone@example.com'] }
+  let(:expected_from                   ){ sender }
+  let(:expected_conversation_subject   ){ "OMG guys I love covered!" }
+  let(:expected_message_subject        ){ subject }
+  let(:expected_sent_email_subject     ){ "[RaceTeam] OMG guys I love covered!" }
+  let(:expect_conversation_to_be_a_task){ false }
+  let(:expected_smtp_envelope_from){ recipient }
 
 
   shared_context 'the email recipient is a valid project' do
@@ -99,11 +106,14 @@ describe "processing incoming emails" do
     let(:project)       { covered.projects.find_by_slug! 'raceteam' }
     let(:recipient)     { project.email_address }
     let(:to)            { project.formatted_email_address }
+    let(:expected_to)   { [project.email_address] }
+
   end
 
   shared_context 'the email recipient is not a valid project' do
-    let(:recipient){ 'poopnozel@covered.io' }
-    let(:to)       { 'Poop Nozel <poopnozel@covered.io>' }
+    let(:recipient)  { 'poopnozel@covered.io' }
+    let(:to)         { 'Poop Nozel <poopnozel@covered.io>' }
+    let(:expected_to){ ['poopnozel@covered.io'] }
   end
 
 
@@ -182,7 +192,7 @@ describe "processing incoming emails" do
       expect( message.cc_header         ).to eq cc
       expect( message.date_header       ).to eq date.rfc2822
       expect( message.references_header ).to eq references
-      expect( message.subject           ).to eq subject
+      expect( message.subject           ).to eq expected_message_subject
       expect( message.body_plain        ).to eq body_plain
       expect( message.body_html         ).to eq body_html
       expect( message.stripped_html     ).to eq stripped_html
@@ -217,12 +227,13 @@ describe "processing incoming emails" do
         expect( email.message_id                ).to eq message_id[1..-2]
         expect( email.header[:References].to_s  ).to eq references
         expect( email.date.in_time_zone.rfc2822 ).to eq date.rfc2822
-        expect( email.to                        ).to eq [recipient]
+        expect( email.to                        ).to eq expected_to
         expect( email.smtp_envelope_to.length   ).to eq 1
         expect( project_member_email_addresses  ).to include email.smtp_envelope_to.first
-        expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [sender] ) unless dont_check_from_hack
-        expect( email.smtp_envelope_from        ).to eq recipient
-        expect( email.subject                   ).to eq "[RaceTeam] OMG guys I love covered!"
+        # expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [sender] ) unless dont_check_from_hack
+        expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [expected_from] )
+        expect( email.smtp_envelope_from        ).to eq expected_smtp_envelope_from
+        expect( email.subject                   ).to eq expected_sent_email_subject
         expect( email.html_content              ).to include body_html
         expect( email.text_content              ).to include body_plain
       end
@@ -237,9 +248,14 @@ describe "processing incoming emails" do
 
   shared_examples 'creates a new conversation' do
     it 'creates a new conversation' do
+      if expect_conversation_to_be_a_task
+        expect( conversation ).to be_task
+      else
+        expect( conversation ).to_not be_task
+      end
       expect( conversation.project_id     ).to eq project.id
       expect( conversation.creator_id     ).to eq expected_creator.id
-      expect( conversation.subject        ).to eq subject
+      expect( conversation.subject        ).to eq expected_conversation_subject
       expect( conversation.messages_count ).to eq 1
     end
   end
@@ -327,6 +343,49 @@ describe "processing incoming emails" do
       context "and the sender is a project member" do
         include_context 'the sender is a project member'
         include_examples 'it creates a message in a new conversation'
+
+        context "and the from address is not a project member" do
+          let(:from){ 'Larry TheTvGuy <larry@tvsrus.net>' }
+          let(:expected_from) { 'larry@tvsrus.net' }
+          include_examples 'it creates a message in a new conversation'
+        end
+
+        context "and the message was sent to the +task address" do
+          let(:expect_conversation_to_be_a_task){ true }
+          let(:recipient){ 'raceteam+task@127.0.0.1' }
+          let(:to){ 'Race Team Task <raceteam+task@127.0.0.1>, Someone Else <someone@example.com>' }
+          let(:expected_to){ ['raceteam+task@127.0.0.1', 'someone@example.com'] }
+          let(:expected_conversation_subject){ "OMG guys I love covered!" }
+          let(:expected_sent_email_subject){ "[✔][RaceTeam] OMG guys I love covered!" }
+          include_examples 'it creates a message in a new conversation'
+
+          context 'and the subject has some other [tag]' do
+            let(:subject){ "[ruby-docs] rvm 1.9.2 has a security hole" }
+            let(:expected_conversation_subject){ "[ruby-docs] rvm 1.9.2 has a security hole" }
+            let(:expected_sent_email_subject){ "[✔][RaceTeam] [ruby-docs] rvm 1.9.2 has a security hole" }
+            let(:expected_smtp_envelope_from){ 'raceteam+task@127.0.0.1' }
+            include_examples 'it creates a message in a new conversation'
+          end
+        end
+
+        context "and the subject contains [task]" do
+          let(:expect_conversation_to_be_a_task){ true }
+          let(:subject){ "[task] pickup some fried chicken" }
+          let(:expected_conversation_subject){ "pickup some fried chicken" }
+          let(:expected_sent_email_subject){ "[✔][RaceTeam] pickup some fried chicken" }
+          let(:expected_smtp_envelope_from){ 'raceteam+task@127.0.0.1' }
+          include_examples 'it creates a message in a new conversation'
+        end
+
+        context "and the subject contains [✔]" do
+          let(:expect_conversation_to_be_a_task){ true }
+          let(:subject){ "[✔] pickup some fried chicken" }
+          let(:expected_conversation_subject){ "pickup some fried chicken" }
+          let(:expected_sent_email_subject){ "[✔][RaceTeam] pickup some fried chicken" }
+          let(:expected_smtp_envelope_from){ 'raceteam+task@127.0.0.1' }
+          include_examples 'it creates a message in a new conversation'
+        end
+
       end
 
       context "and the sender is not a covered member" do
@@ -340,7 +399,7 @@ describe "processing incoming emails" do
           let(:sender_is_a_member) { true }
           let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
           let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
-          let(:dont_check_from_hack) { true }  #TODO: fix this
+          let(:expected_from) { 'yan@ucsd.covered.io' }
           include_examples 'it creates a message in a new conversation'
         end
       end
@@ -356,7 +415,7 @@ describe "processing incoming emails" do
           let(:sender_is_a_member) { true }
           let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
           let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
-          let(:dont_check_from_hack) { true }  #TODO: fix this
+          let(:expected_from) { 'yan@ucsd.covered.io' }
           include_examples 'it creates a message in a new conversation'
         end
       end

@@ -19,86 +19,90 @@ describe Covered, :type => :covered do
 
     %w{
       Covered
-      Covered::CoveredError
-      Covered::RecordNotFound
-      Covered::RecordInvalid
-      Covered::CurrentUserNotFound
-      Covered::AuthorizationError
+      Covered::Application
+      Covered::Attachment
+      Covered::Attachments
+      Covered::Attachments::Create
       Covered::AuthenticationError
-      Covered::Config
+      Covered::AuthorizationError
       Covered::Class
-      Covered::CurrentUser
-      Covered::Tracker
-      Covered::InMemoryTracker
-      Covered::MixpanelTracker
-      Covered::Emails
-      Covered::EmailAddresses
-      Covered::EmailAddresses::Create
-      Covered::EmailAddress
-      Covered::Users
-      Covered::Users::Create
-      Covered::User
-      Covered::User::EmailAddresses
-      Covered::User::EmailAddress
-      Covered::User::Projects
-      Covered::User::Messages
-      Covered::User::Update
-      Covered::Projects
-      Covered::Projects::Create
-      Covered::Project
-      Covered::Project::Update
-      Covered::Project::Members
-      Covered::Project::Members::Add
-      Covered::Project::Members::Remove
-      Covered::Project::Member
-      Covered::Project::Conversations
-      Covered::Project::Messages
-      Covered::Project::Tasks
+      Covered::Config
+      Covered::Conversation
+      Covered::Conversation::CreatedEvent
+      Covered::Conversation::Creator
+      Covered::Conversation::Event
+      Covered::Conversation::Events
+      Covered::Conversation::Messages
+      Covered::Conversation::Participant
+      Covered::Conversation::Participants
+      Covered::Conversation::Recipient
+      Covered::Conversation::Recipients
       Covered::Conversations
       Covered::Conversations::Create
-      Covered::Conversation
-      Covered::Conversation::Creator
-      Covered::Conversation::Events
-      Covered::Conversation::Event
-      Covered::Conversation::CreatedEvent
-      Covered::Conversation::Messages
-      Covered::Conversation::Recipients
-      Covered::Conversation::Recipient
-      Covered::Conversation::Participants
-      Covered::Conversation::Participant
-      Covered::Tasks
-      Covered::Tasks::Create
-      Covered::Task
-      Covered::Task::Event
-      Covered::Task::CreatedEvent
-      Covered::Task::DoneEvent
-      Covered::Task::UndoneEvent
-      Covered::Task::AddedDoerEvent
-      Covered::Task::RemovedDoerEvent
-      Covered::Task::Doers
-      Covered::Messages
-      Covered::Messages::Create
-      Covered::Messages::FindByChildHeader
+      Covered::CoveredError
+      Covered::CurrentUser
+      Covered::CurrentUserNotFound
+      Covered::EmailAddress
+      Covered::EmailAddresses
+      Covered::EmailAddresses::Create
+      Covered::Emails
+      Covered::Event
+      Covered::Events
+      Covered::InMemoryTracker
+      Covered::IncomingEmail
+      Covered::IncomingEmail::Attachments
+      Covered::IncomingEmail::Attachments::Create
+      Covered::IncomingEmail::Creator
+      Covered::IncomingEmail::MailgunRequestToEmail
+      Covered::IncomingEmail::Process
+      Covered::IncomingEmails
+      Covered::IncomingEmails::Create
+      Covered::Mailer
       Covered::Message
       Covered::Message::Attachments
       Covered::Message::Body
+      Covered::Message::Body::Empty
       Covered::Message::Body::HTML
       Covered::Message::Body::Plain
-      Covered::Attachments
-      Covered::Attachments::Create
-      Covered::Attachment
-      Covered::IncomingEmails
-      Covered::IncomingEmails::Create
-      Covered::IncomingEmail
-      Covered::IncomingEmail::Creator
-      Covered::IncomingEmail::Attachments
-      Covered::IncomingEmail::MailgunRequestToEmail
-      Covered::Mailer
-      Covered::Worker
-      Covered::ProcessIncomingEmail
-      Covered::ProcessIncomingEmail::CreateConversationMessage
+      Covered::Messages
+      Covered::Messages::Create
+      Covered::Messages::FindByChildHeader
+      Covered::MixpanelTracker
+      Covered::Project
+      Covered::Project::Conversations
+      Covered::Project::Member
+      Covered::Project::Members
+      Covered::Project::Members::Add
+      Covered::Project::Members::Remove
+      Covered::Project::Messages
+      Covered::Project::Tasks
+      Covered::Project::Update
+      Covered::Projects
+      Covered::Projects::Create
+      Covered::RecordInvalid
+      Covered::RecordNotFound
       Covered::SignUp
-      Covered::Application
+      Covered::Task
+      Covered::Task::AddedDoerEvent
+      Covered::Task::CreatedEvent
+      Covered::Task::Doers
+      Covered::Task::DoneEvent
+      Covered::Task::Event
+      Covered::Task::RemovedDoerEvent
+      Covered::Task::UndoneEvent
+      Covered::Tasks
+      Covered::Tasks::Create
+      Covered::Tracker
+      Covered::User
+      Covered::User::EmailAddress
+      Covered::User::EmailAddresses
+      Covered::User::Messages
+      Covered::User::Project
+      Covered::User::Projects
+      Covered::User::Update
+      Covered::Users
+      Covered::Users::Create
+      Covered::Worker
     }.shuffle.each do |constant_name|
 
       it "#{constant_name}" do

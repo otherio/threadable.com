@@ -16,7 +16,7 @@ describe ConversationMailer do
     let(:expected_to           ){ project.task_email_address }
     let(:expected_from         ){ message.from }
     let(:expected_envelope_to  ){ recipient.email_address }
-    let(:expected_envelope_from){ project.email_address }
+    let(:expected_envelope_from){ project.task_email_address }
 
     let(:mail_as_string){ mail.to_s }
     let(:text_part){ mail.text_part.body.to_s }
@@ -44,11 +44,11 @@ describe ConversationMailer do
       project_unsubscribe_token = extract_project_unsubscribe_token(text_part)
       expect( ProjectUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
 
-      mail.header[:'Reply-To'].to_s.should == project.formatted_task_email_address
-      mail.header[:'List-ID'].to_s.should == project.formatted_list_id
-      mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]
-      mail.message_id.should == message.message_id_header[1..-2]
-      mail.references.should == (
+      expect(mail.header[:'Reply-To'].to_s).to eq project.formatted_task_email_address
+      expect(mail.header[:'List-ID'].to_s ).to eq project.formatted_list_id
+      expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
+      expect(mail.message_id              ).to eq message.message_id_header[1..-2]
+      expect(mail.references              ).to eq(
         message.parent_message.references_header.scan(/<(.+?)>/).flatten +
         [message.parent_message.message_id_header[1..-2]]
       )

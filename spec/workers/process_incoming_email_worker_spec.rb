@@ -2,14 +2,18 @@ require 'spec_helper'
 
 describe ProcessIncomingEmailWorker do
 
-  it "should find the incoming email record and pass it to covered.process_incoming_email" do
-    incoming_email_double = double(:incoming_email)
-    expect(IncomingEmail).to receive(:find).with(42).and_return incoming_email_double
-    expect(covered).to receive(:process_incoming_email).with incoming_email_double
+  subject{ described_class.new }
+  before do
+    subject.instance_variable_set(:@covered, covered)
+  end
+  delegate :perform!, to: :subject
 
-    instance = described_class.new
-    instance.instance_variable_set(:@covered, covered)
-    instance.perform!(42)
+  it "should find the incoming email record and pass it to covered.process_incoming_email" do
+    incoming_email = double(:incoming_email)
+    expect_any_instance_of(Covered::IncomingEmails).to receive(:find_by_id!).with(42).and_return(incoming_email)
+    expect(incoming_email).to receive(:reset!)
+    expect(incoming_email).to receive(:process!)
+    perform!(42)
   end
 
 end

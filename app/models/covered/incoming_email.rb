@@ -1,8 +1,6 @@
 class Covered::IncomingEmail < Covered::Model
 
-  include Let
-  extend ActiveSupport::Autoload
-
+  autoload :Process
   autoload :Creator
   autoload :Attachments
 
@@ -17,6 +15,8 @@ class Covered::IncomingEmail < Covered::Model
     id
     to_param
     params
+    processed?
+    failed?
     creator_id
     creator_id=
     project_id
@@ -29,12 +29,11 @@ class Covered::IncomingEmail < Covered::Model
     parent_message_id=
     message_id
     message_id=
+    reset!
     created_at
+    errors
+    persisted?
   }, to: :incoming_email_record
-
-  def status
-    ActiveSupport::StringInquirer.new incoming_email_record.status
-  end
 
   def creator
     Creator.new(self) if creator_id
@@ -64,14 +63,28 @@ class Covered::IncomingEmail < Covered::Model
     @parent_message ||= Covered::Message.new(covered, incoming_email_record.parent_message)
   end
 
-  def sender_email_address
-    email_address_for mail_message.sender
+  def reply?
+    !!parent_message_id
   end
 
-  def from_email_addresses
-    mail_message.from.map do |email_address|
-      email_address_for email_address
-    end
+  def task?
+    conversation.task?
+  end
+
+  let :sender_email_address do
+    mail_message.sender
+  end
+
+  let :from_email_addresses do
+    Array(mail_message.from) + [sender_email_address]
+  end
+
+  def from_email_address
+    params["from"]
+  end
+
+  def recipient_email_address
+    params["recipient"]
   end
 
   def subject
@@ -106,6 +119,14 @@ class Covered::IncomingEmail < Covered::Model
     mail_message.header['Date'].to_s
   end
 
+  def to_header
+    message_headers_as_hash['To']
+  end
+
+  def cc_header
+    message_headers_as_hash['Cc']
+  end
+
   delegate *%w{header multipart?}, to: :mail_message
 
   class MailgunRequestToEmail < ::Incoming::Strategies::Mailgun
@@ -115,14 +136,20 @@ class Covered::IncomingEmail < Covered::Model
     @mail_message ||= MailgunRequestToEmail.new(self).message
   end
 
-  def inspect
-    %(#<#{self.class} id: #{id.inspect}>)
+  def message_headers
+    @message_headers ||= JSON.parse(params['message-headers'])
   end
 
-  private
+  def message_headers_as_hash
+    @message_headers_as_hash ||= Hash[message_headers]
+  end
 
-  def email_address_for email_address
-    Covered::EmailAddress.new(covered, ::EmailAddress.where(address: email_address).first_or_initialize)
+  def process!
+    Process.call(self)
+  end
+
+  def inspect
+    %(#<#{self.class} id: #{id.inspect}>)
   end
 
 end

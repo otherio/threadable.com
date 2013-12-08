@@ -47,7 +47,7 @@ class Covered::Project::Members < Covered::Collection
   end
 
   def find_by_email_address! email_address
-    member = find_by_user_email_address(email_address)
+    member = find_by_email_address(email_address)
     member or raise Covered::RecordNotFound, "unable to find project member with email_address: #{email_address}"
     member
   end

@@ -27,9 +27,13 @@ module IncomingEmail::Params
     update_attachments(params, &method(:decode_attachment))
   end
 
-  File = Struct.new(:original_filename, :content_type, :read)
+  File = Struct.new(:original_filename, :content_type, :read) do
+    alias_method :filename, :original_filename
+    alias_method :mimetype, :content_type
+  end
+
   def self.decode_attachment(attachment)
-    self::File.new *attachment.values_at("original_filename", "content_type", "read")
+    self::File.new *attachment.values_at(*File.members.map(&:to_s))
   end
 
   def self.update_attachments(params, &block)

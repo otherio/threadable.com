@@ -44,7 +44,6 @@ module Covered
   autoload :Worker
 
   # procedures
-  autoload :ProcessIncomingEmail
   autoload :SignUp
 
   def self.config name

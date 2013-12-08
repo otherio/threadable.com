@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Covered::IncomingEmails do
 
-
   let(:incoming_emails){ described_class.new(covered) }
   subject{ incoming_emails }
 
@@ -56,10 +55,10 @@ describe Covered::IncomingEmails do
     end
   end
 
-  describe 'create' do
+  describe 'create!' do
     it 'calls Create with its self and the given attributes' do
       expect(described_class::Create).to receive(:call).with(incoming_emails, some: 'attributes').and_return(incoming_email)
-      expect( incoming_emails.create(some: 'attributes') ).to eq incoming_email
+      expect( incoming_emails.create!(some: 'attributes') ).to eq incoming_email
     end
   end
 

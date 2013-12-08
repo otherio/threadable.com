@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe IncomingEmail::Params do
 
+  let(:covered){ Covered.new(host:'example.com') }
   let(:params){ create_incoming_email_params }
 
-  delegate :dump, :load, to: described_class
+  delegate :dump, :load, to: :described_class
 
   it "should be able to handle File instances" do
     encoded_params = dump(params)
@@ -22,12 +23,6 @@ describe IncomingEmail::Params do
       end
     end
 
-  end
-
-  describe ".dump" do
-  end
-
-  describe ".load" do
   end
 
   def expect_attachments_to_be_equal(expected_attachment, decoded_attachment)

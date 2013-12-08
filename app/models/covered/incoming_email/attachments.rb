@@ -1,13 +1,16 @@
-class Covered::IncomingEmail::Attachments
+class Covered::IncomingEmail::Attachments < Covered::Attachments
+
+  autoload :Create
 
   def initialize incoming_email
+    super(incoming_email.covered)
     @incoming_email = incoming_email
   end
   attr_reader :incoming_email
-  delegate :covered, to: :incoming_email
 
-  def all
-    scope.map{|attachment_record| attachment_for attachment_record }
+  # create(filename: 'cat.jpg', mimetype: 'image/jpg', content: "CONTENT")
+  def create attributes
+    Create.call(self, attributes)
   end
 
   def inspect
@@ -16,12 +19,8 @@ class Covered::IncomingEmail::Attachments
 
   private
 
-  def attachment_for attachment_record
-    Covered::Attachment.new(covered, attachment_record)
-  end
-
   def scope
-    incoming_email.incoming_email_record.attachments.all
+    incoming_email.incoming_email_record.attachments
   end
 
 end

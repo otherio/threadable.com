@@ -54,10 +54,6 @@ class Covered::Class
     Covered::SignUp.call(attributes.merge(covered: self))
   end
 
-  def process_incoming_email incoming_email
-    Covered::ProcessIncomingEmail.call(self, incoming_email)
-  end
-
   def email_host
     Covered::Class::EMAIL_HOSTS[host] || host
   end

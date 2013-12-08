@@ -15,6 +15,8 @@ class Covered::Attachment
     writeable?
     created_at
     updated_at
+    errors
+    persisted?
   }, to: :attachment_record
 
   def inspect
