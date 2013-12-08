@@ -12,7 +12,6 @@ gem 'sidekiq-failures'
 
 gem 'redis'
 gem 'pg'
-gem 'newrelic_rpm'
 
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'stringex'
@@ -45,6 +44,7 @@ gem 'roadie'
 gem 'mixpanel-ruby'
 
 gem 'appsignal'
+gem 'oboe-heroku'
 
 group :production, :staging do
   gem 'rails_12factor'
