@@ -39,6 +39,10 @@ GEM
     addressable (2.3.5)
     animate-sass (0.1.1)
       compass (>= 0.11.5)
+    appsignal (0.6.7)
+      json
+      rails (>= 3.0)
+      rake
     arel (4.0.0)
     atomic (1.1.14)
     backports (3.3.5)
@@ -329,6 +333,7 @@ DEPENDENCIES
   activerecord-fixture_builder
   acts_as_list
   animate-sass
+  appsignal
   bcrypt-ruby (~> 3.0.0)
   better_errors
   binding_of_caller

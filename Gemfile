@@ -44,6 +44,8 @@ gem 'animate-sass'
 gem 'roadie'
 gem 'mixpanel-ruby'
 
+gem 'appsignal'
+
 group :production, :staging do
   gem 'rails_12factor'
 end
