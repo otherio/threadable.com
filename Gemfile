@@ -55,6 +55,10 @@ group :production do
   gem 'honeybadger'
 end
 
+group :development do
+  gem 'meta_request'
+end
+
 group :development, :test do
   gem 'dotenv-rails'
   gem 'debugger'
