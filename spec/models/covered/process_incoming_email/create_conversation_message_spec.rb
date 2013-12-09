@@ -137,7 +137,7 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
 
     context "when the conversation is a task" do
       let(:task){ true }
-      let(:subject){ 'task: buy some coffee' }
+      let(:subject){ '✔ buy some coffee' }
       let(:expected_subject){ 'buy some coffee' }
       it_should_create_a_new_conversation_message!
     end
@@ -162,17 +162,18 @@ describe Covered::ProcessIncomingEmail::CreateConversationMessage do
 
     it_should_create_a_new_conversation_message!
 
-    context "when the subject starts with 'task: '" do
-      let(:task){ true }
-      let(:subject){ 'task: buy some coffee' }
-      let(:expected_subject){ 'buy some coffee' }
-      it_should_create_a_new_conversation_message!
-    end
-
     context "when the subject starts with '✔ '" do
       let(:task){ true }
       let(:subject){ '✔ buy some coffee' }
       let(:expected_subject){ 'buy some coffee' }
+      it_should_create_a_new_conversation_message!
+    end
+
+    context "when the recipient address contains +task" do
+      let(:task) { true }
+      let(:subject) { 'buy some coffee' }
+      let(:expected_subject) { 'buy some coffee' }
+      let(:recipient_email_address) { 'recipient+task@covered.io' }
       it_should_create_a_new_conversation_message!
     end
   end

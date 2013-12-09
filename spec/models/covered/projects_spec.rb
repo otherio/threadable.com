@@ -18,11 +18,25 @@ describe Covered::Projects do
     end
   end
 
-  describe 'create' do
+  describe '#create' do
     it 'should attempt to create a project and return a Covered::Project' do
       project = subject.create(name: 'pet a kitten')
       expect(project.class).to eq Covered::Project
       expect(project.project_record).to be_a ::Project
+    end
+  end
+
+  describe '#find_by_email_address' do
+    let!(:project) { FactoryGirl.create(:project, name: 'foo') }
+
+    it 'finds the project' do
+      project_record = subject.find_by_email_address('foo@covered.io')
+      expect(project_record.id).to eq project.id
+    end
+
+    it 'finds the project if there are labels/commands' do
+      project_record = subject.find_by_email_address('foo+task@covered.io')
+      expect(project_record.id).to eq project.id
     end
   end
 

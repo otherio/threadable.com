@@ -1,6 +1,7 @@
 class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
 
-  TASK_SUBJECT_PREFIX_REGEXP = /^(task:|✔)\s*/i
+  TASK_SUBJECT_PREFIX_REGEXP = /^(✔)\s*/
+  TASK_RECIPIENT_REGEXP = /\+task\b/i
 
   include Let
 
@@ -47,7 +48,12 @@ class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
     if pre_existing_conversation
       pre_existing_conversation.task? ? :task : :conversation
     else
-      incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP ? :task : :conversation
+      if incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP ||
+        incoming_email.recipient_email_address =~ TASK_RECIPIENT_REGEXP
+        :task
+      else
+        :conversation
+      end
     end
   end
 

@@ -9,10 +9,10 @@
       %td
         %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
           %tr
-            = email_button "New conversation", "mailto:#{@project.email_address}",            class: 'compose-button'
-            = email_button "New task",         "mailto:#{@project.email_address}?subject=✔+", class: 'compose-button'
-            = email_button "View on Covered",  "#{@message_url}",                             class: 'view-button'
-            -# = email_button "Mute",             "#{@message_url}",                             class: 'mute-button'
+            = email_button "New conversation", "mailto:#{@project.email_address}",                 class: 'compose-button'
+            = email_button "New task",         "mailto:#{@project.task_email_address}?subject=✔+", class: 'compose-button'
+            = email_button "View on Covered",  "#{@message_url}",                                  class: 'view-button'
+            - # = email_button "Mute",             "#{@message_url}",                                  class: 'mute-button'
 
         %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
           - if @task

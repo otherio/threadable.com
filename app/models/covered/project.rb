@@ -38,8 +38,16 @@ class Covered::Project < Covered::Model
     "#{project_record.email_address_username}@#{covered.email_host}"
   end
 
+  def task_email_address
+    "#{project_record.email_address_username}+task@#{covered.email_host}"
+  end
+
   def formatted_email_address
     "#{name} <#{email_address}>"
+  end
+
+  def formatted_task_email_address
+    "#{name} Tasks <#{task_email_address}>"
   end
 
   def list_id

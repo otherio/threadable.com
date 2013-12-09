@@ -33,6 +33,10 @@ class Covered::Projects < Covered::Collection
   def find_by_email_address email_address
     email_address.present? or return
     email_address_username, host = email_address.split('@')
+    # grab the stuff before the + here.
+    email_address_username =~ /^([^+]+)\+?/
+    email_address_username = $1
+
     # return nil if covered.host != host
     project_for (scope.where(email_address_username: email_address_username).first or return)
   end

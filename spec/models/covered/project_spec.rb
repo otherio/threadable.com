@@ -36,10 +36,12 @@ describe Covered::Project do
     its(:model_name){ should == ::Project.model_name }
   end
 
-  its(:email_address          ){ should eq "C02-cleaners@127.0.0.1" }
-  its(:formatted_email_address){ should eq "C02 Cleaners <C02-cleaners@127.0.0.1>" }
-  its(:list_id                ){ should eq "C02-cleaners.127.0.0.1" }
-  its(:formatted_list_id      ){ should eq "C02 Cleaners <C02-cleaners.127.0.0.1>" }
+  its(:email_address                ){ should eq "C02-cleaners@127.0.0.1" }
+  its(:task_email_address           ){ should eq "C02-cleaners+task@127.0.0.1" }
+  its(:formatted_email_address      ){ should eq "C02 Cleaners <C02-cleaners@127.0.0.1>" }
+  its(:formatted_task_email_address ){ should eq "C02 Cleaners Tasks <C02-cleaners+task@127.0.0.1>" }
+  its(:list_id                      ){ should eq "C02-cleaners.127.0.0.1" }
+  its(:formatted_list_id            ){ should eq "C02 Cleaners <C02-cleaners.127.0.0.1>" }
 
   its(:members      ){ should be_a Covered::Project::Members }
   its(:conversations){ should be_a Covered::Project::Conversations }
