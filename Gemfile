@@ -47,12 +47,10 @@ gem 'newrelic_rpm'
 gem 'appsignal'
 gem 'oboe-heroku'
 
+gem 'honeybadger'
+
 group :production, :staging do
   gem 'rails_12factor'
-end
-
-group :production do
-  gem 'honeybadger'
 end
 
 group :development do
