@@ -31,8 +31,8 @@ describe "Email actions" do
       when "Remove me";        project_task_remove_me_url(project, conversation)
       when "Mark as done";     project_task_mark_as_done_url(project, conversation)
       when "Mark as undone";   project_task_mark_as_undone_url(project, conversation)
-      when "New conversation"; "mailto:#{project.email_address}"
-      when "New task";         "mailto:#{project.task_email_address}?subject=%E2%9C%94+"
+      when "New conversation"; "mailto:#{URI::encode(project.formatted_email_address)}?subject=%5B#{project.subject_tag}%5D+"
+      when "New task";         "mailto:#{URI::encode(project.formatted_task_email_address)}?subject=%5B%E2%9C%94%5D%5B#{project.subject_tag}%5D+"
       when "View on Covered";  project_conversation_url(project, conversation, anchor: "message-#{message.id}")
       when "Mute";             project_conversation_url(project, conversation, anchor: "message-#{message.id}")
       else; raise "unknown name #{name}"

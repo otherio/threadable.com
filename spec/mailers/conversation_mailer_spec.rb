@@ -13,7 +13,7 @@ describe ConversationMailer do
 
     let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, project, message, recipient) }
 
-    let(:expected_to           ){ project.email_address }
+    let(:expected_to           ){ project.task_email_address }
     let(:expected_from         ){ message.from }
     let(:expected_envelope_to  ){ recipient.email_address }
     let(:expected_envelope_from){ project.email_address }
@@ -44,7 +44,7 @@ describe ConversationMailer do
       project_unsubscribe_token = extract_project_unsubscribe_token(text_part)
       expect( ProjectUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
 
-      mail.header[:'Reply-To'].to_s.should == project.formatted_email_address
+      mail.header[:'Reply-To'].to_s.should == project.formatted_task_email_address
       mail.header[:'List-ID'].to_s.should == project.formatted_list_id
       mail.in_reply_to.should == message.parent_message.message_id_header[1..-2]
       mail.message_id.should == message.message_id_header[1..-2]

@@ -34,12 +34,16 @@ class ConversationMailer < Covered::Mailer
       }
     end
 
+    reply_to_address = @task ? @project.formatted_task_email_address : @project.formatted_email_address
+
     @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
+    @new_task_url = "mailto:#{URI::encode(@project.formatted_task_email_address)}?subject=[✔][#{@project.subject_tag}]+"
+    @new_conversation_url = "mailto:#{URI::encode(@project.formatted_email_address)}?subject=[#{@project.subject_tag}]+"
 
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
       to_addresses = filter_out_project_members(to_addresses)
-      to_addresses.map(&:to_s).join(', ').presence || @project.formatted_email_address
+      to_addresses.map(&:to_s).join(', ').presence || reply_to_address
     end
 
     cc = begin
@@ -48,14 +52,13 @@ class ConversationMailer < Covered::Mailer
       cc_addresses.map(&:to_s).join(', ').presence || nil
     end
 
-
     email = mail(
       :css                 => 'email',
       :'from'              => from,
       :'to'                => to,
       :'cc'                => cc,
       :'subject'           => subject,
-      :'Reply-To'          => @project.formatted_email_address,
+      :'Reply-To'          => reply_to_address,
       :'Message-ID'        => @message.message_id_header,
       :'References'        => @message.references_header,
       :'Date'              => @message.date_header,
