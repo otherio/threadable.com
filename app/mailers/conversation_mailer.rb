@@ -41,9 +41,12 @@ class ConversationMailer < Covered::Mailer
       to_addresses.map(&:to_s).join(', ').presence || reply_to_address
     end
 
+    sender_is_a_member = @message.creator.present? && @project.members.include?(@message.creator)
+
     cc = begin
       cc_addresses = Mail::AddressList.new(@message.cc_header.to_s).addresses
       cc_addresses = filter_out_project_members(cc_addresses)
+      cc_addresses << @message.from if !sender_is_a_member && @message.from.present?
       cc_addresses.map(&:to_s).join(', ').presence || nil
     end
 

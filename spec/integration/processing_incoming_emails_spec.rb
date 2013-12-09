@@ -93,6 +93,7 @@ describe "processing incoming emails" do
     %(I think we should build it out of fiberglass and duck tape.)
   }
   let(:expected_to                     ){ ['raceteam@127.0.0.1', 'someone@example.com'] }
+  let(:expected_cc                     ){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
   let(:expected_from                   ){ sender }
   let(:expected_conversation_subject   ){ "OMG guys I love covered!" }
   let(:expected_message_subject        ){ subject }
@@ -164,6 +165,7 @@ describe "processing incoming emails" do
     let(:sender)       { 'steve@jobs.me' }
     let(:from)         { 'Steve Jobs <steve@jobs.me>' }
     let(:envelope_from){ '<steve@jobs.me>' }
+    let(:expected_cc)  { "Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>, #{from}" }
   end
 
   shared_context 'the sender is a covered member who is not a project member' do
@@ -172,6 +174,15 @@ describe "processing incoming emails" do
     let(:sender)       { 'amywong.phd@gmail.com' }
     let(:from)         { 'Amy Wong <amywong.phd@gmail.com>' }
     let(:envelope_from){ '<amywong.phd@gmail.com>' }
+    let(:expected_cc)  { "Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>, #{from}" }
+  end
+
+  shared_context 'the from address is a project member' do
+    let(:sender_is_a_member) { true }
+    let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
+    let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
+    let(:expected_from) { 'yan@ucsd.covered.io' }
+    let(:expected_cc){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
   end
 
   shared_examples 'it bounces the message' do
@@ -228,6 +239,7 @@ describe "processing incoming emails" do
         expect( email.header[:References].to_s  ).to eq references
         expect( email.date.in_time_zone.rfc2822 ).to eq date.rfc2822
         expect( email.to                        ).to eq expected_to
+        expect( email.header[:Cc].to_s          ).to eq expected_cc
         expect( email.smtp_envelope_to.length   ).to eq 1
         expect( project_member_email_addresses  ).to include email.smtp_envelope_to.first
         # expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [sender] ) unless dont_check_from_hack
@@ -283,6 +295,7 @@ describe "processing incoming emails" do
     context "and a parent message is found via the In-Reply-To header" do
       include_context "a parent message can be found via the In-Reply-To header"
       include_context 'it creates a message in an existing conversation'
+
       context "and the sender is a project member" do
         include_context 'the sender is a project member'
         include_examples 'creates a new message with a creator'
@@ -293,10 +306,9 @@ describe "processing incoming emails" do
         include_context 'the sender is not a covered member'
         include_examples 'creates a new message without a creator'
         include_examples 'sends emails to all project members that get email'
+
         context 'but the from address is a project member' do
-          let(:sender_is_a_member) { true }
-          let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
-          let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
+          include_context 'the from address is a project member'
           include_examples 'creates a new message with a creator'
         end
       end
@@ -305,10 +317,9 @@ describe "processing incoming emails" do
         include_context 'the sender is a covered member who is not a project member'
         include_examples 'creates a new message with a creator'
         include_examples 'sends emails to all project members that get email'
+
         context 'but the from address is a project member' do
-          let(:sender_is_a_member) { true }
-          let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
-          let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
+          include_context 'the from address is a project member'
           include_examples 'creates a new message with a creator'
         end
       end
@@ -396,10 +407,7 @@ describe "processing incoming emails" do
         end
 
         context "but the from address is a project member" do
-          let(:sender_is_a_member) { true }
-          let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
-          let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
-          let(:expected_from) { 'yan@ucsd.covered.io' }
+          include_context 'the from address is a project member'
           include_examples 'it creates a message in a new conversation'
         end
       end
@@ -412,10 +420,7 @@ describe "processing incoming emails" do
         end
 
         context "but the from address is a project member" do
-          let(:sender_is_a_member) { true }
-          let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
-          let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
-          let(:expected_from) { 'yan@ucsd.covered.io' }
+          include_context 'the from address is a project member'
           include_examples 'it creates a message in a new conversation'
         end
       end

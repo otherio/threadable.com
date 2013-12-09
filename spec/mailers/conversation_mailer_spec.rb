@@ -14,6 +14,7 @@ describe ConversationMailer do
     let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, project, message, recipient) }
 
     let(:expected_to           ){ project.task_email_address }
+    let(:expected_cc           ){ '' }
     let(:expected_from         ){ message.from }
     let(:expected_envelope_to  ){ recipient.email_address }
     let(:expected_envelope_from){ project.task_email_address }
@@ -46,6 +47,7 @@ describe ConversationMailer do
 
       expect(mail.header[:'Reply-To'].to_s).to eq project.formatted_task_email_address
       expect(mail.header[:'List-ID'].to_s ).to eq project.formatted_list_id
+      expect(mail.header[:'Cc'].to_s      ).to eq expected_cc
       expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
       expect(mail.message_id              ).to eq message.message_id_header[1..-2]
       expect(mail.references              ).to eq(
@@ -73,8 +75,12 @@ describe ConversationMailer do
     end
 
     context "when given a message without a user" do
-      it "should set the from address to the incoming messages's from address" do
+      let(:expected_cc) { message.from }
+      before do
         message.stub(creator: nil)
+      end
+
+      it "should set the from address to the incoming messages's from address" do
         validate_mail!
       end
     end
