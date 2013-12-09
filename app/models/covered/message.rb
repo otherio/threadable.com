@@ -35,7 +35,7 @@ class Covered::Message < Covered::Model
   }, to: :message_record
 
   def project
-    conversation.project
+    conversation.try(:project)
   end
 
   def creator
