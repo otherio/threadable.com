@@ -73,7 +73,7 @@ module RSpec::Support::IncomingEmailParams
         "In-Reply-To"      => @options[:in_reply_to_header],
         "References"       => @options[:references],
         "From"             => @options[:from],
-        "Date"             => @options[:date].rfc2822,
+        "Date"             => @options[:date].utc.rfc2822,
         "Message-Id"       => @options[:message_id],
         "Subject"          => @options[:subject],
         "To"               => @options[:to],
