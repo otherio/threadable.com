@@ -109,7 +109,7 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def message_id_header
-    mail_message.header['Message-ID'].to_s
+    params['Message-Id']
   end
 
   def references_header
