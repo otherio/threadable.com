@@ -11,7 +11,6 @@ require 'webmock/rspec'
 require 'sidekiq/testing'
 
 Sidekiq::Testing.fake!
-WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
 
 module RSpec::Support; end
 Dir[Rails.root.join("spec/support/*.rb")].each {|f| require f}
@@ -31,14 +30,12 @@ RSpec.configure do |config|
   config.include RSpec::Support::SentEmail
 
   config.before :each do
+    WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
     Timecop.return
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Covered::InMemoryTracker.clear
-    stub_request(:any, 'https://api.mixpanel.com/track').to_return({ :body => '{"status": 1, "error": null}' })
-    stub_request(:any, 'https://api.mixpanel.com/people').to_return({ :body => '{"status": 1, "error": null}' })
-    stub_request(:any, 'https://api.mixpanel.com/engage').to_return({ :body => '{"status": 1, "error": null}' })
-    stub_request(:any, 'https://api.mixpanel.com/import').to_return({ :body => '{"status": 1, "error": null}' })
+    stub_mixpanel!
   end
 
   config.around :each do |example|
