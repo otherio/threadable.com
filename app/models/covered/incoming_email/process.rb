@@ -4,6 +4,7 @@ class Covered::IncomingEmail::Process < MethodObject
     @incoming_email, @covered = incoming_email, incoming_email.covered
     raise ArgumentError, "IncomingEmail #{@incoming_email.id.inspect} was already processed. Call reset! first." if incoming_email.processed?
     ActiveRecord::Base.transaction do
+      find_message_by_message_id_header!
       save_off_attachments!
       find_project!
       find_creator!
@@ -80,7 +81,7 @@ class Covered::IncomingEmail::Process < MethodObject
     return if @incoming_email.message_id || @incoming_email.conversation_id.nil? || @incoming_email.project_id.nil?
     @project ||= @covered.projects.find_by_id!(@incoming_email.project_id)
     @conversation ||= @project.conversations.find_by_id!(@incoming_email.conversation_id)
-    @message = @conversation.messages.find_by_message_id_header(@incoming_email.message_id_header)
+    # this is where we prevent non-members from starting new conversations
     return if @incoming_email.creator_id.nil? && @incoming_email.parent_message_id.nil?
     @message ||= @conversation.messages.create!(
       creator_id:        @incoming_email.creator_id,
@@ -99,6 +100,18 @@ class Covered::IncomingEmail::Process < MethodObject
       attachments:       @incoming_email.attachments,
     )
     @incoming_email.message_id = @message.id
+  end
+
+  # this is here for legacy reasons
+  def find_message_by_message_id_header!
+    return if @incoming_email.message_id
+    @message = @covered.messages.find_by_message_id_header(@incoming_email.message_id_header) or return
+    @project = @message.project
+    @conversation = @message.conversation
+    @incoming_email.message_id        = @message.id
+    @incoming_email.conversation_id   = @conversation.id
+    @incoming_email.project_id        = @project.id
+    @incoming_email.parent_message_id = @message.parent_message_id
   end
 
   def strip_user_specific_content body
