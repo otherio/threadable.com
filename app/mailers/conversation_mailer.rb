@@ -16,9 +16,12 @@ class ConversationMailer < Covered::Mailer
 
     subject = @message.subject
 
-    # add a check mark to the subject if the conversation is a task, and if the subject doesn't already include one
-    subject = "✔ #{subject}" if @task && !subject.include?("✔")
     subject = "[#{subject_tag}] #{subject}" unless subject.include?("[#{subject_tag}]")
+
+    if @task && !subject.include?("✔")
+      # add a check mark to the subject if the conversation is a task, and if the subject doesn't already include one
+      subject.gsub!(/\[#{subject_tag}\]/, "[✔][#{subject_tag}]")
+    end
 
     from = @message.from || @message.creator.try(:formatted_email_address ) || @project.formatted_email_address
     unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project.id, @recipient.id)

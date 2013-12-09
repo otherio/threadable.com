@@ -1,6 +1,8 @@
+# encoding: UTF-8
+
 class Covered::ProcessIncomingEmail::CreateConversationMessage < MethodObject
 
-  TASK_SUBJECT_PREFIX_REGEXP = /^(✔)\s*/
+  TASK_SUBJECT_PREFIX_REGEXP = /^(\[?✔\]?)\s*/
   TASK_RECIPIENT_REGEXP = /\+task\b/i
 
   include Let
