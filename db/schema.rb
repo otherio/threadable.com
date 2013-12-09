@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131208214619) do
+ActiveRecord::Schema.define(version: 20131209024403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20131208214619) do
   end
 
   create_table "messages", force: true do |t|
-    t.integer  "conversation_id"
+    t.integer  "conversation_id",                   null: false
     t.integer  "user_id"
     t.text     "body_plain"
     t.boolean  "reply"
@@ -107,8 +107,8 @@ ActiveRecord::Schema.define(version: 20131208214619) do
     t.text     "body_html",         default: ""
     t.text     "stripped_html",     default: ""
     t.string   "date_header"
-    t.string   "to_header"
-    t.string   "cc_header"
+    t.text     "to_header"
+    t.text     "cc_header"
   end
 
   add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
