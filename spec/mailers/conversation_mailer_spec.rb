@@ -23,7 +23,8 @@ describe ConversationMailer do
     let(:html_part){ mail.html_part.body.to_s }
 
     def validate_mail!
-      mail.subject.should include "[RaceTeam] #{conversation.subject}"
+      mail.subject.should include "[RaceTeam]"
+      mail.subject.should include conversation.subject
       mail.subject.scan('RaceTeam').size.should == 1
 
       mail.to.should                    == [expected_to]
