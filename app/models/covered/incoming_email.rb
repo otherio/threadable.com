@@ -82,6 +82,7 @@ class Covered::IncomingEmail < Covered::Model
   def from_email_address
     params["from"]
   end
+  alias_method :from, :from_email_address
 
   def recipient_email_address
     params["recipient"]
@@ -149,7 +150,17 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def inspect
-    %(#<#{self.class} id: #{id.inspect}>)
+    details = {
+      id:              id,
+      processed:       processed?,
+      failed:          failed?,
+      from:            from,
+      creator_id:      creator_id,
+      project_id:      project_id,
+      conversation_id: conversation_id,
+      message_id:      message_id,
+    }.map{|k,v| "#{k}: #{v.inspect}"}.join(', ')
+    %(#<#{self.class} #{details}>)
   end
 
 end
