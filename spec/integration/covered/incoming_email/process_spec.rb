@@ -72,7 +72,7 @@ describe Covered::IncomingEmail::Process do
           expect( incoming_email.message.conversation      ).to eq parent_message.conversation
           expect( incoming_email.message.message_id_header ).to be_present
           expect( incoming_email.message.references_header ).to be_blank
-          expect( incoming_email.message.date_header       ).to eq "Sun, 08 Dec 2013 22:57:02 -0000"
+          expect( incoming_email.message.date_header       ).to match /Sun, 08 Dec 2013 22:57:02 [-\+]0000/
           expect( incoming_email.message.subject           ).to eq "who took my soldering iron?"
           expect( incoming_email.message.parent_message    ).to eq parent_message
           expect( incoming_email.message.from              ).to eq "Alice Neilson <alice@ucsd.covered.io>"
@@ -115,7 +115,7 @@ describe Covered::IncomingEmail::Process do
         expect( incoming_email.message.conversation      ).to eq incoming_email.conversation
         expect( incoming_email.message.message_id_header ).to be_present
         expect( incoming_email.message.references_header ).to be_blank
-        expect( incoming_email.message.date_header       ).to eq "Sun, 08 Dec 2013 14:57:02 -0800"
+        expect( incoming_email.message.date_header       ).to match /Sun, 08 Dec 2013 22:57:02 [-\+]0000/
         expect( incoming_email.message.subject           ).to eq "[✔] buy some milk"
         expect( incoming_email.message.parent_message    ).to be_nil
         expect( incoming_email.message.from              ).to eq "Alice Neilson <alice@ucsd.covered.io>"
@@ -180,7 +180,7 @@ describe Covered::IncomingEmail::Process do
           expect( incoming_email.message.conversation      ).to eq incoming_email.conversation
           expect( incoming_email.message.message_id_header ).to be_present
           expect( incoming_email.message.references_header ).to be_blank
-          expect( incoming_email.message.date_header       ).to eq "Sun, 08 Dec 2013 14:57:02 -0800"
+          expect( incoming_email.message.date_header       ).to match /Sun, 08 Dec 2013 22:57:02 [-\+]0000/
           expect( incoming_email.message.subject           ).to eq "who took my soldering iron?"
           expect( incoming_email.message.parent_message    ).to eq parent_message
           expect( incoming_email.message.from              ).to eq 'Larry Harvey <larry@bm.org>'
