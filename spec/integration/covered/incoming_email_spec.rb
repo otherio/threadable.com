@@ -38,7 +38,7 @@ describe Covered::IncomingEmail do
       expect( incoming_email.message.creator           ).to be_the_same_user_as alice
       expect( incoming_email.message.message_id_header ).to eq params['Message-Id']
       expect( incoming_email.message.references_header ).to eq ""
-      expect( incoming_email.message.date_header       ).to eq params['Date']
+      expect( incoming_email.message.date_header       ).to eq params['Date'].sub(%r{-0000}, '+0000')
       expect( incoming_email.message.subject           ).to eq 'Where is my hammer?'
       expect( incoming_email.message.parent_message    ).to be_nil
       expect( incoming_email.message.from              ).to eq alice.formatted_email_address
