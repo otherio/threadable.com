@@ -8,6 +8,8 @@ class Event < ActiveRecord::Base
   validates_presence_of :project
   validates_presence_of :user
 
+  default_scope { order :created_at => :asc }
+
 end
 
 # This forces all events to get loaded when Event is loaded
