@@ -439,6 +439,15 @@ describe "processing incoming emails" do
       # include_context "when this message has CC recipients"
       # include_context "when the message has multiple recipients in the to header"
     end
+
+    context 'and the subject is more than 255 characters' do
+      include_context 'the sender is a project member'
+      include_context 'it creates a message in a new conversation'
+      let(:subject){ '1'*500 }
+      let(:expected_conversation_subject){ '1'*255 }
+      let(:expected_message_subject     ){ '1'*255 }
+      let(:expected_sent_email_subject  ){ "[RaceTeam] #{'1'*255}" }
+    end
   end
 
 end

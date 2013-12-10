@@ -71,8 +71,10 @@ class Covered::IncomingEmail::Process < MethodObject
 
     is_task = @incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP || @incoming_email.recipient_email_address =~ TASK_RECIPIENT_REGEXP
 
+    subject = StripEmailSubject.call(@project, @incoming_email.subject)
+
     @conversation = (is_task ? @project.tasks : @project.conversations).create!(
-      subject:    StripEmailSubject.call(@project, @incoming_email.subject),
+      subject:    subject[0..254],
       creator_id: @incoming_email.creator_id,
     )
 
@@ -92,7 +94,7 @@ class Covered::IncomingEmail::Process < MethodObject
       date_header:       @incoming_email.date_header,
       to_header:         @incoming_email.to_header,
       cc_header:         @incoming_email.cc_header,
-      subject:           @incoming_email.subject,
+      subject:           @incoming_email.subject[0..254],
       parent_message:    @incoming_email.parent_message,
       from:              @incoming_email.from_email_address,
       body_plain:        strip_user_specific_content(@incoming_email.body_plain),
