@@ -461,10 +461,14 @@ describe "processing incoming emails" do
     context 'and the subject is more than 255 characters' do
       include_context 'the sender is a project member'
       include_context 'it creates a message in a new conversation'
-      let(:subject){ '1'*500 }
-      let(:expected_conversation_subject){ '1'*255 }
-      let(:expected_message_subject     ){ '1'*255 }
-      let(:expected_sent_email_subject  ){ "[RaceTeam] #{'1'*255}" }
+      let(:subject){ 'A☃'*250 }
+      let(:expected_conversation_subject){ subject[0..254] }
+      let(:expected_message_subject     ){ expected_conversation_subject }
+      let(:expected_sent_email_subject  ){ "[RaceTeam] #{expected_message_subject}" }
+    end
+
+    context 'and the subject is all unicode characters' do
+      it 'should create a valid slug for the conversation'
     end
   end
 
