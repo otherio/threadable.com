@@ -38,7 +38,7 @@ class ConversationMailer < Covered::Mailer
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
       to_addresses = filter_out_project_members(to_addresses)
-      to_addresses.map(&:to_s).join(', ').presence || reply_to_address
+      to_addresses.map(&:to_s).join(', ').presence || nil
     end
 
     sender_is_a_member = @message.creator.present? && @project.members.include?(@message.creator)
@@ -46,9 +46,12 @@ class ConversationMailer < Covered::Mailer
     cc = begin
       cc_addresses = Mail::AddressList.new(@message.cc_header.to_s).addresses
       cc_addresses = filter_out_project_members(cc_addresses)
+      cc_addresses = filter_out_project_email_address(cc_addresses) unless to
       cc_addresses << @message.from if !sender_is_a_member && @message.from.present?
       cc_addresses.map(&:to_s).join(', ').presence || nil
     end
+
+    to ||= reply_to_address
 
     email = mail(
       :css                 => 'email',
@@ -83,6 +86,14 @@ class ConversationMailer < Covered::Mailer
     email_addresses.select do |email_address|
       project_member_emails_addresses.none? do |member_email_address|
         member_email_address.address == email_address.address
+      end
+    end
+  end
+
+  def filter_out_project_email_address email_addresses
+    email_addresses.select do |email_address|
+      [@project.task_email_address, @project.email_address].none? do |project_email_address|
+        project_email_address == email_address.address
       end
     end
   end
