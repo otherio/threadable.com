@@ -1,3 +1,5 @@
+require_dependency 'covered/project'
+
 class Covered::Project::Member < Covered::User
 
   def initialize project, project_membership_record

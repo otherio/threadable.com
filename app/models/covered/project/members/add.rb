@@ -1,3 +1,5 @@
+require_dependency 'covered/project/members'
+
 class Covered::Project::Members::Add < MethodObject
 
   def call members, options

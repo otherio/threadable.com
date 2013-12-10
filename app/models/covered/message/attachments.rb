@@ -1,3 +1,5 @@
+require_dependency 'covered/message'
+
 class Covered::Message::Attachments < Covered::Attachments
 
   def initialize message

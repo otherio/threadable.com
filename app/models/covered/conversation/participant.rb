@@ -1,3 +1,5 @@
+require_dependency 'covered/conversation'
+
 class Covered::Conversation::Participant
 
   def initialize conversation, user_record

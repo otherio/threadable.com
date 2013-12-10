@@ -3,6 +3,8 @@ require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
 require File.expand_path("../../config/environment", __FILE__)
+Rails.application.eager_load!
+
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'factories'
@@ -30,8 +32,9 @@ RSpec.configure do |config|
   config.include RSpec::Support::SentEmail
 
   config.before :each do
-    WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
     Timecop.return
+    Redis.current.flushdb
+    WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Covered::InMemoryTracker.clear

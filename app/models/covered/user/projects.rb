@@ -1,3 +1,5 @@
+require_dependency 'covered/user'
+
 class Covered::User::Projects < Covered::Projects
 
   def initialize user

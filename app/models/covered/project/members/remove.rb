@@ -1,3 +1,5 @@
+require_dependency 'covered/project/members'
+
 class Covered::Project::Members::Remove < MethodObject
 
   def call members, options

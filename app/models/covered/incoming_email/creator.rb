@@ -1,3 +1,5 @@
+require_dependency 'covered/incoming_email'
+
 class Covered::IncomingEmail::Creator < Covered::User
 
   def initialize incoming_email

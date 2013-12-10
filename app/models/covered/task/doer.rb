@@ -1,3 +1,5 @@
+require_dependency 'covered/task'
+
 class Covered::Task::Doer
 
   def initialize task, user_record

@@ -1,3 +1,5 @@
+require_dependency 'covered/project'
+
 class Covered::Project::Messages < Covered::Messages
 
   def initialize project

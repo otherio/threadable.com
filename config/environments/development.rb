@@ -25,19 +25,23 @@ Covered::Application.configure do
 
   # Our Customizations
 
-  config.action_mailer.smtp_settings = {
-    :domain => 'covered.io',
-    :address => 'localhost',
-    :port => 1025
-  }
-  # config.action_mailer.smtp_settings = {
-  #   :address              => "smtp.gmail.com",
-  #   :port                 => 587,
-  #   :domain               => 'covered.io',
-  #   :user_name            => 'coveredthrowaway1@gmail.com',
-  #   :password             => 'coveredcovered',
-  #   :authentication       => 'plain',
-  #   :enable_starttls_auto => true  }
+  if ENV['GMAIL'] == 'true'
+    config.action_mailer.smtp_settings = {
+      :address              => "smtp.gmail.com",
+      :port                 => 587,
+      :domain               => 'covered.io',
+      :user_name            => 'coveredthrowaway1@gmail.com',
+      :password             => 'coveredcovered',
+      :authentication       => 'plain',
+      :enable_starttls_auto => true
+    }
+  else
+    config.action_mailer.smtp_settings = {
+      :domain => 'covered.io',
+      :address => 'localhost',
+      :port => 1025
+    }
+  end
 
   # Do not compress assets
   config.assets.compress = false

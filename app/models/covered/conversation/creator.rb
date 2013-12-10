@@ -1,3 +1,5 @@
+require_dependency 'covered/conversation'
+
 class Covered::Conversation::Creator
 
   def initialize conversation

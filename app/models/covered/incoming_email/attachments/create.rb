@@ -1,3 +1,5 @@
+require_dependency 'covered/incoming_email/attachments'
+
 class Covered::IncomingEmail::Attachments::Create < MethodObject
 
   def call attachments, attributes

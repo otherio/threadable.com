@@ -1,3 +1,5 @@
+require_dependency 'covered/task'
+
 class Covered::Task::Doers
 
   def initialize task

@@ -1,3 +1,5 @@
+require_dependency 'covered/incoming_email'
+
 class Covered::IncomingEmail::Process < MethodObject
 
   def call incoming_email

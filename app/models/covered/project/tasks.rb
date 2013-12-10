@@ -1,3 +1,5 @@
+require_dependency 'covered/project'
+
 class Covered::Project::Tasks < Covered::Tasks
 
   def initialize project

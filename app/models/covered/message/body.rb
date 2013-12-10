@@ -1,3 +1,5 @@
+require_dependency 'covered/message'
+
 class Covered::Message::Body < MethodObject
 
   def call html, plain

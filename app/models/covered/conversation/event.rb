@@ -1,3 +1,5 @@
+require_dependency 'covered/conversation'
+
 class Covered::Conversation::Event < Covered::Event
 
   def initialize covered, event_record, conversation=nil

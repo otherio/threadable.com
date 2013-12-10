@@ -1,3 +1,5 @@
+require_dependency 'covered/task'
+
 class Covered::Task::Event < Covered::Conversation::Event
 
   def as_json options=nil

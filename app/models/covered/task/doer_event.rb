@@ -1,3 +1,5 @@
+require_dependency 'covered/task'
+
 module Covered::Task::DoerEvent
 
   def doer_id

@@ -1,3 +1,5 @@
+require_dependency 'covered/project'
+
 class Covered::Project::Members < Covered::Collection
 
   def initialize project

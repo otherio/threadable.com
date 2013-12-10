@@ -1,3 +1,5 @@
+require_dependency 'covered/user'
+
 class Covered::User::Update < MethodObject
 
   def call user, attributes

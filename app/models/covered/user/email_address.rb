@@ -1,3 +1,5 @@
+require_dependency 'covered/user'
+
 class Covered::User::EmailAddress < Covered::EmailAddress
 
   def initialize user, email_address_record

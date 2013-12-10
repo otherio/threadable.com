@@ -1,3 +1,5 @@
+require_dependency 'covered/project'
+
 class Covered::Project::Update < MethodObject
 
   def call project, attributes
