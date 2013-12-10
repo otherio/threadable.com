@@ -45,7 +45,6 @@ gem 'mixpanel-ruby'
 
 gem 'newrelic_rpm'
 gem 'appsignal'
-gem 'oboe-heroku'
 
 gem 'honeybadger'
 

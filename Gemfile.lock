@@ -190,9 +190,6 @@ GEM
     net-ssh (2.6.8)
     newrelic_rpm (3.6.5.130)
     nokogiri (1.5.10)
-    oboe (2.3.4.1)
-    oboe-heroku (0.9.0.1)
-      oboe (>= 2.3.3.7)
     options_hash (0.0.1)
     options_hash-method_object (0.1.0)
       options_hash
@@ -379,7 +376,6 @@ DEPENDENCIES
   minitest
   mixpanel-ruby
   newrelic_rpm
-  oboe-heroku
   options_hash-method_object
   pg
   pry-debugger
