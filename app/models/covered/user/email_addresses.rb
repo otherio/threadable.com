@@ -1,4 +1,5 @@
 require_dependency 'covered/user'
+require_dependency 'covered/user/email_address'
 
 class Covered::User::EmailAddresses < Covered::EmailAddresses
 

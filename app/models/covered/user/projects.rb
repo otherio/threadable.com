@@ -1,4 +1,5 @@
 require_dependency 'covered/user'
+require_dependency 'covered/user/project'
 
 class Covered::User::Projects < Covered::Projects
 
