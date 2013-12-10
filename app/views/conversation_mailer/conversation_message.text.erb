@@ -9,7 +9,7 @@ Start a new conversation:
 <%= mail_to_href @project.email_address %>
 
 Start a new task:
-<%= mail_to_href @project.email_address, subject: "✔ " %>
+<%= mail_to_href @project.email_address, subject: "[task] " %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>

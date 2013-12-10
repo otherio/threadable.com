@@ -195,6 +195,7 @@ describe "covered", fixtures: false do
       expect(sent_emails.size).to eq 1
       email = sent_emails.first
       expect(email.text_content).to include 'OMG I love their belly fat'
+      expect(email.text_content).to include '%5Btask%5D%20'
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.urls.map(&:to_s)).to include project_url(htp)
       expect(email.urls.map(&:to_s)).to include project_conversation_url(htp, fat_cops, anchor: "message-#{msg1.id}")
