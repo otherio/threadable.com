@@ -1,7 +1,5 @@
 machine:
   environment:
-    foo: bar
-    baz: 123
     RACK_ENV: test
     COVERED_FILEPICKER_API_KEY: FAKE_COVERED_FILEPICKER_API_KEY
     COVERED_S3_ACCESS_KEY_ID: FAKE_COVERED_S3_ACCESS_KEY_ID
