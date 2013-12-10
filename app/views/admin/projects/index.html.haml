@@ -12,4 +12,4 @@
     - @projects.each do |project|
       %tr
         %td= link_to project.name, admin_edit_project_path(project)
-        %td= link_to 'destroy', admin_project_path(project), method: :delete, confirm: 'Are you sure?'
+        %td= link_to 'destroy', admin_project_path(project), method: :delete, data: { confirm: 'Are you sure?' }
