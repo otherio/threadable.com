@@ -18,6 +18,8 @@ describe SendEmailWorker do
   let(:message_id  ){ 2 }
   let(:recipient_id){ 3 }
 
+  let(:current_user){ double :current_user }
+
   let(:projects    ){ double :projects }
   let(:messages    ){ double :messages }
   let(:members     ){ double :members  }
@@ -49,6 +51,7 @@ describe SendEmailWorker do
     let(:personal_message){ "i need you!" }
     let(:arguments){ [:join_notice, project_id, recipient_id, personal_message] }
     it "should find all the records and call covered.emails.send_email" do
+      expect_any_instance_of(Covered::Class).to receive(:current_user).and_return(current_user)
       expect(current_user  ).to receive(:projects        ).and_return(projects)
       expect(projects      ).to receive(:find_by_id!     ).with(project_id).and_return(project)
 
@@ -64,6 +67,7 @@ describe SendEmailWorker do
   describe 'unsubscribe_notice' do
     let(:arguments){ [:unsubscribe_notice, project_id, recipient_id] }
     it "should find all the records and call covered.emails.send_email" do
+      expect_any_instance_of(Covered::Class).to receive(:current_user).and_return(current_user)
       expect(current_user  ).to receive(:projects        ).and_return(projects)
       expect(projects      ).to receive(:find_by_id!     ).with(project_id).and_return(project)
 

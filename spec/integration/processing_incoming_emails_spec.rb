@@ -8,8 +8,11 @@ describe "processing incoming emails" do
     expect{
       expect{
 
-        post emails_url, params
-        expect(response).to be_ok
+        expect{
+          post emails_url, params
+          expect(response).to be_ok
+        }.to change{ IncomingEmail.count }.by(1)
+
         drain_background_jobs!
 
       }.to change{ Message.count }.by(expected_message_count_change)
@@ -54,7 +57,6 @@ describe "processing incoming emails" do
     }
   end
 
-  let(:dont_check_from_hack) { false }  #TODO: fix this
   let(:sender)            { 'yan@ucsd.covered.io' }
   let(:expected_creator)  { sender_user }
   let(:recipient)         { 'raceteam@127.0.0.1' }
@@ -242,7 +244,6 @@ describe "processing incoming emails" do
         expect( email.header[:Cc].to_s          ).to eq expected_sent_email_cc
         expect( email.smtp_envelope_to.length   ).to eq 1
         expect( project_member_email_addresses  ).to include email.smtp_envelope_to.first
-        # expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [sender] ) unless dont_check_from_hack
         expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [expected_from] )
         expect( email.smtp_envelope_from        ).to eq expected_smtp_envelope_from
         expect( email.subject                   ).to eq expected_sent_email_subject
