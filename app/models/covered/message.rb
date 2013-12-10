@@ -1,8 +1,5 @@
 class Covered::Message < Covered::Model
 
-  autoload :Attachments
-  autoload :Body
-
   self.model_name = ::Message.model_name
 
   def initialize covered, message_record

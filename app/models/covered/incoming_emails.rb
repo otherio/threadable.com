@@ -1,7 +1,5 @@
 class Covered::IncomingEmails < Covered::Collection
 
-  autoload :Create
-
   def all
     incoming_emails_for scope.reload
   end

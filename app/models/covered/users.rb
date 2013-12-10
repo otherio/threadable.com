@@ -1,7 +1,5 @@
 class Covered::Users < Covered::Collection
 
-  extend ActiveSupport::Autoload
-  autoload :Create
 
   def initialize covered
     @covered = covered

@@ -1,7 +1,6 @@
 class Covered::Collection
 
   include Let
-  extend ActiveSupport::Autoload
 
   def initialize covered
     @covered = covered

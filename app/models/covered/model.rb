@@ -1,7 +1,6 @@
 class Covered::Model
 
   include Let
-  extend ActiveSupport::Autoload
 
   class << self
     attr_reader :model_name

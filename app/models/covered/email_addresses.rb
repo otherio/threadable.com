@@ -1,7 +1,5 @@
 class Covered::EmailAddresses < Covered::Collection
 
-  autoload :Create
-
   def all
     scope.reload.map{|email_address_record| email_address_for email_address_record }
   end

@@ -6,20 +6,8 @@ class Covered::Conversation < Covered::Model
       conversation_record.task? ?
         Covered::Task        .__new__(covered, conversation_record) :
         Covered::Conversation.__new__(covered, conversation_record)
-    rescue
-      binding.pry
     end
   end
-
-  autoload :Creator
-  autoload :Events
-  autoload :Event
-  autoload :CreatedEvent
-  autoload :Messages
-  autoload :Recipients
-  autoload :Recipient
-  autoload :Participants
-  autoload :Participant
 
   self.model_name = ::Conversation.model_name
 

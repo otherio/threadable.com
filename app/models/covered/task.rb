@@ -1,13 +1,5 @@
 class Covered::Task < Covered::Conversation
 
-  autoload :Event
-  autoload :CreatedEvent
-  autoload :DoneEvent
-  autoload :UndoneEvent
-  autoload :AddedDoerEvent
-  autoload :RemovedDoerEvent
-  autoload :Doers
-
   alias_method :task_record, :conversation_record
 
   delegate *%w{
@@ -36,3 +28,13 @@ class Covered::Task < Covered::Conversation
   end
 
 end
+
+require_dependency 'covered/task/event'
+require_dependency 'covered/task/removed_doer_event'
+require_dependency 'covered/task/undone_event'
+require_dependency 'covered/task/added_doer_event'
+require_dependency 'covered/task/created_event'
+require_dependency 'covered/task/doer'
+require_dependency 'covered/task/doer_event'
+require_dependency 'covered/task/doers'
+require_dependency 'covered/task/done_event'

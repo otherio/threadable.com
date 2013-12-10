@@ -1,7 +1,5 @@
 class Covered::Tasks < Covered::Conversations
 
-  autoload :Create
-
   def find_by_slug! slug
     find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find Task with slug #{slug.inspect}"
   end
@@ -31,3 +29,5 @@ class Covered::Tasks < Covered::Conversations
   end
 
 end
+
+require_dependency 'covered/tasks/create'

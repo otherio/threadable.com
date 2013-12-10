@@ -1,8 +1,5 @@
 class Covered::Messages < Covered::Collection
 
-  autoload :Create
-  autoload :FindByChildHeader
-
   def all
     scope.reload.map{ |message_record| message_for message_record }
   end

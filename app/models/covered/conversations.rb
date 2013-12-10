@@ -1,7 +1,5 @@
 class Covered::Conversations < Covered::Collection
 
-  autoload :Create
-
   def all
     scope.map{ |conversation_record| conversation_for conversation_record }
   end

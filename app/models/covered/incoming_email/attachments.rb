@@ -1,7 +1,5 @@
 class Covered::IncomingEmail::Attachments < Covered::Attachments
 
-  autoload :Create
-
   def initialize incoming_email
     super(incoming_email.covered)
     @incoming_email = incoming_email

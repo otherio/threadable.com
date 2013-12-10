@@ -1,7 +1,5 @@
 class Covered::Attachments < Covered::Collection
 
-  autoload :Create
-
   def all
     scope.reload.map{ |attachment_record| attachment_for attachment_record }
   end

@@ -1,7 +1,5 @@
 class Covered::Projects < Covered::Collection
 
-  autoload :Create
-
   def all
     scope.reload.map{ |project| project_for project }
   end

@@ -2,15 +2,6 @@ class Covered::User
 
   include Let
 
-  extend ActiveSupport::Autoload
-
-  autoload :EmailAddresses
-  autoload :EmailAddress
-  autoload :Projects
-  autoload :Project
-  autoload :Messages
-  autoload :Update
-
   def self.model_name
     ::User.model_name
   end

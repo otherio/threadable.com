@@ -1,8 +1,5 @@
 class Covered::Project::Members < Covered::Collection
 
-  autoload :Add
-  autoload :Remove
-
   def initialize project
     @project = project
   end

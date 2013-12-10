@@ -7,6 +7,7 @@ class Covered::Worker
   sidekiq_options :queue => :default, :retry => true, :backtrace => true
 
   def perform covered_env, *args
+    ActiveRecord::Base.establish_connection
     @covered = Covered.new(covered_env.symbolize_keys)
     perform! *args
   end

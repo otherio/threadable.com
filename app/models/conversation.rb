@@ -1,5 +1,3 @@
-# require_dependency "conversation/event"
-
 class Conversation < ActiveRecord::Base
 
   belongs_to :project

@@ -1,12 +1,5 @@
 class Covered::Project < Covered::Model
 
-  autoload :Update
-  autoload :Members
-  autoload :Member
-  autoload :Conversations
-  autoload :Messages
-  autoload :Tasks
-
   def self.model_name
     ::Project.model_name
   end

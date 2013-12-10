@@ -9,45 +9,8 @@ module Covered
   AuthorizationError  = Class.new(CoveredError)
   AuthenticationError = Class.new(CoveredError)
 
-  # Utilities
-  autoload :Config
-  autoload :Class
-  autoload :CurrentUser
-  autoload :Tracker
-  autoload :InMemoryTracker
-  autoload :MixpanelTracker
-  autoload :Emails
-
-  # resources
-  autoload :EmailAddresses
-  autoload :EmailAddress
-  autoload :Users
-  autoload :User
-  autoload :Projects
-  autoload :Project
-  autoload :Conversations
-  autoload :Conversation
-  autoload :Tasks
-  autoload :Task
-  autoload :Messages
-  autoload :Message
-  autoload :Attachments
-  autoload :Attachment
-  autoload :IncomingEmails
-  autoload :IncomingEmail
-  autoload :Events
-  autoload :Event
-
-
-  # superclasses
-  autoload :Mailer
-  autoload :Worker
-
-  # procedures
-  autoload :SignUp
-
   def self.config name
-    Config[name]
+    Covered::Config[name]
   end
 
   def self.new(*args)
@@ -59,4 +22,3 @@ module Covered
   end
 
 end
-

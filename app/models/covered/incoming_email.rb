@@ -1,9 +1,5 @@
 class Covered::IncomingEmail < Covered::Model
 
-  autoload :Process
-  autoload :Creator
-  autoload :Attachments
-
   self.model_name = ::IncomingEmail.model_name
 
   def initialize covered, incoming_email_record
