@@ -215,7 +215,7 @@ FixtureBuilder.build do
       text:      %(I like cheese. I think someone else likes cheese too.),
     )
     create_conversation(
-      to_header: %(),
+      to_header: %(some@guy.com),
       cc_header: %(#{project.formatted_email_address}, "Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
       subject:   %(Who wants to pick up dinner?),
       text:      %(I like potatoes. I think someone else likes potatoes too.),
