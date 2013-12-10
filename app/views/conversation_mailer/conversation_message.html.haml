@@ -48,7 +48,7 @@
           |
           = mail_to @project.email_address, @project.email_address
         .covered-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
-          = "sent to #{mail_to @recipient.email_address, @recipient.email_address} | #{link_to 'unsubscribe', @unsubscribe_url}".html_safe
+          = "sent to #{mail_to @recipient.email_address, @recipient.email_address} | #{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to 'support@covered.io', 'feedback' }".html_safe
 
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: footer ##"

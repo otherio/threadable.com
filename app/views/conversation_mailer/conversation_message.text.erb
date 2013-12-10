@@ -9,7 +9,10 @@ Start a new conversation:
 <%= mail_to_href @project.email_address %>
 
 Start a new task:
-<%= mail_to_href @project.email_address, subject: "[task] " %>
+<%= mail_to_href @project.task_email_address, subject: "[task] " %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>
+
+Feedback:
+<%= mail_to_href 'support@covered.io' %>

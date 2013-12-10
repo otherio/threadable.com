@@ -12,6 +12,7 @@ describe ConversationMailer do
     let(:recipient){ project.members.all.last }
 
     let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, project, message, recipient) }
+    let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
 
     let(:expected_to           ){ project.task_email_address }
     let(:expected_cc           ){ '' }
@@ -44,6 +45,11 @@ describe ConversationMailer do
 
       project_unsubscribe_token = extract_project_unsubscribe_token(text_part)
       expect( ProjectUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
+
+      expect(email.link('feedback')).to be_present
+      expect(email.link('feedback')[:href]).to eq "mailto:support@covered.io"
+
+      expect(text_part).to include "mailto:#{project.task_email_address}"
 
       expect(mail.header[:'Reply-To'].to_s).to eq project.formatted_task_email_address
       expect(mail.header[:'List-ID'].to_s ).to eq project.formatted_list_id
