@@ -15,6 +15,9 @@ git fetch --tags
 # push to github
 git push $ENV master || exit
 
+# run migrations
+heroku run rake db:migrate --app covered-$ENV
+
 # tag this rev as having been released
 git push --delete origin latest-$ENV
 git tag -f latest-$ENV
