@@ -55,5 +55,6 @@ module Covered
   end
 end
 
+require 'pp'
 require 'wtf'
 require 'ruby_template_handler'
