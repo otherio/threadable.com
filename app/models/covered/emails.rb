@@ -6,7 +6,9 @@ class Covered::Emails
   attr_reader :covered
 
   def send_email type, *args
-    generate(type, *args).deliver!
+    email = generate(type, *args)
+    Honeybadger.context(email: email)
+    email.deliver!
   end
 
   def send_email_async type, *args
