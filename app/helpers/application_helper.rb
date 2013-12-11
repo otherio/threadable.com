@@ -49,6 +49,12 @@ module ApplicationHelper
     h(clean_html(auto_link(string.to_s))).gsub(/\n/, "<br/>").html_safe
   end
 
+  def truncated_text text, length=25
+    capture_haml do
+      haml_tag :span, truncate(text.to_s, length: length), title: text.to_s
+    end
+  end
+
 end
 
 

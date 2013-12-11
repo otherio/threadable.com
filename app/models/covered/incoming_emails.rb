@@ -4,6 +4,13 @@ class Covered::IncomingEmails < Covered::Collection
     incoming_emails_for scope.reload
   end
 
+  PAGE_SIZE = 10
+  def page page, conditions=nil
+    query = scope.reload.limit(PAGE_SIZE).offset(page * PAGE_SIZE).order(created_at: :desc)
+    query = query.where(conditions) if conditions.present?
+    incoming_emails_for query
+  end
+
   def find_by_id id
     incoming_email_for (scope.find(id) or return)
   end

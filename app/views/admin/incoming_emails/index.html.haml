@@ -1,0 +1,69 @@
+%h1 Incoming emails page #{@page}
+
+%form.filters{onchange:'submit()'}
+  %select{name:'filter'}
+    %option{value:'all',                     selected: @filter == 'all' || @filter.nil?     } All
+    %option{value:'not-processed',           selected: @filter == 'not-processed'           } Not processed
+    %option{value:'processed-succesfully',   selected: @filter == 'processed-succesfully'   } Processed successfully
+    %option{value:'processed-unsuccesfully', selected: @filter == 'processed-unsuccesfully' } Processed unsuccessfully
+
+%table.table.table-nowrap.incoming-emails-table
+  %thead
+    %tr
+      %th Processed
+      %th Failed
+      %th Id
+      %th Created at
+      %th Recipient
+      %th Sender
+      %th From
+      %th Subject
+      %th Creator
+      %th Project
+      %th Conversation
+      %th Message
+  %tbody
+    - @incoming_emails.each do |incoming_email|
+      %tr{class: "#{'processed' if incoming_email.processed?} #{'failed' if incoming_email.failed?}"}
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = incoming_email.processed? ? 'yes' : 'no'
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = incoming_email.processed? ? incoming_email.failed? ? 'yes' : 'no' : ''
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.id
+        %td{title: incoming_email.created_at.to_s}
+          = link_to admin_incoming_email_path(incoming_email) do
+            #{time_ago_in_words incoming_email.created_at} ago
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.recipient_email_address
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.sender_email_address
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.from_email_address
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.subject
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.creator_id
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.project_id
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.conversation_id
+        %td
+          = link_to admin_incoming_email_path(incoming_email) do
+            = truncated_text incoming_email.message_id
+
+.pagination
+  - if @page > 0
+    = link_to 'last page', admin_incoming_emails_path(filter: @filter, page: @page-1)
+  .pull-right
+    = link_to 'next page', admin_incoming_emails_path(filter: @filter, page: @page+1)

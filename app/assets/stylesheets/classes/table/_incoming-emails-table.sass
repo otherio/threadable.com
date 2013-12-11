@@ -1,0 +1,12 @@
+table.incoming-emails-table
+  th,td
+    white-space: nowrap
+  tbody
+    tr
+      &, a, a:hover, a:visited
+        color: black
+      background-color: lighten(#f1c40f, 20%)
+      &.processed
+        background-color: lighten(#1abc9c, 20%)
+      &.failed
+        background-color: lighten(#e74c3c, 20%)

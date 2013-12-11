@@ -9,6 +9,8 @@ class IncomingEmail < ActiveRecord::Base
   belongs_to :parent_message, class_name: :Message
   has_and_belongs_to_many :attachments
 
+  default_scope { order :created_at => :asc }
+
   validates_presence_of :params
 
   def processed! successfully

@@ -1,0 +1,103 @@
+%ul.inline.pull-right
+  %li= link_to 'incoming emails', admin_incoming_emails_path
+  %li= link_to 'details', admin_incoming_email_path(@incoming_email)
+  %li= link_to 'retry', admin_retry_incoming_email_path(@incoming_email), method: :post if @incoming_email.failed?
+
+
+
+
+:sass
+  .incoming-email
+    > table
+      th
+        text-align: right
+        padding-right: 1em
+        vertical-align: top
+    > section
+      cursor: pointer
+      > .content
+        display: none
+
+      h3:before
+        content: "+ "
+      &.expanded
+        > .content
+          display: block
+        h3:before
+          content: "- "
+
+.incoming-email
+
+  %table
+    %tr
+      %th Processed?
+      %td= @incoming_email.processed?
+    %tr
+      %th Failed?
+      %td= @incoming_email.failed?
+    %tr
+      %th Id
+      %td= @incoming_email.id
+    %tr
+      %th Created at
+      %td{title: @incoming_email.created_at.to_s}= time_ago_in_words @incoming_email.created_at
+    %tr
+      %th Recipient email address
+      %td= @incoming_email.recipient_email_address
+    %tr
+      %th Sender email address
+      %td= @incoming_email.sender_email_address
+    %tr
+      %th From email address
+      %td= @incoming_email.from_email_address
+    %tr
+      %th Subject
+      %td= @incoming_email.subject
+    %tr
+      %th Creator
+      %td= @incoming_email.creator.try(:name)
+    %tr
+      %th Project
+      %td= @incoming_email.project.try(:name)
+    %tr
+      %th Conversation
+      %td= @incoming_email.conversation.try(:subject)
+    %tr
+      %th Message id
+      %td= @incoming_email.message_id
+
+  %section
+    %h3 body plain
+    %pre.code.content=h @incoming_email.body_plain
+
+  %section
+    %h3 body html
+    %pre.code.content=h @incoming_email.body_plain
+
+  %section
+    %h3 stripped html
+    %pre.code.content=h @incoming_email.body_plain
+
+  %section
+    %h3 stripped plain
+    %pre.code.content=h @incoming_email.body_plain
+
+  %section
+    %h3 source
+    %pre.code.content=h @incoming_email.mail_message.to_s rescue "FAILED TO `to_s' EMAIL MESSAGE, this is a bug - Jared"
+
+  %section
+    %h3 params
+    %pre.code.content=h @incoming_email.params.pretty_inspect
+
+  %section
+    %h3 yaml
+    .content= debug @incoming_email
+
+:javascript
+
+  whenReady(function(){
+    $('.incoming-email > section').click(function(){
+      $(this).toggleClass('expanded');
+    });
+  });

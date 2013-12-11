@@ -15,6 +15,11 @@ Covered::Application.routes.draw do
     get    'projects/:id/edit' => 'projects#edit',    as: 'edit_project'
     patch  'projects/:id'      => 'projects#update',  as: 'project'
     delete 'projects/:id'      => 'projects#destroy'
+
+    get    'incoming_emails'           => 'incoming_emails#index',  as: 'incoming_emails'
+    get    'incoming_emails/:id'       => 'incoming_emails#show',   as: 'incoming_email'
+    post   'incoming_emails/:id/retry' => 'incoming_emails#retry',  as: 'retry_incoming_email'
+
     require 'sidekiq/web'
     mount Sidekiq::Web => '/background_jobs'
     mount MailPreview => '/mail_preview' if defined?(MailView)
