@@ -17,6 +17,7 @@ class Covered::IncomingEmail::Process < MethodObject
       @incoming_email.incoming_email_record.save!
     end
     report_failure_to_honeybadger! if failed?
+    true
   end
 
   def failed?
