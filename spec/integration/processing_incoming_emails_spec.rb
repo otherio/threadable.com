@@ -372,6 +372,24 @@ describe "processing incoming emails" do
           include_examples 'it creates a message in a new conversation'
         end
 
+        context "and the subject is in japanese" do
+          let(:subject) { "おはいよございます！げんきですか？" }
+          let(:expected_conversation_subject   ){ "おはいよございます！げんきですか？" }
+          let(:expected_message_subject        ){ subject }
+          let(:expected_sent_email_subject     ){ "[RaceTeam] おはいよございます！げんきですか？" }
+
+          include_examples 'it creates a message in a new conversation'
+        end
+
+        context "and the subject has emoji" do
+          let(:subject) { "I love the snow! ☃❅❆" }
+          let(:expected_conversation_subject   ){ "I love the snow! ☃❅❆" }
+          let(:expected_message_subject        ){ subject }
+          let(:expected_sent_email_subject     ){ "[RaceTeam] I love the snow! ☃❅❆" }
+
+          include_examples 'it creates a message in a new conversation'
+        end
+
         context "and the message was sent to the +task address" do
           let(:expect_conversation_to_be_a_task){ true }
           let(:recipient){ 'raceteam+task@127.0.0.1' }
