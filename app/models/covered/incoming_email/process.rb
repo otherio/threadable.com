@@ -10,6 +10,7 @@ class Covered::IncomingEmail::Process < MethodObject
       save_off_attachments!
       find_project!
       find_creator!
+      sign_in_as_creator!
       find_parent_message!
       find_or_create_conversation!
       find_or_create_message!
@@ -45,7 +46,6 @@ class Covered::IncomingEmail::Process < MethodObject
     end
   end
 
-
   def find_project!
     return if @incoming_email.project_id
     @project = @covered.projects.find_by_email_address @incoming_email.recipient_email_address
@@ -59,6 +59,10 @@ class Covered::IncomingEmail::Process < MethodObject
       @incoming_email.creator_id = user.id
       break
     end
+  end
+
+  def sign_in_as_creator!
+    @covered.current_user_id = @incoming_email.creator_id
   end
 
   def find_parent_message!

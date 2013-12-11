@@ -115,7 +115,7 @@ class Covered::Messages::Create < MethodObject
       'Project Name' => @conversation.project.name,
       'Reply' => parent_message.try(:id) ? true : false,
       'Task' => @conversation.task?,
-      'Via' => @options.sent_via_web.present? ? 'web' : 'email',
+      'Via' => @options.sent_via_web ? 'web' : 'email',
       'Message ID' => message_id_header,
     })
     @message = Covered::Message.new(@covered, @message_record)

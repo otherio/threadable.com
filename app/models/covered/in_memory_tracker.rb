@@ -6,23 +6,23 @@ class Covered::InMemoryTracker < Covered::Tracker
     @store[:trackings] ||= []
   end
 
-  def self.tracked_users_changes
-    @store[:tracked_users_changes] ||= []
+  def self.user_changes
+    @store[:user_changes] ||= []
   end
 
   def self.clear
     @store.clear
   end
 
-  delegate :trackings, :tracked_users_changes, :clear, to: :class
+  delegate :trackings, :user_changes, :clear, to: :class
 
-  def track *args
-    trackings << args
+  def track event, params={}
+    trackings << [covered.current_user_id, event.to_s, params.stringify_keys]
     nil
   end
 
   def track_user_change user
-    tracked_users_changes << user
+    user_changes << user
     nil
   end
 

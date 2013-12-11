@@ -27,6 +27,7 @@ RSpec.configure do |config|
   config.include RSpec::Support::Transactions
   config.include RSpec::Support::Finders
   config.include RSpec::Support::BackgroundJobs
+  config.include RSpec::Support::Trackings
   config.include RSpec::Support::Attachments
   config.include RSpec::Support::IncomingEmailParams
   config.include RSpec::Support::SentEmail

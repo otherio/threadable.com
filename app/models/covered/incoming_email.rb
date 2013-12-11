@@ -64,7 +64,7 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def task?
-    conversation.task?
+    conversation.try(:task?)
   end
 
   let :sender_email_address do
