@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-bundle exec sidekiq
+# 20 worker processes
+bundle exec sidekiq -c 20
