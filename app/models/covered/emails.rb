@@ -7,7 +7,12 @@ class Covered::Emails
 
   def send_email type, *args
     email = generate(type, *args)
-    Honeybadger.context(email: email)
+    binding.pry
+    Honeybadger.context({
+      email_message: email.to_s,
+      smtp_envelope_from: email.smtp_envelope_from,
+      smtp_envelope_to: email.smtp_envelope_to,
+    })
     email.deliver!
   end
 
