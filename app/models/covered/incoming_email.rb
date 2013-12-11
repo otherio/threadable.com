@@ -68,11 +68,11 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   let :sender_email_address do
-    mail_message.sender
+    params["sender"]
   end
 
   let :from_email_addresses do
-    Array(mail_message.from) + [sender_email_address]
+    (Array(mail_message.from) + [sender_email_address]).compact
   end
 
   def from_email_address

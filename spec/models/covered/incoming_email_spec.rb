@@ -25,7 +25,7 @@ describe Covered::IncomingEmail do
       'Date'       => "DATE HEADER",
     }
   end
-  let(:mail_message){ double :mail_message, header: mail_message_header, from: %w{a@a.io b@b.io}, sender: 'c@c.io' }
+  let(:mail_message){ double :mail_message, header: mail_message_header, from: %w{a@a.io b@b.io}}
   let(:incoming_email){ described_class.new(covered, incoming_email_record) }
   subject{ incoming_email }
 
@@ -35,6 +35,7 @@ describe Covered::IncomingEmail do
 
   def params
     {
+      "sender"        => 'c@c.io',
       "subject"       => "why did you do that!?",
       "body-plain"    => "go eat a goat!\n\n> you're wrong!",
       "body-html"     => "<stron>go eat a goat!<strong>\n\n<blockquote>you're wrong!</blockquote>",
@@ -127,7 +128,7 @@ describe Covered::IncomingEmail do
 
   describe "sender_email_address" do
     it 'should curry params["sender"]' do
-      expect(subject.mail_message).to receive(:sender)
+      expect(subject.params).to receive(:[]).with('sender')
       subject.sender_email_address
     end
   end
