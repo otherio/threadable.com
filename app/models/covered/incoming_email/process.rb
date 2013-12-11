@@ -13,9 +13,22 @@ class Covered::IncomingEmail::Process < MethodObject
       find_parent_message!
       find_or_create_conversation!
       find_or_create_message!
-      @incoming_email.incoming_email_record.processed! !!@incoming_email.message_id
+      @incoming_email.incoming_email_record.processed! !failed?
       @incoming_email.incoming_email_record.save!
     end
+    report_failure_to_honeybadger! if failed?
+  end
+
+  def failed?
+    @incoming_email.message_id.nil?
+  end
+
+  def report_failure_to_honeybadger!
+    Honeybadger.notify(
+      :error_class   => "incoming email process failed",
+      :error_message => "failed to find or create a conversation message for incoming email #{@incoming_email.id.inspect}",
+      :parameters    => {incoming_email_id: @incoming_email.id},
+    )
   end
 
   # we're doing this to shrink our incoming messages table size
