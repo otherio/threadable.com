@@ -27,9 +27,11 @@ namespace :db do
         system("heroku pgbackups:capture --app covered-#{environment}")
       end
     end
+    desc "tells heroku to backup staging database"
     task :staging do
       backup.call :staging
     end
+    desc "tells heroku to backup production database"
     task :production do
       backup.call :production
     end
@@ -44,9 +46,11 @@ namespace :db do
         system("curl -o #{backup_path.to_s.inspect} #{backup_url.inspect}")
       end
     end
+    desc "downloads staging database into tmp/staging.dump"
     task :staging do
       download.call :staging
     end
+    desc "downloads production database into tmp/production.dump"
     task :production do
       download.call :production
     end
@@ -62,9 +66,11 @@ namespace :db do
         system("pg_restore --verbose --clean --no-acl --no-owner -h localhost -U #{`whoami`.chomp} -d covered_development #{backup_path.to_s.inspect}")
       end
     end
+    desc "imports tmp/staging.dump"
     task :staging => %w{db:drop:all db:create:all} do
       import.call :staging
     end
+    desc "imports tmp/production.dump"
     task :production => %w{db:drop:all db:create:all} do
       import.call :production
     end
