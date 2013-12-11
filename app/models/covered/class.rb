@@ -9,10 +9,10 @@ class Covered::Class
 
   def initialize options={}
     options = options.symbolize_keys
-    @host            = options.fetch(:host){ raise ArgumentError, 'required options: :host' }
-    @port            = options.fetch(:port){ 80 }
-    @protocol        = options.fetch(:protocol){ 'http' }
-    @current_user_id = options[:current_user_id]
+    @host     = options.fetch(:host){ raise ArgumentError, 'required options: :host' }
+    @port     = options.fetch(:port){ 80 }
+    @protocol = options.fetch(:protocol){ 'http' }
+    self.current_user_id = options[:current_user_id]
   end
 
   attr_reader :protocol, :host, :port, :current_user_id, :tracker
@@ -20,6 +20,7 @@ class Covered::Class
   def current_user_id= user_id
     @current_user_id = user_id
     @current_user = nil
+    Honeybadger.context(user_id: @current_user_id)
   end
 
   def current_user= user
