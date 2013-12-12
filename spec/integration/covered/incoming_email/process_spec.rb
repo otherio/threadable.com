@@ -126,9 +126,6 @@ describe Covered::IncomingEmail::Process do
     else
       expect( incoming_email.message ).to_not be
     end
-
-    if expect_incoming_email_to_be_failed
-    end
   end
 
 
