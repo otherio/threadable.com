@@ -14,6 +14,10 @@ module Storage
     @local_root ||= Rails.root.join('public')
   end
 
+  def self.absolute_local_path
+    local_root + "storage/#{config[:local]}"
+  end
+
   def self.local_path
     Pathname("/storage/#{config[:local]}")
   end
