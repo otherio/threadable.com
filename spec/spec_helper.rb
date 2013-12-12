@@ -37,8 +37,8 @@ RSpec.configure do |config|
   config.include RSpec::Support::SentEmail
 
   config.before :each do
-    Storage.absolute_local_path.rmtree
-    Storage.absolute_local_path.mkdir
+    Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
+    FileUtils.mkdir_p(Storage.absolute_local_path.to_s)
     Timecop.return
     Redis.current.flushdb
     WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
