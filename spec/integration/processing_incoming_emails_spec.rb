@@ -107,7 +107,6 @@ describe "processing incoming emails" do
     let(:recipient)                { project.email_address }
     let(:to)                       { project.formatted_email_address }
     let(:expected_sent_email_to)   { [project.email_address] }
-
   end
 
   shared_context 'the email recipient is not a valid project' do
@@ -207,6 +206,16 @@ describe "processing incoming emails" do
       expect( message.body_html         ).to eq body_html
       expect( message.stripped_html     ).to eq stripped_html
       expect( message.stripped_plain    ).to eq stripped_text
+
+      attachment_details = message.attachments.map do |attachment|
+        [attachment.filename, attachment.mimetype]
+      end.to_set
+
+      expect(attachment_details).to eq Set[
+        ['some.gif', 'image/gif'],
+        ['some.jpg', 'image/jpeg'],
+        ['some.txt', 'text/plain'],
+      ]
     end
   end
 
