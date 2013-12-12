@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   include Password
 
-  has_many :email_addresses, autosave: true
+  has_many :email_addresses, autosave: true, validate: true
   has_many :project_memberships
   has_many :projects, :through => :project_memberships
   has_many :messages

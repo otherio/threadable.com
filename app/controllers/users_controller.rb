@@ -41,7 +41,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email_address, :password, :password_confirmation).symbolize_keys
+    @user_params or begin
+      @user_params = params.require(:user).permit(:name, :email_address, :password, :password_confirmation).symbolize_keys
+      @user_params[:email_address].try(:strip_non_ascii!)
+    end
+    @user_params
   end
 
   def require_user_be_current_user!

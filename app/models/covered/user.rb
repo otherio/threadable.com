@@ -18,6 +18,7 @@ class Covered::User
     email_address
     slug
     admin?
+    valid?
     errors
     new_record?
     persisted?

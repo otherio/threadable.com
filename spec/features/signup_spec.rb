@@ -8,8 +8,8 @@ feature "Signup" do
 
   scenario %(signing up) do
     visit sign_up_path
-    fill_in 'Name',  with: 'Weird Al Yankovik'
-    fill_in 'Email', with: 'weird.al@yankovik.com'
+    fill_in 'Name',                  with: 'Weird Al Yankovik'
+    fill_in 'Email',                 with: 'weird.al@yankovik.com'
     fill_in 'Password',              with: 'ilovepizza', :match => :prefer_exact
     fill_in 'Password confirmation', with: 'ilovepizz'
     click_button 'Sign up'

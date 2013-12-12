@@ -2,15 +2,13 @@ class EmailAddress < ActiveRecord::Base
 
   belongs_to :user
 
-  validates_presence_of :address, :user
+  validates :address, :presence => true, :email => true
   validates_uniqueness_of :address
-
   validate :ensure_only_one_primary, if: :primary?
 
-  validates_format_of :address,
-    with: /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/,
-    allow_blank: true,
-    if: :address_changed?
+  before_save do |record|
+    return false if !record.new_record? && record.address_changed?
+  end
 
   def self.primary
     where(primary: true)

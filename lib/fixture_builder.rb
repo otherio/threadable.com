@@ -20,7 +20,7 @@ class FixtureBuilder
       password: 'password',
       password_confirmation: 'password',
     )
-    user.errors.empty? or raise "'failed to sign up #{name}, #{email_address}: #{user.errors.full_messages.to_sentence}"
+    user.persisted? or raise "'failed to sign up #{name}, #{email_address}: #{user.errors.full_messages.to_sentence}"
   end
 
   def get_user email_address

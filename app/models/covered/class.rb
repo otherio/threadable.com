@@ -52,7 +52,7 @@ class Covered::Class
   let(:events         ){ Covered::Events         .new(self) }
 
   def sign_up attributes
-    Covered::SignUp.call(attributes.merge(covered: self))
+    Covered::SignUp.call(self, attributes)
   end
 
   def email_host
