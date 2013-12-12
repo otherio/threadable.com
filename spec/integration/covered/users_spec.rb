@@ -30,5 +30,4 @@ describe Covered::Users do
 
   end
 
-
 end
