@@ -24,6 +24,7 @@ module Storage
 
   def self.service
     @service ||= if local?
+      FileUtils.mkdir_p(Storage.absolute_local_path.to_s) unless Storage.absolute_local_path.exist?
       Fog::Storage.new({
         :provider   => 'Local',
         :local_root => local_root.tap(&:mkpath),
