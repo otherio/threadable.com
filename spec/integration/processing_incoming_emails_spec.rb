@@ -3,8 +3,6 @@ require 'spec_helper'
 describe "processing incoming emails" do
 
   before do
-    EmailsController.any_instance.stub(authenticate: true)
-
     expect{
       expect{
 
@@ -21,40 +19,39 @@ describe "processing incoming emails" do
   end
 
   def params
-    {
-      "recipient"        => recipient,
-      "sender"           => sender,
-      "subject"          => subject,
-      "from"             => from,
-      "X-Envelope-From"  => envelope_from,
-      "Sender"           => sender,
-      "In-Reply-To"      => in_reply_to_header,
-      "References"       => references,
-      "From"             => from,
-      "Date"             => date.rfc2822,
-      "Message-Id"       => message_id,
-      "Subject"          => subject,
-      "To"               => to,
-      "Cc"               => cc,
-      "Content-Type"     => content_type,
-      "message-headers"  => [
+    create_incoming_email_params(
+      recipient:        recipient,
+      sender:           sender,
+      subject:          subject,
+      from:             from,
+      envelope_from:    envelope_from,
+      sender:           sender,
+      in_reply_to:      in_reply_to_header,
+      references:       references,
+      from:             from,
+      date:             date,
+      message_id:       message_id,
+      to:               to,
+      cc:               cc,
+      content_type:     content_type,
+      message_headers:  [
         ["X-Envelope-From", envelope_from],
         ["Sender",          sender],
         ["In-Reply-To",     in_reply_to_header],
         ["References",      references],
         ["From",            from],
-        ["Date",            date.rfc2822],
+        ["Date",            date.utc.rfc2822],
         ["Message-Id",      message_id],
         ["Subject",         subject],
         ["To",              to],
         ["Cc",              cc],
         ["Content-Type",    content_type],
-      ].to_json,
-      "body-plain"    => body_plain,
-      "body-html"     => body_html,
-      "stripped-html" => stripped_html,
-      "stripped-text" => stripped_text,
-    }
+      ],
+      body_plain:    body_plain,
+      body_html:     body_html,
+      stripped_html: stripped_html,
+      stripped_text: stripped_text,
+    )
   end
 
   let(:sender)            { 'yan@ucsd.covered.io' }
@@ -453,9 +450,6 @@ describe "processing incoming emails" do
           include_examples 'it creates a message in a new conversation'
         end
       end
-
-      # include_context "when this message has CC recipients"
-      # include_context "when the message has multiple recipients in the to header"
     end
 
     context 'and the subject is more than 255 characters' do
