@@ -11,7 +11,7 @@ class Covered::Users < Covered::Collection
   end
 
   def find_by_email_address email_address
-    user_for (scope.find_by_email_address(email_address) or return)
+    user_for (scope.find_by_email_address(email_address.strip_non_ascii) or return)
   end
 
   def find_by_email_address! email_address
