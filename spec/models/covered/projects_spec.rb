@@ -38,6 +38,11 @@ describe Covered::Projects do
       project_record = subject.find_by_email_address('foo+task@covered.io')
       expect(project_record.id).to eq project.id
     end
+
+    it 'strips non ascii characters before searching' do
+      project_record = subject.find_by_email_address('★foo★@covered.io')
+      expect(project_record.id).to eq project.id
+    end
   end
 
 end
