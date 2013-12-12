@@ -14,6 +14,10 @@ class EmailAddress < ActiveRecord::Base
     where(primary: true)
   end
 
+  def address= address
+    write_attribute(:address, address.try(:strip_non_ascii))
+  end
+
   scope :for_user, ->(user){
     where(user_id: user.is_a?(User) ? user.id : user)
   }

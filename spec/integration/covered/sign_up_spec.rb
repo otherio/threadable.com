@@ -2,17 +2,12 @@ require 'spec_helper'
 
 describe Covered::SignUp, fixtures: false do
 
-  let(:name                 ){ 'Thomas Shaffer' }
-  let(:email_address        ){ 'thomas@shaffer.me' }
-  let(:password             ){ 'password' }
-  let(:password_confirmation){ 'password' }
-
   let :attributes do
     {
-      name:                  name,
-      email_address:         email_address,
-      password:              password,
-      password_confirmation: password_confirmation,
+      name:                  'Thomas Shaffer',
+      email_address:         'thomas@shaffer.me',
+      password:              'password',
+      password_confirmation: 'password',
     }
   end
 
@@ -23,36 +18,42 @@ describe Covered::SignUp, fixtures: false do
     expect(user).to be_valid
   end
 
-  context 'when given an email address with non-ascii characters' do
-    valid = [
-      %(jared@cover.io),
-      %(jared+covered@cover.io),
-      %(jared@127.0.0.1),
-    ]
-    invalid = [
-      %(\xEF\xBB\xBFjared@deadlyicon.com), # FYI this string contains a zero-width no-break space (U+FEFF)
-      %(﻿jared+\xE2\x98\x83@deadlyicon.com),
-      %(jared@localhost),
-      # %(jared@127.0.0),
-      # %(jared@127.0.0.),
-    ]
+  def self.escape_unicode string
+    string.bytes.to_a.map(&:chr).join.inspect
+  end
 
-    def self.escape_unicode string
-      string.bytes.to_a.map(&:chr).join.inspect
-    end
+  valid_email_addresses = [
+    %(jared@cover.io),
+    %(jared+covered@cover.io),
+    %(jared@127.0.0.1),
+    %(\xEF\xBB\xBFjared@deadlyicon.com), # FYI this string contains a zero-width no-break space (U+FEFF)
+    %(jared+\xE2\x98\x83@deadlyicon.com),
+  ]
 
-    valid.each do |address|
-      it "#{escape_unicode(address)} should return a persisted user" do
-        attributes[:email_address] = address
+  invalid_email_addresses = [
+    %(jared@localhost),
+    %(jared),
+    %(ian.baker@foo),
+  ]
+
+  valid_email_addresses.each do |email_address|
+    context "when given the email_address #{escape_unicode(email_address)}" do
+      it 'returns a persisted user' do
+        attributes[:email_address] = email_address
         expect(user).to be_persisted
+        expect(user.email_address).to eq email_address.strip_non_ascii
       end
     end
-    invalid.each do |address|
-      it "#{escape_unicode(address)} should return a unpersisted user" do
-        attributes[:email_address] = address
+  end
+
+  invalid_email_addresses.each do |email_address|
+    context "when given the email_address #{escape_unicode(email_address)}" do
+      it 'returns a non-persisted user' do
+        attributes[:email_address] = email_address
         expect(user).to_not be_persisted
         expect(user.errors['email_addresses.address']).to eq ['is invalid']
       end
     end
   end
+
 end

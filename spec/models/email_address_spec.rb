@@ -15,18 +15,6 @@ describe EmailAddress, fixtures: false do
   end
 
   describe 'address format validations' do
-    valid = [
-      %(jared@cover.io),
-      %(jared+covered@cover.io),
-      %(jared@127.0.0.1),
-    ]
-    invalid = [
-      %(\xEF\xBB\xBFjared@deadlyicon.com), # FYI this string contains a zero-width no-break space (U+FEFF)
-      %(﻿jared+\xE2\x98\x83@deadlyicon.com),
-      %(jared@localhost),
-      # %(jared@127.0.0),
-      # %(jared@127.0.0.),
-    ]
 
     def email_address address
       described_class.new(address: address)
@@ -36,16 +24,36 @@ describe EmailAddress, fixtures: false do
       string.bytes.to_a.map(&:chr).join.inspect
     end
 
-    valid.each do |address|
-      it "#{escape_unicode(address)} should be valid" do
-        expect(email_address(address)).to have(0).errors_on(:address)
+    valid_addresses = [
+      %(jared@cover.io),
+      %(jared+covered@cover.io),
+      %(jared@127.0.0.1),
+      %(\xEF\xBB\xBFjared@deadlyicon.com), # FYI this string contains a zero-width no-break space (U+FEFF)
+      %(jared+\xE2\x98\x83@deadlyicon.com),
+    ]
+
+    invalid_addresses = [
+      %(jared@localhost),
+      %(jared),
+      %(ian.baker@foo),
+    ]
+
+    valid_addresses.each do |address|
+      context "when given the address #{escape_unicode(address)}" do
+        it "should be valid" do
+          expect(email_address(address)).to have(0).errors_on(:address)
+        end
       end
     end
-    invalid.each do |address|
-      it "#{escape_unicode(address)} should be invalid" do
-        expect(email_address(address)).to have(1).error_on(:address)
+
+    invalid_addresses.each do |address|
+      context "when given the address #{escape_unicode(address)}" do
+        it 'should be invalid' do
+          expect(email_address(address)).to have(1).errors_on(:address)
+        end
       end
     end
+
   end
 
 end
