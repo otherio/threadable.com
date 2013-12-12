@@ -20,12 +20,17 @@ class Project::MembersController < ApplicationController
     member_params[:user_id]          = member_params.delete(:id)      if member_params.key? :id
     member_params[:personal_message] = member_params.delete(:message) if member_params.key? :message
 
-    if member_params[:email_address]
-      user = covered.users.find_by_email_address(member_params[:email_address])
-      if user && project.members.include?(user)
-        return render json: {error: "user is already a member"}, status: :unprocessable_entity
-      end
+    user = case
+    when member_params[:email_address]
+      covered.users.find_by_email_address(member_params[:email_address])
+    when member_params[:user_id]
+      covered.users.find_by_id(member_params[:user_id])
     end
+
+    if user && project.members.include?(user)
+      return render json: {error: "user is already a member"}, status: :unprocessable_entity
+    end
+
     member = project.members.add(member_params)
     render json: member, status: :created
   rescue Covered::RecordInvalid

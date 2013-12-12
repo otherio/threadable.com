@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   def email_address= email_address
     email_addresses.build(
       user: self,
-      address: email_address,
+      address: email_address.strip_non_ascii,
       primary: true
     )
   end

@@ -8,9 +8,7 @@ module RSpec::Support::SentEmail
     end
 
     def join_notices(project_name)
-      find_all do |email|
-        email.subject == "You've been added to #{project_name}"
-      end
+      with_subject("You've been added to #{project_name}")
     end
 
     def sent_to(to_address)

@@ -25,7 +25,7 @@ class Covered::Project::Members::Remove < MethodObject
 
   def track!
     @covered.track("Removed User", {
-      'Removed User' => user_id,
+      'Removed User' => user_id.to_i,
       'Project'      => @project.id,
       'Project Name' => @project.name,
     })

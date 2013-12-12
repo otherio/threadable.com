@@ -3,20 +3,21 @@ require_dependency 'covered/project/members'
 class Covered::Project::Members::Add < MethodObject
 
   def call members, options
-    @members = members
-    @covered = members.covered
-    @project = members.project
-    @options = options
-    @send_join_notice = @options.fetch(:send_join_notice){ true }
-    member or create_membership!
-    track!
+    ActiveRecord::Base.transaction do
+      @members = members
+      @covered = members.covered
+      @project = members.project
+      @options = options
+      @send_join_notice = @options.fetch(:send_join_notice){ true }
+      member or create_membership!
+    end
     return member
   end
 
   def user_id
     @user_id ||= case
     when @options.key?(:user_id)
-      @covered.users.exists! @options[:user_id]
+      @covered.users.exists! @options[:user_id].to_i
     when @options.key?(:email_address)
       (
         @covered.users.find_by_email_address(@options[:email_address]) or
@@ -38,10 +39,8 @@ class Covered::Project::Members::Add < MethodObject
       user_id: user_id,
       gets_email: @options[:gets_email] != false
     )
-
-    if @send_join_notice
-      @covered.emails.send_email_async(:join_notice, @project.id, user_id, @options[:personal_message])
-    end
+    track!
+    sent_join_notice! if @send_join_notice
   end
 
   def track!
@@ -54,5 +53,8 @@ class Covered::Project::Members::Add < MethodObject
     })
   end
 
+  def sent_join_notice!
+    @covered.emails.send_email_async(:join_notice, @project.id, user_id, @options[:personal_message])
+  end
 
 end
