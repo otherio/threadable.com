@@ -39,7 +39,7 @@ class Covered::Project::Members < Covered::Collection
   def find_by_email_address email_address
     member_for (
       scope.includes(:email_addresses)
-        .where(email_addresses:{address:email_address})
+        .where(email_addresses:{address:email_address.strip_non_ascii})
         .references(:email_addresses)
         .first or return
     )
