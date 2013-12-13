@@ -86,6 +86,7 @@ class Covered::IncomingEmail::Process < MethodObject
     end
 
     return if @incoming_email.creator_id.nil?
+    return unless @project.members.include? @incoming_email.creator
 
     is_task = @incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP || @incoming_email.recipient_email_address =~ TASK_RECIPIENT_REGEXP
 

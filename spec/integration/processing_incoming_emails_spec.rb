@@ -15,10 +15,9 @@ describe "processing incoming emails" do
 
       }.to change{ Message.count }.by(expected_message_count_change)
     }.to change{ Conversation.count }.by(expected_conversation_count_change)
-
   end
 
-  def params
+  let :params do
     create_incoming_email_params(
       recipient:        recipient,
       sender:           sender,
@@ -183,7 +182,44 @@ describe "processing incoming emails" do
     let(:expected_sent_email_cc){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
   end
 
+  shared_examples 'creates a new incoming email record' do
+    let(:incoming_email){ IncomingEmail.last }
+    it 'creates a new incoming email record' do
+      expect( incoming_email.message ).to eq message
+
+      expect( incoming_email.params['timestamp']        ).to eq params['timestamp']
+      expect( incoming_email.params['token']            ).to eq params['token']
+      expect( incoming_email.params['signature']        ).to eq params['signature']
+      expect( incoming_email.params['recipient']        ).to eq params['recipient']
+      expect( incoming_email.params['sender']           ).to eq params['sender']
+      expect( incoming_email.params['Sender']           ).to eq params['Sender']
+      expect( incoming_email.params['subject']          ).to eq params['subject']
+      expect( incoming_email.params['Subject']          ).to eq params['Subject']
+      expect( incoming_email.params['from']             ).to eq params['from']
+      expect( incoming_email.params['From']             ).to eq params['From']
+      expect( incoming_email.params['X-Envelope-From']  ).to eq params['X-Envelope-From']
+      expect( incoming_email.params['In-Reply-To']      ).to eq params['In-Reply-To']
+      expect( incoming_email.params['References']       ).to eq params['References']
+      expect( incoming_email.params['Date']             ).to eq params['Date']
+      expect( incoming_email.params['Message-Id']       ).to eq params['Message-Id']
+      expect( incoming_email.params['To']               ).to eq params['To']
+      expect( incoming_email.params['Cc']               ).to eq params['Cc']
+      expect( incoming_email.params['Content-Type']     ).to eq params['Content-Type']
+      expect( incoming_email.params['message-headers']  ).to eq params['message-headers']
+      expect( incoming_email.params['body-plain']       ).to eq params['body-plain']
+      expect( incoming_email.params['body-html']        ).to eq params['body-html']
+      expect( incoming_email.params['stripped-html']    ).to eq params['stripped-html']
+      expect( incoming_email.params['stripped-text']    ).to eq params['stripped-text']
+      expect( incoming_email.params['attachment-count'] ).to be_nil
+      expect( incoming_email.params['attachment-1']     ).to be_nil
+      expect( incoming_email.params['attachment-2']     ).to be_nil
+      expect( incoming_email.params['attachment-3']     ).to be_nil
+    end
+  end
+
   shared_examples 'it bounces the message' do
+    include_examples 'creates a new incoming email record'
+    let(:message){ nil }
     let(:expected_conversation_count_change){ 0 }
     let(:expected_message_count_change){ 0 }
     it "bounces the message"
@@ -193,6 +229,7 @@ describe "processing incoming emails" do
   end
 
   shared_examples 'creates a new message' do
+    include_examples 'creates a new incoming email record'
     let(:expected_message_count_change){ 1 }
     it 'creates a new message' do
       expect( message.conversation_id   ).to eq conversation.id
