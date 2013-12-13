@@ -79,8 +79,8 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
-    compass-rails (2.0.alpha.0)
-      compass (>= 0.12.2, < 0.14)
+    compass-rails (1.1.2)
+      compass (>= 0.12.2)
     connection_pool (1.1.0)
     crack (0.4.0)
       safe_yaml (~> 0.9.0)
@@ -350,7 +350,7 @@ DEPENDENCIES
   capybara (>= 2.0.2)
   capybara-webkit
   codeclimate-test-reporter
-  compass-rails (~> 2.0.alpha.0)
+  compass-rails (~> 1.1.2)
   debugger
   dotenv-rails
   encryptor
