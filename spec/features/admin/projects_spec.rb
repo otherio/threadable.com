@@ -148,7 +148,25 @@ feature "Admin projects CRUD" do
     expect(page).to have_text 'Projects'
     expect(current_url).to eq admin_projects_url
     expect(page).to_not have_text 'United Hations'
-
   end
+
+  scenario %(adding a member to a project you (the admin) are not a member of) do
+    sign_in_as 'jared@other.io'
+    visit admin_projects_path
+    click_on 'SF Health Center'
+    within '.add-new-member-form' do
+      fill_in 'Name',          with: 'Bob Newbetauser'
+      fill_in 'Email address', with: 'bob.newbetauser@example.com'
+      click_on 'Add Member'
+    end
+    expect(members_table).to include ['Bob Newbetauser', 'bob.newbetauser@example.com', "yes"]
+    project = covered.projects.find_by_slug('sfhealth')
+    bob = project.members.find_by_user_slug!('bob-newbetauser')
+    expect( bob.gets_email? ).to be_true
+    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, bob.id, nil]
+    drain_background_jobs!
+    expect( sent_emails.join_notices('SF Health Center').to(bob.email_address) ).to be
+  end
+
 
 end

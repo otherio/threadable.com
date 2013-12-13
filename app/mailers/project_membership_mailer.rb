@@ -1,7 +1,7 @@
 class ProjectMembershipMailer < Covered::Mailer
 
-  def join_notice(project, recipient, personal_message=nil) #recipientship, adder, personal_message)
-    @adder            = covered.current_user
+  def join_notice project, recipient, personal_message=nil
+    @adder = covered.current_user
     @project, @recipient, @personal_message = project, recipient, personal_message
 
     @subject                  = "You've been added to #{@project.name}"
@@ -18,7 +18,7 @@ class ProjectMembershipMailer < Covered::Mailer
     )
   end
 
-  def unsubscribe_notice(project, recipient)
+  def unsubscribe_notice project, recipient
     @project, @recipient = project, recipient
 
     project_resubscribe_token = ProjectResubscribeToken.encrypt(@project.id, @recipient.id)

@@ -16,13 +16,13 @@ class SendEmailWorker < Covered::Worker
   end
 
   def join_notice project_id, recipient_id, personal_message=nil
-    project   = current_user.projects.find_by_id! project_id
+    project   = covered.projects.find_by_id! project_id
     recipient = project.members.find_by_user_id! recipient_id
     covered.emails.send_email(:join_notice, project, recipient, personal_message)
   end
 
   def unsubscribe_notice project_id, recipient_id
-    project = current_user.projects.find_by_id! project_id
+    project   = covered.projects.find_by_id! project_id
     recipient = project.members.find_by_user_id! recipient_id
     covered.emails.send_email(:unsubscribe_notice, project, recipient)
   end
