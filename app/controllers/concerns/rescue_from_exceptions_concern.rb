@@ -30,8 +30,7 @@ module RescueFromExceptionsConcern
       sign_out!
       redirect_to sign_in_path(r: request.original_url)
     else
-      logger.error("\n\nRENDERING 500 FROM EXCEPTION: #{exception.class}(#{exception.message.inspect})\n#{exception.backtrace.join("\n")}\n\n")
-      Honeybadger.notify(exception)
+      covered.report_exception! exception
       raise exception if Rails.application.config.consider_all_requests_local
       render_error_page 500
     end

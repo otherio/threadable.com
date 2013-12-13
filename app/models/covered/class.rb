@@ -68,6 +68,16 @@ class Covered::Class
     }.as_json
   end
 
+  def report_exception! exception
+    logger.error("\n\nEXCEPTION: #{exception.class}(#{exception.message.inspect})\n#{exception.backtrace.join("\n")}\n\n")
+    Honeybadger.notify(exception)
+    track("Exception",
+      'Class'     => exception.class,
+      'Message'   => exception.message,
+      'Backtrace' => exception.backtrace.first,
+    )
+  end
+
   def == other
     self.class === other && self.env == other.env
   end
