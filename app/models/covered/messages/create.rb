@@ -23,6 +23,7 @@ class Covered::Messages::Create < MethodObject
 
     create_message!
     if @message.persisted?
+      track!
       create_attachments!
       send_emails!
     end
@@ -108,16 +109,6 @@ class Covered::Messages::Create < MethodObject
       cc_header:         cc_header,
       date_header:       date_header,
     )
-
-    @covered.track("Composed Message", {
-      'Project' => @conversation.project.id,
-      'Conversation' => @conversation.id,
-      'Project Name' => @conversation.project.name,
-      'Reply' => parent_message.try(:id) ? true : false,
-      'Task' => @conversation.task?,
-      'Via' => @options.sent_via_web ? 'web' : 'email',
-      'Message ID' => message_id_header,
-    })
     @message = Covered::Message.new(@covered, @message_record)
   end
 
@@ -139,6 +130,18 @@ class Covered::Messages::Create < MethodObject
       next if !@options.sent_via_web && recipient.same_user?(creator)
       @covered.emails.send_email_async(:conversation_message, @conversation.project.id, @message.id, recipient.id)
     end
+  end
+
+  def track!
+    @covered.track("Composed Message", {
+      'Project' => @conversation.project.id,
+      'Conversation' => @conversation.id,
+      'Project Name' => @conversation.project.name,
+      'Reply' => parent_message.try(:id) ? true : false,
+      'Task' => @conversation.task?,
+      'Via' => @options.sent_via_web ? 'web' : 'email',
+      'Message ID' => message_id_header,
+    })
   end
 
   def strip_html(html)

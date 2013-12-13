@@ -14,7 +14,7 @@ class Covered::User::EmailAddresses < Covered::EmailAddresses
   end
 
   def add email_address, primary=false
-    scope.transaction do
+    Covered.transaction do
       email_address = email_address_for create(address: email_address)
       email_address.primary! if primary
     end

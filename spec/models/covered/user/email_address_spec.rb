@@ -20,7 +20,7 @@ describe Covered::User::EmailAddress do
       let(:email_addresses){ double(:email_addresses) }
       it 'returns true' do
         scope = double(:scope)
-        expect(EmailAddress        ).to receive(:transaction).and_yield
+        expect(Covered             ).to receive(:transaction).and_yield
         expect(EmailAddress        ).to receive(:where).with(user_id: user.id).and_return(scope)
         expect(scope               ).to receive(:update_all).with(primary: false)
         expect(email_address_record).to receive(:update).with(primary: true)

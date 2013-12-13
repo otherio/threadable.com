@@ -39,7 +39,7 @@ RSpec.configure do |config|
   config.before :each do
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
     Timecop.return
-    Redis.current.flushdb
+    Covered.redis.flushdb
     WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!

@@ -21,4 +21,21 @@ module Covered
     false
   end
 
+  def self.redis
+    Sidekiq.redis{|redis|redis}
+  end
+
+  def self.transaction &block
+    redis.multi do
+      Rails.logger.info('BEGIN REDIS TRANSACTION')
+      ActiveRecord::Base.transaction do
+        yield
+      end
+      Rails.logger.info('COMMIT REDIS TRANSACTION')
+    end
+  rescue Exception
+    Rails.logger.info('ABORT REDIS TRANSACTION')
+    raise
+  end
+
 end

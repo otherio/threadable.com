@@ -11,7 +11,7 @@ class Covered::Task < Covered::Conversation
 
   def done! now=Time.now
     return false if done?
-    task_record.transaction do
+    Covered.transaction do
       task_record.update! done_at: now
       task_record.events.create! type: 'Task::DoneEvent', user_id: covered.current_user_id
     end
@@ -20,7 +20,7 @@ class Covered::Task < Covered::Conversation
 
   def undone!
     return false unless done?
-    task_record.transaction do
+    Covered.transaction do
       task_record.update! done_at: nil
       task_record.events.create! type: 'Task::UndoneEvent', user_id: covered.current_user_id
     end

@@ -24,7 +24,7 @@ class Covered::Task::Doers
   def add *doers
     doer_user_ids = (doers.map(&:user_id) - task.task_record.doer_ids).uniq
 
-    task.task_record.transaction do
+    Covered.transaction do
       task.task_record.doer_ids += doer_user_ids
       events = doer_user_ids.map do |user_id|
         {
@@ -42,7 +42,7 @@ class Covered::Task::Doers
   def remove *doers
     doer_user_ids = (doers.map(&:user_id) & task.task_record.doer_ids).uniq
 
-    task.task_record.transaction do
+    Covered.transaction do
       task.task_record.doer_ids -= doer_user_ids
       events = doer_user_ids.map do |user_id|
         {

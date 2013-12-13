@@ -5,7 +5,7 @@ class Covered::IncomingEmail::Process < MethodObject
   def call incoming_email
     @incoming_email, @covered = incoming_email, incoming_email.covered
     raise ArgumentError, "IncomingEmail #{@incoming_email.id.inspect} was already processed. Call reset! first." if incoming_email.processed?
-    ActiveRecord::Base.transaction do
+    Covered.transaction do
       find_message_by_message_id_header!
       save_off_attachments!
       find_project!

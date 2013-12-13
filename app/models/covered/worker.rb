@@ -7,6 +7,7 @@ class Covered::Worker
   sidekiq_options :queue => :default, :retry => true, :backtrace => true
 
   def perform covered_env, *args
+
     @covered = Covered.new(covered_env.symbolize_keys)
     begin
       perform!(*args)

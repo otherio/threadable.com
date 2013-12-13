@@ -10,7 +10,7 @@ class Covered::User::EmailAddress < Covered::EmailAddress
 
   def primary!
     return false if primary?
-    ::EmailAddress.transaction do
+    Covered.transaction do
       ::EmailAddress.where(user_id: user.id).update_all(primary: false)
       email_address_record.update(primary: true)
     end

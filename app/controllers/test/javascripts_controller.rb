@@ -30,7 +30,7 @@ class Test::JavascriptsController < TestController
   def render_fixture path
     render_path = path.relative_path_from(VIEWS).to_s.sub(/\.\w+\.\w+$/,'')
     name = path.relative_path_from(FIXTURES).sub(/_fixture\..+$/, '')
-    ActiveRecord::Base.transaction do
+    Covered.transaction do
       @fixtures[name] = view_context.render(file: render_path)
       raise ActiveRecord::Rollback
     end

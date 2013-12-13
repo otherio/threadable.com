@@ -3,7 +3,7 @@ require_dependency 'covered/project/members'
 class Covered::Project::Members::Add < MethodObject
 
   def call members, options
-    ActiveRecord::Base.transaction do
+    Covered.transaction do
       @members = members
       @covered = members.covered
       @project = members.project
