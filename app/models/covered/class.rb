@@ -69,7 +69,7 @@ class Covered::Class
   end
 
   def report_exception! exception
-    logger.error("\n\nEXCEPTION: #{exception.class}(#{exception.message.inspect})\n#{exception.backtrace.join("\n")}\n\n")
+    Rails.logger.error("\n\nEXCEPTION: #{exception.class}(#{exception.message.inspect})\n#{exception.backtrace.join("\n")}\n\n")
     Honeybadger.notify(exception)
     track("Exception",
       'Class'     => exception.class,
