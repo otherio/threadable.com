@@ -18,13 +18,6 @@ class Covered::Users < Covered::Collection
     find_by_email_address(email_address) or raise Covered::RecordNotFound, "unable to find user with email address: #{email_address}"
   end
 
-  def find_by_email_addresses email_addresses
-    email_addresses = email_addresses.map(&:strip_non_ascii)
-    scope.with_email_address(email_addresses).
-      sort_by{|user_record| email_addresses.index(user_record.email_address) }.
-      map{|user_record| user_for user_record }
-  end
-
   def find_by_slug slug
     user_for (scope.where(slug:slug).first or return)
   end

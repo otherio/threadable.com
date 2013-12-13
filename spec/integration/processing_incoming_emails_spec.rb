@@ -8,15 +8,14 @@ describe "processing incoming emails" do
 
         expect{
           post emails_url, params
-          expect(response.status).to eq expected_status_code
-        }.to change{ IncomingEmail.count }.by(expected_incoming_email_count_change)
+          expect(response).to be_ok
+        }.to change{ IncomingEmail.count }.by(1)
 
         drain_background_jobs!
 
       }.to change{ Message.count }.by(expected_message_count_change)
     }.to change{ Conversation.count }.by(expected_conversation_count_change)
   end
-
 
   let :params do
     create_incoming_email_params(
@@ -25,8 +24,10 @@ describe "processing incoming emails" do
       subject:          subject,
       from:             from,
       envelope_from:    envelope_from,
+      sender:           sender,
       in_reply_to:      in_reply_to_header,
       references:       references,
+      from:             from,
       date:             date,
       message_id:       message_id,
       to:               to,
@@ -89,19 +90,14 @@ describe "processing incoming emails" do
   let(:stripped_text)     {
     %(I think we should build it out of fiberglass and duck tape.)
   }
-
-  let(:project_member_email_addresses){ project.members.that_get_email.map(&:email_address) }
-
-  let(:expected_status_code                ){ 200 }
-  let(:expected_incoming_email_count_change){ 1 }
-  let(:expected_sent_email_to              ){ ['raceteam@127.0.0.1', 'someone@example.com'] }
-  let(:expected_sent_email_cc              ){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
-  let(:expected_from                       ){ sender }
-  let(:expected_conversation_subject       ){ "OMG guys I love covered!" }
-  let(:expected_message_subject            ){ subject }
-  let(:expected_sent_email_subject         ){ "[RaceTeam] OMG guys I love covered!" }
-  let(:expect_conversation_to_be_a_task    ){ false }
-  let(:expected_smtp_envelope_from         ){ recipient }
+  let(:expected_sent_email_to          ){ ['raceteam@127.0.0.1', 'someone@example.com'] }
+  let(:expected_sent_email_cc          ){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
+  let(:expected_from                   ){ sender }
+  let(:expected_conversation_subject   ){ "OMG guys I love covered!" }
+  let(:expected_message_subject        ){ subject }
+  let(:expected_sent_email_subject     ){ "[RaceTeam] OMG guys I love covered!" }
+  let(:expect_conversation_to_be_a_task){ false }
+  let(:expected_smtp_envelope_from){ recipient }
 
 
   shared_context 'the email recipient is a valid project' do
@@ -117,6 +113,7 @@ describe "processing incoming emails" do
     let(:to)         { 'Poop Nozel <poopnozel@covered.io>' }
     let(:expected_sent_email_to){ ['poopnozel@covered.io'] }
   end
+
 
   shared_context "a parent message can be found via the In-Reply-To header" do
     let(:conversation)      { project.conversations.find_by_slug! 'how-are-we-going-to-build-the-body' }
@@ -221,12 +218,14 @@ describe "processing incoming emails" do
   end
 
   shared_examples 'it bounces the message' do
-    let(:expected_status_code                ){ 406 }
-    let(:expected_incoming_email_count_change){ 0 }
-    let(:expected_conversation_count_change  ){ 0 }
-    let(:expected_message_count_change       ){ 0 }
-    it 'bounces the message' do
-    end
+    include_examples 'creates a new incoming email record'
+    let(:message){ nil }
+    let(:expected_conversation_count_change){ 0 }
+    let(:expected_message_count_change){ 0 }
+    it "bounces the message"
+    #   # expect( sent_emails.count ).to eq 1
+    #   # expect sent email to be a bounce message
+    # end
   end
 
   shared_examples 'creates a new message' do
@@ -256,6 +255,9 @@ describe "processing incoming emails" do
       ]
     end
   end
+
+
+  let(:project_member_email_addresses){ project.members.that_get_email.map(&:email_address) }
 
   shared_examples 'creates a new message with a creator' do
     include_examples 'creates a new message'

@@ -27,8 +27,7 @@ module RSpec::Support::IncomingEmailParams
       @options[:date]               ||= Time.now
       @options[:envelope_from]      ||= creator.email_address
       @options[:from]               ||= creator.formatted_email_address
-      @options[:in_reply_to]        ||= @options[:in_reply_to_header] # DEPRECATED
-      @options[:in_reply_to]        ||= ''
+      @options[:in_reply_to_header] ||= ''
       @options[:message_id]         ||= "<#{SecureRandom.uuid}@mail.example.com>"
       @options[:recipient]          ||= project.email_address
       @options[:references]         ||= ''
@@ -47,7 +46,7 @@ module RSpec::Support::IncomingEmailParams
       @options[:message_headers] ||= [
         ["X-Envelope-From", @options[:envelope_from]],
         ["Sender",          @options[:sender]],
-        ["In-Reply-To",     @options[:in_reply_to]],
+        ["In-Reply-To",     @options[:in_reply_to_header]],
         ["References",      @options[:references]],
         ["From",            @options[:from]],
         ["Date",            @options[:date].utc.rfc2822],
@@ -73,10 +72,13 @@ module RSpec::Support::IncomingEmailParams
         "from"             => @options[:from],
         "From"             => @options[:from],
         "X-Envelope-From"  => @options[:envelope_from],
-        "In-Reply-To"      => @options[:in_reply_to],
+        "Sender"           => @options[:sender],
+        "In-Reply-To"      => @options[:in_reply_to_header],
         "References"       => @options[:references],
+        "From"             => @options[:from],
         "Date"             => @options[:date].utc.rfc2822,
         "Message-Id"       => @options[:message_id],
+        "Subject"          => @options[:subject],
         "To"               => @options[:to],
         "Cc"               => @options[:cc],
         "Content-Type"     => @options[:content_type],

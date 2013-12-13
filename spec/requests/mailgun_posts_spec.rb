@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe "Mailgun posts", fixtures: true do
+describe "Mailgun posts", fixtures: false do
 
   describe "POST /emails" do
     let(:params){
       create_incoming_email_params(
-        envelope_from: 'alice@ucsd.covered.io',
-        from:          'Alice Neilson <alice@ucsd.covered.io>',
-        sender:        'alice.neilson@gmail.com',
-        recipient:     'raceteam@covered.io',
-        to:            'Race Team <raceteam@covered.io>',
+        envelope_from: 'bob@bob.com',
+        from:          'Bob Smith <bob@bob.com>',
+        sender:        'bob@bob.com',
+        recipient:     'flying-car@covered.io',
+        to:            'Flying car <flying-car@covered.io>',
       )
     }
     it "should render succesfully" do

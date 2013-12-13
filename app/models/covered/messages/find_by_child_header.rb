@@ -1,9 +1,9 @@
 class Covered::Messages::FindByChildHeader < MethodObject
 
-  def call project_id, params
-    @project_id, @params = project_id, params
-    in_reply_to = params['In-Reply-To'].to_s
-    references  = params['References'].to_s.split(/\s+/)
+  def call project_id, header
+    @project_id, @header = project_id, header
+    in_reply_to = header['In-Reply-To'].to_s
+    references  = header['References'].to_s.split(/\s+/)
     # this fixes a bug in the Eudora mail client (see the JWZ threading algorithm)
     references.push(in_reply_to) if in_reply_to.present?
     references.reverse!

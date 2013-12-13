@@ -1,5 +1,3 @@
-# Encoding: UTF-8
-
 require_dependency 'covered/incoming_email'
 
 class Covered::IncomingEmail::Process < MethodObject
@@ -8,11 +6,11 @@ class Covered::IncomingEmail::Process < MethodObject
     @incoming_email, @covered = incoming_email, incoming_email.covered
     raise ArgumentError, "IncomingEmail #{@incoming_email.id.inspect} was already processed. Call reset! first." if incoming_email.processed?
     ActiveRecord::Base.transaction do
-      @project = @incoming_email.project
-      @creator = @incoming_email.creator
       find_message_by_message_id_header!
-      sign_in_as_creator!
       save_off_attachments!
+      find_project!
+      find_creator!
+      sign_in_as_creator!
       find_parent_message!
       find_or_create_conversation!
       find_or_create_message!
@@ -48,12 +46,28 @@ class Covered::IncomingEmail::Process < MethodObject
     end
   end
 
+  def find_project!
+    return if @incoming_email.project_id
+    @project = @covered.projects.find_by_email_address @incoming_email.recipient_email_address
+    @incoming_email.project_id = @project.id if @project
+  end
+
+  def find_creator!
+    return if @incoming_email.creator_id
+    @incoming_email.from_email_addresses.find do |email_address|
+      user = @covered.users.find_by_email_address(email_address) or next
+      @incoming_email.creator_id = user.id
+      break
+    end
+  end
+
   def sign_in_as_creator!
     @covered.current_user_id = @incoming_email.creator_id
   end
 
   def find_parent_message!
-    return if @incoming_email.parent_message_id
+    return if @incoming_email.parent_message_id || @incoming_email.project_id.nil?
+    @project ||= @covered.projects.find_by_id!(@incoming_email.project_id)
     parent_message = @project.messages.find_by_child_message_header(@incoming_email.header) or return
     @incoming_email.parent_message_id = parent_message.id
     @incoming_email.conversation_id   = parent_message.conversation_id
@@ -62,7 +76,8 @@ class Covered::IncomingEmail::Process < MethodObject
   TASK_SUBJECT_PREFIX_REGEXP = /^\[(✔|task)\]\s*/i
   TASK_RECIPIENT_REGEXP = /\+task\b/i
   def find_or_create_conversation!
-    return if @incoming_email.conversation_id
+    return if @incoming_email.conversation_id || @incoming_email.project_id.nil?
+    @project ||= @covered.projects.find_by_id!(@incoming_email.project_id)
 
     if @incoming_email.parent_message
       @conversation = @incoming_email.parent_message.conversation
@@ -86,8 +101,9 @@ class Covered::IncomingEmail::Process < MethodObject
   end
 
   def find_or_create_message!
-    return if @incoming_email.message_id || @incoming_email.conversation_id.nil?
-    @conversation ||= @incoming_email.conversation
+    return if @incoming_email.message_id || @incoming_email.conversation_id.nil? || @incoming_email.project_id.nil?
+    @project ||= @covered.projects.find_by_id!(@incoming_email.project_id)
+    @conversation ||= @project.conversations.find_by_id!(@incoming_email.conversation_id)
     # this is where we prevent non-members from starting new conversations
     return if @incoming_email.creator_id.nil? && @incoming_email.parent_message_id.nil?
     @message ||= @conversation.messages.create!(
@@ -112,10 +128,13 @@ class Covered::IncomingEmail::Process < MethodObject
   # this is here for legacy reasons
   def find_message_by_message_id_header!
     return if @incoming_email.message_id
-    @message = @project.messages.find_by_message_id_header(@incoming_email.message_id_header) or return
+    @message = @covered.messages.find_by_message_id_header(@incoming_email.message_id_header) or return
+    @project = @message.project
+    @conversation = @message.conversation
     @incoming_email.message_id        = @message.id
+    @incoming_email.conversation_id   = @conversation.id
+    @incoming_email.project_id        = @project.id
     @incoming_email.parent_message_id = @message.parent_message_id
-    @incoming_email.conversation_id   = @message.conversation.id
   end
 
   def strip_user_specific_content body
