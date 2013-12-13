@@ -36,12 +36,6 @@
 
   &#183;
 
-  %a.control-link.text-info.schedule-event{href:""}
-    %i.icon-calendar
-    schedule event
-
-  &#183;
-
   - url = task.done? ? project_task_mark_as_undone_path(task.project, task) : project_task_mark_as_done_path(task.project, task)
   = link_to url, method: 'post', class: 'control-link text-info toggle-done' do
     - if task.done?
