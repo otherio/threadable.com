@@ -9,6 +9,7 @@ describe Covered::IncomingEmail::Process do
 
   def create_incoming_email_params_options
     {
+      recipient: project.email_address,
       subject: "who took my soldering iron?",
       date: Time.parse("Sun, 08 Dec 2013 14:57:02 -0800"),
     }
@@ -30,7 +31,6 @@ describe Covered::IncomingEmail::Process do
   let(:expected_via                         ){ 'email' }
 
   def assert_processed!
-
     if expect_incoming_email_to_be_failed
       expect(Honeybadger).to receive(:notify).with{|hash|
         expect(hash[:error_class]  ).to eq "incoming email process failed"
@@ -144,80 +144,94 @@ describe Covered::IncomingEmail::Process do
       assert_processed!
     end
 
-    context 'when the incoming email is a reply' do
-      let(:expected_parent_message        ){ project.messages.latest }
-      let(:expected_to_be_a_reply         ){ true }
-      let(:expected_to_be_a_task          ){ expected_parent_message.conversation.task? }
-      let(:expected_incoming_email_subject){ "RE: your last email" }
-      let(:expected_message_subject       ){ "RE: your last email" }
-      let(:expected_conversation_subject  ){ expected_parent_message.conversation }
-      let(:expected_conversation_subject  ){ expected_parent_message.conversation.subject }
+    context 'when the project is not found' do
       def create_incoming_email_params_options
-        super.merge(
-          subject: "RE: your last email",
-          in_reply_to_header: expected_parent_message.message_id_header
-        )
+        super.merge(recipient: 'cat-cannon@covered.io')
       end
-      it 'processes successfully' do
-        assert_processed!
+      it "raises a Covered::RejectedIncomingEmail error" do
+        expect{ incoming_email.process! }.to raise_error(
+          Covered::RejectedIncomingEmail, 'project not found')
       end
     end
 
-    context 'when the incoming_email is a task' do
-      let(:expected_to_be_a_task          ){ true }
-      let(:expected_incoming_email_subject){ "[✔] buy some milk" }
-      let(:expected_message_subject       ){ "[✔] buy some milk" }
-      let(:expected_conversation_subject  ){ "buy some milk" }
-      def create_incoming_email_params_options
-        super.merge(subject: "[✔] buy some milk")
-      end
-      it 'processes successfully' do
-        assert_processed!
-      end
-    end
+    context 'when the project is found' do
 
-    context 'when the sender is not a member of the project' do
-      let(:expect_message_to_be_present         ){ false }
-      let(:expect_incoming_email_to_be_processed){ true }
-      let(:expect_incoming_email_to_be_failed   ){ true }
-      let(:expected_creator                     ){ nil }
-      let(:expected_message_from                ){ 'Larry Harvey <larry@bm.org>' }
-      def create_incoming_email_params_options
-        super.merge(
-          envelope_from:      'larry@bm.org',
-          from:               'Larry Harvey <larry@bm.org>',
-          sender:             'larry@bm.org',
-          in_reply_to_header: nil,
-          references:         nil
-        )
-      end
-
-      it 'processes unsuccessfully' do
-        assert_processed!
-      end
-
-      context 'but its a reply to an existing message' do
-        let(:expect_message_to_be_present       ){ true }
-        let(:expect_incoming_email_to_be_failed ){ false }
-        let(:expected_to_be_a_reply             ){ true }
-        let(:expected_parent_message            ){ project.messages.latest }
-        let(:expected_conversation_subject      ){ expected_parent_message.conversation }
-        let(:expected_to_be_a_task              ){ expected_parent_message.conversation.task? }
-        let(:expected_incoming_email_subject    ){ "RE: your last email" }
-        let(:expected_message_subject           ){ "RE: your last email" }
-        let(:expected_conversation_subject      ){ expected_parent_message.conversation.subject }
+      context 'when the incoming email is a reply' do
+        let(:expected_parent_message        ){ project.messages.latest }
+        let(:expected_to_be_a_reply         ){ true }
+        let(:expected_to_be_a_task          ){ expected_parent_message.conversation.task? }
+        let(:expected_incoming_email_subject){ "RE: your last email" }
+        let(:expected_message_subject       ){ "RE: your last email" }
+        let(:expected_conversation_subject  ){ expected_parent_message.conversation }
+        let(:expected_conversation_subject  ){ expected_parent_message.conversation.subject }
         def create_incoming_email_params_options
           super.merge(
             subject: "RE: your last email",
-            in_reply_to_header: expected_parent_message.message_id_header,
+            in_reply_to_header: expected_parent_message.message_id_header
           )
         end
-
         it 'processes successfully' do
           assert_processed!
         end
       end
 
+      context 'when the incoming_email is a task' do
+        let(:expected_to_be_a_task          ){ true }
+        let(:expected_incoming_email_subject){ "[✔] buy some milk" }
+        let(:expected_message_subject       ){ "[✔] buy some milk" }
+        let(:expected_conversation_subject  ){ "buy some milk" }
+        def create_incoming_email_params_options
+          super.merge(subject: "[✔] buy some milk")
+        end
+        it 'processes successfully' do
+          assert_processed!
+        end
+      end
+
+      context 'when the sender is not a member of the project' do
+        let(:expect_message_to_be_present         ){ false }
+        let(:expect_incoming_email_to_be_processed){ true }
+        let(:expect_incoming_email_to_be_failed   ){ true }
+        let(:expected_creator                     ){ nil }
+        let(:expected_message_from                ){ 'Larry Harvey <larry@bm.org>' }
+        def create_incoming_email_params_options
+          super.merge(
+            envelope_from:      'larry@bm.org',
+            from:               'Larry Harvey <larry@bm.org>',
+            sender:             'larry@bm.org',
+            in_reply_to_header: nil,
+            references:         nil
+          )
+        end
+
+        it 'raises a Covered::RejectedIncomingEmail error' do
+          expect{ incoming_email.process! }.to raise_error(
+            Covered::RejectedIncomingEmail, 'cannot start conversation. sender is not a member of the project')
+        end
+
+        context 'but its a reply to an existing message' do
+          let(:expect_message_to_be_present       ){ true }
+          let(:expect_incoming_email_to_be_failed ){ false }
+          let(:expected_to_be_a_reply             ){ true }
+          let(:expected_parent_message            ){ project.messages.latest }
+          let(:expected_conversation_subject      ){ expected_parent_message.conversation }
+          let(:expected_to_be_a_task              ){ expected_parent_message.conversation.task? }
+          let(:expected_incoming_email_subject    ){ "RE: your last email" }
+          let(:expected_message_subject           ){ "RE: your last email" }
+          let(:expected_conversation_subject      ){ expected_parent_message.conversation.subject }
+          def create_incoming_email_params_options
+            super.merge(
+              subject: "RE: your last email",
+              in_reply_to_header: expected_parent_message.message_id_header,
+            )
+          end
+
+          it 'processes successfully' do
+            assert_processed!
+          end
+        end
+
+      end
     end
   end
 

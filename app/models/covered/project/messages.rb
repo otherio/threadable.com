@@ -8,8 +8,8 @@ class Covered::Project::Messages < Covered::Messages
   end
   attr_reader :project
 
-  def find_by_child_message_header header
-    message_for (FindByChildHeader.call(project.id, header) or return)
+  def find_by_child_message_header params
+    message_for (FindByChildHeader.call(project.id, params) or return)
   end
 
   def inspect
