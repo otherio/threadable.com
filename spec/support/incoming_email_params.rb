@@ -2,15 +2,8 @@ module RSpec::Support::IncomingEmailParams
 
   class Factory < MethodObject
 
-    def project
-      @options[:project] ||= @covered.projects.find_by_slug!('raceteam')
-    end
-    def creator
-      @options[:creator] ||= project.members.find_by_email_address!('alice@ucsd.covered.io')
-    end
-
-    def call covered, options={}
-      @covered, @options = covered, options
+    def call options={}
+      @options = options
       set_defaults!
       define_params!
       return @params
@@ -25,17 +18,17 @@ module RSpec::Support::IncomingEmailParams
       @options[:cc]                 ||= ''
       @options[:content_type]       ||= %(multipart/alternative; boundary="f46d0438942f7e6e4a04ebf98c9c")
       @options[:date]               ||= Time.now
-      @options[:envelope_from]      ||= creator.email_address
-      @options[:from]               ||= creator.formatted_email_address
+      @options[:envelope_from]      ||= "alice@ucsd.covered.io"
+      @options[:from]               ||= "Alice Neilson <alice@ucsd.covered.io>"
       @options[:in_reply_to_header] ||= ''
       @options[:message_id]         ||= "<#{SecureRandom.uuid}@mail.example.com>"
-      @options[:recipient]          ||= project.email_address
+      @options[:recipient]          ||= 'raceteam@127.0.0.1'
       @options[:references]         ||= ''
-      @options[:sender]             ||= creator.email_address
+      @options[:sender]             ||= @options[:envelope_from]
       @options[:stripped_html]      ||= Sanitize.clean(@options[:body_html])
       @options[:stripped_text]      ||= Sanitize.clean(@options[:body_plain])
       @options[:subject]            ||= %(I'll be away on vacation all next week)
-      @options[:to]                 ||= project.formatted_email_address
+      @options[:to]                 ||= "UCSD Electric Racing <raceteam@127.0.0.1>"
 
       @options[:attachments] ||= [
         RSpec::Support::Attachments.uploaded_file("some.gif", 'image/gif',  true),
@@ -72,13 +65,10 @@ module RSpec::Support::IncomingEmailParams
         "from"             => @options[:from],
         "From"             => @options[:from],
         "X-Envelope-From"  => @options[:envelope_from],
-        "Sender"           => @options[:sender],
         "In-Reply-To"      => @options[:in_reply_to_header],
         "References"       => @options[:references],
-        "From"             => @options[:from],
         "Date"             => @options[:date].utc.rfc2822,
         "Message-Id"       => @options[:message_id],
-        "Subject"          => @options[:subject],
         "To"               => @options[:to],
         "Cc"               => @options[:cc],
         "Content-Type"     => @options[:content_type],
@@ -100,7 +90,7 @@ module RSpec::Support::IncomingEmailParams
   end
 
   def create_incoming_email_params options={}
-    Factory.call(covered, options)
+    Factory.call(options)
   end
 
 end
