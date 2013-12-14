@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe Covered, :type => :covered do
 
+  describe 'transaction', transaction: false do
+    it 'should save changes to postgres and redis at the same time' do
+      expect(Covered.redis.client).to be_a Redis::Client
+      expect(Covered.postgres.transaction_open?).to be_false
+      Covered.transaction do
+        expect(Covered.redis.client).to be_a Redis::Pipeline::Multi
+        expect(Covered.postgres.transaction_open?).to be_true
+      end
+      expect(Covered.redis.client).to be_a Redis::Client
+      expect(Covered.postgres.transaction_open?).to be_false
+    end
+  end
+
   describe "autoloads" do
 
     # # you can use this to generate the list of constants
