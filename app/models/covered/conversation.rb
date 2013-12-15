@@ -69,3 +69,6 @@ class Covered::Conversation < Covered::Model
   end
 
 end
+
+require_dependency 'covered/conversation/event'
+require_dependency 'covered/conversation/created_event'

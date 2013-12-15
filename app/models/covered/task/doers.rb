@@ -4,6 +4,7 @@ class Covered::Task::Doers
 
   def initialize task
     @task = task
+    @covered = task.covered
   end
   attr_reader :task
   delegate :covered, to: :task
@@ -26,15 +27,17 @@ class Covered::Task::Doers
 
     Covered.transaction do
       task.task_record.doer_ids += doer_user_ids
-      events = doer_user_ids.map do |user_id|
-        {
-          type: 'Task::AddedDoerEvent',
-          project_id: task.project.id,
-          user_id: covered.current_user.id,
-          doer_id: user_id,
-        }
+      doer_user_ids.each do |user_id|
+        @covered.events.create!(
+          {
+            type: 'Task::AddedDoerEvent',
+            project_id: task.project.id,
+            user_id: covered.current_user.id,
+            doer_id: user_id,
+            conversation_id: task.id,
+          }
+        )
       end
-      task.task_record.events.create!(events)
     end
     self
   end
@@ -44,15 +47,17 @@ class Covered::Task::Doers
 
     Covered.transaction do
       task.task_record.doer_ids -= doer_user_ids
-      events = doer_user_ids.map do |user_id|
-        {
-          type: 'Task::RemovedDoerEvent',
-          project_id: task.project.id,
-          user_id: covered.current_user.id,
-          doer_id: user_id,
-        }
+      doer_user_ids.each do |user_id|
+        @covered.events.create!(
+          {
+            type: 'Task::RemovedDoerEvent',
+            project_id: task.project.id,
+            user_id: covered.current_user.id,
+            doer_id: user_id,
+            conversation_id: task.id,
+          }
+        )
       end
-      task.task_record.events.create!(events)
     end
     self
   end

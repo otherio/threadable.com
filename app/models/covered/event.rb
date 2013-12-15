@@ -5,14 +5,15 @@ class Covered::Event < Covered::Model
   end
   attr_reader :event_record
 
-  delegate *%w{
+  delegate(*%w{
     id
     type
     project_id
     conversation_id
     content
     created_at
-  }, to: :event_record
+    persisted?
+  }, to: :event_record)
 
   def human_readable_type
     type.split('::').last.underscore[/^(.*)_event$/,1].sub('_', ' ')

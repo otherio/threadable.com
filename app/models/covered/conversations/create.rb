@@ -32,7 +32,8 @@ class Covered::Conversations::Create < MethodObject
   end
 
   def create_created_at_event!
-    @conversation_record.class::CreatedEvent.create!(
+    @covered.events.create!(
+      type: "#{@conversation_record.class}::CreatedEvent",
       conversation_id: @conversation_record.id,
       project_id: @project.id,
       user_id: @options.creator_id || @covered.current_user_id,

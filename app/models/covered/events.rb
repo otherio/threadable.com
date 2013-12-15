@@ -4,7 +4,6 @@ class Covered::Events < Covered::Collection
     scope.reload.map{ |event| event_for event }
   end
 
-
   def latest
     event_for (scope.last or return)
   end
@@ -20,6 +19,15 @@ class Covered::Events < Covered::Collection
   end
   alias_method :new, :build
 
+  def create attributes
+    Create.call(self, attributes)
+  end
+
+  def create! attributes
+    event = create(attributes)
+    event.persisted? or raise Covered::RecordInvalid, "Event invalid: #{event.errors.full_messages.to_sentence}"
+    event
+  end
 
   private
 
