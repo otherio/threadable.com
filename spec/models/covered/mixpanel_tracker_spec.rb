@@ -13,10 +13,25 @@ describe Covered::MixpanelTracker do
   end
 
   describe 'track' do
-    it 'calls Mixpanel::Tracker#track' do
+    before do
       expect(covered).to receive(:current_user_id).and_return(98)
-      expect(mixpanel_tracker).to receive(:track).with(98, 'foo')
-      covered_mixpanel_tracker.track('foo')
+    end
+    context 'when running outside a worker' do
+      it 'calls Mixpanel::Tracker#track' do
+        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'Web', things: 'are good'})
+        covered_mixpanel_tracker.track("An event", {things: 'are good'})
+      end
+    end
+
+    context 'when running in a worker' do
+      before do
+        covered.stub(:worker).and_return(true)
+      end
+
+      it 'calls Mixpanel::Tracker#track' do
+        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'Email', things: 'are good'})
+        covered_mixpanel_tracker.track("An event", {things: 'are good'})
+      end
     end
   end
 
