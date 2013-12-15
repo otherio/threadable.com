@@ -48,6 +48,14 @@ describe Covered::Class do
       expect( project.tasks         .count ).to eq ::Task              .where(project_id: project.id).count
       expect( project.messages      .count ).to eq ::Project.find(project.id).messages.count
     end
+
+    expect(covered.env.symbolize_keys).to eq({
+      protocol: 'http',
+      host: '127.0.0.1',
+      port: anything,
+      current_user_id: nil,
+      worker: false,
+    })
   end
 
 

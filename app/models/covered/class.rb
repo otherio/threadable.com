@@ -12,10 +12,11 @@ class Covered::Class
     @host     = options.fetch(:host){ raise ArgumentError, 'required options: :host' }
     @port     = options.fetch(:port){ 80 }
     @protocol = options.fetch(:protocol){ 'http' }
+    @worker   = options.fetch(:worker)  { false }
     self.current_user_id = options[:current_user_id]
   end
 
-  attr_reader :protocol, :host, :port, :current_user_id, :tracker
+  attr_reader :protocol, :host, :port, :current_user_id, :tracker, :worker
 
   def current_user_id= user_id
     @current_user_id = user_id
@@ -65,6 +66,7 @@ class Covered::Class
       host:            host,
       port:            port,
       current_user_id: current_user_id,
+      worker:          worker,
     }.as_json
   end
 

@@ -17,4 +17,10 @@ describe Covered::Worker do
     end
   end
 
+  context 'when the job is correct' do
+    it 'sets the worker flag on the covered object' do
+      instance = worker.new
+      expect(instance.covered.env[:worker]).to be_true
+    end
+  end
 end

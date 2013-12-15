@@ -8,7 +8,7 @@ class Covered::Worker
 
   def perform covered_env, *args
 
-    @covered = Covered.new(covered_env.symbolize_keys)
+    @covered = Covered.new(covered_env.symbolize_keys.merge({worker: true}))
     begin
       perform!(*args)
     rescue Exception => exception
