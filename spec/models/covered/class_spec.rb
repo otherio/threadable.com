@@ -36,6 +36,7 @@ describe Covered::Class do
     "host" => 'example.com',
     "port" => 3000,
     "current_user_id" => user_record.id,
+    "worker" => false,
   )}
 
   describe "#==" do

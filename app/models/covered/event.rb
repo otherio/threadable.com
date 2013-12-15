@@ -19,6 +19,11 @@ class Covered::Event < Covered::Model
     type.split('::').last.underscore[/^(.*)_event$/,1].sub('_', ' ')
   end
 
+  def tracking_name
+    event_name = type.split('::').join('_').underscore[/^(.*)_event$/,1]
+    event_name.present? ? event_name.split('_').map(&:capitalize).join(' ') : 'Event'
+  end
+
   def actor_id
     event_record.user_id
   end

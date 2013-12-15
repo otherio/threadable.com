@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe Covered::Events::Create do
 
-  let(:event) { double :event }
-  let(:event_record) { double :event_record }
+  let(:event_persisted) { true }
+  let(:event) { double :event, persisted?: event_persisted, tracking_name: 'Event' }
+  let(:event_record) { double :event_record, persisted?: event_persisted }
   let(:events) { double :events, covered: covered }
-  let(:covered) { double :covered }
+  let(:covered) { double :covered, track: double(:track) }
   let(:scope) { double :scope, create: event_record }
 
   let(:create_event) { described_class.call(events, event_attributes) }
@@ -29,6 +30,19 @@ describe Covered::Events::Create do
 
     it 'makes a new event' do
       expect(create_event).to eq event
+    end
+
+    it 'tracks the event' do
+      expect(covered).to receive(:track).with('Event', {project_id: 1} )
+      create_event
+    end
+  end
+
+  context 'when the event fails to save' do
+    let(:event_persisted) { false }
+    it 'does not track the event' do
+      expect(covered).to_not receive(:track)
+      create_event
     end
   end
 
