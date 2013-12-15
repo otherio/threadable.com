@@ -18,7 +18,7 @@ describe Covered::MixpanelTracker do
     end
     context 'when running outside a worker' do
       it 'calls Mixpanel::Tracker#track' do
-        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'Web', things: 'are good'})
+        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'web', things: 'are good'})
         covered_mixpanel_tracker.track("An event", {things: 'are good'})
       end
     end
@@ -29,7 +29,7 @@ describe Covered::MixpanelTracker do
       end
 
       it 'calls Mixpanel::Tracker#track' do
-        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'Email', things: 'are good'})
+        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'email', things: 'are good'})
         covered_mixpanel_tracker.track("An event", {things: 'are good'})
       end
     end

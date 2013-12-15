@@ -1,7 +1,7 @@
 class Covered::MixpanelTracker < Covered::Tracker
 
   def track event_name, event_attributes
-    event_attributes.merge! via: covered.worker ? 'Email' : 'Web'
+    event_attributes.merge! via: covered.worker ? 'email' : 'web'
     mixpanel.track(covered.current_user_id, *[event_name, event_attributes])
     nil
   end

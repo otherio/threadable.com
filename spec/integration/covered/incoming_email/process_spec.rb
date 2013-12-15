@@ -120,7 +120,6 @@ describe Covered::IncomingEmail::Process do
         'Project Name' => project.name,
         'Reply'        => expected_to_be_a_reply,
         'Task'         => expected_to_be_a_task,
-        'Via'          => expected_via,
         'Message ID'   => incoming_email.message.message_id_header,
       })
     else

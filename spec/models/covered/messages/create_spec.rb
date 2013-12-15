@@ -94,7 +94,6 @@ describe Covered::Messages::Create do
         'Project Name' => project.name,
         'Reply' => false,
         'Task' => false,
-        'Via' => 'email',
         'Message ID' => expected_message_id_header,
       })
 
