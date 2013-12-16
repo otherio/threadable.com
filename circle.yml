@@ -15,5 +15,4 @@ deployment:
   staging:
     branch: master
     commands:
-      - git push git@heroku.com:covered-staging.git $CIRCLE_SHA1:master
-      - heroku run rake db:migrate --app covered-staging
+      - script/deploy staging

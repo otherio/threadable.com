@@ -1,24 +1,31 @@
 #!/bin/sh
 set -e
 
-ENV=${1:-staging}
-SKIP_CI=${2:-nope}
+ENV=$1
 
-if [ $SKIP_CI != '--now' ]
-  # run CI
-  then script/ci || exit
+if [ $ENV == 'production' ]
+  then
+    BRANCH=origin
+    REFSPEC="--tag latest-staging"
+elif [ $ENV == 'staging' ]
+  then
+    REFSPEC=HEAD
+    BRANCH=HEAD
+  else
+    echo 'Expected production or staging'
+    exit 1
 fi
 
 # update local tags
 git fetch --tags
 
 # push to github
-git push $ENV master || exit
+git push $ENV $REFSPEC:master || exit 1
 
 # run migrations
 heroku run rake db:migrate --app covered-$ENV
 
 # tag this rev as having been released
 git push --delete origin latest-$ENV
-git tag -f latest-$ENV
+git tag -f latest-$ENV $BRANCH
 git push --tags
