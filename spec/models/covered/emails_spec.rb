@@ -5,11 +5,23 @@ describe Covered::Emails do
   subject{ covered.emails }
 
   describe 'send_email' do
+    let(:envelope_to) { 'other@guy.com' }
+    let(:email_double) { double(:email, smtp_envelope_from: 'some@guy.com', smtp_envelope_to: envelope_to) }
+
     it 'calls generate and deliver' do
-      email_double = double(:email, smtp_envelope_from: 'some@guy.com', smtp_envelope_to: 'other@guy.com')
       expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
       expect(email_double).to receive(:deliver!)
       subject.send_email(:foo, 1,2,3)
+    end
+
+    context "if the recipient is at example.com" do
+      let(:envelope_to) { 'other@foo.example.com' }
+
+      it "skips the message" do
+        expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
+        expect(email_double).to_not receive(:deliver!)
+        subject.send_email(:foo, 1,2,3)
+      end
     end
   end
 
