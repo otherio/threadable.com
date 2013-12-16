@@ -20,7 +20,7 @@ fi
 git fetch --tags
 
 # push to github
-git push $ENV $REFSPEC:master || exit 1
+git push git@heroku.com:covered-$ENV.git $REFSPEC:master || exit 1
 
 # run migrations
 heroku run rake db:migrate --app covered-$ENV
