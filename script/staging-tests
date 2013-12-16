@@ -1,0 +1,4 @@
+#!/bin/sh
+
+bundle check || bundle install
+bundle exec rspec --format Fuubar --order random --tag type:live|| exit 1

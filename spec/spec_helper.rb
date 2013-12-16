@@ -26,7 +26,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
   config.infer_base_class_for_anonymous_controllers = true
   config.order = "random"
-
+  config.filter_run_excluding type: "live"
   config.include RSpec::Support::Fixtures
   config.include RSpec::Support::Transactions
   config.include RSpec::Support::Finders

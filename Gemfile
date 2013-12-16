@@ -83,4 +83,5 @@ group :test do
   gem 'minitest', require: nil
   gem 'webmock'
   gem 'simplecov'
+  gem 'rest-client'
 end
