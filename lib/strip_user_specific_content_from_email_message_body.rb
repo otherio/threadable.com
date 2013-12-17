@@ -1,6 +1,6 @@
 class StripUserSpecificContentFromEmailMessageBody < MethodObject
 
-  around = '##CovMid:\s?[a-zA-Z0-9+/]+=?\s?##'
+  around = '##CovMid:\s?[a-zA-Z0-9+\/=-]+\s?##'
   REMOVE_CONTROLS_REGEXP = %r(#{around}.*?#{around})msu
 
   def call body

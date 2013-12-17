@@ -114,4 +114,211 @@ BODY
     expect(call(body)).to eq stripped_body
   end
 
+  context "with Lyra's crazy broken gmail forward" do
+    let :body do
+<<-BODY
+<div dir="ltr"><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">We can do group chats in gtalk - if we all invite/accept each other&#39;s chat requests, the workflow is:</div><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">
+
+<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;padding-left:1ex"><ol style="margin:1em 0px;padding:0px;border:0px;outline:0px;font-size:13px;font-family:&#39;Helvetica Neue&#39;,HelveticaNeue,Helvetica,sans-serif;vertical-align:baseline;line-height:18.1875px">
+
+<li style="margin:0px 0px 0px 2em;padding:0px;border:0px;outline:0px;font-weight:inherit;font-style:inherit;font-size:13px;font-family:inherit;vertical-align:baseline">Start a chat with a single person in your Chat list.</li>
+
+<li style="margin:0px 0px 0px 2em;padding:0px;border:0px;outline:0px;font-weight:inherit;font-style:inherit;font-size:13px;font-family:inherit;vertical-align:baseline">Once you&#39;ve started the chat, click the person icon at the top of the chat window.</li>
+
+<li style="margin:0px 0px 0px 2em;padding:0px;border:0px;outline:0px;font-weight:inherit;font-style:inherit;font-size:13px;font-family:inherit;vertical-align:baseline">In the field labeled &#39;Add people to this chat&#39;, enter the names of the contacts you want to add to your group chat.</li>
+
+</ol></blockquote><div><br></div><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">There are also stand-alone options like GroupMe. They&#39;ll keep our transcripts and might not have as creepy emoticons.</div>
+
+<div class="gmail_default"><font face="arial, helvetica, sans-serif"><a href="https://groupme.com/">https://groupme.com/</a></font><br></div></div><div class="gmail_extra"><br><br><div class="gmail_quote">On 3 December 2013 13:13, Lyra Levin <span dir="ltr">&lt;<a href="mailto:lyralevin@gmail.com" target="_blank">lyralevin@gmail.com</a>&gt;</span> wrote:<br>
+
+<blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir="ltr"><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">Opening docs now!</div></div>
+<div class="HOEnZb">
+<div class="h5"><div class="gmail_extra"><br><br><div class="gmail_quote">On 3 December 2013 13:11, Eden Gallanter <span dir="ltr">&lt;<a href="mailto:edengallanter@gmail.com" target="_blank">edengallanter@gmail.com</a>&gt;</span> wrote:<br>
+
+
+<blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><u></u>
+
+
+
+
+
+<div>
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+Yay! We should maybe make some tasks and stuff. Also I am in google docs.
+
+
+On Tue, Dec 3, 2013 at 1:10 PM, Lyra Levin &lt;<a href="mailto:lyralevin@gmail.com" target="_blank">lyralevin@gmail.com</a>&gt; wrote:
+
+&gt;   Consider it fuckin&#39; tried!
+&gt; ____________
+
+</div>
+<br>
+</div>
+<div dir="ltr">Yay! We should maybe make some tasks and stuff. Also I am in google docs.</div>
+<div class="gmail_extra">
+<br><br><div class="gmail_quote"><div>On Tue, Dec 3, 2013 at 1:10 PM, Lyra Levin <span dir="ltr">&lt;<a href="mailto:lyralevin@gmail.com" target="_blank">lyralevin@gmail.com</a>&gt;</span> wrote:<br></div><blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+
+
+
+<u></u>
+
+
+
+
+
+<div><div>
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+Consider it fuckin&#39; tried!                                                                          __________________________________________________________________________
+##CovMid: PDUyOWU0OGM2Mjg4MDhfNjNmYmVmMzU0NWU5YzI0NmY4QGNvdmVyZWQuaW8- ##
+</div>
+<div>
+<table border="0" cellpadding="0" color="dark grey" width="100%" style="font-weight:300!important;max-width:450px!important"><tbody><tr>
+<td>
+<table align="left" border="0" cellpadding="0" cellspacing="4" style="margin:0"><tbody><tr>
+<td valign="middle" style="vertical-align:middle">
+
+<a href="mailto:secret.art.project@covered.io" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#16a085!important" target="_blank">  New conversation  </a>
+
+</td>
+
+<td valign="middle" style="vertical-align:middle">
+
+<a href="mailto:secret.art.project@covered.io?subject=%E2%9C%94+" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#16a085!important" target="_blank">  New task  </a>
+
+</td>
+
+<td valign="middle" style="vertical-align:middle">
+
+<a href="https://beta.covered.io/secret-art-project/conversations/hello#message-1254" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#7f8c8d!important" target="_blank">  View on Covered  </a>
+
+</td>
+
+</tr></tbody></table>
+<table align="left" border="0" cellpadding="0" cellspacing="4" style="margin:0"></table>
+</td>
+</tr></tbody></table>
+</div>
+<div style="display:none!important">
+##CovMid: PDUyOWU0OGM2Mjg4MDhfNjNmYmVmMzU0NWU5YzI0NmY4QGNvdmVyZWQuaW8- ##
+</div>
+<br>
+</div>
+Consider it fuckin&#39; tried!
+</div><div>
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+
+</div>
+</div>
+<img width="1px" height="1px" alt="">
+</div>
+</div>
+</blockquote>
+</div>
+<br>
+</div><div>
+
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+
+</div>
+</div>
+<img width="1px" height="1px" alt=""></div></div></blockquote></div><br></div>
+</div></div></blockquote></div><br></div>
+BODY
+    end
+
+    let :stripped_body do
+<<-BODY
+<div dir="ltr"><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">We can do group chats in gtalk - if we all invite/accept each other&#39;s chat requests, the workflow is:</div><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">
+
+<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;padding-left:1ex"><ol style="margin:1em 0px;padding:0px;border:0px;outline:0px;font-size:13px;font-family:&#39;Helvetica Neue&#39;,HelveticaNeue,Helvetica,sans-serif;vertical-align:baseline;line-height:18.1875px">
+
+<li style="margin:0px 0px 0px 2em;padding:0px;border:0px;outline:0px;font-weight:inherit;font-style:inherit;font-size:13px;font-family:inherit;vertical-align:baseline">Start a chat with a single person in your Chat list.</li>
+
+<li style="margin:0px 0px 0px 2em;padding:0px;border:0px;outline:0px;font-weight:inherit;font-style:inherit;font-size:13px;font-family:inherit;vertical-align:baseline">Once you&#39;ve started the chat, click the person icon at the top of the chat window.</li>
+
+<li style="margin:0px 0px 0px 2em;padding:0px;border:0px;outline:0px;font-weight:inherit;font-style:inherit;font-size:13px;font-family:inherit;vertical-align:baseline">In the field labeled &#39;Add people to this chat&#39;, enter the names of the contacts you want to add to your group chat.</li>
+
+</ol></blockquote><div><br></div><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">There are also stand-alone options like GroupMe. They&#39;ll keep our transcripts and might not have as creepy emoticons.</div>
+
+<div class="gmail_default"><font face="arial, helvetica, sans-serif"><a href="https://groupme.com/">https://groupme.com/</a></font><br></div></div><div class="gmail_extra"><br><br><div class="gmail_quote">On 3 December 2013 13:13, Lyra Levin <span dir="ltr">&lt;<a href="mailto:lyralevin@gmail.com" target="_blank">lyralevin@gmail.com</a>&gt;</span> wrote:<br>
+
+<blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir="ltr"><div class="gmail_default" style="font-family:arial,helvetica,sans-serif">Opening docs now!</div></div>
+<div class="HOEnZb">
+<div class="h5"><div class="gmail_extra"><br><br><div class="gmail_quote">On 3 December 2013 13:11, Eden Gallanter <span dir="ltr">&lt;<a href="mailto:edengallanter@gmail.com" target="_blank">edengallanter@gmail.com</a>&gt;</span> wrote:<br>
+
+
+<blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><u></u>
+
+
+
+
+
+<div>
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+Yay! We should maybe make some tasks and stuff. Also I am in google docs.
+
+
+On Tue, Dec 3, 2013 at 1:10 PM, Lyra Levin &lt;<a href="mailto:lyralevin@gmail.com" target="_blank">lyralevin@gmail.com</a>&gt; wrote:
+
+&gt;   Consider it fuckin&#39; tried!
+&gt; ____________
+
+</div>
+<br>
+</div>
+<div dir="ltr">Yay! We should maybe make some tasks and stuff. Also I am in google docs.</div>
+<div class="gmail_extra">
+<br><br><div class="gmail_quote"><div>On Tue, Dec 3, 2013 at 1:10 PM, Lyra Levin <span dir="ltr">&lt;<a href="mailto:lyralevin@gmail.com" target="_blank">lyralevin@gmail.com</a>&gt;</span> wrote:<br></div><blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+
+
+
+<u></u>
+
+
+
+
+
+<div><div>
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+Consider it fuckin&#39; tried!                                                                          __________________________________________________________________________
+
+</div>
+<br>
+</div>
+Consider it fuckin&#39; tried!
+</div><div>
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+
+</div>
+</div>
+<img width="1px" height="1px" alt="">
+</div>
+</div>
+</blockquote>
+</div>
+<br>
+</div><div>
+
+<div style="margin-top:1em!important">
+<div style="display:none!important">
+
+</div>
+</div>
+<img width="1px" height="1px" alt=""></div></div></blockquote></div><br></div>
+</div></div></blockquote></div><br></div>
+BODY
+    end
+
+    it "should strip covered controls" do
+      expect(call(body)).to eq stripped_body
+    end
+  end
 end
