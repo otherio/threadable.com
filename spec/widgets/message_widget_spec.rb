@@ -6,6 +6,8 @@ describe MessageWidget do
   let(:conversation){ double(:conversation, project: project) }
 
   let(:root){ false }
+  let(:body) { 'BODY' }
+  let(:stripped_body) { 'STRIPPED BODY' }
 
   let(:message)   {
     double(:message,
@@ -13,9 +15,13 @@ describe MessageWidget do
       shareworthy?:  true,
       knowledge?:    true,
       conversation:  conversation,
-      body:          double(:body, html?: false, html_safe?: false, to_s: "BODY"),
-      stripped_body: double(:stripped_body, html?: false, html_safe?: false, to_s: "STRIPPED BODY"),
+      body:          double(:body, html?: false, html_safe?: false, to_s: body),
+      stripped_body: double(:stripped_body, html?: false, html_safe?: false, to_s: stripped_body),
       root?:         root,
+      creator:       nil,
+      from:          'FROM ADDRESS',
+      created_at:    Time.now,
+      attachments:   double(:attachments, all: [])
     )
   }
   let(:arguments) { [message] }
@@ -47,40 +53,39 @@ describe MessageWidget do
       }
     end
   end
-  # message_types = [:stripped_html, :body_html, :stripped_plain, :body_plain]
 
-  # context "with a malicious message" do
-  #   message_types.each do |message_type|
-  #     let(message_type) { '<script>some nefarious crap</script><p>stuff that is okay</p>' }
-  #   end
 
-  #   it "sanitizes the html using the relaxed configuration" do
-  #     # Sanitize.should_receive(:clean).
-  #     #   with(anything, Sanitize::Config::RELAXED).
-  #     #   at_least(1).times.
-  #     #   and_call_original
+  context "with a malicious message" do
+    let(:body) { '<script>some nefarious crap</script><p>stuff that is okay</p>' }
+    let(:stripped_body) { '<html>some nefarious crap</html><p>stuff that is quite alright</p>' }
 
-  #     message_types.each do |message_type|
-  #       presenter.locals[message_type].should =~ /okay/
-  #       presenter.locals[message_type].should_not =~ /script/
-  #     end
-  #   end
-  # end
+    it "sanitizes the html using the relaxed configuration" do
+      Sanitize.should_receive(:clean).
+        with(anything, Sanitize::Config::RELAXED).
+        at_least(1).times.
+        and_call_original
 
-  # context "with a link in plaintext" do
-  #   message_types.each do |message_type|
-  #     let(message_type) { 'Go to http://www.rubyonrails.org and say hello to david@loudthinking.com' }
-  #   end
+      rendered_html = presenter.render
 
-  #   it "linkifies the plaintext" do
-  #     message_types.each do |message_type|
-  #       html = Nokogiri::HTML.fragment presenter.locals[message_type]
-  #       links = html.css(:a)
-  #       links.count.should == 2
-  #     end
-  #   end
+      rendered_html.should =~ /okay/
+      rendered_html.should =~ /alright/
+      rendered_html.should_not =~ /script/
+      rendered_html.should_not =~ /html/
+    end
+  end
 
-  # end
+  context "with a link in plaintext" do
+    let(:body) { 'Go to http://www.rubyonrails.org and say hello to david@loudthinking.com' }
+    let(:stripped_body) { 'Go to http://www.rubyonrails.org and say hello to david@loudthinking.com' }
+
+    it "linkifies the plaintext" do
+      rendered_html = presenter.render
+      html = Nokogiri::HTML.fragment rendered_html
+      links = html.css(:a)
+      links.count.should == 4
+    end
+
+  end
 
   describe "link_to_toggle" do
     it "should..." do

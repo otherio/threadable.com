@@ -12,7 +12,7 @@
 .message-body
   - if message.stripped_body.present?
     - if message.stripped_body.html?
-      .message-text.html<= message.stripped_body
+      .message-text.html<= clean_html message.stripped_body
     - else
       .message-text.plain<= htmlify message.stripped_body
 
@@ -23,7 +23,7 @@
     %button.btn.btn-small.show-quoted-text{:alt => "show quoted text"} &middot; &middot; &middot;
   - else
     - if message.body.html?
-      .message-text.html<= message.body
+      .message-text.html<= clean_html message.body
     - else
       .message-text.plain<= htmlify message.body
 
