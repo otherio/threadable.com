@@ -6,7 +6,7 @@ class Covered::Messages::Create < MethodObject
     required :conversation
     optional :from, :subject, :parent_message, :attachments
     optional :body, :text, :html
-    optional :creator_id
+    optional :creator, :creator_id
     optional :body_plain, :body_html, :stripped_plain, :stripped_html
     optional :message_id_header, :references_header, :date_header
     optional :to_header, :cc_header
@@ -66,7 +66,7 @@ class Covered::Messages::Create < MethodObject
   end
 
   let :creator do
-    @options.creator_id ? @covered.users.find_by_id!(@options.creator_id) : @covered.current_user
+    @options.creator || (@options.creator_id && @covered.users.find_by_id!(@options.creator_id))
   end
 
   let :creator_id do

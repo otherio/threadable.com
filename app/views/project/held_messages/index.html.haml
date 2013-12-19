@@ -1,0 +1,14 @@
+%table.table
+  %thead
+    %tr
+      %td From
+      %td Subject
+      %td
+  %tbody
+    - @held_messages.each do |held_message|
+      %tr
+        %td= held_message.from
+        %td= held_message.subject
+        %td
+          = link_to 'Reject', reject_project_held_message_path(@project, held_message), class: 'btn', data:{method:'POST'}
+          = link_to 'Accept', accept_project_held_message_path(@project, held_message), class: 'btn', data:{method:'POST'}

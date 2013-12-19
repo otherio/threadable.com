@@ -49,6 +49,7 @@ class ConversationsController < ApplicationController
     end
 
     conversation = project.conversations.create(
+      creator: current_user,
       subject: subject,
     )
 
@@ -56,6 +57,7 @@ class ConversationsController < ApplicationController
       if conversation.persisted?
 
         message = conversation.messages.create(
+          creator:      current_user,
           sent_via_web: true,
           html:         body,
           attachments:  attachments,

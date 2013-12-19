@@ -12,17 +12,9 @@ feature "Admin incoming emails" do
     incoming_emails.sample(8).each(&:process!)
   end
 
-  let :failed_incoming_emails do
-    processed_incoming_emails.sample(3).each do |ie|
-      ie.incoming_email_record.update_attributes(failed: true)
-    end
-  end
-
-  before do
-    failed_incoming_emails
-  end
-
   let(:columns){["Processed", "Failed", "Id", "Created at", "Recipient", "Sender", "From", "Subject", "Creator", "Project", "Conversation", "Message"]}
+
+  before{ processed_incoming_emails }
 
   def incoming_emails_table
     all('.incoming-emails-table tbody tr').map do |tr|
@@ -35,17 +27,17 @@ feature "Admin incoming emails" do
     incoming_emails.map do |incoming_email|
       {
         "Processed"    => incoming_email.processed? ? 'yes' : 'no',
-        "Failed"       => incoming_email.processed? ? incoming_email.failed? ? 'yes' : 'no' : '',
+        "Failed"       => incoming_email.processed? ? incoming_email.bounced? ? 'yes' : 'no' : '',
         "Id"           => incoming_email.id.to_s,
         "Created at"   => "less than a minute ago",
-        "Recipient"    => incoming_email.recipient_email_address.truncate(25),
-        "Sender"       => incoming_email.sender_email_address.truncate(25),
-        "From"         => incoming_email.from_email_address.truncate(25),
+        "Recipient"    => incoming_email.recipient.truncate(25),
+        "Sender"       => incoming_email.sender.truncate(25),
+        "From"         => incoming_email.from.truncate(25),
         "Subject"      => incoming_email.subject.truncate(25),
-        "Creator"      => incoming_email.creator_id.to_s,
-        "Project"      => incoming_email.project_id.to_s,
-        "Conversation" => incoming_email.conversation_id.to_s,
-        "Message"      => incoming_email.message_id.to_s,
+        "Creator"      => incoming_email.incoming_email_record.creator_id.to_s,
+        "Project"      => incoming_email.incoming_email_record.project_id.to_s,
+        "Conversation" => incoming_email.incoming_email_record.conversation_id.to_s,
+        "Message"      => incoming_email.incoming_email_record.message_id.to_s,
       }
     end
   end
@@ -68,21 +60,5 @@ feature "Admin incoming emails" do
 
     expect(page).to have_text incoming_email.id
     expect(current_url).to eq admin_incoming_email_url(incoming_email.id)
-
-    clear_background_jobs!
-
-    incoming_email = failed_incoming_emails.first
-    visit admin_incoming_email_url(incoming_email.id)
-    click_on 'retry'
-
-    expect(page).to have_text incoming_email.id
-    expect(current_url).to eq admin_incoming_email_url(incoming_email.id)
-
-    incoming_email.incoming_email_record.reload
-
-    expect(incoming_email).to_not be_processed
-    expect(incoming_email).to_not be_failed
-
-    assert_background_job_enqueued ProcessIncomingEmailWorker, args: [covered.env, incoming_email.id]
   end
 end

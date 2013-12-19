@@ -6,7 +6,6 @@ class Event < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :project
-  validates_presence_of :user
 
   default_scope { order :created_at => :asc }
 

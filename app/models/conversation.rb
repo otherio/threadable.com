@@ -8,7 +8,9 @@ class Conversation < ActiveRecord::Base
   # TODO recipients will eventually have a scope that removes members who have muted this conversation
   has_many :recipients, through: :project, class_name: 'User', source: 'members_who_get_email'
 
-  default_scope -> { order('conversations.updated_at DESC') }
+  def self.default_scope
+    order('conversations.updated_at DESC')
+  end
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
   scope :task, ->{ where(type: 'Task') }
   scope :not_task, ->{ where(type: nil) }
@@ -17,7 +19,7 @@ class Conversation < ActiveRecord::Base
 
   alias_method :to_param, :slug
 
-  validates_presence_of :subject, :creator, :slug
+  validates_presence_of :subject, :slug
   validate :validate_slug_does_not_collide_with_existing_route
 
   def task?

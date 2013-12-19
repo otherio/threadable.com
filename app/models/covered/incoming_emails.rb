@@ -1,7 +1,11 @@
 class Covered::IncomingEmails < Covered::Collection
 
   def all
-    incoming_emails_for scope.reload
+    incoming_emails_for scope.to_a
+  end
+
+  def held
+    incoming_emails_for scope.where(held: true)
   end
 
   PAGE_SIZE = 10
@@ -12,11 +16,15 @@ class Covered::IncomingEmails < Covered::Collection
   end
 
   def find_by_id id
-    incoming_email_for (scope.find(id) or return)
+    incoming_email_for (scope.where(id: id).first or return)
   end
 
   def find_by_id! id
     find_by_id(id) or raise Covered::RecordNotFound, "unable to find incoming email with id #{id.inspect}"
+  end
+
+  def latest
+    incoming_email_for (scope.last or return)
   end
 
   def create! mailgun_params

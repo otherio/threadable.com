@@ -29,6 +29,18 @@ class MailPreview < MailView
     covered.emails.generate(:reset_password, find_recipient)
   end
 
+  def message_held_notice
+    covered.emails.generate(:message_held_notice, covered.incoming_emails.latest)
+  end
+
+  def message_accepted_notice
+    covered.emails.generate(:message_accepted_notice, covered.incoming_emails.latest)
+  end
+
+  def message_rejected_notice
+    covered.emails.generate(:message_rejected_notice, covered.incoming_emails.latest)
+  end
+
   private
 
   def covered

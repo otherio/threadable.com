@@ -19,7 +19,7 @@ describe Covered::IncomingEmails do
   describe 'all' do
     it 'returns all incoming emails' do
       all_incoming_emails = [1,2,3]
-      expect(scope).to receive(:reload).and_return(all_incoming_emails)
+      expect(scope).to receive(:to_a).and_return(all_incoming_emails)
       expect(Covered::IncomingEmail).to receive(:new).with(covered, 1).and_return(1)
       expect(Covered::IncomingEmail).to receive(:new).with(covered, 2).and_return(2)
       expect(Covered::IncomingEmail).to receive(:new).with(covered, 3).and_return(3)
@@ -29,11 +29,13 @@ describe Covered::IncomingEmails do
 
   describe 'find_by_id' do
     it 'return the incoming_email for the given id' do
-      expect(scope).to receive(:find).with(84).and_return(incoming_email_record)
+      expect(scope).to receive(:where).with(id: 84).and_return(scope)
+      expect(scope).to receive(:first).and_return(incoming_email_record)
       expect(Covered::IncomingEmail).to receive(:new).with(covered, incoming_email_record).and_return(incoming_email)
       expect(incoming_emails.find_by_id(84)).to eq incoming_email
 
-      expect(scope).to receive(:find).with(84).and_return(nil)
+      expect(scope).to receive(:where).with(id: 84).and_return(scope)
+      expect(scope).to receive(:first).and_return(nil)
       expect(Covered::IncomingEmail).to_not receive(:new)
       expect(incoming_emails.find_by_id(84)).to be_nil
     end

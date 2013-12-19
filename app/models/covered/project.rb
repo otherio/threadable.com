@@ -35,6 +35,10 @@ class Covered::Project < Covered::Model
     "#{project_record.email_address_username}+task@#{covered.email_host}"
   end
 
+  def email_addresses
+    [email_address, task_email_address]
+  end
+
   def formatted_email_address
     "#{name} <#{email_address}>"
   end
@@ -55,6 +59,8 @@ class Covered::Project < Covered::Model
   let(:conversations){ Conversations.new(self) }
   let(:messages){ Messages.new(self) }
   let(:tasks){ Tasks.new(self) }
+  let(:incoming_emails){ IncomingEmails.new(self) }
+  let(:held_messages){ HeldMessages.new(self) }
 
   # TODO remove me in favor of a rails json view file
   def as_json options=nil

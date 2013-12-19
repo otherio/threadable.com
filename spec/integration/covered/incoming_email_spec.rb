@@ -27,7 +27,8 @@ describe Covered::IncomingEmail do
     it 'finds all associations and sends out the new message' do
       incoming_email.process!
       expect( incoming_email                 ).to be_processed
-      expect( incoming_email                 ).to_not be_failed
+      expect( incoming_email                 ).to_not be_bounced
+      expect( incoming_email                 ).to_not be_held
       expect( incoming_email.project         ).to eq raceteam
       expect( incoming_email.creator         ).to be_the_same_user_as alice
       expect( incoming_email.parent_message  ).to be_nil
@@ -58,7 +59,8 @@ describe Covered::IncomingEmail do
       expect( attachments[1].mimetype ).to eq 'text/plain'
       expect( attachments[1].url      ).to end_with 'some.txt'
 
-      expect{ incoming_email.process! }.to raise_error "IncomingEmail #{incoming_email.id.inspect} was already processed. Call reset! first."
+      expect(described_class::Process).to_not receive(:call)
+      incoming_email.process!
     end
 
     context 'when Storage.local? is false' do

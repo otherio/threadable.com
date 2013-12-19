@@ -1,0 +1,20 @@
+We're writing in regards to your mail to <%= @project.name.inspect %>
+with the subject
+
+    <%= @incoming_email.subject %>
+
+As far as we can tell, you are not a member of this project,
+so your message is being held for approval by a project member.
+
+You will be notified when action is taken to accept or reject your
+message.
+
+If you are in fact a member of this project, you may need to add:
+
+    <%= @incoming_email.from %>
+
+to your Covered account, which you can do on your your profile:
+
+    <%= profile_url %>
+
+<3

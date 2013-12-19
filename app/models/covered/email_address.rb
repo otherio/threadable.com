@@ -8,6 +8,7 @@ class Covered::EmailAddress < Covered::Model
   delegate *%w{
     id
     address
+    user_id
     primary?
     errors
     persisted?

@@ -24,6 +24,8 @@ class Covered::Project::Conversations < Covered::Conversations
   private
 
   def scope
+    # this is bullshit but its the only way I could find - Jared
+    project.project_record.conversations.instance_variable_get(:@association).reset
     project.project_record.conversations
   end
 

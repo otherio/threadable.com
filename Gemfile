@@ -74,7 +74,7 @@ group :test do
   gem 'capybara', '>= 2.0.2'
   gem 'capybara-webkit'
   gem 'selenium-webdriver'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', require: nil
   gem 'timecop'
   gem 'launchy'
   gem 'factory_girl_rails'

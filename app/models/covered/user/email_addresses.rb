@@ -38,7 +38,7 @@ class Covered::User::EmailAddresses < Covered::EmailAddresses
   end
 
   def email_address_for email_address_record
-    Covered::User::EmailAddress.new(user, email_address_record)
+    Covered::User::EmailAddress.new(user, email_address_record) if email_address_record
   end
 
 end

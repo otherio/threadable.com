@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 
-  has_many :conversations, -> { order "updated_at DESC" }, dependent: :destroy
+  has_many :conversations, dependent: :destroy
   has_many :messages, through: :conversations
   has_many :tasks, -> { order "position" }, class_name: 'Task'
   has_many :project_memberships, dependent: :destroy
@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
   end
   has_many :members_who_get_email, -> { where project_memberships: {gets_email:true} }, :through => :project_memberships, :source => 'user'
   has_many :events, -> { order "created_at" }, dependent: :destroy
+  has_many :incoming_emails, -> { order "created_at" }, dependent: :destroy
 
   scope :with_members, ->{ includes(:project_memberships).where('project_memberships.id IS NOT NULL').references(:project_memberships) }
   scope :without_members, ->{ includes(:project_memberships).where(project_memberships:{id:nil}).references(:project_memberships) }

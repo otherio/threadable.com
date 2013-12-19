@@ -49,20 +49,20 @@ class FixtureBuilder
 
   def create_conversation options
     subject = options.fetch(:subject)
-    conversation = project.conversations.create!(subject: subject)
+    conversation = project.conversations.create!(subject: subject, creator: current_user)
     create_message conversation, options
   end
 
   def create_message conversation, options
-    message = conversation.messages.create!(options)
+    message = conversation.messages.create!(options.merge(creator: current_user))
   end
 
   def reply_to message, options
-    message.conversation.messages.create!(options.merge(parent_message: message))
+    message.conversation.messages.create!(options.merge(parent_message: message, creator: current_user))
   end
 
   def create_task subject
-    project.tasks.create!(subject: subject)
+    project.tasks.create!(subject: subject, creator: current_user)
   end
 
   def add_doer_to_task task, email_address

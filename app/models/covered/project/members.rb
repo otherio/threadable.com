@@ -62,6 +62,7 @@ class Covered::Project::Members < Covered::Collection
   end
 
   def include? member
+    return false unless member.respond_to?(:user_id)
     !!scope.where(:user_id => member.user_id).exists?
   end
 

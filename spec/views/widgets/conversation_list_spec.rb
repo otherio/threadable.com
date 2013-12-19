@@ -8,19 +8,19 @@ describe "conversation_list" do
 
   let(:creator) { double(:creator,  name: "creator") }
 
-  def participants_double *indexies
-    double(:participants, all: indexies.empty? ? [] : participants[*indexies])
+  def participant_names *indices
+    indices.empty? ? [] : participants[*indices].map(&:name)
   end
 
   let(:conversations){
     [
-      double(:conversation1, id: 1, to_param: 'conversation-one',   subject: 'conversation one',   participants: participants_double(0,3), updated_at: 1.hour.ago),
-      double(:conversation2, id: 2, to_param: 'conversation-two',   subject: 'conversation two',   participants: participants_double(3,2), updated_at: 2.months.ago),
-      double(:conversation3, id: 3, to_param: 'conversation-three', subject: 'conversation three', participants: participants_double(5,1), updated_at: 13.months.ago),
-      double(:conversation4, id: 4, to_param: 'conversation-four',  subject: 'conversation four',  participants: participants_double, updated_at: 15.months.ago, creator: creator),
+      double(:conversation1, id: 1, to_param: 'conversation-one',   subject: 'conversation one',   participant_names: participant_names(0,3), updated_at: 1.hour.ago),
+      double(:conversation2, id: 2, to_param: 'conversation-two',   subject: 'conversation two',   participant_names: participant_names(3,2), updated_at: 2.months.ago),
+      double(:conversation3, id: 3, to_param: 'conversation-three', subject: 'conversation three', participant_names: participant_names(5,1), updated_at: 13.months.ago),
+      double(:conversation4, id: 4, to_param: 'conversation-four',  subject: 'conversation four',  participant_names: ['Larry'],              updated_at: 15.months.ago, creator: creator),
     ]
   }
-  let(:project){ double(:project, to_param: 'some-project') }
+  let(:project){ double(:project, to_param: 'some-project', held_messages: double(:held_messages, count: 0)) }
 
   def locals
     {
@@ -31,7 +31,7 @@ describe "conversation_list" do
 
   before do
     conversations.each_with_index do |conversation, index|
-      conversation.stub_chain('messages.count').and_return(index + 10)
+      conversation.stub('messages_count' => index + 10)
     end
   end
 
@@ -51,7 +51,7 @@ describe "conversation_list" do
     conversation_elements[2].css('a').first[:href].should == "/some-project/conversations/conversation-three"
     conversation_elements[2].css('.datetime').first.text.strip.should == conversations[2].updated_at.strftime('%-m/%-d/%Y').strip
 
-    conversation_elements[3].css('td.participants').first.text.should == "\n\ncreator\n\n(13)\n"
+    conversation_elements[3].css('td.participants').first.text.should == "\n\nLarry\n\n(13)\n"
     conversation_elements[3].css('a').first[:href].should == "/some-project/conversations/conversation-four"
     conversation_elements[3].css('.datetime').first.text.strip.should == conversations[3].updated_at.strftime('%-m/%-d/%Y').strip
   end

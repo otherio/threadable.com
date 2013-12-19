@@ -2,16 +2,15 @@
 
 %form.filters{onchange:'submit()'}
   %select{name:'filter'}
-    %option{value:'all',                     selected: @filter == 'all' || @filter.nil?     } All
-    %option{value:'not-processed',           selected: @filter == 'not-processed'           } Not processed
-    %option{value:'processed-succesfully',   selected: @filter == 'processed-succesfully'   } Processed successfully
-    %option{value:'processed-unsuccesfully', selected: @filter == 'processed-unsuccesfully' } Processed unsuccessfully
+    %option{value:'all',                selected: @filter == 'all' || @filter.nil? } All
+    %option{value:'not-processed',      selected: @filter == 'not-processed'       } Not processed
+    %option{value:'processed',          selected: @filter == 'processed'           } processed
 
 %table.table.table-nowrap.incoming-emails-table
   %thead
     %tr
       %th Processed
-      %th Failed
+      %th Held
       %th Id
       %th Created at
       %th Recipient
@@ -24,13 +23,13 @@
       %th Message
   %tbody
     - @incoming_emails.each do |incoming_email|
-      %tr{class: "#{'processed' if incoming_email.processed?} #{'failed' if incoming_email.failed?}"}
+      %tr{class: "#{incoming_email.processed? ? 'processed' : 'not-processed'}"}
         %td
           = link_to admin_incoming_email_path(incoming_email) do
             = incoming_email.processed? ? 'yes' : 'no'
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = incoming_email.processed? ? incoming_email.failed? ? 'yes' : 'no' : ''
+            = incoming_email.processed? ? incoming_email.held? ? 'yes' : 'no' : ''
         %td
           = link_to admin_incoming_email_path(incoming_email) do
             = truncated_text incoming_email.id
@@ -39,28 +38,28 @@
             #{time_ago_in_words incoming_email.created_at} ago
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.recipient_email_address
+            = truncated_text incoming_email.recipient
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.sender_email_address
+            = truncated_text incoming_email.sender
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.from_email_address
+            = truncated_text incoming_email.from
         %td
           = link_to admin_incoming_email_path(incoming_email) do
             = truncated_text incoming_email.subject
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.creator_id
+            = truncated_text incoming_email.incoming_email_record.creator_id
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.project_id
+            = truncated_text incoming_email.incoming_email_record.project_id
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.conversation_id
+            = truncated_text incoming_email.incoming_email_record.conversation_id
         %td
           = link_to admin_incoming_email_path(incoming_email) do
-            = truncated_text incoming_email.message_id
+            = truncated_text incoming_email.incoming_email_record.message_id
 
 .pagination
   - if @page > 0

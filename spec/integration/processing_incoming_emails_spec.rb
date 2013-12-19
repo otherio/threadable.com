@@ -1,515 +1,750 @@
 require 'spec_helper'
 
-describe "processing incoming emails" do
-
-  before do
-    expect{
-      expect{
-
-        expect{
-          post emails_url, params
-          expect(response).to be_ok
-        }.to change{ IncomingEmail.count }.by(1)
-
-        drain_background_jobs!
-
-      }.to change{ Message.count }.by(expected_message_count_change)
-    }.to change{ Conversation.count }.by(expected_conversation_count_change)
-  end
+describe "processing incoming emails 2" do
 
   let :params do
     create_incoming_email_params(
-      recipient:        recipient,
-      sender:           sender,
-      subject:          subject,
-      from:             from,
-      envelope_from:    envelope_from,
-      sender:           sender,
-      in_reply_to:      in_reply_to_header,
-      references:       references,
-      from:             from,
-      date:             date,
-      message_id:       message_id,
-      to:               to,
-      cc:               cc,
-      content_type:     content_type,
-      message_headers:  [
-        ["X-Envelope-From", envelope_from],
-        ["Sender",          sender],
-        ["In-Reply-To",     in_reply_to_header],
-        ["References",      references],
-        ["From",            from],
-        ["Date",            date.utc.rfc2822],
-        ["Message-Id",      message_id],
-        ["Subject",         subject],
-        ["To",              to],
-        ["Cc",              cc],
-        ["Content-Type",    content_type],
-      ],
-      body_plain:    body_plain,
+      subject:       subject,
+      message_id:    message_id,
+
+      from:          from,
+      envelope_from: envelope_from,
+      sender:        sender,
+
+      recipient:     recipient,
+      to:            to,
+      cc:            cc,
+
+      content_type:  content_type,
+      date:          date,
+
+      in_reply_to:   in_reply_to,
+      references:    references,
+
       body_html:     body_html,
+      body_plain:    body_plain,
       stripped_html: stripped_html,
       stripped_text: stripped_text,
+      attachments:   attachments,
     )
   end
 
-  let(:sender)            { 'yan@ucsd.covered.io' }
-  let(:expected_creator)  { sender_user }
-  let(:recipient)         { 'raceteam@127.0.0.1' }
-  let(:to)                { 'Race Team <raceteam@127.0.0.1>, Someone Else <someone@example.com>' }
-  let(:cc)                { 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
-  let(:from)              { 'Yan Hzu <yan@ucsd.covered.io>' }
-  let(:envelope_from)     { '<yan@ucsd.covered.io>' }
-  let(:subject)           { 'OMG guys I love covered!' }
-  let(:content_type)      { 'multipart/alternative; boundary="089e0158ba9ec5cbb704eb3fc74e"' }
-  let(:date)              { 14.days.ago }
-  let(:message_id)        { '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>' }
-  let(:in_reply_to_header){ '<5292fe2cdfe_63fafb8d97e8c626b0@covered.io>' }
-  let(:references)        {
-    '<CABQbZc8ngwpxZ2Mz_+ithGeRvm_bpw9GP9gxxU9WUC=YQJq6fw@mail.gmail.com> '+
-    '<E828A5B5-03B0-48C5-9DA6-861115E1EE22@gmail.com> '+
-    '<CALO0tS1VqrOZ6pJ9pMiTB+1Z5p9tHtAM7Z-a8=9aQPjsZM_Bqw@mail.gmail.com> '+
-    '<CALO0tS1n5CX-0egtTHBRHgrm6RmncdZ4oDxw9sKEMwf=zkEeqA@mail.gmail.com> '+
-    '<5292fe2cdfe_63fafb8d97e8c626b0@covered.io>'
-  }
-  let(:body_html)         {
+
+  def validate! result
+    post emails_url, params
+    expect(response).to be_ok
+
+    incoming_email = covered.incoming_emails.latest
+
+    # before being processed
+
+    expect( incoming_email.params['timestamp']        ).to eq params['timestamp']
+    expect( incoming_email.params['token']            ).to eq params['token']
+    expect( incoming_email.params['signature']        ).to eq params['signature']
+    expect( incoming_email.params['recipient']        ).to eq params['recipient']
+    expect( incoming_email.params['sender']           ).to eq params['sender']
+    expect( incoming_email.params['Sender']           ).to eq params['Sender']
+    expect( incoming_email.params['subject']          ).to eq params['subject']
+    expect( incoming_email.params['Subject']          ).to eq params['Subject']
+    expect( incoming_email.params['from']             ).to eq params['from']
+    expect( incoming_email.params['From']             ).to eq params['From']
+    expect( incoming_email.params['X-Envelope-From']  ).to eq params['X-Envelope-From']
+    expect( incoming_email.params['In-Reply-To']      ).to eq params['In-Reply-To']
+    expect( incoming_email.params['References']       ).to eq params['References']
+    expect( incoming_email.params['Date']             ).to eq params['Date']
+    expect( incoming_email.params['Message-Id']       ).to eq params['Message-Id']
+    expect( incoming_email.params['To']               ).to eq params['To']
+    expect( incoming_email.params['Cc']               ).to eq params['Cc']
+    expect( incoming_email.params['Content-Type']     ).to eq params['Content-Type']
+    expect( incoming_email.params['message-headers']  ).to eq params['message-headers']
+    expect( incoming_email.params['body-plain']       ).to eq params['body-plain']
+    expect( incoming_email.params['body-html']        ).to eq params['body-html']
+    expect( incoming_email.params['stripped-html']    ).to eq params['stripped-html']
+    expect( incoming_email.params['stripped-text']    ).to eq params['stripped-text']
+    expect( incoming_email.params['attachment-count'] ).to eq attachments.count.to_s
+    attachments.size.times do |n|
+      expect( incoming_email.params["attachment-#{n+1}"] ).to be_present
+    end
+    expect( incoming_email.subject                ).to eq(subject)
+    expect( incoming_email.message_id             ).to eq(message_id)
+    expect( incoming_email.from                   ).to eq(from)
+    expect( incoming_email.envelope_from          ).to eq(envelope_from)
+    expect( incoming_email.sender                 ).to eq(sender)
+    expect( incoming_email.recipient              ).to eq(recipient)
+    expect( incoming_email.to                     ).to eq(to)
+    expect( incoming_email.cc                     ).to eq(cc)
+    expect( incoming_email.content_type           ).to eq(content_type)
+    expect( incoming_email.date                   ).to eq(date)
+    expect( incoming_email.in_reply_to            ).to eq(in_reply_to)
+    expect( incoming_email.references             ).to eq(references)
+    expect( incoming_email.message_headers.to_set ).to eq Set[
+      ["X-Envelope-From", envelope_from],
+      ["Sender",          sender],
+      ["In-Reply-To",     in_reply_to],
+      ["References",      references],
+      ["From",            from],
+      ["Date",            date.rfc2822],
+      ["Message-Id",      message_id],
+      ["Subject",         subject],
+      ["To",              to],
+      ["Cc",              cc],
+      ["Content-Type",    content_type],
+    ]
+    expect( incoming_email.body_html      ).to eq(body_html)
+    expect( incoming_email.body_plain     ).to eq(body_plain)
+    expect( incoming_email.stripped_html  ).to eq(stripped_html)
+    expect( incoming_email.stripped_plain ).to eq(stripped_text)
+
+    # process incoming email
+    drain_background_jobs!
+    incoming_email = covered.incoming_emails.find_by_id(incoming_email.id) # reload
+
+    # after being processed
+    case result
+    when :bounced
+      expect( incoming_email ).to     be_bounced
+      expect( incoming_email ).to_not be_held
+      expect( incoming_email ).to_not be_delivered
+    when :held
+      expect( incoming_email ).to_not be_bounced
+      expect( incoming_email ).to     be_held
+      expect( incoming_email ).to_not be_delivered
+    when :delivered
+      expect( incoming_email ).to_not be_bounced
+      expect( incoming_email ).to_not be_held
+      expect( incoming_email ).to     be_delivered
+    else
+      raise "expect result to :bounced, :held, or :delivered. got #{result.inspect}"
+    end
+
+    expect( incoming_email.project        ).to eq expected_project
+    expect( incoming_email.parent_message ).to eq expected_parent_message
+    expect( incoming_email.conversation   ).to eq expected_conversation
+    expect( incoming_email.creator        ).to eq expected_creator
+
+    if result == :bounced || result == :held
+      expect( incoming_email.message                    ).to be_nil
+      expect( incoming_email.params['attachment-count'] ).to eq attachments.count.to_s
+      expect( incoming_email.params['attachment-1']     ).to be_present
+      expect( incoming_email.params['attachment-2']     ).to be_present
+      expect( incoming_email.params['attachment-3']     ).to be_present
+      return
+    end
+
+    # only validating delivered messages beyond this point
+
+
+    expect( incoming_email.message ).to be_present
+    expect( incoming_email.conversation ).to be_present
+
+    message      = covered.messages.latest
+    conversation = covered.conversations.latest
+
+    expect( incoming_email.message      ).to eq message
+    expect( incoming_email.conversation ).to eq conversation
+    expect( message.conversation        ).to eq conversation
+
+    if expect_conversation_to_be_a_task
+      expect( conversation ).to be_task
+    else
+      expect( conversation ).to_not be_task
+    end
+
+
+
+    expect( incoming_email.params['attachment-count'] ).to be_nil
+    expect( incoming_email.params['attachment-1']     ).to be_nil
+    expect( incoming_email.params['attachment-2']     ).to be_nil
+    expect( incoming_email.params['attachment-3']     ).to be_nil
+
+    incoming_email_attachments = incoming_email.attachments.all.map do |attachment|
+      [attachment.filename, attachment.mimetype, attachment.content]
+    end.to_set
+
+    posted_attachments = attachments.map do |attachment|
+      [attachment.original_filename, attachment.content_type, File.read(attachment.path)]
+    end.to_set
+
+    expect(incoming_email_attachments).to eq posted_attachments
+
+
+    expect( message.project           ).to eq expected_project
+    expect( message.conversation      ).to eq expected_conversation
+    expect( message.message_id_header ).to eq message_id
+    expect( message.to_header         ).to eq to
+    expect( message.cc_header         ).to eq cc
+    expect( message.date_header       ).to eq date.rfc2822
+    expect( message.references_header ).to eq references
+    expect( message.subject           ).to eq expected_message_subject
+    expect( message.body_plain        ).to eq body_plain
+    expect( message.body_html         ).to eq body_html
+    expect( message.stripped_html     ).to eq stripped_html
+    expect( message.stripped_plain    ).to eq stripped_text
+    expect( message.attachments.all   ).to eq incoming_email.attachments.all
+
+
+    project_members_that_get_email = message.project.members.that_get_email.reject do |user|
+      message.creator.same_user?(user) if message.creator
+    end
+    project_member_email_addresses = project_members_that_get_email.map(&:email_address)
+    expected_emails_count = project_member_email_addresses.length
+    expect(sent_emails.count).to eq expected_emails_count
+    sent_emails.each do |email|
+      expect( email.from ).to eq(
+        (message.creator && email.smtp_envelope_to.include?(message.creator.email_address) ) ?
+        [recipient] : [ExtractEmailAddresses.call(from).first]
+      )
+      expect( email.message_id                      ).to eq message_id[1..-2]
+      expect( email.header[:References].to_s        ).to eq references
+      expect( email.date.in_time_zone.rfc2822       ).to eq date.rfc2822
+      expect( email.to                              ).to eq expected_sent_email_to
+      expect( email.header[:Cc].to_s                ).to eq expected_sent_email_cc
+      expect( email.smtp_envelope_to.length         ).to eq 1
+      expect( project_member_email_addresses        ).to include email.smtp_envelope_to.first
+      expect( email.smtp_envelope_from              ).to eq expected_sent_email_smtp_envelope_from
+      expect( email.subject                         ).to eq expected_sent_email_subject
+      expect( email.html_content                    ).to include body_html
+      expect( email.text_content                    ).to include body_plain
+      expect( email.header['Reply-To'].to_s         ).to eq expected_sent_email_reply_to
+      expect( email.header['List-ID'].to_s          ).to eq expected_sent_email_list_id
+      expect( email.header['List-Archive'].to_s     ).to eq expected_sent_email_list_archive
+      expect( email.header['List-Unsubscribe'].to_s ).to be_present
+      expect( email.header['List-Post'].to_s        ).to eq expected_sent_email_list_post
+    end
+  end
+
+
+  # default incoming email params
+
+  let(:subject)      { 'OMG guys I love covered!' }
+  let(:message_id)   { '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>' }
+
+  let(:from)         { 'Yan Hzu <yan@ucsd.covered.io>' }
+  let(:envelope_from){ '<yan@ucsd.covered.io>' }
+  let(:sender)       { 'yan@ucsd.covered.io' }
+
+  let(:recipient)    { 'raceteam@127.0.0.1' }
+  let(:to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+  let(:cc)           { '' }
+
+  let(:content_type) { 'multipart/alternative; boundary="089e0158ba9ec5cbb704eb3fc74e"' }
+  let(:date)         { Time.parse(14.days.ago.to_s).in_time_zone } # round off milliseconds
+
+  let(:in_reply_to)  { '' }
+  let(:references)   { '' }
+
+  let(:body_html){
     %(<p>I think we should build it out of fiberglass and duck tape.\n</p>\n)+
     %(<blockquote>)+
     %(I'm not 100% clear on the right way to go for this, but we should figure out if we're going to )+
     %(make the body out of carbon or buy a giant boat and cut it up or whatever.)+
     %(</blockquote>)
   }
-  let(:body_plain)        {
+  let(:body_plain){
     %(I think we should build it out of fiberglass and duck tape.\n\n)+
     %(> I'm not 100% clear on the right way to go for this, but we should figure out if we're going to )+
     %(> make the body out of carbon or buy a giant boat and cut it up or whatever.)
   }
-  let(:stripped_html)     {
+  let(:stripped_html){
     %(<p>I think we should build it out of fiberglass and duck tape.\n</p>)
   }
-  let(:stripped_text)     {
+  let(:stripped_text){
     %(I think we should build it out of fiberglass and duck tape.)
   }
-  let(:expected_sent_email_to          ){ ['raceteam@127.0.0.1', 'someone@example.com'] }
-  let(:expected_sent_email_cc          ){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
-  let(:expected_from                   ){ sender }
-  let(:expected_conversation_subject   ){ "OMG guys I love covered!" }
-  let(:expected_message_subject        ){ subject }
-  let(:expected_sent_email_subject     ){ "[RaceTeam] OMG guys I love covered!" }
-  let(:expect_conversation_to_be_a_task){ false }
-  let(:expected_smtp_envelope_from){ recipient }
 
-
-  shared_context 'the email recipient is a valid project' do
-    let(:sender_user)              { as('yan@ucsd.covered.io'){ current_user } }
-    let(:project)                  { covered.projects.find_by_slug! 'raceteam' }
-    let(:recipient)                { project.email_address }
-    let(:to)                       { project.formatted_email_address }
-    let(:expected_sent_email_to)   { [project.email_address] }
+  let :attachments do
+    [
+      RSpec::Support::Attachments.uploaded_file("some.gif", 'image/gif',  true),
+      RSpec::Support::Attachments.uploaded_file("some.jpg", 'image/jpeg', true),
+      RSpec::Support::Attachments.uploaded_file("some.txt", 'text/plain', false),
+    ]
   end
 
-  shared_context 'the email recipient is not a valid project' do
-    let(:recipient)  { 'poopnozel@covered.io' }
-    let(:to)         { 'Poop Nozel <poopnozel@covered.io>' }
-    let(:expected_sent_email_to){ ['poopnozel@covered.io'] }
+  # default expected values for the default incoming email params above
+
+  let(:expected_parent_message)                { nil }
+  let(:expected_conversation)                  { covered.conversations.latest }
+  let(:expected_creator)                       { covered.users.find_by_email_address('yan@ucsd.covered.io') }
+  let(:expected_project)                       { covered.projects.find_by_slug!('raceteam') }
+  let(:expected_conversation_subject)          { 'OMG guys I love covered!' }
+  let(:expected_message_subject)               { 'OMG guys I love covered!' }
+  let(:expect_conversation_to_be_a_task)       { false }
+  let(:expected_sent_email_to)                 { ['raceteam@127.0.0.1'] }
+  let(:expected_sent_email_cc)                 { '' }
+  let(:expected_sent_email_subject)            { "[RaceTeam] OMG guys I love covered!" }
+  let(:expected_sent_email_smtp_envelope_from) { 'raceteam@127.0.0.1' }
+  let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+  let(:expected_sent_email_list_id)            { expected_project.formatted_list_id }
+  let(:expected_sent_email_list_archive)       { "<#{project_conversations_url(expected_project)}>" }
+  let(:expected_sent_email_list_post)          { "<mailto:#{expected_project.email_address}>, <#{new_project_conversation_url(expected_project)}>" }
+
+
+  it 'delivers the email' do
+    validate! :delivered
   end
 
 
-  shared_context "a parent message can be found via the In-Reply-To header" do
-    let(:conversation)      { project.conversations.find_by_slug! 'how-are-we-going-to-build-the-body' }
-    let(:parent_message)    { conversation.messages.latest }
-    let(:in_reply_to_header){ "#{parent_message.message_id_header}" }
-    let(:references)        {
-      '<CABQbZc8ngwpxZ2Mz_+ithGeRvm_bpw9GP9gxxU9WUC=YQJq6fw@mail.gmail.com> '+
-      '<E828A5B5-03B0-48C5-9DA6-861115E1EE22@gmail.com> '+
-      '<CALO0tS1VqrOZ6pJ9pMiTB+1Z5p9tHtAM7Z-a8=9aQPjsZM_Bqw@mail.gmail.com> '+
-      '<CALO0tS1n5CX-0egtTHBRHgrm6RmncdZ4oDxw9sKEMwf=zkEeqA@mail.gmail.com>'
-    }
-  end
+  context "when the recipients do not match a project" do
+    let(:recipient)    { 'poopnozel@covered.io' }
+    let(:to)           { 'Poop Nozel <poopnozel@covered.io>' }
 
-  shared_context "a parent message can be found via the References header" do
-    let(:conversation)      { project.conversations.find_by_slug! 'how-are-we-going-to-build-the-body' }
-    let(:parent_message)    { conversation.messages.latest }
-    let(:in_reply_to_header){ "CALO0tS1VqrOZ6pJ9pMiTB+1Z5p9tHtAM7Z-a8=9aQPjsZM_Bqw@mail.gmail.com" }
-    let(:references)        {
-      '<CABQbZc8ngwpxZ2Mz_+ithGeRvm_bpw9GP9gxxU9WUC=YQJq6fw@mail.gmail.com> '+
-      '<E828A5B5-03B0-48C5-9DA6-861115E1EE22@gmail.com> '+
-      "#{parent_message.message_id_header} "+
-      '<CALO0tS1n5CX-0egtTHBRHgrm6RmncdZ4oDxw9sKEMwf=zkEeqA@mail.gmail.com>'
-    }
-  end
-
-  shared_context "a parent message cannot be found" do
-    let(:in_reply_to_header){ '<55555555555555555@covered.io>' }
-    let(:references)        {
-      '<CABQbZc8ngwpxZ2Mz_+_bpw9GP9ithGeRvmgxxU9WUC=YQJq6fw@mail.gmail.com> '+
-      '<E828A5B58C5-9DA6--03B0-4861115E1EE22@gmail.com> '+
-      '<CALO0tS1VqrOZ6p9tHtAM7Z-a8=9apJ9pMiTB+1Z5QPjsZM_Bqw@mail.gmail.com> '+
-      '<CALO0tS1n5CXRHgrm6RmncdZ4oD-0egtTHBxw9sKEMwf=zkEeqA@mail.gmail.com> '+
-      '<55555555555555555@covered.io>'
-    }
-  end
-
-  shared_context 'the sender is a project member' do
-    let(:sender_is_a_member){ true }
-    let(:sender)       { 'yan@ucsd.covered.io' }
-    let(:from)         { 'Yan Hzu <yan@ucsd.covered.io>' }
-    let(:envelope_from){ '<yan@ucsd.covered.io>' }
-  end
-
-  shared_context 'the sender is not a covered member' do
-    let(:sender_is_a_member){ false }
-    let(:sender)       { 'steve@jobs.me' }
-    let(:from)         { 'Steve Jobs <steve@jobs.me>' }
-    let(:envelope_from){ '<steve@jobs.me>' }
-    let(:expected_sent_email_cc)  { "Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>, #{from}" }
-  end
-
-  shared_context 'the sender is a covered member who is not a project member' do
-    let(:sender_is_a_member){ false }
-    let(:sender_user)  { as('amywong.phd@gmail.com'){ current_user } }
-    let(:sender)       { 'amywong.phd@gmail.com' }
-    let(:from)         { 'Amy Wong <amywong.phd@gmail.com>' }
-    let(:envelope_from){ '<amywong.phd@gmail.com>' }
-    let(:expected_sent_email_cc)  { "Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>, #{from}" }
-  end
-
-  shared_context 'the from address is a project member' do
-    let(:sender_is_a_member) { true }
-    let(:expected_creator)   { as('yan@ucsd.covered.io'){ current_user } }
-    let(:from){ 'Yan Hzu <yan@ucsd.covered.io>' }
-    let(:expected_from) { 'yan@ucsd.covered.io' }
-    let(:expected_sent_email_cc){ 'Another Guy <another@guy.io>, Your Mom <mom@yourmom.com>' }
-  end
-
-  shared_examples 'creates a new incoming email record' do
-    let(:incoming_email){ IncomingEmail.last }
-    it 'creates a new incoming email record' do
-      expect( incoming_email.message ).to eq message
-
-      expect( incoming_email.params['timestamp']        ).to eq params['timestamp']
-      expect( incoming_email.params['token']            ).to eq params['token']
-      expect( incoming_email.params['signature']        ).to eq params['signature']
-      expect( incoming_email.params['recipient']        ).to eq params['recipient']
-      expect( incoming_email.params['sender']           ).to eq params['sender']
-      expect( incoming_email.params['Sender']           ).to eq params['Sender']
-      expect( incoming_email.params['subject']          ).to eq params['subject']
-      expect( incoming_email.params['Subject']          ).to eq params['Subject']
-      expect( incoming_email.params['from']             ).to eq params['from']
-      expect( incoming_email.params['From']             ).to eq params['From']
-      expect( incoming_email.params['X-Envelope-From']  ).to eq params['X-Envelope-From']
-      expect( incoming_email.params['In-Reply-To']      ).to eq params['In-Reply-To']
-      expect( incoming_email.params['References']       ).to eq params['References']
-      expect( incoming_email.params['Date']             ).to eq params['Date']
-      expect( incoming_email.params['Message-Id']       ).to eq params['Message-Id']
-      expect( incoming_email.params['To']               ).to eq params['To']
-      expect( incoming_email.params['Cc']               ).to eq params['Cc']
-      expect( incoming_email.params['Content-Type']     ).to eq params['Content-Type']
-      expect( incoming_email.params['message-headers']  ).to eq params['message-headers']
-      expect( incoming_email.params['body-plain']       ).to eq params['body-plain']
-      expect( incoming_email.params['body-html']        ).to eq params['body-html']
-      expect( incoming_email.params['stripped-html']    ).to eq params['stripped-html']
-      expect( incoming_email.params['stripped-text']    ).to eq params['stripped-text']
-      expect( incoming_email.params['attachment-count'] ).to be_nil
-      expect( incoming_email.params['attachment-1']     ).to be_nil
-      expect( incoming_email.params['attachment-2']     ).to be_nil
-      expect( incoming_email.params['attachment-3']     ).to be_nil
-    end
-  end
-
-  shared_examples 'it bounces the message' do
-    include_examples 'creates a new incoming email record'
-    let(:message){ nil }
-    let(:expected_conversation_count_change){ 0 }
-    let(:expected_message_count_change){ 0 }
-    it "bounces the message"
-    #   # expect( sent_emails.count ).to eq 1
-    #   # expect sent email to be a bounce message
-    # end
-  end
-
-  shared_examples 'creates a new message' do
-    include_examples 'creates a new incoming email record'
-    let(:expected_message_count_change){ 1 }
-    it 'creates a new message' do
-      expect( message.conversation_id   ).to eq conversation.id
-      expect( message.message_id_header ).to eq message_id
-      expect( message.to_header         ).to eq to
-      expect( message.cc_header         ).to eq cc
-      expect( message.date_header       ).to eq date.rfc2822
-      expect( message.references_header ).to eq references
-      expect( message.subject           ).to eq expected_message_subject
-      expect( message.body_plain        ).to eq body_plain
-      expect( message.body_html         ).to eq body_html
-      expect( message.stripped_html     ).to eq stripped_html
-      expect( message.stripped_plain    ).to eq stripped_text
-
-      attachment_details = message.attachments.map do |attachment|
-        [attachment.filename, attachment.mimetype]
-      end.to_set
-
-      expect(attachment_details).to eq Set[
-        ['some.gif', 'image/gif'],
-        ['some.jpg', 'image/jpeg'],
-        ['some.txt', 'text/plain'],
-      ]
+    let(:expected_project)       { nil }
+    let(:expected_parent_message){ nil }
+    let(:expected_conversation)  { nil }
+    let(:expected_creator)       { nil }
+    it 'bounces the incoming email' do
+      validate! :bounced
     end
   end
 
 
-  let(:project_member_email_addresses){ project.members.that_get_email.map(&:email_address) }
+  context "when the recipient email address matches a project" do
+    let(:recipient){ expected_project.email_address }
+    let(:to)       { expected_project.formatted_email_address }
 
-  shared_examples 'creates a new message with a creator' do
-    include_examples 'creates a new message'
-    it 'creates a new message with a creator' do
-      expect(message.creator_id).to eq expected_creator.id
-    end
-  end
+    let(:expected_project)      { covered.projects.find_by_slug!('raceteam') }
+    let(:expected_sent_email_to){ [recipient] }
+    let(:expected_sent_email_cc){ '' }
 
-  shared_examples 'creates a new message without a creator' do
-    include_examples 'creates a new message'
-    it 'creates a new message without a creator' do
-      expect(message.creator_id).to be_nil
-    end
-  end
-
-  shared_examples 'sends emails to all project members that get email' do
-    it 'sends emails to all project members that get email' do
-      expected_emails_count = project_member_email_addresses.length
-      expected_emails_count -= 1 if sender_is_a_member
-
-      expect(sent_emails.count).to eq expected_emails_count
-      sent_emails.each do |email|
-        expect( email.message_id                ).to eq message_id[1..-2]
-        expect( email.header[:References].to_s  ).to eq references
-        expect( email.date.in_time_zone.rfc2822 ).to eq date.rfc2822
-        expect( email.to                        ).to eq expected_sent_email_to
-        expect( email.header[:Cc].to_s          ).to eq expected_sent_email_cc
-        expect( email.smtp_envelope_to.length   ).to eq 1
-        expect( project_member_email_addresses  ).to include email.smtp_envelope_to.first
-        expect( email.from                      ).to eq(email.smtp_envelope_to.include?(sender) ? [recipient] : [expected_from] )
-        expect( email.smtp_envelope_from        ).to eq expected_smtp_envelope_from
-        expect( email.subject                   ).to eq expected_sent_email_subject
-        expect( email.html_content              ).to include body_html
-        expect( email.text_content              ).to include body_plain
-      end
-    end
-  end
-
-  shared_context 'it creates a message in an existing conversation' do
-    let(:message){ Message.last }
-    let(:expected_conversation_count_change){ 0 }
-    let(:expected_message_count_change){ 1 }
-  end
-
-  shared_examples 'creates a new conversation' do
-    it 'creates a new conversation' do
-      if expect_conversation_to_be_a_task
-        expect( conversation ).to be_task
-      else
-        expect( conversation ).to_not be_task
-      end
-      expect( conversation.project_id     ).to eq project.id
-      expect( conversation.creator_id     ).to eq expected_creator.id
-      expect( conversation.subject        ).to eq expected_conversation_subject
-      expect( conversation.messages_count ).to eq 1
-    end
-  end
-
-  shared_examples 'it creates a message in a new conversation' do
-    let(:message){ Message.last }
-    let(:conversation){ Conversation.last }
-    let(:expected_conversation_count_change){ 1 }
-    let(:expected_message_count_change){ 1 }
-    include_examples 'creates a new message with a creator'
-    include_examples 'creates a new conversation'
-    include_examples 'sends emails to all project members that get email'
-  end
-
-  # The actual tests :P - Jared
-
-  context "when the project is not found" do
-    include_context 'the email recipient is not a valid project'
-    include_examples 'it bounces the message'
-  end
-
-  context "when the project is found" do
-    include_context 'the email recipient is a valid project'
-
-    context "and a parent message is found via the In-Reply-To header" do
-      include_context "a parent message can be found via the In-Reply-To header"
-      include_context 'it creates a message in an existing conversation'
+    context 'a parent message cannot be found' do
+      let(:in_reply_to){ '' }
+      let(:references) { '' }
+      let(:expected_parent_message){ nil }
 
       context "and the sender is a project member" do
-        include_context 'the sender is a project member'
-        include_examples 'creates a new message with a creator'
-        include_examples 'sends emails to all project members that get email'
+        let(:from)          { "Alice Neilson <alice@ucsd.covered.io>" }
+        let(:envelope_from) { "<alice@ucsd.covered.io>" }
+        let(:sender)        { "alice@ucsd.covered.io" }
 
-        context "and only members are specified in the to header, but the project is in cc" do
-          let(:to) { 'Alice Neilson <alice@ucsd.covered.io>' }
-          let(:cc) { 'Race Team <raceteam@127.0.0.1>' }
-          let(:expected_sent_email_to) { ['raceteam@127.0.0.1'] }
-          let(:expected_sent_email_cc) { '' }
+        let(:expected_conversation)      { covered.conversations.latest }
+        let(:expected_creator)           { covered.users.find_by_email_address(sender) }
+        let(:expected_sent_email_smtp_envelope_from){ expected_project.email_address }
+        let(:expected_sent_email_subject){ "[#{expected_project.subject_tag}] #{subject}" }
 
-          include_examples 'creates a new message with a creator'
-          include_examples 'sends emails to all project members that get email'
+        it 'delivers the email' do
+          validate! :delivered
         end
       end
 
-      context "and the sender is not a covered member" do
-        include_context 'the sender is not a covered member'
-        include_examples 'creates a new message without a creator'
-        include_examples 'sends emails to all project members that get email'
+      context "and the sender is not a project member" do
+        let(:from)          { "Elizabeth Pickles <elizabeth@pickles.io>" }
+        let(:envelope_from) { "<elizabeth@pickles.io>" }
+        let(:sender)        { "elizabeth@pickles.io" }
 
-        context 'but the from address is a project member' do
-          include_context 'the from address is a project member'
-          include_examples 'creates a new message with a creator'
+        let(:expected_conversation) { nil }
+        let(:expected_creator     ){ nil }
+
+        it 'holds the incoming email' do
+          validate! :held
         end
       end
 
-      context "and the sender is a covered member who is not a project member" do
-        include_context 'the sender is a covered member who is not a project member'
-        include_examples 'creates a new message with a creator'
-        include_examples 'sends emails to all project members that get email'
+      context "and the sender is a user but not a project member" do
+        let(:from)          { 'Ritsuko Akagi <ritsuko@sfhealth.example.com>' }
+        let(:envelope_from) { '<ritsuko@sfhealth.example.com>' }
+        let(:sender)        { 'ritsuko@sfhealth.example.com' }
 
-        context 'but the from address is a project member' do
-          include_context 'the from address is a project member'
-          include_examples 'creates a new message with a creator'
+        let(:expected_conversation){ nil }
+        let(:expected_creator)     { covered.users.find_by_email_address(sender) }
+
+        it 'holds the incoming email' do
+          validate! :held
         end
       end
+
+    end
+
+    context 'a parent message can be found via the In-Reply-To header' do
+      let(:in_reply_to){ expected_parent_message.message_id_header }
+      let(:references) { '' }
+
+      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_parent_message){ expected_conversation.messages.latest }
+      it 'delivers the email' do
+        validate! :delivered
+      end
+    end
+
+    context 'a parent message can be found via the Referenes header' do
+      let(:in_reply_to){ '' }
+      let(:references) { expected_conversation.messages.all.map(&:message_id_header).join(' ') }
+
+      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_parent_message){ expected_conversation.messages.latest }
+      it 'delivers the email' do
+        validate! :delivered
+      end
+    end
+
+    context 'a parent message can be found via the In-Reply-To header and the Referenes header' do
+      let(:in_reply_to){ expected_parent_message.message_id_header }
+      let(:references) { expected_project.conversations.find_by_slug("layup-body-carbon").messages.all.map(&:message_id_header).join(' ') }
+
+      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_parent_message){ expected_conversation.messages.latest }
+      it 'prefers the In-Reply-To message id over the References message ids' do
+        validate! :delivered
+      end
+    end
+
+    context 'a parent message can be found' do
+      let(:in_reply_to){ expected_parent_message.message_id_header }
+      let(:references) { '' }
+
+      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_parent_message){ expected_conversation.messages.latest }
+
+      context 'but the creator exists but is not a project member' do
+        let(:from)         { 'Anil Kapoor <anil@sfhealth.example.com>' }
+        let(:envelope_from){ '<anil@sfhealth.example.com>' }
+        let(:sender)       { 'anil@sfhealth.example.com' }
+
+        let(:expected_creator){ covered.users.find_by_email_address!(sender) }
+        let(:expected_sent_email_cc){ 'Anil Kapoor <anil@sfhealth.example.com>' }
+        it 'it delivers the message and copies the non-member to the cc header' do
+          validate! :delivered
+        end
+      end
+
+      context 'but the creator does not exist' do
+        let(:from)         { 'Who Knows <who.knows@example.com>' }
+        let(:envelope_from){ '<who.knows@example.com>' }
+        let(:sender)       { 'who.knows@example.com' }
+
+        let(:expected_creator){ nil }
+        let(:expected_sent_email_cc){ 'Who Knows <who.knows@example.com>' }
+        it 'it delivers the message and copies the unknown email address to the cc header' do
+          validate! :delivered
+        end
+      end
+
+      context 'and the creator is a project member' do
+        let(:from)         { "Alice Neilson <alice@ucsd.covered.io>" }
+        let(:envelope_from){ '<alice@ucsd.covered.io>' }
+        let(:sender)       { 'alice@ucsd.covered.io' }
+
+        let(:expected_creator){ covered.users.find_by_email_address!(sender) }
+        it 'it delivers the message' do
+          validate! :delivered
+        end
+      end
+    end
+
+  end
+
+
+
+  context 'and the subject is more than 255 characters' do
+    let(:subject){ 'A☃'*250 }
+
+    let(:expected_conversation_subject){ subject[0..254] }
+    let(:expected_message_subject)     { subject[0..254] }
+    let(:expected_sent_email_subject)  { "[#{expected_project.subject_tag}] #{subject[0..254]}" }
+    let(:expected_parent_message)      { nil }
+
+    it 'truncates the subject to 255 characters' do
+      validate! :delivered
+    end
+  end
+
+  context 'and the subject is all unicode characters' do
+    let(:subject){ '☃☃☃☃☃' }
+    it 'creates a valid slug for the conversation'
+  end
+
+  context "and the subject is in Japanese" do
+    let(:subject) { "おはいよございます！げんきですか？" }
+    let(:expected_message_subject)   { "おはいよございます！げんきですか？" }
+    let(:expected_sent_email_subject){ "[RaceTeam] おはいよございます！げんきですか？" }
+
+    it 'delivers the incoming email' do
+      validate! :delivered
+    end
+  end
+
+  context "and the message was sent to the +task address" do
+    let(:recipient){ expected_project.task_email_address }
+    let(:to)       { expected_project.formatted_task_email_address }
+
+    let(:expect_conversation_to_be_a_task)      { true }
+    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
+    let(:expected_sent_email_to)                { [expected_project.task_email_address] }
+    let(:expected_sent_email_subject)           { "[✔][RaceTeam] #{subject}" }
+    let(:expected_sent_email_reply_to)          { expected_project.formatted_task_email_address }
+
+    it 'creates the conversation as a task' do
+      validate! :delivered
+    end
+  end
+
+  context "and the subject contains [task]" do
+    let(:subject){ '[task] pickup some cheese' }
+
+    let(:expect_conversation_to_be_a_task)      { true }
+    let(:expected_message_subject)              { '[task] pickup some cheese' }
+    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
+    let(:expected_sent_email_to)                { [expected_project.task_email_address] }
+    let(:expected_sent_email_subject)           { "[✔][RaceTeam] pickup some cheese" }
+    let(:expected_sent_email_reply_to)          { expected_project.formatted_task_email_address }
+
+    it 'creates the conversation as a task' do
+      validate! :delivered
+    end
+
+    context "but the message was cc'd to the regular project address" do
+      let(:to){ 'someone else <someone.else@example.com>' }
+      let(:cc){ 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+
+      let(:expected_sent_email_to){ ['someone.else@example.com'] }
+      let(:expected_sent_email_cc){ expected_project.formatted_task_email_address }
+
+      it 'rewrites the project email address to use the project task email address' do
+        validate! :delivered
+      end
+    end
+  end
+
+
+  context "and the subject contains [✔]" do
+    let(:subject){ '[✔] pickup some cake' }
+
+    let(:expect_conversation_to_be_a_task)      { true }
+    let(:expected_message_subject)              { '[✔] pickup some cake' }
+    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
+    let(:expected_sent_email_to)                { [expected_project.task_email_address] }
+    let(:expected_sent_email_subject)           { "[✔][RaceTeam] pickup some cake" }
+    let(:expected_sent_email_reply_to)          { expected_project.formatted_task_email_address }
+
+    it 'creates the conversation as a task' do
+      validate! :delivered
+    end
+  end
+
+
+  # from, envelope from, sender
+
+  context 'when the from address matches a non-member and the envelope from matches a non-member and the sender matches a member' do
+    let(:from)                    { 'Hans Zarkov <zarkov@sfhealth.example.com>' }
+    let(:envelope_from)           { '<bj@sfhealth.example.com>' }
+    let(:sender)                  { 'bob@ucsd.covered.io' }
+    let(:expected_creator)        { covered.users.find_by_email_address('bob@ucsd.covered.io') }
+    it 'sets the creator as the user matching the sender address' do
+      validate! :delivered
+    end
+  end
+
+  context 'when the from address matches a non-member and the envelope from matches a member and the sender matches a non-member' do
+    let(:from)                    { 'Hans Zarkov <zarkov@sfhealth.example.com>' }
+    let(:envelope_from)           { '<bethany@ucsd.covered.io>' }
+    let(:sender)                  { 'house@sfhealth.example.com' }
+    let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.covered.io') }
+    it 'sets the creator as user matching the envelope from address' do
+      validate! :delivered
+    end
+  end
+
+  context 'when the from address matches a member and the envelope from matches a non-member but the sender matches a non-member' do
+    let(:from)                    { 'Jonathan Spray <jonathan@ucsd.covered.io>' }
+    let(:envelope_from)           { '<zarkov@sfhealth.example.com>' }
+    let(:sender)                  { 'trapper@sfhealth.example.com' }
+    let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.covered.io') }
+    it 'sets the creator as user matching the from address' do
+      validate! :delivered
+    end
+  end
+
+  context 'when the from, envelope from, and sender are all members' do
+    let(:from)                    { 'Jonathan Spray <jonathan@ucsd.covered.io>' }
+    let(:envelope_from)           { '<bethany@ucsd.covered.io>' }
+    let(:sender)                  { 'bob@ucsd.covered.io' }
+    let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.covered.io') }
+    it 'sets the creator as user matching the from address' do
+      validate! :delivered
+    end
+  end
+
+  context 'when the from is not a user, but the envelope from, and sender are both members' do
+    let(:from)                    { 'Some Rando <some-rando@example.com>' }
+    let(:envelope_from)           { '<bethany@ucsd.covered.io>' }
+    let(:sender)                  { 'bob@ucsd.covered.io' }
+    let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.covered.io') }
+    it 'sets the creator as user matching the envelope from address' do
+      validate! :delivered
+    end
+  end
+
+  context 'when there are only members in the to header, and the cc is blank' do
+    let(:to) { "Alice Neilson <alice@ucsd.covered.io>" }
+    let(:cc) { '' }
+
+    let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
+    let(:expected_sent_email_cc){ '' }
+
+    it 'adds the project to the to' do
+      validate! :delivered
+    end
+  end
+
+  context 'when there are only members in the to header, and the project is in the CC' do
+    let(:to) { "Alice Neilson <alice@ucsd.covered.io>" }
+    let(:cc) { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+
+    let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
+    let(:expected_sent_email_cc){ '' }
+
+    it 'moves the project from the cc header to the to header' do
+      validate! :delivered
+    end
+  end
+
+  context 'when there are non-members in the to header, and the project is in the CC' do
+    let(:to) { "Frank Rizzo <frank.rizzo@jerkyboys.co>" }
+    let(:cc) { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+
+    let(:expected_sent_email_to){ ['frank.rizzo@jerkyboys.co'] }
+    let(:expected_sent_email_cc){ 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+
+    it 'does not move the project from the cc header to the to header' do
+      validate! :delivered
+    end
+  end
+
+  context 'when there are members in the to header' do
+    let(:to) { "Alice Neilson <alice@ucsd.covered.io>, Someone Else <someone.else@example.com>, bethany@ucsd.covered.io" }
+
+    let(:expected_sent_email_to){ ['someone.else@example.com'] }
+
+    it 'filters members out of the to header' do
+      validate! :delivered
+    end
+  end
+
+  context 'when there are members in the cc header' do
+    let(:cc) { "Alice Neilson <alice@ucsd.covered.io>, Someone Else <someone.else@example.com>, bethany@ucsd.covered.io" }
+
+    let(:expected_sent_email_cc){ 'Someone Else <someone.else@example.com>' }
+    it 'filters members out of the cc header' do
+      validate! :delivered
+    end
+  end
+
+
+  context 'when the message is a reply to a non-task conversation but the message was sent to the project task email addresss' do
+    let(:recipient)  { 'raceteam+task@127.0.0.1' }
+    let(:to)         { 'UCSD Electric Racing Tasks <raceteam+task@127.0.0.1>' }
+    let(:in_reply_to){ expected_parent_message.message_id_header }
+    let(:references) { '' }
+
+    let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
+    let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+    let(:expected_parent_message){ expected_conversation.messages.latest }
+    it 'replace that email with the non task version' do
+      validate! :delivered
+    end
+  end
+
+  context 'when the message is a reply to a task but the message was sent to the project non-task email addresss' do
+    let(:recipient)  { 'raceteam@127.0.0.1' }
+    let(:to)         { 'UCSD Electric Racing Tasks <raceteam@127.0.0.1>' }
+    let(:in_reply_to){ expected_parent_message.message_id_header }
+    let(:references) { '' }
+
+    let(:expected_sent_email_to){ ['raceteam+task@127.0.0.1'] }
+    let(:expected_conversation)  { expected_project.conversations.find_by_slug('layup-body-carbon') }
+    let(:expected_parent_message){ expected_conversation.messages.latest }
+    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
+    let(:expect_conversation_to_be_a_task) { true }
+    let(:expected_sent_email_subject){ "[✔][RaceTeam] #{subject}" }
+    let(:expected_sent_email_reply_to){ expected_project.formatted_task_email_address }
+    it 'replace that email with the task version' do
+      validate! :delivered
+    end
+  end
+
+
+
+
+
+  if false
+
+
+
+
+    context "and the from address is not a project member" do
+    end
+
+    context "and the subject is in japanese" do
+    end
+
+    context "and the subject has emoji" do
+    end
+
+    context "and the message was sent to the +task address" do
+
+      context 'and the subject has some other [tag]' do
+      end
+    end
+
+    context "and the subject contains [task]" do
+    end
+
+    context "and the subject contains [✔]" do
+    end
+
+
+    context 'and a parent message is found via the In-Reply-To header' do
+      context 'and the sender is a user' do
+        context 'found via the from email address' do
+          context 'and that user is a project member' do
+            it 'it creates an incoming email address record and a message record and emails the conversation message out'
+          end
+          context 'and that user is not a project member' do
+          end
+        end
+        context 'found via the X-Envelope-From email address' do
+          context 'and that user a project member' do
+          end
+          context 'and that user not a project member' do
+          end
+        end
+        context 'found via the sender email address' do
+          context 'and that user a project member' do
+          end
+          context 'and that user not a project member' do
+          end
+        end
+      end
+      context 'and a project memeber is not found' do
+      end
+
+
+      # context "and the sender is a project member" do
+      #   context "and only members are specified in the to header, but the project is in cc" do
+      #   end
+      # end
+
+      # context "and the sender is not a covered member" do
+      #   context 'but the from address is a project member' do
+      #   end
+      # end
+
+      # context "and the sender is a covered member who is not a project member" do
+
+      #   context 'but the from address is a project member' do
+      #   end
+      # end
     end
 
     context "and the parent message is found via the References header" do
-      include_context "a parent message can be found via the References header"
-      include_context 'it creates a message in an existing conversation'
 
       context "and the sender is a project member" do
-        include_context 'the sender is a project member'
-        include_examples 'creates a new message with a creator'
-        include_examples 'sends emails to all project members that get email'
       end
 
       context "and the sender is not a covered member" do
-        include_context 'the sender is not a covered member'
-        include_examples 'creates a new message without a creator'
-        include_examples 'sends emails to all project members that get email'
       end
 
       context "and the sender is a covered member who is not a project member" do
-        include_context 'the sender is a covered member who is not a project member'
-        include_examples 'creates a new message with a creator'
-        include_examples 'sends emails to all project members that get email'
       end
-    end
-
-    context "and the parent message is not found" do
-      include_context "a parent message cannot be found"
-
-      context "and the sender is a project member" do
-        include_context 'the sender is a project member'
-        include_examples 'it creates a message in a new conversation'
-
-        context "and the from address is not a project member" do
-          let(:from){ 'Larry TheTvGuy <larry@tvsrus.net>' }
-          let(:expected_from) { 'larry@tvsrus.net' }
-          include_examples 'it creates a message in a new conversation'
-        end
-
-        context "and the subject is in japanese" do
-          let(:subject) { "おはいよございます！げんきですか？" }
-          let(:expected_conversation_subject   ){ "おはいよございます！げんきですか？" }
-          let(:expected_message_subject        ){ subject }
-          let(:expected_sent_email_subject     ){ "[RaceTeam] おはいよございます！げんきですか？" }
-
-          include_examples 'it creates a message in a new conversation'
-        end
-
-        context "and the subject has emoji" do
-          let(:subject) { "I love the snow! ☃❅❆" }
-          let(:expected_conversation_subject   ){ "I love the snow! ☃❅❆" }
-          let(:expected_message_subject        ){ subject }
-          let(:expected_sent_email_subject     ){ "[RaceTeam] I love the snow! ☃❅❆" }
-
-          include_examples 'it creates a message in a new conversation'
-        end
-
-        context "and the message was sent to the +task address" do
-          let(:expect_conversation_to_be_a_task){ true }
-          let(:recipient){ 'raceteam+task@127.0.0.1' }
-          let(:to){ 'Race Team Task <raceteam+task@127.0.0.1>, Someone Else <someone@example.com>' }
-          let(:expected_sent_email_to){ ['raceteam+task@127.0.0.1', 'someone@example.com'] }
-          let(:expected_conversation_subject){ "OMG guys I love covered!" }
-          let(:expected_sent_email_subject){ "[✔][RaceTeam] OMG guys I love covered!" }
-          include_examples 'it creates a message in a new conversation'
-
-          context 'and the subject has some other [tag]' do
-            let(:subject){ "[ruby-docs] rvm 1.9.2 has a security hole" }
-            let(:expected_conversation_subject){ "[ruby-docs] rvm 1.9.2 has a security hole" }
-            let(:expected_sent_email_subject){ "[✔][RaceTeam] [ruby-docs] rvm 1.9.2 has a security hole" }
-            let(:expected_smtp_envelope_from){ 'raceteam+task@127.0.0.1' }
-            include_examples 'it creates a message in a new conversation'
-          end
-        end
-
-        context "and the subject contains [task]" do
-          let(:expect_conversation_to_be_a_task){ true }
-          let(:subject){ "[task] pickup some fried chicken" }
-          let(:expected_conversation_subject){ "pickup some fried chicken" }
-          let(:expected_sent_email_subject){ "[✔][RaceTeam] pickup some fried chicken" }
-          let(:expected_smtp_envelope_from){ 'raceteam+task@127.0.0.1' }
-          include_examples 'it creates a message in a new conversation'
-        end
-
-        context "and the subject contains [✔]" do
-          let(:expect_conversation_to_be_a_task){ true }
-          let(:subject){ "[✔] pickup some fried chicken" }
-          let(:expected_conversation_subject){ "pickup some fried chicken" }
-          let(:expected_sent_email_subject){ "[✔][RaceTeam] pickup some fried chicken" }
-          let(:expected_smtp_envelope_from){ 'raceteam+task@127.0.0.1' }
-          include_examples 'it creates a message in a new conversation'
-        end
-
-      end
-
-      context "and the sender is not a covered member" do
-        include_context 'the sender is not a covered member'
-
-        context "and the from address is not a project member" do
-          include_examples 'it bounces the message'
-        end
-
-        context "but the from address is a project member" do
-          include_context 'the from address is a project member'
-          include_examples 'it creates a message in a new conversation'
-        end
-      end
-
-      context "and the sender is a covered member who is not a project member" do
-        include_context 'the sender is a covered member who is not a project member'
-
-        context "and the from address is not a project member" do
-          include_examples 'it bounces the message'
-        end
-
-        context "but the from address is a project member" do
-          include_context 'the from address is a project member'
-          include_examples 'it creates a message in a new conversation'
-        end
-      end
-    end
-
-    context 'and the subject is more than 255 characters' do
-      include_context 'the sender is a project member'
-      include_context 'it creates a message in a new conversation'
-      let(:subject){ 'A☃'*250 }
-      let(:expected_conversation_subject){ subject[0..254] }
-      let(:expected_message_subject     ){ expected_conversation_subject }
-      let(:expected_sent_email_subject  ){ "[RaceTeam] #{expected_message_subject}" }
-    end
-
-    context 'and the subject is all unicode characters' do
-      it 'should create a valid slug for the conversation'
     end
   end
-
 end

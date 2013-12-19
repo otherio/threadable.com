@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe Covered::Conversation do
 
-  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false) }
-  subject{ described_class.new(covered, conversation_record) }
+  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false, creator_id: 8993) }
+  let(:conversation){ described_class.new(covered, conversation_record) }
+  subject{ conversation }
 
   it { should have_constant :Creator      }
   it { should have_constant :Events       }
@@ -16,16 +17,19 @@ describe Covered::Conversation do
   it { should have_constant :Participant  }
 
 
-  it { should delegate(:id         ).to(:conversation_record) }
-  it { should delegate(:to_param   ).to(:conversation_record) }
-  it { should delegate(:slug       ).to(:conversation_record) }
-  it { should delegate(:subject    ).to(:conversation_record) }
-  it { should delegate(:task?      ).to(:conversation_record) }
-  it { should delegate(:created_at ).to(:conversation_record) }
-  it { should delegate(:updated_at ).to(:conversation_record) }
-  it { should delegate(:persisted? ).to(:conversation_record) }
-  it { should delegate(:new_record?).to(:conversation_record) }
-  it { should delegate(:errors     ).to(:conversation_record) }
+  it { should delegate(:id            ).to(:conversation_record) }
+  it { should delegate(:to_param      ).to(:conversation_record) }
+  it { should delegate(:slug          ).to(:conversation_record) }
+  it { should delegate(:subject       ).to(:conversation_record) }
+  it { should delegate(:task?         ).to(:conversation_record) }
+  it { should delegate(:messages_count).to(:conversation_record) }
+  it { should delegate(:project_id    ).to(:conversation_record) }
+  it { should delegate(:creator_id    ).to(:conversation_record) }
+  it { should delegate(:created_at    ).to(:conversation_record) }
+  it { should delegate(:updated_at    ).to(:conversation_record) }
+  it { should delegate(:persisted?    ).to(:conversation_record) }
+  it { should delegate(:new_record?   ).to(:conversation_record) }
+  it { should delegate(:errors        ).to(:conversation_record) }
 
 
   its(:creator     ){ should be_a Covered::Conversation::Creator      }
@@ -57,6 +61,34 @@ describe Covered::Conversation do
         errors = double(:errors, full_messages: ['e1', 'e2'])
         expect(conversation_record).to receive(:errors).and_return(errors)
         expect{ subject.update!(attributes) }.to raise_error Covered::RecordInvalid, 'Conversation invalid: e1 and e2'
+      end
+    end
+  end
+
+  describe 'participant_names' do
+    let(:messages){ double(:messages) }
+    let(:creator){ double(:creator, name: 'Nicole Aptekar') }
+    let :all_messages do
+      [
+        double(:message, creator: double(:creator, name: 'Jared Grippe'), from: 'Jared Grippe <jared@other.io>'),
+        double(:message, creator: nil, from: 'Peter Sellers <peter.sellers@example.com>'),
+        double(:message, creator: double(:creator, name: 'Jared Grippe'), from: 'Martin Van Buren <martin@example.com>'),
+        double(:message, creator: nil, from: nil),
+      ]
+    end
+    before do
+      expect(conversation).to receive(:messages).and_return(messages)
+      conversation.stub creator: creator
+      expect(messages).to receive(:all).and_return(all_messages)
+    end
+
+    it 'returns an array of strings' do
+      expect(conversation.participant_names).to eq ['Jared', 'Peter', 'Jared']
+    end
+    context "when there are no messages" do
+      let(:all_messages){ [] }
+      it 'returns an array with one string of the creator name' do
+        expect(conversation.participant_names).to eq ['Nicole']
       end
     end
   end

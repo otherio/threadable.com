@@ -11,14 +11,6 @@ class IncomingEmail < ActiveRecord::Base
 
   default_scope { order :created_at => :asc }
 
-  validates_presence_of :params
-
-  def processed! successfully
-    update_attributes!(processed: true, failed: !successfully)
-  end
-
-  def reset!
-    update_attributes!(processed: false, failed: false)
-  end
+  validates :params, presence: true
 
 end

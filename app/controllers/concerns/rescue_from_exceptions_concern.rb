@@ -28,7 +28,7 @@ module RescueFromExceptionsConcern
       render_error_page 404
     when *NOT_LOGGED_IN_EXCEPTION
       sign_out!
-      redirect_to sign_in_path(r: request.original_url)
+      redirect_to(request.get? ? sign_in_path(r: request.original_url) : sign_in_path)
     else
       covered.report_exception! exception
       raise exception if Rails.application.config.consider_all_requests_local

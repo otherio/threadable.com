@@ -50,6 +50,7 @@ describe MessagesController do
 
     def request!
       expect_any_instance_of(Covered::Conversation::Messages).to receive(:create).with(
+        creator:        current_user,
         sent_via_web:   true,
         body:           params[:message][:body],
         attachments:    params[:message][:attachments],

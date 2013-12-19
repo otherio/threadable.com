@@ -22,6 +22,7 @@ class Covered::Conversation < Covered::Model
     slug
     subject
     task?
+    messages_count
     project_id
     creator_id
     created_at
@@ -33,7 +34,7 @@ class Covered::Conversation < Covered::Model
 
   let(:project     ){ covered.projects.find_by_id(project_id) }
 
-  let(:creator     ){ Creator.new(self)      }
+  let(:creator     ){ Creator.new(self) if creator_id }
   let(:events      ){ Events.new(self)       }
   let(:messages    ){ Messages.new(self)     }
   let(:recipients  ){ Recipients.new(self)   }
@@ -46,6 +47,19 @@ class Covered::Conversation < Covered::Model
 
   def update! attributes
     update(attributes) or raise Covered::RecordInvalid, "Conversation invalid: #{errors.full_messages.to_sentence}"
+  end
+
+  def participant_names
+    messages = self.messages.all
+    return [creator.name.split(/\s+/).first] if messages.empty? && creator.present?
+    messages.map do |message|
+      case
+      when message.creator.present?
+        message.creator.name.split(/\s+/).first
+      else
+        ExtractNamesFromEmailAddresses.call([message.from]).first
+      end
+    end.compact
   end
 
   def as_json options=nil

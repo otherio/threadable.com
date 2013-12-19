@@ -20,15 +20,18 @@ module Rails::ConsoleMethods
   delegate :current_user, to: :covered
 
   def load_fixtures!
+    Covered.redis.flushdb
     ActiveRecord::FixtureBuilder.load_fixtures!
   end
 
   def reload_fixtures!
+    Covered.redis.flushdb
     ActiveRecord::FixtureBuilder.database.truncate_all_tables!
     load_fixtures!
   end
 
   def build_fixtures!
+    Covered.redis.flushdb
     ActiveRecord::FixtureBuilder.build_fixtures!
   end
 

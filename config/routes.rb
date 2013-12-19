@@ -46,6 +46,8 @@ Covered::Application.routes.draw do
     end
   end
 
+  get '/profile' => 'users#me'
+
   scope '/:project_id', :as => 'project' do
     resources :members, :only => [:index, :create, :destroy], controller: 'project/members'
 
@@ -54,6 +56,11 @@ Covered::Application.routes.draw do
       #   put :mute
       # end
       resources :messages, :only => [:create, :update]
+    end
+
+    resources :held_messages, :only => [:index], controller: 'project/held_messages' do
+      post :accept, on: :member
+      post :reject, on: :member
     end
 
     # resources :invites, :only => [:create]

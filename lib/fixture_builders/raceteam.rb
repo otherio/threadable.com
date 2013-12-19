@@ -22,7 +22,7 @@ FixtureBuilder.build do
 
     # Alice sends a welcome email
     @welcome_message = create_conversation(
-      subject: 'Welcome to our new Covered project!',
+      subject: 'Welcome to our Covered project!',
       text: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!',
     )
   end
@@ -228,5 +228,6 @@ FixtureBuilder.build do
       text:      %(I like foodz. I've been here all night!!!!!),
     )
   end
+
 
 end

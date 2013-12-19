@@ -8,7 +8,6 @@ class Covered::Conversation::Events < Covered::Events
   end
   attr_reader :conversation
 
-
   private
 
   def scope

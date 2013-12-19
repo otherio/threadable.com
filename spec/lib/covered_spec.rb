@@ -39,6 +39,7 @@ describe Covered, :type => :covered do
       Covered::AuthenticationError
       Covered::AuthorizationError
       Covered::Class
+      Covered::Collection
       Covered::Config
       Covered::Conversation
       Covered::Conversation::CreatedEvent
@@ -65,7 +66,8 @@ describe Covered, :type => :covered do
       Covered::IncomingEmail
       Covered::IncomingEmail::Attachments
       Covered::IncomingEmail::Attachments::Create
-      Covered::IncomingEmail::Creator
+      Covered::IncomingEmail::Bounce
+      Covered::IncomingEmail::Deliver
       Covered::IncomingEmail::MailgunRequestToEmail
       Covered::IncomingEmail::Process
       Covered::IncomingEmails
@@ -81,6 +83,7 @@ describe Covered, :type => :covered do
       Covered::Messages::Create
       Covered::Messages::FindByChildHeader
       Covered::MixpanelTracker
+      Covered::Model
       Covered::Project
       Covered::Project::Conversations
       Covered::Project::Member
@@ -92,12 +95,15 @@ describe Covered, :type => :covered do
       Covered::Project::Update
       Covered::Projects
       Covered::Projects::Create
+      Covered::Projects::Update
       Covered::RecordInvalid
       Covered::RecordNotFound
       Covered::SignUp
       Covered::Task
       Covered::Task::AddedDoerEvent
       Covered::Task::CreatedEvent
+      Covered::Task::Doer
+      Covered::Task::DoerEvent
       Covered::Task::Doers
       Covered::Task::DoneEvent
       Covered::Task::Event

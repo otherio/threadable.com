@@ -23,7 +23,7 @@ describe 'model relationships' do
     project.description.should == 'Senior engineering electric race team!'
 
     project.conversations.to_set.should == Set[
-      conversation('Welcome to our new Covered project!'),
+      conversation('Welcome to our Covered project!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
       conversation('install mirrors'),
@@ -92,9 +92,9 @@ describe 'model relationships' do
     alice.email_address.should == 'alice@ucsd.covered.io'
     alice.project_memberships.count.should == 1
     alice.projects.should == [project]
-    alice.messages.count.should == 14
+    alice.messages.count.should == 3
     alice.conversations.to_set.should == Set[
-      conversation('Welcome to our new Covered project!'),
+      conversation('Welcome to our Covered project!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
       conversation('install mirrors'),
@@ -118,7 +118,7 @@ describe 'model relationships' do
       task('trim body panels'),
     ]
 
-    conversation = alice.conversations.where(subject: 'Welcome to our new Covered project!').first
+    conversation = alice.conversations.where(subject: 'Welcome to our Covered project!').first
     conversation.messages.count.should == 2
     conversation.should_not be_a_task
     conversation.project.should == project

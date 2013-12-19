@@ -13,7 +13,7 @@ describe Covered::CurrentUser do
   its(:persisted?   ){ should eq user_record.persisted?   }
   its(:avatar_url   ){ should eq user_record.avatar_url   }
 
-  its(:inspect){ should eq %(#<Covered::CurrentUser user_id: #{user_record.id}>) }
+  its(:inspect){ should eq %(#<Covered::CurrentUser id: #{user_record.id}, email_address: #{user_record.email_address.inspect}, slug: #{user_record.slug.inspect}>) }
 
   its(:errors){ should be_a user_record.errors.class }
 

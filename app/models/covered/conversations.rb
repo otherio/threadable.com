@@ -13,7 +13,7 @@ class Covered::Conversations < Covered::Collection
   end
 
   def find_by_id! id
-    find_by_id(id) or raise Covered::RecordNotFound, "unable to find Conversation with id #{slug.inspect}"
+    find_by_id(id) or raise Covered::RecordNotFound, "unable to find Conversation with id #{id.inspect}"
   end
 
   def find_by_slug slug
@@ -24,10 +24,9 @@ class Covered::Conversations < Covered::Collection
     find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find Conversation with slug #{slug.inspect}"
   end
 
-  def newest
+  def latest
     conversation_for (scope.first or return)
   end
-  alias_method :latest, :newest
 
   def oldest
     conversation_for (scope.last or return)
@@ -47,7 +46,7 @@ class Covered::Conversations < Covered::Collection
   private
 
   def scope
-    ::Conversation.all
+    ::Conversation.order('conversations.updated_at DESC')
   end
 
   def conversation_for conversation_record

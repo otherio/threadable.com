@@ -9,10 +9,9 @@ class Admin::IncomingEmailsController < ApplicationController
     @page = (params[:page] || 0).to_i
     @filter = params[:filter]
     conditions = case @filter
-    when 'all';                     {}
-    when 'not-processed';           {processed: false}
-    when 'processed-succesfully';   {processed: true, failed: false}
-    when 'processed-unsuccesfully'; {processed: true, failed: true}
+    when 'all';                {}
+    when 'not-processed';      {processed: false}
+    when 'processed';          {processed: true}
     end
     @incoming_emails = covered.incoming_emails.page(@page, conditions)
   end
@@ -20,14 +19,6 @@ class Admin::IncomingEmailsController < ApplicationController
   # GET /admin/projects/:id
   def show
     @incoming_email = covered.incoming_emails.find_by_id!(params[:id])
-  end
-
-  # POST /admin/projects/:id
-  def retry
-    @incoming_email = covered.incoming_emails.find_by_id!(params[:id])
-    @incoming_email.reset!
-    ProcessIncomingEmailWorker.perform_async(covered.env, @incoming_email.id)
-    redirect_to request.referer
   end
 
 end

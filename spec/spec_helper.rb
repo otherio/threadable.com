@@ -15,6 +15,7 @@ require 'factories'
 require 'rails/widgets/rspec'
 require 'webmock/rspec'
 require 'sidekiq/testing'
+require 'shoulda-matchers'
 
 Sidekiq::Testing.fake!
 

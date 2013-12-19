@@ -110,12 +110,18 @@ describe "covered", fixtures: false do
       expect( sent_emails.map(&:to).flatten.to_set ).to eq Set["nicole@other.io", "aaron@other.io", "ian@other.io"]
       sent_emails.clear
 
-      welcome_conversation = other.conversations.create! subject: 'Welcome to the new other mailing list'
+      welcome_conversation = other.conversations.create!(
+        creator: current_user,
+        subject: 'Welcome to the new other mailing list',
+      )
       expect( welcome_conversation.class       ).to eq Covered::Conversation
       expect( welcome_conversation.slug        ).to eq "welcome-to-the-new-other-mailing-list"
       expect( welcome_conversation.creator_id  ).to eq current_user.id
       expect( welcome_conversation.creator     ).to eq current_user
-      msg = welcome_conversation.messages.create! body: 'Hey guys. Covered is amazing.'
+      msg = welcome_conversation.messages.create!(
+        creator: current_user,
+        body: 'Hey guys. Covered is amazing.',
+      )
 
       assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "conversation_message", other.id, msg.id, jared.id]
       assert_background_job_enqueued     SendEmailWorker, args: [covered.env, "conversation_message", other.id, msg.id, nicole.id]
@@ -165,7 +171,10 @@ describe "covered", fixtures: false do
 
       expect( htp.members ).to include aaron
 
-      fat_cops = htp.conversations.create! subject: 'fat cops are so squishy'
+      fat_cops = htp.conversations.create!(
+        creator: current_user,
+        subject: 'fat cops are so squishy',
+      )
       expect( fat_cops.class ).to eq Covered::Conversation
       expect( fat_cops.slug  ).to eq "fat-cops-are-so-squishy"
       expect( fat_cops.task? ).to be_false
@@ -180,7 +189,11 @@ describe "covered", fixtures: false do
       fat_cops = htp.conversations.find_by_slug! fat_cops.slug
       expect( fat_cops.class ).to eq Covered::Conversation
 
-      msg1 = fat_cops.messages.create! html: "<p>OMG I love their belly fat</p>", sent_via_web: true
+      msg1 = fat_cops.messages.create!(
+        creator: current_user,
+        html: "<p>OMG I love their belly fat</p>",
+        sent_via_web: true
+      )
       expect( msg1.class             ).to eq Covered::Message
       expect( msg1.subject           ).to eq fat_cops.subject
       expect( msg1.body              ).to eq "<p>OMG I love their belly fat</p>"
@@ -207,6 +220,7 @@ describe "covered", fixtures: false do
 
       date_header = 5.minutes.ago.rfc2822
       msg2 = fat_cops.messages.create!(
+        creator:           current_user,
         sent_via_web:      true,
         message_id_header: '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>',
         references_header: msg1.message_id_header,

@@ -12,7 +12,7 @@ describe Covered::Conversations do
   end
 
   before do
-    ::Conversation.stub(all: all_conversation_records)
+    Conversation.stub(:order).with('conversations.updated_at DESC').and_return(all_conversation_records)
   end
 
   its(:inspect){ should eq "#<Covered::Conversations>" }
@@ -30,7 +30,7 @@ describe Covered::Conversations do
 
   describe 'all_with_participants' do
     it 'returns all the conversations with participants eager loaded' do
-      expect(Conversation.all).to receive(:includes).with(:participants).and_return(all_conversation_records)
+      expect(all_conversation_records).to receive(:includes).with(:participants).and_return(all_conversation_records)
       all_conversation = conversations.all_with_participants
       expect(all_conversation.size).to eq 5
       all_conversation.each_with_index do |conversation, i|
@@ -39,30 +39,5 @@ describe Covered::Conversations do
       end
     end
   end
-
-  describe 'find_by_id' do
-    it 'needs tests'
-  end
-
-  describe 'find_by_id' do
-    it 'needs tests'
-  end
-
-  describe 'find_by_slug' do
-    it 'needs tests'
-  end
-
-  describe 'find_by_slug' do
-    it 'needs tests'
-  end
-
-  describe 'newest' do
-    it 'needs tests'
-  end
-
-  describe 'oldest' do
-    it 'needs tests'
-  end
-
 
 end

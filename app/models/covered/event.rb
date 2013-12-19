@@ -29,7 +29,7 @@ class Covered::Event < Covered::Model
   end
 
   def actor
-    @actor ||= Covered::User.new(covered, event_record.user)
+    @actor ||= Covered::User.new(covered, event_record.user) if actor_id
   end
 
   def conversation

@@ -12,125 +12,141 @@ class Covered::IncomingEmail < Covered::Model
     to_param
     params
     processed?
-    failed?
-    creator_id
-    creator_id=
-    project_id
-    project_id=
-    conversation_id
-    conversation_id=
-    message_id
-    message_id=
-    parent_message_id
-    parent_message_id=
-    message_id
-    message_id=
-    reset!
+    bounced?
+    held?
     created_at
     errors
     persisted?
+    save!
   }, to: :incoming_email_record
 
-  def creator
-    Creator.new(self) if creator_id
+  def reload!
+    incoming_email_record.reload
+    self
   end
 
-  def attachments
-    Attachments.new(self)
+  def processed!
+    incoming_email_record.processed = true
+    incoming_email_record.save!
   end
 
-  def project
-    return unless project_id
-    @project ||= Covered::Project.new(covered, incoming_email_record.project)
+  def bounced!
+    incoming_email_record.bounced = true
+    incoming_email_record.save!
   end
 
-  def conversation
-    return unless conversation_id
-    @conversation ||= Covered::Conversation.new(covered, incoming_email_record.conversation)
+  def held!
+    incoming_email_record.held = true
+    incoming_email_record.save!
   end
 
-  def message
-    return unless message_id
-    @message ||= Covered::Message.new(covered, incoming_email_record.message)
+  def process!
+    Process.call(self) unless processed?
   end
 
-  def parent_message
-    return unless parent_message_id
-    @parent_message ||= Covered::Message.new(covered, incoming_email_record.parent_message)
+  def deliver!
+    Deliver.call(self) unless delivered?
   end
 
-  def reply?
-    !!parent_message_id
+  def hold!
+    return if held?
+    covered.emails.send_email(:message_held_notice, self)
+    held!
   end
 
-  def task?
-    conversation.try(:task?)
+  def unhold!
+    incoming_email_record.held = false
+    incoming_email_record.save!
   end
 
-  let :sender_email_address do
-    params["sender"]
+  def bounce!
+    Bounce.call(self) unless bounced?
   end
 
-  let :from_email_addresses do
-    (Array(mail_message.from) + [sender_email_address]).compact
+  def accept!
+    deliver!
+    covered.emails.send_email(:message_accepted_notice, self)
   end
 
-  def from_email_address
-    params["from"]
+  def reject!
+    covered.emails.send_email(:message_rejected_notice, self)
+    incoming_email_record.delete
   end
-  alias_method :from, :from_email_address
 
-  def recipient_email_address
-    params["recipient"]
+  def creator_is_a_project_member?
+    return false if project.nil? || creator.nil?
+    project.members.include?(creator)
   end
+
+  # delegated methods:
+  #   processed?
+  #   bounced?
+  #   held?
+
+  def delivered?
+    processed? && !held? && !bounced? && message.present?
+  end
+
+  def bounceable?
+    project.nil?
+  end
+
+  def holdable?
+    !bounceable? && (parent_message.nil? && !creator_is_a_project_member?)
+  end
+
+  def deliverable?
+    !bounceable? && !holdable?
+  end
+
+
 
   def subject
-    params["subject"]
+    params['subject']
   end
 
-  def body_plain
-    params["body-plain"]
-  end
-
-  def body_html
-    params["body-html"]
-  end
-
-  def stripped_html
-    params["stripped-html"]
-  end
-
-  def stripped_plain
-    params["stripped-text"]
-  end
-
-  def message_id_header
+  def message_id
     params['Message-Id']
   end
 
-  def references_header
-    mail_message.header['References'].to_s
+  def from
+    params['from']
   end
 
-  def date_header
-    mail_message.header['Date'].to_s
+  def envelope_from
+    params['X-Envelope-From']
   end
 
-  def to_header
-    message_headers_as_hash['To']
+  def sender
+    params['sender']
   end
 
-  def cc_header
-    message_headers_as_hash['Cc']
+  def recipient
+    params['recipient']
   end
 
-  delegate *%w{header multipart?}, to: :mail_message
-
-  class MailgunRequestToEmail < ::Incoming::Strategies::Mailgun
-    setup :api_key => Covered.config('mailgun')['key']
+  def to
+    params['To']
   end
-  def mail_message
-    @mail_message ||= MailgunRequestToEmail.new(self).message
+
+  def cc
+    params['Cc']
+  end
+
+  def content_type
+    params['Content-Type']
+  end
+
+  def date
+    @date ||= Time.parse(params['Date']).in_time_zone
+  end
+
+  def in_reply_to
+    params['In-Reply-To']
+  end
+
+  def references
+    params['References']
   end
 
   def message_headers
@@ -141,20 +157,162 @@ class Covered::IncomingEmail < Covered::Model
     @message_headers_as_hash ||= Hash[message_headers]
   end
 
-  def process!
-    Process.call(self)
+  def body_html
+    params['body-html']
   end
+
+  def body_plain
+    params['body-plain']
+  end
+
+  def stripped_html
+    params['stripped-html']
+  end
+
+  def stripped_plain
+    params['stripped-text']
+  end
+
+
+
+  def from_email_addresses
+    ExtractEmailAddresses.call(from, envelope_from, sender).uniq
+  end
+
+  def find_project!
+    return self if project
+    self.project = covered.projects.find_by_email_address(recipient)
+    return self
+  end
+
+  # find a message that's message id matches this incoming email's message id
+  def find_message!
+    return self if message || project.nil?
+    self.message = project.messages.find_by_message_id_header(message_id)
+    return self
+  end
+
+  def find_creator!
+    return self if creator
+    users = covered.users.find_by_email_addresses(from_email_addresses)
+    self.creator = users.find{|user| project.members.include?(user) } if project.present?
+    self.creator ||= users.compact.first
+    return self
+  end
+
+  def find_parent_message!
+    return self if parent_message || project.nil?
+    self.parent_message = project.messages.find_by_child_message_header(params)
+    return self
+  end
+
+  def find_conversation!
+    return self if conversation
+    return find_parent_message!
+  end
+
+  # associations
+
+  def attachments
+    @attachments ||= Attachments.new(self)
+  end
+
+  def project= project
+    if project.try(:project_record).present?
+      @project = project
+      incoming_email_record.project = project.project_record
+    else
+      @project = incoming_email_record.project = nil
+    end
+  end
+
+  def project
+    return unless incoming_email_record.project
+    @project ||= Covered::Project.new(covered, incoming_email_record.project)
+  end
+
+  def message= message
+    if message.try(:message_record).present?
+      @message = message
+      incoming_email_record.message = message.message_record
+      self.creator        = message.creator
+      self.conversation   = message.conversation
+      self.parent_message = message.parent_message
+    else
+      @message = incoming_email_record.message = nil
+    end
+  end
+
+  def message
+    return unless incoming_email_record.message
+    @message ||= Covered::Message.new(covered, incoming_email_record.message)
+  end
+
+  def creator= creator
+    @creator = creator
+    incoming_email_record.creator = creator.try(:user_record)
+  end
+
+  def creator
+    return unless incoming_email_record.creator
+    @creator ||= Covered::User.new(covered, incoming_email_record.creator)
+  end
+
+  def parent_message= parent_message
+    if parent_message.try(:message_record).present?
+      if self.conversation && parent_message.conversation != self.conversation
+        raise  ArgumentError, 'invalid parent message. Conversations are not the same'
+      end
+      @parent_message = parent_message
+      incoming_email_record.parent_message = parent_message.message_record
+      self.conversation ||= parent_message.conversation
+    else
+      @parent_message = incoming_email_record.parent_message = nil
+    end
+  end
+
+  def parent_message
+    return unless incoming_email_record.parent_message
+    @parent_message ||= Covered::Message.new(covered, incoming_email_record.parent_message)
+  end
+
+  def conversation= conversation
+    @conversation = conversation
+    incoming_email_record.conversation = conversation.try(:conversation_record)
+  end
+
+  def conversation
+    return unless incoming_email_record.conversation
+    @conversation ||= Covered::Conversation.new(covered, incoming_email_record.conversation)
+  end
+
+
+
+
+  delegate *%w{header multipart?}, to: :mail_message
+
+  class MailgunRequestToEmail < ::Incoming::Strategies::Mailgun
+    setup :api_key => Covered.config('mailgun')['key']
+  end
+  def mail_message
+    @mail_message ||= MailgunRequestToEmail.new(self).message
+  end
+
+
+
 
   def inspect
     details = {
       id:              id,
       processed:       processed?,
-      failed:          failed?,
+      bounced:         bounced?,
+      held:            held?,
+      delivered:       delivered?,
       from:            from,
-      creator_id:      creator_id,
-      project_id:      project_id,
-      conversation_id: conversation_id,
-      message_id:      message_id,
+      creator_id:      incoming_email_record.creator_id,
+      project_id:      incoming_email_record.project_id,
+      conversation_id: incoming_email_record.conversation_id,
+      message_id:      incoming_email_record.message_id,
     }.map{|k,v| "#{k}: #{v.inspect}"}.join(', ')
     %(#<#{self.class} #{details}>)
   end

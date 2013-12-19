@@ -26,7 +26,7 @@ describe Covered::User do
   its(:persisted?    ){ should eq user_record.persisted?    }
   its(:avatar_url    ){ should eq user_record.avatar_url    }
 
-  its(:inspect       ){ should eq %(#<Covered::User user_id: #{user_record.id}>) }
+  its(:inspect       ){ should eq %(#<Covered::User id: #{user_record.id}, email_address: #{user_record.email_address.inspect}, slug: #{user_record.slug.inspect}>) }
 
   it { should delegate(:id           ).to(:user_record) }
   it { should delegate(:to_param     ).to(:user_record) }

@@ -18,13 +18,12 @@ class User < ActiveRecord::Base
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
   alias_method :to_param, :slug
 
-  default_scope -> { includes(:email_addresses) }
+  default_scope { includes(:email_addresses) }
 
   scope :with_email_address, ->(email_address){
     readonly(false). \
     joins(:email_addresses). \
-    where(email_addresses: {address: email_address}). \
-    limit(1)
+    where(email_addresses: {address: email_address})
   }
 
   def self.find_by_email_address email_address

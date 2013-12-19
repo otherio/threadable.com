@@ -2,7 +2,7 @@ class Covered::Conversations::Create < MethodObject
 
   OPTIONS = Class.new OptionsHash do
     required :project, :subject
-    optional :creator_id
+    optional :creator, :creator_id
     optional :task, default: false
   end
 
@@ -27,7 +27,7 @@ class Covered::Conversations::Create < MethodObject
   def create_conversation!
     @conversation_record = scope.create(
       subject:    @options.subject,
-      creator_id: @options.creator_id || @covered.current_user_id,
+      creator_id: @options.creator.try(:id) || @options.creator_id,
     )
   end
 
@@ -36,7 +36,7 @@ class Covered::Conversations::Create < MethodObject
       type: "#{@conversation_record.class}::CreatedEvent",
       conversation_id: @conversation_record.id,
       project_id: @project.id,
-      user_id: @options.creator_id || @covered.current_user_id,
+      user_id: @options.creator.try(:id) || @options.creator_id,
     )
   end
 

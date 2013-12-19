@@ -1,4 +1,4 @@
-class Covered::Attachment
+class Covered::Attachment < Covered::Model
 
   def initialize covered, attachment_record
     @covered, @attachment_record = covered, attachment_record

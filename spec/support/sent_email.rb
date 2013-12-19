@@ -91,6 +91,10 @@ module RSpec::Support::SentEmail
       Nokogiri.parse(html_content.to_s)
     end
 
+    def text
+      text_content
+    end
+
     def links text_content=nil
       links = html.css('a[href]')
       links = links.find_all{|link| link.text == text_content } if text_content.present?

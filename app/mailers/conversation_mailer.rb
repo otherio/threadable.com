@@ -9,6 +9,8 @@ class ConversationMailer < Covered::Mailer
     @conversation = @message.conversation
     @task = @conversation if @conversation.task?
 
+    @project_email_address = @task ? @project.formatted_task_email_address : @project.formatted_email_address
+
     subject_tag = @project.subject_tag
     buffer_length = 100 - @message.body_plain.length
     buffer_length = 0 if buffer_length < 0
@@ -37,6 +39,7 @@ class ConversationMailer < Covered::Mailer
 
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
+      to_addresses = correct_project_email_address(to_addresses)
       to_addresses = filter_out_project_members(to_addresses)
       to_addresses.map(&:to_s).join(', ').presence || nil
     end
@@ -46,7 +49,7 @@ class ConversationMailer < Covered::Mailer
     cc = begin
       cc_addresses = Mail::AddressList.new(@message.cc_header.to_s).addresses
       cc_addresses = filter_out_project_members(cc_addresses)
-      cc_addresses = filter_out_project_email_address(cc_addresses) unless to
+      cc_addresses = to.present? ? correct_project_email_address(cc_addresses) : filter_out_project_email_address(cc_addresses)
       cc_addresses << @message.from if !sender_is_a_member && @message.from.present?
       cc_addresses.map(&:to_s).join(', ').presence || nil
     end
@@ -79,21 +82,27 @@ class ConversationMailer < Covered::Mailer
   private
 
   def project_member_emails_addresses
-    @project_member_emails_addresses ||= @project.members.email_addresses
+    @project_member_emails_addresses ||= @project.members.email_addresses.map(&:address)
   end
 
   def filter_out_project_members email_addresses
     email_addresses.select do |email_address|
-      project_member_emails_addresses.none? do |member_email_address|
-        member_email_address.address == email_address.address
-      end
+      project_member_emails_addresses.exclude? email_address.address
     end
   end
 
   def filter_out_project_email_address email_addresses
     email_addresses.select do |email_address|
-      [@project.task_email_address, @project.email_address].none? do |project_email_address|
-        project_email_address == email_address.address
+      @project.email_addresses.exclude? email_address.address
+    end
+  end
+
+  def correct_project_email_address email_addresses
+    email_addresses.map do |email_address|
+      if @project.email_addresses.include? email_address.address
+        Mail::Address.new(@project_email_address)
+      else
+        email_address
       end
     end
   end

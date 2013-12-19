@@ -7,6 +7,7 @@ class Covered::User
   end
 
   def initialize covered, user_record
+    raise ArgumentError, 'user record cannot be nil' if user_record.nil?
     @covered, @user_record = covered, user_record
   end
   attr_reader :covered, :user_record
@@ -92,8 +93,8 @@ class Covered::User
   end
 
   def inspect
-    %(#<#{self.class} user_id: #{id}>)
-    # %(#<#{self.class} id: #{id}, email_address: #{email_address.inspect}, slug: #{slug.inspect}>)
+    # %(#<#{self.class} user_id: #{id}>)
+    %(#<#{self.class} id: #{id}, email_address: #{email_address.inspect}, slug: #{slug.inspect}>)
   end
 
 end

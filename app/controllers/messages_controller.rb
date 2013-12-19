@@ -11,6 +11,7 @@ class MessagesController < ApplicationController
     end
 
     message = conversation.messages.create(
+      creator:        current_user,
       sent_via_web:   true,
       body:           body,
       attachments:    attachments,

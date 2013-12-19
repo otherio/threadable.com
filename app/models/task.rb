@@ -6,7 +6,7 @@ class Task < Conversation
   validates_presence_of :position
 
   default_scopes.clear
-  default_scope -> { unscoped.order('conversations.position ASC') }
+  default_scope { unscoped.order('conversations.position ASC') }
 
   acts_as_list :scope => :project
 

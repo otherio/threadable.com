@@ -1,10 +1,7 @@
 module RSpec::Support::BackgroundJobs
 
   def background_job_workers
-    [
-      SendEmailWorker,
-      ProcessIncomingEmailWorker,
-    ]
+    Covered::Worker.descendants
   end
 
   def background_jobs

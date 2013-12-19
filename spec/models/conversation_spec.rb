@@ -6,7 +6,7 @@ describe Conversation do
 
   context "slug" do
     let :conversation do
-      described_class.create(subject: 'foo bar Baz!')
+      described_class.create(project_id: 1, subject: 'foo bar Baz!')
     end
 
     it "has a correct slug" do

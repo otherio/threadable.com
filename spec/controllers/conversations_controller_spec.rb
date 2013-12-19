@@ -92,13 +92,16 @@ describe ConversationsController do
 
       before do
         expect_any_instance_of(Covered::Project::Conversations).to receive(:create).
-          with(subject: subject).
-          and_return(conversation)
+          with(
+            creator: current_user,
+            subject: subject,
+          ).and_return(conversation)
 
         if conversation.persisted?
           messages_double = double(:messages)
           expect(conversation).to receive(:messages).and_return(messages_double)
           expect(messages_double).to receive(:create).with(
+            creator: current_user,
             sent_via_web: true,
             html: body,
             attachments: attachments

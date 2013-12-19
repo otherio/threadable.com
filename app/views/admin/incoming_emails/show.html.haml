@@ -1,10 +1,6 @@
 %ul.inline.pull-right
   %li= link_to 'incoming emails', admin_incoming_emails_path
   %li= link_to 'details', admin_incoming_email_path(@incoming_email)
-  %li= link_to 'retry', admin_retry_incoming_email_path(@incoming_email), method: :post if @incoming_email.failed?
-
-
-
 
 :sass
   .incoming-email
@@ -33,8 +29,11 @@
       %th Processed?
       %td= @incoming_email.processed?
     %tr
-      %th Failed?
-      %td= @incoming_email.failed?
+      %th Bounced?
+      %td= @incoming_email.bounced?
+    %tr
+      %th Held?
+      %td= @incoming_email.held?
     %tr
       %th Id
       %td= @incoming_email.id
@@ -43,13 +42,13 @@
       %td{title: @incoming_email.created_at.to_s}= time_ago_in_words @incoming_email.created_at
     %tr
       %th Recipient email address
-      %td= @incoming_email.recipient_email_address
+      %td= @incoming_email.recipient
     %tr
       %th Sender email address
-      %td= @incoming_email.sender_email_address
+      %td= @incoming_email.sender
     %tr
       %th From email address
-      %td= @incoming_email.from_email_address
+      %td= @incoming_email.from
     %tr
       %th Subject
       %td= @incoming_email.subject
