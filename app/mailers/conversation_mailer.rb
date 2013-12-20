@@ -34,8 +34,8 @@ class ConversationMailer < Covered::Mailer
     reply_to_address = @task ? @project.formatted_task_email_address : @project.formatted_email_address
 
     @message_url = project_conversation_url(@project, @conversation, anchor: "message-#{@message.id}")
-    @new_task_url = "mailto:#{URI::encode(@project.formatted_task_email_address)}?subject=[✔][#{@project.subject_tag}]+"
-    @new_conversation_url = "mailto:#{URI::encode(@project.formatted_email_address)}?subject=[#{@project.subject_tag}]+"
+    @new_task_url = "mailto:#{URI::encode(@project.formatted_task_email_address)}"
+    @new_conversation_url = "mailto:#{URI::encode(@project.formatted_email_address)}"
 
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
