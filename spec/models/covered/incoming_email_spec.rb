@@ -11,6 +11,8 @@ describe Covered::IncomingEmail do
   end
   let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params) }
   let(:incoming_email){ described_class.new(covered, incoming_email_record) }
+  let(:project){ double(:project, members: double(:members), subject_tag: 'foo') }
+
   subject{ incoming_email }
 
   it{ should have_constant :Attachments }
@@ -203,8 +205,17 @@ describe Covered::IncomingEmail do
       it { should be_true }
     end
     context 'when project is not nil' do
-      before{ expect(incoming_email).to receive(:project).and_return(5) }
-      it { should be_false }
+      before{ expect(incoming_email).to receive(:project).and_return(project) }
+
+      context 'when the subject is valid' do
+        before { expect(incoming_email).to receive(:subject_valid?).and_return(true) }
+        it { should be_false }
+      end
+
+      context 'when the subject is invalid' do
+        before { expect(incoming_email).to receive(:subject_valid?).and_return(false) }
+        it { should be_true }
+      end
     end
   end
 
@@ -248,6 +259,41 @@ describe Covered::IncomingEmail do
         before{ expect(incoming_email).to receive(:holdable?).and_return(false) }
         it { should be_true }
       end
+    end
+  end
+
+  describe '#subject_valid?' do
+    let(:subject_line) { '[task] i am a subject line' }
+    let(:body) { 'a message body' }
+
+    subject{ incoming_email.subject_valid? }
+
+    before do
+      incoming_email.stub(:subject).and_return(subject_line)
+      incoming_email.stub(:stripped_plain).and_return(body)
+      incoming_email.stub(:project).and_return(double(:project, subject_tag: 'subject-tag'))
+    end
+
+    it { should be_true }
+
+    context 'with a subject containing only things that are stripped' do
+      let(:subject_line) { '[task][subject-tag] '}
+      context 'with a plaintext body' do
+        let(:body) { "I've got a lovely bunch of coconuts, here they are standing in a row" }
+        it { should be_true }
+      end
+
+      context 'with a plaintext body containing no words' do
+        let(:body) { ' ' }
+        it { should be_false }
+      end
+    end
+
+    context 'with a blank subject line and a blank body' do
+      let(:subject_line) { '' }
+      let(:body) { '' }
+
+      it { should be_false }
     end
   end
 

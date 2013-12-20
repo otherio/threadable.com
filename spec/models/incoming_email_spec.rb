@@ -3,7 +3,8 @@ require 'spec_helper'
 describe IncomingEmail do
 
   let(:attributes){ {params:{love:'it'}} }
-  subject{ described_class.create(attributes) }
+  let(:incoming_email) { described_class.create(attributes) }
+  subject{ incoming_email }
 
   it { should be_persisted }
   it { should_not be_processed }
@@ -17,5 +18,4 @@ describe IncomingEmail do
   it { should have_and_belong_to_many :attachments }
 
   it { should validate_presence_of :params }
-
 end

@@ -88,7 +88,7 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def bounceable?
-    project.nil?
+    project.nil? || !subject_valid?
   end
 
   def holdable?
@@ -99,6 +99,9 @@ class Covered::IncomingEmail < Covered::Model
     !bounceable? && !holdable?
   end
 
+  def subject_valid?
+    PrepareEmailSubject.call(project, self).present?
+  end
 
 
   def subject

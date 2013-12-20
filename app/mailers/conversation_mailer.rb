@@ -16,7 +16,7 @@ class ConversationMailer < Covered::Mailer
     buffer_length = 0 if buffer_length < 0
     @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
-    subject = StripEmailSubject.call(@project, @message.subject)
+    subject = PrepareEmailSubject.call(@project, @message)
     subject = "[#{subject_tag}] #{subject}"
     subject = "[✔]#{subject}" if @task
 

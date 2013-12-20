@@ -25,11 +25,13 @@ describe Covered::IncomingEmail::Deliver do
       from:           double(:incoming_email_from),
       body_plain:     double(:incoming_email_body_plain),
       body_html:      double(:incoming_email_body_html),
-      stripped_plain: double(:incoming_email_stripped_plain),
+      stripped_plain: 'i am a message body',
       stripped_html:  double(:incoming_email_stripped_html),
     )
   end
   let(:message){ double :message }
+
+  let(:expected_subject) { subject[0..254] }
 
   before do
     expect(Covered).to receive(:transaction).and_yield
@@ -58,7 +60,7 @@ describe Covered::IncomingEmail::Deliver do
       date_header:       'rfc2822 version of date',
       to_header:         incoming_email.to,
       cc_header:         incoming_email.cc,
-      subject:           subject[0..254],
+      subject:           expected_subject,
       parent_message:    incoming_email.parent_message,
       from:              incoming_email.from,
       body_plain:        'stripped incoming_email.body_plain',
@@ -153,6 +155,21 @@ describe Covered::IncomingEmail::Deliver do
         call!
       end
     end
+
+    context 'and the subject is blank' do
+      let(:subject){ '' }
+      before do
+        expect(incoming_email.project.conversations).to receive(:create!).with(
+          subject:    'i am a message body',
+          creator_id: 54,
+        ).and_return(conversation)
+      end
+
+      it 'saves off the attachments, and creates a conveesation and a conversation message' do
+        call!
+      end
+    end
+
 
   end
 

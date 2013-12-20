@@ -285,8 +285,8 @@ describe "processing incoming emails 2" do
 
 
   context "when the recipients do not match a project" do
-    let(:recipient)    { 'poopnozel@covered.io' }
-    let(:to)           { 'Poop Nozel <poopnozel@covered.io>' }
+    let(:recipient)    { 'poopnozzle@covered.io' }
+    let(:to)           { 'Poop Nozzle <poopnozzle@covered.io>' }
 
     let(:expected_project)       { nil }
     let(:expected_parent_message){ nil }
@@ -305,6 +305,34 @@ describe "processing incoming emails 2" do
     let(:expected_project)      { covered.projects.find_by_slug!('raceteam') }
     let(:expected_sent_email_to){ [recipient] }
     let(:expected_sent_email_cc){ '' }
+
+    context 'the subject contains only stuff that is stripped and spaces' do
+      let(:subject) { '[RaceTeam] ' }
+
+      context 'and the body is present' do
+        let(:stripped_text) { "Just you, sir? Don't worry, Master Wayne. It takes a little time to get back in the swing of things." }
+        let(:expected_sent_email_subject) { "[RaceTeam] Just you, sir? Don't worry, Master Wayne. It..." }
+        let(:expected_message_subject) { subject }
+
+        it 'copies the first 8 words of the body to the subject' do
+          validate! :delivered
+        end
+      end
+
+      context 'and the body is blank' do
+        let(:recipient){ expected_project.email_address }
+        let(:to)       { expected_project.formatted_email_address }
+
+        let(:stripped_text) { '' }
+
+        let(:expected_parent_message){ nil }
+        let(:expected_conversation)  { nil }
+        let(:expected_creator)       { nil }
+        it 'bounces the incoming email' do
+          validate! :bounced
+        end
+      end
+    end
 
     context 'a parent message cannot be found' do
       let(:in_reply_to){ '' }

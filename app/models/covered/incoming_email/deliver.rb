@@ -27,11 +27,10 @@ class Covered::IncomingEmail::Deliver < MethodObject
   TASK_SUBJECT_PREFIX_REGEXP = /^\[(✔|task)\]\s*/i
   TASK_RECIPIENT_REGEXP = /\+task\b/i
   def create_conversation!
-    subject = StripEmailSubject.call(@incoming_email.project, @incoming_email.subject)
     is_task = @incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP || @incoming_email.recipient =~ TASK_RECIPIENT_REGEXP
     collection = (is_task ? @incoming_email.project.tasks : @incoming_email.project.conversations)
     @incoming_email.conversation = collection.create!(
-      subject:    subject[0..254],
+      subject:    subject,
       creator_id: @incoming_email.creator.try(:id),
     )
   end
@@ -53,6 +52,10 @@ class Covered::IncomingEmail::Deliver < MethodObject
       stripped_html:     strip_user_specific_content(@incoming_email.stripped_html),
       attachments:       @incoming_email.attachments,
     )
+  end
+
+  def subject
+    PrepareEmailSubject.call(@incoming_email.project, @incoming_email)
   end
 
   def save!
