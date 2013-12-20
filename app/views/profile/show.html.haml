@@ -1,0 +1,52 @@
+.row
+  .span4.offset2
+    .well
+      %h2 Profile
+      = simple_form_for current_user, url: current_url do |f|
+        = f.input :name
+        = f.submit :Update, class: 'btn btn-primary'
+    .well
+      %h2 Password
+      = simple_form_for current_user, url: current_url do |f|
+        = f.input :current_password
+        = f.input :password
+        = f.input :password_confirmation
+        = f.submit 'Change password', class: 'btn btn-primary'
+
+  .span5
+    .well
+      %h2 Email addresses
+
+      %small Messages from any of these addresses will be associated with you, however we will only ever email you at your primary email address.
+
+      %table.email-addresses.table
+        %thead
+          %tr
+            %th.address Address
+            %th.primary Primary?
+
+        %tbody
+          - current_user.email_addresses.all.sort_by(&:address).each do |email_address|
+            %tr
+              %td= email_address.address
+              %td
+                - if email_address.primary?
+                  primary
+                - else
+                  = link_to 'make primary', email_address_path(email_address:{ address: email_address.address, primary:1 }), data:{method:'patch'}
+
+      = form_for current_user.email_addresses.new, url: email_addresses_path, html: { class: 'form-inline' } do |f|
+        = f.text_field :address, placeholder: 'my.email@example.com', type: 'email', required: true
+        = f.submit :Add, class: 'btn btn-primary', value: 'Add'
+
+      %small
+        * If you need to delete an email address from your account please email us at
+        = mail_to 'support@covered.io'
+
+
+:sass
+  table.email-addresses
+    td, th
+      white-space: nowrap
+  .well
+    overflow: hidden

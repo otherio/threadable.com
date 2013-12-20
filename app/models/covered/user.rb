@@ -50,6 +50,11 @@ class Covered::User
     "#{name} <#{email_address}>"
   end
 
+  def reload
+    user_record.reload
+    self
+  end
+
   def confirm!
     !!update(confirmed_at: Time.now)
   end
@@ -66,6 +71,19 @@ class Covered::User
     update(attributes)
     user_record.errors.empty? or
     raise Covered::RecordInvalid, "User invalid: #{user_record.errors.full_messages.to_sentence}"
+  end
+
+  def change_password attributes
+    current_password      = attributes.fetch(:current_password)
+    password              = attributes.fetch(:password)
+    password_confirmation = attributes.fetch(:password_confirmation)
+    if authenticate(current_password)
+      user_record.password = password
+      user_record.password_confirmation = password_confirmation
+      user_record.save
+    else
+      user_record.errors.add(:current_password, 'wrong password')
+    end
   end
 
   def track_update!

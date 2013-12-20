@@ -4,6 +4,14 @@ class Covered::EmailAddresses < Covered::Collection
     email_addresses_for scope.reload.to_a
   end
 
+  def find_by_address address
+    email_address_for (scope.where(address: address).first or return)
+  end
+
+  def find_by_address! address
+    find_by_address(address) or raise Covered::RecordNotFound, "unable to find email address: #{address.inspect}"
+  end
+
   def find_by_addresses addresses
     email_address_records = scope.where(address: addresses).to_a
     email_address_records = addresses.map do |email_address|
@@ -12,6 +20,10 @@ class Covered::EmailAddresses < Covered::Collection
       end
     end
     email_addresses_for email_address_records
+  end
+
+  def new
+    Covered::EmailAddress.new(covered, ::EmailAddress.new)
   end
 
   def create attributes={}

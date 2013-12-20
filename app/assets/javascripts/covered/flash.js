@@ -9,20 +9,20 @@ Object.extend(Covered.Flash.prototype, {
 
     switch(type){
       case 'message':
-        classnames = 'message alert-success'
-        title      = 'Hey!'
+        classnames = 'message alert-success';
+        title      = 'Hey!';
       break;
       case 'error':
-        classnames = 'error alert-error'
-        title      = 'Error!'
+        classnames = 'error alert-error';
+        title      = 'Error!';
       break;
       case 'notice':
-        classnames = 'notice alert-info'
-        title      = 'Notice!'
+        classnames = 'notice alert-info';
+        title      = 'Notice!';
       break;
       case 'alert':
-        classnames = 'alert-error'
-        title      = 'Alert!'
+        classnames = 'alert-error';
+        title      = 'Alert!';
       break;
     }
 
@@ -34,13 +34,16 @@ Object.extend(Covered.Flash.prototype, {
     );
 
     alert.addClass(classnames);
-    alert.find('strong').text(title)
+    alert.find('strong').text(title);
     alert.append(html);
     return alert;
   },
 
   createAndAppendFromText: function(type, text){
-    return this.append(this.create(type, Covered.Util.text2html(text)));
+    var flash = this.create(type, Covered.Util.text2html(text));
+    this.append(flash);
+    setTimeout(function(){ flash.fadeOut(function(){ flash.remove(); }); }, 3000);
+    return flash;
   },
 
   empty: function(){

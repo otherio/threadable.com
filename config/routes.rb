@@ -46,7 +46,10 @@ Covered::Application.routes.draw do
     end
   end
 
-  get '/profile' => 'users#me'
+  get   '/profile' => 'profile#show'
+  patch '/profile' => 'profile#update'
+  post  '/email_addresses' => 'email_addresses#create', as: 'email_addresses'
+  patch '/email_addresses' => 'email_addresses#update', as: 'email_address'
 
   scope '/:project_id', :as => 'project' do
     resources :members, :only => [:index, :create, :destroy], controller: 'project/members'

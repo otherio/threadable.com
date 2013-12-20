@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :require_user_not_be_signed_in!, only: [:create, :new]
-  before_filter :require_user_be_signed_in!,     only: [:me, :show, :edit, :update]
+  before_filter :require_user_be_signed_in!,     only: [:show, :edit, :update]
   before_filter :require_user_be_current_user!,  only: [:edit, :update]
 
   def index
@@ -25,11 +25,6 @@ class UsersController < ApplicationController
 
   def show
     @user = covered.users.find_by_slug!(params[:id])
-  end
-
-  def me
-    @user = current_user
-    render :show
   end
 
   def edit

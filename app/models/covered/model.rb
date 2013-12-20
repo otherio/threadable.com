@@ -3,7 +3,10 @@ class Covered::Model
   include Let
 
   class << self
-    attr_reader :model_name
+    def model_name
+      return @model_name if @model_name
+      superclass.model_name if superclass.respond_to?(:model_name)
+    end
     private
     attr_writer :model_name
   end

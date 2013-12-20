@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe ProjectsController do
 
-
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
   let(:project){ current_user.projects.find_by_slug! 'raceteam' }
