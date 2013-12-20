@@ -128,6 +128,22 @@ describe "processing incoming emails 2" do
       expect( incoming_email.params['attachment-1']     ).to be_present
       expect( incoming_email.params['attachment-2']     ).to be_present
       expect( incoming_email.params['attachment-3']     ).to be_present
+
+      if result == :held
+        # held mail gets sent an auto-response
+        held_notice = sent_emails.first
+        expect( held_notice.smtp_envelope_from ).to eq '<>'
+        expect( held_notice.smtp_envelope_to   ).to eq [envelope_from.gsub(/[<>]/, '')]
+        expect( held_notice.to                 ).to eq [envelope_from.gsub(/[<>]/, '')]
+        expect( held_notice.from               ).to eq ["support+message-held@#{covered.email_host}"]
+        expect( held_notice.subject            ).to eq "[message held] #{subject}"
+
+        expect( held_notice.header['Reply-To'].to_s       ).to eq "Covered message held <support+message-held@#{covered.email_host}>"
+        expect( held_notice.header['In-Reply-To'].to_s    ).to eq incoming_email.message_id
+        expect( held_notice.header['References'].to_s     ).to eq incoming_email.message_id
+        expect( held_notice.header['Auto-Submitted'].to_s ).to eq 'auto-replied'
+      end
+
       return
     end
 
