@@ -34,7 +34,7 @@ class Covered::User::EmailAddresses < Covered::EmailAddresses
   private
 
   def scope
-    user.user_record.email_addresses
+    user.user_record.email_addresses.unload
   end
 
   def email_address_for email_address_record
