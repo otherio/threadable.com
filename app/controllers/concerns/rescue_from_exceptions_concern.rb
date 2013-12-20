@@ -13,7 +13,6 @@ module RescueFromExceptionsConcern
   ].freeze
 
   NOT_FOUND_EXCEPTION = [
-    ActionController::RoutingError,
     ActionController::UnknownController,
     AbstractController::ActionNotFound,
     ActiveRecord::RecordNotFound,
