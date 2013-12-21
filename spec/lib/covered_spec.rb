@@ -2,17 +2,117 @@ require 'spec_helper'
 
 describe Covered, :type => :covered do
 
-  describe 'transaction', transaction: false do
-    it 'should save changes to postgres and redis at the same time' do
-      expect(Covered.redis.client).to be_a Redis::Client
-      expect(Covered.postgres.transaction_open?).to be_false
+  describe 'transactions in test' do
+    it 'single transaction' do
+      callback1_called = false
+      callback2_called = false
       Covered.transaction do
-        expect(Covered.redis.client).to be_a Redis::Pipeline::Multi
-        expect(Covered.postgres.transaction_open?).to be_true
+        Covered.after_transaction{ callback1_called = true }
+        Covered.after_transaction{ callback2_called = true }
+        expect(callback1_called).to be_false
+        expect(callback2_called).to be_false
       end
-      expect(Covered.redis.client).to be_a Redis::Client
-      expect(Covered.postgres.transaction_open?).to be_false
+      expect(callback1_called).to be_true
+      expect(callback2_called).to be_true
     end
+  end
+
+  describe 'transactions', transaction: false do
+    before do
+      Covered::Transactions.expect_test_transaction = false
+      expect(Covered.transaction_open?).to be_false
+    end
+
+    context 'when another outside transaction is open' do
+      it 'raises an error' do
+        ActiveRecord::Base.transaction do
+          expect{ Covered.transaction{ } }.to raise_error("another outside transaction is already open")
+        end
+      end
+    end
+
+    it 'after_transaction runs the given callback immediately when outside of a transaction' do
+      callback_called = false
+      Covered.after_transaction{ callback_called = true }
+      expect(callback_called).to be_true
+    end
+
+    it 'single transaction' do
+      callback1_called = false
+      callback2_called = false
+      Covered.transaction do
+        Covered.after_transaction{ callback1_called = true }
+        Covered.after_transaction{ callback2_called = true }
+        expect(callback1_called).to be_false
+        expect(callback2_called).to be_false
+      end
+      expect(callback1_called).to be_true
+      expect(callback2_called).to be_true
+    end
+
+    it 'nested transactions with nested callbacks' do
+      callback1_called = false
+      callback2_called = false
+      Covered.transaction do
+        Covered.after_transaction{ callback1_called = true }
+        expect(callback1_called).to be_false
+        expect(callback2_called).to be_false
+        Covered.transaction do
+          Covered.after_transaction{ callback2_called = true }
+          expect(callback1_called).to be_false
+          expect(callback2_called).to be_false
+        end
+      end
+      expect(callback1_called).to be_true
+      expect(callback2_called).to be_true
+    end
+
+    it 'nested with inner failure' do
+      callback1_called = false
+      callback2_called = false
+      callback3_called = false
+      Covered.transaction do
+        Covered.after_transaction{ callback1_called = true }
+        expect(callback1_called).to be_false
+        expect(callback2_called).to be_false
+        expect(callback3_called).to be_false
+        begin
+          Covered.transaction do
+            Covered.after_transaction{ callback2_called = true }
+            Covered.after_transaction{ callback3_called = true }
+            expect(callback1_called).to be_false
+            expect(callback2_called).to be_false
+            expect(callback3_called).to be_false
+            raise "FUUUCK"
+          end
+        rescue
+        end
+      end
+      expect(callback1_called).to be_true
+      expect(callback2_called).to be_false
+      expect(callback3_called).to be_false
+    end
+  end
+
+  def first
+    Covered.transaction do
+      Covered.after_transaction{ @first_after_transaction_called = true }
+      second
+      return 15
+    end
+  end
+
+  def second
+    Covered.transaction do
+      Covered.after_transaction{ @second_after_transaction_called = true }
+      return 98
+    end
+  end
+
+  it 'when the transaction block as an explicit return' do
+    expect(first).to eq 15
+    expect(@first_after_transaction_called).to be_true
+    expect(@second_after_transaction_called).to be_true
   end
 
   describe "autoloads" do

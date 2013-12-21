@@ -1,3 +1,5 @@
+# Encoding: UTF-8
+
 require_dependency 'covered/incoming_email'
 
 class Covered::IncomingEmail::Deliver < MethodObject

@@ -18,13 +18,17 @@ class Covered::Project::HeldMessage < Covered::Model
 
   def accept!
     incoming_email.unhold!
-    AcceptHeldIncomingEmailWorker.perform_async(covered.env, id)
+    Covered.after_transaction do
+      AcceptHeldIncomingEmailWorker.perform_async(covered.env, id)
+    end
     self
   end
 
   def reject!
     incoming_email.unhold!
-    RejectHeldIncomingEmailWorker.perform_async(covered.env, id)
+    Covered.after_transaction do
+      RejectHeldIncomingEmailWorker.perform_async(covered.env, id)
+    end
     self
   end
 

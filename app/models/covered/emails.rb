@@ -17,7 +17,9 @@ class Covered::Emails
 
   def send_email_async type, *args
     type?(type)
-    SendEmailWorker.perform_async(covered.env, type, *args)
+    Covered.after_transaction do
+      SendEmailWorker.perform_async(covered.env, type, *args)
+    end
   end
 
   def generate type, *args

@@ -38,6 +38,7 @@ RSpec.configure do |config|
   config.include RSpec::Support::SentEmail
 
   config.before :each do
+    Covered::Transactions.expect_test_transaction = true
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
     Timecop.return
     Covered.redis.flushdb

@@ -2,6 +2,9 @@ module Covered
 
   extend ActiveSupport::Autoload
 
+  require 'covered/transactions'
+  extend Covered::Transactions
+
   CoveredError        = Class.new(StandardError)
   RecordNotFound      = Class.new(CoveredError)
   RecordInvalid       = Class.new(CoveredError)
@@ -27,25 +30,6 @@ module Covered
 
   def self.postgres
     ActiveRecord::Base.connection
-  end
-
-  # this has a significant caveat:
-  #   normally redis.get(key) returns the value of the given key
-  #   within a multi block reads cannot be made so it returns a Redis::Future
-  #   read these docs for more into: https://github.com/redis/redis-rb#futures
-  def self.transaction &block
-    redis.multi do
-      begin
-        Rails.logger.info('BEGIN REDIS TRANSACTION')
-        postgres.transaction do
-          yield
-        end
-        Rails.logger.info('COMMIT REDIS TRANSACTION')
-      rescue Exception
-        Rails.logger.info('ABORT REDIS TRANSACTION')
-        raise
-      end
-    end
   end
 
 end
