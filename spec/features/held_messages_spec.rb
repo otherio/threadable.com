@@ -26,6 +26,8 @@ feature "Held messages" do
     expect(held_message).to be_held
 
     held_message_notification_email = sent_emails.to('tom.sucksateverything@example.com').with_subject("[message held] #{email_subject}").first
+
+    # TODO: expand this test to look at some of the stuff that's checked in process_incoming_email_spec. It probably belongs here more.
     expect(held_message_notification_email).to be_present
     expect(held_message_notification_email.text_content).to include project.name
     expect(held_message_notification_email.text_content).to include email_subject
