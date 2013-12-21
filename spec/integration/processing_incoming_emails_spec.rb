@@ -132,7 +132,7 @@ describe "processing incoming emails 2" do
       if result == :held
         # held mail gets sent an auto-response
         held_notice = sent_emails.first
-        expect( held_notice.smtp_envelope_from ).to eq '<>'
+        expect( held_notice.smtp_envelope_from ).to eq "no-reply-auto@#{covered.email_host}"
         expect( held_notice.smtp_envelope_to   ).to eq [envelope_from.gsub(/[<>]/, '')]
         expect( held_notice.to                 ).to eq [envelope_from.gsub(/[<>]/, '')]
         expect( held_notice.from               ).to eq ["support+message-held@#{covered.email_host}"]

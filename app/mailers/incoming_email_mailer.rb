@@ -48,7 +48,7 @@ class IncomingEmailMailer < Covered::Mailer
       :'List-Post'      => "<mailto:#{@project.email_address}>, <#{new_project_conversation_url(@project)}>"
     }.merge(options))
 
-    message.smtp_envelope_from = '<>'
+    message.smtp_envelope_from = "no-reply-auto@#{covered.email_host}"
     message
   end
 
