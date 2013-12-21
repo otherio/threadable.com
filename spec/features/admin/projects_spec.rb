@@ -36,20 +36,20 @@ feature "Admin projects CRUD" do
       expect(page).to have_field "Name",                   with: "United Nations"
       expect(page).to have_field "Subject tag",            with: "United Nations"
       expect(page).to have_field "Slug",                   with: "united-nations"
-      expect(page).to have_field "Email address username", with: "united.nations"
+      expect(page).to have_field "Email address username", with: "united-nations"
     end
 
     project = covered.projects.find_by_name!("United Nations")
     expect(project.name                  ).to eq "United Nations"
     expect(project.subject_tag           ).to eq "United Nations"
     expect(project.slug                  ).to eq "united-nations"
-    expect(project.email_address_username).to eq "united.nations"
+    expect(project.email_address_username).to eq "united-nations"
 
     within '.edit-project-form' do
       fill_in "Name",                   with: "United Hations"
       fill_in "Subject tag",            with: "United Hations"
       fill_in "Slug",                   with: "united-hations"
-      fill_in "Email address username", with: "united.hations"
+      fill_in "Email address username", with: "united-hations"
       click_on 'Update Project'
     end
     expect(page).to have_text 'Notice! Project was successfully updated.'
@@ -57,7 +57,7 @@ feature "Admin projects CRUD" do
     expect(project.name                  ).to eq "United Hations"
     expect(project.subject_tag           ).to eq "United Hations"
     expect(project.slug                  ).to eq "united-hations"
-    expect(project.email_address_username).to eq "united.hations"
+    expect(project.email_address_username).to eq "united-hations"
 
     expect(project.members.all).to be_empty
 

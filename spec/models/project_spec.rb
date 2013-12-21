@@ -45,7 +45,7 @@ describe Project do
         end
         describe "#email_address_username" do
           subject{ project.email_address_username }
-          it { should == 'langworth.barton.and.strosin'}
+          it { should == 'langworth-barton-and-strosin'}
         end
       end
 
