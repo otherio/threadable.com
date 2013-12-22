@@ -3,7 +3,7 @@ class Message < ActiveRecord::Base
   belongs_to :conversation, counter_cache: true
   belongs_to :parent_message, class_name: 'Message', foreign_key: 'parent_id'
   belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
-  has_one :project, through: :conversation
+  has_one :organization, through: :conversation
   has_and_belongs_to_many :attachments, class_name: 'Attachment'
 
   scope :by_created_at, ->{ order('messages.created_at DESC') }

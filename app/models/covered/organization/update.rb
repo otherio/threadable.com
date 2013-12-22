@@ -1,9 +1,9 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::Update < MethodObject
 
-  def call project, attributes
-    !!project.project_record.update_attributes(attributes)
+  def call organization, attributes
+    !!organization.organization_record.update_attributes(attributes)
   end
 
 end

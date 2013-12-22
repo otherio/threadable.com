@@ -18,13 +18,13 @@
           - if @task
             %tr
               - if @task.doers.include? @recipient
-                = email_button "Remove me", project_task_remove_me_url(@project, @task)
+                = email_button "Remove me", organization_task_remove_me_url(@organization, @task)
               - else
-                = email_button "I'll do it!", project_task_ill_do_it_url(@project, @task)
+                = email_button "I'll do it!", organization_task_ill_do_it_url(@organization, @task)
               - if @task.done?
-                = email_button "Mark as undone", project_task_mark_as_undone_url(@project, @task)
+                = email_button "Mark as undone", organization_task_mark_as_undone_url(@organization, @task)
               - else
-                = email_button "Mark as done", project_task_mark_as_done_url(@project, @task)
+                = email_button "Mark as done", organization_task_mark_as_done_url(@organization, @task)
               %td
 
   %div{:style => "display:none; display:none !important;"}
@@ -43,10 +43,10 @@
   %table.covered-details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "100%"}
     %tr
       %td.covered-details-inner{:style => "color: #95A5A6; text-align: left;"}
-        .covered-project{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
-          = link_to @project.name, project_url(@project)
+        .covered-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+          = link_to @organization.name, organization_url(@organization)
           |
-          = mail_to @project.email_address, @project.email_address
+          = mail_to @organization.email_address, @organization.email_address
         .covered-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
           = "sent to #{mail_to @recipient.email_address, @recipient.email_address} | #{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @covered.support_email_address, 'feedback' }".html_safe
 

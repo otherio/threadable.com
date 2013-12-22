@@ -3,13 +3,13 @@
 
 _____
 View on Covered:
-<%= project_conversation_url(@message.project, @message.conversation) %>
+<%= organization_conversation_url(@message.organization, @message.conversation) %>
 
 Start a new conversation:
-<%= mail_to_href @project.email_address %>
+<%= mail_to_href @organization.email_address %>
 
 Start a new task:
-<%= mail_to_href @project.task_email_address, subject: "[task] " %>
+<%= mail_to_href @organization.task_email_address, subject: "[task] " %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>

@@ -1,12 +1,12 @@
 class Conversation < ActiveRecord::Base
 
-  belongs_to :project
+  belongs_to :organization
   belongs_to :creator, :class_name => 'User'
   has_many :messages, -> { order created_at: :asc }, dependent: :destroy
   has_many :events, class_name: 'Conversation::Event'
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   # TODO recipients will eventually have a scope that removes members who have muted this conversation
-  has_many :recipients, through: :project, class_name: 'User', source: 'members_who_get_email'
+  has_many :recipients, through: :organization, class_name: 'User', source: 'members_who_get_email'
 
   def self.default_scope
     order('conversations.updated_at DESC')
@@ -30,11 +30,11 @@ class Conversation < ActiveRecord::Base
 
   # this is crazy pants... sorry - Jared
   def validate_slug_does_not_collide_with_existing_route
-    return true unless project.present? && to_param.present?
+    return true unless organization.present? && to_param.present?
     valid_slug = false
 
     until valid_slug
-      path = Rails.application.routes.url_helpers.project_conversation_path(project, self)
+      path = Rails.application.routes.url_helpers.organization_conversation_path(organization, self)
 
       begin
         route = Rails.application.routes.recognize_path(path)
@@ -45,7 +45,7 @@ class Conversation < ActiveRecord::Base
       expected_route = {
         action: "show",
         controller: "conversations",
-        project_id: project.to_param,
+        organization_id: organization.to_param,
         id: to_param,
       }
 

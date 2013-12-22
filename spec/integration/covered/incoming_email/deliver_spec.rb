@@ -15,7 +15,7 @@ describe Covered::IncomingEmail::Deliver do
       recipient:      recipient,
       creator:        double(:creator, id: 54),
       attachments:    double(:attachments),
-      project:        double(:project, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks)),
+      organization:        double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks)),
       message_id:     double(:incoming_email_message_id),
       references:     double(:incoming_email_references),
       date:           double(:incoming_email_date, rfc2822: 'rfc2822 version of date'),
@@ -81,8 +81,8 @@ describe Covered::IncomingEmail::Deliver do
   context 'when the incoming_email has a conversation' do
     before do
       incoming_email.stub conversation: conversation
-      expect(incoming_email.project.conversations).to_not receive(:create!)
-      expect(incoming_email.project.tasks).to_not receive(:create!)
+      expect(incoming_email.organization.conversations).to_not receive(:create!)
+      expect(incoming_email.organization.tasks).to_not receive(:create!)
     end
     it 'saves off the attachments, and creates a conversation message' do
       call!
@@ -98,7 +98,7 @@ describe Covered::IncomingEmail::Deliver do
 
     context 'and recipient is not a +task email address, and the subject does not contain [task] or [✔]' do
       before do
-        expect(incoming_email.project.conversations).to receive(:create!).with(
+        expect(incoming_email.organization.conversations).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
         ).and_return(conversation)
@@ -110,7 +110,7 @@ describe Covered::IncomingEmail::Deliver do
     context 'and recipient is a +task email address' do
       let(:recipient){'raceteam+task@127.0.0.1' }
       before do
-        expect(incoming_email.project.tasks).to receive(:create!).with(
+        expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
         ).and_return(conversation)
@@ -122,7 +122,7 @@ describe Covered::IncomingEmail::Deliver do
     context 'and the subject containts [task]' do
       let(:subject){ '[task] I love this community!' }
       before do
-        expect(incoming_email.project.tasks).to receive(:create!).with(
+        expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
         ).and_return(conversation)
@@ -134,7 +134,7 @@ describe Covered::IncomingEmail::Deliver do
     context 'and the subject containts [✔]' do
       let(:subject){ '[✔] I love this community!' }
       before do
-        expect(incoming_email.project.tasks).to receive(:create!).with(
+        expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
         ).and_return(conversation)
@@ -146,7 +146,7 @@ describe Covered::IncomingEmail::Deliver do
     context 'and the subject is more than 255 characters' do
       let(:subject){ 'hello ' * 100 }
       before do
-        expect(incoming_email.project.conversations).to receive(:create!).with(
+        expect(incoming_email.organization.conversations).to receive(:create!).with(
           subject:    subject[0..254],
           creator_id: 54,
         ).and_return(conversation)
@@ -159,7 +159,7 @@ describe Covered::IncomingEmail::Deliver do
     context 'and the subject is blank' do
       let(:subject){ '' }
       before do
-        expect(incoming_email.project.conversations).to receive(:create!).with(
+        expect(incoming_email.organization.conversations).to receive(:create!).with(
           subject:    'i am a message body',
           creator_id: 54,
         ).and_return(conversation)

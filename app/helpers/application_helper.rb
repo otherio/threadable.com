@@ -4,8 +4,8 @@ module ApplicationHelper
     request.url
   end
 
-  def current_project
-    @project
+  def current_organization
+    @organization
   end
 
   def current_conversation

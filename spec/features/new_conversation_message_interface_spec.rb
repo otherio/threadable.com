@@ -13,7 +13,7 @@ describe 'new conversaion message interface' do
     sign_in_as 'alice@ucsd.covered.io'
   end
 
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 
   it "should work" do
     click_on 'UCSD Electric Racing'
@@ -33,7 +33,7 @@ describe 'new conversaion message interface' do
     expect_widget_not_to_be_expanded!
 
     drain_background_jobs!
-    expect(sent_emails.count).to eq project.members.that_get_email.count
+    expect(sent_emails.count).to eq organization.members.that_get_email.count
     expect(
       sent_emails.sent_to('alice@ucsd.covered.io').
         with_subject('[RaceTeam] we did it').
@@ -52,7 +52,7 @@ describe 'new conversaion message interface' do
     expect_widget_not_to_be_expanded!
 
     drain_background_jobs!
-    expect(sent_emails.count).to eq project.members.that_get_email.count
+    expect(sent_emails.count).to eq organization.members.that_get_email.count
     expect(
       sent_emails.sent_to('alice@ucsd.covered.io').
         with_subject('[RaceTeam] we did it').

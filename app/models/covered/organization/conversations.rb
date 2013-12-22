@@ -1,12 +1,12 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::Conversations < Covered::Conversations
 
-  def initialize project
-    @project = project
-    @covered = project.covered
+  def initialize organization
+    @organization = organization
+    @covered = organization.covered
   end
-  attr_reader :project
+  attr_reader :organization
 
   def build attributes={}
     conversation_for scope.build(attributes)
@@ -14,17 +14,17 @@ class Covered::Organization::Conversations < Covered::Conversations
   alias_method :new, :build
 
   def create attributes={}
-    super attributes.merge(project: project)
+    super attributes.merge(organization: organization)
   end
 
   def inspect
-    %(#<#{self.class} project_id: #{project.id.inspect}>)
+    %(#<#{self.class} organization_id: #{organization.id.inspect}>)
   end
 
   private
 
   def scope
-    project.project_record.conversations.unload
+    organization.organization_record.conversations.unload
   end
 
 end

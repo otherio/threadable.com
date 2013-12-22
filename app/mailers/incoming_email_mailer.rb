@@ -2,7 +2,7 @@ class IncomingEmailMailer < Covered::Mailer
 
   def message_held_notice incoming_email
     @incoming_email = incoming_email
-    @project = incoming_email.project
+    @organization = incoming_email.organization
 
     auto_response_mail(
       :'from'     => "Covered message held <#{covered.support_email_address('message-held')}>",
@@ -13,7 +13,7 @@ class IncomingEmailMailer < Covered::Mailer
 
   def message_rejected_notice incoming_email
     @incoming_email = incoming_email
-    @project = incoming_email.project
+    @organization = incoming_email.organization
 
     auto_response_mail(
       :'from'     => "Covered message rejected <#{covered.support_email_address('message-rejected')}>",
@@ -24,7 +24,7 @@ class IncomingEmailMailer < Covered::Mailer
 
   def message_accepted_notice incoming_email
     @incoming_email = incoming_email
-    @project = incoming_email.project
+    @organization = incoming_email.organization
 
     auto_response_mail(
       :'from'     => "Covered message accepted <#{covered.support_email_address('message-accepted')}>",
@@ -43,9 +43,9 @@ class IncomingEmailMailer < Covered::Mailer
       :'to'             => to,
       :'In-Reply-To'    => @incoming_email.message_id,
       :'References'     => [@incoming_email.message_id],
-      :'List-ID'        => @project.formatted_list_id,
-      :'List-Archive'   => "<#{project_conversations_url(@project)}>",
-      :'List-Post'      => "<mailto:#{@project.email_address}>, <#{new_project_conversation_url(@project)}>"
+      :'List-ID'        => @organization.formatted_list_id,
+      :'List-Archive'   => "<#{organization_conversations_url(@organization)}>",
+      :'List-Post'      => "<mailto:#{@organization.email_address}>, <#{new_organization_conversation_url(@organization)}>"
     }.merge(options))
 
     message.smtp_envelope_from = "no-reply-auto@#{covered.email_host}"

@@ -1,13 +1,13 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::HeldMessage < Covered::Model
 
-  def initialize project, incoming_email
-    @project = project
-    @covered = project.covered
+  def initialize organization, incoming_email
+    @organization = organization
+    @covered = organization.covered
     @incoming_email = incoming_email
   end
-  attr_reader :project, :incoming_email
+  attr_reader :organization, :incoming_email
 
   delegate *%w{
     id

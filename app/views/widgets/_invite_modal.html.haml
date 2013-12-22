@@ -1,4 +1,4 @@
-= form_for :member, url: project_members_url(project), remote: true, :html => {class: 'form-horizontal', :'data-type' => 'json'} do |f|
+= form_for :member, url: organization_members_url(organization), remote: true, :html => {class: 'form-horizontal', :'data-type' => 'json'} do |f|
   .modal-header
     %button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Add a member
@@ -21,7 +21,7 @@
         = f.text_area :message, class: 'custom-message', cols: nil, rows: nil, placeholder: "Hey!", value: ""
 
         %p
-          You've been added to the #{project.name} project on Covered!
+          You've been added to the #{organization.name} organization on Covered!
 
         %p
           Covered is a magical mailing list that helps you and your friends get more done.

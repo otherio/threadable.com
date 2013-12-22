@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Covered::Messages::FindByChildHeader do
 
-  let(:project_id){ 9331 }
+  let(:organization_id){ 9331 }
 
   let :header do
     {
@@ -19,9 +19,9 @@ describe Covered::Messages::FindByChildHeader do
 
   def expect_query references, messages
     scope = double(:scope)
-    expect(Message).to receive(:joins).with(:conversation => :project).and_return(scope)
+    expect(Message).to receive(:joins).with(:conversation => :organization).and_return(scope)
     expect(scope).to receive(:where).with(
-      :projects => { :id => project_id },
+      :organizations => { :id => organization_id },
       :messages => { :message_id_header => references },
     ).and_return(scope)
     expect(scope).to receive(:to_a).and_return(messages)
@@ -33,7 +33,7 @@ describe Covered::Messages::FindByChildHeader do
     let(:in_reply_to_header){ stringable("") }
     let(:references_header ){ stringable("") }
     it "returns nil" do
-      expect( call(project_id, header) ).to be_nil
+      expect( call(organization_id, header) ).to be_nil
     end
   end
 
@@ -45,7 +45,7 @@ describe Covered::Messages::FindByChildHeader do
     let(:messages){ references.map{|reference| double(:message, message_id_header: reference) } }
     it "returns the parent message" do
       expect_query(references, messages.shuffle)
-      expect( call(project_id, header) ).to eq messages.first
+      expect( call(organization_id, header) ).to eq messages.first
     end
   end
 

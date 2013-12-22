@@ -8,7 +8,7 @@ class Task < Conversation
   default_scopes.clear
   default_scope { unscoped.order('conversations.position ASC') }
 
-  acts_as_list :scope => :project
+  acts_as_list :scope => :organization
 
   scope :done, ->{ where('conversations.done_at IS NOT NULL') }
   scope :not_done, ->{ where('conversations.done_at IS NULL') }
@@ -27,7 +27,7 @@ class Task < Conversation
   private
 
   def set_position
-    self.position ||= project.tasks.count + 1 if project
+    self.position ||= organization.tasks.count + 1 if organization
   end
 
 end

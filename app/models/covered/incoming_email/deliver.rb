@@ -30,7 +30,7 @@ class Covered::IncomingEmail::Deliver < MethodObject
   TASK_RECIPIENT_REGEXP = /\+task\b/i
   def create_conversation!
     is_task = @incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP || @incoming_email.recipient =~ TASK_RECIPIENT_REGEXP
-    collection = (is_task ? @incoming_email.project.tasks : @incoming_email.project.conversations)
+    collection = (is_task ? @incoming_email.organization.tasks : @incoming_email.organization.conversations)
     @incoming_email.conversation = collection.create!(
       subject:    subject,
       creator_id: @incoming_email.creator.try(:id),
@@ -57,7 +57,7 @@ class Covered::IncomingEmail::Deliver < MethodObject
   end
 
   def subject
-    PrepareEmailSubject.call(@incoming_email.project, @incoming_email)
+    PrepareEmailSubject.call(@incoming_email.organization, @incoming_email)
   end
 
   def save!

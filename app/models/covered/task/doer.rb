@@ -23,7 +23,7 @@ class Covered::Task::Doer
   end
 
   def member
-    @member ||= task.project.members.find_by_user_id!(user_id)
+    @member ||= task.organization.members.find_by_user_id!(user_id)
   end
 
   def == other

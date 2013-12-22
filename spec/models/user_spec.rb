@@ -5,8 +5,8 @@ describe User do
   subject(:user){ described_class.new }
 
   it { should have_many :email_addresses }
-  it { should have_many :project_memberships }
-  it { should have_many :projects }
+  it { should have_many :organization_memberships }
+  it { should have_many :organizations }
   it { should have_many :messages }
   it { should have_many :conversations }
   it { should have_and_belong_to_many :tasks }

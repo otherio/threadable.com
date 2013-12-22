@@ -7,10 +7,10 @@ feature "Organization member add" do
     sign_in_as 'tom@ucsd.covered.io'
   end
 
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 
   # this used to be called the invite modal
-  scenario %(adding a member to a project) do
+  scenario %(adding a member to a organization) do
     click_on 'UCSD Electric Racing'
     click_on 'Add'
     fill_in "Name", with: 'Foo Guy'
@@ -18,15 +18,15 @@ feature "Organization member add" do
     fill_in "Message", with: 'Hi i like you'
     click_on 'Add member'
 
-    expect(page).to have_text 'Hey! Foo Guy <foo@guy.com> was added to this project.'
+    expect(page).to have_text 'Hey! Foo Guy <foo@guy.com> was added to this organization.'
 
     click_on 'Members'
 
     expect(page).to have_text 'Foo Guy'
 
-    foo_guy = project.members.find_by_user_slug!('foo-guy')
+    foo_guy = organization.members.find_by_user_slug!('foo-guy')
 
-    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, foo_guy.id, 'Hi i like you']
+    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, foo_guy.id, 'Hi i like you']
 
     drain_background_jobs!
 

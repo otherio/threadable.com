@@ -3,11 +3,11 @@ class User < ActiveRecord::Base
   include Password
 
   has_many :email_addresses, autosave: true, validate: true
-  has_many :project_memberships
-  has_many :projects, :through => :project_memberships
+  has_many :organization_memberships
+  has_many :organizations, :through => :organization_memberships
   has_many :messages
-  has_many :project_messages, through: :projects, source: :messages
-  has_many :conversations, ->{ uniq }, through: :projects
+  has_many :organization_messages, through: :organizations, source: :messages
+  has_many :conversations, ->{ uniq }, through: :organizations
 
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 

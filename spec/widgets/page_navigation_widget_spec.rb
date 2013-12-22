@@ -15,19 +15,19 @@ describe PageNavigationWidget do
         block: nil,
         presenter: presenter,
         current_user: nil,
-        current_project: nil,
+        current_organization: nil,
         covered_link_url: view.root_url,
-        projects: nil,
+        organizations: nil,
       }
     end
 
     context "when given a user" do
 
-      let(:projects){
-        projects = 8.times.map{|i| double("project#{i}", :persisted? => i%2==0) }
-        double(:projects, all: projects)
+      let(:organizations){
+        organizations = 8.times.map{|i| double("organization#{i}", :persisted? => i%2==0) }
+        double(:organizations, all: organizations)
       }
-      let(:current_user){ double(:current_user, projects: projects) }
+      let(:current_user){ double(:current_user, organizations: organizations) }
 
       def html_options
         super.merge(current_user: current_user)
@@ -38,18 +38,18 @@ describe PageNavigationWidget do
           block: nil,
           presenter: presenter,
           current_user: current_user,
-          current_project: nil,
+          current_organization: nil,
           covered_link_url: view.root_url,
-          projects: projects.all,
+          organizations: organizations.all,
         }
       end
 
-      context "when given a project" do
+      context "when given a organization" do
 
-        let(:current_project){ projects.all.sample }
+        let(:current_organization){ organizations.all.sample }
 
         def html_options
-          super.merge(current_project: current_project)
+          super.merge(current_organization: current_organization)
         end
 
         it do
@@ -57,9 +57,9 @@ describe PageNavigationWidget do
             block: nil,
             presenter: presenter,
             current_user: current_user,
-            current_project: current_project,
-            covered_link_url: view.project_conversations_url(current_project),
-            projects: projects.all,
+            current_organization: current_organization,
+            covered_link_url: view.organization_conversations_url(current_organization),
+            organizations: organizations.all,
           }
         end
 

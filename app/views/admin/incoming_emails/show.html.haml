@@ -57,7 +57,7 @@
       %td= @incoming_email.creator.try(:name)
     %tr
       %th Organization
-      %td= @incoming_email.project.try(:name)
+      %td= @incoming_email.organization.try(:name)
     %tr
       %th Conversation
       %td= @incoming_email.conversation.try(:subject)

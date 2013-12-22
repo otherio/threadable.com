@@ -2,28 +2,28 @@ require 'spec_helper'
 
 describe 'model relationships' do
 
-  let!(:project){ Organization.where(name: "UCSD Electric Racing").first! }
+  let!(:organization){ Organization.where(name: "UCSD Electric Racing").first! }
 
   def member(email)
-    project.members.with_email_address(email).first!
+    organization.members.with_email_address(email).first!
   end
 
   def conversation(subject)
-    project.conversations.where(subject: subject).first!
+    organization.conversations.where(subject: subject).first!
   end
 
   def task(subject)
-    project.tasks.where(subject: subject).first!
+    organization.tasks.where(subject: subject).first!
   end
 
   it "should work" do
-    project.should be_a Organization
+    organization.should be_a Organization
 
-    project.name.should == 'UCSD Electric Racing'
-    project.description.should == 'Senior engineering electric race team!'
+    organization.name.should == 'UCSD Electric Racing'
+    organization.description.should == 'Senior engineering electric race team!'
 
-    project.conversations.to_set.should == Set[
-      conversation('Welcome to our Covered project!'),
+    organization.conversations.to_set.should == Set[
+      conversation('Welcome to our Covered organization!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
       conversation('install mirrors'),
@@ -37,7 +37,7 @@ describe 'model relationships' do
       conversation('Who wants to pick up breakfast?'),
     ]
 
-    project.tasks.to_set.should == Set[
+    organization.tasks.to_set.should == Set[
       task('layup body carbon'),
       task('install mirrors'),
       task('trim body panels'),
@@ -47,7 +47,7 @@ describe 'model relationships' do
       task('get carbon and fiberglass'),
     ]
 
-    project.members.to_set.should == Set[
+    organization.members.to_set.should == Set[
       member('alice@ucsd.covered.io'),
       member('tom@ucsd.covered.io'),
       member('yan@ucsd.covered.io'),
@@ -56,7 +56,7 @@ describe 'model relationships' do
       member('jonathan@ucsd.covered.io'),
     ]
 
-    project.tasks.to_set.should == Set[
+    organization.tasks.to_set.should == Set[
       task('layup body carbon'),
       task('install mirrors'),
       task('trim body panels'),
@@ -66,13 +66,13 @@ describe 'model relationships' do
       task('get carbon and fiberglass'),
     ]
 
-    project.tasks.not_done.to_set.should == Set[
+    organization.tasks.not_done.to_set.should == Set[
       task('install mirrors'),
       task('trim body panels'),
       task('make wooden form for carbon layup'),
     ]
 
-    project.tasks.done.to_set.should == Set[
+    organization.tasks.done.to_set.should == Set[
       task('layup body carbon'),
       task('get epoxy'),
       task('get release agent'),
@@ -90,11 +90,11 @@ describe 'model relationships' do
     alice = member('alice@ucsd.covered.io')
     alice.name.should == 'Alice Neilson'
     alice.email_address.should == 'alice@ucsd.covered.io'
-    alice.project_memberships.count.should == 1
-    alice.projects.should == [project]
+    alice.organization_memberships.count.should == 1
+    alice.organizations.should == [organization]
     alice.messages.count.should == 3
     alice.conversations.to_set.should == Set[
-      conversation('Welcome to our Covered project!'),
+      conversation('Welcome to our Covered organization!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
       conversation('install mirrors'),
@@ -118,15 +118,15 @@ describe 'model relationships' do
       task('trim body panels'),
     ]
 
-    conversation = alice.conversations.where(subject: 'Welcome to our Covered project!').first
+    conversation = alice.conversations.where(subject: 'Welcome to our Covered organization!').first
     conversation.messages.count.should == 2
     conversation.should_not be_a_task
-    conversation.project.should == project
+    conversation.organization.should == organization
 
     conversation = alice.conversations.where(subject: 'layup body carbon').first
     conversation.messages.count.should == 8
     conversation.should be_a_task
-    conversation.project.should == project
+    conversation.organization.should == organization
 
     message = conversation.messages.first
     message.conversation.should == conversation

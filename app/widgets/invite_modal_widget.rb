@@ -1,6 +1,6 @@
 class InviteModalWidget < Rails::Widget::Presenter
 
-  arguments :project
+  arguments :organization
 
   classname :modal, :hide, :fade
 

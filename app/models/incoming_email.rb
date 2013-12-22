@@ -4,7 +4,7 @@ class IncomingEmail < ActiveRecord::Base
 
   belongs_to :creator, class_name: :User
   belongs_to :conversation
-  belongs_to :project
+  belongs_to :organization
   belongs_to :message
   belongs_to :parent_message, class_name: :Message
   has_and_belongs_to_many :attachments

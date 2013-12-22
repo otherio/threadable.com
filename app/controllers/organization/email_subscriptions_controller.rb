@@ -2,25 +2,25 @@ class Organization::EmailSubscriptionsController < ApplicationController
 
   before_filter :deal_with_robots!
 
-  # GET /:project_id/unsubscribe/:token
+  # GET /:organization_id/unsubscribe/:token
   def unsubscribe
-    project_id, member_id = OrganizationUnsubscribeToken.decrypt(params.require(:token))
+    organization_id, member_id = OrganizationUnsubscribeToken.decrypt(params.require(:token))
     covered.current_user_id ||= member_id
-    @project = current_user.projects.find_by_id! project_id
-    @member  = @project.members.me
-    @resubscribe_token = OrganizationResubscribeToken.encrypt(@project.id, @member.id)
+    @organization = current_user.organizations.find_by_id! organization_id
+    @member  = @organization.members.me
+    @resubscribe_token = OrganizationResubscribeToken.encrypt(@organization.id, @member.id)
     if @member.subscribed?
       @member.unsubscribe!
-      covered.emails.send_email_async(:unsubscribe_notice, @project.id, @member.id)
+      covered.emails.send_email_async(:unsubscribe_notice, @organization.id, @member.id)
     end
   end
 
-  # GET /:project_id/resubscribe/:token
+  # GET /:organization_id/resubscribe/:token
   def resubscribe
-    project_id, member_id = OrganizationResubscribeToken.decrypt(params.require(:token))
+    organization_id, member_id = OrganizationResubscribeToken.decrypt(params.require(:token))
     covered.current_user_id ||= member_id
-    @project = current_user.projects.find_by_id! project_id
-    @member  = @project.members.me
+    @organization = current_user.organizations.find_by_id! organization_id
+    @member  = @organization.members.me
     @member.subscribe!(true) unless @member.subscribed?
   end
 

@@ -6,19 +6,19 @@ describe ConversationMailer do
 
     signed_in_as 'bethany@ucsd.covered.io'
 
-    let(:project){ current_user.projects.find_by_slug! 'raceteam' }
-    let(:conversation){ project.conversations.find_by_slug! 'layup-body-carbon' }
+    let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
+    let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
     let(:message){ conversation.messages.latest }
-    let(:recipient){ project.members.all.last }
+    let(:recipient){ organization.members.all.last }
 
-    let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, project, message, recipient) }
+    let(:mail){ ConversationMailer.new(covered).generate(:conversation_message, organization, message, recipient) }
     let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
 
-    let(:expected_to           ){ project.task_email_address }
+    let(:expected_to           ){ organization.task_email_address }
     let(:expected_cc           ){ '' }
     let(:expected_from         ){ message.from }
     let(:expected_envelope_to  ){ recipient.email_address }
-    let(:expected_envelope_from){ project.task_email_address }
+    let(:expected_envelope_from){ organization.task_email_address }
 
     let(:mail_as_string){ mail.to_s }
     let(:text_part){ mail.text_part.body.to_s }
@@ -40,19 +40,19 @@ describe ConversationMailer do
 
       text_part.should include message.body_plain
       html_part.gsub(/\n/,'').should include message.body_html.gsub(/\n/,'')
-      text_part.should include "View on Covered:\n#{project_conversation_url(project, conversation)}"
+      text_part.should include "View on Covered:\n#{organization_conversation_url(organization, conversation)}"
 
 
-      project_unsubscribe_token = extract_project_unsubscribe_token(text_part)
-      expect( OrganizationUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
+      organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
+      expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
 
       expect(email.link('feedback')).to be_present
       expect(email.link('feedback')[:href]).to eq "mailto:support@127.0.0.1"
 
-      expect(text_part).to include "mailto:#{project.task_email_address}"
+      expect(text_part).to include "mailto:#{organization.task_email_address}"
 
-      expect(mail.header[:'Reply-To'].to_s).to eq project.formatted_task_email_address
-      expect(mail.header[:'List-ID'].to_s ).to eq project.formatted_list_id
+      expect(mail.header[:'Reply-To'].to_s).to eq organization.formatted_task_email_address
+      expect(mail.header[:'List-ID'].to_s ).to eq organization.formatted_list_id
       expect(mail.header[:'Cc'].to_s      ).to eq expected_cc
       expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
       expect(mail.message_id              ).to eq message.message_id_header[1..-2]
@@ -75,7 +75,7 @@ describe ConversationMailer do
 
     context "when we send a message to the message creator" do
       let(:recipient){ message.creator }
-      it "should set the from address as the project instead of the sender" do
+      it "should set the from address as the organization instead of the sender" do
         validate_mail!
       end
     end

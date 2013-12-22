@@ -1,12 +1,12 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::Tasks < Covered::Tasks
 
-  def initialize project
-    @project = project
-    @covered = project.covered
+  def initialize organization
+    @organization = organization
+    @covered = organization.covered
   end
-  attr_reader :project
+  attr_reader :organization
 
   def find_by_slug! slug
     find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find Task with slug #{slug.inspect}"
@@ -18,17 +18,17 @@ class Covered::Organization::Tasks < Covered::Tasks
   alias_method :new, :build
 
   def create attributes={}
-    super attributes.merge(project: project)
+    super attributes.merge(organization: organization)
   end
 
   def inspect
-    %(#<#{self.class} project_id: #{project.id.inspect}>)
+    %(#<#{self.class} organization_id: #{organization.id.inspect}>)
   end
 
   private
 
   def scope
-    project.project_record.tasks
+    organization.organization_record.tasks
   end
 
 end

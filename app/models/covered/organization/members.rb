@@ -1,12 +1,12 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::Members < Covered::Collection
 
-  def initialize project
-    @project = project
+  def initialize organization
+    @organization = organization
   end
-  attr_reader :project
-  delegate :covered, to: :project
+  attr_reader :organization
+  delegate :covered, to: :organization
 
   def all
     scope.reload.map{|membership| member_for membership }
@@ -22,7 +22,7 @@ class Covered::Organization::Members < Covered::Collection
 
   def find_by_user_id! id
     member = find_by_user_id(id)
-    member or raise Covered::RecordNotFound, "unable to find project member with id: #{id}"
+    member or raise Covered::RecordNotFound, "unable to find organization member with id: #{id}"
     member
   end
 
@@ -32,7 +32,7 @@ class Covered::Organization::Members < Covered::Collection
 
   def find_by_user_slug! slug
     member = find_by_user_slug(slug)
-    member or raise Covered::RecordNotFound, "unable to find project member with slug: #{slug}"
+    member or raise Covered::RecordNotFound, "unable to find organization member with slug: #{slug}"
     member
   end
 
@@ -47,7 +47,7 @@ class Covered::Organization::Members < Covered::Collection
 
   def find_by_email_address! email_address
     member = find_by_email_address(email_address)
-    member or raise Covered::RecordNotFound, "unable to find project member with email_address: #{email_address}"
+    member or raise Covered::RecordNotFound, "unable to find organization member with email_address: #{email_address}"
     member
   end
 
@@ -56,7 +56,7 @@ class Covered::Organization::Members < Covered::Collection
   end
 
   def email_addresses
-    EmailAddress.joins(:user => :projects).where(projects: {id: project.id}).each do |email_address_record|
+    EmailAddress.joins(:user => :organizations).where(organizations: {id: organization.id}).each do |email_address_record|
       Covered::EmailAddress.new(covered, email_address_record)
     end
   end
@@ -91,17 +91,17 @@ class Covered::Organization::Members < Covered::Collection
   end
 
   def inspect
-    %(#<#{self.class} project_id: #{project.id.inspect}>)
+    %(#<#{self.class} organization_id: #{organization.id.inspect}>)
   end
 
   private
 
   def scope
-    project.project_record.memberships.includes(:user).reload
+    organization.organization_record.memberships.includes(:user).reload
   end
 
-  def member_for project_membership_record
-    Covered::Organization::Member.new(project, project_membership_record)
+  def member_for organization_membership_record
+    Covered::Organization::Member.new(organization, organization_membership_record)
   end
 
 end

@@ -6,8 +6,8 @@ feature "Organizations" do
     sign_in_as 'tom@ucsd.covered.io'
   end
 
-  scenario %(editing a project) do
-    within find('table.projects tr', text: 'UCSD Electric Racing') do
+  scenario %(editing a organization) do
+    within find('table.organizations tr', text: 'UCSD Electric Racing') do
       find('.actions .dropdown-toggle').click
       click_on 'Edit'
     end
@@ -17,7 +17,7 @@ feature "Organizations" do
     click_on 'Update'
     page.should have_content('Notice! UCSD Steam Powered Racing was successfully updated.')
 
-    within find('table.projects tr', text: "UCSD Steam Powered Racing") do
+    within find('table.organizations tr', text: "UCSD Steam Powered Racing") do
       find('.actions .dropdown-toggle').click
       click_on 'Edit'
     end
@@ -27,8 +27,8 @@ feature "Organizations" do
     find_field('Description').value.should == 'Steam all the things!'
   end
 
-  scenario %(leaving a project) do
-    within find('table.projects tr', text: 'UCSD Electric Racing') do
+  scenario %(leaving a organization) do
+    within find('table.organizations tr', text: 'UCSD Electric Racing') do
       find('.actions .dropdown-toggle').click
       click_on 'Leave'
     end

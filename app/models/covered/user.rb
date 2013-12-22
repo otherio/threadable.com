@@ -34,7 +34,7 @@ class Covered::User
   end
 
   let(:email_addresses){ EmailAddresses.new(self) }
-  let(:projects)       { Organizations.new(self)     }
+  let(:organizations)       { Organizations.new(self)     }
   let(:messages)       { Messages.new(self)     }
 
   def web_enabled?

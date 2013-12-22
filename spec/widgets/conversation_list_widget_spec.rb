@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe ConversationListWidget do
 
-  let(:project_conversations) { double(:project_conversations) }
-  let(:project)               { double(:project, conversations: double(:conversations, all_with_participants: project_conversations) ) }
+  let(:organization_conversations) { double(:organization_conversations) }
+  let(:organization)               { double(:organization, conversations: double(:conversations, all_with_participants: organization_conversations) ) }
   let(:custom_conversations)  { double(:custom_conversations) }
-  let(:arguments)             { [project] }
+  let(:arguments)             { [organization] }
 
   def html_options
     {class: 'custom_class'}
@@ -17,8 +17,8 @@ describe ConversationListWidget do
       should == {
         block: nil,
         presenter: presenter,
-        project: project,
-        conversations: project_conversations,
+        organization: organization,
+        conversations: organization_conversations,
       }
     end
     context "when given conversations" do
@@ -29,7 +29,7 @@ describe ConversationListWidget do
         should == {
           block: nil,
           presenter: presenter,
-          project: project,
+          organization: organization,
           conversations: custom_conversations,
         }
       end

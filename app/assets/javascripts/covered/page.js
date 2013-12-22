@@ -7,7 +7,7 @@
     this.env = env;
     this.name = env.page_name;
 
-    this.current_project      = env.current_project;
+    this.current_organization      = env.current_organization;
     this.current_conversation = env.current_conversation;
     this.current_task         = env.current_task;
     this.current_task_doers   = env.current_task_doers;

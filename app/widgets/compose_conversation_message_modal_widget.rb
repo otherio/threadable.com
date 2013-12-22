@@ -1,11 +1,11 @@
 class ComposeConversationMessageModalWidget < Rails::Widget::Presenter
 
-  arguments :project
+  arguments :organization
 
   classname :modal, :hide, :fade
 
   option :conversation do
-    project.conversations.build
+    organization.conversations.build
   end
 
 end

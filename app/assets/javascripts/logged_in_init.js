@@ -2,7 +2,7 @@ whenReady(function() {
 
   if (Covered.page.current_user) {
     var user = Covered.page.current_user;
-    var project = Covered.page.current_project || {};
+    var organization = Covered.page.current_organization || {};
     // Identify the user and pass traits
     // To enable, replace sample data with actual user traits and uncomment the line
     UserVoice.push(['identify', {
@@ -13,8 +13,8 @@ whenReady(function() {
       //created_at: 1364406966, // Unix timestamp for the date the user signed up
       //type:       'Owner', // Optional: segment your users by type
       account: {
-        id:           project.id, // Optional: associate multiple users with a single account
-        name:         project.name, // Account name
+        id:           organization.id, // Optional: associate multiple users with a single account
+        name:         organization.name, // Account name
         // created_at:   1364406966, // Unix timestamp for the date the account was created
         // monthly_rate: 9.99, // Decimal; monthly rate of the account
         // ltv:          1495.00, // Decimal; lifetime value of the account

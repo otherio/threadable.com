@@ -35,7 +35,7 @@ feature "Admin incoming emails" do
         "From"         => incoming_email.from.truncate(25),
         "Subject"      => incoming_email.subject.truncate(25),
         "Creator"      => incoming_email.incoming_email_record.creator_id.to_s,
-        "Organization"      => incoming_email.incoming_email_record.project_id.to_s,
+        "Organization"      => incoming_email.incoming_email_record.organization_id.to_s,
         "Conversation" => incoming_email.incoming_email_record.conversation_id.to_s,
         "Message"      => incoming_email.incoming_email_record.message_id.to_s,
       }

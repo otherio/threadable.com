@@ -1,18 +1,18 @@
 %p
-  We're writing in regards to your mail to #{@project.name.inspect}
+  We're writing in regards to your mail to #{@organization.name.inspect}
   with the subject
   %blockquote= @incoming_email.subject
 
 %p
-  As far as we can tell, you are not a member of this project,
-  so your message is being held for approval by a project member.
+  As far as we can tell, you are not a member of this organization,
+  so your message is being held for approval by a organization member.
 
 %p
   You will be notified when action is taken to accept or reject your
   message.
 
 %p
-  If you are in fact a member of this project, you may need to add
+  If you are in fact a member of this organization, you may need to add
   %strong= @incoming_email.from
   to your Covered account, which you can do on your
   #{link_to "your profile", profile_url}.

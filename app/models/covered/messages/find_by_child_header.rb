@@ -1,7 +1,7 @@
 class Covered::Messages::FindByChildHeader < MethodObject
 
-  def call project_id, header
-    @project_id, @header = project_id, header
+  def call organization_id, header
+    @organization_id, @header = organization_id, header
     in_reply_to = header['In-Reply-To'].to_s
     references  = header['References'].to_s.split(/\s+/)
     # this fixes a bug in the Eudora mail client (see the JWZ threading algorithm)
@@ -9,8 +9,8 @@ class Covered::Messages::FindByChildHeader < MethodObject
     references.reverse!
     return nil unless references.present?
 
-    messages = Message.joins(:conversation => :project).where(
-      :projects => { :id => project_id },
+    messages = Message.joins(:conversation => :organization).where(
+      :organizations => { :id => organization_id },
       :messages => { :message_id_header => references },
     ).to_a
 

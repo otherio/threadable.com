@@ -17,10 +17,10 @@ describe 'sending emails' do
 
   when_signed_in_as 'alice@ucsd.covered.io' do
 
-    let(:project     ){ current_user.projects.find_by_slug! 'raceteam' }
-    let(:conversation){ project.conversations.find_by_slug! 'layup-body-carbon' }
+    let(:organization     ){ current_user.organizations.find_by_slug! 'raceteam' }
+    let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
     let(:message     ){ conversation.messages.latest }
-    let(:recipient   ){ project.members.find_by_user_id! find_user_by_email_address('yan@ucsd.covered.io').id }
+    let(:recipient   ){ organization.members.find_by_user_id! find_user_by_email_address('yan@ucsd.covered.io').id }
 
     describe 'conversation_message' do
 
@@ -37,32 +37,32 @@ describe 'sending emails' do
         expect( email.header['Subject'].to_s     ).to eq "[✔][RaceTeam] layup body carbon"
 
         expect( email.header['List-ID'].to_s      ).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
-        expect( email.header['List-Archive'].to_s ).to eq "<#{project_conversations_url(project)}>"
+        expect( email.header['List-Archive'].to_s ).to eq "<#{organization_conversations_url(organization)}>"
 
         expect( email.header["List-Unsubscribe"].to_s ).to match %r{/raceteam/unsubscribe/}
-        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{new_project_conversation_url(project)}>"
+        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{new_organization_conversation_url(organization)}>"
       end
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:conversation_message, project, message, recipient)
+          covered.emails.send_email(:conversation_message, organization, message, recipient)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:conversation_message, project.id, message.id, recipient.id)
+          covered.emails.send_email_async(:conversation_message, organization.id, message.id, recipient.id)
           expect(sent_emails).to be_empty
-          expect_job_to_be_enqueued! "conversation_message", project.id, message.id, recipient.id
+          expect_job_to_be_enqueued! "conversation_message", organization.id, message.id, recipient.id
           run_jobs!
           expect_email!
         end
       end
 
       context "when there are multiple people in the TO and CC headers" do
-        let(:conversation){ project.conversations.find_by_slug! 'who-wants-to-pick-up-lunch' }
-        it "should filter out project members from the TO and CC headers" do
-          covered.emails.send_email(:conversation_message, project, message, recipient)
+        let(:conversation){ organization.conversations.find_by_slug! 'who-wants-to-pick-up-lunch' }
+        it "should filter out organization members from the TO and CC headers" do
+          covered.emails.send_email(:conversation_message, organization, message, recipient)
 
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up lunch?").first
 
@@ -77,11 +77,11 @@ describe 'sending emails' do
         end
       end
 
-      context 'when the project is in the CC header and there are multiple people in the TO and CC headers' do
-        let(:conversation){ project.conversations.find_by_slug! 'who-wants-to-pick-up-dinner' }
+      context 'when the organization is in the CC header and there are multiple people in the TO and CC headers' do
+        let(:conversation){ organization.conversations.find_by_slug! 'who-wants-to-pick-up-dinner' }
 
-        it "should include the project in the CC header" do
-          covered.emails.send_email(:conversation_message, project, message, recipient)
+        it "should include the organization in the CC header" do
+          covered.emails.send_email(:conversation_message, organization, message, recipient)
 
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up dinner?").first
 
@@ -89,11 +89,11 @@ describe 'sending emails' do
           expect( email.header['Cc'].to_s ).to include 'UCSD Electric Racing <raceteam@127.0.0.1>'
         end
       end
-      context 'when the project is in the BCC header and there are multiple people in the TO and CC headers' do
-        let(:conversation){ project.conversations.find_by_slug! 'who-wants-to-pick-up-breakfast' }
+      context 'when the organization is in the BCC header and there are multiple people in the TO and CC headers' do
+        let(:conversation){ organization.conversations.find_by_slug! 'who-wants-to-pick-up-breakfast' }
 
-        it "should not include the project email address in the TO or CC headers" do
-          covered.emails.send_email(:conversation_message, project, message, recipient)
+        it "should not include the organization email address in the TO or CC headers" do
+          covered.emails.send_email(:conversation_message, organization, message, recipient)
 
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up breakfast?").first
 
@@ -115,15 +115,15 @@ describe 'sending emails' do
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:join_notice, project, recipient, personal_message)
+          covered.emails.send_email(:join_notice, organization, recipient, personal_message)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:join_notice, project.id, recipient.id, personal_message)
+          covered.emails.send_email_async(:join_notice, organization.id, recipient.id, personal_message)
           expect(sent_emails).to be_empty
-          expect_job_to_be_enqueued! "join_notice", project.id, recipient.id, personal_message
+          expect_job_to_be_enqueued! "join_notice", organization.id, recipient.id, personal_message
           run_jobs!
           expect_email!
         end
@@ -139,15 +139,15 @@ describe 'sending emails' do
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:unsubscribe_notice, project, recipient)
+          covered.emails.send_email(:unsubscribe_notice, organization, recipient)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:unsubscribe_notice, project.id, recipient.id)
+          covered.emails.send_email_async(:unsubscribe_notice, organization.id, recipient.id)
           expect(sent_emails).to be_empty
-          expect_job_to_be_enqueued! "unsubscribe_notice", project.id, recipient.id
+          expect_job_to_be_enqueued! "unsubscribe_notice", organization.id, recipient.id
           run_jobs!
           expect_email!
         end

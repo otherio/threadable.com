@@ -3,10 +3,10 @@ require 'spec_helper'
 describe "new_conversation_message" do
 
   let(:from){ double(:from, name: 'FROM NAME') }
-  let(:project){ double(:project) }
+  let(:organization){ double(:organization) }
   let(:message){ double(:message, class: Message, body: 'MESSAGE BODY', subject: 'MESSAGE SUBJECT') }
   let(:messages){ double(:messages, build: message) }
-  let(:conversation){ double(:conversation, project: project, messages: messages) }
+  let(:conversation){ double(:conversation, organization: organization, messages: messages) }
   let(:recipients) do
     2.times.map{|i|
       double(:recipient,
@@ -21,7 +21,7 @@ describe "new_conversation_message" do
       remote: true,
       url: '/conversations',
       from: from,
-      project: project,
+      organization: organization,
       message: message,
       conversation: conversation,
       recipients: recipients,

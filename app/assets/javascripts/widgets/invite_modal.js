@@ -80,13 +80,13 @@ Rails.widget('invite_modal', function(Widget){
   function onSuccess(event, member, status, xhr){
     var widget = $(this).widget(Widget);
     widget.hide().reset();
-    widget.page().flash.message(member.name+' <'+member.email_address+'> was added to this project.');
+    widget.page().flash.message(member.name+' <'+member.email_address+'> was added to this organization.');
   }
 
   function onError(event, xhr, status, error){
     var widget = $(this).widget(Widget);
     if (xhr.status === 422){
-      widget.flash.notice('That user is already a member of this project.');
+      widget.flash.notice('That user is already a member of this organization.');
       widget.enable();
     }else{
       widget.flash.alert('Oops! Something went wrong. Please try again later.');

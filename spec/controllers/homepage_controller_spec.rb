@@ -15,10 +15,10 @@ describe HomepageController do
         sign_in! find_user_by_email_address('bob@ucsd.covered.io')
       end
 
-      it "should show the projects" do
+      it "should show the organizations" do
         get :show
-        assigns(:projects).should be
-        response.should render_template('projects/index')
+        assigns(:organizations).should be
+        response.should render_template('organizations/index')
       end
     end
   end

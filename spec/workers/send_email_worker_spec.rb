@@ -14,34 +14,34 @@ describe SendEmailWorker do
     end
   end
 
-  let(:project_id  ){ 1 }
+  let(:organization_id  ){ 1 }
   let(:message_id  ){ 2 }
   let(:recipient_id){ 3 }
 
   let(:current_user){ double :current_user }
 
-  let(:projects    ){ double :projects }
+  let(:organizations    ){ double :organizations }
   let(:messages    ){ double :messages }
   let(:members     ){ double :members  }
   let(:users       ){ double :users    }
 
-  let(:project     ){ double :project }
+  let(:organization     ){ double :organization }
   let(:message     ){ double :message }
   let(:recipient   ){ double :recipient }
 
   describe 'conversation_message' do
-    let(:arguments){ [:conversation_message, project_id, message_id, recipient_id] }
+    let(:arguments){ [:conversation_message, organization_id, message_id, recipient_id] }
     it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:projects).and_return(projects)
-      expect(projects).to receive(:find_by_id!     ).with(project_id).and_return(project)
+      expect_any_instance_of(Covered::Class).to receive(:organizations).and_return(organizations)
+      expect(organizations).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
-      expect(project ).to receive(:messages        ).and_return(messages)
+      expect(organization ).to receive(:messages        ).and_return(messages)
       expect(messages).to receive(:find_by_id!     ).with(message_id).and_return(message)
 
-      expect(project ).to receive(:members         ).and_return(members)
+      expect(organization ).to receive(:members         ).and_return(members)
       expect(members ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:conversation_message, project, message, recipient)
+      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:conversation_message, organization, message, recipient)
 
       perform!
     end
@@ -49,30 +49,30 @@ describe SendEmailWorker do
 
   describe 'join_notice' do
     let(:personal_message){ "i need you!" }
-    let(:arguments){ [:join_notice, project_id, recipient_id, personal_message] }
+    let(:arguments){ [:join_notice, organization_id, recipient_id, personal_message] }
     it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:projects).and_return(projects)
-      expect(projects      ).to receive(:find_by_id!     ).with(project_id).and_return(project)
+      expect_any_instance_of(Covered::Class).to receive(:organizations).and_return(organizations)
+      expect(organizations      ).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
-      expect(project       ).to receive(:members         ).and_return(members)
+      expect(organization       ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:join_notice, project, recipient, personal_message)
+      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:join_notice, organization, recipient, personal_message)
 
       perform!
     end
   end
 
   describe 'unsubscribe_notice' do
-    let(:arguments){ [:unsubscribe_notice, project_id, recipient_id] }
+    let(:arguments){ [:unsubscribe_notice, organization_id, recipient_id] }
     it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:projects).and_return(projects)
-      expect(projects      ).to receive(:find_by_id!     ).with(project_id).and_return(project)
+      expect_any_instance_of(Covered::Class).to receive(:organizations).and_return(organizations)
+      expect(organizations      ).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
-      expect(project       ).to receive(:members         ).and_return(members)
+      expect(organization       ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:unsubscribe_notice, project, recipient)
+      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:unsubscribe_notice, organization, recipient)
 
       perform!
     end

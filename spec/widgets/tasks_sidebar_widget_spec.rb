@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe TasksSidebarWidget do
 
-  let(:arguments) { [project] }
+  let(:arguments) { [organization] }
 
   let(:current_user){ double(:current_user) }
 
-  let(:project){
-    double(:project,
+  let(:organization){
+    double(:organization,
       conversations: conversations,
       tasks: tasks,
       to_param: 'lick-a-fish'
@@ -56,7 +56,7 @@ describe TasksSidebarWidget do
       should == {
         block:             nil,
         presenter:         presenter,
-        project:           project,
+        organization:           organization,
         conversations:     conversations.all,
         tasks:             tasks.all,
         my_tasks:          [conversations.all[2], conversations.all[5], conversations.all[8]],

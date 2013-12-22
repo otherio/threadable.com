@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Covered::Messages::Create do
 
   let(:messages){ double :messages, covered: covered }
-  let(:project){ double :project, id: 4855, name: 'Babys First Organization' }
+  let(:organization){ double :organization, id: 4855, name: 'Babys First Organization' }
   let(:conversation_record){ double :conversation_record, messages: double(:messages)}
   let :attachment1 do
     {
@@ -32,7 +32,7 @@ describe Covered::Messages::Create do
     double(:conversation,
       covered: covered,
       conversation_record: conversation_record,
-      project: project,
+      organization: organization,
       subject: 'I like your face',
       task?: false,
       id: 1234,
@@ -89,9 +89,9 @@ describe Covered::Messages::Create do
       ).and_return(message_record)
 
       expect(covered).to receive(:track).with('Composed Message', {
-        'Organization' => project.id,
+        'Organization' => organization.id,
         'Conversation' => conversation.id,
-        'Organization Name' => project.name,
+        'Organization Name' => organization.name,
         'Reply' => false,
         'Task' => false,
         'Message ID' => expected_message_id_header,

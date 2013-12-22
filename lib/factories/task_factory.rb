@@ -1,12 +1,12 @@
 factory :task do
   subject { Faker::Company.catch_phrase }
 
-  project
+  organization
 
   creator {
-    project.members.sample or begin
+    organization.members.sample or begin
       user = create(:user)
-      project.members << user
+      organization.members << user
       user
     end
   }

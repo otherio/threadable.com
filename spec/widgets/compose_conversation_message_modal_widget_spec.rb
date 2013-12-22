@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe ComposeConversationMessageModalWidget do
 
-  let(:project)   { double(:project, conversations: conversations) }
+  let(:organization)   { double(:organization, conversations: conversations) }
   let(:conversations){ double(:conversations) }
   let(:conversation){ double(:conversation) }
-  let(:arguments) { [project] }
+  let(:arguments) { [organization] }
 
   before do
     conversations.stub(:build).and_return(conversation)
@@ -23,7 +23,7 @@ describe ComposeConversationMessageModalWidget do
       should == {
         block: nil,
         presenter: presenter,
-        project: project,
+        organization: organization,
         conversation: conversation,
       }
     end

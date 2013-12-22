@@ -1,5 +1,5 @@
 require_dependency 'covered/user'
-require_dependency 'covered/user/project'
+require_dependency 'covered/user/organization'
 
 class Covered::User::Organizations < Covered::Organizations
 
@@ -17,11 +17,11 @@ class Covered::User::Organizations < Covered::Organizations
   private
 
   def scope
-    user.user_record.projects
+    user.user_record.organizations
   end
 
-  def project_for project_record
-    Covered::User::Organization.new(self, project_record)
+  def organization_for organization_record
+    Covered::User::Organization.new(self, organization_record)
   end
 
 end

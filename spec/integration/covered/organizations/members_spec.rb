@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Covered::Organization::Members do
-  let(:project){ covered.projects.find_by_slug('raceteam') }
-  let(:members){ described_class.new(project) }
+  let(:organization){ covered.organizations.find_by_slug('raceteam') }
+  let(:members){ described_class.new(organization) }
 
   describe '#find_by_email_address' do
 

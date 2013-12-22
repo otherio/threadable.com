@@ -1,10 +1,10 @@
 factory :conversation do
   subject { Faker::Company.bs }
-  project
+  organization
   creator {
-    project.members.sample or begin
+    organization.members.sample or begin
       user = create(:user)
-      project.members << user
+      organization.members << user
       user
     end
   }

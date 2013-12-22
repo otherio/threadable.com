@@ -160,8 +160,8 @@ Rails.widget('tasks_sidebar', function(Widget){
 
     if (!$.isNumeric(new_position)) throw new Error('unable to determine new position');
 
-    url = widget.page().project_task_path(
-      widget.page().current_project.slug, task.data('slug')
+    url = widget.page().organization_task_path(
+      widget.page().current_organization.slug, task.data('slug')
     );
 
     $.ajax({

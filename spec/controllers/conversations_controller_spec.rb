@@ -4,8 +4,8 @@ describe ConversationsController do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
-  let(:conversation) { project.conversations.oldest }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
+  let(:conversation) { organization.conversations.oldest }
 
 
   def valid_attributes
@@ -16,7 +16,7 @@ describe ConversationsController do
   end
 
   def valid_params
-    {project_id: project.to_param}
+    {organization_id: organization.to_param}
   end
 
   def xhr_valid_params
@@ -24,14 +24,14 @@ describe ConversationsController do
   end
 
   def expected_conversation
-    project.conversations.find_by_subject(valid_attributes["subject"])
+    organization.conversations.find_by_subject(valid_attributes["subject"])
   end
 
   describe "GET index" do
     it "assigns all conversations as @conversations" do
       get :index, valid_params
-      assigns(:conversations).should eq(project.conversations.all)
-      assigns(:tasks).should eq(project.tasks.all)
+      assigns(:conversations).should eq(organization.conversations.all)
+      assigns(:tasks).should eq(organization.tasks.all)
     end
   end
 
@@ -54,7 +54,7 @@ describe ConversationsController do
 
     context "when given invalid params" do
       it "should raise an error" do
-        expect{ post :create, {project_id: project.to_param} }.to raise_error(ActionController::ParameterMissing)
+        expect{ post :create, {organization_id: organization.to_param} }.to raise_error(ActionController::ParameterMissing)
       end
     end
 
@@ -81,7 +81,7 @@ describe ConversationsController do
       def params
         {
           format: format,
-          project_id: project.to_param,
+          organization_id: organization.to_param,
           message: {
             subject: subject,
             body: body,
@@ -117,9 +117,9 @@ describe ConversationsController do
         context "and the conversation saves successfully" do
           let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: true) }
 
-          it "should redirect to the project conversation url with a successfull flash notice" do
+          it "should redirect to the organization conversation url with a successfull flash notice" do
             post :create, params
-            expect(response).to redirect_to project_conversation_url(project, conversation)
+            expect(response).to redirect_to organization_conversation_url(organization, conversation)
             expect(flash[:notice]).to eq 'Conversation was successfully created.'
           end
 
@@ -146,11 +146,11 @@ describe ConversationsController do
         context "and the conversation saves successfully" do
           let(:conversation){ double(:conversation, to_param: 'we-need-more-wood', persisted?: true) }
 
-          it "should redirect to the project conversation url with a successfull flash notice" do
+          it "should redirect to the organization conversation url with a successfull flash notice" do
             post :create, params
             expect(response.status).to eq 201
             expect(response.body).to eq conversation.to_json
-            expect(response.location).to eq project_conversation_url(project, conversation)
+            expect(response.location).to eq organization_conversation_url(organization, conversation)
           end
 
           context "but the message doesnt save successfully" do
@@ -181,7 +181,7 @@ describe ConversationsController do
 
 
   describe "PUT update" do
-    # let!(:conversation){ Conversation.create!(valid_attributes.merge(project:project, creator: current_user)) }
+    # let!(:conversation){ Conversation.create!(valid_attributes.merge(organization:organization, creator: current_user)) }
 
     def valid_update_params
       {
@@ -210,7 +210,7 @@ describe ConversationsController do
 
       it "redirects to the conversation" do
         put :update, valid_params.merge(:id => conversation.to_param, :conversation => valid_update_params)
-        response.should redirect_to project_conversation_url(project, conversation)
+        response.should redirect_to organization_conversation_url(organization, conversation)
       end
     end
 
@@ -231,11 +231,11 @@ describe ConversationsController do
         assigns(:conversation).should eq(conversation)
       end
 
-      it "redirect to the project conversation page" do
+      it "redirect to the organization conversation page" do
         # Trigger the behavior that occurs when invalid params are submitted
         Conversation.any_instance.stub(:save).and_return(false)
         put :update, valid_params.update(invalid_params)
-        response.should redirect_to project_conversation_url(project, conversation)
+        response.should redirect_to organization_conversation_url(organization, conversation)
       end
     end
   end

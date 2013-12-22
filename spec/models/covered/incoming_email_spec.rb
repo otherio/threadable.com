@@ -11,7 +11,7 @@ describe Covered::IncomingEmail do
   end
   let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params) }
   let(:incoming_email){ described_class.new(covered, incoming_email_record) }
-  let(:project){ double(:project, members: double(:members), subject_tag: 'foo') }
+  let(:organization){ double(:organization, members: double(:members), subject_tag: 'foo') }
 
   subject{ incoming_email }
 
@@ -129,15 +129,15 @@ describe Covered::IncomingEmail do
 
 
 
-  describe 'creator_is_a_project_member?' do
-    subject{ incoming_email.creator_is_a_project_member? }
-    context 'when project is nil' do
-      before{ expect(incoming_email).to receive(:project).and_return(nil) }
+  describe 'creator_is_a_organization_member?' do
+    subject{ incoming_email.creator_is_a_organization_member? }
+    context 'when organization is nil' do
+      before{ expect(incoming_email).to receive(:organization).and_return(nil) }
       it { should be_false }
     end
-    context 'when project is not nil' do
-      let(:project){ double(:project, members: double(:members)) }
-      before{ expect(incoming_email).to receive(:project).at_least(1).times.and_return(project) }
+    context 'when organization is not nil' do
+      let(:organization){ double(:organization, members: double(:members)) }
+      before{ expect(incoming_email).to receive(:organization).at_least(1).times.and_return(organization) }
       context 'when creator is nil' do
         before{ expect(incoming_email).to receive(:creator).and_return(nil) }
         it { should be_false }
@@ -145,12 +145,12 @@ describe Covered::IncomingEmail do
       context 'when creator is not nil' do
         let(:creator){ double(:creator) }
         before{ expect(incoming_email).to receive(:creator).at_least(1).times.and_return(creator) }
-        context 'when project.members.include?(creator) returns true' do
-          before{ expect(project.members).to receive(:include?).with(creator).and_return(true) }
+        context 'when organization.members.include?(creator) returns true' do
+          before{ expect(organization.members).to receive(:include?).with(creator).and_return(true) }
           it { should be_true }
         end
-        context 'when project.members.include?(creator) returns false' do
-          before{ expect(project.members).to receive(:include?).with(creator).and_return(false) }
+        context 'when organization.members.include?(creator) returns false' do
+          before{ expect(organization.members).to receive(:include?).with(creator).and_return(false) }
           it { should be_false }
         end
       end
@@ -200,12 +200,12 @@ describe Covered::IncomingEmail do
 
   describe 'bounceable?' do
     subject{ incoming_email.bounceable? }
-    context 'when project is nil' do
-      before{ expect(incoming_email).to receive(:project).and_return(nil) }
+    context 'when organization is nil' do
+      before{ expect(incoming_email).to receive(:organization).and_return(nil) }
       it { should be_true }
     end
-    context 'when project is not nil' do
-      before{ expect(incoming_email).to receive(:project).and_return(project) }
+    context 'when organization is not nil' do
+      before{ expect(incoming_email).to receive(:organization).and_return(organization) }
 
       context 'when the subject is valid' do
         before { expect(incoming_email).to receive(:subject_valid?).and_return(true) }
@@ -235,8 +235,8 @@ describe Covered::IncomingEmail do
       end
       context 'when parent_message is nil' do
         before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
-        context 'when creator is not a member of the project' do
-          before{ expect(incoming_email).to receive(:creator_is_a_project_member?).and_return(false) }
+        context 'when creator is not a member of the organization' do
+          before{ expect(incoming_email).to receive(:creator_is_a_organization_member?).and_return(false) }
           it { should be_true }
         end
       end
@@ -271,7 +271,7 @@ describe Covered::IncomingEmail do
     before do
       incoming_email.stub(:subject).and_return(subject_line)
       incoming_email.stub(:stripped_plain).and_return(body)
-      incoming_email.stub(:project).and_return(double(:project, subject_tag: 'subject-tag'))
+      incoming_email.stub(:organization).and_return(double(:organization, subject_tag: 'subject-tag'))
     end
 
     it { should be_true }
@@ -321,7 +321,7 @@ describe Covered::IncomingEmail do
   its(:from_email_addresses){ should eq ['alice@ucsd.covered.io', 'alice.neilson@gmail.com'] }
 
 
-  describe 'find_project!' do
+  describe 'find_organization!' do
     # these are integration tested
   end
   describe 'find_message!' do
@@ -336,7 +336,7 @@ describe Covered::IncomingEmail do
   describe 'find_conversation!' do
     # these are integration tested
   end
-  describe 'creator_is_a_project_member?' do
+  describe 'creator_is_a_organization_member?' do
     # these are integration tested
   end
 
@@ -351,41 +351,41 @@ describe Covered::IncomingEmail do
     end
   end
 
-  describe 'project=' do
+  describe 'organization=' do
     context 'when given a Covered::Organization' do
-      it 'sets @project to the given project and set incoming_email_record.project to project.project_record' do
-        project_record = double(:project_record)
-        project = double(:project, project_record: project_record)
-        expect(incoming_email_record).to receive(:project=).with(project_record)
-        expect(incoming_email_record).to receive(:project).and_return(project_record)
-        incoming_email.project = project
-        expect(incoming_email.project).to eq project
+      it 'sets @organization to the given organization and set incoming_email_record.organization to organization.organization_record' do
+        organization_record = double(:organization_record)
+        organization = double(:organization, organization_record: organization_record)
+        expect(incoming_email_record).to receive(:organization=).with(organization_record)
+        expect(incoming_email_record).to receive(:organization).and_return(organization_record)
+        incoming_email.organization = organization
+        expect(incoming_email.organization).to eq organization
       end
     end
     context 'when given nil' do
-      it 'sets @project and incoming_email_record.project to nil' do
-        expect(incoming_email_record).to receive(:project=).with(nil)
-        expect(incoming_email_record).to receive(:project).and_return(nil)
-        incoming_email.project = nil
-        expect(incoming_email.project).to be_nil
+      it 'sets @organization and incoming_email_record.organization to nil' do
+        expect(incoming_email_record).to receive(:organization=).with(nil)
+        expect(incoming_email_record).to receive(:organization).and_return(nil)
+        incoming_email.organization = nil
+        expect(incoming_email.organization).to be_nil
       end
     end
   end
 
-  describe 'project' do
-    context 'when incoming_email_record.project is nil' do
-      before{ expect(incoming_email_record).to receive(:project).and_return(nil) }
+  describe 'organization' do
+    context 'when incoming_email_record.organization is nil' do
+      before{ expect(incoming_email_record).to receive(:organization).and_return(nil) }
       it 'returns nil' do
-        expect(incoming_email.project).to be_nil
+        expect(incoming_email.organization).to be_nil
       end
     end
-    context 'when incoming_email_record.project is present' do
-      let(:project_record){ double :project_record }
-      before{ expect(incoming_email_record).to receive(:project).at_least(1).times.and_return(project_record) }
+    context 'when incoming_email_record.organization is present' do
+      let(:organization_record){ double :organization_record }
+      before{ expect(incoming_email_record).to receive(:organization).at_least(1).times.and_return(organization_record) }
       it 'returns a Covered::Organization' do
-        expect(incoming_email.project).to be_a Covered::Organization
-        expect(incoming_email.project).to be incoming_email.project
-        expect(incoming_email.project.project_record).to be project_record
+        expect(incoming_email.organization).to be_a Covered::Organization
+        expect(incoming_email.organization).to be incoming_email.organization
+        expect(incoming_email.organization.organization_record).to be organization_record
       end
     end
   end
@@ -454,7 +454,7 @@ describe Covered::IncomingEmail do
       end
     end
     context 'when given nil' do
-      it 'sets @project and incoming_email_record.project to nil' do
+      it 'sets @organization and incoming_email_record.organization to nil' do
         expect(incoming_email_record).to receive(:creator=).with(nil)
         expect(incoming_email_record).to receive(:creator).and_return(nil)
         incoming_email.creator = nil
@@ -563,7 +563,7 @@ describe Covered::IncomingEmail do
       end
     end
     context 'when given nil' do
-      it 'sets @project and incoming_email_record.project to nil' do
+      it 'sets @organization and incoming_email_record.organization to nil' do
         expect(incoming_email_record).to receive(:creator=).with(nil)
         expect(incoming_email_record).to receive(:creator).and_return(nil)
         incoming_email.creator = nil
@@ -612,13 +612,13 @@ describe Covered::IncomingEmail do
         bounced?:        false,
         held?:           false,
         creator_id:      12,
-        project_id:      13,
+        organization_id:      13,
         conversation_id: 14,
         message_id:      15,
       )
     end
     before{ expect(incoming_email).to receive(:delivered?).and_return(true) }
-    its(:inspect){ should eq %(#<Covered::IncomingEmail id: 4589, processed: true, bounced: false, held: false, delivered: true, from: "alice@ucsd.covered.io", creator_id: 12, project_id: 13, conversation_id: 14, message_id: 15>) }
+    its(:inspect){ should eq %(#<Covered::IncomingEmail id: 4589, processed: true, bounced: false, held: false, delivered: true, from: "alice@ucsd.covered.io", creator_id: 12, organization_id: 13, conversation_id: 14, message_id: 15>) }
   end
 
 end

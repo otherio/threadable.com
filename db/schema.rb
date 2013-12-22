@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20131221204244) do
   create_table "conversations", force: true do |t|
     t.string   "type"
     t.string   "subject",                    null: false
-    t.integer  "project_id",                 null: false
+    t.integer  "organization_id",                 null: false
     t.integer  "creator_id"
     t.integer  "position"
     t.string   "slug",                       null: false
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20131221204244) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "conversations", ["project_id"], name: "index_conversations_on_project_id", using: :btree
+  add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
 
   create_table "email_addresses", force: true do |t|
     t.integer  "user_id"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20131221204244) do
 
   create_table "events", force: true do |t|
     t.string   "type"
-    t.integer  "project_id",      null: false
+    t.integer  "organization_id",      null: false
     t.integer  "conversation_id"
     t.integer  "user_id"
     t.text     "content"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20131221204244) do
   end
 
   add_index "events", ["conversation_id"], name: "index_events_on_conversation_id", using: :btree
-  add_index "events", ["project_id"], name: "index_events_on_project_id", using: :btree
+  add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "incoming_emails", force: true do |t|
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20131221204244) do
     t.boolean  "processed",         default: false
     t.boolean  "bounced",           default: false
     t.integer  "creator_id"
-    t.integer  "project_id"
+    t.integer  "organization_id"
     t.integer  "conversation_id"
     t.integer  "parent_message_id"
     t.integer  "message_id"
@@ -116,8 +116,8 @@ ActiveRecord::Schema.define(version: 20131221204244) do
   add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
   add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
 
-  create_table "project_memberships", force: true do |t|
-    t.integer  "project_id",                 null: false
+  create_table "organization_memberships", force: true do |t|
+    t.integer  "organization_id",                 null: false
     t.integer  "user_id",                    null: false
     t.boolean  "can_write",  default: true
     t.boolean  "gets_email", default: true
@@ -126,9 +126,9 @@ ActiveRecord::Schema.define(version: 20131221204244) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "project_memberships", ["project_id", "user_id"], name: "index_project_memberships_on_project_id_and_user_id", unique: true, using: :btree
+  add_index "organization_memberships", ["organization_id", "user_id"], name: "index_organization_memberships_on_organization_id_and_user_id", unique: true, using: :btree
 
-  create_table "projects", force: true do |t|
+  create_table "organizations", force: true do |t|
     t.string   "name"
     t.string   "slug",                   null: false
     t.text     "description"
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(version: 20131221204244) do
     t.string   "email_address_username"
   end
 
-  add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
+  add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
 
   create_table "task_doers", force: true do |t|
     t.integer "user_id"

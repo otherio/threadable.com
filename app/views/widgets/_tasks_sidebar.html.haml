@@ -8,7 +8,7 @@
     %h2 Tasks
 
 .form
-  %form.input-append{action: project_tasks_path(project)}
+  %form.input-append{action: organization_tasks_path(organization)}
     .input
       %input{type: "text", name: "subject", placeholder: "new task..."}
     %button.btn{disabled: true}
@@ -19,7 +19,7 @@
     - conversations.each do |conversation|
       - next if conversation.new_record?
       %li.conversation.clearfix{title: conversation.subject, "data-conversation-id" => conversation.id}
-        = link_to project_conversation_url(conversation.project, conversation) do
+        = link_to organization_conversation_url(conversation.organization, conversation) do
           - if conversation.task?
             %i.icon-ok{ class: conversation.done? ? 'finished-check' : 'unfinished-check' }
           - else

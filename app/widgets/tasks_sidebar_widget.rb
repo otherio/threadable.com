@@ -1,19 +1,19 @@
 class TasksSidebarWidget < Rails::Widget::Presenter
 
-  arguments :project
+  arguments :organization
 
   option :with_title, false
 
   option :conversations do
-    project.conversations.all # includes(:project)
+    organization.conversations.all # includes(:organization)
   end
 
   option :tasks do
-    project.tasks.all
+    organization.tasks.all
   end
 
   option :my_tasks do
-    project.tasks.all_for_user @view.current_user
+    organization.tasks.all_for_user @view.current_user
   end
 
   option :done_tasks do

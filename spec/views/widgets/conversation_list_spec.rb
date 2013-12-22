@@ -20,11 +20,11 @@ describe "conversation_list" do
       double(:conversation4, id: 4, to_param: 'conversation-four',  subject: 'conversation four',  participant_names: ['Larry'],              updated_at: 15.months.ago, creator: creator),
     ]
   }
-  let(:project){ double(:project, to_param: 'some-project', held_messages: double(:held_messages, count: 0)) }
+  let(:organization){ double(:organization, to_param: 'some-organization', held_messages: double(:held_messages, count: 0)) }
 
   def locals
     {
-      project: project,
+      organization: organization,
       conversations: conversations
     }
   end
@@ -40,19 +40,19 @@ describe "conversation_list" do
     conversation_elements.size.should == 4
 
     conversation_elements[0].css('td.participants').first.text.should == "\n\nuser0\nuser1\nuser2\n\n(10)\n"
-    conversation_elements[0].css('a').first[:href].should == "/some-project/conversations/conversation-one"
+    conversation_elements[0].css('a').first[:href].should == "/some-organization/conversations/conversation-one"
     conversation_elements[0].css('.datetime').first.text.strip.should == conversations[0].updated_at.strftime('%l:%M %p').strip
 
     conversation_elements[1].css('td.participants').first.text.should == "\n\nuser3\nuser4\n\n(11)\n"
-    conversation_elements[1].css('a').first[:href].should == "/some-project/conversations/conversation-two"
+    conversation_elements[1].css('a').first[:href].should == "/some-organization/conversations/conversation-two"
     conversation_elements[1].css('.datetime').first.text.strip.should == conversations[1].updated_at.strftime('%b %-d').strip
 
     conversation_elements[2].css('td.participants').first.text.should == "\n\nuser5\n\n(12)\n"
-    conversation_elements[2].css('a').first[:href].should == "/some-project/conversations/conversation-three"
+    conversation_elements[2].css('a').first[:href].should == "/some-organization/conversations/conversation-three"
     conversation_elements[2].css('.datetime').first.text.strip.should == conversations[2].updated_at.strftime('%-m/%-d/%Y').strip
 
     conversation_elements[3].css('td.participants').first.text.should == "\n\nLarry\n\n(13)\n"
-    conversation_elements[3].css('a').first[:href].should == "/some-project/conversations/conversation-four"
+    conversation_elements[3].css('a').first[:href].should == "/some-organization/conversations/conversation-four"
     conversation_elements[3].css('.datetime').first.text.strip.should == conversations[3].updated_at.strftime('%-m/%-d/%Y').strip
   end
 

@@ -23,7 +23,7 @@ class Covered::Conversation < Covered::Model
     subject
     task?
     messages_count
-    project_id
+    organization_id
     creator_id
     created_at
     updated_at
@@ -32,7 +32,7 @@ class Covered::Conversation < Covered::Model
     errors
   }, to: :conversation_record
 
-  let(:project     ){ covered.projects.find_by_id(project_id) }
+  let(:organization     ){ covered.organizations.find_by_id(organization_id) }
 
   let(:creator     ){ Creator.new(self) if creator_id }
   let(:events      ){ Events.new(self)       }

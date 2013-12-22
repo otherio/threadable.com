@@ -12,7 +12,7 @@ describe IncomingEmail do
   it { should_not be_held }
   it { should belong_to :creator }
   it { should belong_to :conversation }
-  it { should belong_to :project }
+  it { should belong_to :organization }
   it { should belong_to :message }
   it { should belong_to :parent_message }
   it { should have_and_belong_to_many :attachments }

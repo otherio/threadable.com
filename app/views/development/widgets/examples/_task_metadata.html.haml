@@ -1,7 +1,7 @@
 
 - if signed_in?
 
-  - @task = current_user.projects.all.first.tasks.all.first
+  - @task = current_user.organizations.all.first.tasks.all.first
 
   = render_widget :task_metadata, task: @task, user: current_user
 

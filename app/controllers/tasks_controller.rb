@@ -20,7 +20,7 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     subject = params.require(:task).require(:subject)
-    @task = project.tasks.create(subject: subject)
+    @task = organization.tasks.create(subject: subject)
 
     respond_to do |format|
       if @task.persisted?
@@ -28,7 +28,7 @@ class TasksController < ApplicationController
           request.xhr? ? render_tasks_sidebar : redirect_to_show
         }
         format.json {
-          render json: @task, status: :created, location: project_task_url(project, @task)
+          render json: @task, status: :created, location: organization_task_url(organization, @task)
         }
       else
         format.html {
@@ -41,8 +41,8 @@ class TasksController < ApplicationController
     end
   end
 
-  # PUT /:project_id/tasks/:id
-  # PUT /:project_id/tasks/:id.json
+  # PUT /:organization_id/tasks/:id
+  # PUT /:organization_id/tasks/:id.json
   def update
     task_params = params.require(:task).permit(:position)
 
@@ -99,35 +99,35 @@ class TasksController < ApplicationController
 
   private
 
-  def project_slug
-    params[:project_id]
+  def organization_slug
+    params[:organization_id]
   end
 
   def task_slug
     params[:task_id] || params[:id]
   end
 
-  def project
-    @project ||= current_user.projects.find_by_slug! project_slug
+  def organization
+    @organization ||= current_user.organizations.find_by_slug! organization_slug
   end
 
   def task
-    @task ||= project.tasks.find_by_slug!(task_slug)
+    @task ||= organization.tasks.find_by_slug!(task_slug)
   end
 
   def tasks
-    @tasks ||= project.tasks.all
+    @tasks ||= organization.tasks.all
   end
 
   def render_tasks_sidebar
     options = {}
     options[:with_title]    = true  if params[:with_title] == "true"
     options[:conversations] = false if params[:conversations] == "false"
-    render text: render_widget(:tasks_sidebar, project, options)
+    render text: render_widget(:tasks_sidebar, organization, options)
   end
 
   def redirect_to_show options={}
-    redirect_to project_conversation_url(project, @task), options
+    redirect_to organization_conversation_url(organization, @task), options
   end
 
 end

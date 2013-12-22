@@ -3,11 +3,11 @@ class EnsureAllOrganizationsHaveAShortName < ActiveRecord::Migration
   def up
 
     Covered::Organization.transaction do
-      Covered::Organization.find_in_batches do |projects|
-        projects.each do |project|
-          next if project.valid?
-          project.short_name
-          project.save!
+      Covered::Organization.find_in_batches do |organizations|
+        organizations.each do |organization|
+          next if organization.valid?
+          organization.short_name
+          organization.save!
         end
       end
     end

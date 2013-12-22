@@ -32,7 +32,7 @@ describe Covered::CurrentUser do
     )
   }
 
-  its(:projects){ should be_a Covered::User::Organizations }
+  its(:organizations){ should be_a Covered::User::Organizations }
 
   describe "==" do
     it "should match on user_id" do

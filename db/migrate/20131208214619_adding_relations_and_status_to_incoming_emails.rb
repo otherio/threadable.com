@@ -3,7 +3,7 @@ class AddingRelationsAndStatusToIncomingEmails < ActiveRecord::Migration
     add_column :incoming_emails, :processed,         :boolean, default: false
     add_column :incoming_emails, :failed,            :boolean, default: false
     add_column :incoming_emails, :creator_id,        :integer
-    add_column :incoming_emails, :project_id,        :integer
+    add_column :incoming_emails, :organization_id,        :integer
     add_column :incoming_emails, :conversation_id,   :integer
     add_column :incoming_emails, :parent_message_id, :integer
     add_column :incoming_emails, :message_id,        :integer

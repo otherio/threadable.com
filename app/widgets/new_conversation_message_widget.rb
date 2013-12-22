@@ -14,8 +14,8 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
     @view.current_user
   end
 
-  option :project do
-    conversation.project
+  option :organization do
+    conversation.organization
   end
 
   option :message do
@@ -28,9 +28,9 @@ class NewConversationMessageWidget < Rails::Widget::Presenter
 
   option :url do
     if new_conversation?
-      @view.project_conversations_path(project, format: :json)
+      @view.organization_conversations_path(organization, format: :json)
     else
-      @view.project_conversation_messages_path(project, conversation)
+      @view.organization_conversation_messages_path(organization, conversation)
     end
   end
 

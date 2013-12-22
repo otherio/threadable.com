@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe IncomingEmail::ParentMessageFinder do
 
-  let(:project){ find_project_by_slug('raceteam') }
-  let(:conversation){ project.conversations.where(slug: 'layup-body-carbon').first! }
+  let(:organization){ find_organization_by_slug('raceteam') }
+  let(:conversation){ organization.conversations.where(slug: 'layup-body-carbon').first! }
   let(:parent_message){ conversation.messages.where('messages.parent_id IS NOT NULL').last! }
   let(:headers){ {'In-Reply-To' => in_reply_to, 'References' => references } }
 
   before{ expect(parent_message.message_id_header).to be_present }
 
   def call!
-    described_class.call(project_id: project.id, headers: headers)
+    described_class.call(organization_id: organization.id, headers: headers)
   end
 
   def self.it_should_find_the_parent_message!

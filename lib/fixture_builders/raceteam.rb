@@ -1,7 +1,7 @@
 FixtureBuilder.build do
 
   as_an_admin do
-    create_project(
+    create_organization(
       name: 'UCSD Electric Racing',
       short_name: 'RaceTeam',
       description: 'Senior engineering electric race team!',
@@ -13,7 +13,7 @@ FixtureBuilder.build do
   as 'alice@ucsd.covered.io' do
     set_avatar! 'alice.jpg'
 
-    # Alice invites her project mates
+    # Alice invites her organization mates
     add_member 'Tom Canver',      'tom@ucsd.covered.io'
     add_member 'Yan Hzu',         'yan@ucsd.covered.io'
     add_member 'Bethany Pattern', 'bethany@ucsd.covered.io'
@@ -22,7 +22,7 @@ FixtureBuilder.build do
 
     # Alice sends a welcome email
     @welcome_message = create_conversation(
-      subject: 'Welcome to our Covered project!',
+      subject: 'Welcome to our Covered organization!',
       text: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!',
     )
   end
@@ -51,7 +51,7 @@ FixtureBuilder.build do
   end
 
   as 'jonathan@ucsd.covered.io' do
-    unsubscribe_from_project_email!
+    unsubscribe_from_organization_email!
   end
 
 
@@ -208,21 +208,21 @@ FixtureBuilder.build do
 
   as 'tom@ucsd.covered.io' do
     create_conversation(
-      to_header: %(#{project.formatted_email_address}, somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
+      to_header: %(#{organization.formatted_email_address}, somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
       cc_header: %("Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
       subject:   %(Who wants to pick up lunch?),
       text:      %(I like cheese. I think someone else likes cheese too.),
     )
     create_conversation(
       to_header: %(some@guy.com),
-      cc_header: %(#{project.formatted_email_address}, "Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      cc_header: %(#{organization.formatted_email_address}, "Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
       subject:   %(Who wants to pick up dinner?),
       text:      %(I like potatoes. I think someone else likes potatoes too.),
     )
     create_conversation(
       to_header: %(somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
       cc_header: %("Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
-      # bcc_header: project.formatted_email_address # <--- Let's assume the project was BCC'd
+      # bcc_header: organization.formatted_email_address # <--- Let's assume the organization was BCC'd
       subject:   %(Who wants to pick up breakfast?),
       text:      %(I like foodz. I've been here all night!!!!!),
     )

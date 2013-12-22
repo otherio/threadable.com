@@ -23,7 +23,7 @@ Rails.widget('task_metadata', function(Widget){
   this.showDoersPopover = function(event){
     this.node.find('.doers_popover').widget().show({
       target:          this.node.find('.add-remove-doers'),
-      project_members: this.data.project_members,
+      organization_members: this.data.organization_members,
       doers:           this.data.doers,
       addDoer:         addDoer.bind(this),
       removeDoer:      removeDoer.bind(this)
@@ -54,8 +54,8 @@ Rails.widget('task_metadata', function(Widget){
     member_name = member_is_current_user ? 'you' :  member.name;
 
     url = add ?
-      page.project_task_doers_path(page.current_project.slug, page.current_task.slug) :
-      page.project_task_doer_path(page.current_project.slug, page.current_task.slug, member.id);
+      page.organization_task_doers_path(page.current_organization.slug, page.current_task.slug) :
+      page.organization_task_doer_path(page.current_organization.slug, page.current_task.slug, member.id);
 
     data = add ? {user_id: member.id} : {};
 

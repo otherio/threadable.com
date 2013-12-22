@@ -4,8 +4,8 @@ describe Covered::Organization::Members::Remove do
 
   delegate :call, to: :described_class
 
-  let(:project){ double(:project, id: 134, name: 'lick a baby') }
-  let(:members){ double(:members, project: project) }
+  let(:organization){ double(:organization, id: 134, name: 'lick a baby') }
+  let(:members){ double(:members, organization: organization) }
   let(:scope  ){ double(:scope) }
 
   before do
@@ -14,8 +14,8 @@ describe Covered::Organization::Members::Remove do
 
     expect(covered).to receive(:track).with("Removed User", {
       'Removed User' => 9442,
-      'Organization'      => project.id,
-      'Organization Name' => project.name,
+      'Organization'      => organization.id,
+      'Organization Name' => organization.name,
     })
 
     expect(scope).to receive(:where).with(user_id: 9442).and_return(scope)
@@ -23,13 +23,13 @@ describe Covered::Organization::Members::Remove do
   end
 
   context 'when given a user id' do
-    it 'deleted the project members by the user id' do
+    it 'deleted the organization members by the user id' do
       call(members, user_id: 9442)
     end
   end
 
   context 'when given a user' do
-    it 'deleted the project members by the user id' do
+    it 'deleted the organization members by the user id' do
       call(members, user: double(:user, user_id: 9442))
     end
   end

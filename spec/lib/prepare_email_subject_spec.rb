@@ -5,10 +5,10 @@ describe PrepareEmailSubject do
   delegate :call, to: :described_class
 
   let(:email_subject){ self.class.description }
-  let(:project){ double(:project, subject_tag: 'foobar') }
+  let(:organization){ double(:organization, subject_tag: 'foobar') }
   let(:stripped_plain) { 'i am a message body' }
   let(:email) { double(:email, subject: email_subject, stripped_plain: stripped_plain ) }
-  subject{ call(project, email) }
+  subject{ call(organization, email) }
 
   context "RE: [foobar] [walmart] where the kids at?" do
     it { should eq "RE: [walmart] where the kids at?" }

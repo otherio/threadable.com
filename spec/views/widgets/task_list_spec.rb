@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe "task_list" do
 
-  let(:project){ double(:project) }
+  let(:organization){ double(:organization) }
 
   let(:tasks){
     5.times.map do |i|
       double(:"task#{i}",
         id: i+1,
         done?: i > 2,
-        project: project,
+        organization: organization,
         subject: "TASK SUBJECT #{i}",
         position: i,
         slug: "#{i}-task"
@@ -30,7 +30,7 @@ describe "task_list" do
       li[:"data-slug"].should == task.slug
 
       link = li.css('a').first
-      link[:href].should == project_conversation_url(project, task)
+      link[:href].should == organization_conversation_url(organization, task)
       link.text.should == task.subject
       icon_class = link.css('i').first[:class]
       icon_class.should include 'icon-ok'

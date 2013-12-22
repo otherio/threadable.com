@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe InviteModalWidget do
 
-  let(:project)   { double(:project) }
-  let(:arguments) { [project] }
+  let(:organization)   { double(:organization) }
+  let(:arguments) { [organization] }
 
   def html_options
     {class: 'custom_class'}
@@ -17,7 +17,7 @@ describe InviteModalWidget do
       should == {
         block: nil,
         presenter: presenter,
-        project: project,
+        organization: organization,
       }
     end
   end

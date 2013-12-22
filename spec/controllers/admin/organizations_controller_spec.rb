@@ -52,95 +52,95 @@ describe Admin::OrganizationsController do
 
     describe 'GET :index' do
       it 'should render the index page' do
-        projects = double(:projects)
-        expect(covered.projects).to receive(:all).and_return(projects)
+        organizations = double(:organizations)
+        expect(covered.organizations).to receive(:all).and_return(organizations)
         get :index
         expect(response).to render_template :index
-        expect(assigns[:projects]).to eq projects
+        expect(assigns[:organizations]).to eq organizations
       end
     end
 
     describe 'GET :new' do
-      it 'should render the new project page' do
-        new_project = double(:new_project)
-        expect(covered.projects).to receive(:new).and_return(new_project)
+      it 'should render the new organization page' do
+        new_organization = double(:new_organization)
+        expect(covered.organizations).to receive(:new).and_return(new_organization)
         get :new
         expect(response).to render_template :new
-        expect(assigns[:project]).to eq new_project
+        expect(assigns[:organization]).to eq new_organization
       end
     end
 
     describe 'POST :create' do
-      let(:project_params){ { name: 'Robot Cow', add_current_user_as_a_member: "1" } }
-      let(:project){ double(:project, to_param: 'robot-cow', persisted?: persisted) }
+      let(:organization_params){ { name: 'Robot Cow', add_current_user_as_a_member: "1" } }
+      let(:organization){ double(:organization, to_param: 'robot-cow', persisted?: persisted) }
       before do
-        expect(covered.projects).to receive(:create).with(name: 'Robot Cow', add_current_user_as_a_member: true).and_return(project)
-        post :create, project: project_params
+        expect(covered.organizations).to receive(:create).with(name: 'Robot Cow', add_current_user_as_a_member: true).and_return(organization)
+        post :create, organization: organization_params
       end
-      context 'when the project is successfully created' do
+      context 'when the organization is successfully created' do
         let(:persisted){ true }
-        it 'should redirect to the project edit page' do
-          expect(response).to redirect_to admin_edit_project_path('robot-cow')
+        it 'should redirect to the organization edit page' do
+          expect(response).to redirect_to admin_edit_organization_path('robot-cow')
           expect(flash[:notice]).to eq "Organization was successfully created."
         end
       end
-      context 'when the project is not successfully created' do
+      context 'when the organization is not successfully created' do
         let(:persisted){ false }
-        it 'should render to the project edit page' do
+        it 'should render to the organization edit page' do
           expect(response).to render_template :new
-          expect(assigns[:project]).to eq project
+          expect(assigns[:organization]).to eq organization
         end
       end
     end
 
     describe 'GET :edit' do
-      let(:project){ double :project, members: double(:members) }
+      let(:organization){ double :organization, members: double(:members) }
       let(:members){ double :members }
       before do
-        expect(covered.projects).to receive(:find_by_slug!).with('low-rider').and_return(project)
-        expect(project.members).to receive(:all).and_return(members)
+        expect(covered.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
+        expect(organization.members).to receive(:all).and_return(members)
       end
-      it 'should render the project edit page' do
+      it 'should render the organization edit page' do
         get :edit, id: 'low-rider'
         expect(response).to render_template :edit
-        expect(assigns[:project]).to eq project
+        expect(assigns[:organization]).to eq organization
         expect(assigns[:members]).to eq members
       end
     end
 
     describe 'PUT :update' do
-      let(:project){ double :project, members: double(:members), to_param: 'lowrider' }
-      let(:project_params){ {slug: 'lowrider'} }
+      let(:organization){ double :organization, members: double(:members), to_param: 'lowrider' }
+      let(:organization_params){ {slug: 'lowrider'} }
       before do
-        expect(covered.projects).to receive(:find_by_slug!).with('low-rider').and_return(project)
-        expect(project).to receive(:update).with(project_params).and_return(update_successful)
-        put :update, id: 'low-rider', project: project_params
+        expect(covered.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
+        expect(organization).to receive(:update).with(organization_params).and_return(update_successful)
+        put :update, id: 'low-rider', organization: organization_params
       end
-      context 'when the project is successfully updated' do
+      context 'when the organization is successfully updated' do
         let(:update_successful){ true }
-        it 'should redirect to the project edit page' do
-          expect(response).to redirect_to admin_edit_project_path('lowrider')
+        it 'should redirect to the organization edit page' do
+          expect(response).to redirect_to admin_edit_organization_path('lowrider')
           expect(flash[:notice]).to eq "Organization was successfully updated."
         end
       end
-      context 'when the project is not successfully updated' do
+      context 'when the organization is not successfully updated' do
         let(:update_successful){ false }
-        it 'should render to the project edit page' do
+        it 'should render to the organization edit page' do
           expect(response).to render_template :edit
-          expect(assigns[:project]).to eq project
+          expect(assigns[:organization]).to eq organization
         end
       end
     end
 
     describe 'DELETE :destroy' do
-      let(:project){ double :project, members: double(:members), slug: 'lowrider' }
+      let(:organization){ double :organization, members: double(:members), slug: 'lowrider' }
       before do
-        expect(covered.projects).to receive(:find_by_slug!).with('low-rider').and_return(project)
-        expect(project).to receive(:destroy!)
+        expect(covered.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
+        expect(organization).to receive(:destroy!)
         delete :destroy, id: 'low-rider'
       end
-      it 'should redirect to the admin projects page' do
-        expect(response).to redirect_to admin_projects_url
+      it 'should redirect to the admin organizations page' do
+        expect(response).to redirect_to admin_organizations_url
         expect(flash[:notice]).to eq "Organization was successfully destroyed."
       end
     end

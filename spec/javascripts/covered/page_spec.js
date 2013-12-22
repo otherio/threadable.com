@@ -5,7 +5,7 @@ describe("Covered.Page", function(){
   beforeEach(function(){
     env = {
       page_name: 'example/page/name',
-      current_project:      {current_project:true},
+      current_organization:      {current_organization:true},
       current_conversation: {current_conversation:true},
       current_task:         {current_task:true},
       current_task_doers:   {current_task_doers:true},
@@ -22,7 +22,7 @@ describe("Covered.Page", function(){
   it("should assign current_{x} properties", function(){
     expect(page.name).toEqual('example/page/name');
 
-    expect(page.current_project     ).toEqual(page.current_project);
+    expect(page.current_organization     ).toEqual(page.current_organization);
     expect(page.current_conversation).toEqual(page.current_conversation);
     expect(page.current_task        ).toEqual(page.current_task);
     expect(page.current_task_doers  ).toEqual(page.current_task_doers);

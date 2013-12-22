@@ -37,17 +37,17 @@ class FixtureBuilder
     @covered = nil
   end
 
-  def create_project attributes
-    @project.nil? or raise "you can only create one project in a fixture builder"
-    @project = covered.projects.create! attributes.merge(add_current_user_as_a_member: false)
+  def create_organization attributes
+    @organization.nil? or raise "you can only create one organization in a fixture builder"
+    @organization = covered.organizations.create! attributes.merge(add_current_user_as_a_member: false)
   end
 
-  def project
-    @project or raise 'please create a project first'
+  def organization
+    @organization or raise 'please create a organization first'
   end
 
   def add_member name, email_address
-    project.members.add(name: name, email_address: email_address)
+    organization.members.add(name: name, email_address: email_address)
   end
 
   def web_enable! email_address
@@ -67,7 +67,7 @@ class FixtureBuilder
 
   def create_conversation options
     subject = options.fetch(:subject)
-    conversation = project.conversations.create!(subject: subject, creator: current_user)
+    conversation = organization.conversations.create!(subject: subject, creator: current_user)
     create_message conversation, options
   end
 
@@ -80,7 +80,7 @@ class FixtureBuilder
   end
 
   def create_task subject
-    project.tasks.create!(subject: subject, creator: current_user)
+    organization.tasks.create!(subject: subject, creator: current_user)
   end
 
   def add_doer_to_task task, email_address
@@ -103,8 +103,8 @@ class FixtureBuilder
     current_user.email_addresses.add! email_address, primary
   end
 
-  def unsubscribe_from_project_email! project=self.project
-    membership = project.members.find_by_user_id! current_user.id
+  def unsubscribe_from_organization_email! organization=self.organization
+    membership = organization.members.find_by_user_id! current_user.id
     membership.unsubscribe!
   end
 

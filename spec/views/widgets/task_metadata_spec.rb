@@ -4,7 +4,7 @@ describe "task_metadata" do
 
   let(:user   ) { double(:user) }
   # let(:members) { double(:members) }
-  let(:project) { double(:project) } #, members: members) }
+  let(:organization) { double(:organization) } #, members: members) }
 
   let(:doers){ double :doers, all: all_doers }
   let(:all_doers){
@@ -17,7 +17,7 @@ describe "task_metadata" do
   let :task do
     double(:task,
       subject: "eat a live goat",
-      project: project,
+      organization: organization,
       done?: true,
       doers: doers,
     )

@@ -180,19 +180,19 @@ Consider it fuckin&#39; tried!                                                  
 <table align="left" border="0" cellpadding="0" cellspacing="4" style="margin:0"><tbody><tr>
 <td valign="middle" style="vertical-align:middle">
 
-<a href="mailto:secret.art.project@covered.io" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#16a085!important" target="_blank">  New conversation  </a>
+<a href="mailto:secret.art.organization@covered.io" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#16a085!important" target="_blank">  New conversation  </a>
 
 </td>
 
 <td valign="middle" style="vertical-align:middle">
 
-<a href="mailto:secret.art.project@covered.io?subject=%E2%9C%94+" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#16a085!important" target="_blank">  New task  </a>
+<a href="mailto:secret.art.organization@covered.io?subject=%E2%9C%94+" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#16a085!important" target="_blank">  New task  </a>
 
 </td>
 
 <td valign="middle" style="vertical-align:middle">
 
-<a href="https://beta.covered.io/secret-art-project/conversations/hello#message-1254" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#7f8c8d!important" target="_blank">  View on Covered  </a>
+<a href="https://beta.covered.io/secret-art-organization/conversations/hello#message-1254" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#7f8c8d!important" target="_blank">  View on Covered  </a>
 
 </td>
 

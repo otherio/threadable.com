@@ -4,28 +4,28 @@ describe Organization::MembersController do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 
   def valid_params
     {
       format: 'json',
-      project_id: project.to_param,
+      organization_id: organization.to_param,
     }
   end
 
   describe "GET index" do
-    it "shows a list of users that are members of the project" do
-      get :index, project_id: project.to_param
+    it "shows a list of users that are members of the organization" do
+      get :index, organization_id: organization.to_param
       response.should be_success
-      assigns(:members).should =~ project.members.all
+      assigns(:members).should =~ organization.members.all
     end
 
     context "when XHR" do
-      it "returns a list of users that are members of the project as json" do
+      it "returns a list of users that are members of the organization as json" do
         xhr :get, :index, valid_params
         response.should be_success
         # this is fucking stupid
-        JSON.parse(response.body).should =~ JSON.parse(project.members.to_json)
+        JSON.parse(response.body).should =~ JSON.parse(organization.members.to_json)
       end
     end
   end

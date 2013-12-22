@@ -11,13 +11,13 @@ class MailPreview < MailView
   end
 
   def join_notice
-    project, recipient = find_project_and_recipient
-    covered.emails.generate(:join_notice, project, recipient, "Yo Dawg!")
+    organization, recipient = find_organization_and_recipient
+    covered.emails.generate(:join_notice, organization, recipient, "Yo Dawg!")
   end
 
   def unsubscribe_notice
-    project, recipient = find_project_and_recipient
-    covered.emails.generate(:unsubscribe_notice, project, recipient)
+    organization, recipient = find_organization_and_recipient
+    covered.emails.generate(:unsubscribe_notice, organization, recipient)
   end
 
 
@@ -53,21 +53,21 @@ class MailPreview < MailView
 
   def generate_conversation_message message
     covered.current_user_id = message.creator_id
-    project      = covered.current_user.projects.find_by_id!(message.conversation.project_id)
-    conversation = project.conversations.find_by_id!(message.conversation.id)
+    organization      = covered.current_user.organizations.find_by_id!(message.conversation.organization_id)
+    conversation = organization.conversations.find_by_id!(message.conversation.id)
     message      = conversation.messages.latest
-    recipient    = project.members.all.last
-    covered.emails.generate(:conversation_message, project, message, recipient)
+    recipient    = organization.members.all.last
+    covered.emails.generate(:conversation_message, organization, message, recipient)
   end
 
-  def find_project_and_recipient
-    project_record   = Organization.last!
-    recipient_record = project_record.members.last!
+  def find_organization_and_recipient
+    organization_record   = Organization.last!
+    recipient_record = organization_record.members.last!
 
-    covered.current_user_id = project_record.members.first!
-    project   = covered.current_user.projects.find_by_id!(project_record.id)
-    recipient = project.members.find_by_user_id!(recipient_record.id)
-    [project, recipient]
+    covered.current_user_id = organization_record.members.first!
+    organization   = covered.current_user.organizations.find_by_id!(organization_record.id)
+    recipient = organization.members.find_by_user_id!(recipient_record.id)
+    [organization, recipient]
   end
 
   def find_recipient

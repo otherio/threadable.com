@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Covered::IncomingEmail do
 
-  let(:raceteam      ){ covered.projects.find_by_slug!('raceteam') }
+  let(:raceteam      ){ covered.organizations.find_by_slug!('raceteam') }
   let(:alice         ){ raceteam.members.find_by_email_address!('alice@ucsd.covered.io') }
   let(:incoming_email){ covered.incoming_emails.create!(params) }
   subject{ incoming_email }
@@ -16,7 +16,7 @@ describe Covered::IncomingEmail do
 
   let :params do
     create_incoming_email_params(
-      project: raceteam,
+      organization: raceteam,
       creator: alice,
       subject: 'Where is my hammer?',
       attachments: attachments
@@ -29,7 +29,7 @@ describe Covered::IncomingEmail do
       expect( incoming_email                 ).to be_processed
       expect( incoming_email                 ).to_not be_bounced
       expect( incoming_email                 ).to_not be_held
-      expect( incoming_email.project         ).to eq raceteam
+      expect( incoming_email.organization         ).to eq raceteam
       expect( incoming_email.creator         ).to be_the_same_user_as alice
       expect( incoming_email.parent_message  ).to be_nil
       expect( incoming_email.conversation    ).to be_a Covered::Conversation

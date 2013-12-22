@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Admin projects CRUD" do
+feature "Admin organizations CRUD" do
 
   # let :jared do
   #   covered.users.create!(
@@ -23,29 +23,29 @@ feature "Admin projects CRUD" do
     end
   end
 
-  scenario %(creating a project) do
+  scenario %(creating a organization) do
     sign_in_as 'jared@other.io'
-    visit admin_new_project_path
+    visit admin_new_organization_path
     fill_in 'Name', with: 'United Nations'
     click_on 'Create Organization'
     expect(page).to have_text 'Notice! Organization was successfully created.'
-    expect(page).to have_text 'Edit project'
-    expect(current_url).to eq admin_edit_project_url('united-nations')
+    expect(page).to have_text 'Edit organization'
+    expect(current_url).to eq admin_edit_organization_url('united-nations')
 
-    within '.edit-project-form' do
+    within '.edit-organization-form' do
       expect(page).to have_field "Name",                   with: "United Nations"
       expect(page).to have_field "Subject tag",            with: "United Nations"
       expect(page).to have_field "Slug",                   with: "united-nations"
       expect(page).to have_field "Email address username", with: "united-nations"
     end
 
-    project = covered.projects.find_by_name!("United Nations")
-    expect(project.name                  ).to eq "United Nations"
-    expect(project.subject_tag           ).to eq "United Nations"
-    expect(project.slug                  ).to eq "united-nations"
-    expect(project.email_address_username).to eq "united-nations"
+    organization = covered.organizations.find_by_name!("United Nations")
+    expect(organization.name                  ).to eq "United Nations"
+    expect(organization.subject_tag           ).to eq "United Nations"
+    expect(organization.slug                  ).to eq "united-nations"
+    expect(organization.email_address_username).to eq "united-nations"
 
-    within '.edit-project-form' do
+    within '.edit-organization-form' do
       fill_in "Name",                   with: "United Hations"
       fill_in "Subject tag",            with: "United Hations"
       fill_in "Slug",                   with: "united-hations"
@@ -53,15 +53,15 @@ feature "Admin projects CRUD" do
       click_on 'Update Organization'
     end
     expect(page).to have_text 'Notice! Organization was successfully updated.'
-    project = covered.projects.find_by_name!("United Hations")
-    expect(project.name                  ).to eq "United Hations"
-    expect(project.subject_tag           ).to eq "United Hations"
-    expect(project.slug                  ).to eq "united-hations"
-    expect(project.email_address_username).to eq "united-hations"
+    organization = covered.organizations.find_by_name!("United Hations")
+    expect(organization.name                  ).to eq "United Hations"
+    expect(organization.subject_tag           ).to eq "United Hations"
+    expect(organization.slug                  ).to eq "united-hations"
+    expect(organization.email_address_username).to eq "united-hations"
 
-    expect(project.members.all).to be_empty
+    expect(organization.members.all).to be_empty
 
-    expect(members_table).to eq [["This project has no members."]]
+    expect(members_table).to eq [["This organization has no members."]]
 
     within '.add-existing-member-form' do
       select 'Nicole Aptekar <nicole@other.io>', from: 'user[id]'
@@ -71,7 +71,7 @@ feature "Admin projects CRUD" do
     expect(members_table).to eq [
       ["Nicole Aptekar", "nicole@other.io", "yes"],
     ]
-    expect( project.members ).to include nicole
+    expect( organization.members ).to include nicole
 
     within '.add-existing-member-form' do
       select 'Ian Baker <ian@other.io>', from: 'user[id]'
@@ -84,13 +84,13 @@ feature "Admin projects CRUD" do
       ["Nicole Aptekar", "nicole@other.io", "yes"],
       ["Ian Baker",      "ian@other.io",    "no" ],
     ]
-    expect( project.members ).to include ian
+    expect( organization.members ).to include ian
 
-    assert_background_job_enqueued     SendEmailWorker, args: [covered.env, "join_notice", project.id, nicole.id, nil]
-    assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, ian.id,    nil]
+    assert_background_job_enqueued     SendEmailWorker, args: [covered.env, "join_notice", organization.id, nicole.id, nil]
+    assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, ian.id,    nil]
 
-    expect( project.members.find_by_user_id!(nicole.id).gets_email? ).to be_true
-    expect( project.members.find_by_user_id!(ian.id   ).gets_email? ).to be_false
+    expect( organization.members.find_by_user_id!(nicole.id).gets_email? ).to be_true
+    expect( organization.members.find_by_user_id!(ian.id   ).gets_email? ).to be_false
 
     within '.add-new-member-form' do
       fill_in 'Name', with: 'You Face'
@@ -103,9 +103,9 @@ feature "Admin projects CRUD" do
       ["Ian Baker",      "ian@other.io",    "no" ],
       ["You Face",       "you@face.io",     "yes"],
     ]
-    you_face = project.members.find_by_user_slug!('you-face')
+    you_face = organization.members.find_by_user_slug!('you-face')
     expect( you_face.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, you_face.id, nil]
+    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, you_face.id, nil]
 
     within '.add-new-member-form' do
       fill_in 'Name', with: 'Someone Else'
@@ -121,16 +121,16 @@ feature "Admin projects CRUD" do
       ["You Face",       "you@face.io",     "yes"],
       ["Someone Else",   "someone@else.io", "no" ],
     ]
-    someone_else = project.members.find_by_user_slug!('someone-else')
+    someone_else = organization.members.find_by_user_slug!('someone-else')
     expect( someone_else.gets_email? ).to be_false
-    assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, someone_else.id, nil]
+    assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, someone_else.id, nil]
 
     within first('.members.table tbody tr', text: 'Nicole Aptekar') do
       click_on 'remove'
       accept_prompt!
     end
 
-    expect(page).to have_text 'Edit project'
+    expect(page).to have_text 'Edit organization'
 
     expect(members_table).to match_array [
       ["Ian Baker",      "ian@other.io",    "no" ],
@@ -138,21 +138,21 @@ feature "Admin projects CRUD" do
       ["Someone Else",   "someone@else.io", "no" ],
     ]
 
-    expect( project.members ).to_not include nicole
+    expect( organization.members ).to_not include nicole
 
-    visit admin_projects_url
-    within('.projects.table tbody tr', text: 'United Hations') do
+    visit admin_organizations_url
+    within('.organizations.table tbody tr', text: 'United Hations') do
       click_on 'destroy'
       accept_prompt!
     end
     expect(page).to have_text 'Organizations'
-    expect(current_url).to eq admin_projects_url
+    expect(current_url).to eq admin_organizations_url
     expect(page).to_not have_text 'United Hations'
   end
 
-  scenario %(adding a member to a project you (the admin) are not a member of) do
+  scenario %(adding a member to a organization you (the admin) are not a member of) do
     sign_in_as 'jared@other.io'
-    visit admin_projects_path
+    visit admin_organizations_path
     click_on 'SF Health Center'
     within '.add-new-member-form' do
       fill_in 'Name',          with: 'Bob Newbetauser'
@@ -160,10 +160,10 @@ feature "Admin projects CRUD" do
       click_on 'Add Member'
     end
     expect(members_table).to include ['Bob Newbetauser', 'bob.newbetauser@example.com', "yes"]
-    project = covered.projects.find_by_slug('sfhealth')
-    bob = project.members.find_by_user_slug!('bob-newbetauser')
+    organization = covered.organizations.find_by_slug('sfhealth')
+    bob = organization.members.find_by_user_slug!('bob-newbetauser')
     expect( bob.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", project.id, bob.id, nil]
+    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, bob.id, nil]
     drain_background_jobs!
     expect( sent_emails.join_notices('SF Health Center').to(bob.email_address) ).to be
   end

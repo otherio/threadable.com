@@ -143,7 +143,7 @@ describeWidget("invite_modal", function(){
       this.widget.form.trigger('ajax:success', [user, "ok", {}]);
       expect(hide).toHaveBeenCalled();
       expect(reset).toHaveBeenCalled();
-      expect(flash_message).toHaveBeenCalledWith('Steve Jobs <steve@apple.com> was added to this project.');
+      expect(flash_message).toHaveBeenCalledWith('Steve Jobs <steve@apple.com> was added to this organization.');
     });
   });
 
@@ -163,7 +163,7 @@ describeWidget("invite_modal", function(){
         var flash_notice = spyOn(this.widget.flash,'notice').andReturn(this.widget);
         this.widget.form.trigger('ajax:error', [{status:422}, "not found", {}]);
         expect(enable).toHaveBeenCalled();
-        expect(flash_notice).toHaveBeenCalledWith('That user is already a member of this project.');
+        expect(flash_notice).toHaveBeenCalledWith('That user is already a member of this organization.');
       });
     });
   });

@@ -2,8 +2,8 @@ class MessagesController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 
-  # POST /:project_id/conversations/:conversation_id/messages
-  # POST /:project_id/conversations/:conversation_id/messages.json
+  # POST /:organization_id/conversations/:conversation_id/messages
+  # POST /:organization_id/conversations/:conversation_id/messages.json
   def create
     body = params.require(:message).require(:body)
     attachments = Array(params[:message][:attachments]).map do |attachment|
@@ -19,15 +19,15 @@ class MessagesController < ApplicationController
     )
 
     if message.persisted?
-      render json: message_as_json(message), status: :created, location: project_conversation_messages_path(project, conversation)
+      render json: message_as_json(message), status: :created, location: organization_conversation_messages_path(organization, conversation)
     else
       render json: message.errors, status: :unprocessable_entity
     end
   end
 
 
-  # PUT /:project_id/conversations/:conversation_id/messages/:id
-  # PUT /:project_id/conversations/:conversation_id/messages/:id.json
+  # PUT /:organization_id/conversations/:conversation_id/messages/:id
+  # PUT /:organization_id/conversations/:conversation_id/messages/:id.json
   def update
     attributes = params.require(:message).permit(:shareworthy, :knowledge).symbolize_keys
     message = conversation.messages.find_by_id! params[:id]
@@ -42,16 +42,16 @@ class MessagesController < ApplicationController
 
   private
 
-  def project
-    @project ||= current_user.projects.find_by_slug! params[:project_id]
+  def organization
+    @organization ||= current_user.organizations.find_by_slug! params[:organization_id]
   end
 
   def conversation
-    @conversation ||= project.conversations.find_by_slug! params[:conversation_id]
+    @conversation ||= organization.conversations.find_by_slug! params[:conversation_id]
   end
 
-  def project_slug
-    params.require(:project_id)
+  def organization_slug
+    params.require(:organization_id)
   end
 
   def conversation_slug

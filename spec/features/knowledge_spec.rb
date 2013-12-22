@@ -5,7 +5,7 @@ require 'spec_helper'
 
 #   scenario %(marking a message as knowledge) do
 #     sign_in_as 'tom@ucsd.covered.io'
-#     visit project_conversation_url('raceteam', 'layup-body-carbon')
+#     visit organization_conversation_url('raceteam', 'layup-body-carbon')
 #     expect(page).to have_selector '.message'
 #     within first('.message') do
 #       click_on 'knowledge'

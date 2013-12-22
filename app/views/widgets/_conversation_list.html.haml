@@ -1,9 +1,9 @@
 %h2
   Conversations
 
-  - held_messages_count = project.held_messages.count
+  - held_messages_count = organization.held_messages.count
   - if held_messages_count > 0
-    %a{href: project_held_messages_path(project), role: "button", class: "btn btn-text-thin"}
+    %a{href: organization_held_messages_path(organization), role: "button", class: "btn btn-text-thin"}
       = pluralize held_messages_count, 'held message'
 
 %table.conversations
@@ -16,6 +16,6 @@
               %span= name
           %span.count= "(#{conversation.messages_count})" if conversation.messages_count > 1
         %td.subject
-          = link_to conversation.subject, project_conversation_path(project, conversation)
+          = link_to conversation.subject, organization_conversation_path(organization, conversation)
         %td.datetime
           = humanize_time(conversation.updated_at)

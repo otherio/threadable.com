@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe TaskMetadataWidget do
 
-  let(:project_members) { double(:project_members, all: double(:all_project_members, to_json:'[project_members]')) }
+  let(:organization_members) { double(:organization_members, all: double(:all_organization_members, to_json:'[organization_members]')) }
   let(:task_doers) { double(:task_doers, all: double(:all_task_doers, to_json:'[task_doers]')) }
-  let(:project) { double(:project, members: project_members) }
-  let(:task) { double(:task, project: project, doers: task_doers) }
+  let(:organization) { double(:organization, members: organization_members) }
+  let(:task) { double(:task, organization: organization, doers: task_doers) }
   let(:user) { double(:user) }
   let(:user_is_a_doer){ false }
 
@@ -40,7 +40,7 @@ describe TaskMetadataWidget do
         class: "task_metadata custom_class",
         widget: "task_metadata",
         :'data-doers' => '[task_doers]',
-        :'data-project_members' => '[project_members]',
+        :'data-organization_members' => '[organization_members]',
       }
     end
   end

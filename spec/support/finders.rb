@@ -12,7 +12,7 @@ module RSpec::Support::Finders
     User.with_email_address(email_address).first!
   end
 
-  def find_project_by_slug slug
+  def find_organization_by_slug slug
     Organization.where(slug: slug).first!
   end
 

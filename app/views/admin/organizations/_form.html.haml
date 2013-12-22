@@ -1,4 +1,4 @@
-= simple_form_for [:admin, @project] do |f|
+= simple_form_for [:admin, @organization] do |f|
   = f.error_notification
 
   .inputs
@@ -6,7 +6,7 @@
     = f.input :subject_tag, required: false
     = f.input :slug, required: false
     = f.input :email_address_username, as: :string, required: false
-    - unless @project.persisted?
+    - unless @organization.persisted?
       = f.input :add_current_user_as_a_member, as: :boolean, input_html: {checked: false}, label: "Add #{current_user.name} as a member?"
   .actions
     = f.button :submit, class: 'btn btn-primary'

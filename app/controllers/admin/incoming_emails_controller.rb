@@ -4,7 +4,7 @@ class Admin::IncomingEmailsController < ApplicationController
 
   PAGE_SIZE = 10
 
-  # GET /admin/projects
+  # GET /admin/organizations
   def index
     @page = (params[:page] || 0).to_i
     @filter = params[:filter]
@@ -16,7 +16,7 @@ class Admin::IncomingEmailsController < ApplicationController
     @incoming_emails = covered.incoming_emails.page(@page, conditions)
   end
 
-  # GET /admin/projects/:id
+  # GET /admin/organizations/:id
   def show
     @incoming_email = covered.incoming_emails.find_by_id!(params[:id])
   end

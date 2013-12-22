@@ -8,7 +8,7 @@ class Covered::Event < Covered::Model
   delegate(*%w{
     id
     type
-    project_id
+    organization_id
     conversation_id
     content
     created_at

@@ -12,7 +12,7 @@ class Covered::Events::Create < MethodObject
 
   OPTIONS = Class.new OptionsHash do
     required :type, default: 'Event'
-    optional :project_id
+    optional :organization_id
     optional :conversation_id
     optional :content
   end

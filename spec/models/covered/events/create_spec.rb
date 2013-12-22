@@ -15,7 +15,7 @@ describe Covered::Events::Create do
   let(:event_attributes) do
     {
       type: 'Event',
-      project_id: 1
+      organization_id: 1
     }
   end
 
@@ -33,7 +33,7 @@ describe Covered::Events::Create do
     end
 
     it 'tracks the event' do
-      expect(covered).to receive(:track).with('Event', {project_id: 1} )
+      expect(covered).to receive(:track).with('Event', {organization_id: 1} )
       create_event
     end
   end

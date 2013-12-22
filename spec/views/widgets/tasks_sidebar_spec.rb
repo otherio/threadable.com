@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe "tasks_sidebar" do
 
-  let(:project){ double(:project, to_param: 'lick-a-fish') }
+  let(:organization){ double(:organization, to_param: 'lick-a-fish') }
 
   let(:conversations){
     [
-      double(:"conversation0", id: 0, :new_record? => false, :subject => 'conversation0', project: project, :task? => true, :done? => true),
-      double(:"conversation1", id: 1, :new_record? => true,  :subject => 'conversation1', project: project, :task? => false),
-      double(:"conversation2", id: 2, :new_record? => false, :subject => 'conversation2', project: project, :task? => true, :done? => false),
-      double(:"conversation3", id: 3, :new_record? => false, :subject => 'conversation3', project: project, :task? => false),
+      double(:"conversation0", id: 0, :new_record? => false, :subject => 'conversation0', organization: organization, :task? => true, :done? => true),
+      double(:"conversation1", id: 1, :new_record? => true,  :subject => 'conversation1', organization: organization, :task? => false),
+      double(:"conversation2", id: 2, :new_record? => false, :subject => 'conversation2', organization: organization, :task? => true, :done? => false),
+      double(:"conversation3", id: 3, :new_record? => false, :subject => 'conversation3', organization: organization, :task? => false),
     ]
   }
 
@@ -22,7 +22,7 @@ describe "tasks_sidebar" do
 
   def locals
     {
-      project: project,
+      organization: organization,
       conversations: conversations,
       tasks: tasks,
       my_tasks: my_tasks,
@@ -53,9 +53,9 @@ describe "tasks_sidebar" do
     conversation_elements[0][:'data-conversation-id'].should == "0"
     conversation_elements[1][:'data-conversation-id'].should == "2"
     conversation_elements[2][:'data-conversation-id'].should == "3"
-    conversation_elements[0].css('a').first[:href].should == project_conversation_url(project, conversations[0])
-    conversation_elements[1].css('a').first[:href].should == project_conversation_url(project, conversations[2])
-    conversation_elements[2].css('a').first[:href].should == project_conversation_url(project, conversations[3])
+    conversation_elements[0].css('a').first[:href].should == organization_conversation_url(organization, conversations[0])
+    conversation_elements[1].css('a').first[:href].should == organization_conversation_url(organization, conversations[2])
+    conversation_elements[2].css('a').first[:href].should == organization_conversation_url(organization, conversations[3])
   end
 
 end

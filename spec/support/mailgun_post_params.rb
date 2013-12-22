@@ -58,11 +58,11 @@ module RSpec::Support::MailgunPostParams
 
     default(:token        ){ SecureRandom.uuid }
     default(:signature    ){ MailgunSignature.encode(date, token) }
-    default(:project      ){ @covered.projects.find_by_slug!('raceteam') or raise "member project be blank" }
-    default(:member       ){ project.members.all.first or raise "member cannot be blank" }
+    default(:organization      ){ @covered.organizations.find_by_slug!('raceteam') or raise "member organization be blank" }
+    default(:member       ){ organization.members.all.first or raise "member cannot be blank" }
     default(:sender       ){ member.email_address }
-    default(:recipient    ){ project.email_address }
-    default(:to           ){ project.formatted_email_address }
+    default(:recipient    ){ organization.email_address }
+    default(:to           ){ organization.formatted_email_address }
     default(:from         ){ member.formatted_email_address }
     default(:envelope_from){ member.email_address }
     default(:subject      ){ 'This mailing list is ball ARRRRRRRR!' }

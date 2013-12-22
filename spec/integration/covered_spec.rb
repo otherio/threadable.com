@@ -4,11 +4,11 @@ describe "covered", fixtures: false do
   # it "should work" do
   #   expect{ Covered.new }.to raise_error ArgumentError, 'required options: :host'
 
-  #   prank_calls = covered.projects.create! name: 'Prank Calls'
+  #   prank_calls = covered.organizations.create! name: 'Prank Calls'
   #   expect(prank_calls.class).to eq Covered::Organization
   #   expect(prank_calls).to be_persisted
   #   expect(prank_calls.members.all).to be_empty
-  #   expect(prank_calls.project_record).to eq Organization.last
+  #   expect(prank_calls.organization_record).to eq Organization.last
 
 
   #   expect(prank_calls.members.class       ).to eq Covered::Organization::Members
@@ -75,7 +75,7 @@ describe "covered", fixtures: false do
     expect( covered.emails          ).to be_a Covered::Emails
     expect( covered.email_addresses ).to be_a Covered::EmailAddresses
     expect( covered.users           ).to be_a Covered::Users
-    expect( covered.projects        ).to be_a Covered::Organizations
+    expect( covered.organizations        ).to be_a Covered::Organizations
     expect( covered.conversations   ).to be_a Covered::Conversations
     expect( covered.tasks           ).to be_a Covered::Tasks
     expect( covered.messages        ).to be_a Covered::Messages
@@ -87,12 +87,12 @@ describe "covered", fixtures: false do
     covered.current_user = covered.users.create! options
   end
 
-  context "creating a project, inviting members, creating and replying to conversations" do
+  context "creating a organization, inviting members, creating and replying to conversations" do
     it "should work" do
       jared = sign_up! name: 'Jared Grippe', email_address: 'jared@other.io'
       expect(covered.current_user).to be_the_same_user_as jared
 
-      other = jared.projects.create! name: 'other.io'
+      other = jared.organizations.create! name: 'other.io'
 
       assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", other.id, jared.id, nil]
 
@@ -160,12 +160,12 @@ describe "covered", fixtures: false do
       expect( aaron.user_record ).to eq User.last
 
       expect( aaron.email_addresses.class ).to eq Covered::User::EmailAddresses
-      expect( aaron.projects.class        ).to eq Covered::User::Organizations
+      expect( aaron.organizations.class        ).to eq Covered::User::Organizations
       expect( aaron.messages.class        ).to eq Covered::User::Messages
 
-      htp = aaron.projects.create! name: 'Hug the police!'
+      htp = aaron.organizations.create! name: 'Hug the police!'
       expect( htp.class ).to eq Covered::Organization
-      expect( htp.project_record ).to eq Organization.last
+      expect( htp.organization_record ).to eq Organization.last
 
       assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", htp.id, aaron.id, nil]
 
@@ -217,9 +217,9 @@ describe "covered", fixtures: false do
       expect(email.text_content).to include '%5Btask%5D%20'
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.html_content).to include "feedback"
-      expect(email.urls.map(&:to_s)).to include project_url(htp)
-      expect(email.urls.map(&:to_s)).to include project_conversation_url(htp, fat_cops, anchor: "message-#{msg1.id}")
-      expect(email.project_unsubscribe_url).to be_present
+      expect(email.urls.map(&:to_s)).to include organization_url(htp)
+      expect(email.urls.map(&:to_s)).to include organization_conversation_url(htp, fat_cops, anchor: "message-#{msg1.id}")
+      expect(email.organization_unsubscribe_url).to be_present
 
       sent_emails.clear
 
@@ -269,9 +269,9 @@ describe "covered", fixtures: false do
       expect(email.text_content).to include 'OMG I love their belly fat'
       expect(email.html_content).to include "<p>I like to pinch their belly buttons</p>"
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
-      expect(email.urls.map(&:to_s)).to include project_url(htp)
-      expect(email.urls.map(&:to_s)).to include project_conversation_url(htp, fat_cops, anchor: "message-#{msg2.id}")
-      expect(email.project_unsubscribe_url).to be_present
+      expect(email.urls.map(&:to_s)).to include organization_url(htp)
+      expect(email.urls.map(&:to_s)).to include organization_conversation_url(htp, fat_cops, anchor: "message-#{msg2.id}")
+      expect(email.organization_unsubscribe_url).to be_present
     end
   end
 

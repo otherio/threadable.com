@@ -6,15 +6,15 @@ Covered::Application.routes.draw do
 
   get '/admin' => 'admin#show'
   namespace :admin do
-    post   'projects/:project_id/members'          => 'project/members#add',    as: 'add_project_member'
-    patch  'projects/:project_id/members/:user_id' => 'project/members#update', as: 'update_project_member'
-    delete 'projects/:project_id/members/:user_id' => 'project/members#remove', as: 'remove_project_member'
-    get    'projects'          => 'projects#index',   as: 'projects'
-    post   'projects'          => 'projects#create'
-    get    'projects/new'      => 'projects#new',     as: 'new_project'
-    get    'projects/:id/edit' => 'projects#edit',    as: 'edit_project'
-    patch  'projects/:id'      => 'projects#update',  as: 'project'
-    delete 'projects/:id'      => 'projects#destroy'
+    post   'organizations/:organization_id/members'          => 'organization/members#add',    as: 'add_organization_member'
+    patch  'organizations/:organization_id/members/:user_id' => 'organization/members#update', as: 'update_organization_member'
+    delete 'organizations/:organization_id/members/:user_id' => 'organization/members#remove', as: 'remove_organization_member'
+    get    'organizations'          => 'organizations#index',   as: 'organizations'
+    post   'organizations'          => 'organizations#create'
+    get    'organizations/new'      => 'organizations#new',     as: 'new_organization'
+    get    'organizations/:id/edit' => 'organizations#edit',    as: 'edit_organization'
+    patch  'organizations/:id'      => 'organizations#update',  as: 'organization'
+    delete 'organizations/:id'      => 'organizations#destroy'
 
     get    'incoming_emails'           => 'incoming_emails#index',  as: 'incoming_emails'
     get    'incoming_emails/:id'       => 'incoming_emails#show',   as: 'incoming_email'
@@ -52,8 +52,8 @@ Covered::Application.routes.draw do
   post  '/email_addresses/resend_confirmation_email' => 'email_addresses#resend_confirmation_email', as: 'resend_email_address_confirmation'
   match '/email_addresses/confirm/:token' => 'email_addresses#confirm', as: 'confirm_email_address', via: [:get, :post]
 
-  scope '/:project_id', :as => 'project' do
-    resources :members, :only => [:index, :create, :destroy], controller: 'project/members'
+  scope '/:organization_id', :as => 'organization' do
+    resources :members, :only => [:index, :create, :destroy], controller: 'organization/members'
 
     resources :conversations, :except => [:edit] do
       # member do
@@ -62,7 +62,7 @@ Covered::Application.routes.draw do
       resources :messages, :only => [:create, :update]
     end
 
-    resources :held_messages, :only => [:index], controller: 'project/held_messages' do
+    resources :held_messages, :only => [:index], controller: 'organization/held_messages' do
       post :accept, on: :member
       post :reject, on: :member
     end
@@ -79,19 +79,19 @@ Covered::Application.routes.draw do
       match 'mark_as_undone', via: [:get, :post]
     end
 
-    match '/unsubscribe/:token' => 'project/email_subscriptions#unsubscribe', as: 'unsubscribe', via: [:get, :post]
-    match '/resubscribe/:token' => 'project/email_subscriptions#resubscribe', as: 'resubscribe', via: [:get, :post]
+    match '/unsubscribe/:token' => 'organization/email_subscriptions#unsubscribe', as: 'unsubscribe', via: [:get, :post]
+    match '/resubscribe/:token' => 'organization/email_subscriptions#resubscribe', as: 'resubscribe', via: [:get, :post]
   end
 
   resources :emails, :only => :create
 
-  get   '/:id/edit'      => 'projects#edit',      :as => 'edit_project'
-  get   '/:id'           => 'projects#show',      :as => 'project'
-  put   '/:id'           => 'projects#update'
-  patch '/:id'           => 'projects#update'
-  get   '/:id/user_list' => 'projects#user_list', :as => 'user_list'
+  get   '/:id/edit'      => 'organizations#edit',      :as => 'edit_organization'
+  get   '/:id'           => 'organizations#show',      :as => 'organization'
+  put   '/:id'           => 'organizations#update'
+  patch '/:id'           => 'organizations#update'
+  get   '/:id/user_list' => 'organizations#user_list', :as => 'user_list'
 
-  resources :projects, except: [:index, :show, :update, :patch] do
+  resources :organizations, except: [:index, :show, :update, :patch] do
     member do
       put :leave
     end

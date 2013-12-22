@@ -10,25 +10,25 @@ module RSpec::Support::FeatureExampleGroup
       sign_in_path
     when 'the user setup page'
       setup_users_path params_for_current_path[:token]
-    when /^the project page for "(.+?)"$/
-      project_path Organization.where(name: $1).first!
-    when /^the project conversations page for "(.+?)"$/
-      project_conversations_path Organization.where(name: $1).first!
+    when /^the organization page for "(.+?)"$/
+      organization_path Organization.where(name: $1).first!
+    when /^the organization conversations page for "(.+?)"$/
+      organization_conversations_path Organization.where(name: $1).first!
     # when /^the "(.+?)" task page$/
     #   task = Task.where(subject: $1).first!
-    #   project_task_path task.project, task
+    #   organization_task_path task.organization, task
 
     when /the sign in page prefilled with "(.+?)"/
       sign_in_path(email: $1)
 
     when /^the "(.+?)" (?:conversation|task) page$/
       conversation = Conversation.where(subject: $1).first!
-      project_conversation_path conversation.project, conversation
-    when /^the "(.+?)" (?:conversation|task) for the "(.+?)" project$/
-      message_name, project_name = $1, $2
-      project = Organization.where(name: $2).first!
-      conversation = project.conversations.find_by_subject($1)
-      project_conversation_path(project, conversation)
+      organization_conversation_path conversation.organization, conversation
+    when /^the "(.+?)" (?:conversation|task) for the "(.+?)" organization$/
+      message_name, organization_name = $1, $2
+      organization = Organization.where(name: $2).first!
+      conversation = organization.conversations.find_by_subject($1)
+      organization_conversation_path(organization, conversation)
     else
       raise "\n\nCan't find mapping from \"#{name}\" to a path.\nNow, go and add a mapping in #{__FILE__}\n\n"
     end

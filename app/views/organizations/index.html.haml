@@ -4,19 +4,19 @@
 
       %h1 Organizations
 
-      %table.projects.table.table-hover
+      %table.organizations.table.table-hover
         %head
           %tr
             %th.name Name
             %th.name Description
             %th.actions Actions
         %tbody
-          - @projects.each do |project|
+          - @organizations.each do |organization|
             %tr
               %td.name
-                = link_to project.name, project_conversations_path(project)
+                = link_to organization.name, organization_conversations_path(organization)
               %td.description
-                = project.description
+                = organization.description
 
               %td.actions
 
@@ -25,10 +25,10 @@
                     %i.icon-cog
                   %ul.dropdown-menu
                     %li
-                      = link_to edit_project_path(project) do
+                      = link_to edit_organization_path(organization) do
                         %i.icon-pencil
                         Edit
                     %li
-                      = link_to leave_project_path(project), method: :put, data:{ confirm: 'Are you sure?' } do
+                      = link_to leave_organization_path(organization), method: :put, data:{ confirm: 'Are you sure?' } do
                         %i.icon-trash
                         Leave

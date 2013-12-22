@@ -2,11 +2,11 @@
   .navbar-inner
     .navbar-content
 
-      - if current_project.present? && current_project.persisted?
-        = render_widget :invite_modal, current_project
-        = render_widget :compose_conversation_message_modal, current_project
-        = link_to current_project.email_address, project_conversations_path(current_project), class: 'brand'
-        = link_to project_members_path(current_project), class: "btn btn-text-thin" do
+      - if current_organization.present? && current_organization.persisted?
+        = render_widget :invite_modal, current_organization
+        = render_widget :compose_conversation_message_modal, current_organization
+        = link_to current_organization.email_address, organization_conversations_path(current_organization), class: 'brand'
+        = link_to organization_members_path(current_organization), class: "btn btn-text-thin" do
           %i.icon-group
           Members
         %a(href="" role="button" class="btn btn-text-thin" data-toggle="modal" data-target=".invite_modal")
@@ -21,14 +21,14 @@
 
       - if current_user.present?
         %ul.nav.pull-right
-          %li.projects.dropdown
-            - if projects.present?
+          %li.organizations.dropdown
+            - if organizations.present?
               %a.dropdown-toggle{"data-toggle" => "dropdown", href:""}
                 Organizations
                 .caret
               %ul.dropdown-menu
-                - projects.each do |project|
-                  %li= link_to project.name, project_conversations_path(project)
+                - organizations.each do |organization|
+                  %li= link_to organization.name, organization_conversations_path(organization)
                 %li.divider
                 %li= link_to 'All Organizations', root_path
 

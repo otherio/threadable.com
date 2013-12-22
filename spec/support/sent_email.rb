@@ -7,8 +7,8 @@ module RSpec::Support::SentEmail
       ActionMailer::Base.deliveries.clear
     end
 
-    def join_notices(project_name)
-      with_subject("You've been added to #{project_name}")
+    def join_notices(organization_name)
+      with_subject("You've been added to #{organization_name}")
     end
 
     def sent_to(to_address)
@@ -105,7 +105,7 @@ module RSpec::Support::SentEmail
       links(text_content).first
     end
 
-    def project_unsubscribe_url
+    def organization_unsubscribe_url
       urls.find{|url| url.to_s =~ %r(/unsubscribe/) }
     end
 

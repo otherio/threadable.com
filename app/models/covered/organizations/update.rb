@@ -1,6 +1,6 @@
 class Covered::Organizations::Update < MethodObject
 
-  def call projects, attributes
+  def call organizations, attributes
     raise "DO ME"
   end
 

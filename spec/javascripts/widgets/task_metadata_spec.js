@@ -9,8 +9,8 @@ describeWidget("task_metadata", function(){
 //   beforeEach(function(){
 
 //     ENV = {
-//       current_project: {
-//         slug: 'project-slug'
+//       current_organization: {
+//         slug: 'organization-slug'
 //       },
 //       current_conversation: {
 //         slug: 'conversation-slug'
@@ -44,7 +44,7 @@ describeWidget("task_metadata", function(){
 
 //       it("adds the current user as a doer", function() {
 //         var request = mostRecentAjaxRequest();
-//         expect(request.url).toEqual(page.project_task_doers_path(ENV.current_project.slug, ENV.current_conversation.slug));
+//         expect(request.url).toEqual(page.organization_task_doers_path(ENV.current_organization.slug, ENV.current_conversation.slug));
 //         expect(request.method).toEqual('POST');
 //         expect(request.params).toEqual('doer_id=1')
 //       });
@@ -83,7 +83,7 @@ describeWidget("task_metadata", function(){
 
 //       it("removes the current user as a doer", function() {
 //         var request = mostRecentAjaxRequest();
-//         expect(request.url).toEqual(page.project_task_doer_path(ENV.current_project.slug, ENV.current_conversation.slug, page.current_user.id));
+//         expect(request.url).toEqual(page.organization_task_doer_path(ENV.current_organization.slug, ENV.current_conversation.slug, page.current_user.id));
 //         expect(request.method).toEqual('DELETE');
 //       });
 
@@ -113,7 +113,7 @@ describeWidget("task_metadata", function(){
 //       spy = jasmine.createSpy();
 //     });
 
-//     it("gets the current project members and returns them in the right format", function() {
+//     it("gets the current organization members and returns them in the right format", function() {
 //       this.widget.getCurrentOrganizationMembers(spy);
 //       mostRecentAjaxRequest().response({status: 200, responseText: '[{"name": "foo", "email": "foo@example.com", "id": 1}]'});
 //       expect(spy).toHaveBeenCalledWith([ { name: 'foo', email: 'foo@example.com', id: 1 } ]);
@@ -121,10 +121,10 @@ describeWidget("task_metadata", function(){
 
 //     it("fetches from the right url", function() {
 //       this.widget.getCurrentOrganizationMembers(spy);
-//       expect(mostRecentAjaxRequest().url).toEqual('/project-slug/members');
+//       expect(mostRecentAjaxRequest().url).toEqual('/organization-slug/members');
 //     });
 
-//     it("only gets the project members once", function() {
+//     it("only gets the organization members once", function() {
 //       clearAjaxRequests();
 //       this.widget.getCurrentOrganizationMembers(spy);
 //       expect(ajaxRequests.length).toEqual(1);
@@ -240,7 +240,7 @@ describeWidget("task_metadata", function(){
 
 //   //         it("adds the clicked doer", function() {
 //   //           var request = mostRecentAjaxRequest();
-//   //           expect(request.url).toEqual(page.project_task_doers_path(ENV.current_project.slug, ENV.current_conversation.slug));
+//   //           expect(request.url).toEqual(page.organization_task_doers_path(ENV.current_organization.slug, ENV.current_conversation.slug));
 //   //           expect(request.method).toEqual('POST');
 //   //           expect(request.params).toEqual('doer_id=1')
 //   //         });
@@ -281,7 +281,7 @@ describeWidget("task_metadata", function(){
 
 //   //         it("removes the clicked doer", function() {
 //   //           var request = mostRecentAjaxRequest();
-//   //           expect(request.url).toEqual(page.project_task_doer_path(ENV.current_project.slug, ENV.current_conversation.slug, 2));
+//   //           expect(request.url).toEqual(page.organization_task_doer_path(ENV.current_organization.slug, ENV.current_conversation.slug, 2));
 //   //           expect(request.method).toEqual('DELETE');
 //   //         });
 

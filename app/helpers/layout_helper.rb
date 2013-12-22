@@ -16,7 +16,7 @@ module LayoutHelper
       flash: flash,
       page_name: page_name,
       current_user: current_user,
-      current_project: current_project,
+      current_organization: current_organization,
       current_conversation: current_conversation,
       current_task: current_task,
       current_task_doers: current_task.try(:doers).try(:all),

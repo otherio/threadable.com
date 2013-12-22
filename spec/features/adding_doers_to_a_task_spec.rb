@@ -4,7 +4,7 @@ feature "Adding doers to a task" do
 
   scenario %(adding doers to a task) do
     sign_in_as 'alice@ucsd.covered.io'
-    visit project_conversation_url('raceteam', 'make-wooden-form-for-carbon-layup')
+    visit organization_conversation_url('raceteam', 'make-wooden-form-for-carbon-layup')
 
     expect(doers).to eq Set[]
 

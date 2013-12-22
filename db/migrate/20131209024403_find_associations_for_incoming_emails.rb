@@ -4,7 +4,7 @@ class FindAssociationsForIncomingEmails < ActiveRecord::Migration
       if message = Message.where(message_id_header: incoming_email.params['Message-Id']).first
         incoming_email.message_id        = message.id
         incoming_email.conversation_id   = message.conversation_id
-        incoming_email.project_id        = message.conversation.project_id
+        incoming_email.organization_id        = message.conversation.organization_id
         incoming_email.parent_message_id = message.parent_message_id
         incoming_email.attachments       = message.attachments
         incoming_email.params.keys.grep(/^attachment/).each do |key|

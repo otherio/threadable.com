@@ -31,7 +31,7 @@ class Covered::Task::Doers
         @covered.events.create!(
           {
             type: 'Task::AddedDoerEvent',
-            project_id: task.project.id,
+            organization_id: task.organization.id,
             user_id: covered.current_user_id,
             doer_id: user_id,
             conversation_id: task.id,
@@ -51,7 +51,7 @@ class Covered::Task::Doers
         @covered.events.create!(
           {
             type: 'Task::RemovedDoerEvent',
-            project_id: task.project.id,
+            organization_id: task.organization.id,
             user_id: covered.current_user.id,
             doer_id: user_id,
             conversation_id: task.id,

@@ -4,10 +4,10 @@ describe "Email actions" do
 
   include RSpec::States
 
-  let(:project_slug){ 'raceteam' }
+  let(:organization_slug){ 'raceteam' }
   let(:task_slug   ){ 'layup-body-carbon' }
-  let(:project     ){ current_user.projects.find_by_slug!(project_slug) }
-  let(:task        ){ project.tasks.find_by_slug!(task_slug) }
+  let(:organization     ){ current_user.organizations.find_by_slug!(organization_slug) }
+  let(:task        ){ organization.tasks.find_by_slug!(task_slug) }
 
   define_state %(the task is done) do
     let(:task_slug){ 'layup-body-carbon' }
@@ -48,15 +48,15 @@ describe "Email actions" do
   define_state %r(\AI follow the "(.+)" button in my email\Z) do |button|
     case button
     when "mark as done"
-      let(:url){ project_task_mark_as_done_url(project_slug, task_slug) }
+      let(:url){ organization_task_mark_as_done_url(organization_slug, task_slug) }
     when "mark as undone"
-      let(:url){ project_task_mark_as_undone_url(project_slug, task_slug) }
+      let(:url){ organization_task_mark_as_undone_url(organization_slug, task_slug) }
     when "I'll do it"
-      let(:url){ project_task_ill_do_it_url(project_slug, task_slug) }
+      let(:url){ organization_task_ill_do_it_url(organization_slug, task_slug) }
     when "remove me"
-      let(:url){ project_task_remove_me_url(project_slug, task_slug) }
+      let(:url){ organization_task_remove_me_url(organization_slug, task_slug) }
     when "view on covered"
-      let(:url){ project_conversation_url(project_slug, task_slug) }
+      let(:url){ organization_conversation_url(organization_slug, task_slug) }
     end
     before{ visit url }
   end
@@ -95,13 +95,13 @@ describe "Email actions" do
   end
 
   define_it_should 'be on the task show page' do
-    expect(current_url).to eq project_conversation_url(project_slug, task_slug)
+    expect(current_url).to eq organization_conversation_url(organization_slug, task_slug)
   end
 
   define_it_should "mark the task as done" do
     expect(page).to have_link 'mark as not done'
     expect(page).to have_text task.subject
-    expect(current_url).to eq project_conversation_url(project_slug, task_slug)
+    expect(current_url).to eq organization_conversation_url(organization_slug, task_slug)
     expect(task).to be_done
   end
 

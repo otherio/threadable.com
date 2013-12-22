@@ -128,15 +128,15 @@ class Covered::Messages::Create < MethodObject
   def send_emails!
     @message.recipients.each do |recipient|
       next if !@options.sent_via_web && recipient.same_user?(creator)
-      @covered.emails.send_email_async(:conversation_message, @conversation.project.id, @message.id, recipient.id)
+      @covered.emails.send_email_async(:conversation_message, @conversation.organization.id, @message.id, recipient.id)
     end
   end
 
   def track!
     @covered.track("Composed Message", {
-      'Organization' => @conversation.project.id,
+      'Organization' => @conversation.organization.id,
       'Conversation' => @conversation.id,
-      'Organization Name' => @conversation.project.name,
+      'Organization Name' => @conversation.organization.name,
       'Reply' => parent_message.try(:id) ? true : false,
       'Task' => @conversation.task?,
       'Message ID' => message_id_header,

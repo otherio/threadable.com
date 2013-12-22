@@ -1,7 +1,7 @@
 class IncomingEmail::ParentMessageFinder < MethodObject
 
   OPTIONS = Class.new OptionsHash do
-    required :project_id, :headers
+    required :organization_id, :headers
   end
 
   def call options
@@ -29,8 +29,8 @@ class IncomingEmail::ParentMessageFinder < MethodObject
   end
 
   def find message_id_header
-    Message.joins(:conversation => :project).where(
-      :projects => { :id => @options.project_id },
+    Message.joins(:conversation => :organization).where(
+      :organizations => { :id => @options.organization_id },
       :messages => { :message_id_header => message_id_header },
     )
   end

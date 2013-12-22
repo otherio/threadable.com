@@ -6,28 +6,28 @@ describe TasksController do
 
     describe "GET index" do
       it 'should redirect to a sign in page' do
-        get :index, project_id: 'raceteam'
+        get :index, organization_id: 'raceteam'
         expect(response).to be_redirect
       end
     end
 
     describe "POST create" do
       it 'should redirect to a sign in page' do
-        post :create, project_id: 'raceteam'
+        post :create, organization_id: 'raceteam'
         expect(response).to be_redirect
       end
     end
 
     describe "PATCH update" do
       it 'should redirect to a sign in page' do
-        patch :update, project_id: 'raceteam', id: 1
+        patch :update, organization_id: 'raceteam', id: 1
         expect(response).to be_redirect
       end
     end
 
     describe "PUT update" do
       it 'should redirect to a sign in page' do
-        patch :update, project_id: 'raceteam', id: 1
+        patch :update, organization_id: 'raceteam', id: 1
         expect(response).to be_redirect
       end
     end
@@ -35,14 +35,14 @@ describe TasksController do
     %w{ill_do_it remove_me mark_as_done mark_as_undone}.each do |action|
       describe "GET #{action}" do
         it 'should redirect to a sign in page' do
-          get action, project_id: 'raceteam', task_id: 1
+          get action, organization_id: 'raceteam', task_id: 1
           expect(response).to be_redirect
         end
       end
 
       describe "POST #{action}" do
         it 'should redirect to a sign in page' do
-          post action, project_id: 'raceteam', task_id: 1
+          post action, organization_id: 'raceteam', task_id: 1
           expect(response).to be_redirect
         end
       end
@@ -54,19 +54,19 @@ describe TasksController do
 
     describe "GET index" do
       it "should render a 404" do
-        get :index, project_id: 'raceteam'
+        get :index, organization_id: 'raceteam'
         expect(response.status).to eq 404
       end
     end
 
     describe "XHR GET index" do
       it "should render the tasks_sidebar widget" do
-        expect(controller).to receive(:render_widget) do |widget_name, project, options|
+        expect(controller).to receive(:render_widget) do |widget_name, organization, options|
           expect(widget_name).to eq :tasks_sidebar
-          expect(project.slug).to eq 'raceteam'
+          expect(organization.slug).to eq 'raceteam'
           expect(options).to eq({})
         end
-        xhr :get, :index, project_id: 'raceteam'
+        xhr :get, :index, organization_id: 'raceteam'
       end
     end
 
@@ -77,7 +77,7 @@ describe TasksController do
       end
 
       def request! options={}
-        options = {project_id: 'raceteam'}.merge(options)
+        options = {organization_id: 'raceteam'}.merge(options)
         if xhr?
           xhr :post, :create, options
         else
@@ -86,13 +86,13 @@ describe TasksController do
       end
 
       shared_context 'creating a task' do
-        let(:project_double){ double(:project, to_param: 'raceteam') }
+        let(:organization_double){ double(:organization, to_param: 'raceteam') }
         let(:tasks_double)  { double(:tasks)   }
         let(:task_double)   { double(:task, persisted?: task_persisted, to_param: 'poop-on-a-cat') }
 
         before do
-          expect(current_user.projects).to receive(:find_by_slug!).with('raceteam').and_return(project_double)
-          expect(project_double).to receive(:tasks).and_return(tasks_double)
+          expect(current_user.organizations).to receive(:find_by_slug!).with('raceteam').and_return(organization_double)
+          expect(organization_double).to receive(:tasks).and_return(tasks_double)
           expect(tasks_double).to receive(:create).with(subject: "poop on a cat").and_return(task_double)
           #
         end
@@ -125,7 +125,7 @@ describe TasksController do
           let(:task_persisted){ true }
           it "should redirect me to the show page" do
             request! task: {subject: "poop on a cat"}
-            expect(response).to redirect_to project_conversation_url('raceteam', 'poop-on-a-cat')
+            expect(response).to redirect_to organization_conversation_url('raceteam', 'poop-on-a-cat')
           end
         end
       end
@@ -140,9 +140,9 @@ describe TasksController do
           include_context 'creating a task'
           let(:task_persisted){ true }
           it "should render the tasks_sidebar widget" do
-            expect(controller).to receive(:render_widget) do |widget_name, project, options|
+            expect(controller).to receive(:render_widget) do |widget_name, organization, options|
               expect(widget_name).to eq :tasks_sidebar
-              expect(project).to eq project_double
+              expect(organization).to eq organization_double
               expect(options).to eq({})
             end
             request! task: {subject: "poop on a cat"}
@@ -153,14 +153,14 @@ describe TasksController do
     end
 
     describe "PUT update" do
-      let(:project_slug) { 'yourmom' }
-      let(:project){ double(:project) }
+      let(:organization_slug) { 'yourmom' }
+      let(:organization){ double(:organization) }
       let(:task_slug){ 'send-mom-a-chicken' }
       let(:tasks){ double(:tasks) }
       let(:task){ double(:task) }
       before do
-        expect(current_user.projects).to receive(:find_by_slug!).with(project_slug).and_return(project)
-        expect(project).to receive(:tasks).and_return(tasks)
+        expect(current_user.organizations).to receive(:find_by_slug!).with(organization_slug).and_return(organization)
+        expect(organization).to receive(:tasks).and_return(tasks)
         expect(tasks).to receive(:find_by_slug!).with(task_slug).and_return(task)
       end
 
@@ -169,7 +169,7 @@ describe TasksController do
           expect(task).to receive(:update).with("position" => 99).and_return(true)
         end
         it "updates the task's position" do
-          patch :update, project_id: 'yourmom', id: task_slug, task: {position: 99, something: 'else'}, format: :json
+          patch :update, organization_id: 'yourmom', id: task_slug, task: {position: 99, something: 'else'}, format: :json
           expect(response).to be_successful
           expect(response.body).to eq task.to_json
         end
@@ -180,7 +180,7 @@ describe TasksController do
           expect(task).to receive(:update).with("position" => 99).and_return(false)
         end
         it "updates renders an error" do
-          patch :update, project_id: 'yourmom', id: task_slug, task: {position: 99, something: 'else'}, format: :json
+          patch :update, organization_id: 'yourmom', id: task_slug, task: {position: 99, something: 'else'}, format: :json
           expect(response).to_not be_successful
           expect(response.body).to eq task.to_json
         end

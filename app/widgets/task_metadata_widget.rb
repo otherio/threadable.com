@@ -11,6 +11,6 @@ class TaskMetadataWidget < Rails::Widget::Presenter
   end
 
   html_option('data-doers') {task.doers.all.to_json }
-  html_option('data-project_members') { task.project.members.all.to_json }
+  html_option('data-organization_members') { task.organization.members.all.to_json }
 
 end

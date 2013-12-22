@@ -2,15 +2,15 @@ require_dependency 'covered/user'
 
 class Covered::User::Organization < Covered::Organization
 
-  def initialize projects, project_record
-    @covered = projects.covered
-    @projects = projects
-    @project_record = project_record
+  def initialize organizations, organization_record
+    @covered = organizations.covered
+    @organizations = organizations
+    @organization_record = organization_record
   end
-  attr_reader :projects
+  attr_reader :organizations
 
   def leave!
-    members.remove(user: projects.user)
+    members.remove(user: organizations.user)
   end
 
 end

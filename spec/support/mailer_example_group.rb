@@ -23,16 +23,16 @@ module RSpec::Support::MailerExampleGroup
   end
 
 
-  def extract_project_unsubscribe_token string
-    project_unsubscribe_link = URI.extract(string).find{|link| link =~ %r(/unsubscribe/) }
-    project_unsubscribe_link or return
-    project_unsubscribe_link[%r{/unsubscribe/(.*)},1]
+  def extract_organization_unsubscribe_token string
+    organization_unsubscribe_link = URI.extract(string).find{|link| link =~ %r(/unsubscribe/) }
+    organization_unsubscribe_link or return
+    organization_unsubscribe_link[%r{/unsubscribe/(.*)},1]
   end
 
-  def extract_project_resubscribe_token string
-    project_resubscribe_link = URI.extract(string).find{|link| link =~ %r(/resubscribe/) }
-    project_resubscribe_link or return
-    project_resubscribe_link[%r{/resubscribe/(.*)},1]
+  def extract_organization_resubscribe_token string
+    organization_resubscribe_link = URI.extract(string).find{|link| link =~ %r(/resubscribe/) }
+    organization_resubscribe_link or return
+    organization_resubscribe_link[%r{/resubscribe/(.*)},1]
   end
 
   def extract_user_setup_token string

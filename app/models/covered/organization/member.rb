@@ -1,21 +1,21 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::Member < Covered::User
 
-  def initialize project, project_membership_record
-    @project, @project_membership_record = project, project_membership_record
-    project.id == project_membership_record.project_id or raise ArgumentError
+  def initialize organization, organization_membership_record
+    @organization, @organization_membership_record = organization, organization_membership_record
+    organization.id == organization_membership_record.organization_id or raise ArgumentError
   end
-  attr_reader :project, :project_membership_record
-  delegate :covered, to: :project
-  delegate :project_id, :user_id, to: :project_membership_record
+  attr_reader :organization, :organization_membership_record
+  delegate :covered, to: :organization
+  delegate :organization_id, :user_id, to: :organization_membership_record
 
   def user_record
-    project_membership_record.user
+    organization_membership_record.user
   end
 
-  def project_record
-    project_membership_record.project
+  def organization_record
+    organization_membership_record.organization
   end
 
   delegate *%w{
@@ -27,14 +27,14 @@ class Covered::Organization::Member < Covered::User
   delegate *%w{
     gets_email?
     subscribed?
-  }, to: :project_membership_record
+  }, to: :organization_membership_record
 
   def to_param
     id
   end
 
-  def project_membership_id
-    project_membership_record.id
+  def organization_membership_id
+    organization_membership_record.id
   end
 
   def user
@@ -42,36 +42,36 @@ class Covered::Organization::Member < Covered::User
   end
 
   def reload
-    project_membership_record.reload
+    organization_membership_record.reload
     self
   end
 
   def subscribe! track=false
     if track
       covered.track('Re-subscribed', {
-        'Organization'      => project.id,
-        'Organization Name' => project.name,
+        'Organization'      => organization.id,
+        'Organization Name' => organization.name,
       })
     end
 
-    project_membership_record.subscribe!
+    organization_membership_record.subscribe!
   end
 
   def unsubscribe!
     covered.track('Unsubscribed', {
-      'Organization'      => project.id,
-      'Organization Name' => project.name,
+      'Organization'      => organization.id,
+      'Organization Name' => organization.name,
     })
 
-    project_membership_record.unsubscribe!
+    organization_membership_record.unsubscribe!
   end
 
   def == other
-    self.class === other && self.user_id == other.user_id && self.project_id == other.project_id
+    self.class === other && self.user_id == other.user_id && self.organization_id == other.organization_id
   end
 
   def inspect
-    %(#<#{self.class} project_id: #{project_id.inspect}, user_id: #{user_id.inspect}>)
+    %(#<#{self.class} organization_id: #{organization_id.inspect}, user_id: #{user_id.inspect}>)
   end
 
 end

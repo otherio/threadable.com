@@ -1,6 +1,6 @@
 #
 # Example usage:
-#   covered.emails.schedule_send(:conversation_message, project_id, message_id, recipient_id)
+#   covered.emails.schedule_send(:conversation_message, organization_id, message_id, recipient_id)
 #
 class SendEmailWorker < Covered::Worker
 
@@ -8,23 +8,23 @@ class SendEmailWorker < Covered::Worker
     send type, *args
   end
 
-  def conversation_message project_id, message_id, recipient_id
-    project   = covered.projects.find_by_id! project_id
-    message   = project.messages.find_by_id! message_id
-    recipient = project.members.find_by_user_id! recipient_id
-    covered.emails.send_email(:conversation_message, project, message, recipient)
+  def conversation_message organization_id, message_id, recipient_id
+    organization   = covered.organizations.find_by_id! organization_id
+    message   = organization.messages.find_by_id! message_id
+    recipient = organization.members.find_by_user_id! recipient_id
+    covered.emails.send_email(:conversation_message, organization, message, recipient)
   end
 
-  def join_notice project_id, recipient_id, personal_message=nil
-    project   = covered.projects.find_by_id! project_id
-    recipient = project.members.find_by_user_id! recipient_id
-    covered.emails.send_email(:join_notice, project, recipient, personal_message)
+  def join_notice organization_id, recipient_id, personal_message=nil
+    organization   = covered.organizations.find_by_id! organization_id
+    recipient = organization.members.find_by_user_id! recipient_id
+    covered.emails.send_email(:join_notice, organization, recipient, personal_message)
   end
 
-  def unsubscribe_notice project_id, recipient_id
-    project   = covered.projects.find_by_id! project_id
-    recipient = project.members.find_by_user_id! recipient_id
-    covered.emails.send_email(:unsubscribe_notice, project, recipient)
+  def unsubscribe_notice organization_id, recipient_id
+    organization   = covered.organizations.find_by_id! organization_id
+    recipient = organization.members.find_by_user_id! recipient_id
+    covered.emails.send_email(:unsubscribe_notice, organization, recipient)
   end
 
   def sign_up_confirmation recipient_id

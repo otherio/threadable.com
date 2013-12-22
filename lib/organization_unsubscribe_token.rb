@@ -1,7 +1,7 @@
 module OrganizationUnsubscribeToken
 
-  def self.encrypt project_id, user_id
-    Token.encrypt(name, [project_id, user_id])
+  def self.encrypt organization_id, user_id
+    Token.encrypt(name, [organization_id, user_id])
   end
 
   def self.decrypt token

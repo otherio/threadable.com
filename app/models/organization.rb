@@ -3,24 +3,24 @@ class Organization < ActiveRecord::Base
   has_many :conversations, dependent: :destroy
   has_many :messages, through: :conversations
   has_many :tasks, -> { order "position" }, class_name: 'Task'
-  has_many :project_memberships, dependent: :destroy
+  has_many :organization_memberships, dependent: :destroy
   has_many :memberships, class_name: 'OrganizationMembership'
-  has_many :members, :through => :project_memberships, :source => 'user' do
+  has_many :members, :through => :organization_memberships, :source => 'user' do
     def who_get_email
-      where project_memberships: {gets_email:true}
+      where organization_memberships: {gets_email:true}
     end
   end
-  has_many :members_who_get_email, -> { where project_memberships: {gets_email:true} }, :through => :project_memberships, :source => 'user'
+  has_many :members_who_get_email, -> { where organization_memberships: {gets_email:true} }, :through => :organization_memberships, :source => 'user'
   has_many :events, -> { order "created_at" }, dependent: :destroy
   has_many :incoming_emails, -> { order "created_at" }, dependent: :destroy
 
-  scope :with_members, ->{ includes(:project_memberships).where('project_memberships.id IS NOT NULL').references(:project_memberships) }
-  scope :without_members, ->{ includes(:project_memberships).where(project_memberships:{id:nil}).references(:project_memberships) }
+  scope :with_members, ->{ includes(:organization_memberships).where('organization_memberships.id IS NOT NULL').references(:organization_memberships) }
+  scope :without_members, ->{ includes(:organization_memberships).where(organization_memberships:{id:nil}).references(:organization_memberships) }
 
   scope :with_member, -> member do
     includes(:members).
-    where(project_memberships: {user_id: member.id}).
-    references(:project_memberships)
+    where(organization_memberships: {user_id: member.id}).
+    references(:organization_memberships)
   end
 
 

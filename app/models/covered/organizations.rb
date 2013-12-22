@@ -1,31 +1,31 @@
 class Covered::Organizations < Covered::Collection
 
   def all
-    scope.reload.map{ |project| project_for project }
+    scope.reload.map{ |organization| organization_for organization }
   end
 
   def find_by_name name
-    project_for (scope.where(name: name).first or return)
+    organization_for (scope.where(name: name).first or return)
   end
 
   def find_by_name! name
-    find_by_name(name) or raise Covered::RecordNotFound, "unable to find project with name #{slug.inspect}"
+    find_by_name(name) or raise Covered::RecordNotFound, "unable to find organization with name #{slug.inspect}"
   end
 
   def find_by_slug slug
-    project_for (scope.where(slug: slug).first or return)
+    organization_for (scope.where(slug: slug).first or return)
   end
 
   def find_by_slug! slug
-    find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find project with slug #{slug.inspect}"
+    find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find organization with slug #{slug.inspect}"
   end
 
   def find_by_id id
-    project_for (scope.where(id: id).first or return)
+    organization_for (scope.where(id: id).first or return)
   end
 
   def find_by_id! id
-    find_by_id(id) or raise Covered::RecordNotFound, "unable to find project with id #{id.inspect}"
+    find_by_id(id) or raise Covered::RecordNotFound, "unable to find organization with id #{id.inspect}"
   end
 
   def find_by_email_address email_address
@@ -36,15 +36,15 @@ class Covered::Organizations < Covered::Collection
     email_address_username = $1
 
     # return nil if covered.host != host
-    project_for (scope.where(email_address_username: email_address_username).first or return)
+    organization_for (scope.where(email_address_username: email_address_username).first or return)
   end
 
   def find_by_email_address! email_address
-    find_by_email_address(email_address) or raise Covered::RecordNotFound, "unable to find project with email address #{email_address.inspect}"
+    find_by_email_address(email_address) or raise Covered::RecordNotFound, "unable to find organization with email address #{email_address.inspect}"
   end
 
   def build attributes={}
-    project_for scope.new(attributes)
+    organization_for scope.new(attributes)
   end
   alias_method :new, :build
 
@@ -53,9 +53,9 @@ class Covered::Organizations < Covered::Collection
   end
 
   def create! attributes
-    project = create(attributes)
-    project.persisted? or raise Covered::RecordInvalid, "Organization invalid: #{project.errors.full_messages.to_sentence}"
-    project
+    organization = create(attributes)
+    organization.persisted? or raise Covered::RecordInvalid, "Organization invalid: #{organization.errors.full_messages.to_sentence}"
+    organization
   end
 
   private
@@ -64,8 +64,8 @@ class Covered::Organizations < Covered::Collection
     ::Organization.all
   end
 
-  def project_for project_record
-    Covered::Organization.new(covered, project_record)
+  def organization_for organization_record
+    Covered::Organization.new(covered, organization_record)
   end
 
 end

@@ -4,7 +4,7 @@ describe OrganizationsController do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 
   def valid_attributes
     {
@@ -15,7 +15,7 @@ describe OrganizationsController do
 
   def valid_params
     {
-      "project" => {
+      "organization" => {
         "name"        => valid_attributes["name"],
         "short_name"  => "robo cats",
         "description" => "make some roboty kitties",
@@ -25,7 +25,7 @@ describe OrganizationsController do
 
   def invalid_params
     {
-      "project" => {
+      "organization" => {
         "name"        => "",
         "short_name"  => "",
         "subject_tag" => "",
@@ -35,27 +35,27 @@ describe OrganizationsController do
   end
 
   describe "GET show" do
-    before{ project }
-    it "assigns the requested project as @project" do
-      get :show, {:id => project.to_param}
-      assigns(:project).should eq(project)
-      response.should redirect_to project_conversations_url(project)
+    before{ organization }
+    it "assigns the requested organization as @organization" do
+      get :show, {:id => organization.to_param}
+      assigns(:organization).should eq(organization)
+      response.should redirect_to organization_conversations_url(organization)
     end
   end
 
   describe "GET new" do
-    it "assigns a new project as @project" do
+    it "assigns a new organization as @organization" do
       get :new, {}
-      expect(assigns(:project)).to be_a(Covered::Organization)
-      expect(assigns(:project)).to_not be_persisted
+      expect(assigns(:organization)).to be_a(Covered::Organization)
+      expect(assigns(:organization)).to_not be_persisted
     end
   end
 
   describe "GET edit" do
-    before{ project }
-    it "assigns the requested project as @project" do
-      get :edit, {:id => project.to_param}
-      assigns(:project).should eq(project)
+    before{ organization }
+    it "assigns the requested organization as @organization" do
+      get :edit, {:id => organization.to_param}
+      assigns(:organization).should eq(organization)
     end
   end
 
@@ -67,26 +67,26 @@ describe OrganizationsController do
         }.to change(Organization, :count).by(1)
       end
 
-      it "assigns a newly created project as @project" do
+      it "assigns a newly created organization as @organization" do
         post :create, valid_params
-        expect(assigns(:project)).to be_a(Covered::Organization)
-        expect(assigns(:project)).to be_persisted
-        expect(assigns(:project).name       ).to eq valid_params["project"]["name"]
-        expect(assigns(:project).short_name ).to eq valid_params["project"]["short_name"]
-        expect(assigns(:project).description).to eq valid_params["project"]["description"]
+        expect(assigns(:organization)).to be_a(Covered::Organization)
+        expect(assigns(:organization)).to be_persisted
+        expect(assigns(:organization).name       ).to eq valid_params["organization"]["name"]
+        expect(assigns(:organization).short_name ).to eq valid_params["organization"]["short_name"]
+        expect(assigns(:organization).description).to eq valid_params["organization"]["description"]
       end
 
-      it "redirects to the created project" do
+      it "redirects to the created organization" do
         post :create, valid_params
-        response.should redirect_to project_url(Organization.last)
+        response.should redirect_to organization_url(Organization.last)
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved project as @project" do
+      it "assigns a newly created but unsaved organization as @organization" do
         post :create, invalid_params
-        expect(assigns(:project)).to be_a(Covered::Organization)
-        expect(assigns(:project)).to_not be_persisted
+        expect(assigns(:organization)).to be_a(Covered::Organization)
+        expect(assigns(:organization)).to_not be_persisted
       end
 
       it "re-renders the 'new' template" do
@@ -98,33 +98,33 @@ describe OrganizationsController do
 
   describe "PUT update" do
 
-    before{ project }
+    before{ organization }
 
     def valid_params
-      params = super.merge("id" => project.to_param)
-      params["project"]["name"] = "make amazing robot cats"
+      params = super.merge("id" => organization.to_param)
+      params["organization"]["name"] = "make amazing robot cats"
       params
     end
 
     def invalid_params
-      super.merge("id" => project.to_param)
+      super.merge("id" => organization.to_param)
     end
 
     describe "with valid params" do
-      it "updates the requested project, assigns the requested project as @project, and redirects to the project" do
-        Organization.any_instance.should_receive(:update_attributes).with(valid_params["project"]).and_return(true)
+      it "updates the requested organization, assigns the requested organization as @organization, and redirects to the organization" do
+        Organization.any_instance.should_receive(:update_attributes).with(valid_params["organization"]).and_return(true)
         put :update, valid_params
-        assigns(:project).should eq(project)
+        assigns(:organization).should eq(organization)
         response.should redirect_to(root_path)
       end
     end
 
     describe "with invalid params" do
-      it "assigns the project as @project" do
+      it "assigns the organization as @organization" do
         # Trigger the behavior that occurs when invalid params are submitted
         Organization.any_instance.stub(:update_attributes).and_return(false)
         put :update, invalid_params
-        assigns(:project).should eq(project)
+        assigns(:organization).should eq(organization)
       end
 
       it "re-renders the 'edit' template" do
@@ -137,17 +137,17 @@ describe OrganizationsController do
   end
 
   # describe "DELETE destroy" do
-  #   before{ project }
+  #   before{ organization }
 
-  #   it "destroys the requested project" do
+  #   it "destroys the requested organization" do
   #     expect {
-  #       delete :destroy, {:id => project.to_param}
+  #       delete :destroy, {:id => organization.to_param}
   #     }.to change(Organization, :count).by(-1)
   #   end
 
-  #   it "redirects to the projects list" do
-  #     delete :destroy, {:id => project.to_param}
-  #     response.should redirect_to(projects_url)
+  #   it "redirects to the organizations list" do
+  #     delete :destroy, {:id => organization.to_param}
+  #     response.should redirect_to(organizations_url)
   #   end
   # end
 

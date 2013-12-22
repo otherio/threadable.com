@@ -13,9 +13,9 @@ class Test::JavascriptsController < TestController
 
     sign_in! User.with_email_address('tom@ucsd.covered.io').first!
 
-    @project = current_user.projects.find_by_slug! 'raceteam'
-    @task = @project.tasks.latest
-    @conversation = @project.conversations.find_by_slug! "layup-body-carbon"
+    @organization = current_user.organizations.find_by_slug! 'raceteam'
+    @task = @organization.tasks.latest
+    @conversation = @organization.conversations.find_by_slug! "layup-body-carbon"
     @message = @conversation.messages.find_by_id! @conversation.conversation_record.messages.where("body_plain != stripped_plain").last!.id
 
     @fixtures = {}

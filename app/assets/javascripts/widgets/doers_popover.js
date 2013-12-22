@@ -18,7 +18,7 @@ Rails.widget('doers_popover', function(Widget){
     this.widget          = widget;
     this.target          = $(options.target);
     this.doers           = options.doers;
-    this.project_members = options.project_members;
+    this.organization_members = options.organization_members;
     this.addDoer         = options.addDoer;
     this.removeDoer      = options.removeDoer;
     this.show();
@@ -107,13 +107,13 @@ Rails.widget('doers_popover', function(Widget){
 
 
   function renderOrganizationMembers(search_term){
-    // popover.user_list_node, popover.project_members, popover.doers,
+    // popover.user_list_node, popover.organization_members, popover.doers,
     var popover = this;
     var lis = $();
 
     var doer_ids = this.doers.map(function(doer){ return doer.id; });
 
-    popover.project_members.forEach(function(member) {
+    popover.organization_members.forEach(function(member) {
       if (member_doesnt_match_search_term(member, search_term)) return;
 
       var li = popover.widget.user_template.clone();

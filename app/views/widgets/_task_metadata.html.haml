@@ -36,7 +36,7 @@
 
   &#183;
 
-  - url = task.done? ? project_task_mark_as_undone_path(task.project, task) : project_task_mark_as_done_path(task.project, task)
+  - url = task.done? ? organization_task_mark_as_undone_path(task.organization, task) : organization_task_mark_as_done_path(task.organization, task)
   = link_to url, method: 'post', class: 'control-link text-info toggle-done' do
     - if task.done?
       %i.icon-ok

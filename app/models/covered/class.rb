@@ -44,7 +44,7 @@ class Covered::Class
   let(:emails         ){ Covered::Emails         .new(self) }
   let(:email_addresses){ Covered::EmailAddresses .new(self) }
   let(:users          ){ Covered::Users          .new(self) }
-  let(:projects       ){ Covered::Organizations       .new(self) }
+  let(:organizations       ){ Covered::Organizations       .new(self) }
   let(:conversations  ){ Covered::Conversations  .new(self) }
   let(:tasks          ){ Covered::Tasks          .new(self) }
   let(:messages       ){ Covered::Messages       .new(self) }

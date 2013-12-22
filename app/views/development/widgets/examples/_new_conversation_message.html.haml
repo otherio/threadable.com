@@ -1,2 +1,2 @@
-- conversation = current_user.projects.all.first.conversations.latest
-= render_widget :new_conversation_message, conversation, from: conversation.project.members.all.last
+- conversation = current_user.organizations.all.first.conversations.latest
+= render_widget :new_conversation_message, conversation, from: conversation.organization.members.all.last

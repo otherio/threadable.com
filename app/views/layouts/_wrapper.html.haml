@@ -12,7 +12,7 @@
       preventEverything();
 
     .page
-      = render_widget :page_navigation, current_user: current_user, current_project: current_project
+      = render_widget :page_navigation, current_user: current_user, current_organization: current_organization
       .content
         = yield
       .flash_messages

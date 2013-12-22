@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe MessageWidget do
 
-  let(:project){ double(:project) }
-  let(:conversation){ double(:conversation, project: project) }
+  let(:organization){ double(:organization) }
+  let(:conversation){ double(:conversation, organization: organization) }
 
   let(:root){ false }
   let(:body) { 'BODY' }
@@ -89,7 +89,7 @@ describe MessageWidget do
 
   describe "link_to_toggle" do
     it "should..." do
-      view.should_receive(:project_conversation_message_path).with(project, conversation, message).and_return('THE_PATH')
+      view.should_receive(:organization_conversation_message_path).with(organization, conversation, message).and_return('THE_PATH')
       params = {message:{shareworthy: false}}.to_param
       classname = "shareworthy control-link"
       block = proc{}

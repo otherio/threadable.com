@@ -2,12 +2,12 @@ class Conversation::Event < Event
 
   belongs_to :conversation
 
-  def project_id
-    super or self.project_id = conversation.project_id if conversation
+  def organization_id
+    super or self.organization_id = conversation.organization_id if conversation
   end
 
-  def project
-    super or self.project = conversation.project if conversation
+  def organization
+    super or self.organization = conversation.organization if conversation
   end
 
 end

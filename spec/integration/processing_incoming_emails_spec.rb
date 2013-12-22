@@ -117,7 +117,7 @@ describe "processing incoming emails 2" do
       raise "expect result to :bounced, :held, or :delivered. got #{result.inspect}"
     end
 
-    expect( incoming_email.project        ).to eq expected_project
+    expect( incoming_email.organization        ).to eq expected_organization
     expect( incoming_email.parent_message ).to eq expected_parent_message
     expect( incoming_email.conversation   ).to eq expected_conversation
     expect( incoming_email.creator        ).to eq expected_creator
@@ -184,7 +184,7 @@ describe "processing incoming emails 2" do
     expect(incoming_email_attachments).to eq posted_attachments
 
 
-    expect( message.project           ).to eq expected_project
+    expect( message.organization           ).to eq expected_organization
     expect( message.conversation      ).to eq expected_conversation
     expect( message.message_id_header ).to eq message_id
     expect( message.to_header         ).to eq to
@@ -199,11 +199,11 @@ describe "processing incoming emails 2" do
     expect( message.attachments.all   ).to eq incoming_email.attachments.all
 
 
-    project_members_that_get_email = message.project.members.that_get_email.reject do |user|
+    organization_members_that_get_email = message.organization.members.that_get_email.reject do |user|
       message.creator.same_user?(user) if message.creator
     end
-    project_member_email_addresses = project_members_that_get_email.map(&:email_address)
-    expected_emails_count = project_member_email_addresses.length
+    organization_member_email_addresses = organization_members_that_get_email.map(&:email_address)
+    expected_emails_count = organization_member_email_addresses.length
     expect(sent_emails.count).to eq expected_emails_count
     sent_emails.each do |email|
       expect( email.from ).to eq(
@@ -216,7 +216,7 @@ describe "processing incoming emails 2" do
       expect( email.to                              ).to eq expected_sent_email_to
       expect( email.header[:Cc].to_s                ).to eq expected_sent_email_cc
       expect( email.smtp_envelope_to.length         ).to eq 1
-      expect( project_member_email_addresses        ).to include email.smtp_envelope_to.first
+      expect( organization_member_email_addresses        ).to include email.smtp_envelope_to.first
       expect( email.smtp_envelope_from              ).to eq expected_sent_email_smtp_envelope_from
       expect( email.subject                         ).to eq expected_sent_email_subject
       expect( email.html_content                    ).to include body_html
@@ -281,7 +281,7 @@ describe "processing incoming emails 2" do
   let(:expected_parent_message)                { nil }
   let(:expected_conversation)                  { covered.conversations.latest }
   let(:expected_creator)                       { covered.users.find_by_email_address('yan@ucsd.covered.io') }
-  let(:expected_project)                       { covered.projects.find_by_slug!('raceteam') }
+  let(:expected_organization)                       { covered.organizations.find_by_slug!('raceteam') }
   let(:expected_conversation_subject)          { 'OMG guys I love covered!' }
   let(:expected_message_subject)               { 'OMG guys I love covered!' }
   let(:expect_conversation_to_be_a_task)       { false }
@@ -290,9 +290,9 @@ describe "processing incoming emails 2" do
   let(:expected_sent_email_subject)            { "[RaceTeam] OMG guys I love covered!" }
   let(:expected_sent_email_smtp_envelope_from) { 'raceteam@127.0.0.1' }
   let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
-  let(:expected_sent_email_list_id)            { expected_project.formatted_list_id }
-  let(:expected_sent_email_list_archive)       { "<#{project_conversations_url(expected_project)}>" }
-  let(:expected_sent_email_list_post)          { "<mailto:#{expected_project.email_address}>, <#{new_project_conversation_url(expected_project)}>" }
+  let(:expected_sent_email_list_id)            { expected_organization.formatted_list_id }
+  let(:expected_sent_email_list_archive)       { "<#{organization_conversations_url(expected_organization)}>" }
+  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{new_organization_conversation_url(expected_organization)}>" }
 
 
   it 'delivers the email' do
@@ -300,11 +300,11 @@ describe "processing incoming emails 2" do
   end
 
 
-  context "when the recipients do not match a project" do
+  context "when the recipients do not match a organization" do
     let(:recipient)    { 'poopnozzle@covered.io' }
     let(:to)           { 'Poop Nozzle <poopnozzle@covered.io>' }
 
-    let(:expected_project)       { nil }
+    let(:expected_organization)       { nil }
     let(:expected_parent_message){ nil }
     let(:expected_conversation)  { nil }
     let(:expected_creator)       { nil }
@@ -314,11 +314,11 @@ describe "processing incoming emails 2" do
   end
 
 
-  context "when the recipient email address matches a project" do
-    let(:recipient){ expected_project.email_address }
-    let(:to)       { expected_project.formatted_email_address }
+  context "when the recipient email address matches a organization" do
+    let(:recipient){ expected_organization.email_address }
+    let(:to)       { expected_organization.formatted_email_address }
 
-    let(:expected_project)      { covered.projects.find_by_slug!('raceteam') }
+    let(:expected_organization)      { covered.organizations.find_by_slug!('raceteam') }
     let(:expected_sent_email_to){ [recipient] }
     let(:expected_sent_email_cc){ '' }
 
@@ -336,8 +336,8 @@ describe "processing incoming emails 2" do
       end
 
       context 'and the body is blank' do
-        let(:recipient){ expected_project.email_address }
-        let(:to)       { expected_project.formatted_email_address }
+        let(:recipient){ expected_organization.email_address }
+        let(:to)       { expected_organization.formatted_email_address }
 
         let(:stripped_text) { '' }
 
@@ -355,22 +355,22 @@ describe "processing incoming emails 2" do
       let(:references) { '' }
       let(:expected_parent_message){ nil }
 
-      context "and the sender is a project member" do
+      context "and the sender is a organization member" do
         let(:from)          { "Alice Neilson <alice@ucsd.covered.io>" }
         let(:envelope_from) { "<alice@ucsd.covered.io>" }
         let(:sender)        { "alice@ucsd.covered.io" }
 
         let(:expected_conversation)      { covered.conversations.latest }
         let(:expected_creator)           { covered.users.find_by_email_address(sender) }
-        let(:expected_sent_email_smtp_envelope_from){ expected_project.email_address }
-        let(:expected_sent_email_subject){ "[#{expected_project.subject_tag}] #{subject}" }
+        let(:expected_sent_email_smtp_envelope_from){ expected_organization.email_address }
+        let(:expected_sent_email_subject){ "[#{expected_organization.subject_tag}] #{subject}" }
 
         it 'delivers the email' do
           validate! :delivered
         end
       end
 
-      context "and the sender is not a user or a project member" do
+      context "and the sender is not a user or a organization member" do
         let(:from)          { "Elizabeth Pickles <elizabeth@pickles.io>" }
         let(:envelope_from) { "<elizabeth@pickles.io>" }
         let(:sender)        { "elizabeth@pickles.io" }
@@ -383,7 +383,7 @@ describe "processing incoming emails 2" do
         end
       end
 
-      context "and the sender is a user but not a project member" do
+      context "and the sender is a user but not a organization member" do
         let(:from)          { 'Ritsuko Akagi <ritsuko@sfhealth.example.com>' }
         let(:envelope_from) { '<ritsuko@sfhealth.example.com>' }
         let(:sender)        { 'ritsuko@sfhealth.example.com' }
@@ -402,7 +402,7 @@ describe "processing incoming emails 2" do
       let(:in_reply_to){ expected_parent_message.message_id_header }
       let(:references) { '' }
 
-      let(:expected_conversation)  { expected_project.conversations.find_by_slug!('welcome-to-our-covered-project') }
+      let(:expected_conversation)  { expected_organization.conversations.find_by_slug!('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       it 'delivers the email' do
         validate! :delivered
@@ -413,7 +413,7 @@ describe "processing incoming emails 2" do
       let(:in_reply_to){ '' }
       let(:references) { expected_conversation.messages.all.map(&:message_id_header).join(' ') }
 
-      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       it 'delivers the email' do
         validate! :delivered
@@ -422,9 +422,9 @@ describe "processing incoming emails 2" do
 
     context 'a parent message can be found via the In-Reply-To header and the Referenes header' do
       let(:in_reply_to){ expected_parent_message.message_id_header }
-      let(:references) { expected_project.conversations.find_by_slug("layup-body-carbon").messages.all.map(&:message_id_header).join(' ') }
+      let(:references) { expected_organization.conversations.find_by_slug("layup-body-carbon").messages.all.map(&:message_id_header).join(' ') }
 
-      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       it 'prefers the In-Reply-To message id over the References message ids' do
         validate! :delivered
@@ -435,10 +435,10 @@ describe "processing incoming emails 2" do
       let(:in_reply_to){ expected_parent_message.message_id_header }
       let(:references) { '' }
 
-      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
 
-      context 'but the creator exists but is not a project member' do
+      context 'but the creator exists but is not a organization member' do
         let(:from)         { 'Anil Kapoor <anil@sfhealth.example.com>' }
         let(:envelope_from){ '<anil@sfhealth.example.com>' }
         let(:sender)       { 'anil@sfhealth.example.com' }
@@ -462,7 +462,7 @@ describe "processing incoming emails 2" do
         end
       end
 
-      context 'and the creator is a project member' do
+      context 'and the creator is a organization member' do
         let(:from)         { "Alice Neilson <alice@ucsd.covered.io>" }
         let(:envelope_from){ '<alice@ucsd.covered.io>' }
         let(:sender)       { 'alice@ucsd.covered.io' }
@@ -483,7 +483,7 @@ describe "processing incoming emails 2" do
 
     let(:expected_conversation_subject){ subject[0..254] }
     let(:expected_message_subject)     { subject[0..254] }
-    let(:expected_sent_email_subject)  { "[#{expected_project.subject_tag}] #{subject[0..254]}" }
+    let(:expected_sent_email_subject)  { "[#{expected_organization.subject_tag}] #{subject[0..254]}" }
     let(:expected_parent_message)      { nil }
 
     it 'truncates the subject to 255 characters' do
@@ -507,14 +507,14 @@ describe "processing incoming emails 2" do
   end
 
   context "and the message was sent to the +task address" do
-    let(:recipient){ expected_project.task_email_address }
-    let(:to)       { expected_project.formatted_task_email_address }
+    let(:recipient){ expected_organization.task_email_address }
+    let(:to)       { expected_organization.formatted_task_email_address }
 
     let(:expect_conversation_to_be_a_task)      { true }
-    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
-    let(:expected_sent_email_to)                { [expected_project.task_email_address] }
+    let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
+    let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
     let(:expected_sent_email_subject)           { "[✔][RaceTeam] #{subject}" }
-    let(:expected_sent_email_reply_to)          { expected_project.formatted_task_email_address }
+    let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
 
     it 'creates the conversation as a task' do
       validate! :delivered
@@ -526,23 +526,23 @@ describe "processing incoming emails 2" do
 
     let(:expect_conversation_to_be_a_task)      { true }
     let(:expected_message_subject)              { '[task] pickup some cheese' }
-    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
-    let(:expected_sent_email_to)                { [expected_project.task_email_address] }
+    let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
+    let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
     let(:expected_sent_email_subject)           { "[✔][RaceTeam] pickup some cheese" }
-    let(:expected_sent_email_reply_to)          { expected_project.formatted_task_email_address }
+    let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
 
     it 'creates the conversation as a task' do
       validate! :delivered
     end
 
-    context "but the message was cc'd to the regular project address" do
+    context "but the message was cc'd to the regular organization address" do
       let(:to){ 'someone else <someone.else@example.com>' }
       let(:cc){ 'UCSD Electric Racing <raceteam@127.0.0.1>' }
 
       let(:expected_sent_email_to){ ['someone.else@example.com'] }
-      let(:expected_sent_email_cc){ expected_project.formatted_task_email_address }
+      let(:expected_sent_email_cc){ expected_organization.formatted_task_email_address }
 
-      it 'rewrites the project email address to use the project task email address' do
+      it 'rewrites the organization email address to use the organization task email address' do
         validate! :delivered
       end
     end
@@ -554,10 +554,10 @@ describe "processing incoming emails 2" do
 
     let(:expect_conversation_to_be_a_task)      { true }
     let(:expected_message_subject)              { '[✔] pickup some cake' }
-    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
-    let(:expected_sent_email_to)                { [expected_project.task_email_address] }
+    let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
+    let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
     let(:expected_sent_email_subject)           { "[✔][RaceTeam] pickup some cake" }
-    let(:expected_sent_email_reply_to)          { expected_project.formatted_task_email_address }
+    let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
 
     it 'creates the conversation as a task' do
       validate! :delivered
@@ -624,31 +624,31 @@ describe "processing incoming emails 2" do
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
     let(:expected_sent_email_cc){ '' }
 
-    it 'adds the project to the to' do
+    it 'adds the organization to the to' do
       validate! :delivered
     end
   end
 
-  context 'when there are only members in the to header, and the project is in the CC' do
+  context 'when there are only members in the to header, and the organization is in the CC' do
     let(:to) { "Alice Neilson <alice@ucsd.covered.io>" }
     let(:cc) { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
 
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
     let(:expected_sent_email_cc){ '' }
 
-    it 'moves the project from the cc header to the to header' do
+    it 'moves the organization from the cc header to the to header' do
       validate! :delivered
     end
   end
 
-  context 'when there are non-members in the to header, and the project is in the CC' do
+  context 'when there are non-members in the to header, and the organization is in the CC' do
     let(:to) { "Frank Rizzo <frank.rizzo@jerkyboys.co>" }
     let(:cc) { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
 
     let(:expected_sent_email_to){ ['frank.rizzo@jerkyboys.co'] }
     let(:expected_sent_email_cc){ 'UCSD Electric Racing <raceteam@127.0.0.1>' }
 
-    it 'does not move the project from the cc header to the to header' do
+    it 'does not move the organization from the cc header to the to header' do
       validate! :delivered
     end
   end
@@ -673,33 +673,33 @@ describe "processing incoming emails 2" do
   end
 
 
-  context 'when the message is a reply to a non-task conversation but the message was sent to the project task email addresss' do
+  context 'when the message is a reply to a non-task conversation but the message was sent to the organization task email addresss' do
     let(:recipient)  { 'raceteam+task@127.0.0.1' }
     let(:to)         { 'UCSD Electric Racing Tasks <raceteam+task@127.0.0.1>' }
     let(:in_reply_to){ expected_parent_message.message_id_header }
     let(:references) { '' }
 
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
-    let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+    let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
     let(:expected_parent_message){ expected_conversation.messages.latest }
     it 'replace that email with the non task version' do
       validate! :delivered
     end
   end
 
-  context 'when the message is a reply to a task but the message was sent to the project non-task email addresss' do
+  context 'when the message is a reply to a task but the message was sent to the organization non-task email addresss' do
     let(:recipient)  { 'raceteam@127.0.0.1' }
     let(:to)         { 'UCSD Electric Racing Tasks <raceteam@127.0.0.1>' }
     let(:in_reply_to){ expected_parent_message.message_id_header }
     let(:references) { '' }
 
     let(:expected_sent_email_to){ ['raceteam+task@127.0.0.1'] }
-    let(:expected_conversation)  { expected_project.conversations.find_by_slug('layup-body-carbon') }
+    let(:expected_conversation)  { expected_organization.conversations.find_by_slug('layup-body-carbon') }
     let(:expected_parent_message){ expected_conversation.messages.latest }
-    let(:expected_sent_email_smtp_envelope_from){ expected_project.task_email_address }
+    let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expect_conversation_to_be_a_task) { true }
     let(:expected_sent_email_subject){ "[✔][RaceTeam] #{subject}" }
-    let(:expected_sent_email_reply_to){ expected_project.formatted_task_email_address }
+    let(:expected_sent_email_reply_to){ expected_organization.formatted_task_email_address }
     it 'replace that email with the task version' do
       validate! :delivered
     end

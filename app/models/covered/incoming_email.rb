@@ -73,9 +73,9 @@ class Covered::IncomingEmail < Covered::Model
     incoming_email_record.delete
   end
 
-  def creator_is_a_project_member?
-    return false if project.nil? || creator.nil?
-    project.members.include?(creator)
+  def creator_is_a_organization_member?
+    return false if organization.nil? || creator.nil?
+    organization.members.include?(creator)
   end
 
   # delegated methods:
@@ -88,11 +88,11 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def bounceable?
-    project.nil? || !subject_valid?
+    organization.nil? || !subject_valid?
   end
 
   def holdable?
-    !bounceable? && (parent_message.nil? && !creator_is_a_project_member?)
+    !bounceable? && (parent_message.nil? && !creator_is_a_organization_member?)
   end
 
   def deliverable?
@@ -100,7 +100,7 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def subject_valid?
-    PrepareEmailSubject.call(project, self).present?
+    PrepareEmailSubject.call(organization, self).present?
   end
 
 
@@ -182,30 +182,30 @@ class Covered::IncomingEmail < Covered::Model
     ExtractEmailAddresses.call(from, envelope_from, sender).uniq
   end
 
-  def find_project!
-    return self if project
-    self.project = covered.projects.find_by_email_address(recipient)
+  def find_organization!
+    return self if organization
+    self.organization = covered.organizations.find_by_email_address(recipient)
     return self
   end
 
   # find a message that's message id matches this incoming email's message id
   def find_message!
-    return self if message || project.nil?
-    self.message = project.messages.find_by_message_id_header(message_id)
+    return self if message || organization.nil?
+    self.message = organization.messages.find_by_message_id_header(message_id)
     return self
   end
 
   def find_creator!
     return self if creator
     users = covered.users.find_by_email_addresses(from_email_addresses)
-    self.creator = users.find{|user| project.members.include?(user) } if project.present?
+    self.creator = users.find{|user| organization.members.include?(user) } if organization.present?
     self.creator ||= users.compact.first
     return self
   end
 
   def find_parent_message!
-    return self if parent_message || project.nil?
-    self.parent_message = project.messages.find_by_child_message_header(params)
+    return self if parent_message || organization.nil?
+    self.parent_message = organization.messages.find_by_child_message_header(params)
     return self
   end
 
@@ -220,18 +220,18 @@ class Covered::IncomingEmail < Covered::Model
     @attachments ||= Attachments.new(self)
   end
 
-  def project= project
-    if project.try(:project_record).present?
-      @project = project
-      incoming_email_record.project = project.project_record
+  def organization= organization
+    if organization.try(:organization_record).present?
+      @organization = organization
+      incoming_email_record.organization = organization.organization_record
     else
-      @project = incoming_email_record.project = nil
+      @organization = incoming_email_record.organization = nil
     end
   end
 
-  def project
-    return unless incoming_email_record.project
-    @project ||= Covered::Organization.new(covered, incoming_email_record.project)
+  def organization
+    return unless incoming_email_record.organization
+    @organization ||= Covered::Organization.new(covered, incoming_email_record.organization)
   end
 
   def message= message
@@ -313,7 +313,7 @@ class Covered::IncomingEmail < Covered::Model
       delivered:       delivered?,
       from:            from,
       creator_id:      incoming_email_record.creator_id,
-      project_id:      incoming_email_record.project_id,
+      organization_id:      incoming_email_record.organization_id,
       conversation_id: incoming_email_record.conversation_id,
       message_id:      incoming_email_record.message_id,
     }.map{|k,v| "#{k}: #{v.inspect}"}.join(', ')

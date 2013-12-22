@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Conversation do
-  it { should belong_to(:project) }
+  it { should belong_to(:organization) }
   it { should have_many(:messages) }
 
   context "slug" do
     let :conversation do
-      described_class.create(project_id: 1, subject: 'foo bar Baz!')
+      described_class.create(organization_id: 1, subject: 'foo bar Baz!')
     end
 
     it "has a correct slug" do

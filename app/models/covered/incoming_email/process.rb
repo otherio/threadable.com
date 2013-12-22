@@ -7,7 +7,7 @@ class Covered::IncomingEmail::Process < MethodObject
     raise ArgumentError, "IncomingEmail #{@incoming_email.id.inspect} has already been processed" if incoming_email.processed?
 
     Covered.transaction do
-      @incoming_email.find_project!
+      @incoming_email.find_organization!
       return bounce! if @incoming_email.bounceable?
       @incoming_email.find_message!
       @incoming_email.find_creator!

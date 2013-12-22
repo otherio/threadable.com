@@ -1,15 +1,15 @@
-require_dependency 'covered/project/members'
+require_dependency 'covered/organization/members'
 
 class Covered::Organization::Members::Remove < MethodObject
 
   def call members, options
     @members = members
     @covered = members.covered
-    @project = members.project
+    @organization = members.organization
     @scope   = @members.send(:scope)
     @options = options
 
-    delete_project_membership!
+    delete_organization_membership!
     track!
     return
   end
@@ -19,15 +19,15 @@ class Covered::Organization::Members::Remove < MethodObject
       raise ArgumentError, "unable to determine user id from #{@options.inspect}"
   end
 
-  def delete_project_membership!
+  def delete_organization_membership!
     @scope.where(user_id: user_id).delete_all
   end
 
   def track!
     @covered.track("Removed User", {
       'Removed User' => user_id.to_i,
-      'Organization'      => @project.id,
-      'Organization Name' => @project.name,
+      'Organization'      => @organization.id,
+      'Organization Name' => @organization.name,
     })
   end
 

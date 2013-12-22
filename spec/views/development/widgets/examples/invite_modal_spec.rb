@@ -8,7 +8,7 @@ describe "invite_modal example" do
 
   it_should_behave_like "a widget example"
 
-  it "should render the invite modal and give it a project" do
+  it "should render the invite modal and give it a organization" do
     view.should_receive(:render_widget).with(:invite_modal, kind_of(Organization))
     subject
   end

@@ -5,8 +5,8 @@ describe MessagesController do
   before do
     sign_in! find_user_by_email_address('tom@ucsd.covered.io')
   end
-  let(:project){ current_user.projects.find_by_slug! 'raceteam' }
-  let(:conversation) { project.conversations.find_by_slug! 'layup-body-carbon' }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
+  let(:conversation) { organization.conversations.find_by_slug! 'layup-body-carbon' }
 
   let(:message){
     double(:message,
@@ -30,7 +30,7 @@ describe MessagesController do
 
     def params
       {
-        project_id:      'raceteam',
+        organization_id:      'raceteam',
         conversation_id: 'layup-body-carbon',
         message: {
           body:  "<b>hello</b><span>there people</span>",
@@ -68,7 +68,7 @@ describe MessagesController do
         request!
         expect( response.status              ).to eq 201
         expect( response.body                ).to eq({"message"=>"as_json", "as_html"=>"<message>html</message>"}.to_json)
-        expect( response.headers['Location'] ).to eq project_conversation_messages_path('raceteam','layup-body-carbon')
+        expect( response.headers['Location'] ).to eq organization_conversation_messages_path('raceteam','layup-body-carbon')
       end
     end
 
@@ -87,7 +87,7 @@ describe MessagesController do
   describe "PUT update" do
     def params
       {
-        project_id:      'raceteam',
+        organization_id:      'raceteam',
         conversation_id: 'layup-body-carbon',
         id:              1,
         message: {

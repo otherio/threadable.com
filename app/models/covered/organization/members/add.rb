@@ -1,4 +1,4 @@
-require_dependency 'covered/project/members'
+require_dependency 'covered/organization/members'
 
 class Covered::Organization::Members::Add < MethodObject
 
@@ -6,7 +6,7 @@ class Covered::Organization::Members::Add < MethodObject
     Covered.transaction do
       @members = members
       @covered = members.covered
-      @project = members.project
+      @organization = members.organization
       @options = options
       @send_join_notice = @options.fetch(:send_join_notice){ true }
       member or create_membership!
@@ -28,11 +28,11 @@ class Covered::Organization::Members::Add < MethodObject
   end
 
   def member
-    @member ||= @project.project_record.memberships.where(user_id: user_id).first
+    @member ||= @organization.organization_record.memberships.where(user_id: user_id).first
   end
 
   def create_membership!
-    @member = @project.project_record.memberships.create!(
+    @member = @organization.organization_record.memberships.create!(
       user_id: user_id,
       gets_email: @options[:gets_email] != false
     )
@@ -43,15 +43,15 @@ class Covered::Organization::Members::Add < MethodObject
   def track!
     @covered.track("Added User", {
       'Invitee'               => user_id,
-      'Organization'               => @project.id,
-      'Organization Name'          => @project.name,
+      'Organization'               => @organization.id,
+      'Organization Name'          => @organization.name,
       'Sent Join Notice'      => @send_join_notice ? true : false,
       'Sent Personal Message' => @options[:personal_message].present?
     })
   end
 
   def sent_join_notice!
-    @covered.emails.send_email_async(:join_notice, @project.id, user_id, @options[:personal_message])
+    @covered.emails.send_email_async(:join_notice, @organization.id, user_id, @options[:personal_message])
   end
 
   def find_or_create_user

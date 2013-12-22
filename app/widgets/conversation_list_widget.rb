@@ -1,9 +1,9 @@
 class ConversationListWidget < Rails::Widget::Presenter
 
-  arguments :project
+  arguments :organization
 
   option :conversations do
-    project.conversations.all_with_participants
+    organization.conversations.all_with_participants
   end
 
 end

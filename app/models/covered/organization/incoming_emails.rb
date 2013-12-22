@@ -1,17 +1,17 @@
-require_dependency 'covered/project'
+require_dependency 'covered/organization'
 
 class Covered::Organization::IncomingEmails < Covered::IncomingEmails
 
-  def initialize project
-    @project = project
-    @covered = project.covered
+  def initialize organization
+    @organization = organization
+    @covered = organization.covered
   end
-  attr_reader :project
+  attr_reader :organization
 
   private
 
   def scope
-    project.project_record.incoming_emails
+    organization.organization_record.incoming_emails
   end
 
 end

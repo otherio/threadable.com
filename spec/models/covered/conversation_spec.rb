@@ -23,7 +23,7 @@ describe Covered::Conversation do
   it { should delegate(:subject       ).to(:conversation_record) }
   it { should delegate(:task?         ).to(:conversation_record) }
   it { should delegate(:messages_count).to(:conversation_record) }
-  it { should delegate(:project_id    ).to(:conversation_record) }
+  it { should delegate(:organization_id    ).to(:conversation_record) }
   it { should delegate(:creator_id    ).to(:conversation_record) }
   it { should delegate(:created_at    ).to(:conversation_record) }
   it { should delegate(:updated_at    ).to(:conversation_record) }

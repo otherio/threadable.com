@@ -1,6 +1,6 @@
 class OrganizationMembership < ActiveRecord::Base
 
-  belongs_to :project
+  belongs_to :organization
   belongs_to :user
   has_many :email_addresses, through: :user
 

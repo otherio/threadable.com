@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe "invite_modal" do
 
-  let(:project){ Factories.build(:project) }
+  let(:organization){ Factories.build(:organization) }
 
   def locals
-    {project: project}
+    {organization: organization}
   end
 
-  it "should have a form that posts to the project invites url" do
+  it "should have a form that posts to the organization invites url" do
     form = html.css('form').first
-    form[:action].should == project_members_url(project)
+    form[:action].should == organization_members_url(organization)
     form[:method].should == 'post'
   end
 

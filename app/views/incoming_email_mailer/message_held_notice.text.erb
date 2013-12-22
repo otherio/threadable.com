@@ -1,15 +1,15 @@
-We're writing in regards to your mail to <%= @project.name.inspect %>
+We're writing in regards to your mail to <%= @organization.name.inspect %>
 with the subject
 
     <%= @incoming_email.subject %>
 
-As far as we can tell, you are not a member of this project,
-so your message is being held for approval by a project member.
+As far as we can tell, you are not a member of this organization,
+so your message is being held for approval by a organization member.
 
 You will be notified when action is taken to accept or reject your
 message.
 
-If you are in fact a member of this project, you may need to add:
+If you are in fact a member of this organization, you may need to add:
 
     <%= @incoming_email.from %>
 

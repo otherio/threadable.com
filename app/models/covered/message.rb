@@ -31,8 +31,8 @@ class Covered::Message < Covered::Model
     errors
   }, to: :message_record
 
-  def project
-    conversation.try(:project)
+  def organization
+    conversation.try(:organization)
   end
 
   def creator
@@ -51,7 +51,7 @@ class Covered::Message < Covered::Model
   end
 
   def recipients
-    project.members.that_get_email
+    organization.members.that_get_email
   end
 
   def body

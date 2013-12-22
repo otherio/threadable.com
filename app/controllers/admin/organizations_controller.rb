@@ -2,74 +2,74 @@ class Admin::OrganizationsController < ApplicationController
 
   before_filter :require_user_be_admin!
 
-  # GET /admin/projects
+  # GET /admin/organizations
   def index
-    @projects = covered.projects.all
+    @organizations = covered.organizations.all
   end
 
-  # GET /admin/projects/new
+  # GET /admin/organizations/new
   def new
-    @project = covered.projects.new
+    @organization = covered.organizations.new
   end
 
-  # POST /admin/projects
+  # POST /admin/organizations
   def create
-    @project = covered.projects.create(project_params)
+    @organization = covered.organizations.create(organization_params)
 
-    if project.persisted?
-      redirect_to admin_edit_project_path(project), notice: 'Organization was successfully created.'
+    if organization.persisted?
+      redirect_to admin_edit_organization_path(organization), notice: 'Organization was successfully created.'
     else
       render action: 'new'
     end
   end
 
-  # GET /admin/projects/1/edit
+  # GET /admin/organizations/1/edit
   def edit
-    project
-    @members = project.members.all
+    organization
+    @members = organization.members.all
     @all_users = covered.users.all
   end
 
-  # PATCH /admin/projects/1
+  # PATCH /admin/organizations/1
   def update
-    if project.update(project_params)
-      redirect_to admin_edit_project_path(project), notice: 'Organization was successfully updated.'
+    if organization.update(organization_params)
+      redirect_to admin_edit_organization_path(organization), notice: 'Organization was successfully updated.'
     else
       render action: 'edit'
     end
   end
 
-  # DELETE /admin/projects/1
+  # DELETE /admin/organizations/1
   def destroy
-    project.destroy!
-    redirect_to admin_projects_url, notice: 'Organization was successfully destroyed.'
+    organization.destroy!
+    redirect_to admin_organizations_url, notice: 'Organization was successfully destroyed.'
   end
 
   private
 
-  def project
-    @project ||= covered.projects.find_by_slug! params[:id]
+  def organization
+    @organization ||= covered.organizations.find_by_slug! params[:id]
   end
 
-  def project_params
-    @project_params or begin
-      @project_params = params.require(:project).permit(
+  def organization_params
+    @organization_params or begin
+      @organization_params = params.require(:organization).permit(
         :name,
         :subject_tag,
         :slug,
         :email_address_username,
         :add_current_user_as_a_member,
       ).symbolize_keys
-      if @project_params.key? :add_current_user_as_a_member
-        @project_params[:add_current_user_as_a_member] = @project_params[:add_current_user_as_a_member] == "1"
+      if @organization_params.key? :add_current_user_as_a_member
+        @organization_params[:add_current_user_as_a_member] = @organization_params[:add_current_user_as_a_member] == "1"
       end
     end
-    @project_params
+    @organization_params
   end
 
-  # this is here so the page navigation project section is not rendered
-  def current_project
+  # this is here so the page navigation organization section is not rendered
+  def current_organization
   end
-  helper_method :current_project
+  helper_method :current_organization
 
 end

@@ -1,15 +1,15 @@
 %h1 Organizations
 
 .pull-right
-  = link_to 'New Organization', admin_new_project_path
+  = link_to 'New Organization', admin_new_organization_path
 
 
-%table.projects.table
+%table.organizations.table
   %thead
     %th Name
     %th
   %tbody
-    - @projects.each do |project|
+    - @organizations.each do |organization|
       %tr
-        %td= link_to project.name, admin_edit_project_path(project)
-        %td= link_to 'destroy', admin_project_path(project), method: :delete, data: { confirm: 'Are you sure?' }
+        %td= link_to organization.name, admin_edit_organization_path(organization)
+        %td= link_to 'destroy', admin_organization_path(organization), method: :delete, data: { confirm: 'Are you sure?' }

@@ -6,96 +6,96 @@ class OrganizationsController < ApplicationController
   # GET /make-a-tank.json
   def show
     respond_to do |format|
-      format.html { redirect_to project_conversations_url(project) }
-      format.json { render json: project }
+      format.html { redirect_to organization_conversations_url(organization) }
+      format.json { render json: organization }
     end
   end
 
-  # GET /projects/new
-  # GET /projects/new.json
+  # GET /organizations/new
+  # GET /organizations/new.json
   def new
-    @project = current_user.projects.new
+    @organization = current_user.organizations.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @project }
+      format.json { render json: @organization }
     end
   end
 
-  # GET /projects/edit
+  # GET /organizations/edit
   def edit
-    @project = current_user.projects.find_by_slug! params[:id]
+    @organization = current_user.organizations.find_by_slug! params[:id]
   end
 
-  # POST /projects
-  # POST /projects.json
+  # POST /organizations
+  # POST /organizations.json
   def create
-    @project = current_user.projects.create(project_params)
+    @organization = current_user.organizations.create(organization_params)
 
     respond_to do |format|
-      if @project.persisted?
-        format.html { redirect_to project_url(@project), notice: "#{@project.name} was successfully created." }
-        format.json { render json: @project, status: :created, location: @project }
+      if @organization.persisted?
+        format.html { redirect_to organization_url(@organization), notice: "#{@organization.name} was successfully created." }
+        format.json { render json: @organization, status: :created, location: @organization }
       else
         format.html { render action: "new" }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /projects/make-a-tank
-  # PUT /projects/make-a-tank.json
+  # PUT /organizations/make-a-tank
+  # PUT /organizations/make-a-tank.json
   def update
     respond_to do |format|
-      if project.update(project_params)
-        format.html { redirect_to root_path, notice: "#{@project.name} was successfully updated." }
+      if organization.update(organization_params)
+        format.html { redirect_to root_path, notice: "#{@organization.name} was successfully updated." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # # GET /projects/make-like-a-tree-and/join
-  # # GET /projects/make-like-a-tree-and/join.json
+  # # GET /organizations/make-like-a-tree-and/join
+  # # GET /organizations/make-like-a-tree-and/join.json
   # def join
-  #   flash[:notice] = "Welcome aboard! You're now a memeber of the #{project.name} project."
+  #   flash[:notice] = "Welcome aboard! You're now a memeber of the #{organization.name} organization."
   # end
 
-  # PUT /projects/make-like-a-tree-and/leave
-  # PUT /projects/make-like-a-tree-and/leave.json
+  # PUT /organizations/make-like-a-tree-and/leave
+  # PUT /organizations/make-like-a-tree-and/leave.json
   def leave
     respond_to do |format|
-      if project.leave!
-        format.html { redirect_to root_path, notice: "You have successfully left #{@project.name}." }
+      if organization.leave!
+        format.html { redirect_to root_path, notice: "You have successfully left #{@organization.name}." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # # DELETE /projects/make-a-tank
-  # # DELETE /projects/make-a-tank.json
+  # # DELETE /organizations/make-a-tank
+  # # DELETE /organizations/make-a-tank.json
   # def destroy
-  #   project.destroy
+  #   organization.destroy
 
   #   respond_to do |format|
-  #     format.html { redirect_to projects_url }
+  #     format.html { redirect_to organizations_url }
   #     format.json { head :no_content }
   #   end
   # end
 
   private
 
-  def project_params
-    params.require(:project).permit(:name, :short_name, :description)
+  def organization_params
+    params.require(:organization).permit(:name, :short_name, :description)
   end
 
-  def project
-    @project ||= current_user.projects.find_by_slug! params[:id]
+  def organization
+    @organization ||= current_user.organizations.find_by_slug! params[:id]
   end
 
 end

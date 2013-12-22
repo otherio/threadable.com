@@ -4,10 +4,10 @@ class Covered::Organization < Covered::Model
     ::Organization.model_name
   end
 
-  def initialize covered, project_record
-    @covered, @project_record = covered, project_record
+  def initialize covered, organization_record
+    @covered, @organization_record = covered, organization_record
   end
-  attr_reader :project_record
+  attr_reader :organization_record
 
   delegate *%w{
     id
@@ -21,18 +21,18 @@ class Covered::Organization < Covered::Model
     errors
     new_record?
     persisted?
-  }, to: :project_record
+  }, to: :organization_record
 
   def to_key
     id ? [id] : nil
   end
 
   def email_address
-    "#{project_record.email_address_username}@#{covered.email_host}"
+    "#{organization_record.email_address_username}@#{covered.email_host}"
   end
 
   def task_email_address
-    "#{project_record.email_address_username}+task@#{covered.email_host}"
+    "#{organization_record.email_address_username}+task@#{covered.email_host}"
   end
 
   def email_addresses
@@ -48,7 +48,7 @@ class Covered::Organization < Covered::Model
   end
 
   def list_id
-    "#{project_record.email_address_username}.#{covered.email_host}"
+    "#{organization_record.email_address_username}.#{covered.email_host}"
   end
 
   def formatted_list_id
@@ -80,11 +80,11 @@ class Covered::Organization < Covered::Model
   end
 
   def destroy!
-    project_record.destroy!
+    organization_record.destroy!
   end
 
   def inspect
-    %(#<#{self.class} project_id: #{id.inspect}, name: #{name.inspect}>)
+    %(#<#{self.class} organization_id: #{id.inspect}, name: #{name.inspect}>)
   end
 
 end

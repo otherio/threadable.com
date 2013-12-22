@@ -5,13 +5,13 @@
 
 - task = Task.with_doers.first
 - doers = task.doers
-- project_members = task.project.members
+- organization_members = task.organization.members
 
 :javascript
   function showDoersPopover(link){
     $(link).parent().find('.doers_popover').widget().show({
       target:          $(link),
-      project_members: #{project_members.to_json},
+      organization_members: #{organization_members.to_json},
       doers:           #{doers.to_json},
       addDoer:         function(){ alert("doer added") },
       removeDoer:      function(){ alert("doer removed") }

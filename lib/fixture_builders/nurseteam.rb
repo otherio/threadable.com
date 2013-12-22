@@ -1,7 +1,7 @@
 FixtureBuilder.build do
 
   as_an_admin do
-    create_project(
+    create_organization(
       name: 'SF Health Center',
       short_name: 'SFHealth',
       description: 'San Francisco Health Center',
@@ -13,7 +13,7 @@ FixtureBuilder.build do
   as 'amywong.phd@gmail.com' do
     set_avatar! 'amy.jpg'
 
-    # Amy invites her project mates
+    # Amy invites her organization mates
     add_member 'Sandeep Prakash', 'sfmedstudent@gmail.com'
     add_member 'Lilith Sternin',  'lilith@sfhealth.example.com'
     add_member 'Anil Kapoor',     'anil@sfhealth.example.com'
@@ -30,14 +30,14 @@ FixtureBuilder.build do
     add_member 'Peter Venkman',   'ecto@sfhealth.example.com'
 
     @welcome_message = create_conversation(
-      subject: 'Welcome to our new Covered project!',
+      subject: 'Welcome to our new Covered organization!',
       text:    'Hey all! I think we should try this way to organize our conversation and work. Thanks for joining up!',
     )
 
   end
 
 
-  # Amy's project mates all accept their invites
+  # Amy's organization mates all accept their invites
   web_enable! 'sfmedstudent@gmail.com'
   as 'sfmedstudent@gmail.com' do
     set_avatar! 'sandeep.jpg'
