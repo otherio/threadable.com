@@ -14,6 +14,7 @@ class Covered::EmailAddress < Covered::Model
     primary?
     errors
     persisted?
+    confirmed?
   }, to: :email_address_record
 
 
@@ -22,19 +23,24 @@ class Covered::EmailAddress < Covered::Model
   end
 
   def to_s
-    address
+    address.to_s
   end
+  alias_method :to_str, :to_s
 
   def to_param
     address
   end
 
+  def user
+    @user ||= covered.users.find_by_id(user_id) if user_id
+  end
+
   def == other
-    self.class === other && (id.nil? ? other.id == id : other.address == address)
+    id.nil? ? (self.class === other && other.id == id) : (other.to_s == self.to_s)
   end
 
   def inspect
-    %(#<#{self.class} address: #{address.inspect}, primary: #{primary?.inspect}>)
+    %(#<#{self.class} address: #{address.inspect}, primary: #{primary?.inspect}, confirmed: #{confirmed?.inspect}>)
   end
 
 end

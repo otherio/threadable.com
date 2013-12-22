@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131218023451) do
+ActiveRecord::Schema.define(version: 20131221204244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,9 +54,10 @@ ActiveRecord::Schema.define(version: 20131218023451) do
   add_index "conversations", ["project_id"], name: "index_conversations_on_project_id", using: :btree
 
   create_table "email_addresses", force: true do |t|
-    t.integer "user_id"
-    t.text    "address",                 null: false
-    t.boolean "primary", default: false
+    t.integer  "user_id"
+    t.text     "address",                      null: false
+    t.boolean  "primary",      default: false
+    t.datetime "confirmed_at"
   end
 
   add_index "email_addresses", ["address"], name: "index_email_addresses_on_address", unique: true, using: :btree
@@ -158,10 +159,6 @@ ActiveRecord::Schema.define(version: 20131218023451) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
     t.string   "authentication_token"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false

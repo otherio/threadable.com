@@ -66,6 +66,16 @@ feature "Editing my profile" do
     fill_in 'my.email@example.com', with: 'yan.hzu@example.com'
     click_on 'Add'
     expect(page).to have_text 'yan.hzu@example.com'
+    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
+    expect(find('table.email-addresses')).to have_text 'yan.hzu@example.com'
+    expect(page).to have_text "we've sent a confirmation email to yan.hzu@example.com. Please check your email."
+
+    drain_background_jobs!
+
+
+
+
+
     expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io', 'yan.hzu@example.com']
   end
 

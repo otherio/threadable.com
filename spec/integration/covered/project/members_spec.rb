@@ -15,6 +15,7 @@ describe Covered::Project::Members do
         yan@ucsd.covered.io
         bethany@ucsd.covered.io
         bob@ucsd.covered.io
+        bob.cauchois@example.com
         jonathan@ucsd.covered.io
       }.to_set
     end

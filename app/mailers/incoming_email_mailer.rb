@@ -5,8 +5,8 @@ class IncomingEmailMailer < Covered::Mailer
     @project = incoming_email.project
 
     auto_response_mail(
-      :'from'     => "Covered message held <support+message-held@#{covered.email_host}>",
-      :'Reply-To' => "Covered message held <support+message-held@#{covered.email_host}>",
+      :'from'     => "Covered message held <#{covered.support_email_address('message-held')}>",
+      :'Reply-To' => "Covered message held <#{covered.support_email_address('message-held')}>",
       :'subject'  => "[message held] #{@incoming_email.subject}",
     )
   end
@@ -16,8 +16,8 @@ class IncomingEmailMailer < Covered::Mailer
     @project = incoming_email.project
 
     auto_response_mail(
-      :'from'     => "Covered message rejected <support+message-rejected@#{covered.email_host}>",
-      :'Reply-To' => "Covered message rejected <support+message-rejected@#{covered.email_host}>",
+      :'from'     => "Covered message rejected <#{covered.support_email_address('message-rejected')}>",
+      :'Reply-To' => "Covered message rejected <#{covered.support_email_address('message-rejected')}>",
       :'subject'  => "[message rejected] #{@incoming_email.subject}",
     )
   end
@@ -27,8 +27,8 @@ class IncomingEmailMailer < Covered::Mailer
     @project = incoming_email.project
 
     auto_response_mail(
-      :'from'     => "Covered message accepted <support+message-accepted@#{covered.email_host}>",
-      :'Reply-To' => "Covered message accepted <support+message-accepted@#{covered.email_host}>",
+      :'from'     => "Covered message accepted <#{covered.support_email_address('message-accepted')}>",
+      :'Reply-To' => "Covered message accepted <#{covered.support_email_address('message-accepted')}>",
       :'subject'  => "[message accepted] #{@incoming_email.subject}",
     )
   end

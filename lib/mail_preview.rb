@@ -41,6 +41,10 @@ class MailPreview < MailView
     covered.emails.generate(:message_rejected_notice, covered.incoming_emails.latest)
   end
 
+  def email_address_confirmation
+    covered.emails.generate(:email_address_confirmation, covered.users.all.last.email_addresses.all.last)
+  end
+
   private
 
   def covered

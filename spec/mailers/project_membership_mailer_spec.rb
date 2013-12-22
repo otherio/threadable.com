@@ -16,7 +16,7 @@ describe ProjectMembershipMailer do
 
     before do
       expect(mail.subject).to eq "You've been added to #{project.name}"
-      expect(mail.to     ).to eq [recipient.email_address]
+      expect(mail.to     ).to eq [recipient.email_address.to_s]
       expect(mail.from   ).to eq ['bethany@ucsd.covered.io']
       expect(text_part   ).to include personal_message
       expect(text_part   ).to include project_url(project)
@@ -51,7 +51,7 @@ describe ProjectMembershipMailer do
     it "should return the expected message" do
       expect(mail.subject ).to eq "You've been unsubscribed from #{project.name}"
       expect(mail.to      ).to eq ['bethany@ucsd.covered.io']
-      expect(mail.from    ).to eq [project.email_address]
+      expect(mail.from    ).to eq [project.email_address.to_s]
       expect(text_part    ).to include %(You've been unsubscribed from the "#{project.name}" project on Covered.)
 
       project_resubscribe_token = extract_project_resubscribe_token(text_part)

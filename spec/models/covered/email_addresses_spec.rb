@@ -16,7 +16,7 @@ describe Covered::EmailAddresses do
     end
 
     before do
-      ::EmailAddress.stub_chain(:all, :reload).and_return(all_email_address_records)
+      ::EmailAddress.stub_chain(:all, :to_a).and_return(all_email_address_records)
     end
 
     it 'returns all the email addresses as Covered::EmailAddress instances' do

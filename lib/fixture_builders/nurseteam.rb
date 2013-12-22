@@ -1,19 +1,17 @@
 FixtureBuilder.build do
 
-  # Amy signs up (we do this since this fixutre might run first)
-  sign_up 'Amy Wong', 'amywong.phd@gmail.com'
-
-  as 'amywong.phd@gmail.com' do
-    confirm_account!
-    set_avatar! 'amy.jpg'
-
-    # Amy creates a project
+  as_an_admin do
     create_project(
       name: 'SF Health Center',
       short_name: 'SFHealth',
       description: 'San Francisco Health Center',
     )
-    # project.members << user('Amy Wong')
+    add_member 'Amy Wong', 'amywong.phd@gmail.com'
+  end
+
+  web_enable! 'amywong.phd@gmail.com'
+  as 'amywong.phd@gmail.com' do
+    set_avatar! 'amy.jpg'
 
     # Amy invites her project mates
     add_member 'Sandeep Prakash', 'sfmedstudent@gmail.com'
@@ -40,87 +38,73 @@ FixtureBuilder.build do
 
 
   # Amy's project mates all accept their invites
+  web_enable! 'sfmedstudent@gmail.com'
   as 'sfmedstudent@gmail.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'sandeep.jpg'
   end
 
+  web_enable! 'lilith@sfhealth.example.com'
   as 'lilith@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'lilith.jpg'
   end
 
+  web_enable! 'anil@sfhealth.example.com'
   as 'anil@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'anil.jpg'
   end
 
+  web_enable! 'trapper@sfhealth.example.com'
   as 'trapper@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'trapper.jpg'
   end
 
+  web_enable! 'marcus@sfhealth.example.com'
   as 'marcus@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'marcus.jpg'
   end
 
+  web_enable! 'mquinn@sfhealth.example.com'
   as 'mquinn@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'mquinn.jpg'
   end
 
+  web_enable! 'bj@sfhealth.example.com'
   as 'bj@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'bj.jpg'
   end
 
+  web_enable! 'smaturin@sfhealth.example.com'
   as 'smaturin@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'stephen.jpg'
   end
 
+  web_enable! 'lcuddy@sfhealth.example.com'
   as 'lcuddy@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'lisa.jpg'
   end
 
+  web_enable! 'house@sfhealth.example.com'
   as 'house@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'house.jpg'
   end
 
+  web_enable! 'ritsuko@sfhealth.example.com'
   as 'ritsuko@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'ritsuko.jpg'
   end
 
+  web_enable! 'yuriz@sfhealth.example.com'
   as 'yuriz@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'yuri.jpg'
   end
 
+  web_enable! 'zarkov@sfhealth.example.com'
   as 'zarkov@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'zarkov.gif'
   end
 
+  web_enable! 'ecto@sfhealth.example.com'
   as 'ecto@sfhealth.example.com' do
-    confirm_account!
-    web_enable!
     set_avatar! 'venkman.jpg'
   end
 

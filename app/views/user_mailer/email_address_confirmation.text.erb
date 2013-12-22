@@ -1,0 +1,11 @@
+The email address <%= mail_to @email_address %> has been added to <%= @email_address.user.name %>'s Covered account.
+
+If this is correct:
+
+    click this link to confirm your email address:
+
+    <%= @confirm_email_address_url %>
+
+If this is not correct:
+
+  contact us at <%= @covered.support_email_address %>

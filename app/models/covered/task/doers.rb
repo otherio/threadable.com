@@ -32,7 +32,7 @@ class Covered::Task::Doers
           {
             type: 'Task::AddedDoerEvent',
             project_id: task.project.id,
-            user_id: covered.current_user.id,
+            user_id: covered.current_user_id,
             doer_id: user_id,
             conversation_id: task.id,
           }

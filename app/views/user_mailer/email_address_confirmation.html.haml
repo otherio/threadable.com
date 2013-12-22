@@ -1,0 +1,12 @@
+%p The email address #{mail_to @email_address} has been added to #{@email_address.user.name}'s Covered account.
+
+%p
+  If this is correct:
+  %blockquote
+    = link_to 'click here to confirm your email address', @confirm_email_address_url
+
+%p
+  If this is not correct:
+  %blockquote
+    contact us at
+    = mail_to @covered.support_email_address

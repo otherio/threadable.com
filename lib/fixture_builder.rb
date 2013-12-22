@@ -5,38 +5,41 @@ class FixtureBuilder
   end
 
   def covered
-    @covered ||= Covered.new(
+    @covered ||= new_covered
+  end
+  delegate :current_user, to: :covered
+
+  def new_covered options={}
+    Covered.new options.merge(
       host: defined?(Capybara) ? Capybara.server_host : 'example.com',
       port: defined?(Capybara) ? Capybara.server_port : 80,
     )
   end
+  private :new_covered
 
-  delegate :current_user, to: :covered
-
-  def sign_up name, email_address
-    user = covered.sign_up(
-      name: name,
-      email_address: email_address,
-      password: 'password',
-      password_confirmation: 'password',
-    )
-    user.persisted? or raise "'failed to sign up #{name}, #{email_address}: #{user.errors.full_messages.to_sentence}"
-  end
 
   def get_user email_address
     @users_cache ||= {}
     @users_cache[email_address] ||= ::User.find_by_email_address!(email_address)
   end
 
+  def as_an_admin
+    @covered = new_covered(current_user_id: get_user('jared@other.io').id)
+    yield
+  ensure
+    @covered = nil
+  end
+
   def as email_address
-    @covered = Covered.new covered.env.merge(current_user_id: get_user(email_address).id)
+    @covered = new_covered(current_user_id: get_user(email_address).id)
     yield
   ensure
     @covered = nil
   end
 
   def create_project attributes
-    @project = current_user.projects.create! attributes
+    @project.nil? or raise "you can only create one project in a fixture builder"
+    @project = covered.projects.create! attributes.merge(add_current_user_as_a_member: false)
   end
 
   def project
@@ -45,6 +48,21 @@ class FixtureBuilder
 
   def add_member name, email_address
     project.members.add(name: name, email_address: email_address)
+  end
+
+  def web_enable! email_address
+    covered.users.find_by_email_address!(email_address).update!(
+      password: 'password',
+      password_confirmation: 'password'
+    )
+  end
+
+  def require_current_user_be_web_enabled!
+    current_user.web_enabled? or raise "the current user #{current_user.inspect} must be web enabled to do this action."
+  end
+
+  def confirm_email_address! email_address
+    covered.users.find_by_email_address!(email_address).email_addresses.find_by_address!(email_address).confirm!
   end
 
   def create_conversation options
@@ -75,19 +93,13 @@ class FixtureBuilder
     task.done!
   end
 
-  def confirm_account!
-    current_user.confirm!
-  end
-
-  def web_enable!
-    current_user.update!(password: 'password', password_confirmation: 'password')
-  end
-
   def set_avatar! filename
+    require_current_user_be_web_enabled!
     current_user.update! avatar_url: "/fixture_images/#{filename}"
   end
 
   def add_email_address! email_address, primary=false
+    require_current_user_be_web_enabled!
     current_user.email_addresses.add! email_address, primary
   end
 
@@ -96,10 +108,5 @@ class FixtureBuilder
     membership.unsubscribe!
   end
 
-  def web_enable email_address
-    as email_address do
-      web_enable!
-    end
-  end
 
 end

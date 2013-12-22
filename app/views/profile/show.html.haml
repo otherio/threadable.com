@@ -1,47 +1,53 @@
 .row
-  .span4.offset2
-    .well
-      %h2 Profile
-      = simple_form_for current_user, url: current_url do |f|
-        = f.input :name
-        = f.submit :Update, class: 'btn btn-primary'
-    .well
-      %h2 Password
-      = simple_form_for current_user, url: current_url do |f|
-        = f.input :current_password
-        = f.input :password
-        = f.input :password_confirmation
-        = f.submit 'Change password', class: 'btn btn-primary'
 
-  .span5
-    .well
-      %h2 Email addresses
+  .well.span5
+    %h2 Profile
+    = simple_form_for current_user, url: current_url do |f|
+      = f.input :name
+      = f.submit :Update, class: 'btn btn-primary'
 
-      %small Messages from any of these addresses will be associated with you, however we will only ever email you at your primary email address.
+  .well.span5
+    %h2 Password
+    = simple_form_for current_user, url: current_url do |f|
+      = f.input :current_password
+      = f.input :password
+      = f.input :password_confirmation
+      = f.submit 'Change password', class: 'btn btn-primary'
 
-      %table.email-addresses.table
-        %thead
-          %tr
-            %th.address Address
-            %th.primary Primary?
+.well
+  %h2 Email addresses
 
-        %tbody
-          - current_user.email_addresses.all.sort_by(&:address).each do |email_address|
-            %tr
-              %td= email_address.address
-              %td
-                - if email_address.primary?
-                  primary
-                - else
-                  = link_to 'make primary', email_address_path(email_address:{ address: email_address.address, primary:1 }), data:{method:'patch'}
+  %small Messages from any of these addresses will be associated with you, however we will only ever email you at your primary email address.
 
-      = form_for current_user.email_addresses.new, url: email_addresses_path, html: { class: 'form-inline' } do |f|
-        = f.text_field :address, placeholder: 'my.email@example.com', type: 'email', required: true
-        = f.submit :Add, class: 'btn btn-primary', value: 'Add'
+  %table.email-addresses.table
+    %thead
+      %tr
+        %th Address
+        %th Primary?
+        %th Confirmed?
 
-      %small
-        * If you need to delete an email address from your account please email us at
-        = mail_to 'support@covered.io'
+    %tbody
+      - current_user.email_addresses.all.sort_by(&:address).each do |email_address|
+        %tr
+          %td= email_address.address
+          %td
+            - if email_address.primary?
+              primary
+            - elsif email_address.confirmed?
+              = link_to 'make primary', email_address_path(email_address:{ address: email_address.address, primary:1 }), data:{method:'patch'}
+          %td
+            - if email_address.confirmed?
+              confirmed
+            - else
+              = link_to 'resend confirmation email', resend_email_address_confirmation_path(email_address:{ address: email_address.address }), data:{method:'post'}
+
+  = form_for current_user.email_addresses.new, url: email_addresses_path, html: { class: 'form-inline' } do |f|
+    = f.text_field :address, placeholder: 'my.email@example.com', type: 'email', required: true
+    = f.submit :Add, class: 'btn btn-primary', value: 'Add'
+
+  %small
+    * If you need to delete an email address from your account please email us at
+    = mail_to covered.support_email_address
 
 
 :sass

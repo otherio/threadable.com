@@ -33,18 +33,17 @@ module RSpec::Support::Fixtures
     stub_request(:any, 'https://api.mixpanel.com/import').to_return({ :body => '{"status": 1, "error": null}' })
   end
 
-  def truncate_all_tables!
+  def empty_databases!
     ActiveRecord::Base.connection_handler.clear_all_connections! unless test_transaction_open?
-    ActiveRecord::FixtureBuilder.database.truncate_all_tables!
+    ::Fixtures.empty_databases!
     fixtures_not_loaded! unless test_transaction_open?
   end
 
   def build_fixtures!
     return false if fixtures_built? # only build fixtures once
     stub_mixpanel!
-    truncate_all_tables!
-    ActiveRecord::FixtureBuilder.build_fixtures!
-    ActiveRecord::FixtureBuilder.write_fixtures!
+    empty_databases!
+    ::Fixtures.build!
     fixtures_built!
     fixtures_loaded! unless test_transaction_open?
     true
@@ -53,8 +52,8 @@ module RSpec::Support::Fixtures
   def load_fixtures!
     return if fixtures_loaded?
     build_fixtures! and return
-    truncate_all_tables!
-    ActiveRecord::FixtureBuilder.load_fixtures!
+    empty_databases!
+    ::Fixtures.load!
     fixtures_loaded!
   end
 

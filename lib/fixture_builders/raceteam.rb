@@ -1,17 +1,17 @@
 FixtureBuilder.build do
 
-  # Alice signs up
-  sign_up 'Alice Neilson', 'alice@ucsd.covered.io'
-
-  as 'alice@ucsd.covered.io' do
-    confirm_account!
-    set_avatar! 'alice.jpg'
-
+  as_an_admin do
     create_project(
       name: 'UCSD Electric Racing',
       short_name: 'RaceTeam',
       description: 'Senior engineering electric race team!',
     )
+    add_member 'Alice Neilson', 'alice@ucsd.covered.io'
+  end
+
+  web_enable! 'alice@ucsd.covered.io'
+  as 'alice@ucsd.covered.io' do
+    set_avatar! 'alice.jpg'
 
     # Alice invites her project mates
     add_member 'Tom Canver',      'tom@ucsd.covered.io'
@@ -27,28 +27,27 @@ FixtureBuilder.build do
     )
   end
 
+  web_enable! 'tom@ucsd.covered.io'
   as 'tom@ucsd.covered.io' do
-    confirm_account!
-    web_enable!
     set_avatar! 'tom.jpg'
   end
 
+  web_enable! 'yan@ucsd.covered.io'
   as 'yan@ucsd.covered.io' do
-    confirm_account!
-    web_enable!
     set_avatar! 'yan.jpg'
     add_email_address! 'yan@yansterdam.io'
+    confirm_email_address! 'yan@yansterdam.io'
   end
 
+  web_enable! 'bethany@ucsd.covered.io'
   as 'bethany@ucsd.covered.io' do
-    confirm_account!
     set_avatar! 'bethany.jpg'
   end
 
+  web_enable! 'bob@ucsd.covered.io'
   as 'bob@ucsd.covered.io' do
-    confirm_account!
-    web_enable!
     set_avatar! 'bob.jpg'
+    add_email_address! 'bob.cauchois@example.com'
   end
 
   as 'jonathan@ucsd.covered.io' do

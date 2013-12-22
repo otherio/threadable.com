@@ -19,7 +19,7 @@ describe Covered::User do
   its(:user_id       ){ should eq user_record.id            }
   its(:to_param      ){ should eq user_record.to_param      }
   its(:name          ){ should eq user_record.name          }
-  its(:email_address ){ should eq user_record.email_address }
+  its(:email_address ){ should eq user_record.primary_email_address }
   its(:slug          ){ should eq user_record.slug          }
   its(:errors        ){ should eq user_record.errors        }
   its(:new_record?   ){ should eq user_record.new_record?   }
@@ -31,7 +31,6 @@ describe Covered::User do
   it { should delegate(:id           ).to(:user_record) }
   it { should delegate(:to_param     ).to(:user_record) }
   it { should delegate(:name         ).to(:user_record) }
-  it { should delegate(:email_address).to(:user_record) }
   it { should delegate(:slug         ).to(:user_record) }
   it { should delegate(:errors       ).to(:user_record) }
   it { should delegate(:new_record?  ).to(:user_record) }
@@ -55,7 +54,7 @@ describe Covered::User do
     id:            user.id,
     param:         user.to_param,
     name:          user.name,
-    email_address: user.email_address,
+    email_address: user.email_address.to_s,
     slug:          user.slug,
     avatar_url:    user.avatar_url,
   )}
@@ -92,10 +91,6 @@ describe Covered::User do
       user.stub web_enabled?: true
       expect(user.requires_setup?).to be_false
     end
-  end
-
-  describe 'confirm!' do
-    it 'should update the confirmed_at field with the current time'
   end
 
 end

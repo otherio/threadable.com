@@ -10,20 +10,24 @@ class EmailAddress < ActiveRecord::Base
     return false if !record.new_record? && record.address_changed?
   end
 
-  def self.primary
-    where(primary: true)
-  end
-
-  def address= address
-    write_attribute(:address, address.try(:strip_non_ascii))
-  end
+  scope :primary,   -> { where(primary: true) }
+  scope :confirmed, -> { where('email_addresses.confirmed IS NOT NULL') }
 
   scope :for_user, ->(user){
-    where(user_id: user.is_a?(User) ? user.id : user)
+    user_id = Integer === user ? user : user.id
+    where(user_id: user_id)
   }
   scope :address_not, ->(address){
     where(arel_table[:address].not_eq(address))
   }
+
+  def confirmed?
+    !confirmed_at.nil?
+  end
+
+  def address= address
+    write_attribute(:address, address.to_s.strip_non_ascii)
+  end
 
   def has_taken_error?
     errors[:address].present? && errors[:address].include?(I18n.t('errors.messages.taken'))
@@ -32,7 +36,7 @@ class EmailAddress < ActiveRecord::Base
   private
 
   def ensure_only_one_primary
-    if self.class.for_user(user_id).where(primary: true).address_not(self.address).present?
+    if user_id && self.class.for_user(user_id).where(primary: true).address_not(self.address).present?
       errors.add(:base, 'there can be only one primary email address')
     end
   end

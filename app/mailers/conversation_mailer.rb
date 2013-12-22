@@ -74,7 +74,7 @@ class ConversationMailer < Covered::Mailer
     )
 
     email.smtp_envelope_from = @task ? @project.task_email_address : @project.email_address
-    email.smtp_envelope_to = @recipient.email_address
+    email.smtp_envelope_to = @recipient.email_address.to_s
 
     email
   end

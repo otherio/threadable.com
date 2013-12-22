@@ -47,8 +47,13 @@ describe "covered", fixtures: false do
     expect( jared_at_deadlyicon_dot_com         ).to be_a Covered::User::EmailAddress
     expect( jared_at_deadlyicon_dot_com.address ).to eq 'jared@deadlyicon.com'
     expect( jared_at_deadlyicon_dot_com         ).to_not be_primary
+    expect( jared_at_deadlyicon_dot_com         ).to_not be_confirmed
+
+    jared_at_deadlyicon_dot_com.confirm!
+    expect( jared_at_deadlyicon_dot_com ).to be_confirmed
 
     jared_at_deadlyicon_dot_com.primary!
+    jared.reload
     expect( jared.email_address ).to eq 'jared@deadlyicon.com'
 
     expect( jared.email_addresses.all.map{|e| [e.address, e.primary?] }.to_set ).to eq Set[
@@ -208,7 +213,7 @@ describe "covered", fixtures: false do
       expect(sent_emails.size).to eq 1
       email = sent_emails.first
       expect(email.text_content).to include 'OMG I love their belly fat'
-      expect(email.text_content).to include 'support@covered.io'
+      expect(email.text_content).to include 'support@127.0.0.1'
       expect(email.text_content).to include '%5Btask%5D%20'
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.html_content).to include "feedback"

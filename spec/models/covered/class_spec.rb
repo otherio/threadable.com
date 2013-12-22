@@ -39,6 +39,8 @@ describe Covered::Class do
     "worker" => false,
   )}
 
+  it { should delegate(:track).to(:tracker) }
+
   describe "#==" do
     it "should be equal if the other object is an instance of Covered and the env hashes are equal" do
       expect( covered ).to     eq Covered.new(covered.env)
@@ -73,6 +75,14 @@ describe Covered::Class do
     end
   end
 
-  it { should delegate(:track).to(:tracker) }
+  describe '#support_email_address' do
+    it "returns a support email address" do
+      expect( covered.support_email_address ).to eq 'support@example.com'
+    end
+
+    it 'returns an email address with an optional tag' do
+      expect( covered.support_email_address('foo-bar') ).to eq 'support+foo-bar@example.com'
+    end
+  end
 
 end

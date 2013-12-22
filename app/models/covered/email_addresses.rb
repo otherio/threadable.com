@@ -1,7 +1,25 @@
+require_dependency 'covered/email_address'
+
 class Covered::EmailAddresses < Covered::Collection
 
   def all
-    email_addresses_for scope.reload.to_a
+    email_addresses_for scope.to_a
+  end
+
+  def confirmed
+    email_addresses_for scope.confirmed.to_a
+  end
+
+  def unconfirmed
+    email_addresses_for scope.confirmed.to_a
+  end
+
+  def find_by_id id
+    email_address_for (scope.where(id: id).first or return)
+  end
+
+  def find_by_id! id
+    find_by_id(id) or raise Covered::RecordNotFound, "unable to find email address with id: #{id.inspect}"
   end
 
   def find_by_address address
@@ -22,9 +40,10 @@ class Covered::EmailAddresses < Covered::Collection
     email_addresses_for email_address_records
   end
 
-  def new
-    Covered::EmailAddress.new(covered, ::EmailAddress.new)
+  def new attributes={}
+    Covered::EmailAddress.new(covered, ::EmailAddress.new(attributes))
   end
+  alias_method :build, :new
 
   def create attributes={}
     Create.call(self, attributes)

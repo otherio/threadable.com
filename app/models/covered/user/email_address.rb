@@ -8,8 +8,18 @@ class Covered::User::EmailAddress < Covered::EmailAddress
   end
   attr_reader :user
 
+  def formatted_email_address
+    "#{user.name} <#{address}>"
+  end
+
+  def confirm!
+    return false if confirmed?
+    email_address_record.update!(confirmed_at: Time.now)
+    return true
+  end
+
   def primary!
-    return false if primary?
+    return false if primary? || !confirmed?
     Covered.transaction do
       ::EmailAddress.where(user_id: user.id).update_all(primary: false)
       email_address_record.update(primary: true)

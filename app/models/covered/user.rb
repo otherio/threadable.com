@@ -16,7 +16,6 @@ class Covered::User
     id
     to_param
     name
-    email_address
     slug
     admin?
     valid?
@@ -46,21 +45,18 @@ class Covered::User
     !web_enabled?
   end
 
+  def email_address
+    @email_address ||= email_addresses.primary
+  end
+
   def formatted_email_address
     "#{name} <#{email_address}>"
   end
 
   def reload
+    @email_address = nil
     user_record.reload
     self
-  end
-
-  def confirm!
-    !!update(confirmed_at: Time.now)
-  end
-
-  def confirmed?
-    user_record.confirmed_at.present?
   end
 
   def update attributes
@@ -95,7 +91,7 @@ class Covered::User
       id:            id,
       param:         to_param,
       name:          name,
-      email_address: email_address,
+      email_address: email_address.to_s,
       slug:          slug,
       avatar_url:    avatar_url,
     }
@@ -112,7 +108,7 @@ class Covered::User
 
   def inspect
     # %(#<#{self.class} user_id: #{id}>)
-    %(#<#{self.class} id: #{id}, email_address: #{email_address.inspect}, slug: #{slug.inspect}>)
+    %(#<#{self.class} id: #{id}, email_address: #{email_address.to_s.inspect}, slug: #{slug.inspect}>)
   end
 
 end

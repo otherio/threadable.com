@@ -13,18 +13,22 @@ describe Covered::CurrentUser do
   its(:persisted?   ){ should eq user_record.persisted?   }
   its(:avatar_url   ){ should eq user_record.avatar_url   }
 
-  its(:inspect){ should eq %(#<Covered::CurrentUser id: #{user_record.id}, email_address: #{user_record.email_address.inspect}, slug: #{user_record.slug.inspect}>) }
+  its(:inspect){
+    should eq(
+      %(#<Covered::CurrentUser id: #{user_record.id}, email_address: #{user_record.email_address.to_s.inspect}, slug: #{user_record.slug.inspect}>)
+    )
+  }
 
   its(:errors){ should be_a user_record.errors.class }
 
   its(:as_json){
     should eq(
-      id:            subject.id,
-      param:         subject.to_param,
-      name:          subject.name,
-      email_address: subject.email_address,
-      slug:          subject.slug,
-      avatar_url:    subject.avatar_url,
+      id:            current_user.id,
+      param:         current_user.to_param,
+      name:          current_user.name,
+      email_address: current_user.email_address.to_s,
+      slug:          current_user.slug,
+      avatar_url:    current_user.avatar_url,
     )
   }
 
@@ -33,15 +37,6 @@ describe Covered::CurrentUser do
   describe "==" do
     it "should match on user_id" do
       expect(current_user).to eq Covered::CurrentUser.new(covered, user_record.id)
-    end
-  end
-
-  describe 'confirm!' do
-    it "should confirm the user" do
-      expect(user_record).to_not be_confirmed
-      current_user.confirm!
-      user_record.reload
-      expect(user_record).to be_confirmed
     end
   end
 

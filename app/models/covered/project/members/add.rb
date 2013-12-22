@@ -19,10 +19,7 @@ class Covered::Project::Members::Add < MethodObject
     when @options.key?(:user_id)
       @covered.users.exists! @options[:user_id].to_i
     when @options.key?(:email_address)
-      (
-        @covered.users.find_by_email_address(@options[:email_address]) or
-        @covered.users.create!(name: @options[:name], email_address: @options[:email_address])
-      ).id
+      find_or_create_user.id
     when @options[:user].respond_to?(:user_id)
       @options[:user].user_id
     else
@@ -55,6 +52,15 @@ class Covered::Project::Members::Add < MethodObject
 
   def sent_join_notice!
     @covered.emails.send_email_async(:join_notice, @project.id, user_id, @options[:personal_message])
+  end
+
+  def find_or_create_user
+    @covered.users.find_by_email_address(@options[:email_address]) or
+    @covered.users.create!(
+      name: @options[:name],
+      email_address: @options[:email_address],
+      confirm_email_address: true,
+    )
   end
 
 end

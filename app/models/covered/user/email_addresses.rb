@@ -10,7 +10,11 @@ class Covered::User::EmailAddresses < Covered::EmailAddresses
   attr_reader :user
 
   def primary
-    email_address_for (scope.primary.first or return)
+    if user.user_record.email_addresses.loaded?
+      email_address_for user.user_record.primary_email_address
+    else
+      email_address_for (scope.primary.first or return)
+    end
   end
 
   def add email_address, primary=false

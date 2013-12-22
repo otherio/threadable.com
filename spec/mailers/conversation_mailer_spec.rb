@@ -47,7 +47,7 @@ describe ConversationMailer do
       expect( ProjectUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
 
       expect(email.link('feedback')).to be_present
-      expect(email.link('feedback')[:href]).to eq "mailto:support@covered.io"
+      expect(email.link('feedback')[:href]).to eq "mailto:support@127.0.0.1"
 
       expect(text_part).to include "mailto:#{project.task_email_address}"
 

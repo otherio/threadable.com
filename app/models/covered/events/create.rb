@@ -1,3 +1,13 @@
+require_dependency 'event'
+require_dependency 'conversation/created_event'
+require_dependency 'conversation/event'
+require_dependency 'task/event'
+require_dependency 'task/added_doer_event'
+require_dependency 'task/created_event'
+require_dependency 'task/done_event'
+require_dependency 'task/removed_doer_event'
+require_dependency 'task/undone_event'
+
 class Covered::Events::Create < MethodObject
 
   OPTIONS = Class.new OptionsHash do

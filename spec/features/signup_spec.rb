@@ -25,7 +25,7 @@ feature "Signup" do
     drain_background_jobs!
     confirmation_email = sent_emails.to('weird.al@yankovik.com').containing('Please visit this url confirm your account').first
     expect(confirmation_email).to be_present
-    url = confirmation_email.urls.find{|url| url.to_s =~ %r{users/confirm} }
+    url = confirmation_email.urls.find{|url| url.to_s =~ %r{email_addresses/confirm} }
     expect(url).to be_present
     visit url.to_s
 

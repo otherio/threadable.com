@@ -42,7 +42,6 @@ Covered::Application.routes.draw do
     collection do
       get   'setup/:token' => 'users/setup#edit', as: 'setup'
       patch 'setup/:token' => 'users/setup#update'
-      get   'confirm/:token' => 'users/confirm#confirm', as: 'confirm'
     end
   end
 
@@ -50,6 +49,8 @@ Covered::Application.routes.draw do
   patch '/profile' => 'profile#update'
   post  '/email_addresses' => 'email_addresses#create', as: 'email_addresses'
   patch '/email_addresses' => 'email_addresses#update', as: 'email_address'
+  post  '/email_addresses/resend_confirmation_email' => 'email_addresses#resend_confirmation_email', as: 'resend_email_address_confirmation'
+  match '/email_addresses/confirm/:token' => 'email_addresses#confirm', as: 'confirm_email_address', via: [:get, :post]
 
   scope '/:project_id', :as => 'project' do
     resources :members, :only => [:index, :create, :destroy], controller: 'project/members'

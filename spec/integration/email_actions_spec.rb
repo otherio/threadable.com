@@ -7,7 +7,7 @@ describe "Email actions" do
     let(:sender   ){ current_user }
     let(:recipient){ project.members.find_by_user_id! find_user_by_email_address('bob@ucsd.covered.io').id }
     let(:message  ){ conversation.messages.create! text: 'I dont agree with any of you. I hate this team. I quit!' }
-    let(:email    ){ sent_emails.to(recipient.email_address).last }
+    let(:email    ){ sent_emails.to(recipient.email_address).last or raise "unable to find email" }
     let(:html_part){ Nokogiri::HTML.fragment email.html_part.body.to_s }
     let(:text_part){ email.text_part.body.to_s }
 

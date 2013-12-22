@@ -60,6 +60,10 @@ class Covered::Class
     Covered::Class::EMAIL_HOSTS[host] || host
   end
 
+  def support_email_address tag=nil
+    tag.nil? ? "support@#{email_host}" : "support+#{tag}@#{email_host}"
+  end
+
   def env
     {
       protocol:        protocol,

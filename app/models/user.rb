@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
+  accepts_nested_attributes_for :email_addresses
+
   validates :name, presence: true
   validates :email_address, presence: true
   validates_associated :email_addresses
@@ -47,20 +49,21 @@ class User < ActiveRecord::Base
     email_addresses.build(
       user: self,
       address: email_address,
-      primary: true
+      primary: new_record?,
+      confirmed_at: nil,
     )
   end
 
+  def primary_email_address
+    email_addresses.find(&:primary?)
+  end
+
   def email_address
-    email_addresses.reverse.find(&:primary?).try(:address)
+    primary_email_address.try(:address)
   end
 
   def avatar_url
     read_attribute(:avatar_url) || gravatar_url
-  end
-
-  def confirmed?
-    confirmed_at.present?
   end
 
   private

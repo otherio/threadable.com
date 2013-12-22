@@ -59,15 +59,15 @@ RSpec.configure do |config|
 
     if use_transaction
       test_transaction do
-        truncate_all_tables! if !use_fixtures
+        empty_databases! if !use_fixtures
         example.call
       end
     else
-      truncate_all_tables! if !use_fixtures
+      empty_databases! if !use_fixtures
       begin
         example.call
       ensure
-        truncate_all_tables!
+        empty_databases!
       end
     end
 

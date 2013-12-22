@@ -5,7 +5,7 @@ module RSpec::Support::FeatureExampleGroup
     sign_out!
     visit sign_in_path if current_path != sign_in_path
     within_element 'the sign in form' do
-      fill_in 'Email', :with => user.email_address
+      fill_in 'Email', :with => user.email_address.to_s
       fill_in 'Password', :with => 'password'
       click_on 'Sign in'
     end

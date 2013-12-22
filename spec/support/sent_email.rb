@@ -13,7 +13,7 @@ module RSpec::Support::SentEmail
 
     def sent_to(to_address)
       find_all do |email|
-        (email.smtp_envelope_to + email.to).include?(to_address)
+        (email.smtp_envelope_to + email.to).include?(to_address.to_s)
       end
     end
     alias_method :to, :sent_to
@@ -71,7 +71,7 @@ module RSpec::Support::SentEmail
     end
 
     def content
-      "#{text_content}\n\n\n\n#{html_content}"
+      "#{text_content}\n\n\n\n#{html_content}".gsub(/\s+/, ' ')
     end
 
     def urls

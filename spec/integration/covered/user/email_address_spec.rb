@@ -18,23 +18,51 @@ describe Covered::User::EmailAddress do
   its(:to_s      ){ should eq email_address.address           }
 
   describe 'primary!' do
-    context 'when the email address is primary' do
+
+    context 'when the email address is primary and confirmed' do
       let(:email_address_record){ find_email_address 'yan@ucsd.covered.io' }
       it 'returns false' do
         expect(email_address_record).to be_primary
+        expect(email_address_record.confirmed_at).to be_present
         expect(email_address.primary!).to be_false
-        expect(email_address_record).to be_primary
       end
     end
-    context 'when the email address is not primary' do
+
+    context 'when the email address is not primary and not confirmed' do
+      let(:email_address_record){ find_email_address 'bob.cauchois@example.com' }
+      it 'returns false' do
+        expect(email_address_record).to_not be_primary
+        expect(email_address_record.confirmed_at).to be_nil
+        expect(email_address.primary!).to be_false
+      end
+    end
+
+    context 'when the email address is not primary but confirmed' do
       let(:email_address_record){ find_email_address 'yan@yansterdam.io' }
       it 'returns true' do
         expect(email_address_record).to_not be_primary
+        expect(email_address_record.confirmed_at).to be_present
         expect(email_address.primary!).to be_true
-        expect(email_address_record).to be_primary
-        expect(user_record.email_addresses.primary).to eq [email_address_record]
       end
     end
   end
+
+  describe 'confirm!' do
+    context 'when the email address is not confirmed' do
+      let(:email_address_record){ find_email_address 'bob.cauchois@example.com' }
+      it 'confirmes the address' do
+        expect(email_address_record.confirmed_at).to be_nil
+        expect(email_address.confirm!).to be_true
+      end
+    end
+    context 'when the email address is confirmed' do
+      let(:email_address_record){ find_email_address 'yan@ucsd.covered.io' }
+      it 'does nothing' do
+        expect(email_address_record.confirmed_at).to be_present
+        expect(email_address.confirm!).to be_false
+      end
+    end
+  end
+
 
 end

@@ -7,6 +7,7 @@ describe Covered::EmailAddress do
       id: 3390,
       address: 'foo@bar.io',
       primary?: true,
+      confirmed?: true,
       errors: nil,
     )
   end
@@ -19,10 +20,11 @@ describe Covered::EmailAddress do
   it { should delegate(:primary?  ).to(:email_address_record) }
   it { should delegate(:errors    ).to(:email_address_record) }
   it { should delegate(:persisted?).to(:email_address_record) }
+  it { should delegate(:confirmed?).to(:email_address_record) }
 
   its(:covered             ){ should eq covered }
   its(:email_address_record){ should eq email_address_record }
-  its(:inspect             ){ should eq %(#<Covered::EmailAddress address: "foo@bar.io", primary: true>) }
+  its(:inspect             ){ should eq %(#<Covered::EmailAddress address: "foo@bar.io", primary: true, confirmed: true>) }
   its(:to_s                ){ should eq 'foo@bar.io' }
 
 end
