@@ -46,7 +46,7 @@ describe "page_navigation" do
         4.times.map do |i|
           double(:"organization #{i}",
             persisted?: true,
-            name: "PROJECT #{i}",
+            name: "ORGANIZATION #{i}",
             to_param: i,
           )
         end
