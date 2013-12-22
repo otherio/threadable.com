@@ -13,7 +13,7 @@ module RSpec::Support::Finders
   end
 
   def find_project_by_slug slug
-    Project.where(slug: slug).first!
+    Organization.where(slug: slug).first!
   end
 
 end

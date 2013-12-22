@@ -11,9 +11,9 @@ module RSpec::Support::FeatureExampleGroup
     when 'the user setup page'
       setup_users_path params_for_current_path[:token]
     when /^the project page for "(.+?)"$/
-      project_path Project.where(name: $1).first!
+      project_path Organization.where(name: $1).first!
     when /^the project conversations page for "(.+?)"$/
-      project_conversations_path Project.where(name: $1).first!
+      project_conversations_path Organization.where(name: $1).first!
     # when /^the "(.+?)" task page$/
     #   task = Task.where(subject: $1).first!
     #   project_task_path task.project, task
@@ -26,7 +26,7 @@ module RSpec::Support::FeatureExampleGroup
       project_conversation_path conversation.project, conversation
     when /^the "(.+?)" (?:conversation|task) for the "(.+?)" project$/
       message_name, project_name = $1, $2
-      project = Project.where(name: $2).first!
+      project = Organization.where(name: $2).first!
       conversation = project.conversations.find_by_subject($1)
       project_conversation_path(project, conversation)
     else

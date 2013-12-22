@@ -16,11 +16,11 @@ describe "Navbar" do
       visit project_path(project1)
       within_element 'the navbar' do
         page.should have_content project1.email_address
-        click_link('Projects')
+        click_link('Organizations')
         within_element 'the projects dropdown menu' do
           page.should have_content project1.name
           page.should have_content project2.name
-          page.should have_content 'All Projects'
+          page.should have_content 'All Organizations'
         end
       end
     end

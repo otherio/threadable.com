@@ -1,4 +1,4 @@
-class Covered::Projects::Update < MethodObject
+class Covered::Organizations::Update < MethodObject
 
   def call projects, attributes
     raise "DO ME"

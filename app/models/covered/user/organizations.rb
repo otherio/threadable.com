@@ -1,7 +1,7 @@
 require_dependency 'covered/user'
 require_dependency 'covered/user/project'
 
-class Covered::User::Projects < Covered::Projects
+class Covered::User::Organizations < Covered::Organizations
 
   def initialize user
     @user = user
@@ -21,7 +21,7 @@ class Covered::User::Projects < Covered::Projects
   end
 
   def project_for project_record
-    Covered::User::Project.new(self, project_record)
+    Covered::User::Organization.new(self, project_record)
   end
 
 end

@@ -61,7 +61,7 @@ class MailPreview < MailView
   end
 
   def find_project_and_recipient
-    project_record   = Project.last!
+    project_record   = Organization.last!
     recipient_record = project_record.members.last!
 
     covered.current_user_id = project_record.members.first!

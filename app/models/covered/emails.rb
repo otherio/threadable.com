@@ -32,8 +32,8 @@ class Covered::Emails
   def types
     {
       conversation_message:       ConversationMailer,
-      join_notice:                ProjectMembershipMailer,
-      unsubscribe_notice:         ProjectMembershipMailer,
+      join_notice:                OrganizationMembershipMailer,
+      unsubscribe_notice:         OrganizationMembershipMailer,
       sign_up_confirmation:       UserMailer,
       reset_password:             UserMailer,
       email_address_confirmation: UserMailer,

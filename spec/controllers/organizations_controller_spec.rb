@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProjectsController do
+describe OrganizationsController do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
@@ -46,7 +46,7 @@ describe ProjectsController do
   describe "GET new" do
     it "assigns a new project as @project" do
       get :new, {}
-      expect(assigns(:project)).to be_a(Covered::Project)
+      expect(assigns(:project)).to be_a(Covered::Organization)
       expect(assigns(:project)).to_not be_persisted
     end
   end
@@ -61,15 +61,15 @@ describe ProjectsController do
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new Project" do
+      it "creates a new Organization" do
         expect {
           post :create, valid_params
-        }.to change(Project, :count).by(1)
+        }.to change(Organization, :count).by(1)
       end
 
       it "assigns a newly created project as @project" do
         post :create, valid_params
-        expect(assigns(:project)).to be_a(Covered::Project)
+        expect(assigns(:project)).to be_a(Covered::Organization)
         expect(assigns(:project)).to be_persisted
         expect(assigns(:project).name       ).to eq valid_params["project"]["name"]
         expect(assigns(:project).short_name ).to eq valid_params["project"]["short_name"]
@@ -78,14 +78,14 @@ describe ProjectsController do
 
       it "redirects to the created project" do
         post :create, valid_params
-        response.should redirect_to project_url(Project.last)
+        response.should redirect_to project_url(Organization.last)
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved project as @project" do
         post :create, invalid_params
-        expect(assigns(:project)).to be_a(Covered::Project)
+        expect(assigns(:project)).to be_a(Covered::Organization)
         expect(assigns(:project)).to_not be_persisted
       end
 
@@ -112,7 +112,7 @@ describe ProjectsController do
 
     describe "with valid params" do
       it "updates the requested project, assigns the requested project as @project, and redirects to the project" do
-        Project.any_instance.should_receive(:update_attributes).with(valid_params["project"]).and_return(true)
+        Organization.any_instance.should_receive(:update_attributes).with(valid_params["project"]).and_return(true)
         put :update, valid_params
         assigns(:project).should eq(project)
         response.should redirect_to(root_path)
@@ -122,14 +122,14 @@ describe ProjectsController do
     describe "with invalid params" do
       it "assigns the project as @project" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Project.any_instance.stub(:update_attributes).and_return(false)
+        Organization.any_instance.stub(:update_attributes).and_return(false)
         put :update, invalid_params
         assigns(:project).should eq(project)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Project.any_instance.stub(:update_attributes).and_return(false)
+        Organization.any_instance.stub(:update_attributes).and_return(false)
         put :update, invalid_params
         response.should render_template("edit")
       end
@@ -142,7 +142,7 @@ describe ProjectsController do
   #   it "destroys the requested project" do
   #     expect {
   #       delete :destroy, {:id => project.to_param}
-  #     }.to change(Project, :count).by(-1)
+  #     }.to change(Organization, :count).by(-1)
   #   end
 
   #   it "redirects to the projects list" do

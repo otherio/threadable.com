@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Project member add" do
+feature "Organization member add" do
 
 
   before do

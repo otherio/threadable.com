@@ -1,4 +1,4 @@
-class Admin::ProjectsController < ApplicationController
+class Admin::OrganizationsController < ApplicationController
 
   before_filter :require_user_be_admin!
 
@@ -17,7 +17,7 @@ class Admin::ProjectsController < ApplicationController
     @project = covered.projects.create(project_params)
 
     if project.persisted?
-      redirect_to admin_edit_project_path(project), notice: 'Project was successfully created.'
+      redirect_to admin_edit_project_path(project), notice: 'Organization was successfully created.'
     else
       render action: 'new'
     end
@@ -33,7 +33,7 @@ class Admin::ProjectsController < ApplicationController
   # PATCH /admin/projects/1
   def update
     if project.update(project_params)
-      redirect_to admin_edit_project_path(project), notice: 'Project was successfully updated.'
+      redirect_to admin_edit_project_path(project), notice: 'Organization was successfully updated.'
     else
       render action: 'edit'
     end
@@ -42,7 +42,7 @@ class Admin::ProjectsController < ApplicationController
   # DELETE /admin/projects/1
   def destroy
     project.destroy!
-    redirect_to admin_projects_url, notice: 'Project was successfully destroyed.'
+    redirect_to admin_projects_url, notice: 'Organization was successfully destroyed.'
   end
 
   private

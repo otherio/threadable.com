@@ -1,6 +1,6 @@
 require_dependency 'covered/user'
 
-class Covered::User::Project < Covered::Project
+class Covered::User::Organization < Covered::Organization
 
   def initialize projects, project_record
     @covered = projects.covered

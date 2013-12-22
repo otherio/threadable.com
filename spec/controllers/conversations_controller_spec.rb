@@ -91,7 +91,7 @@ describe ConversationsController do
       end
 
       before do
-        expect_any_instance_of(Covered::Project::Conversations).to receive(:create).
+        expect_any_instance_of(Covered::Organization::Conversations).to receive(:create).
           with(
             creator: current_user,
             subject: subject,

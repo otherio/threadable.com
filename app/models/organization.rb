@@ -1,10 +1,10 @@
-class Project < ActiveRecord::Base
+class Organization < ActiveRecord::Base
 
   has_many :conversations, dependent: :destroy
   has_many :messages, through: :conversations
   has_many :tasks, -> { order "position" }, class_name: 'Task'
   has_many :project_memberships, dependent: :destroy
-  has_many :memberships, class_name: 'ProjectMembership'
+  has_many :memberships, class_name: 'OrganizationMembership'
   has_many :members, :through => :project_memberships, :source => 'user' do
     def who_get_email
       where project_memberships: {gets_email:true}

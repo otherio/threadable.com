@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Projects" do
+feature "Organizations" do
 
   before do
     sign_in_as 'tom@ucsd.covered.io'

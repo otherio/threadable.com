@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Covered::Projects::Create do
+describe Covered::Organizations::Create do
 
 end

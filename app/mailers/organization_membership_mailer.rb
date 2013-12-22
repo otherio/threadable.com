@@ -1,4 +1,4 @@
-class ProjectMembershipMailer < Covered::Mailer
+class OrganizationMembershipMailer < Covered::Mailer
 
   def join_notice project, recipient, personal_message=nil
     @adder = covered.current_user
@@ -8,7 +8,7 @@ class ProjectMembershipMailer < Covered::Mailer
     @project_url              = project_url(@project)
     user_setup_token          = UserSetupToken.encrypt(@recipient.id, project_path(@project))
     @recipient_setup_url      = setup_users_url(user_setup_token)
-    project_unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project.id, @recipient.id)
+    project_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@project.id, @recipient.id)
     @project_unsubscribe_url  = project_unsubscribe_url(@project, project_unsubscribe_token)
 
     mail(
@@ -21,7 +21,7 @@ class ProjectMembershipMailer < Covered::Mailer
   def unsubscribe_notice project, recipient
     @project, @recipient = project, recipient
 
-    project_resubscribe_token = ProjectResubscribeToken.encrypt(@project.id, @recipient.id)
+    project_resubscribe_token = OrganizationResubscribeToken.encrypt(@project.id, @recipient.id)
     @project_resubscribe_url   = project_resubscribe_url(@project, project_resubscribe_token)
 
     mail(

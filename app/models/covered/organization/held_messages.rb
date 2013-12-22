@@ -1,6 +1,6 @@
 require_dependency 'covered/project'
 
-class Covered::Project::HeldMessages < Covered::Collection
+class Covered::Organization::HeldMessages < Covered::Collection
 
   def initialize project
     @project = project
@@ -23,7 +23,7 @@ class Covered::Project::HeldMessages < Covered::Collection
   private
 
   def held_message_for incoming_email
-    Covered::Project::HeldMessage.new(project, incoming_email) if incoming_email
+    Covered::Organization::HeldMessage.new(project, incoming_email) if incoming_email
   end
 
   def held_messages_for incoming_emails

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::ProjectsController do
+describe Admin::OrganizationsController do
   describe "routing" do
 
     it "routes to #index" do

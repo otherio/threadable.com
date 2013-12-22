@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::ProjectsController do
+describe Admin::OrganizationsController do
 
   when_not_signed_in do
 
@@ -81,7 +81,7 @@ describe Admin::ProjectsController do
         let(:persisted){ true }
         it 'should redirect to the project edit page' do
           expect(response).to redirect_to admin_edit_project_path('robot-cow')
-          expect(flash[:notice]).to eq "Project was successfully created."
+          expect(flash[:notice]).to eq "Organization was successfully created."
         end
       end
       context 'when the project is not successfully created' do
@@ -120,7 +120,7 @@ describe Admin::ProjectsController do
         let(:update_successful){ true }
         it 'should redirect to the project edit page' do
           expect(response).to redirect_to admin_edit_project_path('lowrider')
-          expect(flash[:notice]).to eq "Project was successfully updated."
+          expect(flash[:notice]).to eq "Organization was successfully updated."
         end
       end
       context 'when the project is not successfully updated' do
@@ -141,7 +141,7 @@ describe Admin::ProjectsController do
       end
       it 'should redirect to the admin projects page' do
         expect(response).to redirect_to admin_projects_url
-        expect(flash[:notice]).to eq "Project was successfully destroyed."
+        expect(flash[:notice]).to eq "Organization was successfully destroyed."
       end
     end
 

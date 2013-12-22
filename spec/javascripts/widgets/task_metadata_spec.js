@@ -107,26 +107,26 @@ describeWidget("task_metadata", function(){
 //     });
 //   });
 
-//   describe("getCurrentProjectMembers", function() {
+//   describe("getCurrentOrganizationMembers", function() {
 //     var spy;
 //     beforeEach(function() {
 //       spy = jasmine.createSpy();
 //     });
 
 //     it("gets the current project members and returns them in the right format", function() {
-//       this.widget.getCurrentProjectMembers(spy);
+//       this.widget.getCurrentOrganizationMembers(spy);
 //       mostRecentAjaxRequest().response({status: 200, responseText: '[{"name": "foo", "email": "foo@example.com", "id": 1}]'});
 //       expect(spy).toHaveBeenCalledWith([ { name: 'foo', email: 'foo@example.com', id: 1 } ]);
 //     });
 
 //     it("fetches from the right url", function() {
-//       this.widget.getCurrentProjectMembers(spy);
+//       this.widget.getCurrentOrganizationMembers(spy);
 //       expect(mostRecentAjaxRequest().url).toEqual('/project-slug/members');
 //     });
 
 //     it("only gets the project members once", function() {
 //       clearAjaxRequests();
-//       this.widget.getCurrentProjectMembers(spy);
+//       this.widget.getCurrentOrganizationMembers(spy);
 //       expect(ajaxRequests.length).toEqual(1);
 //     });
 //   });
@@ -143,11 +143,11 @@ describeWidget("task_metadata", function(){
 
 //   //   describe("user list", function() {
 //   //     it("fetches the user list when the control is opened", function() {
-//   //       spyOn(this.widget, "getCurrentProjectMembers");
+//   //       spyOn(this.widget, "getCurrentOrganizationMembers");
 //   //       this.widget.initialize();
 
 //   //       $('.add-others').click();
-//   //       expect(this.widget.getCurrentProjectMembers).toHaveBeenCalled();
+//   //       expect(this.widget.getCurrentOrganizationMembers).toHaveBeenCalled();
 //   //     });
 
 //   //     describe("with the user list open", function() {

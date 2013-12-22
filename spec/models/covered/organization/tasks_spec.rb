@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Covered::Project::Tasks do
+describe Covered::Organization::Tasks do
 
 end

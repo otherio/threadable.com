@@ -29,8 +29,8 @@ describe "project members" do
 
       assert_tracked(current_user.id, "Added User",
         "Invitee"               => user.id,
-        "Project"               => project.id,
-        "Project Name"          => "UCSD Electric Racing",
+        "Organization"               => project.id,
+        "Organization Name"          => "UCSD Electric Racing",
         "Sent Join Notice"      => true,
         "Sent Personal Message" => true,
       )
@@ -162,8 +162,8 @@ describe "project members" do
 
       assert_tracked(current_user.id, "Added User",
         "Invitee"               => larry.id,
-        "Project"               => project.id,
-        "Project Name"          => "UCSD Electric Racing",
+        "Organization"               => project.id,
+        "Organization Name"          => "UCSD Electric Racing",
         "Sent Join Notice"      => true,
         "Sent Personal Message" => true,
       )
@@ -211,8 +211,8 @@ describe "project members" do
       expect(response.body).to be_blank
       assert_tracked(current_user.id, "Removed User",
         "Removed User" => member.id,
-        "Project"      => project.id,
-        "Project Name" => "UCSD Electric Racing"
+        "Organization"      => project.id,
+        "Organization Name" => "UCSD Electric Racing"
       )
       expect(background_jobs).to be_empty
       expect(sent_emails).to be_empty

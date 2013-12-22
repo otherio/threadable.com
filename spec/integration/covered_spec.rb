@@ -5,26 +5,26 @@ describe "covered", fixtures: false do
   #   expect{ Covered.new }.to raise_error ArgumentError, 'required options: :host'
 
   #   prank_calls = covered.projects.create! name: 'Prank Calls'
-  #   expect(prank_calls.class).to eq Covered::Project
+  #   expect(prank_calls.class).to eq Covered::Organization
   #   expect(prank_calls).to be_persisted
   #   expect(prank_calls.members.all).to be_empty
-  #   expect(prank_calls.project_record).to eq Project.last
+  #   expect(prank_calls.project_record).to eq Organization.last
 
 
-  #   expect(prank_calls.members.class       ).to eq Covered::Project::Members
-  #   expect(prank_calls.conversations.class ).to eq Covered::Project::Conversations
-  #   expect(prank_calls.messages.class      ).to eq Covered::Project::Messages
-  #   expect(prank_calls.tasks.class         ).to eq Covered::Project::Tasks
+  #   expect(prank_calls.members.class       ).to eq Covered::Organization::Members
+  #   expect(prank_calls.conversations.class ).to eq Covered::Organization::Conversations
+  #   expect(prank_calls.messages.class      ).to eq Covered::Organization::Messages
+  #   expect(prank_calls.tasks.class         ).to eq Covered::Organization::Tasks
 
   #   frank = covered.users.create! name: 'Frank Rizzo', email_address: 'frak@rizz.io'
   #   expect(frank.class).to eq Covered::User
   #   expect(frank.user_record).to eq User.last
 
   #   frank_membership = prank_calls.members.add user: frank
-  #   expect(frank_membership.class).to eq Covered::Project::Member
+  #   expect(frank_membership.class).to eq Covered::Organization::Member
 
   #   expect(prank_calls.members).to include frank
-  #   expect(Project.last.members).to include frank.user_record
+  #   expect(Organization.last.members).to include frank.user_record
   # end
 
   it 'email addresses' do
@@ -75,7 +75,7 @@ describe "covered", fixtures: false do
     expect( covered.emails          ).to be_a Covered::Emails
     expect( covered.email_addresses ).to be_a Covered::EmailAddresses
     expect( covered.users           ).to be_a Covered::Users
-    expect( covered.projects        ).to be_a Covered::Projects
+    expect( covered.projects        ).to be_a Covered::Organizations
     expect( covered.conversations   ).to be_a Covered::Conversations
     expect( covered.tasks           ).to be_a Covered::Tasks
     expect( covered.messages        ).to be_a Covered::Messages
@@ -102,9 +102,9 @@ describe "covered", fixtures: false do
       aaron  = other.members.add name: 'Aaron Muszalski', email_address: 'aaron@other.io'
       ian    = other.members.add name: 'Ian Baker',       email_address: 'ian@other.io'
 
-      expect(nicole).to be_a Covered::Project::Member
-      expect(aaron ).to be_a Covered::Project::Member
-      expect(ian   ).to be_a Covered::Project::Member
+      expect(nicole).to be_a Covered::Organization::Member
+      expect(aaron ).to be_a Covered::Organization::Member
+      expect(ian   ).to be_a Covered::Organization::Member
 
       assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", other.id, nicole.id, nil]
       assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", other.id, aaron.id, nil]
@@ -160,19 +160,19 @@ describe "covered", fixtures: false do
       expect( aaron.user_record ).to eq User.last
 
       expect( aaron.email_addresses.class ).to eq Covered::User::EmailAddresses
-      expect( aaron.projects.class        ).to eq Covered::User::Projects
+      expect( aaron.projects.class        ).to eq Covered::User::Organizations
       expect( aaron.messages.class        ).to eq Covered::User::Messages
 
       htp = aaron.projects.create! name: 'Hug the police!'
-      expect( htp.class ).to eq Covered::Project
-      expect( htp.project_record ).to eq Project.last
+      expect( htp.class ).to eq Covered::Organization
+      expect( htp.project_record ).to eq Organization.last
 
       assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", htp.id, aaron.id, nil]
 
-      expect( htp.members.class       ).to eq Covered::Project::Members
-      expect( htp.conversations.class ).to eq Covered::Project::Conversations
-      expect( htp.messages.class      ).to eq Covered::Project::Messages
-      expect( htp.tasks.class         ).to eq Covered::Project::Tasks
+      expect( htp.members.class       ).to eq Covered::Organization::Members
+      expect( htp.conversations.class ).to eq Covered::Organization::Conversations
+      expect( htp.messages.class      ).to eq Covered::Organization::Messages
+      expect( htp.tasks.class         ).to eq Covered::Organization::Tasks
 
       expect( htp.members ).to include aaron
 

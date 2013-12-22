@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 require "spec_helper"
 
-describe ProjectMembershipMailer do
+describe OrganizationMembershipMailer do
 
   signed_in_as 'bethany@ucsd.covered.io'
 
@@ -12,7 +12,7 @@ describe ProjectMembershipMailer do
 
   describe "join_notice" do
     let(:personal_message){ "yo dude, I added you to the project. Thanks for the help!" }
-    let(:mail){ ProjectMembershipMailer.new(covered).generate(:join_notice, project, recipient, personal_message) }
+    let(:mail){ OrganizationMembershipMailer.new(covered).generate(:join_notice, project, recipient, personal_message) }
 
     before do
       expect(mail.subject).to eq "You've been added to #{project.name}"
@@ -22,7 +22,7 @@ describe ProjectMembershipMailer do
       expect(text_part   ).to include project_url(project)
 
       project_unsubscribe_token = extract_project_unsubscribe_token(text_part)
-      expect( ProjectUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
+      expect( OrganizationUnsubscribeToken.decrypt(project_unsubscribe_token) ).to eq [project.id, recipient.id]
     end
 
     context "when the recipient is a web enabled user" do
@@ -47,7 +47,7 @@ describe ProjectMembershipMailer do
 
   describe "unsubscribe_notice" do
     let(:member){ project.members.find_by_user_id!(covered.current_user.id) }
-    let(:mail){ ProjectMembershipMailer.new(covered).generate(:unsubscribe_notice, project, member) }
+    let(:mail){ OrganizationMembershipMailer.new(covered).generate(:unsubscribe_notice, project, member) }
     it "should return the expected message" do
       expect(mail.subject ).to eq "You've been unsubscribed from #{project.name}"
       expect(mail.to      ).to eq ['bethany@ucsd.covered.io']
@@ -55,7 +55,7 @@ describe ProjectMembershipMailer do
       expect(text_part    ).to include %(You've been unsubscribed from the "#{project.name}" project on Covered.)
 
       project_resubscribe_token = extract_project_resubscribe_token(text_part)
-      expect( ProjectResubscribeToken.decrypt(project_resubscribe_token) ).to eq [project.id, current_user.id]
+      expect( OrganizationResubscribeToken.decrypt(project_resubscribe_token) ).to eq [project.id, current_user.id]
     end
   end
 

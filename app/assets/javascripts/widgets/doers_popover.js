@@ -56,7 +56,7 @@ Rails.widget('doers_popover', function(Widget){
 
     popover.node.find('.user-search').on('keyup', function(event){
       var search_term = $(this).val().toLowerCase();
-      renderProjectMembers.call(popover, search_term);
+      renderOrganizationMembers.call(popover, search_term);
       updateInviteButton.call(popover, search_term);
     }).trigger('keyup');
 
@@ -106,7 +106,7 @@ Rails.widget('doers_popover', function(Widget){
   }
 
 
-  function renderProjectMembers(search_term){
+  function renderOrganizationMembers(search_term){
     // popover.user_list_node, popover.project_members, popover.doers,
     var popover = this;
     var lis = $();

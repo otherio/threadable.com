@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Covered::Project::Members do
+describe Covered::Organization::Members do
   let(:project){ covered.projects.find_by_slug('raceteam') }
   let(:members){ described_class.new(project) }
 

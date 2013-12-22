@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ProjectsController do
+describe OrganizationsController do
   describe "routing" do
 
     it "routes to #new" do

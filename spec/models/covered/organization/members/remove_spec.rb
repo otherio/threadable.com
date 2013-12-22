@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Covered::Project::Members::Remove do
+describe Covered::Organization::Members::Remove do
 
   delegate :call, to: :described_class
 
@@ -14,8 +14,8 @@ describe Covered::Project::Members::Remove do
 
     expect(covered).to receive(:track).with("Removed User", {
       'Removed User' => 9442,
-      'Project'      => project.id,
-      'Project Name' => project.name,
+      'Organization'      => project.id,
+      'Organization Name' => project.name,
     })
 
     expect(scope).to receive(:where).with(user_id: 9442).and_return(scope)

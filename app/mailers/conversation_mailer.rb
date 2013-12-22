@@ -21,7 +21,7 @@ class ConversationMailer < Covered::Mailer
     subject = "[✔]#{subject}" if @task
 
     from = @message.from || @message.creator.try(:formatted_email_address ) || @project.formatted_email_address
-    unsubscribe_token = ProjectUnsubscribeToken.encrypt(@project.id, @recipient.id)
+    unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@project.id, @recipient.id)
     @unsubscribe_url = project_unsubscribe_url(@project.slug, unsubscribe_token)
 
     @message.attachments.all.each do |attachment|

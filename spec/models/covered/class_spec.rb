@@ -23,7 +23,7 @@ describe Covered::Class do
 
   its(:emails          ){ should be_a Covered::Emails         }
   its(:users           ){ should be_a Covered::Users          }
-  its(:projects        ){ should be_a Covered::Projects       }
+  its(:projects        ){ should be_a Covered::Organizations       }
   its(:conversations   ){ should be_a Covered::Conversations  }
   its(:tasks           ){ should be_a Covered::Tasks          }
   its(:messages        ){ should be_a Covered::Messages       }
@@ -49,7 +49,7 @@ describe Covered::Class do
   end
 
   it "should work" do
-    expect(covered.projects.new).to be_a Covered::Project
+    expect(covered.projects.new).to be_a Covered::Organization
     expect(covered.users.new   ).to be_a Covered::User
 
     expect(covered.projects.new.covered).to eq covered

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Covered::Project do
+describe Covered::Organization do
 
   let :project_record do
     double(:project_record,
@@ -33,7 +33,7 @@ describe Covered::Project do
 
   describe 'model_name' do
     subject{ described_class }
-    its(:model_name){ should == ::Project.model_name }
+    its(:model_name){ should == ::Organization.model_name }
   end
 
   its(:email_address                ){ should eq "C02-cleaners@127.0.0.1" }
@@ -43,17 +43,17 @@ describe Covered::Project do
   its(:list_id                      ){ should eq "C02-cleaners.127.0.0.1" }
   its(:formatted_list_id            ){ should eq "C02 Cleaners <C02-cleaners.127.0.0.1>" }
 
-  its(:members      ){ should be_a Covered::Project::Members }
-  its(:conversations){ should be_a Covered::Project::Conversations }
-  its(:tasks        ){ should be_a Covered::Project::Tasks }
-  its(:messages     ){ should be_a Covered::Project::Messages }
+  its(:members      ){ should be_a Covered::Organization::Members }
+  its(:conversations){ should be_a Covered::Organization::Conversations }
+  its(:tasks        ){ should be_a Covered::Organization::Tasks }
+  its(:messages     ){ should be_a Covered::Organization::Messages }
 
-  its(:inspect){ should eq %(#<Covered::Project project_id: 5479, name: "C02 Cleaners">) }
+  its(:inspect){ should eq %(#<Covered::Organization project_id: 5479, name: "C02 Cleaners">) }
 
   describe 'update' do
-    it 'calls Covered::Project::Update' do
+    it 'calls Covered::Organization::Update' do
       attributes = {some:'updates'}
-      expect(Covered::Project::Update).to receive(:call).with(project, attributes).and_return(45)
+      expect(Covered::Organization::Update).to receive(:call).with(project, attributes).and_return(45)
       expect(project.update(attributes)).to eq 45
     end
   end

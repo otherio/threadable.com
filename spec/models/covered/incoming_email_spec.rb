@@ -352,7 +352,7 @@ describe Covered::IncomingEmail do
   end
 
   describe 'project=' do
-    context 'when given a Covered::Project' do
+    context 'when given a Covered::Organization' do
       it 'sets @project to the given project and set incoming_email_record.project to project.project_record' do
         project_record = double(:project_record)
         project = double(:project, project_record: project_record)
@@ -382,8 +382,8 @@ describe Covered::IncomingEmail do
     context 'when incoming_email_record.project is present' do
       let(:project_record){ double :project_record }
       before{ expect(incoming_email_record).to receive(:project).at_least(1).times.and_return(project_record) }
-      it 'returns a Covered::Project' do
-        expect(incoming_email.project).to be_a Covered::Project
+      it 'returns a Covered::Organization' do
+        expect(incoming_email.project).to be_a Covered::Organization
         expect(incoming_email.project).to be incoming_email.project
         expect(incoming_email.project.project_record).to be project_record
       end

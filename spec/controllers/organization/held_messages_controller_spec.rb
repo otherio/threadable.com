@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Project::HeldMessagesController do
+describe Organization::HeldMessagesController do
 
 
   when_not_signed_in do

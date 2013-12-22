@@ -8,7 +8,7 @@ feature "Authentication" do
     fill_in "Email", with: "alice@ucsd.covered.io"
     fill_in "Password", with: "password"
     click_button "Sign in"
-    expect(page).to have_text "Projects"
+    expect(page).to have_text "Organizations"
     expect(current_url).to eq root_url
     expect_to_be_signed_in_as! "Alice Neilson"
   end
@@ -17,7 +17,7 @@ feature "Authentication" do
     fill_in "Email", with: "yan@yansterdam.io"
     fill_in "Password", with: "password"
     click_button "Sign in"
-    expect(page).to have_text "Projects"
+    expect(page).to have_text "Organizations"
     expect(current_url).to eq root_url
     expect_to_be_signed_in_as! "Yan Hzu"
   end

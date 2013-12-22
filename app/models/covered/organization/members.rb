@@ -1,6 +1,6 @@
 require_dependency 'covered/project'
 
-class Covered::Project::Members < Covered::Collection
+class Covered::Organization::Members < Covered::Collection
 
   def initialize project
     @project = project
@@ -101,7 +101,7 @@ class Covered::Project::Members < Covered::Collection
   end
 
   def member_for project_membership_record
-    Covered::Project::Member.new(project, project_membership_record)
+    Covered::Organization::Member.new(project, project_membership_record)
   end
 
 end

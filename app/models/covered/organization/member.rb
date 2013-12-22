@@ -1,6 +1,6 @@
 require_dependency 'covered/project'
 
-class Covered::Project::Member < Covered::User
+class Covered::Organization::Member < Covered::User
 
   def initialize project, project_membership_record
     @project, @project_membership_record = project, project_membership_record
@@ -49,8 +49,8 @@ class Covered::Project::Member < Covered::User
   def subscribe! track=false
     if track
       covered.track('Re-subscribed', {
-        'Project'      => project.id,
-        'Project Name' => project.name,
+        'Organization'      => project.id,
+        'Organization Name' => project.name,
       })
     end
 
@@ -59,8 +59,8 @@ class Covered::Project::Member < Covered::User
 
   def unsubscribe!
     covered.track('Unsubscribed', {
-      'Project'      => project.id,
-      'Project Name' => project.name,
+      'Organization'      => project.id,
+      'Organization Name' => project.name,
     })
 
     project_membership_record.unsubscribe!

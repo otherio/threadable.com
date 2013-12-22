@@ -184,18 +184,18 @@ describe Covered, :type => :covered do
       Covered::Messages::FindByChildHeader
       Covered::MixpanelTracker
       Covered::Model
-      Covered::Project
-      Covered::Project::Conversations
-      Covered::Project::Member
-      Covered::Project::Members
-      Covered::Project::Members::Add
-      Covered::Project::Members::Remove
-      Covered::Project::Messages
-      Covered::Project::Tasks
-      Covered::Project::Update
-      Covered::Projects
-      Covered::Projects::Create
-      Covered::Projects::Update
+      Covered::Organization
+      Covered::Organization::Conversations
+      Covered::Organization::Member
+      Covered::Organization::Members
+      Covered::Organization::Members::Add
+      Covered::Organization::Members::Remove
+      Covered::Organization::Messages
+      Covered::Organization::Tasks
+      Covered::Organization::Update
+      Covered::Organizations
+      Covered::Organizations::Create
+      Covered::Organizations::Update
       Covered::RecordInvalid
       Covered::RecordNotFound
       Covered::SignUp
@@ -216,8 +216,8 @@ describe Covered, :type => :covered do
       Covered::User::EmailAddress
       Covered::User::EmailAddresses
       Covered::User::Messages
-      Covered::User::Project
-      Covered::User::Projects
+      Covered::User::Organization
+      Covered::User::Organizations
       Covered::User::Update
       Covered::Users
       Covered::Users::Create

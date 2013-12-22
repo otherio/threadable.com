@@ -1,4 +1,4 @@
-class Admin::Project::MembersController < ApplicationController
+class Admin::Organization::MembersController < ApplicationController
 
   before_filter :require_user_be_admin!
   before_filter :find_or_create_user!, only: :add

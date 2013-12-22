@@ -231,7 +231,7 @@ class Covered::IncomingEmail < Covered::Model
 
   def project
     return unless incoming_email_record.project
-    @project ||= Covered::Project.new(covered, incoming_email_record.project)
+    @project ||= Covered::Organization.new(covered, incoming_email_record.project)
   end
 
   def message= message

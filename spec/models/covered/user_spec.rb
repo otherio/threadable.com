@@ -9,8 +9,8 @@ describe Covered::User do
 
   it { should have_constant :EmailAddresses }
   it { should have_constant :EmailAddress }
-  it { should have_constant :Projects }
-  it { should have_constant :Project }
+  it { should have_constant :Organizations }
+  it { should have_constant :Organization }
   it { should have_constant :Messages }
 
   its(:covered       ){ should eq covered                   }

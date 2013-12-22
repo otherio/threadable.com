@@ -11,7 +11,7 @@ module RSpec::Support::FeatureExampleGroup
     end
     # not sure why we see this error sometimes but retrying seems to fix it - Jared
     begin
-      expect(page).to have_content('Projects')
+      expect(page).to have_content('Organizations')
     rescue Capybara::Webkit::InvalidResponseError
       raise if @capybara_webkit_invalid_response_error_seen
       @capybara_webkit_invalid_response_error_seen = true

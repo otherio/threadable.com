@@ -1,9 +1,9 @@
-class EnsureAllProjectsHaveAShortName < ActiveRecord::Migration
+class EnsureAllOrganizationsHaveAShortName < ActiveRecord::Migration
 
   def up
 
-    Covered::Project.transaction do
-      Covered::Project.find_in_batches do |projects|
+    Covered::Organization.transaction do
+      Covered::Organization.find_in_batches do |projects|
         projects.each do |project|
           next if project.valid?
           project.short_name

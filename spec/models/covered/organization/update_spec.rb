@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Covered::Project::Update do
+describe Covered::Organization::Update do
 
 end

@@ -62,14 +62,14 @@ describe "page_navigation" do
             [project.name, view.project_conversations_path(project)]
           end
 
-          expected_project_links << ["All Projects", root_path]
+          expected_project_links << ["All Organizations", root_path]
 
           project_links.should == expected_project_links
         end
 
         describe "text" do
           subject{ html.css('.projects .dropdown-toggle').first.text }
-          it { should =~ /\s*Projects\s*/ }
+          it { should =~ /\s*Organizations\s*/ }
         end
       end
 

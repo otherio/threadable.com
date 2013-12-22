@@ -1,7 +1,7 @@
-class Covered::Project < Covered::Model
+class Covered::Organization < Covered::Model
 
   def self.model_name
-    ::Project.model_name
+    ::Organization.model_name
   end
 
   def initialize covered, project_record

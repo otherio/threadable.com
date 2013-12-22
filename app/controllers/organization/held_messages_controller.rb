@@ -1,4 +1,4 @@
-class Project::HeldMessagesController < ApplicationController
+class Organization::HeldMessagesController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 

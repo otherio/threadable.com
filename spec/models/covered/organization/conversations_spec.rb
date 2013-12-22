@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Covered::Project::Conversations do
+describe Covered::Organization::Conversations do
 
 end

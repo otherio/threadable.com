@@ -134,9 +134,9 @@ class Covered::Messages::Create < MethodObject
 
   def track!
     @covered.track("Composed Message", {
-      'Project' => @conversation.project.id,
+      'Organization' => @conversation.project.id,
       'Conversation' => @conversation.id,
-      'Project Name' => @conversation.project.name,
+      'Organization Name' => @conversation.project.name,
       'Reply' => parent_message.try(:id) ? true : false,
       'Task' => @conversation.task?,
       'Message ID' => message_id_header,

@@ -47,15 +47,15 @@ describe Covered::Emails do
       end
     end
     context 'when given :join_notice as the type' do
-      it 'calls ProjectMembershipMailer#join_notice' do
-        expect(ProjectMembershipMailer).to receive(:new).with(covered).and_return(mailer)
+      it 'calls OrganizationMembershipMailer#join_notice' do
+        expect(OrganizationMembershipMailer).to receive(:new).with(covered).and_return(mailer)
         expect(mailer).to receive(:generate).with(:join_notice, 1,2,3).and_return('A Mail::Message')
         expect(subject.generate(:join_notice, 1,2,3)).to eq 'A Mail::Message'
       end
     end
     context 'when given :unsubscribe_notice as the type' do
-      it 'calls ProjectMembershipMailer#unsubscribe_notice' do
-        expect(ProjectMembershipMailer).to receive(:new).with(covered).and_return(mailer)
+      it 'calls OrganizationMembershipMailer#unsubscribe_notice' do
+        expect(OrganizationMembershipMailer).to receive(:new).with(covered).and_return(mailer)
         expect(mailer).to receive(:generate).with(:unsubscribe_notice, 1,2,3).and_return('A Mail::Message')
         expect(subject.generate(:unsubscribe_notice, 1,2,3)).to eq 'A Mail::Message'
       end

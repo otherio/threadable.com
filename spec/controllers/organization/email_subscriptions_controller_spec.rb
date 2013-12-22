@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Project::EmailSubscriptionsController do
+describe Organization::EmailSubscriptionsController do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
@@ -17,7 +17,7 @@ describe Project::EmailSubscriptionsController do
   end
 
   describe "POST unsubscribe" do
-    let(:token) { ProjectUnsubscribeToken.encrypt(project.id, current_user.id) }
+    let(:token) { OrganizationUnsubscribeToken.encrypt(project.id, current_user.id) }
 
     context "when the member gets email for the project" do
       # bob gets emails for the raceteam project
@@ -50,7 +50,7 @@ describe Project::EmailSubscriptionsController do
   end
 
   describe "POST resubscribe" do
-    let(:token) { ProjectResubscribeToken.encrypt(project.id, current_user.id) }
+    let(:token) { OrganizationResubscribeToken.encrypt(project.id, current_user.id) }
 
     context "when the member gets email for the project" do
       # bob gets emails for the raceteam project

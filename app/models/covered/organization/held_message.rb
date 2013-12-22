@@ -1,6 +1,6 @@
 require_dependency 'covered/project'
 
-class Covered::Project::HeldMessage < Covered::Model
+class Covered::Organization::HeldMessage < Covered::Model
 
   def initialize project, incoming_email
     @project = project

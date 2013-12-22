@@ -12,12 +12,12 @@ describe 'rspec configuration' do
 
   def fixtures_should_be_loaded!
     User.count.should > 0
-    Project.count.should > 0
+    Organization.count.should > 0
   end
 
   def fixtures_should_not_be_loaded!
     User.count.should == 0
-    Project.count.should == 0
+    Organization.count.should == 0
   end
 
   3.times do

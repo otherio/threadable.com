@@ -12,7 +12,7 @@ feature "Admin incoming emails" do
     incoming_emails.sample(8).each(&:process!)
   end
 
-  let(:columns){["Processed", "Failed", "Id", "Created at", "Recipient", "Sender", "From", "Subject", "Creator", "Project", "Conversation", "Message"]}
+  let(:columns){["Processed", "Failed", "Id", "Created at", "Recipient", "Sender", "From", "Subject", "Creator", "Organization", "Conversation", "Message"]}
 
   before{ processed_incoming_emails }
 
@@ -35,7 +35,7 @@ feature "Admin incoming emails" do
         "From"         => incoming_email.from.truncate(25),
         "Subject"      => incoming_email.subject.truncate(25),
         "Creator"      => incoming_email.incoming_email_record.creator_id.to_s,
-        "Project"      => incoming_email.incoming_email_record.project_id.to_s,
+        "Organization"      => incoming_email.incoming_email_record.project_id.to_s,
         "Conversation" => incoming_email.incoming_email_record.conversation_id.to_s,
         "Message"      => incoming_email.incoming_email_record.message_id.to_s,
       }

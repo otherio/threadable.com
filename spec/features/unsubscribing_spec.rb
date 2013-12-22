@@ -12,7 +12,7 @@ feature "Unsubscribing" do
 
   # def project_unsubscribe_url_for project_slug
   #   project = current_user.projects.find_by_slug!(project_slug)
-  #   project_unsubscribe_token = ProjectUnsubscribeToken.encrypt(project.id, current_user.id)
+  #   project_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(project.id, current_user.id)
   #   project_unsubscribe_path(project_slug, project_unsubscribe_token)
   # end
 

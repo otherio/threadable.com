@@ -1,6 +1,6 @@
 require_dependency 'covered/project/members'
 
-class Covered::Project::Members::Remove < MethodObject
+class Covered::Organization::Members::Remove < MethodObject
 
   def call members, options
     @members = members
@@ -26,8 +26,8 @@ class Covered::Project::Members::Remove < MethodObject
   def track!
     @covered.track("Removed User", {
       'Removed User' => user_id.to_i,
-      'Project'      => @project.id,
-      'Project Name' => @project.name,
+      'Organization'      => @project.id,
+      'Organization Name' => @project.name,
     })
   end
 

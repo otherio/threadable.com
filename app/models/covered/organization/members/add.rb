@@ -1,6 +1,6 @@
 require_dependency 'covered/project/members'
 
-class Covered::Project::Members::Add < MethodObject
+class Covered::Organization::Members::Add < MethodObject
 
   def call members, options
     Covered.transaction do
@@ -43,8 +43,8 @@ class Covered::Project::Members::Add < MethodObject
   def track!
     @covered.track("Added User", {
       'Invitee'               => user_id,
-      'Project'               => @project.id,
-      'Project Name'          => @project.name,
+      'Organization'               => @project.id,
+      'Organization Name'          => @project.name,
       'Sent Join Notice'      => @send_join_notice ? true : false,
       'Sent Personal Message' => @options[:personal_message].present?
     })

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Project::MembersController do
+describe Organization::MembersController do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
 
@@ -57,7 +57,7 @@ describe Project::MembersController do
 
     context "when adding the member succeeds" do
       before do
-        expect_any_instance_of(Covered::Project::Members).to receive(:add).
+        expect_any_instance_of(Covered::Organization::Members).to receive(:add).
           with(
             name: member_hash[:name],
             email_address: member_hash[:email_address],
@@ -73,7 +73,7 @@ describe Project::MembersController do
 
     context "when adding the member raises a Covered::RecordInvalid" do
       before do
-        expect_any_instance_of(Covered::Project::Members).to receive(:add).and_raise(Covered::RecordInvalid)
+        expect_any_instance_of(Covered::Organization::Members).to receive(:add).and_raise(Covered::RecordInvalid)
       end
 
       it "should render an error in json with an unprocessable entity status" do

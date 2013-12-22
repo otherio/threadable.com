@@ -1,5 +1,5 @@
 .well.well-centered
-  %h2= @project.new_record? ? 'New Project' : @project.name
+  %h2= @project.new_record? ? 'New Organization' : @project.name
   = simple_form_for @project do |f|
     = f.error_notification
     = f.input :name, required: true, autofocus: true

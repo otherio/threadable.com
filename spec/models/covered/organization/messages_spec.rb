@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Covered::Project::Messages do
+describe Covered::Organization::Messages do
 
 
   describe 'find_by_child_message_header' do

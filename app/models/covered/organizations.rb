@@ -1,4 +1,4 @@
-class Covered::Projects < Covered::Collection
+class Covered::Organizations < Covered::Collection
 
   def all
     scope.reload.map{ |project| project_for project }
@@ -54,18 +54,18 @@ class Covered::Projects < Covered::Collection
 
   def create! attributes
     project = create(attributes)
-    project.persisted? or raise Covered::RecordInvalid, "Project invalid: #{project.errors.full_messages.to_sentence}"
+    project.persisted? or raise Covered::RecordInvalid, "Organization invalid: #{project.errors.full_messages.to_sentence}"
     project
   end
 
   private
 
   def scope
-    ::Project.all
+    ::Organization.all
   end
 
   def project_for project_record
-    Covered::Project.new(covered, project_record)
+    Covered::Organization.new(covered, project_record)
   end
 
 end

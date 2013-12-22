@@ -1,6 +1,6 @@
 require_dependency 'covered/project'
 
-class Covered::Project::Conversations < Covered::Conversations
+class Covered::Organization::Conversations < Covered::Conversations
 
   def initialize project
     @project = project

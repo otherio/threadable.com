@@ -27,8 +27,8 @@ feature "Admin projects CRUD" do
     sign_in_as 'jared@other.io'
     visit admin_new_project_path
     fill_in 'Name', with: 'United Nations'
-    click_on 'Create Project'
-    expect(page).to have_text 'Notice! Project was successfully created.'
+    click_on 'Create Organization'
+    expect(page).to have_text 'Notice! Organization was successfully created.'
     expect(page).to have_text 'Edit project'
     expect(current_url).to eq admin_edit_project_url('united-nations')
 
@@ -50,9 +50,9 @@ feature "Admin projects CRUD" do
       fill_in "Subject tag",            with: "United Hations"
       fill_in "Slug",                   with: "united-hations"
       fill_in "Email address username", with: "united-hations"
-      click_on 'Update Project'
+      click_on 'Update Organization'
     end
-    expect(page).to have_text 'Notice! Project was successfully updated.'
+    expect(page).to have_text 'Notice! Organization was successfully updated.'
     project = covered.projects.find_by_name!("United Hations")
     expect(project.name                  ).to eq "United Hations"
     expect(project.subject_tag           ).to eq "United Hations"
@@ -145,7 +145,7 @@ feature "Admin projects CRUD" do
       click_on 'destroy'
       accept_prompt!
     end
-    expect(page).to have_text 'Projects'
+    expect(page).to have_text 'Organizations'
     expect(current_url).to eq admin_projects_url
     expect(page).to_not have_text 'United Hations'
   end

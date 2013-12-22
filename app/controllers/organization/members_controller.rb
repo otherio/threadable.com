@@ -1,4 +1,4 @@
-class Project::MembersController < ApplicationController
+class Organization::MembersController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 

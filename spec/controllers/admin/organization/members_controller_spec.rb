@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::Project::MembersController do
+describe Admin::Organization::MembersController do
 
   when_not_signed_in do
 

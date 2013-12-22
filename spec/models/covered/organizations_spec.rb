@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Covered::Projects do
+describe Covered::Organizations do
 
   subject{ covered.projects }
 
@@ -13,16 +13,16 @@ describe Covered::Projects do
   end
 
   describe 'new' do
-    it 'returns a Covered::Project' do
-      expect(subject.new.class).to eq Covered::Project
+    it 'returns a Covered::Organization' do
+      expect(subject.new.class).to eq Covered::Organization
     end
   end
 
   describe '#create' do
-    it 'should attempt to create a project and return a Covered::Project' do
+    it 'should attempt to create a project and return a Covered::Organization' do
       project = subject.create(name: 'pet a kitten')
-      expect(project.class).to eq Covered::Project
-      expect(project.project_record).to be_a ::Project
+      expect(project.class).to eq Covered::Organization
+      expect(project.project_record).to be_a ::Organization
     end
   end
 
