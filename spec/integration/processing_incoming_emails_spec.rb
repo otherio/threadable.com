@@ -370,7 +370,7 @@ describe "processing incoming emails 2" do
         end
       end
 
-      context "and the sender is not a project member" do
+      context "and the sender is not a user or a project member" do
         let(:from)          { "Elizabeth Pickles <elizabeth@pickles.io>" }
         let(:envelope_from) { "<elizabeth@pickles.io>" }
         let(:sender)        { "elizabeth@pickles.io" }
@@ -402,7 +402,7 @@ describe "processing incoming emails 2" do
       let(:in_reply_to){ expected_parent_message.message_id_header }
       let(:references) { '' }
 
-      let(:expected_conversation)  { expected_project.conversations.find_by_slug('welcome-to-our-covered-project') }
+      let(:expected_conversation)  { expected_project.conversations.find_by_slug!('welcome-to-our-covered-project') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       it 'delivers the email' do
         validate! :delivered
@@ -705,90 +705,4 @@ describe "processing incoming emails 2" do
     end
   end
 
-
-
-
-
-  if false
-
-
-
-
-    context "and the from address is not a project member" do
-    end
-
-    context "and the subject is in japanese" do
-    end
-
-    context "and the subject has emoji" do
-    end
-
-    context "and the message was sent to the +task address" do
-
-      context 'and the subject has some other [tag]' do
-      end
-    end
-
-    context "and the subject contains [task]" do
-    end
-
-    context "and the subject contains [✔]" do
-    end
-
-
-    context 'and a parent message is found via the In-Reply-To header' do
-      context 'and the sender is a user' do
-        context 'found via the from email address' do
-          context 'and that user is a project member' do
-            it 'it creates an incoming email address record and a message record and emails the conversation message out'
-          end
-          context 'and that user is not a project member' do
-          end
-        end
-        context 'found via the X-Envelope-From email address' do
-          context 'and that user a project member' do
-          end
-          context 'and that user not a project member' do
-          end
-        end
-        context 'found via the sender email address' do
-          context 'and that user a project member' do
-          end
-          context 'and that user not a project member' do
-          end
-        end
-      end
-      context 'and a project memeber is not found' do
-      end
-
-
-      # context "and the sender is a project member" do
-      #   context "and only members are specified in the to header, but the project is in cc" do
-      #   end
-      # end
-
-      # context "and the sender is not a covered member" do
-      #   context 'but the from address is a project member' do
-      #   end
-      # end
-
-      # context "and the sender is a covered member who is not a project member" do
-
-      #   context 'but the from address is a project member' do
-      #   end
-      # end
-    end
-
-    context "and the parent message is found via the References header" do
-
-      context "and the sender is a project member" do
-      end
-
-      context "and the sender is not a covered member" do
-      end
-
-      context "and the sender is a covered member who is not a project member" do
-      end
-    end
-  end
 end
