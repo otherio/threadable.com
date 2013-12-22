@@ -8,7 +8,10 @@ class Covered::CurrentUser < Covered::User
   alias_method :id, :user_id
 
   def user_record
-    @user_record ||= ::User.find(@user_id)
+    @user_record ||= ::User.find(user_id)
+  rescue ActiveRecord::RecordNotFound
+    covered.current_user_id = nil
+    raise Covered::AuthenticationError, "unable to find user with id: #{user_id}"
   end
 
 end

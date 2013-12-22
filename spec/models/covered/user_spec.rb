@@ -19,7 +19,7 @@ describe Covered::User do
   its(:user_id       ){ should eq user_record.id            }
   its(:to_param      ){ should eq user_record.to_param      }
   its(:name          ){ should eq user_record.name          }
-  its(:email_address ){ should eq user_record.primary_email_address }
+  its(:email_address ){ should eq user_record.primary_email_address.address }
   its(:slug          ){ should eq user_record.slug          }
   its(:errors        ){ should eq user_record.errors        }
   its(:new_record?   ){ should eq user_record.new_record?   }
