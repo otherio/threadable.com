@@ -30,7 +30,6 @@
   &#183;
 
   %a.control-link.text-info.add-remove-doers{href:""}
-    -# {href:"", :"data-toggle-doers_popover" => '.add-remove-doers'}
     %i.icon-user
     add/remove others
 
@@ -45,8 +44,6 @@
       %i.icon-ok
       mark as done
 
-  %a.control-link.text-info.pull-right.mute-task{href:""}
-    %i.icon-volume-off
-    mute conversation
+  = render_widget :mute_conversation_link, task
 
 = render_widget(:doers_popover, class: 'add-remove-doers')

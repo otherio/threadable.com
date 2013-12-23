@@ -149,7 +149,6 @@ describe Covered, :type => :covered do
       Covered::Conversation::Messages
       Covered::Conversation::Participant
       Covered::Conversation::Participants
-      Covered::Conversation::Recipient
       Covered::Conversation::Recipients
       Covered::Conversations
       Covered::Conversations::Create

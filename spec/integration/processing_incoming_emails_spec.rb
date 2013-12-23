@@ -184,7 +184,7 @@ describe "processing incoming emails 2" do
     expect(incoming_email_attachments).to eq posted_attachments
 
 
-    expect( message.organization           ).to eq expected_organization
+    expect( message.organization      ).to eq expected_organization
     expect( message.conversation      ).to eq expected_conversation
     expect( message.message_id_header ).to eq message_id
     expect( message.to_header         ).to eq to
@@ -199,11 +199,11 @@ describe "processing incoming emails 2" do
     expect( message.attachments.all   ).to eq incoming_email.attachments.all
 
 
-    organization_members_that_get_email = message.organization.members.that_get_email.reject do |user|
+    recipients = message.conversation.recipients.all.reject do |user|
       message.creator.same_user?(user) if message.creator
     end
-    organization_member_email_addresses = organization_members_that_get_email.map(&:email_address)
-    expected_emails_count = organization_member_email_addresses.length
+    recipient_email_addresses = recipients.map(&:email_address)
+    expected_emails_count = recipient_email_addresses.length
     expect(sent_emails.count).to eq expected_emails_count
     sent_emails.each do |email|
       expect( email.from ).to eq(
@@ -216,7 +216,7 @@ describe "processing incoming emails 2" do
       expect( email.to                              ).to eq expected_sent_email_to
       expect( email.header[:Cc].to_s                ).to eq expected_sent_email_cc
       expect( email.smtp_envelope_to.length         ).to eq 1
-      expect( organization_member_email_addresses        ).to include email.smtp_envelope_to.first
+      expect( recipient_email_addresses             ).to include email.smtp_envelope_to.first
       expect( email.smtp_envelope_from              ).to eq expected_sent_email_smtp_envelope_from
       expect( email.subject                         ).to eq expected_sent_email_subject
       expect( email.html_content                    ).to include body_html

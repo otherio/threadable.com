@@ -32,14 +32,19 @@ class Covered::Conversation < Covered::Model
     errors
   }, to: :conversation_record
 
-  let(:organization     ){ covered.organizations.find_by_id(organization_id) }
-
+  let(:organization){ covered.organizations.find_by_id(organization_id) }
   let(:creator     ){ Creator.new(self) if creator_id }
   let(:events      ){ Events.new(self)       }
   let(:messages    ){ Messages.new(self)     }
   let(:recipients  ){ Recipients.new(self)   }
   let(:participants){ Participants.new(self) }
 
+
+  def mute!
+    raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
+    conversation_record.muters << covered.current_user.user_record
+    self
+  end
 
   def update attributes
     !!conversation_record.update_attributes(attributes)

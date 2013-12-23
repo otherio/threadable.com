@@ -126,7 +126,7 @@ class Covered::Messages::Create < MethodObject
   end
 
   def send_emails!
-    @message.recipients.each do |recipient|
+    @message.recipients.all.each do |recipient|
       next if !@options.sent_via_web && recipient.same_user?(creator)
       @covered.emails.send_email_async(:conversation_message, @conversation.organization.id, @message.id, recipient.id)
     end

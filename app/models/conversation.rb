@@ -5,8 +5,11 @@ class Conversation < ActiveRecord::Base
   has_many :messages, -> { order created_at: :asc }, dependent: :destroy
   has_many :events, class_name: 'Conversation::Event'
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
-  # TODO recipients will eventually have a scope that removes members who have muted this conversation
-  has_many :recipients, through: :organization, class_name: 'User', source: 'members_who_get_email'
+  has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
+  has_many :recipients, ->(conversation){
+    id = Conversation.sanitize(conversation.id) # shit is fucked up and bullshit - JarIan
+    joins("LEFT JOIN conversations_muters q ON q.user_id = users.id AND q.conversation_id = #{id}").where('q.user_id IS NULL')
+  },  through: :organization, class_name: 'User', source: 'members_who_get_email'
 
   def self.default_scope
     order('conversations.updated_at DESC')

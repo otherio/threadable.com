@@ -58,6 +58,7 @@ FixtureBuilder.build do
   # Bethany replies to the welcome email
   as 'bethany@ucsd.covered.io' do
     reply_to @welcome_message, text: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.'
+    mute_conversation @welcome_message.conversation
   end
 
   as 'tom@ucsd.covered.io' do

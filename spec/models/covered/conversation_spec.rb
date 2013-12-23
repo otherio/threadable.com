@@ -12,7 +12,6 @@ describe Covered::Conversation do
   it { should have_constant :CreatedEvent }
   it { should have_constant :Messages     }
   it { should have_constant :Recipients   }
-  it { should have_constant :Recipient    }
   it { should have_constant :Participants }
   it { should have_constant :Participant  }
 

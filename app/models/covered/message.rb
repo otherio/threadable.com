@@ -50,9 +50,7 @@ class Covered::Message < Covered::Model
     @parent_message ||= Covered::Message.new(covered, message_record.parent_message)
   end
 
-  def recipients
-    organization.members.that_get_email
-  end
+  delegate :recipients, to: :conversation
 
   def body
     Body.call(body_html, body_plain)

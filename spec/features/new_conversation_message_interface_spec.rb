@@ -33,7 +33,7 @@ describe 'new conversaion message interface' do
     expect_widget_not_to_be_expanded!
 
     drain_background_jobs!
-    expect(sent_emails.count).to eq organization.members.that_get_email.count
+    expect(sent_emails.count).to eq organization.members.who_get_email.count
     expect(
       sent_emails.sent_to('alice@ucsd.covered.io').
         with_subject('[RaceTeam] we did it').
@@ -52,7 +52,7 @@ describe 'new conversaion message interface' do
     expect_widget_not_to_be_expanded!
 
     drain_background_jobs!
-    expect(sent_emails.count).to eq organization.members.that_get_email.count
+    expect(sent_emails.count).to eq organization.members.who_get_email.count
     expect(
       sent_emails.sent_to('alice@ucsd.covered.io').
         with_subject('[RaceTeam] we did it').

@@ -3,6 +3,8 @@ class ConversationsController < ApplicationController
   layout 'conversations'
 
   before_filter :require_user_be_signed_in!
+  include ForwardGetRequestsAsPostsConcern
+  before_action :forward_get_requests_as_posts!, only: [:mute]
 
   # GET /conversations
   # GET /conversations.json
@@ -30,12 +32,9 @@ class ConversationsController < ApplicationController
   # GET /conversations/1
   # GET /conversations/1.json
   def show
-    @conversation = organization.conversations.find_by_slug! params[:id]
-      # includes(events: :user, messages: :user).
-
     respond_to do |format|
-      format.html {}
-      format.json { render json: @conversation }
+      format.html { conversation }
+      format.json { render json: conversation }
     end
   end
 
@@ -86,15 +85,14 @@ class ConversationsController < ApplicationController
     if conversation_params && done = conversation_params.delete(:done)
       conversation_params[:done_at] = done == "true" ? Time.now : nil
     end
-    @conversation = organization.conversations.find_by_slug!(params[:id])
 
     respond_to do |format|
-      if @conversation.update(conversation_params)
-        format.html { redirect_to organization_conversation_url(organization, @conversation), notice: 'Conversation was successfully updated.' }
-        format.json { render json: @conversation, status: :created, location: organization_conversation_url(organization, @conversation) }
+      if conversation.update(conversation_params)
+        format.html { redirect_to organization_conversation_url(organization, conversation), notice: 'Conversation was successfully updated.' }
+        format.json { render json: conversation, status: :created, location: organization_conversation_url(organization, conversation) }
       else
-        format.html { redirect_to organization_conversation_url(organization, @conversation), notice: 'We were unable to update your conversation. Please try again later.' }
-        format.json { render json: @conversation.errors, status: :unprocessable_entity }
+        format.html { redirect_to organization_conversation_url(organization, conversation), notice: 'We were unable to update your conversation. Please try again later.' }
+        format.json { render json: conversation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -117,10 +115,20 @@ class ConversationsController < ApplicationController
     end
   end
 
+  def mute
+    conversation.mute!
+    flash[:notice] = "muted: #{conversation.subject}"
+    redirect_to organization_conversations_path(organization)
+  end
+
   private
 
   def organization
     @organization ||= current_user.organizations.find_by_slug! params[:organization_id]
+  end
+
+  def conversation
+    @conversation ||= organization.conversations.find_by_slug! params[:id]
   end
 
 end

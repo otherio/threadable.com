@@ -17,17 +17,17 @@ class Covered::Conversation::Recipients
   end
 
   def inspect
-    %(#<#{self.class}>)
+    %(#<#{self.class} conversation_id: #{conversation.id.inspect}>)
   end
 
   private
 
   def scope
-    conversation.conversation_record.recipients
+    conversation.conversation_record.recipients.unload
   end
 
   def recipient_for user_record
-    Covered::Conversation::Recipient.new(conversation, user_record)
+    Covered::User.new(covered, user_record) if user_record
   end
 
 end

@@ -54,7 +54,7 @@ describe Covered::Messages::Create do
   let(:expected_cc_header)          { nil }
 
   let(:message_record){ double :message_record }
-  let(:message){ double :message, persisted?: true, recipients: [] }
+  let(:message){ double :message, persisted?: true, recipients: double(:recipients, all: []) }
 
   before do
     Mail.stub random_tag: '529695e5b8b3a_13b723fe73985e6d876688'

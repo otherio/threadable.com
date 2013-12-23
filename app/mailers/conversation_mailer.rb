@@ -36,6 +36,7 @@ class ConversationMailer < Covered::Mailer
     @message_url = organization_conversation_url(@organization, @conversation, anchor: "message-#{@message.id}")
     @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
     @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
+    @mute_conversation_url = mute_organization_conversation_url(@organization, @conversation)
 
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses

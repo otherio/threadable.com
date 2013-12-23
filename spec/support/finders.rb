@@ -16,4 +16,8 @@ module RSpec::Support::Finders
     Organization.where(slug: slug).first!
   end
 
+  def find_conversation_by_slug slug
+    Conversation.where(slug: slug).first!
+  end
+
 end

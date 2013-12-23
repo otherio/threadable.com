@@ -4,7 +4,7 @@ class OrganizationMembership < ActiveRecord::Base
   belongs_to :user
   has_many :email_addresses, through: :user
 
-  scope :that_get_email, ->{ where(gets_email: true) }
+  scope :who_get_email, ->{ where(gets_email: true) }
 
   validates_inclusion_of :gets_email, :in => [ true, false ]
 

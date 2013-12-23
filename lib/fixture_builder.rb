@@ -79,6 +79,10 @@ class FixtureBuilder
     message.conversation.messages.create!(options.merge(parent_message: message, creator: current_user))
   end
 
+  def mute_conversation conversation
+    conversation.mute!
+  end
+
   def create_task subject
     organization.tasks.create!(subject: subject, creator: current_user)
   end

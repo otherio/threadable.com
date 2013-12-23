@@ -12,8 +12,8 @@ class Covered::Organization::Members < Covered::Collection
     scope.reload.map{|membership| member_for membership }
   end
 
-  def that_get_email
-    scope.that_get_email.reload.map{|membership| member_for membership }
+  def who_get_email
+    scope.who_get_email.reload.map{|membership| member_for membership }
   end
 
   def find_by_user_id id
