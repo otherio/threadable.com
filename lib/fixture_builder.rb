@@ -5,17 +5,12 @@ class FixtureBuilder
   end
 
   def covered
-    @covered ||= new_covered
-  end
-  delegate :current_user, to: :covered
-
-  def new_covered options={}
-    Covered.new options.merge(
+    @covered ||= Covered.new(
       host: defined?(Capybara) ? Capybara.server_host : 'example.com',
       port: defined?(Capybara) ? Capybara.server_port : 80,
     )
   end
-  private :new_covered
+  delegate :current_user, to: :covered
 
 
   def get_user email_address
@@ -24,17 +19,17 @@ class FixtureBuilder
   end
 
   def as_an_admin
-    @covered = new_covered(current_user_id: get_user('jared@other.io').id)
+    covered.current_user_id = get_user('jared@other.io').id
     yield
   ensure
-    @covered = nil
+    covered.current_user_id = nil
   end
 
   def as email_address
-    @covered = new_covered(current_user_id: get_user(email_address).id)
+    covered.current_user_id = get_user(email_address).id
     yield
   ensure
-    @covered = nil
+    covered.current_user_id = nil
   end
 
   def create_organization attributes
@@ -72,7 +67,7 @@ class FixtureBuilder
   end
 
   def create_message conversation, options
-    message = conversation.messages.create!(options.merge(creator: current_user))
+    conversation.messages.create!(options.merge(creator: current_user))
   end
 
   def reply_to message, options
