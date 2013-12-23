@@ -1,3 +1,8 @@
-= link_to mute_organization_conversation_path(conversation.organization, conversation), data:{method:'POST'}, class: 'control-link text-info mute-conversation' do
-  %i.icon-volume-off
-  mute conversation
+- if conversation.muted?
+  = link_to unmute_organization_conversation_path(conversation.organization, conversation), data:{method:'POST'}, class: 'control-link text-info unmute-conversation' do
+    %i.icon-volume-off
+    un-mute conversation
+- else
+  = link_to mute_organization_conversation_path(conversation.organization, conversation), data:{method:'POST'}, class: 'control-link text-info mute-conversation' do
+    %i.icon-volume-off
+    mute conversation

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Muting a conversation" do
 
-  scenario %(muting a conversation on the web) do
+  scenario %(muting and un-muting a conversation on the web) do
     sign_in_as 'tom@ucsd.covered.io'
 
     conversation = covered.conversations.find_by_slug!('layup-body-carbon')
@@ -22,6 +22,14 @@ feature "Muting a conversation" do
     expect(page).to have_text "muted: #{conversation.subject}"
     expect(current_url).to eq organization_conversations_url('raceteam')
     expect(conversation.recipients.all).to_not include current_user
+
+    visit organization_conversation_url('raceteam', conversation)
+    expect(page).to have_selector '.message'
+    click_on 'un-mute conversation'
+    expect(page).to have_text "un-muted: #{conversation.subject}"
+    expect(current_url).to eq organization_conversation_url('raceteam', conversation)
+    expect(page).to have_text 'mute conversation'
+    expect(conversation.recipients.all).to include current_user
   end
 
   scenario %(muting a conversation in my email) do
