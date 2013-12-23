@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Covered::Conversation do
 
-  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false, creator_id: 8993) }
+  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false, creator_id: 8993, muters: []) }
   let(:conversation){ described_class.new(covered, conversation_record) }
   subject{ conversation }
 
@@ -29,6 +29,7 @@ describe Covered::Conversation do
   it { should delegate(:persisted?    ).to(:conversation_record) }
   it { should delegate(:new_record?   ).to(:conversation_record) }
   it { should delegate(:errors        ).to(:conversation_record) }
+  it { should delegate(:muters        ).to(:conversation_record) }
 
 
   its(:creator     ){ should be_a Covered::Conversation::Creator      }

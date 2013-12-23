@@ -30,6 +30,7 @@ class Covered::Conversation < Covered::Model
     persisted?
     new_record?
     errors
+    muters
   }, to: :conversation_record
 
   let(:organization){ covered.organizations.find_by_id(organization_id) }
@@ -42,8 +43,13 @@ class Covered::Conversation < Covered::Model
 
   def mute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
-    conversation_record.muters << covered.current_user.user_record
+    muters << covered.current_user.user_record
     self
+  end
+
+  def muted?
+    raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
+    muters.map(&:id).include?(covered.current_user.id)
   end
 
   def update attributes
