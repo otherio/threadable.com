@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "conversation_metadata" do
 
-  let(:conversation){ double(:conversation, subject: 'CONVERSATION SUBJECT', organization: double(:organization) ) }
+  let(:conversation){ double(:conversation, subject: 'CONVERSATION SUBJECT', organization: double(:organization), muted?: false ) }
   def locals
     {conversation: conversation}
   end

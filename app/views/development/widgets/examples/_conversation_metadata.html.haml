@@ -1,1 +1,2 @@
-= render_widget :conversation_metadata, conversation: Conversation.last
+- covered.current_user_id = 1
+= render_widget :conversation_metadata, conversation: covered.conversations.latest

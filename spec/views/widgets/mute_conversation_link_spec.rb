@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "mute_conversation_link" do
 
   let(:organization){ double(:organization, to_param: 'lamma-pajammas') }
-  let(:conversation){ double(:conversation, to_param: 'what-color', organization: organization) }
+  let(:conversation){ double(:conversation, to_param: 'what-color', organization: organization, muted?: false) }
 
   def locals
     {conversation: conversation}

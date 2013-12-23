@@ -5,7 +5,7 @@ describe TaskMetadataWidget do
   let(:organization_members) { double(:organization_members, all: double(:all_organization_members, to_json:'[organization_members]')) }
   let(:task_doers) { double(:task_doers, all: double(:all_task_doers, to_json:'[task_doers]')) }
   let(:organization) { double(:organization, members: organization_members) }
-  let(:task) { double(:task, organization: organization, doers: task_doers) }
+  let(:task) { double(:task, organization: organization, doers: task_doers, muted?: false) }
   let(:user) { double(:user) }
   let(:user_is_a_doer){ false }
 

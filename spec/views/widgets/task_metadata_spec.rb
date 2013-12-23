@@ -20,6 +20,7 @@ describe "task_metadata" do
       organization: organization,
       done?: true,
       doers: doers,
+      muted?: false,
     )
   end
 
