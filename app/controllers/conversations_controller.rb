@@ -121,6 +121,12 @@ class ConversationsController < ApplicationController
     redirect_to organization_conversations_path(organization)
   end
 
+  def unmute
+    conversation.unmute!
+    flash[:notice] = "un-muted: #{conversation.subject}"
+    redirect_to organization_conversation_path(organization, conversation)
+  end
+
   private
 
   def organization

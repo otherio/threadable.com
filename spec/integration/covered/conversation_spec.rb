@@ -23,6 +23,28 @@ describe Covered::Conversation do
     end
   end
 
+  describe '#unmute!' do
+    context 'when signed in' do
+      before{ covered.current_user_id = conversation.organization.members.who_get_email.first.id }
+      it 'removes the current user from the muters' do
+        conversation.mute!
+        expect(conversation.recipients.all).to_not include covered.current_user
+        expect(conversation.unmute!).to eq conversation
+        expect(conversation.recipients.all).to include covered.current_user
+      end
+      it 'still works when the conversation was not muted' do
+        expect(conversation.unmute!).to eq conversation
+        expect(conversation.recipients.all).to include covered.current_user
+      end
+    end
+    context 'when not signed in' do
+      before{ covered.current_user_id = nil }
+      it 'raises an ArgumentError' do
+        expect{ conversation.mute! }.to raise_error ArgumentError
+      end
+    end
+  end
+
   describe '#muted?' do
     context 'when signed in' do
       before{ covered.current_user_id = conversation.organization.members.who_get_email.first.id }

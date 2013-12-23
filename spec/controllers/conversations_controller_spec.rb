@@ -240,4 +240,25 @@ describe ConversationsController do
     end
   end
 
+  describe 'POST mute' do
+    it "mutes the conversation" do
+      expect(conversation).to_not be_muted
+      post :mute, valid_params.merge(:id => conversation.to_param)
+      conversation.conversation_record.reload
+      expect(conversation).to be_muted
+      expect(response).to redirect_to organization_conversations_path(organization)
+    end
+  end
+
+  describe 'POST unmute' do
+    before do
+      conversation.mute!
+    end
+    it "mutes the conversation" do
+      post :unmute, valid_params.merge(:id => conversation.to_param)
+      conversation.conversation_record.reload
+      expect(conversation).to_not be_muted
+      expect(response).to redirect_to organization_conversation_path(organization, conversation)
+    end
+  end
 end

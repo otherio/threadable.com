@@ -47,6 +47,12 @@ class Covered::Conversation < Covered::Model
     self
   end
 
+  def unmute!
+    raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
+    muters.delete(covered.current_user.user_record)
+    self
+  end
+
   def muted?
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
     muters.map(&:id).include?(covered.current_user.id)

@@ -58,6 +58,7 @@ Covered::Application.routes.draw do
     resources :conversations, :except => [:edit] do
       member do
         match 'mute', via: [:get, :post]
+        match 'unmute', via: [:post]
       end
       resources :messages, :only => [:create, :update]
     end
