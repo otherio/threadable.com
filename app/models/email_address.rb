@@ -11,7 +11,8 @@ class EmailAddress < ActiveRecord::Base
   end
 
   scope :primary,   -> { where(primary: true) }
-  scope :confirmed, -> { where('email_addresses.confirmed IS NOT NULL') }
+  scope :confirmed, -> { where('email_addresses.confirmed_at IS NOT NULL') }
+  scope :unconfirmed, -> { where('email_addresses.confirmed_at IS NULL') }
 
   scope :for_user, ->(user){
     user_id = Integer === user ? user : user.id

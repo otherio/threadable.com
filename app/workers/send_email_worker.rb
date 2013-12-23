@@ -37,4 +37,9 @@ class SendEmailWorker < Covered::Worker
     covered.emails.send_email(:reset_password, recipient)
   end
 
+  def email_address_confirmation email_address_id
+    email_address = covered.email_addresses.find_by_id!(email_address_id)
+    covered.emails.send_email(:email_address_confirmation, email_address)
+  end
+
 end

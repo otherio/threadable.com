@@ -8,10 +8,6 @@ class Covered::User::EmailAddress < Covered::EmailAddress
   end
   attr_reader :user
 
-  def formatted_email_address
-    "#{user.name} <#{address}>"
-  end
-
   def confirm!
     return false if confirmed?
     email_address_record.update!(confirmed_at: Time.now)

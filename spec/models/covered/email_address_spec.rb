@@ -9,6 +9,7 @@ describe Covered::EmailAddress do
       primary?: true,
       confirmed?: true,
       errors: nil,
+      user_id: 1,
     )
   end
 
@@ -27,4 +28,14 @@ describe Covered::EmailAddress do
   its(:inspect             ){ should eq %(#<Covered::EmailAddress address: "foo@bar.io", primary: true, confirmed: true>) }
   its(:to_s                ){ should eq 'foo@bar.io' }
 
+  its(:formatted_email_address) { should eq 'foo@bar.io'}
+
+  describe '#formatted_email_address' do
+    before do
+      email_address.stub(:user).and_return(double(:user, name: 'Foo Bar'))
+      email_address.stub(:address).and_return('foo@bar.io')
+    end
+
+    its(:formatted_email_address) { should eq 'Foo Bar <foo@bar.io>'}
+  end
 end

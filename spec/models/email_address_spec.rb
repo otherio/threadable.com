@@ -14,6 +14,17 @@ describe EmailAddress, fixtures: false do
     invalid_email.errors.messages.should == {base: ["there can be only one primary email address"] }
   end
 
+  describe '#confirmed' do
+    it "can find confirmed/unconfirmed email addresses using scopes" do
+      user = User.create!(name: 'Poop Popsicle', email_address: 'poop@popsicle.io')
+      email = user.email_addresses.first
+      expect(email).to be_primary
+      expect(user.email_addresses.unconfirmed.first).to eq email
+      email.update(confirmed_at: Time.now)
+      expect(user.email_addresses.confirmed.first).to eq email
+    end
+  end
+
   describe 'address format validations' do
 
     def email_address address
@@ -53,7 +64,6 @@ describe EmailAddress, fixtures: false do
         end
       end
     end
-
   end
 
 end

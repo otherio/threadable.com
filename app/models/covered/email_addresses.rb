@@ -11,7 +11,7 @@ class Covered::EmailAddresses < Covered::Collection
   end
 
   def unconfirmed
-    email_addresses_for scope.confirmed.to_a
+    email_addresses_for scope.unconfirmed.to_a
   end
 
   def find_by_id id

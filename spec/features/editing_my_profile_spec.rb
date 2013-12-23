@@ -66,21 +66,38 @@ feature "Editing my profile" do
     fill_in 'my.email@example.com', with: 'yan.hzu@example.com'
     click_on 'Add'
     expect(page).to have_text 'yan.hzu@example.com'
-    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
+    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io', 'yan.hzu@example.com']
+    expect(confirmed_addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
     expect(find('table.email-addresses')).to have_text 'yan.hzu@example.com'
-    expect(page).to have_text "we've sent a confirmation email to yan.hzu@example.com. Please check your email."
+    expect(page).to have_text "Notice! We've sent a confirmation email to yan.hzu@example.com"
 
     drain_background_jobs!
 
+    expect(sent_emails.with_subject('Please confirm your email address').first).to be
 
+    sent_emails.clear
 
+    click_on 'resend confirmation email'
+    expect(page).to have_text "Notice! We've resent a confirmation email to yan.hzu@example.com"
+    drain_background_jobs!
 
+    email = sent_emails.with_subject('Please confirm your email address').first
+    expect(email).to be
 
-    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io', 'yan.hzu@example.com']
+    confirm_link = email.urls.find{|url| url.to_s =~ /confirm/}.to_s
+    visit(confirm_link)
+
+    expect(page).to have_text "Notice! yan.hzu@example.com has been confirmed"
+
+    expect(confirmed_addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io', 'yan.hzu@example.com']
   end
 
   def addresses
     current_user.email_addresses.all.map(&:address).to_set
+  end
+
+  def confirmed_addresses
+    current_user.email_addresses.confirmed.map(&:address).to_set
   end
 
   scenario %(changing my primary email address) do
