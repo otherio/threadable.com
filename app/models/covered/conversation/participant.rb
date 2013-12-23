@@ -1,12 +1,12 @@
 require_dependency 'covered/conversation'
 
-class Covered::Conversation::Participant
+class Covered::Conversation::Participant < Covered::Model
 
   def initialize conversation, user_record
     @conversation, @user_record = conversation, user_record
+    @covered = conversation.covered
   end
   attr_reader :conversation, :user_record
-  delegate :covered, to: :conversation
 
   delegate *%w{
     id

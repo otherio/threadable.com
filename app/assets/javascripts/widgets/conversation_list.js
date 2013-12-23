@@ -20,4 +20,21 @@ Rails.widget('conversation_list', function(Widget){
 
   };
 
+  this.initialize = function(){
+    this.node.find('.mute-controls .not_muted_conversations').click(this.show_not_muted_conversations.bind(this));
+    this.node.find('.mute-controls .muted_conversations').click(this.show_muted_conversations.bind(this));
+  };
+
+  this.show_muted_conversations = function() {
+    this.node.find('table.conversations.muted').show();
+    this.node.find('table.conversations.not_muted').hide();
+    return this;
+  };
+
+  this.show_not_muted_conversations = function(){
+    this.node.find('table.conversations.muted').hide();
+    this.node.find('table.conversations.not_muted').show();
+    return this;
+  };
+
 });

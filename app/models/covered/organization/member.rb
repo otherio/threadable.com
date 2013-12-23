@@ -5,9 +5,9 @@ class Covered::Organization::Member < Covered::User
   def initialize organization, organization_membership_record
     @organization, @organization_membership_record = organization, organization_membership_record
     organization.id == organization_membership_record.organization_id or raise ArgumentError
+    @covered = organization.covered
   end
   attr_reader :organization, :organization_membership_record
-  delegate :covered, to: :organization
   delegate :organization_id, :user_id, to: :organization_membership_record
 
   def user_record

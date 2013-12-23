@@ -17,11 +17,15 @@ module RSpec::Support::IntegrationExampleGroup
     covered.current_user_id = find_user_by_email_address(email_address).id
   end
 
+  def sign_out!
+    covered.current_user_id = nil
+  end
+
   def as email_address
     sign_in_as email_address
     yield
   ensure
-    covered.current_user_id = nil
+    sign_out!
   end
 
   module ClassMethods

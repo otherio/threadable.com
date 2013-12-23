@@ -8,7 +8,7 @@ class Conversation < ActiveRecord::Base
   has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
   has_many :recipients, ->(conversation){
     id = Conversation.sanitize(conversation.id) # shit is fucked up and bullshit - JarIan
-    joins("LEFT JOIN conversations_muters q ON q.user_id = users.id AND q.conversation_id = #{id}").where('q.user_id IS NULL')
+    joins("LEFT JOIN conversations_muters m ON m.user_id = users.id AND m.conversation_id = #{id}").where('m.user_id IS NULL')
   },  through: :organization, class_name: 'User', source: 'members_who_get_email'
 
   def self.default_scope
@@ -17,6 +17,15 @@ class Conversation < ActiveRecord::Base
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
   scope :task, ->{ where(type: 'Task') }
   scope :not_task, ->{ where(type: nil) }
+
+  scope :muted_by, ->(user_id){
+    joins('LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id').where('m.user_id = ?', user_id)
+  }
+
+  scope :not_muted_by, ->(user_id){
+    user_id = Conversation.sanitize(user_id)
+    joins("LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id AND m.user_id = #{user_id}").where('m.user_id IS NULL')
+  }
 
   acts_as_url :subject, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 

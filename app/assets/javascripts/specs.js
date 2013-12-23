@@ -30,7 +30,7 @@ afterEach(function(){
   $('.page').hide();
 });
 
-$(window).load(function() {
+whenReady(function() {
 
   $('.page').css({'position':'relative'});
 

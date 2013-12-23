@@ -16,10 +16,6 @@
           = image_tag(doer.avatar_url, :class => 'avatar-tiny', alt: doer.name)
           %span.name<>= doer.name
 
-    %span.muted
-      %a.control-link.muted.pull-right{href:""}
-        muted count
-
   %a.control-link.text-info.remove-self-from-doers{href:""}
     %i.icon-remove
     remove me
@@ -44,6 +40,8 @@
       %i.icon-ok
       mark as done
 
-  = render_widget :mute_conversation_link, task
+  .pull-right
+    = render_widget :mute_conversation_link, task
+
 
 = render_widget(:doers_popover, class: 'add-remove-doers')

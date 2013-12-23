@@ -2,58 +2,68 @@ require 'spec_helper'
 
 describe "conversation_list" do
 
-  let(:participants){
-    10.times.map{|i| double(:"user#{i}",  name: "user#{i}") }
-  }
-
   let(:creator) { double(:creator,  name: "creator") }
 
-  def participant_names *indices
-    indices.empty? ? [] : participants[*indices].map(&:name)
+  let(:organization){ double(:organization, to_param: 'some-organization', held_messages: double(:held_messages, count: 0)) }
+
+  def create_participant_names
+    rand(2) == 0 ? [] : rand(4).times.map{ Faker::Name.first_name }
   end
 
-  let(:conversations){
-    [
-      double(:conversation1, id: 1, to_param: 'conversation-one',   subject: 'conversation one',   participant_names: participant_names(0,3), updated_at: 1.hour.ago),
-      double(:conversation2, id: 2, to_param: 'conversation-two',   subject: 'conversation two',   participant_names: participant_names(3,2), updated_at: 2.months.ago),
-      double(:conversation3, id: 3, to_param: 'conversation-three', subject: 'conversation three', participant_names: participant_names(5,1), updated_at: 13.months.ago),
-      double(:conversation4, id: 4, to_param: 'conversation-four',  subject: 'conversation four',  participant_names: ['Larry'],              updated_at: 15.months.ago, creator: creator),
-    ]
+  def create_conversation_double
+    @conversation_double_count ||= 0
+    id = @conversation_double_count += 1
+    double(:"conversation#{id}",
+      id:                id,
+      to_param:          "conversation-#{id}",
+      subject:           "conversation #{id}",
+      participant_names: create_participant_names,
+      creator:           double(:creator, name: "creator-of-conversation-#{id} smith"),
+      updated_at:        id.hours.ago,
+      messages_count:    rand(20),
+    )
+  end
+
+  let(:not_muted_conversations){
+    4.times.map{ create_conversation_double }
   }
-  let(:organization){ double(:organization, to_param: 'some-organization', held_messages: double(:held_messages, count: 0)) }
+
+  let(:muted_conversations){
+    2.times.map{ create_conversation_double }
+  }
 
   def locals
     {
       organization: organization,
-      conversations: conversations
+      not_muted_conversations: not_muted_conversations,
+      muted_conversations: muted_conversations,
     }
   end
 
-  before do
-    conversations.each_with_index do |conversation, index|
-      conversation.stub('messages_count' => index + 10)
-    end
-  end
-
   it "should render a list of the given converations" do
-    conversation_elements = html.css('.conversation')
-    conversation_elements.size.should == 4
+    not_muted_conversation_elements = html.css('.conversations.not_muted .conversation')
+        muted_conversation_elements = html.css('.conversations.muted .conversation')
 
-    conversation_elements[0].css('td.participants').first.text.should == "\n\nuser0\nuser1\nuser2\n\n(10)\n"
-    conversation_elements[0].css('a').first[:href].should == "/some-organization/conversations/conversation-one"
-    conversation_elements[0].css('.datetime').first.text.strip.should == conversations[0].updated_at.strftime('%l:%M %p').strip
+    not_muted_conversation_elements.size.should == 4
+        muted_conversation_elements.size.should == 2
 
-    conversation_elements[1].css('td.participants').first.text.should == "\n\nuser3\nuser4\n\n(11)\n"
-    conversation_elements[1].css('a').first[:href].should == "/some-organization/conversations/conversation-two"
-    conversation_elements[1].css('.datetime').first.text.strip.should == conversations[1].updated_at.strftime('%b %-d').strip
+    (
+      not_muted_conversations.zip(not_muted_conversation_elements) + muted_conversations.zip(muted_conversation_elements)
+    ).map do |conversation, conversation_element|
+      participant_names = conversation_element.css('td.participants .names span').map(&:text)
+      expect(participant_names).to eq conversation.participant_names
 
-    conversation_elements[2].css('td.participants').first.text.should == "\n\nuser5\n\n(12)\n"
-    conversation_elements[2].css('a').first[:href].should == "/some-organization/conversations/conversation-three"
-    conversation_elements[2].css('.datetime').first.text.strip.should == conversations[2].updated_at.strftime('%-m/%-d/%Y').strip
+      count = conversation_element.css('td.participants .count').first.text
+      expect(count).to eq(conversation.messages_count > 1 ? "(#{conversation.messages_count})" : "")
 
-    conversation_elements[3].css('td.participants').first.text.should == "\n\nLarry\n\n(13)\n"
-    conversation_elements[3].css('a').first[:href].should == "/some-organization/conversations/conversation-four"
-    conversation_elements[3].css('.datetime').first.text.strip.should == conversations[3].updated_at.strftime('%-m/%-d/%Y').strip
+      link = conversation_element.css('td.subject a').first
+      expect(link.text).to eq conversation.subject
+      expect(link[:href]).to eq "/some-organization/conversations/#{conversation.to_param}"
+
+      datetime = conversation_element.css('.datetime').first.text.strip
+      expect(datetime).to eq conversation.updated_at.strftime('%l:%M %p').strip
+    end
+
   end
 
 end

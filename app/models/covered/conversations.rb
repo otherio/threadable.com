@@ -1,11 +1,11 @@
 class Covered::Conversations < Covered::Collection
 
   def all
-    scope.map{ |conversation_record| conversation_for conversation_record }
+    conversations_for scope
   end
 
   def all_with_participants
-    scope.includes(:participants).map{ |conversation| conversation_for conversation }
+    conversations_for scope.includes(:participants)
   end
 
   def find_by_id id
@@ -50,7 +50,13 @@ class Covered::Conversations < Covered::Collection
   end
 
   def conversation_for conversation_record
-    Covered::Conversation.new(covered, conversation_record)
+    Covered::Conversation.new(covered, conversation_record) if conversation_record
+  end
+
+  def conversations_for conversation_records
+    conversation_records.map do |conversation_record|
+      conversation_for conversation_record
+    end
   end
 
 end

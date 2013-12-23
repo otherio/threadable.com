@@ -87,6 +87,7 @@ class Covered::Class
   def == other
     self.class === other && self.env == other.env
   end
+  alias_method :eql?, :==
 
   def inspect
     %(#<#{self.class} #{env.inspect}>)

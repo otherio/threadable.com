@@ -10,5 +10,6 @@ class PasswordRecovery
   def == other
     attributes == other.attributes
   end
+  alias_method :eql?, :==
 
 end

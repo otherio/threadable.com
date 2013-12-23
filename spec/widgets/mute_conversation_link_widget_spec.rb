@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe MuteConversationLinkWidget do
 
-  let(:conversation){ double(:conversation) }
+  let(:organization){ double(:organization, to_param: 'frogfrier') }
+  let(:conversation){ double(:conversation, to_param: 'we-need-more-oil', organization: organization, muted?: muted) }
+  let(:muted){ false }
   let(:arguments)   { [conversation] }
+  let(:node_type){ :a }
 
   def html_options
     {class: 'custom_class'}
@@ -13,12 +16,29 @@ describe MuteConversationLinkWidget do
 
   describe "locals" do
     subject{ presenter.locals }
-    it do
-      should == {
-        block: nil,
-        presenter: presenter,
-        conversation: conversation,
-      }
+
+    context 'when the conversation is muted' do
+      let(:muted){ true }
+      it do
+        should == {
+          block: nil,
+          presenter: presenter,
+          conversation: conversation,
+          content: 'un-mute conversation',
+        }
+      end
+    end
+
+    context 'when the conversation is not muted' do
+      let(:muted){ false }
+      it do
+        should == {
+          block: nil,
+          presenter: presenter,
+          conversation: conversation,
+          content: 'mute conversation',
+        }
+      end
     end
   end
 
@@ -26,8 +46,10 @@ describe MuteConversationLinkWidget do
     subject{ presenter.html_options }
     it do
       should == {
-        class: "mute_conversation_link custom_class",
+        class: "control-link custom_class mute_conversation_link text-info",
         widget: "mute_conversation_link",
+        :"data-method" => "POST",
+        href: "/frogfrier/conversations/we-need-more-oil/mute",
       }
     end
   end

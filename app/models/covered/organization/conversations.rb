@@ -8,6 +8,16 @@ class Covered::Organization::Conversations < Covered::Conversations
   end
   attr_reader :organization
 
+  def not_muted_with_participants
+    return [] if covered.current_user_id.nil?
+    conversations_for scope.not_muted_by(covered.current_user_id).includes(:participants)
+  end
+
+  def muted_with_participants
+    return [] if covered.current_user_id.nil?
+    conversations_for scope.muted_by(covered.current_user_id).includes(:participants)
+  end
+
   def build attributes={}
     conversation_for scope.build(attributes)
   end

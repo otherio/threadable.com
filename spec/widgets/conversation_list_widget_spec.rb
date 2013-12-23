@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe ConversationListWidget do
 
-  let(:organization_conversations) { double(:organization_conversations) }
-  let(:organization)               { double(:organization, conversations: double(:conversations, all_with_participants: organization_conversations) ) }
-  let(:custom_conversations)  { double(:custom_conversations) }
-  let(:arguments)             { [organization] }
+  let(:conversations)          { double(:conversations, not_muted_with_participants: not_muted_conversations, muted_with_participants: muted_conversations) }
+  let(:organization)           { double(:organization, conversations: conversations ) }
+  let(:not_muted_conversations){ double(:not_muted_conversations) }
+  let(:muted_conversations)    { double(:muted_conversations) }
+  let(:arguments)              { [organization] }
 
   def html_options
     {class: 'custom_class'}
@@ -18,21 +19,9 @@ describe ConversationListWidget do
         block: nil,
         presenter: presenter,
         organization: organization,
-        conversations: organization_conversations,
+        not_muted_conversations: not_muted_conversations,
+        muted_conversations: muted_conversations
       }
-    end
-    context "when given conversations" do
-      def html_options
-        {conversations: custom_conversations}
-      end
-      it do
-        should == {
-          block: nil,
-          presenter: presenter,
-          organization: organization,
-          conversations: custom_conversations,
-        }
-      end
     end
   end
 

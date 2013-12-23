@@ -1,12 +1,12 @@
 require_dependency 'covered/task'
 
-class Covered::Task::Doer
+class Covered::Task::Doer < Covered::Model
 
   def initialize task, user_record
     @task, @user_record = task, user_record
+    @covered = task.covered
   end
   attr_reader :task, :user_record
-  delegate :covered, to: :task
 
   delegate *%w{
     id

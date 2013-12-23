@@ -17,8 +17,21 @@ class Covered::Model
     %(#<#{self.class}>)
   end
 
-  def == other
-    self.class === other && other.id == id
+  def ==(other)
+    super ||
+      other.instance_of?(self.class) &&
+      id.present? &&
+      other.id == id
+  end
+
+  def eql? other
+    self == other
+  end
+
+  # this returns the same hash for objects that represent the same record
+  # this enables things like: `covered.users.all - [current_user]'
+  def hash
+    id.hash
   end
 
 end

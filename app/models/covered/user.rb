@@ -1,16 +1,12 @@
-class Covered::User
+class Covered::User < Covered::Model
 
-  include Let
-
-  def self.model_name
-    ::User.model_name
-  end
+  self.model_name = ::User.model_name
 
   def initialize covered, user_record
     raise ArgumentError, 'user record cannot be nil' if user_record.nil?
     @covered, @user_record = covered, user_record
   end
-  attr_reader :covered, :user_record
+  attr_reader :user_record
 
   delegate *%w{
     id
@@ -107,7 +103,6 @@ class Covered::User
   end
 
   def inspect
-    # %(#<#{self.class} user_id: #{id}>)
     %(#<#{self.class} id: #{id}, email_address: #{email_address.to_s.inspect}, slug: #{slug.inspect}>)
   end
 
