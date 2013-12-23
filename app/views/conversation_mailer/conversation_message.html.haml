@@ -12,11 +12,11 @@
             = email_button "New conversation", @new_conversation_url,  class: 'compose-button'
             = email_button "New task",         @new_task_url,          class: 'compose-button'
             = email_button "View on Covered",  @message_url,           class: 'view-button'
-            = email_button "Mute",             @mute_conversation_url, class: 'mute-button'
 
         %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
-          - if @task
-            %tr
+          %tr
+            = email_button "Mute", @mute_conversation_url, class: 'mute-button'
+            - if @task
               - if @task.doers.include? @recipient
                 = email_button "Remove me", organization_task_remove_me_url(@organization, @task)
               - else
@@ -25,7 +25,10 @@
                 = email_button "Mark as undone", organization_task_mark_as_undone_url(@organization, @task)
               - else
                 = email_button "Mark as done", organization_task_mark_as_done_url(@organization, @task)
+            - else
               %td
+              %td
+
 
   %div{:style => "display:none; display:none !important;"}
     = "##CovMid: #{@message.unique_id} ##"
