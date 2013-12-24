@@ -20,7 +20,7 @@ describe ProfileController do
 
   end
 
-  when_signed_in_as 'yan@ucsd.covered.io' do
+  when_signed_in_as 'yan@ucsd.example.com' do
 
     describe 'GET /profile' do
       it 'should render the profile show template' do

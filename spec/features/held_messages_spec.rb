@@ -32,7 +32,7 @@ feature "Held messages" do
     expect(held_message_notification_email.text_content).to include organization.name
     expect(held_message_notification_email.text_content).to include email_subject
 
-    sign_in_as 'tom@ucsd.covered.io'
+    sign_in_as 'tom@ucsd.example.com'
     visit organization_conversation_url(organization, 'can-i-be-on-your-organization')
     expect(page).to have_text %(We couldn't find the page you were looking for.)
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Editing my profile" do
 
   before do
-    sign_in_as 'yan@ucsd.covered.io'
+    sign_in_as 'yan@ucsd.example.com'
     visit root_url
     click_on current_user.name
     click_on 'Profile'
@@ -16,14 +16,14 @@ feature "Editing my profile" do
     expect(current_url).to eq profile_url
     expect(page).to have_field('Name', with: '  ')
     expect(page).to have_text "can't be blank"
-    expect(covered.users.find_by_email_address!('yan@ucsd.covered.io').name).to eq 'Yan Hzu'
+    expect(covered.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzu'
 
     fill_in 'Name', with: 'Yan Hzurself'
     click_on 'Update'
     expect(page).to have_text %(Notice! We've updated your profile)
     expect(current_url).to eq profile_url
     expect(page).to have_field('Name', with: 'Yan Hzurself')
-    expect(covered.users.find_by_email_address!('yan@ucsd.covered.io').name).to eq 'Yan Hzurself'
+    expect(covered.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzurself'
   end
 
   scenario %(changing my password) do
@@ -47,27 +47,27 @@ feature "Editing my profile" do
     click_on 'Change password'
     expect(page).to_not have_text %(We've changed your password)
 
-    expect(covered.users.find_by_email_address!('yan@ucsd.covered.io').authenticate('supersecret')).to be_true
+    expect(covered.users.find_by_email_address!('yan@ucsd.example.com').authenticate('supersecret')).to be_true
   end
 
   scenario %(adding an email address) do
-    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
+    expect(addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io']
 
-    fill_in 'my.email@example.com', with: 'yan@ucsd.covered.io'
+    fill_in 'my.email@example.com', with: 'yan@ucsd.example.com'
     click_on 'Add'
     expect(page).to have_text 'Error! Address has already been taken'
-    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
+    expect(addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io']
 
     fill_in 'my.email@example.com', with: 'a@a'
     click_on 'Add'
     expect(page).to have_text 'Error! Address is invalid'
-    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
+    expect(addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io']
 
     fill_in 'my.email@example.com', with: 'yan.hzu@example.com'
     click_on 'Add'
     expect(page).to have_text 'yan.hzu@example.com'
-    expect(addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io', 'yan.hzu@example.com']
-    expect(confirmed_addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io']
+    expect(addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io', 'yan.hzu@example.com']
+    expect(confirmed_addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io']
     expect(find('table.email-addresses')).to have_text 'yan.hzu@example.com'
     expect(page).to have_text "Notice! We've sent a confirmation email to yan.hzu@example.com"
 
@@ -89,7 +89,7 @@ feature "Editing my profile" do
 
     expect(page).to have_text "Notice! yan.hzu@example.com has been confirmed"
 
-    expect(confirmed_addresses).to eq Set['yan@ucsd.covered.io', 'yan@yansterdam.io', 'yan.hzu@example.com']
+    expect(confirmed_addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io', 'yan.hzu@example.com']
   end
 
   def addresses
@@ -101,14 +101,14 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my primary email address) do
-    expect( email_address_table_row('yan@ucsd.covered.io') ).to have_text 'primary'
+    expect( email_address_table_row('yan@ucsd.example.com') ).to have_text 'primary'
     expect( email_address_table_row('yan@yansterdam.io')   ).to have_link 'make primary'
 
     within email_address_table_row('yan@yansterdam.io') do
       click_on 'make primary'
     end
 
-    expect( email_address_table_row('yan@ucsd.covered.io') ).to have_link 'make primary'
+    expect( email_address_table_row('yan@ucsd.example.com') ).to have_link 'make primary'
     expect( email_address_table_row('yan@yansterdam.io')   ).to have_text 'primary'
 
     expect(page).to have_text 'Notice! yan@yansterdam.io is now your primary email address.'

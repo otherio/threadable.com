@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Muting a conversation" do
 
   scenario %(muting and un-muting a conversation on the web) do
-    sign_in_as 'tom@ucsd.covered.io'
+    sign_in_as 'tom@ucsd.example.com'
 
     conversation = covered.conversations.find_by_slug!('layup-body-carbon')
     expect(conversation.recipients.all).to include current_user

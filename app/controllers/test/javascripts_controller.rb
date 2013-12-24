@@ -11,7 +11,7 @@ class Test::JavascriptsController < TestController
       Pathname(spec).relative_path_from(SPECS_PATH).to_s.sub(/_spec\.js$/,'')
     end
 
-    sign_in! User.with_email_address('tom@ucsd.covered.io').first!
+    sign_in! User.with_email_address('tom@ucsd.example.com').first!
 
     @organization = current_user.organizations.find_by_slug! 'raceteam'
     @task = @organization.tasks.latest

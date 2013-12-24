@@ -24,7 +24,7 @@ describe Organization::HeldMessagesController do
     end
   end
 
-  when_signed_in_as 'bob@ucsd.covered.io' do
+  when_signed_in_as 'bob@ucsd.example.com' do
 
     let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 

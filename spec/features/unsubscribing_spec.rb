@@ -3,7 +3,7 @@ require "spec_helper"
 feature "Unsubscribing" do
 
   # scenario "Users who are not web enabled should be able web enable their account" do
-  #   i_am 'yan@ucsd.covered.io'
+  #   i_am 'yan@ucsd.example.com'
   #   visit organization_unsubscribe_url_for 'raceteam'
   #   expect(page).to have_text "We just unsubscribed Alice Neilson from UCSD Electric Racing"
   #   click_link "click here to resubscribe!"

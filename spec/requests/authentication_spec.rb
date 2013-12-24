@@ -4,13 +4,13 @@ describe "Authentication" do
 
   describe "sign in/out" do
 
-    let(:alice){ find_user_by_email_address 'alice@ucsd.covered.io' }
+    let(:alice){ find_user_by_email_address 'alice@ucsd.example.com' }
 
     it "I can sign in and sign out" do
 
       post sign_in_path, {
         "authentication" => {
-          "email"       => 'alice@ucsd.covered.io',
+          "email"       => 'alice@ucsd.example.com',
           "password"    => "password",
         },
       }
@@ -25,7 +25,7 @@ describe "Authentication" do
 
       post sign_in_path, {
         "authentication" => {
-          "email"       => 'alice@ucsd.covered.io',
+          "email"       => 'alice@ucsd.example.com',
           "password"    => "WRONG PASSWORD",
         },
       }

@@ -2,7 +2,7 @@ require "spec_helper"
 
 feature "web enabling account" do
 
-  let(:user){ covered.users.find_by_email_address! 'yan@ucsd.covered.io' }
+  let(:user){ covered.users.find_by_email_address! 'yan@ucsd.example.com' }
 
   scenario "Users who are not web enabled should be able web enable their account" do
     visit '/'

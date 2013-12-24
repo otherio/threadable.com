@@ -8,13 +8,13 @@ describe Covered::Users do
 
     context "when given an email address for a user we have" do
       it 'returns that user' do
-        user = users.find_by_email_address('jonathan@ucsd.covered.io')
+        user = users.find_by_email_address('jonathan@ucsd.example.com')
         expect(user).to be_present
         expect(user.name).to eq 'Jonathan Spray'
       end
       context 'but has weird none-ascii characters in it' do
         it 'returns that user' do
-          user = users.find_by_email_address("\xEF\xBB\xBFjonathan@ucsd.covered.io")
+          user = users.find_by_email_address("\xEF\xBB\xBFjonathan@ucsd.example.com")
           expect(user).to be_present
           expect(user.name).to eq 'Jonathan Spray'
         end
@@ -23,7 +23,7 @@ describe Covered::Users do
 
     context "when given an email address for a user we have" do
       it 'returns that user' do
-        user = users.find_by_email_address('lisa@ucsd.covered.io')
+        user = users.find_by_email_address('lisa@ucsd.example.com')
         expect(user).to be_nil
       end
     end

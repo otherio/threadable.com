@@ -4,7 +4,7 @@ describe Covered::IncomingEmail do
 
   let :params do
     create_incoming_email_params(
-      from:          'alice@ucsd.covered.io',
+      from:          'alice@ucsd.example.com',
       envelope_from: 'alice.neilson@gmail.com',
       sender:        'alice.neilson@gmail.com',
     )
@@ -318,7 +318,7 @@ describe Covered::IncomingEmail do
   its(:stripped_html)          { should eq params['stripped-html'] }
   its(:stripped_plain)         { should eq params['stripped-text'] }
 
-  its(:from_email_addresses){ should eq ['alice@ucsd.covered.io', 'alice.neilson@gmail.com'] }
+  its(:from_email_addresses){ should eq ['alice@ucsd.example.com', 'alice.neilson@gmail.com'] }
 
 
   describe 'find_organization!' do
@@ -618,7 +618,7 @@ describe Covered::IncomingEmail do
       )
     end
     before{ expect(incoming_email).to receive(:delivered?).and_return(true) }
-    its(:inspect){ should eq %(#<Covered::IncomingEmail id: 4589, processed: true, bounced: false, held: false, delivered: true, from: "alice@ucsd.covered.io", creator_id: 12, organization_id: 13, conversation_id: 14, message_id: 15>) }
+    its(:inspect){ should eq %(#<Covered::IncomingEmail id: 4589, processed: true, bounced: false, held: false, delivered: true, from: "alice@ucsd.example.com", creator_id: 12, organization_id: 13, conversation_id: 14, message_id: 15>) }
   end
 
 end

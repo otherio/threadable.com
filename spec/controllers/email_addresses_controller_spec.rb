@@ -20,7 +20,7 @@ describe EmailAddressesController do
 
   end
 
-  when_signed_in_as 'yan@ucsd.covered.io' do
+  when_signed_in_as 'yan@ucsd.example.com' do
 
     describe 'POST /email_addresses' do
       it 'should add the email address to the current users account' do

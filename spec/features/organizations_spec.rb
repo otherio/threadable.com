@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Organizations" do
 
   before do
-    sign_in_as 'tom@ucsd.covered.io'
+    sign_in_as 'tom@ucsd.example.com'
   end
 
   scenario %(editing a organization) do

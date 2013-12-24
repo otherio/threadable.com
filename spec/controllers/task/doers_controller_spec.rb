@@ -20,7 +20,7 @@ describe Task::DoersController do
 
   end
 
-  when_signed_in_as 'tom@ucsd.covered.io' do
+  when_signed_in_as 'tom@ucsd.example.com' do
 
     let(:organization){ double :organization, tasks: double(:tasks), members: double(:members), to_param: 'raceteam' }
     let(:task){ double :task, doers: double(:doers), to_param: 'layup-body-carbon' }

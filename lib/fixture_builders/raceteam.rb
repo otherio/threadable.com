@@ -6,19 +6,19 @@ FixtureBuilder.build do
       short_name: 'RaceTeam',
       description: 'Senior engineering electric race team!',
     )
-    add_member 'Alice Neilson', 'alice@ucsd.covered.io'
+    add_member 'Alice Neilson', 'alice@ucsd.example.com'
   end
 
-  web_enable! 'alice@ucsd.covered.io'
-  as 'alice@ucsd.covered.io' do
+  web_enable! 'alice@ucsd.example.com'
+  as 'alice@ucsd.example.com' do
     set_avatar! 'alice.jpg'
 
     # Alice invites her organization mates
-    add_member 'Tom Canver',      'tom@ucsd.covered.io'
-    add_member 'Yan Hzu',         'yan@ucsd.covered.io'
-    add_member 'Bethany Pattern', 'bethany@ucsd.covered.io'
-    add_member 'Bob Cauchois',    'bob@ucsd.covered.io'
-    add_member 'Jonathan Spray',  'jonathan@ucsd.covered.io'
+    add_member 'Tom Canver',      'tom@ucsd.example.com'
+    add_member 'Yan Hzu',         'yan@ucsd.example.com'
+    add_member 'Bethany Pattern', 'bethany@ucsd.example.com'
+    add_member 'Bob Cauchois',    'bob@ucsd.example.com'
+    add_member 'Jonathan Spray',  'jonathan@ucsd.example.com'
 
     # Alice sends a welcome email
     @welcome_message = create_conversation(
@@ -27,41 +27,41 @@ FixtureBuilder.build do
     )
   end
 
-  web_enable! 'tom@ucsd.covered.io'
-  as 'tom@ucsd.covered.io' do
+  web_enable! 'tom@ucsd.example.com'
+  as 'tom@ucsd.example.com' do
     set_avatar! 'tom.jpg'
   end
 
-  web_enable! 'yan@ucsd.covered.io'
-  as 'yan@ucsd.covered.io' do
+  web_enable! 'yan@ucsd.example.com'
+  as 'yan@ucsd.example.com' do
     set_avatar! 'yan.jpg'
     add_email_address! 'yan@yansterdam.io'
     confirm_email_address! 'yan@yansterdam.io'
   end
 
-  web_enable! 'bethany@ucsd.covered.io'
-  as 'bethany@ucsd.covered.io' do
+  web_enable! 'bethany@ucsd.example.com'
+  as 'bethany@ucsd.example.com' do
     set_avatar! 'bethany.jpg'
   end
 
-  web_enable! 'bob@ucsd.covered.io'
-  as 'bob@ucsd.covered.io' do
+  web_enable! 'bob@ucsd.example.com'
+  as 'bob@ucsd.example.com' do
     set_avatar! 'bob.jpg'
     add_email_address! 'bob.cauchois@example.com'
   end
 
-  as 'jonathan@ucsd.covered.io' do
+  as 'jonathan@ucsd.example.com' do
     unsubscribe_from_organization_email!
   end
 
 
   # Bethany replies to the welcome email
-  as 'bethany@ucsd.covered.io' do
+  as 'bethany@ucsd.example.com' do
     reply_to @welcome_message, text: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.'
     mute_conversation @welcome_message.conversation
   end
 
-  as 'tom@ucsd.covered.io' do
+  as 'tom@ucsd.example.com' do
     create_conversation(
       subject: 'How are we going to build the body?',
       text: (
@@ -73,7 +73,7 @@ FixtureBuilder.build do
 
 
 
-  as 'alice@ucsd.covered.io' do
+  as 'alice@ucsd.example.com' do
     @layup_body_carbon_task = create_task 'layup body carbon'
     create_task 'install mirrors'
     @trim_body_panels_task = create_task 'trim body panels'
@@ -84,34 +84,34 @@ FixtureBuilder.build do
     )
   end
 
-  as 'tom@ucsd.covered.io' do
+  as 'tom@ucsd.example.com' do
     reply_to(@initial_layup_body_carbon_message,
       text: "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time",
     )
-    add_doer_to_task @layup_body_carbon_task, 'tom@ucsd.covered.io'
+    add_doer_to_task @layup_body_carbon_task, 'tom@ucsd.example.com'
   end
 
 
-  as 'alice@ucsd.covered.io' do
+  as 'alice@ucsd.example.com' do
     @get_epoxy_task                 = create_task 'get epoxy'
     @get_release_agent_task         = create_task 'get release agent'
     @get_carbon_and_fiberglass_task = create_task 'get carbon and fiberglass'
   end
 
-  as 'yan@ucsd.covered.io' do
+  as 'yan@ucsd.example.com' do
     reply_to(@initial_layup_body_carbon_message,
       text: "I'm so there! Also, I think I can probably pick up some of those supplies from a friend, who was trying to make a kayak.",
     )
-    add_doer_to_task @layup_body_carbon_task, 'yan@ucsd.covered.io'
+    add_doer_to_task @layup_body_carbon_task, 'yan@ucsd.example.com'
   end
 
 
-  as 'tom@ucsd.covered.io' do
-    add_doer_to_task @get_epoxy_task, 'tom@ucsd.covered.io'
-    add_doer_to_task @get_release_agent_task, 'tom@ucsd.covered.io'
-    add_doer_to_task @get_release_agent_task, 'yan@ucsd.covered.io'
-    add_doer_to_task @get_carbon_and_fiberglass_task, 'tom@ucsd.covered.io'
-    add_doer_to_task @trim_body_panels_task, 'tom@ucsd.covered.io'
+  as 'tom@ucsd.example.com' do
+    add_doer_to_task @get_epoxy_task, 'tom@ucsd.example.com'
+    add_doer_to_task @get_release_agent_task, 'tom@ucsd.example.com'
+    add_doer_to_task @get_release_agent_task, 'yan@ucsd.example.com'
+    add_doer_to_task @get_carbon_and_fiberglass_task, 'tom@ucsd.example.com'
+    add_doer_to_task @trim_body_panels_task, 'tom@ucsd.example.com'
 
     mark_task_as_done @get_epoxy_task
     mark_task_as_done @get_release_agent_task
@@ -127,7 +127,7 @@ FixtureBuilder.build do
     )
   end
 
-  as 'alice@ucsd.covered.io' do
+  as 'alice@ucsd.example.com' do
     @last_layup_body_carbon_message = reply_to(@last_layup_body_carbon_message,
       text: "I think I can get in touch with Yan's friend who built the carbon kayak. He might know!"
     )
@@ -148,7 +148,7 @@ FixtureBuilder.build do
     )
   );
 
-  as 'tom@ucsd.covered.io' do
+  as 'tom@ucsd.example.com' do
     @last_layup_body_carbon_message = reply_to(@last_layup_body_carbon_message,
       text: (
         %(Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, )+
@@ -207,22 +207,22 @@ FixtureBuilder.build do
   end
 
 
-  as 'tom@ucsd.covered.io' do
+  as 'tom@ucsd.example.com' do
     create_conversation(
-      to_header: %(#{organization.formatted_email_address}, somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
-      cc_header: %("Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      to_header: %(#{organization.formatted_email_address}, somebody@else.io, alice@ucsd.example.com, Bethany Pattern <bethany@ucsd.example.com>),
+      cc_header: %("Bob Cauchois" <bob@ucsd.example.com>, another@random-person.com),
       subject:   %(Who wants to pick up lunch?),
       text:      %(I like cheese. I think someone else likes cheese too.),
     )
     create_conversation(
       to_header: %(some@guy.com),
-      cc_header: %(#{organization.formatted_email_address}, "Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      cc_header: %(#{organization.formatted_email_address}, "Bob Cauchois" <bob@ucsd.example.com>, another@random-person.com),
       subject:   %(Who wants to pick up dinner?),
       text:      %(I like potatoes. I think someone else likes potatoes too.),
     )
     create_conversation(
-      to_header: %(somebody@else.io, alice@ucsd.covered.io, Bethany Pattern <bethany@ucsd.covered.io>),
-      cc_header: %("Bob Cauchois" <bob@ucsd.covered.io>, another@random-person.com),
+      to_header: %(somebody@else.io, alice@ucsd.example.com, Bethany Pattern <bethany@ucsd.example.com>),
+      cc_header: %("Bob Cauchois" <bob@ucsd.example.com>, another@random-person.com),
       # bcc_header: organization.formatted_email_address # <--- Let's assume the organization was BCC'd
       subject:   %(Who wants to pick up breakfast?),
       text:      %(I like foodz. I've been here all night!!!!!),

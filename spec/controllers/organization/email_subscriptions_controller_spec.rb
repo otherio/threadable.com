@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Organization::EmailSubscriptionsController do
 
-  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+  before{ sign_in! find_user_by_email_address('bob@ucsd.example.com') }
 
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:member){ organization.members.find_by_user_id! current_user.id }
@@ -21,7 +21,7 @@ describe Organization::EmailSubscriptionsController do
 
     context "when the member gets email for the organization" do
       # bob gets emails for the raceteam organization
-      before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+      before{ sign_in! find_user_by_email_address('bob@ucsd.example.com') }
 
       it "should disable emails for the organization memebership" do
         expect(member).to be_subscribed
@@ -35,7 +35,7 @@ describe Organization::EmailSubscriptionsController do
 
     context "when the member doesnt get email for the organization" do
       # jonathan doesnt get emails for the raceteam organization
-      before{ sign_in! find_user_by_email_address('jonathan@ucsd.covered.io') }
+      before{ sign_in! find_user_by_email_address('jonathan@ucsd.example.com') }
 
       it "should do nothing but look like it unsubscribed you" do
         expect(member).to_not be_subscribed
@@ -54,7 +54,7 @@ describe Organization::EmailSubscriptionsController do
 
     context "when the member gets email for the organization" do
       # bob gets emails for the raceteam organization
-      before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+      before{ sign_in! find_user_by_email_address('bob@ucsd.example.com') }
       it "should do nothing but look like it resubscribed you" do
         expect(member).to be_subscribed
         post :resubscribe, organization_id: organization.slug, token: token
@@ -66,7 +66,7 @@ describe Organization::EmailSubscriptionsController do
 
     context "when the member doesnt get email for the organization" do
       # jonathan doesnt get emails for the raceteam organization
-      before{ sign_in! find_user_by_email_address('jonathan@ucsd.covered.io') }
+      before{ sign_in! find_user_by_email_address('jonathan@ucsd.example.com') }
       it "should disable emails for the organization memebership" do
         expect(member).to_not be_subscribed
         post :resubscribe, organization_id: organization.slug, token: token

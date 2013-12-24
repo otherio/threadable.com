@@ -5,7 +5,7 @@ feature "Authentication" do
   before{ visit sign_in_url }
 
   scenario %(A user with an account and a password can sign in) do
-    fill_in "Email", with: "alice@ucsd.covered.io"
+    fill_in "Email", with: "alice@ucsd.example.com"
     fill_in "Password", with: "password"
     click_button "Sign in"
     expect(page).to have_text "Organizations"
@@ -33,7 +33,7 @@ feature "Authentication" do
   scenario %(Existing user with a password forgot their password) do
     click_on "Forgot password"
     expect(page).to have_text "Recover password"
-    fill_in "Email", with: "alice@ucsd.covered.io"
+    fill_in "Email", with: "alice@ucsd.example.com"
     click_button "Recover"
     expect(page).to have_text "We've emailed you a password reset link. Please check your email."
   end
@@ -41,7 +41,7 @@ feature "Authentication" do
   scenario %(Existing user without a password forgot their password) do
     click_on "Forgot password"
     expect(page).to have_text "Recover password"
-    fill_in "Email", with: "jonathan@ucsd.covered.io"
+    fill_in "Email", with: "jonathan@ucsd.example.com"
     click_button "Recover"
     expect(page).to have_text "We've emailed you a link to setup your account. Please check your email."
   end

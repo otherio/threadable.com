@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Adding organization members" do
 
   before do
-    sign_in_as 'alice@ucsd.covered.io'
+    sign_in_as 'alice@ucsd.example.com'
   end
 
   scenario %(adding an unregistered user to a organization) do
@@ -35,17 +35,17 @@ feature "Adding organization members" do
   end
 
   scenario %(adding an existing member to a organization) do
-    add_member_to_organization 'Yan Zhu', 'yan@ucsd.covered.io', 'raceteam'
+    add_member_to_organization 'Yan Zhu', 'yan@ucsd.example.com', 'raceteam'
     expect(page).to have_text "Notice! That user is already a member of this organization."
   end
 
   scenario %(being added to a organization) do
-    add_member_to_organization 'Archimedes Vanderhimen', 'archimedes@ucsd.covered.io', 'raceteam', 'We need your sick driving skills!'
+    add_member_to_organization 'Archimedes Vanderhimen', 'archimedes@ucsd.example.com', 'raceteam', 'We need your sick driving skills!'
     sign_out!
 
     drain_background_jobs!
 
-    email = sent_emails.join_notices("UCSD Electric Racing").sent_to('archimedes@ucsd.covered.io').first
+    email = sent_emails.join_notices("UCSD Electric Racing").sent_to('archimedes@ucsd.example.com').first
     expect(email.user_setup_url).to be_present
     expect(email.content).to include 'We need your sick driving skills!'
     visit email.user_setup_url.to_s
@@ -66,10 +66,10 @@ feature "Adding organization members" do
     expect(current_url).to eq organization_conversations_url('raceteam')
     expect_to_be_signed_in_as! 'Archimedes Van-Dérhimen'
 
-    user = covered.users.find_by_email_address('archimedes@ucsd.covered.io')
+    user = covered.users.find_by_email_address('archimedes@ucsd.example.com')
     expect(user.email_address).to be_primary
     expect(user.email_address).to be_confirmed
-    expect(user.email_address.address).to eq 'archimedes@ucsd.covered.io'
+    expect(user.email_address.address).to eq 'archimedes@ucsd.example.com'
     expect(user.email_addresses.count).to eq 1
   end
 

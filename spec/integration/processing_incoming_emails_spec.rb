@@ -235,9 +235,9 @@ describe "processing incoming emails 2" do
   let(:subject)      { 'OMG guys I love covered!' }
   let(:message_id)   { '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>' }
 
-  let(:from)         { 'Yan Hzu <yan@ucsd.covered.io>' }
-  let(:envelope_from){ '<yan@ucsd.covered.io>' }
-  let(:sender)       { 'yan@ucsd.covered.io' }
+  let(:from)         { 'Yan Hzu <yan@ucsd.example.com>' }
+  let(:envelope_from){ '<yan@ucsd.example.com>' }
+  let(:sender)       { 'yan@ucsd.example.com' }
 
   let(:recipient)    { 'raceteam@127.0.0.1' }
   let(:to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
@@ -280,7 +280,7 @@ describe "processing incoming emails 2" do
 
   let(:expected_parent_message)                { nil }
   let(:expected_conversation)                  { covered.conversations.latest }
-  let(:expected_creator)                       { covered.users.find_by_email_address('yan@ucsd.covered.io') }
+  let(:expected_creator)                       { covered.users.find_by_email_address('yan@ucsd.example.com') }
   let(:expected_organization)                       { covered.organizations.find_by_slug!('raceteam') }
   let(:expected_conversation_subject)          { 'OMG guys I love covered!' }
   let(:expected_message_subject)               { 'OMG guys I love covered!' }
@@ -356,9 +356,9 @@ describe "processing incoming emails 2" do
       let(:expected_parent_message){ nil }
 
       context "and the sender is a organization member" do
-        let(:from)          { "Alice Neilson <alice@ucsd.covered.io>" }
-        let(:envelope_from) { "<alice@ucsd.covered.io>" }
-        let(:sender)        { "alice@ucsd.covered.io" }
+        let(:from)          { "Alice Neilson <alice@ucsd.example.com>" }
+        let(:envelope_from) { "<alice@ucsd.example.com>" }
+        let(:sender)        { "alice@ucsd.example.com" }
 
         let(:expected_conversation)      { covered.conversations.latest }
         let(:expected_creator)           { covered.users.find_by_email_address(sender) }
@@ -463,9 +463,9 @@ describe "processing incoming emails 2" do
       end
 
       context 'and the creator is a organization member' do
-        let(:from)         { "Alice Neilson <alice@ucsd.covered.io>" }
-        let(:envelope_from){ '<alice@ucsd.covered.io>' }
-        let(:sender)       { 'alice@ucsd.covered.io' }
+        let(:from)         { "Alice Neilson <alice@ucsd.example.com>" }
+        let(:envelope_from){ '<alice@ucsd.example.com>' }
+        let(:sender)       { 'alice@ucsd.example.com' }
 
         let(:expected_creator){ covered.users.find_by_email_address!(sender) }
         it 'it delivers the message' do
@@ -570,8 +570,8 @@ describe "processing incoming emails 2" do
   context 'when the from address matches a non-member and the envelope from matches a non-member and the sender matches a member' do
     let(:from)                    { 'Hans Zarkov <zarkov@sfhealth.example.com>' }
     let(:envelope_from)           { '<bj@sfhealth.example.com>' }
-    let(:sender)                  { 'bob@ucsd.covered.io' }
-    let(:expected_creator)        { covered.users.find_by_email_address('bob@ucsd.covered.io') }
+    let(:sender)                  { 'bob@ucsd.example.com' }
+    let(:expected_creator)        { covered.users.find_by_email_address('bob@ucsd.example.com') }
     it 'sets the creator as the user matching the sender address' do
       validate! :delivered
     end
@@ -579,29 +579,29 @@ describe "processing incoming emails 2" do
 
   context 'when the from address matches a non-member and the envelope from matches a member and the sender matches a non-member' do
     let(:from)                    { 'Hans Zarkov <zarkov@sfhealth.example.com>' }
-    let(:envelope_from)           { '<bethany@ucsd.covered.io>' }
+    let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'house@sfhealth.example.com' }
-    let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.covered.io') }
+    let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.example.com') }
     it 'sets the creator as user matching the envelope from address' do
       validate! :delivered
     end
   end
 
   context 'when the from address matches a member and the envelope from matches a non-member but the sender matches a non-member' do
-    let(:from)                    { 'Jonathan Spray <jonathan@ucsd.covered.io>' }
+    let(:from)                    { 'Jonathan Spray <jonathan@ucsd.example.com>' }
     let(:envelope_from)           { '<zarkov@sfhealth.example.com>' }
     let(:sender)                  { 'trapper@sfhealth.example.com' }
-    let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.covered.io') }
+    let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.example.com') }
     it 'sets the creator as user matching the from address' do
       validate! :delivered
     end
   end
 
   context 'when the from, envelope from, and sender are all members' do
-    let(:from)                    { 'Jonathan Spray <jonathan@ucsd.covered.io>' }
-    let(:envelope_from)           { '<bethany@ucsd.covered.io>' }
-    let(:sender)                  { 'bob@ucsd.covered.io' }
-    let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.covered.io') }
+    let(:from)                    { 'Jonathan Spray <jonathan@ucsd.example.com>' }
+    let(:envelope_from)           { '<bethany@ucsd.example.com>' }
+    let(:sender)                  { 'bob@ucsd.example.com' }
+    let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.example.com') }
     it 'sets the creator as user matching the from address' do
       validate! :delivered
     end
@@ -609,16 +609,16 @@ describe "processing incoming emails 2" do
 
   context 'when the from is not a user, but the envelope from, and sender are both members' do
     let(:from)                    { 'Some Rando <some-rando@example.com>' }
-    let(:envelope_from)           { '<bethany@ucsd.covered.io>' }
-    let(:sender)                  { 'bob@ucsd.covered.io' }
-    let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.covered.io') }
+    let(:envelope_from)           { '<bethany@ucsd.example.com>' }
+    let(:sender)                  { 'bob@ucsd.example.com' }
+    let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.example.com') }
     it 'sets the creator as user matching the envelope from address' do
       validate! :delivered
     end
   end
 
   context 'when there are only members in the to header, and the cc is blank' do
-    let(:to) { "Alice Neilson <alice@ucsd.covered.io>" }
+    let(:to) { "Alice Neilson <alice@ucsd.example.com>" }
     let(:cc) { '' }
 
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
@@ -630,7 +630,7 @@ describe "processing incoming emails 2" do
   end
 
   context 'when there are only members in the to header, and the organization is in the CC' do
-    let(:to) { "Alice Neilson <alice@ucsd.covered.io>" }
+    let(:to) { "Alice Neilson <alice@ucsd.example.com>" }
     let(:cc) { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
 
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
@@ -654,7 +654,7 @@ describe "processing incoming emails 2" do
   end
 
   context 'when there are members in the to header' do
-    let(:to) { "Alice Neilson <alice@ucsd.covered.io>, Someone Else <someone.else@example.com>, bethany@ucsd.covered.io" }
+    let(:to) { "Alice Neilson <alice@ucsd.example.com>, Someone Else <someone.else@example.com>, bethany@ucsd.example.com" }
 
     let(:expected_sent_email_to){ ['someone.else@example.com'] }
 
@@ -664,7 +664,7 @@ describe "processing incoming emails 2" do
   end
 
   context 'when there are members in the cc header' do
-    let(:cc) { "Alice Neilson <alice@ucsd.covered.io>, Someone Else <someone.else@example.com>, bethany@ucsd.covered.io" }
+    let(:cc) { "Alice Neilson <alice@ucsd.example.com>, Someone Else <someone.else@example.com>, bethany@ucsd.example.com" }
 
     let(:expected_sent_email_cc){ 'Someone Else <someone.else@example.com>' }
     it 'filters members out of the cc header' do

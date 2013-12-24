@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Covered::IncomingEmail do
 
   let(:raceteam      ){ covered.organizations.find_by_slug!('raceteam') }
-  let(:alice         ){ raceteam.members.find_by_email_address!('alice@ucsd.covered.io') }
+  let(:alice         ){ raceteam.members.find_by_email_address!('alice@ucsd.example.com') }
   let(:incoming_email){ covered.incoming_emails.create!(params) }
   subject{ incoming_email }
 

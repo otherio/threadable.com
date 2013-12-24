@@ -4,7 +4,7 @@ require 'spec_helper'
 # feature "Knowledge" do
 
 #   scenario %(marking a message as knowledge) do
-#     sign_in_as 'tom@ucsd.covered.io'
+#     sign_in_as 'tom@ucsd.example.com'
 #     visit organization_conversation_url('raceteam', 'layup-body-carbon')
 #     expect(page).to have_selector '.message'
 #     within first('.message') do

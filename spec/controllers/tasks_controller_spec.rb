@@ -50,7 +50,7 @@ describe TasksController do
 
   end
 
-  when_signed_in_as 'alice@ucsd.covered.io' do
+  when_signed_in_as 'alice@ucsd.example.com' do
 
     describe "GET index" do
       it "should render a 404" do

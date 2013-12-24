@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "organization members" do
 
-  before{ sign_in_as 'alice@ucsd.covered.io' }
+  before{ sign_in_as 'alice@ucsd.example.com' }
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 
   describe "reading members of a organization" do
@@ -80,7 +80,7 @@ describe "organization members" do
     end
 
     context 'when the user is already a member of the organization' do
-      let(:user){ covered.users.find_by_email_address('bethany@ucsd.covered.io') }
+      let(:user){ covered.users.find_by_email_address('bethany@ucsd.example.com') }
 
       def post!
         expect(organization.members).to include user

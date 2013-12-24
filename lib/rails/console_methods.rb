@@ -11,7 +11,7 @@ module Rails::ConsoleMethods
     return @covered if options.nil? && @covered
     @covered = nil
     options ||= {}
-    options[:current_user_id] ||= User.with_email_address('alice@ucsd.covered.io').first.try(:id)
+    options[:current_user_id] ||= User.with_email_address('alice@ucsd.example.com').first.try(:id)
     options[:host] ||= URI.parse(app.root_url).host
     options[:port] ||= URI.parse(app.root_url).port
     @covered = Covered.new(options)

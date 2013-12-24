@@ -3,7 +3,7 @@ require "spec_helper"
 feature "recovering password" do
 
   scenario "Users who loose their password should be able recover their account" do
-    i_am 'alice@ucsd.covered.io'
+    i_am 'alice@ucsd.example.com'
 
     visit '/'
     click_link 'Sign in'

@@ -9,14 +9,14 @@ describe Covered::Organization::Members do
 
     let :expected_email_addresses do
       %w{
-        alice@ucsd.covered.io
-        tom@ucsd.covered.io
+        alice@ucsd.example.com
+        tom@ucsd.example.com
         yan@yansterdam.io
-        yan@ucsd.covered.io
-        bethany@ucsd.covered.io
-        bob@ucsd.covered.io
+        yan@ucsd.example.com
+        bethany@ucsd.example.com
+        bob@ucsd.example.com
         bob.cauchois@example.com
-        jonathan@ucsd.covered.io
+        jonathan@ucsd.example.com
       }.to_set
     end
 

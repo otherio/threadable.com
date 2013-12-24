@@ -15,19 +15,19 @@ describe 'sending emails' do
     SendEmailWorker.drain
   end
 
-  when_signed_in_as 'alice@ucsd.covered.io' do
+  when_signed_in_as 'alice@ucsd.example.com' do
 
     let(:organization     ){ current_user.organizations.find_by_slug! 'raceteam' }
     let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
     let(:message     ){ conversation.messages.latest }
-    let(:recipient   ){ organization.members.find_by_user_id! find_user_by_email_address('yan@ucsd.covered.io').id }
+    let(:recipient   ){ organization.members.find_by_user_id! find_user_by_email_address('yan@ucsd.example.com').id }
 
     describe 'conversation_message' do
 
       def expect_email!
         email = sent_emails.to(recipient.email_address).with_subject("[✔][RaceTeam] layup body carbon").first
         expect(email).to be_present
-        expect( email.header['From'].to_s        ).to eq 'Tom Canver <tom@ucsd.covered.io>'
+        expect( email.header['From'].to_s        ).to eq 'Tom Canver <tom@ucsd.example.com>'
         expect( email.header['Reply-To'].to_s    ).to eq 'UCSD Electric Racing Tasks <raceteam+task@127.0.0.1>'
         expect( email.header['To'].to_s          ).to eq 'UCSD Electric Racing Tasks <raceteam+task@127.0.0.1>'
         expect( email.header['Date'].to_s        ).to eq message.date_header.sub('-','+')
@@ -69,11 +69,11 @@ describe 'sending emails' do
           expect( email.header['To'].to_s ).to_not be_blank
           expect( email.header['To'].to_s ).to     include 'UCSD Electric Racing <raceteam@127.0.0.1>'
           expect( email.header['To'].to_s ).to     include 'somebody@else.io'
-          expect( email.header['To'].to_s ).to_not include 'alice@ucsd.covered.io'
-          expect( email.header['To'].to_s ).to_not include 'bethany@ucsd.covered.io'
+          expect( email.header['To'].to_s ).to_not include 'alice@ucsd.example.com'
+          expect( email.header['To'].to_s ).to_not include 'bethany@ucsd.example.com'
 
           expect( email.header['Cc'].to_s ).to     include 'another@random-person.com'
-          expect( email.header['Cc'].to_s ).to_not include 'bob@ucsd.covered.io'
+          expect( email.header['Cc'].to_s ).to_not include 'bob@ucsd.example.com'
         end
       end
 

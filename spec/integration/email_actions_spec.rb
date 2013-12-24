@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe "Email actions" do
 
-  when_signed_in_as 'bethany@ucsd.covered.io' do
+  when_signed_in_as 'bethany@ucsd.example.com' do
     let(:organization  ){ current_user.organizations.find_by_slug! 'raceteam' }
     let(:sender   ){ current_user }
-    let(:recipient){ organization.members.find_by_user_id! find_user_by_email_address('bob@ucsd.covered.io').id }
+    let(:recipient){ organization.members.find_by_user_id! find_user_by_email_address('bob@ucsd.example.com').id }
     let(:message  ){ conversation.messages.create! text: 'I dont agree with any of you. I hate this team. I quit!' }
     let(:email    ){ sent_emails.to(recipient.email_address).last or raise "unable to find email" }
     let(:html_part){ Nokogiri::HTML.fragment email.html_part.body.to_s }
@@ -97,7 +97,7 @@ describe "Email actions" do
         end
 
         context "that the recipient is a doer for" do
-          let(:recipient){ organization.members.find_by_user_id! find_user_by_email_address('tom@ucsd.covered.io').id }
+          let(:recipient){ organization.members.find_by_user_id! find_user_by_email_address('tom@ucsd.example.com').id }
           let(:task){ organization.conversations.find_by_slug! "trim-body-panels" }
           before{ expect(task.doers).to include recipient }
           it "it should have the expected action buttons" do

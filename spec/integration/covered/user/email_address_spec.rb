@@ -8,7 +8,7 @@ describe Covered::User::EmailAddress do
   let(:email_address        ){ described_class.new(user, email_address_record) }
   subject{ email_address }
 
-  let(:email_address_record ){ find_email_address 'yan@ucsd.covered.io' }
+  let(:email_address_record ){ find_email_address 'yan@ucsd.example.com' }
 
   its(:id        ){ should eq email_address_record.id         }
   its(:address   ){ should eq email_address_record.address    }
@@ -20,7 +20,7 @@ describe Covered::User::EmailAddress do
   describe 'primary!' do
 
     context 'when the email address is primary and confirmed' do
-      let(:email_address_record){ find_email_address 'yan@ucsd.covered.io' }
+      let(:email_address_record){ find_email_address 'yan@ucsd.example.com' }
       it 'returns false' do
         expect(email_address_record).to be_primary
         expect(email_address_record.confirmed_at).to be_present
@@ -56,7 +56,7 @@ describe Covered::User::EmailAddress do
       end
     end
     context 'when the email address is confirmed' do
-      let(:email_address_record){ find_email_address 'yan@ucsd.covered.io' }
+      let(:email_address_record){ find_email_address 'yan@ucsd.example.com' }
       it 'does nothing' do
         expect(email_address_record.confirmed_at).to be_present
         expect(email_address.confirm!).to be_false

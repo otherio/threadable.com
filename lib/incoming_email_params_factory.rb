@@ -20,8 +20,8 @@ class IncomingEmailParamsFactory < MethodObject
     @options[:message_id]    ||= "<#{SecureRandom.uuid}@mail.example.com>"
 
     # from email addresses
-    @options[:from]          ||= "Alice Neilson <alice@ucsd.covered.io>"
-    @options[:envelope_from] ||= "alice@ucsd.covered.io"
+    @options[:from]          ||= "Alice Neilson <alice@ucsd.example.com>"
+    @options[:envelope_from] ||= "alice@ucsd.example.com"
     @options[:sender]        ||= @options[:envelope_from]
 
     # to email addresses

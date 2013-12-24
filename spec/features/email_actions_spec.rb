@@ -29,19 +29,19 @@ describe "Email actions" do
   end
 
   define_state %(I am a doer of the task) do
-    import_state %(I am "tom@ucsd.covered.io")
+    import_state %(I am "tom@ucsd.example.com")
   end
 
   define_state %(I am not a doer of the task) do
-    import_state %(I am "bob@ucsd.covered.io")
+    import_state %(I am "bob@ucsd.example.com")
   end
 
   define_state %(I am signed in as a doer of the task) do
-    import_state %(I am signed in as "tom@ucsd.covered.io")
+    import_state %(I am signed in as "tom@ucsd.example.com")
   end
 
   define_state %(I am signed in as a non-doer of the task) do
-    import_state %(I am signed in as "bob@ucsd.covered.io")
+    import_state %(I am signed in as "bob@ucsd.example.com")
   end
 
   # %(I follow the "mark as done" button in my email) do
@@ -63,7 +63,7 @@ describe "Email actions" do
 
   define_it_should "ask me to sign in" do
     expect(current_url).to eq sign_in_url(r:url)
-    sign_in_as 'bob@ucsd.covered.io'
+    sign_in_as 'bob@ucsd.example.com'
   end
 
   define_it_should "not ask me to sign in" do
@@ -153,7 +153,7 @@ describe "Email actions" do
 
   describe "mark as done" do
 
-    state %(I am signed in as "bob@ucsd.covered.io") do
+    state %(I am signed in as "bob@ucsd.example.com") do
       state %(the task is not done), %(I follow the "mark as done" button in my email) do
         it_should(
           %(show a notice saying "Task marked as done."),
@@ -174,7 +174,7 @@ describe "Email actions" do
 
   describe "mark as undone" do
 
-    state %(I am signed in as "bob@ucsd.covered.io") do
+    state %(I am signed in as "bob@ucsd.example.com") do
       state %(the task is done), %(I follow the "mark as undone" button in my email) do
         it_should(
           %(show a notice saying "Task marked as not done."),
@@ -194,7 +194,7 @@ describe "Email actions" do
   end
 
   describe "view on covered" do
-    state %(I am signed in as "bob@ucsd.covered.io"), %(I follow the "view on covered" button in my email) do
+    state %(I am signed in as "bob@ucsd.example.com"), %(I follow the "view on covered" button in my email) do
       it_should(
         %(be on the task show page),
       )

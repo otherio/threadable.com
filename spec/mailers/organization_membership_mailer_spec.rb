@@ -3,7 +3,7 @@ require "spec_helper"
 
 describe OrganizationMembershipMailer do
 
-  signed_in_as 'bethany@ucsd.covered.io'
+  signed_in_as 'bethany@ucsd.example.com'
 
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
@@ -17,7 +17,7 @@ describe OrganizationMembershipMailer do
     before do
       expect(mail.subject).to eq "You've been added to #{organization.name}"
       expect(mail.to     ).to eq [recipient.email_address.to_s]
-      expect(mail.from   ).to eq ['bethany@ucsd.covered.io']
+      expect(mail.from   ).to eq ['bethany@ucsd.example.com']
       expect(text_part   ).to include personal_message
       expect(text_part   ).to include organization_url(organization)
 
@@ -50,7 +50,7 @@ describe OrganizationMembershipMailer do
     let(:mail){ OrganizationMembershipMailer.new(covered).generate(:unsubscribe_notice, organization, member) }
     it "should return the expected message" do
       expect(mail.subject ).to eq "You've been unsubscribed from #{organization.name}"
-      expect(mail.to      ).to eq ['bethany@ucsd.covered.io']
+      expect(mail.to      ).to eq ['bethany@ucsd.example.com']
       expect(mail.from    ).to eq [organization.email_address.to_s]
       expect(text_part    ).to include %(You've been unsubscribed from the "#{organization.name}" organization on Covered.)
 

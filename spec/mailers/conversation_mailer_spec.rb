@@ -4,7 +4,7 @@ require "spec_helper"
 describe ConversationMailer do
   describe "conversation_message" do
 
-    signed_in_as 'bethany@ucsd.covered.io'
+    signed_in_as 'bethany@ucsd.example.com'
 
     let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
     let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }

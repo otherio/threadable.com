@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Conversations" do
   describe "GET /conversations" do
 
-    before{ sign_in_as 'alice@ucsd.covered.io' }
+    before{ sign_in_as 'alice@ucsd.example.com' }
 
     let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 

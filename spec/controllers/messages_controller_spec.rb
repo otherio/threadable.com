@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MessagesController do
 
   before do
-    sign_in! find_user_by_email_address('tom@ucsd.covered.io')
+    sign_in! find_user_by_email_address('tom@ucsd.example.com')
   end
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:conversation) { organization.conversations.find_by_slug! 'layup-body-carbon' }

@@ -12,7 +12,7 @@ describe HomepageController do
 
     context "with a logged in user" do
       before do
-        sign_in! find_user_by_email_address('bob@ucsd.covered.io')
+        sign_in! find_user_by_email_address('bob@ucsd.example.com')
       end
 
       it "should show the organizations" do

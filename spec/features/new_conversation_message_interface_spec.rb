@@ -10,7 +10,7 @@ describe 'new conversaion message interface' do
   end
 
   before do
-    sign_in_as 'alice@ucsd.covered.io'
+    sign_in_as 'alice@ucsd.example.com'
   end
 
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
@@ -35,7 +35,7 @@ describe 'new conversaion message interface' do
     drain_background_jobs!
     expect(sent_emails.count).to eq organization.members.who_get_email.count
     expect(
-      sent_emails.sent_to('alice@ucsd.covered.io').
+      sent_emails.sent_to('alice@ucsd.example.com').
         with_subject('[RaceTeam] we did it').
         containing('our kickstarter is funded.')
     ).to be_present
@@ -54,7 +54,7 @@ describe 'new conversaion message interface' do
     drain_background_jobs!
     expect(sent_emails.count).to eq organization.members.who_get_email.count
     expect(
-      sent_emails.sent_to('alice@ucsd.covered.io').
+      sent_emails.sent_to('alice@ucsd.example.com').
         with_subject('[RaceTeam] we did it').
         containing('isnt that awesome?')
     ).to be_present

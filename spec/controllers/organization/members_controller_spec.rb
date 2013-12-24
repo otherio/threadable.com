@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Organization::MembersController do
 
-  before{ sign_in! find_user_by_email_address('bob@ucsd.covered.io') }
+  before{ sign_in! find_user_by_email_address('bob@ucsd.example.com') }
 
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
 
