@@ -13,13 +13,13 @@ describe Covered::Organization::Conversations do
       end
     end
 
-    when_signed_in_as 'tom@ucsd.covered.io' do
+    when_signed_in_as 'tom@ucsd.example.com' do
       it 'returns all the conversations' do
         expect(conversations.not_muted_with_participants).to eq conversations.all
       end
     end
 
-    when_signed_in_as 'bethany@ucsd.covered.io' do
+    when_signed_in_as 'bethany@ucsd.example.com' do
       let(:muted_conversation){ conversations.find_by_slug!('welcome-to-our-covered-organization') }
       it 'returns all but the one muted conversation' do
         expect(conversations.not_muted_with_participants).to eq(conversations.all - [muted_conversation])
@@ -36,13 +36,13 @@ describe Covered::Organization::Conversations do
       end
     end
 
-    when_signed_in_as 'tom@ucsd.covered.io' do
+    when_signed_in_as 'tom@ucsd.example.com' do
       it 'returns an empty array' do
         expect(conversations.muted_with_participants).to eq []
       end
     end
 
-    when_signed_in_as 'bethany@ucsd.covered.io' do
+    when_signed_in_as 'bethany@ucsd.example.com' do
       let(:muted_conversation){ conversations.find_by_slug!('welcome-to-our-covered-organization') }
       it 'returns all but the one muted conversation' do
         expect(conversations.muted_with_participants).to eq [muted_conversation]
