@@ -4,7 +4,7 @@ describe 'javascript specs', type: :feature, driver: :selenium, fixtures: true, 
 
   it "should all pass" do
     visit javascript_tests_path
-    Timeout::timeout(30) do
+    Timeout::timeout(120) do
       until results.present?
         raise page.evaluate_script('document.body.innerHTML') if page.text.include? 'ERROR: '
         sleep 0.25
