@@ -8,9 +8,13 @@ describe Covered::Emails do
     let(:envelope_to) { 'other@guy.com' }
     let(:email_double) { double(:email, smtp_envelope_from: 'some@guy.com', smtp_envelope_to: envelope_to) }
 
+    before do
+      expect(Covered::Emails::Validate).to receive(:call).with(email_double).and_return(true)
+    end
+
     it 'calls generate and deliver' do
       expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
-      expect(email_double).to receive(:deliver!)
+      expect(email_double).to receive(:deliver)
       subject.send_email(:foo, 1,2,3)
     end
 
@@ -19,7 +23,7 @@ describe Covered::Emails do
 
       it "skips the message" do
         expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
-        expect(email_double).to_not receive(:deliver!)
+        expect(email_double).to_not receive(:deliver)
         subject.send_email(:foo, 1,2,3)
       end
     end

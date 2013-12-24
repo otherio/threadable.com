@@ -1,5 +1,7 @@
 class Covered::Emails
 
+  InvalidEmail = Class.new(StandardError)
+
   def initialize covered
     @covered = covered
   end
@@ -12,7 +14,9 @@ class Covered::Emails
       smtp_envelope_from: email.smtp_envelope_from,
       smtp_envelope_to: email.smtp_envelope_to,
     })
-    email.deliver unless email.smtp_envelope_to =~ /(@|\.)example\.com$/
+    Covered::Emails::Validate.call(email)
+    return if email.smtp_envelope_to =~ /(@|\.)example\.com$/
+    email.deliver
   end
 
   def send_email_async type, *args
