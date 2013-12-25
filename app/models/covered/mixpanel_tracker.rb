@@ -9,7 +9,7 @@ class Covered::MixpanelTracker < Covered::Tracker
   def track_user_change user
     mixpanel.people.set(user.id, {
       '$name'    => user.name,
-      '$email'   => user.email_address,
+      '$email'   => user.email_address.to_s,
       '$created' => user.created_at.try(:iso8601),
     })
     nil
