@@ -34,4 +34,9 @@ class Covered::Model
     id.hash
   end
 
+  # does not return any json by default, to prevent circular references.
+  def as_json options=nil
+    {}
+  end
+
 end
