@@ -1,3 +1,5 @@
+require_dependency 'covered/task'
+
 class Task::Event < Conversation::Event
 
   belongs_to :task, foreign_key: 'conversation_id'
