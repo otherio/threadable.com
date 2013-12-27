@@ -28,14 +28,9 @@ class Covered::Task::Doers
     Covered.transaction do
       task.task_record.doer_ids += doer_user_ids
       doer_user_ids.each do |user_id|
-        @covered.events.create!(
-          {
-            type: 'Task::AddedDoerEvent',
-            organization_id: task.organization.id,
-            user_id: covered.current_user_id,
-            doer_id: user_id,
-            conversation_id: task.id,
-          }
+        task.events.create!(:task_added_doer,
+          user_id: covered.current_user_id,
+          doer_id: user_id,
         )
       end
     end
@@ -48,14 +43,9 @@ class Covered::Task::Doers
     Covered.transaction do
       task.task_record.doer_ids -= doer_user_ids
       doer_user_ids.each do |user_id|
-        @covered.events.create!(
-          {
-            type: 'Task::RemovedDoerEvent',
-            organization_id: task.organization.id,
-            user_id: covered.current_user.id,
-            doer_id: user_id,
-            conversation_id: task.id,
-          }
+        task.events.create!(:task_removed_doer,
+          user_id: covered.current_user.id,
+          doer_id: user_id,
         )
       end
     end

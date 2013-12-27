@@ -7,21 +7,17 @@ class Covered::Event < Covered::Model
 
   delegate(*%w{
     id
-    type
+    event_type
     organization_id
     conversation_id
     content
     created_at
     persisted?
+    errors
   }, to: :event_record)
 
-  def human_readable_type
-    type.split('::').last.underscore[/^(.*)_event$/,1].sub('_', ' ')
-  end
-
   def tracking_name
-    event_name = type.split('::').join('_').underscore[/^(.*)_event$/,1]
-    event_name.present? ? event_name.split('_').map(&:capitalize).join(' ') : 'Event'
+    event_type.to_s.split('_').map(&:capitalize).join(' ')
   end
 
   def actor_id
@@ -29,11 +25,15 @@ class Covered::Event < Covered::Model
   end
 
   def actor
-    @actor ||= Covered::User.new(covered, event_record.user) if actor_id
+    @actor ||= Covered::User.new(covered, event_record.user) if event_record.user
+  end
+
+  def organization
+    @organization ||= Covered::Organization.new(covered, event_record.organization) if event_record.organization
   end
 
   def conversation
-    @conversation ||= Covered::Conversation.new(covered, event_record.conversation)
+    @conversation ||= Covered::Conversation.new(covered, event_record.conversation) if event_record.conversation
   end
 
   def task
@@ -46,7 +46,7 @@ class Covered::Event < Covered::Model
 
   def as_json options=nil
     {
-      type:            human_readable_type,
+      event_type:      event_type,
       actor_id:        actor_id,
       conversation_id: conversation_id,
     }

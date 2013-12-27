@@ -100,19 +100,3 @@ class Covered::Conversation < Covered::Model
   end
 
 end
-
-require_dependency 'covered/conversation/event'
-require_dependency 'covered/conversation/created_event'
-require_dependency 'conversation/created_event'
-
-# TODO: the fact that we have to do this is fucking stupid.
-# these are here because sometimes we fetch a task as a conversation, for display
-require_dependency 'covered/task/event'
-require_dependency 'covered/task/removed_doer_event'
-require_dependency 'covered/task/undone_event'
-require_dependency 'covered/task/added_doer_event'
-require_dependency 'covered/task/created_event'
-require_dependency 'covered/task/doer'
-require_dependency 'covered/task/doer_event'
-require_dependency 'covered/task/doers'
-require_dependency 'covered/task/done_event'

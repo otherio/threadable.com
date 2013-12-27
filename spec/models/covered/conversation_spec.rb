@@ -8,8 +8,6 @@ describe Covered::Conversation do
 
   it { should have_constant :Creator      }
   it { should have_constant :Events       }
-  it { should have_constant :Event        }
-  it { should have_constant :CreatedEvent }
   it { should have_constant :Messages     }
   it { should have_constant :Recipients   }
   it { should have_constant :Participants }

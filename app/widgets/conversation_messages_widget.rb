@@ -13,3 +13,4 @@ class ConversationMessagesWidget < Rails::Widget::Presenter
   end
 
 end
+

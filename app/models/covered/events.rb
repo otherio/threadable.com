@@ -12,19 +12,12 @@ class Covered::Events < Covered::Collection
     event_for (scope.first or return)
   end
 
-  def build attributes={}
-    event_for scope.build(attributes)
-  rescue ActiveRecord::SubclassNotFound
-    raise ArgumentError, "unknown even type found in #{attributes.inspect}"
-  end
-  alias_method :new, :build
-
-  def create attributes
-    Create.call(self, attributes)
+  def create event_type, attributes={}
+    Create.call(self, event_type, attributes)
   end
 
-  def create! attributes
-    event = create(attributes)
+  def create! event_type, attributes={}
+    event = create(event_type, attributes)
     event.persisted? or raise Covered::RecordInvalid, "Event invalid: #{event.errors.full_messages.to_sentence}"
     event
   end
@@ -36,8 +29,9 @@ class Covered::Events < Covered::Collection
   end
 
   def event_for event_record
-    event_type = event_record.type || 'Event'
-    "Covered::#{event_type}".constantize.new(covered, event_record)
+    return nil if event_record.nil?
+    event_type = event_record.event_type.to_s.camelize
+    "Covered::Events::#{event_type}".constantize.new(covered, event_record)
   end
 
 end

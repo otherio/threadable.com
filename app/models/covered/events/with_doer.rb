@@ -1,4 +1,4 @@
-module Task::Event::WithDoer
+module Covered::Events::WithDoer
 
   def doer_id
     content[:doer_id]
@@ -9,7 +9,7 @@ module Task::Event::WithDoer
   end
 
   def doer
-    @doer ||= User.find(doer_id)
+    @doer ||= covered.users.find_by_id!(doer_id) if doer_id
   end
 
   def doer= doer
@@ -18,3 +18,4 @@ module Task::Event::WithDoer
   end
 
 end
+

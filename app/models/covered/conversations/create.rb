@@ -12,7 +12,11 @@ class Covered::Conversations::Create < MethodObject
     @options       = OPTIONS.parse(options)
     @organization       = @options.organization
     create_conversation!
-    create_created_at_event! if @conversation_record.persisted?
+
+    @conversation = object.new(@covered, @conversation_record)
+    return @conversation unless @conversation_record.persisted?
+
+    create_created_at_event!
     return object.new(@covered, @conversation_record)
   end
 
@@ -32,12 +36,9 @@ class Covered::Conversations::Create < MethodObject
   end
 
   def create_created_at_event!
-    @covered.events.create!(
-      type: "#{@conversation_record.class}::CreatedEvent",
-      conversation_id: @conversation_record.id,
-      organization_id: @organization.id,
-      user_id: @options.creator.try(:id) || @options.creator_id,
-    )
+    event_type = @options.task ? :task_created : :conversation_created
+    user_id    = @options.creator.try(:id) || @options.creator_id
+    @conversation.events.create!(event_type, user_id: user_id)
   end
 
 end

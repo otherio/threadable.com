@@ -8,6 +8,15 @@ class Covered::Conversation::Events < Covered::Events
   end
   attr_reader :conversation
 
+  def create event_type, attributes={}
+    attributes = attributes.dup.symbolize_keys!
+    attributes[:organization_id] = conversation.organization.id
+    attributes[:conversation_id] = conversation.id
+    attributes.delete(:organization)
+    attributes.delete(:conversation)
+    super event_type, attributes
+  end
+
   private
 
   def scope

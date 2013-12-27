@@ -8,23 +8,23 @@
       %li.with_event
         %span.event
           - if item.actor.present?
-            - case item.type
-            - when 'Conversation::CreatedEvent'
+            - case item.event_type
+            - when :conversation_created
               #{strong(item.actor.name)} started this conversation
-            - when 'Task::CreatedEvent'
+            - when :task_created
               #{strong(item.actor.name)} created this task
-            - when 'Task::DoneEvent'
+            - when :task_done
               %i.icon-ok.finished-check
               #{strong(item.actor.name)} marked this task as done
-            - when 'Task::UndoneEvent'
+            - when :task_undone
               %i.icon-ok.unfinished-check
               #{strong(item.actor.name)} marked this task as not done
-            - when 'Task::AddedDoerEvent'
+            - when :task_added_doer
               #{strong(item.actor.name)} added #{strong(item.doer.name)} as a doer
-            - when 'Task::RemovedDoerEvent'
+            - when :task_removed_doer
               #{strong(item.actor.name)} removed #{strong(item.doer.name)} as a doer
             - else
-              - raise "unknown type #{item.type.inspect}"
+              - raise "unknown event type #{item.event_type.inspect}"
 
           %span.pull-right
             = timeago item.created_at

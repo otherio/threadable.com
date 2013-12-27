@@ -28,15 +28,15 @@ describe Covered::Class do
 
     events = covered.events.all.group_by(&:class)
     expect( events.keys ).to eq [
-      Covered::Conversation::CreatedEvent,
-      Covered::Task::CreatedEvent,
-      Covered::Task::AddedDoerEvent,
-      Covered::Task::DoneEvent,
+      Covered::Events::ConversationCreated,
+      Covered::Events::TaskCreated,
+      Covered::Events::TaskAddedDoer,
+      Covered::Events::TaskDone,
     ]
-    expect( events[Covered::Conversation::CreatedEvent].count ).to eq 10
-    expect( events[Covered::Task::CreatedEvent        ].count ).to eq 31
-    expect( events[Covered::Task::AddedDoerEvent      ].count ).to eq 9
-    expect( events[Covered::Task::DoneEvent           ].count ).to eq 11
+    expect( events[Covered::Events::ConversationCreated].count ).to eq 10
+    expect( events[Covered::Events::TaskCreated        ].count ).to eq 31
+    expect( events[Covered::Events::TaskAddedDoer      ].count ).to eq 9
+    expect( events[Covered::Events::TaskDone           ].count ).to eq 11
 
     expect( covered.organizations.all.map{|p| [p.name, p.members.count] } ).to eq [
       ["SF Health Center", 15], ["UCSD Electric Racing", 6]

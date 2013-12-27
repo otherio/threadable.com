@@ -7,10 +7,10 @@ describe "conversation_messages" do
     @created_at += 10
   end
 
-  def create_event index, type
+  def create_event index, event_type
     double(:"event",
       index: index,
-      type: type,
+      event_type: event_type,
       created_at: generate_created_at,
       actor: double(:actor, name:"[event#{index} user name]"), )
   end
@@ -21,13 +21,13 @@ describe "conversation_messages" do
 
   let :items do
     [
-      [:event,   create_event(0, 'Conversation::CreatedEvent')],
+      [:event,   create_event(0, :conversation_created)],
       [:message, create_message(0)],
-      [:event,   create_event(1, 'Task::CreatedEvent')],
+      [:event,   create_event(1, :task_created)],
       [:message, create_message(1)],
-      [:event,   create_event(2, 'Task::DoneEvent')],
+      [:event,   create_event(2, :task_done)],
       [:message, create_message(2)],
-      [:event,   create_event(3, 'Task::UndoneEvent')],
+      [:event,   create_event(3, :task_undone)],
     ]
   end
 
@@ -40,8 +40,8 @@ describe "conversation_messages" do
   end
 
   before do
-    items.each do |type, item|
-      case type
+    items.each do |event_type, item|
+      case event_type
       when :message
         view.should_receive(:render_widget).
           with(:message, item).
@@ -72,7 +72,7 @@ describe "conversation_messages" do
 
   describe "return value" do
     subject{ return_value }
-    it { should be_a String}
+    it { should be_a String }
   end
 
 end

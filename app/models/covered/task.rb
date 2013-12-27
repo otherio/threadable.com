@@ -13,11 +13,7 @@ class Covered::Task < Covered::Conversation
     return false if done?
     Covered.transaction do
       task_record.update! done_at: now
-      @covered.events.create!(
-        type: 'Task::DoneEvent',
-        user_id: covered.current_user_id,
-        conversation_id: task_record.id
-      )
+      events.create! :task_done
     end
     true
   end
@@ -26,11 +22,7 @@ class Covered::Task < Covered::Conversation
     return false unless done?
     Covered.transaction do
       task_record.update! done_at: nil
-      @covered.events.create!(
-        type: 'Task::UndoneEvent',
-        user_id: covered.current_user_id,
-        conversation_id: task_record.id
-      )
+      events.create! :task_undone
     end
     true
   end

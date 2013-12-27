@@ -119,6 +119,7 @@ describe Covered, :type => :covered do
 
     # # you can use this to generate the list of constants
     #
+    #        Rails.application.eager_load!
     #        def deep_constants object
     #          return [] unless object.respond_to?(:constants)
     #          constants = [object]
@@ -142,9 +143,7 @@ describe Covered, :type => :covered do
       Covered::Collection
       Covered::Config
       Covered::Conversation
-      Covered::Conversation::CreatedEvent
       Covered::Conversation::Creator
-      Covered::Conversation::Event
       Covered::Conversation::Events
       Covered::Conversation::Messages
       Covered::Conversation::Participant
@@ -159,8 +158,17 @@ describe Covered, :type => :covered do
       Covered::EmailAddresses
       Covered::EmailAddresses::Create
       Covered::Emails
+      Covered::Emails::InvalidEmail
+      Covered::Emails::Validate
       Covered::Event
       Covered::Events
+      Covered::Events::ConversationCreated
+      Covered::Events::Create
+      Covered::Events::TaskAddedDoer
+      Covered::Events::TaskCreated
+      Covered::Events::TaskDone
+      Covered::Events::TaskRemovedDoer
+      Covered::Events::TaskUndone
       Covered::InMemoryTracker
       Covered::IncomingEmail
       Covered::IncomingEmail::Attachments
@@ -185,6 +193,9 @@ describe Covered, :type => :covered do
       Covered::Model
       Covered::Organization
       Covered::Organization::Conversations
+      Covered::Organization::HeldMessage
+      Covered::Organization::HeldMessages
+      Covered::Organization::IncomingEmails
       Covered::Organization::Member
       Covered::Organization::Members
       Covered::Organization::Members::Add
@@ -199,18 +210,12 @@ describe Covered, :type => :covered do
       Covered::RecordNotFound
       Covered::SignUp
       Covered::Task
-      Covered::Task::AddedDoerEvent
-      Covered::Task::CreatedEvent
       Covered::Task::Doer
-      Covered::Task::DoerEvent
       Covered::Task::Doers
-      Covered::Task::DoneEvent
-      Covered::Task::Event
-      Covered::Task::RemovedDoerEvent
-      Covered::Task::UndoneEvent
       Covered::Tasks
       Covered::Tasks::Create
       Covered::Tracker
+      Covered::Transactions
       Covered::User
       Covered::User::EmailAddress
       Covered::User::EmailAddresses

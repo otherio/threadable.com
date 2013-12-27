@@ -3,7 +3,7 @@ class Conversation < ActiveRecord::Base
   belongs_to :organization
   belongs_to :creator, :class_name => 'User'
   has_many :messages, -> { order created_at: :asc }, dependent: :destroy
-  has_many :events, class_name: 'Conversation::Event'
+  has_many :events, -> { order "created_at" }, dependent: :destroy
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
   has_many :recipients, ->(conversation){

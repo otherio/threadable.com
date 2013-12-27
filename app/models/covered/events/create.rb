@@ -1,31 +1,31 @@
-require_dependency 'event'
-require_dependency 'conversation/created_event'
-require_dependency 'conversation/event'
-require_dependency 'task/event'
-require_dependency 'task/added_doer_event'
-require_dependency 'task/created_event'
-require_dependency 'task/done_event'
-require_dependency 'task/removed_doer_event'
-require_dependency 'task/undone_event'
-
 class Covered::Events::Create < MethodObject
 
-  OPTIONS = Class.new OptionsHash do
-    required :type, default: 'Event'
-    optional :organization_id
-    optional :conversation_id
-    optional :content
-  end
+  def call events, event_type, attributes
+    covered = events.covered
 
-  def call events, options
-    begin
-      event_record = options[:type].constantize.create!(options)
-      event = "Covered::#{options[:type]}".constantize.new(events.covered, event_record)
-      events.covered.track(event.tracking_name, options.except(:type)) if event.persisted?
-      event
-    rescue ActiveRecord::SubclassNotFound
-      raise ArgumentError, "unknown event type found in #{options.inspect}"
-    end
+    event_type.present? or raise ArgumentError, 'event type required'
+    event_type = event_type.to_sym
+    ::Event::TYPES.include?(event_type) or raise ArgumentError, "invalid event type: #{event_type.to_s.inspect}"
+
+    content = attributes.slice!(
+      :organization,
+      :organization_id,
+      :conversation,
+      :conversation_id,
+      :user,
+      :user_id,
+      :created_at,
+    )
+    attributes[:user_id]    ||= covered.current_user_id
+    attributes[:event_type] = event_type
+    attributes[:content]    = content
+
+    event_record = Event.create(attributes)
+    event = "Covered::Events::#{event_type.to_s.camelize}".constantize.new(covered, event_record)
+    return event unless event.persisted?
+
+    covered.track(event.tracking_name, attributes.except(:event_type))
+    return event
   end
 
 end
