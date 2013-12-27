@@ -55,6 +55,7 @@ end
 group :development do
   gem 'meta_request'
   gem 'active_record_query_trace'
+  gem 'better_errors'
 end
 
 group :development, :test do
@@ -65,7 +66,6 @@ group :development, :test do
   gem 'pry-debugger'
   gem 'activerecord-fixture_builder'
   gem 'binding_of_caller'
-  gem 'better_errors'
   gem "mail_view"
   gem 'fuubar'
 end
