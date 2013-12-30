@@ -88,7 +88,7 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def bounceable?
-    organization.nil? || !subject_valid?
+    organization.nil? || !subject_valid? || !groups_valid?
   end
 
   def holdable?
@@ -101,6 +101,10 @@ class Covered::IncomingEmail < Covered::Model
 
   def subject_valid?
     PrepareEmailSubject.call(organization, self).present?
+  end
+
+  def groups_valid?
+    email_address_tags.to_set == groups.map(&:email_address_tag).to_set
   end
 
 
@@ -182,9 +186,23 @@ class Covered::IncomingEmail < Covered::Model
     ExtractEmailAddresses.call(from, envelope_from, sender).uniq
   end
 
+  SPECIAL_EMAIL_ADDRESS_TAGS = %w{ task }.freeze
+  def email_address_tags
+    @email_address_tags ||= begin
+      local = recipient.strip_non_ascii.downcase.split('@').first
+      @email_address_tags = local.split('+')[1..-1] - SPECIAL_EMAIL_ADDRESS_TAGS
+    end
+  end
+
   def find_organization!
     return self if organization
     self.organization = covered.organizations.find_by_email_address(recipient)
+    return self
+  end
+
+  def find_groups!
+    return self if groups.present? || organization.nil?
+    self.groups = organization.groups.find_by_email_address_tags(email_address_tags)
     return self
   end
 
@@ -232,6 +250,17 @@ class Covered::IncomingEmail < Covered::Model
   def organization
     return unless incoming_email_record.organization
     @organization ||= Covered::Organization.new(covered, incoming_email_record.organization)
+  end
+
+  def groups= groups
+    @groups = groups.compact
+    incoming_email_record.groups = @groups.map(&:group_record)
+  end
+
+  def groups
+    @groups ||= incoming_email_record.groups.map do |group|
+      Covered::Group.new(covered, group)
+    end
   end
 
   def message= message
@@ -313,7 +342,7 @@ class Covered::IncomingEmail < Covered::Model
       delivered:       delivered?,
       from:            from,
       creator_id:      incoming_email_record.creator_id,
-      organization_id:      incoming_email_record.organization_id,
+      organization_id: incoming_email_record.organization_id,
       conversation_id: incoming_email_record.conversation_id,
       message_id:      incoming_email_record.message_id,
     }.map{|k,v| "#{k}: #{v.inspect}"}.join(', ')

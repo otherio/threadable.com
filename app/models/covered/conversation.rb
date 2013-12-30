@@ -33,12 +33,15 @@ class Covered::Conversation < Covered::Model
     muters
   }, to: :conversation_record
 
+  private :muters
+
   let(:organization){ covered.organizations.find_by_id(organization_id) }
   let(:creator     ){ Creator.new(self) if creator_id }
   let(:events      ){ Events.new(self)       }
   let(:messages    ){ Messages.new(self)     }
   let(:recipients  ){ Recipients.new(self)   }
   let(:participants){ Participants.new(self) }
+  let(:groups      ){ Groups.new(self) }
 
 
   def mute!
@@ -55,7 +58,11 @@ class Covered::Conversation < Covered::Model
 
   def muted?
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
-    muters.map(&:id).include?(covered.current_user.id)
+    muted_by? covered.current_user
+  end
+
+  def muted_by? user
+    muters.map(&:id).include?(user.user_id)
   end
 
   def update attributes

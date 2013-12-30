@@ -109,15 +109,15 @@ describe "processing incoming emails 2" do
       expect( incoming_email ).to_not be_bounced
       expect( incoming_email ).to     be_held
       expect( incoming_email ).to_not be_delivered
-    when :delivered
+    when :delivered, :duplicate
       expect( incoming_email ).to_not be_bounced
       expect( incoming_email ).to_not be_held
       expect( incoming_email ).to     be_delivered
     else
-      raise "expect result to :bounced, :held, or :delivered. got #{result.inspect}"
+      raise "expect result to :bounced, :held, :delivered or :duplicate. got #{result.inspect}"
     end
 
-    expect( incoming_email.organization        ).to eq expected_organization
+    expect( incoming_email.organization   ).to eq expected_organization
     expect( incoming_email.parent_message ).to eq expected_parent_message
     expect( incoming_email.conversation   ).to eq expected_conversation
     expect( incoming_email.creator        ).to eq expected_creator
@@ -147,7 +147,7 @@ describe "processing incoming emails 2" do
       return
     end
 
-    # only validating delivered messages beyond this point
+    # only validating delivered/duplicate messages beyond this point
 
 
     expect( incoming_email.message ).to be_present
@@ -166,23 +166,14 @@ describe "processing incoming emails 2" do
       expect( conversation ).to_not be_task
     end
 
-
-
     expect( incoming_email.params['attachment-count'] ).to be_nil
     expect( incoming_email.params['attachment-1']     ).to be_nil
     expect( incoming_email.params['attachment-2']     ).to be_nil
     expect( incoming_email.params['attachment-3']     ).to be_nil
 
-    incoming_email_attachments = incoming_email.attachments.all.map do |attachment|
-      [attachment.filename, attachment.mimetype, attachment.content]
-    end.to_set
-
     posted_attachments = attachments.map do |attachment|
       [attachment.original_filename, attachment.content_type, File.read(attachment.path)]
     end.to_set
-
-    expect(incoming_email_attachments).to eq posted_attachments
-
 
     expect( message.organization      ).to eq expected_organization
     expect( message.conversation      ).to eq expected_conversation
@@ -196,15 +187,42 @@ describe "processing incoming emails 2" do
     expect( message.body_html         ).to eq body_html
     expect( message.stripped_html     ).to eq stripped_html
     expect( message.stripped_plain    ).to eq stripped_text
+
+    expect( message.conversation.groups.all.map(&:name) ).to match_array expected_groups
+
+    incoming_email_attachments = incoming_email.attachments.all.map do |attachment|
+      [attachment.filename, attachment.mimetype, attachment.content]
+    end.to_set
+
+    expect( sent_emails.map(&:smtp_envelope_to).flatten ).to match_array expected_email_recipients
+
+    if result == :duplicate
+      expect( incoming_email.params['attachment-count'] ).to be_nil
+      expect( incoming_email.params['attachment-1']     ).to be_nil
+      expect( incoming_email.params['attachment-2']     ).to be_nil
+      expect( incoming_email.params['attachment-3']     ).to be_nil
+      expect( incoming_email_attachments ).to be_empty
+      return
+    end
+
+    # only validating delivered messages beyond this point
+
+    expect(incoming_email_attachments).to eq posted_attachments
     expect( message.attachments.all   ).to eq incoming_email.attachments.all
 
-
-    recipients = message.conversation.recipients.all.reject do |user|
+    recipients = message.recipients.all.reject do |user|
       message.creator.same_user?(user) if message.creator
     end
+
+    recipients.each do |recipient|
+      expect(message.sent_to?(recipient)).to be_true
+    end
+
     recipient_email_addresses = recipients.map(&:email_address)
     expected_emails_count = recipient_email_addresses.length
     expect(sent_emails.count).to eq expected_emails_count
+
+
     sent_emails.each do |email|
       expect( email.from ).to eq(
         (message.creator && email.smtp_envelope_to.include?(message.creator.email_address) ) ?
@@ -281,10 +299,11 @@ describe "processing incoming emails 2" do
   let(:expected_parent_message)                { nil }
   let(:expected_conversation)                  { covered.conversations.latest }
   let(:expected_creator)                       { covered.users.find_by_email_address('yan@ucsd.example.com') }
-  let(:expected_organization)                       { covered.organizations.find_by_slug!('raceteam') }
+  let(:expected_organization)                  { covered.organizations.find_by_slug!('raceteam') }
   let(:expected_conversation_subject)          { 'OMG guys I love covered!' }
   let(:expected_message_subject)               { 'OMG guys I love covered!' }
   let(:expect_conversation_to_be_a_task)       { false }
+  let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
   let(:expected_sent_email_to)                 { ['raceteam@127.0.0.1'] }
   let(:expected_sent_email_cc)                 { '' }
   let(:expected_sent_email_subject)            { "[RaceTeam] OMG guys I love covered!" }
@@ -293,18 +312,29 @@ describe "processing incoming emails 2" do
   let(:expected_sent_email_list_id)            { expected_organization.formatted_list_id }
   let(:expected_sent_email_list_archive)       { "<#{organization_conversations_url(expected_organization)}>" }
   let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{new_organization_conversation_url(expected_organization)}>" }
-
+  let(:expected_groups)                        { [] }
 
   it 'delivers the email' do
     validate! :delivered
   end
 
+  context 'when the same message is processed twice' do
+    let(:expected_email_recipients){ [] }
+
+    it 'delivers the first message and processes the second as a duplicate' do
+      covered.incoming_emails.create!(params)
+      drain_background_jobs!
+      sent_emails.clear
+      validate! :duplicate
+    end
+  end
+
 
   context "when the recipients do not match a organization" do
-    let(:recipient)    { 'poopnozzle@covered.io' }
-    let(:to)           { 'Poop Nozzle <poopnozzle@covered.io>' }
+    let(:recipient){ 'poopnozzle@covered.io' }
+    let(:to)       { 'Poop Nozzle <poopnozzle@covered.io>' }
 
-    let(:expected_organization)       { nil }
+    let(:expected_organization)  { nil }
     let(:expected_parent_message){ nil }
     let(:expected_conversation)  { nil }
     let(:expected_creator)       { nil }
@@ -314,7 +344,7 @@ describe "processing incoming emails 2" do
   end
 
 
-  context "when the recipient email address matches a organization" do
+  context "when the recipient email address matches an organization" do
     let(:recipient){ expected_organization.email_address }
     let(:to)       { expected_organization.formatted_email_address }
 
@@ -364,6 +394,7 @@ describe "processing incoming emails 2" do
         let(:expected_creator)           { covered.users.find_by_email_address(sender) }
         let(:expected_sent_email_smtp_envelope_from){ expected_organization.email_address }
         let(:expected_sent_email_subject){ "[#{expected_organization.subject_tag}] #{subject}" }
+        let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
 
         it 'delivers the email' do
           validate! :delivered
@@ -375,7 +406,7 @@ describe "processing incoming emails 2" do
         let(:envelope_from) { "<elizabeth@pickles.io>" }
         let(:sender)        { "elizabeth@pickles.io" }
 
-        let(:expected_conversation) { nil }
+        let(:expected_conversation){ nil }
         let(:expected_creator     ){ nil }
 
         it 'holds the incoming email' do
@@ -391,11 +422,11 @@ describe "processing incoming emails 2" do
         let(:expected_conversation){ nil }
         let(:expected_creator)     { covered.users.find_by_email_address(sender) }
 
+
         it 'holds the incoming email' do
           validate! :held
         end
       end
-
     end
 
     context 'a parent message can be found via the In-Reply-To header' do
@@ -404,6 +435,8 @@ describe "processing incoming emails 2" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug!('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
       it 'delivers the email' do
         validate! :delivered
       end
@@ -415,6 +448,8 @@ describe "processing incoming emails 2" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
       it 'delivers the email' do
         validate! :delivered
       end
@@ -426,6 +461,8 @@ describe "processing incoming emails 2" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
       it 'prefers the In-Reply-To message id over the References message ids' do
         validate! :delivered
       end
@@ -443,8 +480,10 @@ describe "processing incoming emails 2" do
         let(:envelope_from){ '<anil@sfhealth.example.com>' }
         let(:sender)       { 'anil@sfhealth.example.com' }
 
-        let(:expected_creator){ covered.users.find_by_email_address!(sender) }
-        let(:expected_sent_email_cc){ 'Anil Kapoor <anil@sfhealth.example.com>' }
+        let(:expected_creator)         { covered.users.find_by_email_address!(sender) }
+        let(:expected_sent_email_cc)   { 'Anil Kapoor <anil@sfhealth.example.com>' }
+        let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
         it 'it delivers the message and copies the non-member to the cc header' do
           validate! :delivered
         end
@@ -457,6 +496,8 @@ describe "processing incoming emails 2" do
 
         let(:expected_creator){ nil }
         let(:expected_sent_email_cc){ 'Who Knows <who.knows@example.com>' }
+        let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
         it 'it delivers the message and copies the unknown email address to the cc header' do
           validate! :delivered
         end
@@ -468,15 +509,81 @@ describe "processing incoming emails 2" do
         let(:sender)       { 'alice@ucsd.example.com' }
 
         let(:expected_creator){ covered.users.find_by_email_address!(sender) }
+        let(:expected_email_recipients){ ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
         it 'it delivers the message' do
           validate! :delivered
         end
       end
     end
 
+    context 'the recipient email address contains a group that does not exist' do
+      let(:recipient) { 'raceteam+hotdogs+fundraising@127.0.0.1' }
+      let(:to)        { 'raceteam+hotdogs+fundraising@127.0.0.1' }
+
+      let(:expected_parent_message){ nil }
+      let(:expected_conversation)  { nil }
+      let(:expected_creator)       { nil }
+      it 'bounces the incoming email' do
+        validate! :bounced
+      end
+    end
+
+    context 'the recipient email address contains only valid groups' do
+      let(:from)         { 'Alice Neilson <alice@ucsd.example.com>'}
+      let(:envelope_from){ '<alice@ucsd.example.com>' }
+      let(:sender)       { 'alice@ucsd.example.com' }
+      let(:recipient)    { 'raceteam+electronics+fundraising@127.0.0.1' }
+      let(:to)           { '"UCSD Electric Racing: Electronics" <raceteam+electronics+fundraising@127.0.0.1>' }
+
+      let(:expected_creator)         { covered.users.find_by_email_address!(sender) }
+      let(:expected_email_recipients){ ["tom@ucsd.example.com", "bethany@ucsd.example.com", 'bob@ucsd.example.com'] }
+      let(:expected_groups)          { ['Electronics', 'Fundraising'] }
+
+      it "delivers the message to only those groups' members" do
+        validate! :delivered
+      end
+
+      context 'and the message is a reply to a conversation that is in different group(s)' do
+        let(:in_reply_to){ expected_parent_message.message_id_header }
+
+        let(:expected_conversation)  { expected_organization.conversations.find_by_slug('parts-for-the-motor-controller') }
+        let(:expected_parent_message){ expected_conversation.messages.latest }
+        let(:expected_groups)        { ['Electronics', 'Fundraising'] }
+        it 'adds the new groups to the conversation' do
+          validate! :delivered
+        end
+
+        context 'and the conversation was previously removed from one of those groups' do
+          let(:expected_conversation){ expected_organization.conversations.find_by_slug('how-are-we-paying-for-the-motor-controller') }
+
+          let(:expected_groups) { ['Fundraising'] }
+          let(:expected_email_recipients){ ['bob@ucsd.example.com'] }
+          it 'does not add the previously-used groups to the conversation' do
+            validate! :delivered
+          end
+        end
+      end
+
+      context 'the message is a duplicate of an already received message, but the recipient is to different groups' do
+        let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+        let(:recipient) { 'raceteam+electronics@127.0.0.1' }
+        let(:expected_groups) { ['Electronics', 'Fundraising'] }
+        let(:expected_email_recipients){ ["tom@ucsd.example.com", "bethany@ucsd.example.com"] }
+
+        before do
+          # this simulates the same message being recieved twice with different recipients, as if we were in the TO and the CC headers
+          covered.incoming_emails.create!(params.merge("recipient" => 'raceteam+fundraising@127.0.0.1'))
+          drain_background_jobs!
+          sent_emails.clear
+        end
+
+        it 'adds the conversation to those groups, delivers the message only to the recipients from the newly added groups, who are not in the previous groups' do
+          validate! :duplicate
+        end
+      end
+    end
   end
-
-
 
   context 'and the subject is more than 255 characters' do
     let(:subject){ 'A☃'*250 }
@@ -572,6 +679,7 @@ describe "processing incoming emails 2" do
     let(:envelope_from)           { '<bj@sfhealth.example.com>' }
     let(:sender)                  { 'bob@ucsd.example.com' }
     let(:expected_creator)        { covered.users.find_by_email_address('bob@ucsd.example.com') }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com"] }
     it 'sets the creator as the user matching the sender address' do
       validate! :delivered
     end
@@ -582,6 +690,7 @@ describe "processing incoming emails 2" do
     let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'house@sfhealth.example.com' }
     let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.example.com') }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
     it 'sets the creator as user matching the envelope from address' do
       validate! :delivered
     end
@@ -592,6 +701,7 @@ describe "processing incoming emails 2" do
     let(:envelope_from)           { '<zarkov@sfhealth.example.com>' }
     let(:sender)                  { 'trapper@sfhealth.example.com' }
     let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.example.com') }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
     it 'sets the creator as user matching the from address' do
       validate! :delivered
     end
@@ -602,6 +712,7 @@ describe "processing incoming emails 2" do
     let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'bob@ucsd.example.com' }
     let(:expected_creator)        { covered.users.find_by_email_address('jonathan@ucsd.example.com') }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
     it 'sets the creator as user matching the from address' do
       validate! :delivered
     end
@@ -612,6 +723,7 @@ describe "processing incoming emails 2" do
     let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'bob@ucsd.example.com' }
     let(:expected_creator)        { covered.users.find_by_email_address('bethany@ucsd.example.com') }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
     it 'sets the creator as user matching the envelope from address' do
       validate! :delivered
     end
@@ -682,6 +794,8 @@ describe "processing incoming emails 2" do
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
     let(:expected_parent_message){ expected_conversation.messages.latest }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+
     it 'replace that email with the non task version' do
       validate! :delivered
     end

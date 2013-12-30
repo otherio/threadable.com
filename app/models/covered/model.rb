@@ -39,4 +39,8 @@ class Covered::Model
     {}
   end
 
+  def to_key
+    id ? [id] : nil
+  end
+
 end

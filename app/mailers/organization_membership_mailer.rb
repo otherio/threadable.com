@@ -5,7 +5,7 @@ class OrganizationMembershipMailer < Covered::Mailer
     @organization, @recipient, @personal_message = organization, recipient, personal_message
 
     @subject                  = "You've been added to #{@organization.name}"
-    @organization_url              = organization_url(@organization)
+    @organization_url         = organization_url(@organization)
     user_setup_token          = UserSetupToken.encrypt(@recipient.id, organization_path(@organization))
     @recipient_setup_url      = setup_users_url(user_setup_token)
     organization_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)

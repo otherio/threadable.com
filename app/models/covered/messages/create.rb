@@ -25,7 +25,7 @@ class Covered::Messages::Create < MethodObject
     if @message.persisted?
       track!
       create_attachments!
-      send_emails!
+      @message.send_emails! @options.sent_via_web
     end
     return @message
   end
@@ -122,13 +122,6 @@ class Covered::Messages::Create < MethodObject
       when Hash
         ::Attachment.create(attachment)
       end
-    end
-  end
-
-  def send_emails!
-    @message.recipients.all.each do |recipient|
-      next if !@options.sent_via_web && recipient.same_user?(creator)
-      @covered.emails.send_email_async(:conversation_message, @conversation.organization.id, @message.id, recipient.id)
     end
   end
 

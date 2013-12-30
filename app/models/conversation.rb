@@ -6,10 +6,12 @@ class Conversation < ActiveRecord::Base
   has_many :events, -> { order "created_at" }, dependent: :destroy
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
-  has_many :recipients, ->(conversation){
-    id = Conversation.sanitize(conversation.id) # shit is fucked up and bullshit - JarIan
-    joins("LEFT JOIN conversations_muters m ON m.user_id = users.id AND m.conversation_id = #{id}").where('m.user_id IS NULL')
-  },  through: :organization, class_name: 'User', source: 'members_who_get_email'
+  has_many :conversation_groups
+  has_many :groups, through: :conversation_groups do
+    def active
+      where(conversation_groups: {active: true})
+    end
+  end
 
   def self.default_scope
     order('conversations.updated_at DESC')

@@ -22,7 +22,7 @@ describe 'model relationships' do
     organization.name.should == 'UCSD Electric Racing'
     organization.description.should == 'Senior engineering electric race team!'
 
-    organization.conversations.to_set.should == Set[
+    organization.conversations.should match_array [
       conversation('Welcome to our Covered organization!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
@@ -35,9 +35,11 @@ describe 'model relationships' do
       conversation('Who wants to pick up lunch?'),
       conversation('Who wants to pick up dinner?'),
       conversation('Who wants to pick up breakfast?'),
+      conversation('Parts for the motor controller'),
+      conversation('How are we paying for the motor controller?'),
     ]
 
-    organization.tasks.to_set.should == Set[
+    organization.tasks.should match_array [
       task('layup body carbon'),
       task('install mirrors'),
       task('trim body panels'),
@@ -47,7 +49,7 @@ describe 'model relationships' do
       task('get carbon and fiberglass'),
     ]
 
-    organization.members.to_set.should == Set[
+    organization.members.should match_array [
       member('alice@ucsd.example.com'),
       member('tom@ucsd.example.com'),
       member('yan@ucsd.example.com'),
@@ -56,7 +58,7 @@ describe 'model relationships' do
       member('jonathan@ucsd.example.com'),
     ]
 
-    organization.tasks.to_set.should == Set[
+    organization.tasks.should match_array [
       task('layup body carbon'),
       task('install mirrors'),
       task('trim body panels'),
@@ -66,13 +68,13 @@ describe 'model relationships' do
       task('get carbon and fiberglass'),
     ]
 
-    organization.tasks.not_done.to_set.should == Set[
+    organization.tasks.not_done.should match_array [
       task('install mirrors'),
       task('trim body panels'),
       task('make wooden form for carbon layup'),
     ]
 
-    organization.tasks.done.to_set.should == Set[
+    organization.tasks.done.should match_array [
       task('layup body carbon'),
       task('get epoxy'),
       task('get release agent'),
@@ -93,7 +95,7 @@ describe 'model relationships' do
     alice.organization_memberships.count.should == 1
     alice.organizations.should == [organization]
     alice.messages.count.should == 3
-    alice.conversations.to_set.should == Set[
+    alice.conversations.should match_array [
       conversation('Welcome to our Covered organization!'),
       conversation('How are we going to build the body?'),
       conversation('layup body carbon'),
@@ -106,11 +108,13 @@ describe 'model relationships' do
       conversation('Who wants to pick up lunch?'),
       conversation('Who wants to pick up dinner?'),
       conversation('Who wants to pick up breakfast?'),
+      conversation('Parts for the motor controller'),
+      conversation('How are we paying for the motor controller?'),
     ]
     alice.tasks.should == []
 
     tom = member('tom@ucsd.example.com')
-    tom.tasks.to_set.should == Set[
+    tom.tasks.should match_array [
       task('layup body carbon'),
       task('get epoxy'),
       task('get release agent'),

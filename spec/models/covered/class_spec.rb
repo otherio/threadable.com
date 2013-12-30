@@ -23,12 +23,14 @@ describe Covered::Class do
 
   its(:emails          ){ should be_a Covered::Emails         }
   its(:users           ){ should be_a Covered::Users          }
-  its(:organizations        ){ should be_a Covered::Organizations       }
+  its(:organizations   ){ should be_a Covered::Organizations  }
   its(:conversations   ){ should be_a Covered::Conversations  }
   its(:tasks           ){ should be_a Covered::Tasks          }
   its(:messages        ){ should be_a Covered::Messages       }
   its(:attachments     ){ should be_a Covered::Attachments    }
   its(:incoming_emails ){ should be_a Covered::IncomingEmails }
+  its(:events          ){ should be_a Covered::Events         }
+  its(:groups          ){ should be_a Covered::Groups         }
 
 
   its(:env             ){ should eq(

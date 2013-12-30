@@ -2,7 +2,7 @@ class Covered::Conversations::Create < MethodObject
 
   OPTIONS = Class.new OptionsHash do
     required :organization, :subject
-    optional :creator, :creator_id
+    optional :creator, :creator_id, :groups
     optional :task, default: false
   end
 
@@ -16,6 +16,7 @@ class Covered::Conversations::Create < MethodObject
     @conversation = object.new(@covered, @conversation_record)
     return @conversation unless @conversation_record.persisted?
 
+    add_groups!
     create_created_at_event!
     return object.new(@covered, @conversation_record)
   end
@@ -33,6 +34,11 @@ class Covered::Conversations::Create < MethodObject
       subject:    @options.subject,
       creator_id: @options.creator.try(:id) || @options.creator_id,
     )
+  end
+
+  def add_groups!
+    return unless @options.groups.present?
+    @conversation_record.groups = @options.groups.map(&:group_record)
   end
 
   def create_created_at_event!

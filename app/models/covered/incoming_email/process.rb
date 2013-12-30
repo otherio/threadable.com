@@ -8,6 +8,7 @@ class Covered::IncomingEmail::Process < MethodObject
 
     Covered.transaction do
       @incoming_email.find_organization!
+      @incoming_email.find_groups!
       return bounce! if @incoming_email.bounceable?
       @incoming_email.find_message!
       @incoming_email.find_creator!

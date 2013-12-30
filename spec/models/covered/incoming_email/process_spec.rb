@@ -27,8 +27,9 @@ describe Covered::IncomingEmail::Process do
       incoming_email.stub :processed? => false
       expect(Covered).to receive(:transaction).and_yield
       expect(incoming_email).to receive(:find_organization!)
+      expect(incoming_email).to receive(:find_groups!)
     end
-    context 'and the organization is not found' do
+    context 'and the organization or groups are not found' do
       before do
         expect(incoming_email).to receive(:bounceable?).and_return(true)
       end
@@ -38,7 +39,7 @@ describe Covered::IncomingEmail::Process do
         call!
       end
     end
-    context 'and the organization is found' do
+    context 'and the organization and groups are found' do
       before do
         expect(incoming_email).to receive(:bounceable?).once.and_return(false)
         expect(incoming_email).to receive(:find_message!)

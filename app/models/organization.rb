@@ -13,6 +13,7 @@ class Organization < ActiveRecord::Base
   has_many :members_who_get_email, -> { where organization_memberships: {gets_email:true} }, :through => :organization_memberships, :source => 'user'
   has_many :events, -> { order "created_at" }, dependent: :destroy
   has_many :incoming_emails, -> { order "created_at" }, dependent: :destroy
+  has_many :groups
 
   scope :with_members, ->{ includes(:organization_memberships).where('organization_memberships.id IS NOT NULL').references(:organization_memberships) }
   scope :without_members, ->{ includes(:organization_memberships).where(organization_memberships:{id:nil}).references(:organization_memberships) }

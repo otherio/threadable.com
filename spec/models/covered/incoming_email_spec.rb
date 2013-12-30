@@ -209,7 +209,16 @@ describe Covered::IncomingEmail do
 
       context 'when the subject is valid' do
         before { expect(incoming_email).to receive(:subject_valid?).and_return(true) }
-        it { should be_false }
+
+        context 'when the groups are valid' do
+          before { expect(incoming_email).to receive(:groups_valid?).and_return(true) }
+          it { should be_false }
+        end
+
+        context 'when the groups are invalid' do
+          before { expect(incoming_email).to receive(:groups_valid?).and_return(false) }
+          it { should be_true }
+        end
       end
 
       context 'when the subject is invalid' do
@@ -297,6 +306,27 @@ describe Covered::IncomingEmail do
     end
   end
 
+  describe '#groups_valid?' do
+    let(:groups) do
+      [
+        double(:group1, email_address_tag: 'group1'),
+        double(:group2, email_address_tag: 'group2')
+      ]
+    end
+    let(:email_address_tags) { ['group2', 'group1'] }
+
+    before do
+      incoming_email.stub groups: groups, email_address_tags: email_address_tags
+    end
+
+    subject{ incoming_email.groups_valid? }
+    it {should be_true}
+
+    context 'with an extra email address tag' do
+      let(:email_address_tags) { ['group1', 'group2', 'eeevil'] }
+      it {should be_false}
+    end
+  end
 
 
   its(:subject)                { should eq params['subject'] }
@@ -339,7 +369,26 @@ describe Covered::IncomingEmail do
   describe 'creator_is_a_organization_member?' do
     # these are integration tested
   end
+  describe 'find_groups!' do
+    # these are integration tested
+  end
 
+  describe '#email_address_tags' do
+    subject{ incoming_email.email_address_tags }
+    before{ expect(incoming_email).to receive(:recipient).and_return(recipient) }
+    context 'when the email address is foo@covered.io' do
+      let(:recipient){ 'foo@covered.io' }
+      it{ should eq [] }
+    end
+    context 'when the email address contains many tags' do
+      let(:recipient){ 'foo+bar+baz@covered.io' }
+      it{ should eq ['bar', 'baz'] }
+    end
+    context 'when the email address contains +task' do
+      let(:recipient){ 'foo+bar+task@covered.io' }
+      it{ should eq ['bar'] }
+    end
+  end
 
 
   describe 'attachments' do

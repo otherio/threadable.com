@@ -25,13 +25,9 @@ class Covered::User < Covered::Model
 
   alias_method :user_id, :id
 
-  def to_key
-    id ? [id] : nil
-  end
-
   let(:email_addresses){ EmailAddresses.new(self) }
-  let(:organizations)       { Organizations.new(self)     }
-  let(:messages)       { Messages.new(self)     }
+  let(:organizations)  { Organizations.new(self)  }
+  let(:messages)       { Messages.new(self)       }
 
   def web_enabled?
     user_record.encrypted_password.present?
@@ -46,7 +42,7 @@ class Covered::User < Covered::Model
   end
 
   def formatted_email_address
-    "#{name} <#{email_address}>"
+    FormattedEmailAddress.new(display_name: name, address: email_address).to_s
   end
 
   def reload

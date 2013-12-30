@@ -33,7 +33,7 @@ describe Covered::Class do
       Covered::Events::TaskAddedDoer,
       Covered::Events::TaskDone,
     ]
-    expect( events[Covered::Events::ConversationCreated].count ).to eq 10
+    expect( events[Covered::Events::ConversationCreated].count ).to eq 12
     expect( events[Covered::Events::TaskCreated        ].count ).to eq 31
     expect( events[Covered::Events::TaskAddedDoer      ].count ).to eq 9
     expect( events[Covered::Events::TaskDone           ].count ).to eq 11

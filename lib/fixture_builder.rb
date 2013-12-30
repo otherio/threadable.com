@@ -45,6 +45,19 @@ class FixtureBuilder
     organization.members.add(name: name, email_address: email_address)
   end
 
+  def create_group name
+    organization.groups.create!(name: name)
+  end
+
+  def remove_conversation_from_group message, group
+    message.conversation.groups.remove(group)
+  end
+
+  def add_member_to_group email_address_tag, email_address
+    group = organization.groups.find_by_email_address_tag(email_address_tag)
+    group.members.add(organization.members.find_by_email_address(email_address))
+  end
+
   def web_enable! email_address
     covered.users.find_by_email_address!(email_address).update!(
       password: 'password',
@@ -61,9 +74,10 @@ class FixtureBuilder
   end
 
   def create_conversation options
-    subject = options.fetch(:subject)
-    conversation = organization.conversations.create!(subject: subject, creator: current_user)
-    create_message conversation, options
+    message_options = options.slice!(:subject, :groups)
+    options[:creator] = current_user
+    conversation = organization.conversations.create!(options)
+    create_message conversation, message_options
   end
 
   def create_message conversation, options

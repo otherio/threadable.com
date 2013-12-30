@@ -23,10 +23,6 @@ class Covered::Organization < Covered::Model
     persisted?
   }, to: :organization_record
 
-  def to_key
-    id ? [id] : nil
-  end
-
   def email_address
     "#{organization_record.email_address_username}@#{covered.email_host}"
   end
@@ -40,11 +36,11 @@ class Covered::Organization < Covered::Model
   end
 
   def formatted_email_address
-    "#{name} <#{email_address}>"
+    FormattedEmailAddress.new(display_name: name, address: email_address).to_s
   end
 
   def formatted_task_email_address
-    "#{name} Tasks <#{task_email_address}>"
+    FormattedEmailAddress.new(display_name: "#{name} Tasks", address: task_email_address).to_s
   end
 
   def list_id
@@ -61,6 +57,7 @@ class Covered::Organization < Covered::Model
   let(:tasks){ Tasks.new(self) }
   let(:incoming_emails){ IncomingEmails.new(self) }
   let(:held_messages){ HeldMessages.new(self) }
+  let(:groups){ Groups.new(self) }
 
   # TODO remove me in favor of a rails json view file
   def as_json options=nil
@@ -86,6 +83,5 @@ class Covered::Organization < Covered::Model
   def inspect
     %(#<#{self.class} organization_id: #{id.inspect}, name: #{name.inspect}>)
   end
-
 end
 

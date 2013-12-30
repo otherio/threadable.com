@@ -5,6 +5,7 @@ class Message < ActiveRecord::Base
   belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
   has_one :organization, through: :conversation
   has_and_belongs_to_many :attachments, class_name: 'Attachment'
+  has_many :sent_emails
 
   scope :by_created_at, ->{ order('messages.created_at DESC') }
 

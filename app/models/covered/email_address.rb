@@ -18,15 +18,11 @@ class Covered::EmailAddress < Covered::Model
   }, to: :email_address_record
 
   def formatted_email_address
-    user.nil? ? address : "#{user.name} <#{address}>"
+    FormattedEmailAddress.new(display_name: user.try(:name), address: address).to_s
   end
 
   def confirm!
     email_address_record.update(confirmed_at: Time.now)
-  end
-
-  def to_key
-    id ? [id] : nil
   end
 
   def to_s

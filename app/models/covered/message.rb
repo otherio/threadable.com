@@ -50,8 +50,6 @@ class Covered::Message < Covered::Model
     @parent_message ||= Covered::Message.new(covered, message_record.parent_message)
   end
 
-  delegate :recipients, to: :conversation
-
   def body
     Body.call(body_html, body_plain)
   end
@@ -75,10 +73,31 @@ class Covered::Message < Covered::Model
   end
 
 
+  delegate :recipients, to: :conversation
+
+  def send_emails! send_to_creator=false
+    recipients.all.each do |recipient|
+      next if !send_to_creator && recipient.same_user?(creator)
+      next if sent_to? recipient
+      covered.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
+      sent_to! recipient
+    end
+  end
+
+  def sent_to? recipient
+    message_record.sent_emails.where(user_id: recipient.user_id).exists?
+  end
+
+  def sent_to! recipient
+    message_record.sent_emails.create!(
+      user_id: recipient.user_id,
+      email_address_id: recipient.email_addresses.primary.id,
+    )
+  end
+
   def inspect
     %(#<#{self.class} message_id: #{id.inspect}>)
   end
-
 
   def as_json options=nil
     {

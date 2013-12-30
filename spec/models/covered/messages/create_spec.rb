@@ -97,11 +97,14 @@ describe Covered::Messages::Create do
         'Message ID' => expected_message_id_header,
       })
 
+      expect(message).to receive(:send_emails!).with(false)
+
       return_value = described_class.call(messages,
         conversation: conversation,
         body: '<p>hi there</p>',
         attachments: attachments,
       )
+
 
       expect(return_value).to eq(message)
     end

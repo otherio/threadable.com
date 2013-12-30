@@ -4,9 +4,9 @@ class Covered::Organization::Members < Covered::Collection
 
   def initialize organization
     @organization = organization
+    @covered = organization.covered
   end
   attr_reader :organization
-  delegate :covered, to: :organization
 
   def all
     scope.reload.map{|membership| member_for membership }

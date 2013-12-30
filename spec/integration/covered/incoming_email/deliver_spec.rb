@@ -6,6 +6,7 @@ describe Covered::IncomingEmail::Deliver do
   let(:conversation){ double(:conversation, messages: double(:messages)) }
   let(:subject){ 'I love this community!' }
   let(:recipient){ 'raceteam@127.0.0.1' }
+  let(:preexisting_message){ nil }
   let :incoming_email do
     double(:incoming_email,
       id: 879,
@@ -13,9 +14,10 @@ describe Covered::IncomingEmail::Deliver do
       params:         params,
       subject:        subject,
       recipient:      recipient,
+      message:        preexisting_message,
       creator:        double(:creator, id: 54),
       attachments:    double(:attachments),
-      organization:        double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks)),
+      organization:   double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks)),
       message_id:     double(:incoming_email_message_id),
       references:     double(:incoming_email_references),
       date:           double(:incoming_email_date, rfc2822: 'rfc2822 version of date'),
@@ -27,6 +29,7 @@ describe Covered::IncomingEmail::Deliver do
       body_html:      double(:incoming_email_body_html),
       stripped_plain: 'i am a message body',
       stripped_html:  double(:incoming_email_stripped_html),
+      groups:         [double(:group1),double(:group2)],
     )
   end
   let(:message){ double :message }
@@ -83,9 +86,16 @@ describe Covered::IncomingEmail::Deliver do
       incoming_email.stub conversation: conversation
       expect(incoming_email.organization.conversations).to_not receive(:create!)
       expect(incoming_email.organization.tasks).to_not receive(:create!)
+      conversation_groups = double :conversation_groups
+      expect(conversation).to receive(:groups).and_return(conversation_groups)
+      expect(conversation_groups).to receive(:add_unless_removed).with(*incoming_email.groups)
     end
     it 'saves off the attachments, and creates a conversation message' do
       call!
+    end
+
+    context 'when the incoming email is a duplicate of an existing message' do
+      it 'needs tests'
     end
   end
 
@@ -101,6 +111,7 @@ describe Covered::IncomingEmail::Deliver do
         expect(incoming_email.organization.conversations).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
+          groups:     incoming_email.groups,
         ).and_return(conversation)
       end
       it 'saves off the attachments, creates a conversation and creates a conversation message' do
@@ -113,6 +124,7 @@ describe Covered::IncomingEmail::Deliver do
         expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
+          groups:     incoming_email.groups,
         ).and_return(conversation)
       end
       it 'saves off the attachments, creates a task and creates a conversation message' do
@@ -125,6 +137,7 @@ describe Covered::IncomingEmail::Deliver do
         expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
+          groups:     incoming_email.groups,
         ).and_return(conversation)
       end
       it 'saves off the attachments, creates a task and creates a conversation message' do
@@ -137,6 +150,7 @@ describe Covered::IncomingEmail::Deliver do
         expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',
           creator_id: 54,
+          groups:     incoming_email.groups,
         ).and_return(conversation)
       end
       it 'saves off the attachments, creates a task and creates a conversation message' do
@@ -149,6 +163,7 @@ describe Covered::IncomingEmail::Deliver do
         expect(incoming_email.organization.conversations).to receive(:create!).with(
           subject:    subject[0..254],
           creator_id: 54,
+          groups:     incoming_email.groups,
         ).and_return(conversation)
       end
       it 'saves off the attachments, creates a task and creates a conversation message' do
@@ -162,6 +177,7 @@ describe Covered::IncomingEmail::Deliver do
         expect(incoming_email.organization.conversations).to receive(:create!).with(
           subject:    'i am a message body',
           creator_id: 54,
+          groups:     incoming_email.groups,
         ).and_return(conversation)
       end
 

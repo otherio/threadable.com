@@ -44,13 +44,14 @@ class Covered::Class
   let(:emails         ){ Covered::Emails         .new(self) }
   let(:email_addresses){ Covered::EmailAddresses .new(self) }
   let(:users          ){ Covered::Users          .new(self) }
-  let(:organizations       ){ Covered::Organizations       .new(self) }
+  let(:organizations  ){ Covered::Organizations  .new(self) }
   let(:conversations  ){ Covered::Conversations  .new(self) }
   let(:tasks          ){ Covered::Tasks          .new(self) }
   let(:messages       ){ Covered::Messages       .new(self) }
   let(:attachments    ){ Covered::Attachments    .new(self) }
   let(:incoming_emails){ Covered::IncomingEmails .new(self) }
   let(:events         ){ Covered::Events         .new(self) }
+  let(:groups         ){ Covered::Groups         .new(self) }
 
   def sign_up attributes
     Covered::SignUp.call(self, attributes)

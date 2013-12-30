@@ -54,6 +54,19 @@ FixtureBuilder.build do
     unsubscribe_from_organization_email!
   end
 
+  # create some groups and put people in them
+  as 'alice@ucsd.example.com' do
+    @electronics_group = create_group 'Electronics'
+    add_member_to_group 'electronics', 'tom@ucsd.example.com'
+    add_member_to_group 'electronics', 'bethany@ucsd.example.com'
+
+    @fundraising_group = create_group 'Fundraising'
+    add_member_to_group 'fundraising', 'alice@ucsd.example.com'
+    add_member_to_group 'fundraising', 'bob@ucsd.example.com'
+
+    @graphic_design_group = create_group 'Graphic Design'
+    add_member_to_group 'graphic-design', 'jonathan@ucsd.example.com'
+  end
 
   # Bethany replies to the welcome email
   as 'bethany@ucsd.example.com' do
@@ -69,9 +82,20 @@ FixtureBuilder.build do
         %(make the body out of carbon or buy a giant boat and cut it up or whatever.)
       )
     )
+
+    create_conversation(
+      subject: 'Parts for the motor controller',
+      text:    %(Where should we get the SCRs for the motor controller? My usual supplier is out of them.),
+      groups:  [@electronics_group],
+    )
+
+    conversation_of_cash = create_conversation(
+      subject: 'How are we paying for the motor controller?',
+      text:    %(We need cash, baby.),
+      groups:  [@electronics_group, @fundraising_group],
+    )
+    remove_conversation_from_group(conversation_of_cash, @electronics_group)
   end
-
-
 
   as 'alice@ucsd.example.com' do
     @layup_body_carbon_task = create_task 'layup body carbon'
@@ -228,6 +252,4 @@ FixtureBuilder.build do
       text:      %(I like foodz. I've been here all night!!!!!),
     )
   end
-
-
 end

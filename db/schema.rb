@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131226230054) do
+ActiveRecord::Schema.define(version: 20131230195030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(version: 20131226230054) do
   end
 
   add_index "attachments_messages", ["message_id"], name: "index_attachments_messages_on_message_id", using: :btree
+
+  create_table "conversation_groups", id: false, force: true do |t|
+    t.integer "group_id"
+    t.integer "conversation_id"
+    t.boolean "active",          default: true
+  end
+
+  add_index "conversation_groups", ["conversation_id", "group_id"], name: "index_conversation_groups_on_conversation_id_and_group_id", unique: true, using: :btree
+  add_index "conversation_groups", ["group_id"], name: "index_conversation_groups_on_group_id", using: :btree
 
   create_table "conversations", force: true do |t|
     t.string   "type"
@@ -84,6 +93,32 @@ ActiveRecord::Schema.define(version: 20131226230054) do
   add_index "events", ["conversation_id"], name: "index_events_on_conversation_id", using: :btree
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
+
+  create_table "group_memberships", id: false, force: true do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+  end
+
+  add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
+  add_index "group_memberships", ["user_id", "group_id"], name: "index_group_memberships_on_user_id_and_group_id", unique: true, using: :btree
+
+  create_table "groups", force: true do |t|
+    t.string   "name"
+    t.string   "email_address_tag"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups", ["organization_id", "name"], name: "index_groups_on_organization_id_and_name", unique: true, using: :btree
+  add_index "groups", ["organization_id"], name: "index_groups_on_organization_id", using: :btree
+
+  create_table "groups_incoming_emails", id: false, force: true do |t|
+    t.integer "incoming_email_id"
+    t.integer "group_id"
+  end
+
+  add_index "groups_incoming_emails", ["incoming_email_id", "group_id"], name: "index_groups_incoming_emails_on_incoming_email_id_and_group_id", unique: true, using: :btree
 
   create_table "incoming_emails", force: true do |t|
     t.text     "params",                            null: false
@@ -147,6 +182,15 @@ ActiveRecord::Schema.define(version: 20131226230054) do
   end
 
   add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
+
+  create_table "sent_emails", force: true do |t|
+    t.integer  "message_id"
+    t.integer  "user_id"
+    t.integer  "email_address_id"
+    t.datetime "created_at"
+  end
+
+  add_index "sent_emails", ["message_id", "user_id"], name: "index_sent_emails_on_message_id_and_user_id", unique: true, using: :btree
 
   create_table "task_doers", force: true do |t|
     t.integer "user_id"
