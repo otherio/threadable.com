@@ -1,5 +1,10 @@
 Covered::Application.routes.draw do
 
+  post '/sign_in'  => 'authentication#create'
+  post '/sign_out' => 'authentication#destroy'
+
+  # OLD ROUTES START
+
   get '/admin' => 'admin#show'
   namespace :admin do
     post   'organizations/:organization_id/members'          => 'organization/members#add',    as: 'add_organization_member'
@@ -20,6 +25,8 @@ Covered::Application.routes.draw do
     mount Sidekiq::Web => '/background_jobs'
     mount MailPreview => '/mail_preview' if defined?(MailView)
   end
+
+  # OLD ROUTES START
 
   get   '/reset_password/:token' => 'users/reset_password#show', as: 'reset_password'
   patch '/reset_password/:token' => 'users/reset_password#reset'
@@ -54,6 +61,9 @@ Covered::Application.routes.draw do
 
   get   '/:id/edit'      => 'organizations#edit',      :as => 'edit_organization'
 
-  root :to => 'homepage#show'
+  # OLD ROUTES END
+
+  get '/*path' => 'application#show'
+  root to: 'application#show'
 
 end
