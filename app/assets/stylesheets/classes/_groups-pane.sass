@@ -1,0 +1,67 @@
+.groups-pane
+  background-color: #333
+  color: #666
+
+  .current-user-controls
+    position: relative
+    padding: 1em
+    color: #ccc
+    min-height: 50px
+    .avatar
+      position: absolute
+      top: 1em
+      left: 1em
+    .details
+      margin: 0 50px 0 65px
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      line-height: 16px
+      .name
+        font-size: 162%
+        line-height: 30px
+      .organization-name
+        font-size: 90%
+      .organization-email-address
+        font-size: 90%
+    .settings-gear
+      position: absolute
+      top: 1em
+      right: 1em
+      color: inherit
+      font-size: 200%
+
+  .bottom-nav
+    position: absolute
+    left: 0
+    bottom: 0
+    right: 0
+
+  .groups-list
+    > li
+      position: relative
+
+      a.active
+        background: #404040
+        color: #ffffff
+        outline: none
+
+      .badge
+        position: absolute
+        top: 10px
+        right: 10px
+        bottom: 10px
+        padding: 3px 5px
+        line-height: 15px
+        background-color: transparent
+        text-align: center
+        +border-radius(5px)
+        text-shadow: 0 1px 1px #555
+
+  .settings
+    margin-bottom: 4em
+    display: none
+    &.visible
+      display: block
+
+

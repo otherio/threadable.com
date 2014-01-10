@@ -1,0 +1,39 @@
+.organization-conversations
+  margin: 0
+  padding: 0
+  > li
+    position: relative
+    overflow: hidden
+    border-bottom: 1px solid grey
+    > a
+      display: block
+      padding: 0.5em 1em
+      text-decoration: none
+      color: inherit
+
+    .number-of-messages
+      display: inline
+
+    ol.recipients
+      display: inline
+      margin: 0
+      padding: 0
+      list-style-type: none
+      > li
+        display: inline
+        &:after
+          content: ", "
+        &:nth-last-of-type(1):after
+          content: ""
+
+    .updated-at
+      position: absolute
+      top: 0.5em
+      right: 0.5em
+
+    .message-summary
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      color: grey
+      height: 1.5em

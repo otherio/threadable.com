@@ -1,0 +1,112 @@
+html, body, .page, body > .ember-view
+  height: 100%
+  width: 100%
+
+html, body
+  overflow: hidden
+
+$navbar-height: 50px
+
+
+.disable-all-transitions *
+  +transition(none !important)
+
+.page
+  position: relative
+  left: 0
+  +transition-property(left)
+  +transition-duration(0.2s)
+  +transition-timing-function(ease-in)
+  +pie-clearfix
+
+  .shroud
+    display: none
+    z-index: 10
+    position: absolute
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    background-color: rgba(0,0,0,0.75)
+
+  .navbar
+    height: $navbar-height
+
+
+  .canvas
+    position: absolute
+    top: $navbar-height
+    left: 0
+    bottom: 0
+    width: 100%
+    +transition-property(left)
+    +transition-duration(0.2s)
+    +transition-timing-function(ease-in)
+
+  .pane
+    position: absolute
+    top: 0
+    bottom: 0
+    overflow-y: auto
+
+  // single pane
+  +mini-to-small-screens
+    .pane
+      width: 100%
+    .groups-pane
+      top: -$navbar-height
+      right: 100.1%
+      width: 90%
+    .conversations-pane
+      left: 0%
+    .conversation-pane
+      left: 100%
+
+    &[data-focus="groups"]
+      left: 90%
+
+    &[data-focus="conversations"]
+      .canvas
+        left: 0
+    &[data-focus="conversation"]
+      .canvas
+        left: -100%
+
+  // groups is an off canvas
+  +mini-to-medium-screens
+    &[data-focus="groups"]
+      .shroud
+        display: block
+    .groups-pane
+      top: -$navbar-height
+      right: 100.1%
+      width: 300px
+
+    &[data-focus="groups"]
+      left: 300px
+
+  // dual pane
+  +medium-screens
+    .conversations-pane
+      left: 0
+      width: 300px
+    .conversation-pane
+      left: 300px
+      right: 0
+      width: auto
+
+  // tripple pane
+  +large-to-xlarge-screens
+    .groups-pane
+      left: 0
+      width: 300px
+    .conversations-pane
+      left: 300px
+      width: 300px
+    .conversation-pane
+      left: 600px
+      right: 0
+      width: auto
+
+
+
