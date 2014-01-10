@@ -1,9 +1,5 @@
 Covered::Application.routes.draw do
 
-  unless Rails.env.production?
-    get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'
-  end
-
   get '/admin' => 'admin#show'
   namespace :admin do
     post   'organizations/:organization_id/members'          => 'organization/members#add',    as: 'add_organization_member'
