@@ -1,8 +1,0 @@
-= render_widget :compose_conversation_message_modal, current_user.organizations.all.first
-
-%a(href="" role="button" class="btn btn-text-thin" data-toggle="modal" data-target=".compose_conversation_message_modal")
-  %i.icon-envelope
-  Compose
-
-:javascript
-  whenReady(function(){ $('.compose_conversation_message_modal').modal(); });

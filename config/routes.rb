@@ -25,15 +25,6 @@ Covered::Application.routes.draw do
     mount MailPreview => '/mail_preview' if defined?(MailView)
   end
 
-  get '/development' => 'development#index'
-  get '/demoauth' => 'demo_auth#index', as: 'demo_auth'
-
-  get  '/sign_up'  => 'users#new',              as: 'sign_up'
-  get  '/sign_in'  => 'authentication#new',     as: 'sign_in'
-  post '/sign_in'  => 'authentication#create'
-  get  '/sign_out' => 'authentication#destroy', as: 'sign_out'
-
-
   get   '/reset_password/:token' => 'users/reset_password#show', as: 'reset_password'
   patch '/reset_password/:token' => 'users/reset_password#reset'
   post  '/reset_password'        => 'users/reset_password#request_link', as: 'request_reset_password_link'
@@ -53,31 +44,10 @@ Covered::Application.routes.draw do
   match '/email_addresses/confirm/:token' => 'email_addresses#confirm', as: 'confirm_email_address', via: [:get, :post]
 
   scope '/:organization_id', :as => 'organization' do
-    resources :members, :only => [:index, :create, :destroy], controller: 'organization/members'
-
-    resources :conversations, :except => [:edit] do
-      member do
-        match 'mute', via: [:get, :post]
-        match 'unmute', via: [:post]
-      end
-      resources :messages, :only => [:create, :update]
-    end
 
     resources :held_messages, :only => [:index], controller: 'organization/held_messages' do
       post :accept, on: :member
       post :reject, on: :member
-    end
-
-    # resources :invites, :only => [:create]
-
-    resources :tasks, :only => [:index, :create, :update] do
-      post   'doers'          => 'task/doers#add',    as: 'doers'
-      delete 'doers/:user_id' => 'task/doers#remove', as: 'doer'
-
-      match 'ill_do_it', via: [:get, :post]
-      match 'remove_me', via: [:get, :post]
-      match 'mark_as_done', via: [:get, :post]
-      match 'mark_as_undone', via: [:get, :post]
     end
 
     match '/unsubscribe/:token' => 'organization/email_subscriptions#unsubscribe', as: 'unsubscribe', via: [:get, :post]
@@ -87,16 +57,6 @@ Covered::Application.routes.draw do
   resources :emails, :only => :create
 
   get   '/:id/edit'      => 'organizations#edit',      :as => 'edit_organization'
-  get   '/:id'           => 'organizations#show',      :as => 'organization'
-  put   '/:id'           => 'organizations#update'
-  patch '/:id'           => 'organizations#update'
-  get   '/:id/user_list' => 'organizations#user_list', :as => 'user_list'
-
-  resources :organizations, except: [:index, :show, :update, :patch] do
-    member do
-      put :leave
-    end
-  end
 
   root :to => 'homepage#show'
 
