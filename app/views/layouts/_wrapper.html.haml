@@ -2,7 +2,7 @@
 %html
   %head
     %title Covered
-    = stylesheet_link_tag    "application", :media => "all"
+    = stylesheet_link_tag    "old", :media => "all"
     = javascript_tag %(ENV = #{javascript_env.to_json};)
     = javascript_include_tag "init"
     = csrf_meta_tags
@@ -12,11 +12,9 @@
       preventEverything();
 
     .page
-      = render_widget :page_navigation, current_user: current_user, current_organization: current_organization
       .content
         = yield
       .flash_messages
-      = render_widget :page_footer
 
 
     = filepicker_js_include_tag

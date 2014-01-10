@@ -31,6 +31,7 @@ gem 'fog', '1.12.1'
 gem 'httmultiparty'
 gem 'let'
 
+gem 'haml-rails'
 gem 'compass-rails', '~> 1.1.2'
 gem 'sass-rails'
 gem 'ember-rails'

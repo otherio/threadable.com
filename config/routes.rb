@@ -82,7 +82,7 @@ Covered::Application.routes.draw do
 
   # OLD ROUTES END
 
-  get '/*path' => 'application#show'
-  root to: 'application#show'
+  get '/*path' => 'frontend#show'
+  root to: 'frontend#show'
 
 end
