@@ -1,6 +1,6 @@
 class Users::SetupController < ApplicationController
 
-  before_filter :require_valid_token!
+  before_action :require_valid_token!
 
   def edit
     @user = User.find(@user_id)

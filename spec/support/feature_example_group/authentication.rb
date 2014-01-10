@@ -45,7 +45,7 @@ module RSpec::Support::FeatureExampleGroup
   end
 
   def expect_to_be_signed_in_as! user_name
-    expect( find_element('the current user dropdown') ).to have_text user_name
+    expect( find('.current-user-controls .name') ).to have_text user_name
   end
 
   module ClassMethods

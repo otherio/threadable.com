@@ -2,7 +2,7 @@ class Api::ConversationsController < ApiController
 
   # get /api/conversations
   def index
-    render json: Api::ConversationsSerializer[conversations.all_for_message_list]
+    render json: Api::ConversationsSerializer[conversations.all]
   end
 
   # post /api/conversations
@@ -35,7 +35,6 @@ class Api::ConversationsController < ApiController
   end
 
   def conversations
-    # this is here because it will one day return current_user.conversations when an organiztion_id is not given
     if group.present?
       @conversations ||= group.conversations
     else

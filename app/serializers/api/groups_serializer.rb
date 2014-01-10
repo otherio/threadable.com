@@ -14,6 +14,8 @@ class Api::GroupsSerializer < Serializer
       formatted_email_address:      group.formatted_email_address,
       formatted_task_email_address: group.formatted_task_email_address,
 
+      conversations_count: group.conversations.count,
+
       links: {
         members:       api_organization_group_members_path(group.organization, group),
         conversations: api_organization_group_conversations_path(group.organization, group),
