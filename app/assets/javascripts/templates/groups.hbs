@@ -1,0 +1,53 @@
+<div class="current-user-controls">
+  <div class="avatar">
+    <img {{bind-attr src="currentUser.avatarUrl"}} />
+  </div>
+  <div class="details">
+    <div class="name">{{currentUser.name}}</div>
+    <div class="organization-name">{{organization.name}}</div>
+    <div class="organization-email-address">{{organization.emailAddress}}</div>
+  </div>
+  <a class="settings-gear" href="" {{action toggleSettings}}><i class="uk-icon-gear"></i></a>
+</div>
+
+<div {{bind-attr class=":settings settingsVisible:visible"}}>
+  <ul class="uk-nav uk-nav-offcanvas">
+    <li class="uk-nav-header">My Organizations</li>
+    {{#each organization in currentUser.organizations}}
+    <li>
+      {{#link-to 'organization' organization.slug }}{{organization.name}}{{/link-to}}
+    </li>
+    {{/each}}
+  </ul>
+</div>
+
+<ul class="uk-nav uk-nav-offcanvas groups-list">
+  <li>
+    {{#link-to 'all_my_groups'  organization.slug}}All My Groups{{/link-to}}
+  </li>
+  <li class="uk-nav-header">My Groups</li>
+  {{#each group in controller}}
+    <li>
+      {{#link-to 'group' organization.slug group.slug }}
+        <span class="name">+{{group.name}}</span>
+        <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversations_count}}</span>
+      {{/link-to}}
+    </li>
+  {{/each}}
+  <li class="uk-nav-header">All Groups</li>
+  {{#each group in controller}}
+    <li>
+      {{#link-to 'group' organization.slug group.slug }}
+        <span class="name">+{{group.name}}</span>
+        <span class="badge">143</span>
+      {{/link-to}}
+    </li>
+  {{/each}}
+</ul>
+
+
+<ul class="uk-nav uk-nav-offcanvas bottom-nav">
+  <li>
+    <a href="" {{action 'signOut'}}>Sign out</a>
+  </li>
+</ul>

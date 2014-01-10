@@ -1,0 +1,21 @@
+<div class="page" {{bind-attr data-focus="focus"}}>
+
+  <a href="" {{action focusBack}} class="shroud"></a>
+
+  {{render "navbar"}}
+
+  <div class="canvas">
+    <section class="groups-pane pane">
+      {{outlet groupsPane}}
+    </section>
+
+    <section class="conversations-pane pane">
+      {{outlet conversationsPane}}
+    </section>
+
+    <section class="conversation-pane pane">
+      {{outlet conversationPane}}
+    </section>
+  </div>
+
+</div>

@@ -1,0 +1,32 @@
+//= require jquery
+//= require uikit
+//= require moment
+//= require handlebars
+//= require ember
+//= require ember-data
+//= require_self
+//= require covered
+//= require debug
+
+Covered = Ember.Application.create({
+  LOG_MODULE_RESOLVER: true,
+  LOG_ACTIVE_GENERATION: true,
+  LOG_VIEW_LOOKUPS: true,
+  LOG_TRANSITIONS: true,
+  LOG_TRANSITIONS_INTERNAL: true
+});
+
+Ember.TextField.reopen({
+  attributeBindings: ['autofocus']
+});
+
+$(document).on('click', 'a[href=""]', function(e){ e.preventDefault(); });
+
+// This disables all css-transitions while resizing
+$(window).on('resize', function(){
+  $('body').addClass('disable-all-transitions');
+  var timeout = $(this).data('disableAllTransitionsTimeout');
+  clearTimeout(timeout);
+  timeout = setTimeout(function(){ $('body').removeClass('disable-all-transitions'); }, 100);
+  $(this).data('disableAllTransitionsTimeout', timeout);
+});

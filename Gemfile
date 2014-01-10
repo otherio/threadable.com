@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 ruby "2.0.0"
 
 gem 'rails', '4.0.0'
-gem 'haml-rails'
-gem 'jquery-rails'
 gem 'unicorn'
 gem 'sinatra'
 gem 'sidekiq'
@@ -31,12 +29,12 @@ gem 'sanitize'
 gem 'htmlentities'
 gem 'fog', '1.12.1'
 gem 'httmultiparty'
-gem 'rails_autolink'
 gem 'let'
 
 gem 'compass-rails', '~> 1.1.2'
 gem 'sass-rails'
-gem 'font-awesome-sass-rails'
+gem 'ember-rails'
+gem 'ember-source'
 gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
 gem 'roadie'
@@ -52,9 +50,7 @@ group :production, :staging do
 end
 
 group :development do
-  gem 'meta_request'
   gem 'active_record_query_trace'
-  gem 'better_errors'
 end
 
 group :development, :test do
@@ -67,6 +63,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem "mail_view"
   gem 'fuubar'
+  gem 'jasmine'
 end
 
 group :test do

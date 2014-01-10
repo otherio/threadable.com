@@ -1,0 +1,18 @@
+<div class="left-nav">
+  {{#link-to 'organization' currentOrganization.slug}}<button class="uk-button">Cancel</button>{{/link-to}}
+</div>
+
+
+<div class="right-nav">
+  <div data-uk-button-radio class="uk-button-group">
+    {{#link-to 'group_compose_task' currentOrganization.slug classNameBindings=":nav-button :uk-button composingTask:uk-active"}}
+      <i class="uk-icon-check"></i>
+    {{/link-to}}
+
+    {{#link-to 'group_compose_conversation' currentOrganization.slug classNameBindings=":nav-button :uk-button composingConversation:uk-active"}}
+      <i class="uk-icon-comment-o"></i>
+    {{/link-to}}
+  </div>
+
+  <button class="uk-button uk-button-primary" {{action sendMessage}}>Send</button>
+</div>

@@ -1,0 +1,16 @@
+<nav class="navbar">
+  <div class="uk-hidden-small">
+    {{partial "navbar/organization"}}
+  </div>
+  <div class="uk-visible-small">
+    {{#if composing}}
+      {{partial "navbar/compose"}}
+    {{else}}
+      {{#if currentConversation}}
+        {{partial "navbar/conversation"}}
+      {{else}}
+        {{partial "navbar/organization"}}
+      {{/if}}
+    {{/if}}
+  </div>
+</nav>

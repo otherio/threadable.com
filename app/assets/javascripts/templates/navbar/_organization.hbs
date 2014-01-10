@@ -1,0 +1,13 @@
+<div class="left-nav">
+  <a href="" {{action focusGroups}} class="uk-hidden-large">
+    <i class="uk-icon-bars"></i>
+  </a>
+
+  {{#if currentOrganization.subjectTag}}
+    <span>[{{currentOrganization.subjectTag}}]</span>
+  {{/if}}
+</div>
+<div class="right-nav">
+  <a href=""><i class="uk-icon-caret-down"></i></a></li>
+  {{#link-to 'group_compose_conversation' currentOrganization.slug }}<i class="uk-icon-edit"></i>{{/link-to}}</li>
+</div>
