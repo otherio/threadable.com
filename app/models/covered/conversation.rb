@@ -83,7 +83,7 @@ class Covered::Conversation < Covered::Model
       else
         ExtractNamesFromEmailAddresses.call([message.from]).first
       end
-    end.compact
+    end.compact.uniq
   end
 
   def as_json options=nil

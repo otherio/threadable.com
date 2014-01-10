@@ -57,6 +57,7 @@ class Covered::Message < Covered::Model
   def stripped_body
     Body.call(stripped_html, stripped_plain)
   end
+  alias_method :body_stripped, :stripped_body
 
   def html?
     body.html?
@@ -110,7 +111,7 @@ class Covered::Message < Covered::Model
       subject:           subject,
       html:              html?,
       body:              body,
-      stripped_body:     stripped_body,
+      body_stripped:     body_stripped,
       body_html:         body_html,
       body_plain:        body_plain,
       stripped_html:     stripped_html,

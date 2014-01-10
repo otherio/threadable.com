@@ -45,8 +45,8 @@ class FixtureBuilder
     organization.members.add(name: name, email_address: email_address)
   end
 
-  def create_group name
-    organization.groups.create!(name: name)
+  def create_group name, color=nil
+    organization.groups.create!(name: name, color: color)
   end
 
   def remove_conversation_from_group message, group

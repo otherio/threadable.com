@@ -16,11 +16,8 @@ module RSpec::Support::RequestExampleGroup
 
   def sign_in! user, remember_me: false
     post sign_in_path, {
-      "authentication" => {
-        "email"       => user.email_address,
-        "password"    => "password",
-        "remember_me" => remember_me ? 0 : 1
-      },
+      "email_address" => user.email_address,
+      "password"      => "password",
     }
     expect(response).to be_success
     covered.current_user_id = user.id
@@ -34,6 +31,10 @@ module RSpec::Support::RequestExampleGroup
 
   def sign_in_as email_address
     sign_in! find_user_by_email_address(email_address)
+  end
+
+  def response_json
+    JSON.parse(response.body)
   end
 
   module ClassMethods

@@ -56,15 +56,15 @@ FixtureBuilder.build do
 
   # create some groups and put people in them
   as 'alice@ucsd.example.com' do
-    @electronics_group = create_group 'Electronics'
+    @electronics_group = create_group 'Electronics', '#964bf8'
     add_member_to_group 'electronics', 'tom@ucsd.example.com'
     add_member_to_group 'electronics', 'bethany@ucsd.example.com'
 
-    @fundraising_group = create_group 'Fundraising'
+    @fundraising_group = create_group 'Fundraising', '#5a9de1'
     add_member_to_group 'fundraising', 'alice@ucsd.example.com'
     add_member_to_group 'fundraising', 'bob@ucsd.example.com'
 
-    @graphic_design_group = create_group 'Graphic Design'
+    @graphic_design_group = create_group 'Graphic Design', '#f2ad40'
     add_member_to_group 'graphic-design', 'jonathan@ucsd.example.com'
   end
 

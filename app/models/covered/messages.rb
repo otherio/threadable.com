@@ -1,7 +1,7 @@
 class Covered::Messages < Covered::Collection
 
   def all
-    scope.reload.map{ |message_record| message_for message_record }
+    messages_for scope.to_a
   end
 
   def latest
@@ -18,6 +18,10 @@ class Covered::Messages < Covered::Collection
 
   def find_by_id! id
     find_by_id(id) or raise Covered::RecordNotFound, "unable to find conversation message with id: #{id}"
+  end
+
+  def find_by_ids ids
+    messages_for scope.find(ids)
   end
 
   def find_by_message_id_header message_id_header
@@ -51,7 +55,11 @@ class Covered::Messages < Covered::Collection
   end
 
   def message_for message_record
-    Covered::Message.new(covered, message_record)
+    Covered::Message.new(covered, message_record) if message_record
+  end
+
+  def messages_for message_records
+    message_records.map{|message_record| message_for message_record }
   end
 
 end

@@ -5,9 +5,17 @@ class ApplicationController < ActionController::Base
   include AuthenticationConcern
   include RescueFromExceptionsConcern
 
-  private
+  before_action do
+    if request.xhr? || !request.get? || request.accepts.exclude?(:html)
+      if params["controller"] == "application" && params["action"] == "show"
+        raise ActionController::RoutingError.new('Not Found')
+      else
+        return # pass through
+      end
+    end
+    render 'application/show'
+  end
 
-  delegate :render_widget, to: :view_context
-
+  before_action :require_user_be_signed_in!
 
 end

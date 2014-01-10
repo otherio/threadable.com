@@ -12,9 +12,11 @@ class Covered::Group < Covered::Model
     to_param
     name
     email_address_tag
+    color
     errors
     new_record?
     persisted?
+    destroy
   }, to: :group_record
 
   let(:members){ Members.new(self) }
@@ -49,6 +51,10 @@ class Covered::Group < Covered::Model
       display_name: "#{organization.name}: #{name} Tasks",
       address: task_email_address,
     ).to_s
+  end
+
+  def update attributes
+    !!group_record.update_attributes(attributes)
   end
 
   def inspect

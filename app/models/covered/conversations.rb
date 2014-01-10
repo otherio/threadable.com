@@ -8,6 +8,10 @@ class Covered::Conversations < Covered::Collection
     conversations_for scope.includes(:participants)
   end
 
+  def all_for_message_list
+    conversations_for scope.includes(:participants).includes(:messages)
+  end
+
   def find_by_id id
     conversation_for (scope.where(id: id).first or return)
   end

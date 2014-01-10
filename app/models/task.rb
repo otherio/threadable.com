@@ -3,6 +3,13 @@ class Task < Conversation
   has_many :events, foreign_key: 'conversation_id'
   has_and_belongs_to_many :doers, class_name: 'User', join_table: 'task_doers'
 
+  has_many :conversation_groups, dependent: :destroy, foreign_key: 'conversation_id'
+  has_many :groups, through: :conversation_groups do
+    def active
+      where(conversation_groups: {active: true})
+    end
+  end
+
   validates_presence_of :position
 
   default_scopes.clear
