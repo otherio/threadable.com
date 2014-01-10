@@ -13,9 +13,13 @@ class ApplicationController < ActionController::Base
         return # pass through
       end
     end
-    render 'application/show'
+    render 'application/show', layout: false
   end
 
   before_action :require_user_be_signed_in!
+
+  def show
+    render 'application/show', layout: false
+  end
 
 end
