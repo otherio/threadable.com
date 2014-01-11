@@ -10,7 +10,8 @@ Covered.ComposeController = Ember.ObjectController.extend({
       var conversation = Covered.Conversation.create({
         subject: this.get('subject'),
         organization_id: organization_slug,
-        group_ids: group_slug // eventually this will be settable in the UI
+        group_ids: group_slug, // eventually this will be settable in the UI
+        task: message.get('composing') === 'task'
       });
 
       conversation.saveRecord().then(function(response) {

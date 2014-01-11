@@ -3,7 +3,7 @@ Covered.Conversation = RL.Model.extend({
   param:              RL.attr('string'),
   slug:               RL.attr('string'),
   subject:            RL.attr('string'),
-  task:               RL.attr('string'),
+  task:               RL.attr('boolean'),
   created_at:         RL.attr('date'),
   updated_at:         RL.attr('date'),
   participant_names:  RL.attr('string'),

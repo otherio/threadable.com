@@ -108,6 +108,37 @@ FixtureBuilder.build do
     set_avatar! 'venkman.jpg'
   end
 
+  # create some groups and put people in them
+  as 'amywong.phd@gmail.com' do
+    @social_group = create_group 'Social', '#964bf8'
+    add_member_to_group 'social', 'lilith@sfhealth.example.com'
+    add_member_to_group 'social', 'anil@sfhealth.example.com'
+    add_member_to_group 'social', 'yuriz@sfhealth.example.com'
+    add_member_to_group 'social', 'ritsuko@sfhealth.example.com'
+    add_member_to_group 'social', 'amywong.phd@gmail.com'
+    add_member_to_group 'social', 'bj@sfhealth.example.com'
+
+    @triage_group = create_group 'Triage', '#5a9de1'
+    add_member_to_group 'triage', 'anil@sfhealth.example.com'
+    add_member_to_group 'triage', 'sfmedstudent@gmail.com'
+    add_member_to_group 'triage', 'marcus@sfhealth.example.com'
+    add_member_to_group 'triage', 'trapper@sfhealth.example.com'
+    add_member_to_group 'triage', 'mquinn@sfhealth.example.com'
+    add_member_to_group 'triage', 'house@sfhealth.example.com'
+    add_member_to_group 'triage', 'yuriz@sfhealth.example.com'
+    add_member_to_group 'triage', 'smaturin@sfhealth.example.com'
+    add_member_to_group 'triage', 'bj@sfhealth.example.com'
+    add_member_to_group 'triage', 'ritsuko@sfhealth.example.com'
+    add_member_to_group 'triage', 'zarkov@sfhealth.example.com'
+    add_member_to_group 'triage', 'ecto@sfhealth.example.com'
+    add_member_to_group 'triage', 'lcuddy@sfhealth.example.com'
+
+    @anesthiology_group = create_group 'Anesthiology', '#f2ad40'
+    add_member_to_group 'anesthiology', 'ecto@sfhealth.example.com'
+
+    @cardiology_group = create_group 'Cardiology', '#f2ad40'
+    add_member_to_group 'cardiology', 'ecto@sfhealth.example.com'
+  end
 
   # Lisa replies to the welcome email
   as 'lcuddy@sfhealth.example.com' do

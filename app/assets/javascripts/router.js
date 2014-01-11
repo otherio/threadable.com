@@ -18,10 +18,10 @@ Covered.Router.map(function() {
         this.resource('group_members', {path: '/members'}, function(){
           this.resource('group_member', {path: '/:member'});
         });
-        // this.resource('compose_task', {path: '/compose/task'});
+        this.resource('compose_task', {path: '/compose/task'});
+        this.resource('compose_conversation', {path: '/compose/conversation'});
         this.resource('conversations', {path: '/conversations'}, function(){
           this.resource('conversation', {path: '/:conversation'});
-          this.resource('conversation_compose', {path: '/compose'});
         });
         // this.resource('tasks', {path: '/tasks'}, function(){
         //   this.resource('conversation', {path: '/:conversation'});

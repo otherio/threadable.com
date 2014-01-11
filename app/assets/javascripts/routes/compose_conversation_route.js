@@ -1,4 +1,4 @@
-Covered.ConversationComposeRoute = Ember.Route.extend({
+Covered.ComposeConversationRoute = Ember.Route.extend({
   target: 'conversation',
 
   beforeModel: function() {
@@ -9,7 +9,7 @@ Covered.ConversationComposeRoute = Ember.Route.extend({
     // if there's an existing compose model, use it.
     var model = this.controllerFor('compose').get('model');
     var organization = this.modelFor('organization');
-    if(!model || !model.get('isNew')) {
+    if(!model || !model.get('isDirty')) {
       model = Covered.Message.create();
     }
     return model;
@@ -29,14 +29,15 @@ Covered.ConversationComposeRoute = Ember.Route.extend({
     willTransition: function(transition) {
 
       var target = transition.targetName;
-      if(target == 'compose.task' || target == 'compose.conversation') {
+      if(target == 'compose_task' || target == 'compose_conversation') {
         return;
       }
 
       this.controllerFor('application').set('composing', null);
       var model = this.get('currentModel');
-      if (model.get("isNew") && !model.get("isSaving")) {
-        model.rollback();
+      if (model.get("isDirty") && !model.get("isSaving")) {
+        model.set('subject', null);
+        model.set('body', null);
       }
     }
   },
