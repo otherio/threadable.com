@@ -6,7 +6,7 @@ Covered.GroupRoute = Ember.Route.extend({
 
   renderTemplate: function() {
     // this.render('group', {into: 'organization', outlet: 'conversationsPane'});
-    this.render('conversations', {into: 'organization', outlet: 'conversationsPane'});
+    this.render('conversations.index', {into: 'organization', outlet: 'conversationsPane'});
   }
 
 });
