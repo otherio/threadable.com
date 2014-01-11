@@ -45,7 +45,7 @@ describe Api::MessagesController do
         end
         context 'of a message that does not exist or the current user is not in' do
           it 'renders not found' do
-            xhr :get, :index, format: :json, organization_id: raceteam, conversation_id: 'foobar'
+            xhr :get, :index, format: :json, organization_id: raceteam.slug, conversation_id: 'foobar'
             expect(response.status).to eq 404
             expect(response.body).to be_blank
           end
