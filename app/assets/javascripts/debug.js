@@ -1,24 +1,29 @@
+function lookup(name) {
+  return Covered.__container__.lookup(name);
+}
 function store(){
-  return Covered.__container__.lookup('store:main');
+  return lookup('store:main');
 }
-
-function controller(name){
-  return Covered.__container__.lookup("controller:"+name);
+function controllerFor(name){
+  return lookup("controller:"+name);
 }
-
-controllerFor = controller;
-
+function ApplicationController(){
+  return controllerFor('application');
+}
+function OrganizationController(){
+  return controllerFor('organization');
+}
+function GroupsController(){
+  return controllerFor('groups');
+}
+function GroupController(){
+  return controllerFor('group');
+}
+function ConversationController(){
+  return controller('conversation');
+}
 function currentUser(){
-  return controller('application').get('currentUser');
-}
-function currentOrganization(){
-  return controller('application').get('currentOrganization');
-}
-function currentConversation(){
-  return controller('application').get('currentConversation');
-}
-function currentGroup(){
-  return controller('application').get('currentGroup');
+  return ApplicationController().get('currentUser');
 }
 
 
