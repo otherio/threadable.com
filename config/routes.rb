@@ -4,47 +4,14 @@ Covered::Application.routes.draw do
   post '/sign_out' => 'authentication#destroy'
 
   namespace :api, except: [:new, :edit] do
-    resource :current_user, controller: 'current_user'
+    scope :users do
+      resource :current, controller: 'current_user', only: [:show, :update]
+    end
 
     resources :organizations
     resources :groups
     resources :conversations
     resources :messages
-
-    #   resources :groups do
-    #     resources :members
-    #   end
-    #   resources :conversations
-    #   resources :task
-    # end
-    # post :request_password_reset
-
-
-    # resources :organizations
-    # resources :organization_members
-    # resources :groups
-    # resources :group_members
-    # resources :tasks
-    # resources :task_doers
-
-
-    # resources :organizations do
-    #   resources :members
-    #   resources :messages,         only: [:create, :update]
-    #   resources :groups do
-    #     resources :members,        only: [:index]
-    #     resources :conversations,  only: [:index]
-    #     resources :tasks,          only: [:index]
-    #   end
-    #   resources :conversations,    except: [:destroy] do
-    #     resources :messages,       only:   [:index]
-    #   end
-    #   resources :tasks do
-    #     resources :doers,          only: [:index]
-    #   end
-    # end
-
-
   end
 
   # OLD ROUTES START

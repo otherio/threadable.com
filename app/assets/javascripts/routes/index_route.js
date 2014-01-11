@@ -7,6 +7,8 @@ Covered.IndexRoute = Ember.Route.extend({
         var organization = response.organizations[0];
         this.transitionTo('organization', organization.slug);
       }.bind(this));
+    }else{
+      this._super();
     }
   },
 

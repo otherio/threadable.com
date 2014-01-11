@@ -15,7 +15,7 @@ class AuthenticationController < ApplicationController
   end
 
   def create
-    authentication_params = params.permit(:email_address, :password, :remember_me)
+    authentication_params = params.slice(:email_address, :password, :remember_me)
     authentication = Authentication.new(covered, authentication_params)
     if authentication.valid?
       sign_in! authentication.user, remember_me: authentication.remember_me

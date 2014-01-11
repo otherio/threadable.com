@@ -1,19 +1,16 @@
-class Api::CurrentUserSerializer < Serializer
+class Api::CurrentUserSerializer
 
-  def serialize_record user
-    return nil if user.nil?
-    json = {
-      id:            user.id,
-      param:         user.to_param,
-      name:          user.name,
-      email_address: user.email_address.to_s,
-      slug:          user.slug,
-      avatar_url:    user.avatar_url,
+  def self.[] current_user
+    {
+      user: {
+        id:            'current',
+        param:         current_user.to_param,
+        name:          current_user.name,
+        email_address: current_user.email_address.to_s,
+        slug:          current_user.slug,
+        avatar_url:    current_user.avatar_url,
+      }
     }
-
-    json.merge! Api::OrganizationsSerializer[user.organizations.all]
-
-    json
   end
 
 end

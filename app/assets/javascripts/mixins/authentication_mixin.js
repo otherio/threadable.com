@@ -14,7 +14,7 @@ Covered.AuthenticationMixin = Ember.Mixin.create((function(){
 
   function signInSuccessful(response){
     if (response.current_user){
-      var currentUser = this.store.find('user', response.current_user.id);
+      var currentUser = Covered.CurrentUser.get();
       // var currentUser = this.store.buildRecord(Covered.User, response.current_user.id, response.current_user);
       this.signInAs(currentUser);
     }else{
