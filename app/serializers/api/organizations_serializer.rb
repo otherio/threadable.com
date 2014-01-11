@@ -15,12 +15,6 @@ class Api::OrganizationsSerializer < Serializer
       formatted_email_address:      organization.formatted_email_address,
       formatted_task_email_address: organization.formatted_task_email_address,
 
-      links: {
-        members:       api_organization_members_path(organization),
-        groups:        api_organization_groups_path(organization),
-        conversations: api_organization_conversations_path(organization),
-        tasks:         api_organization_tasks_path(organization),
-      }
     }
   end
 

@@ -1,25 +1,23 @@
-Covered.Group = DS.Model.extend({
-  param:             DS.attr('string'),
-  slug:              DS.attr('string'),
-  name:              DS.attr('string'),
-  email_address_tag: DS.attr('string'),
-  color:             DS.attr('string'),
-
-  email_address:                DS.attr('string'),
-  task_email_address:           DS.attr('string'),
-  formatted_email_address:      DS.attr('string'),
-  formatted_task_email_address: DS.attr('string'),
-
-  conversations_count: DS.attr('number'),
-
-  members:       DS.hasMany('group', {async:true}),
-  conversations: DS.hasMany('conversation', {async:true}),
-  tasks:         DS.hasMany('conversation', {async:true}),
+Covered.Group = RL.Model.extend({
+  id:                        RL.attr('number'),
+  param:                     RL.attr('string'),
+  slug:                      RL.attr('string'),
+  name:                      RL.attr('string'),
+  emailAddressTag:           RL.attr('string'),
+  color:                     RL.attr('string'),
+  emailAddress:              RL.attr('string'),
+  taskEmailAddress:          RL.attr('string'),
+  formattedEmailAddress:     RL.attr('string'),
+  formattedTaskEmailAddress: RL.attr('string'),
+  conversationsCount:        RL.attr('number'),
 
   badgeStyle: function() {
     return "background-color: "+this.get('color')+";";
   }.property('color')
+
 });
 
-Covered.GroupAdapter = DS.CoveredAdapter.extend({
+Covered.RESTAdapter.map("Covered.Group", {
+  primaryKey: "slug"
 });
+

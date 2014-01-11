@@ -3,10 +3,17 @@
 //= require moment
 //= require handlebars
 //= require ember
-//= require ember-data
+//= require ember-restless
 //= require_self
 //= require covered
 //= require debug
+
+$.ajaxSetup({
+  headers: {
+    'Accept': 'application/json',
+    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 
 Covered = Ember.Application.create({
   LOG_MODULE_RESOLVER: true,

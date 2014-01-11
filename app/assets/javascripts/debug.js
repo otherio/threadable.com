@@ -6,6 +6,8 @@ function controller(name){
   return Covered.__container__.lookup("controller:"+name);
 }
 
+controllerFor = controller;
+
 function currentUser(){
   return controller('application').get('currentUser');
 }

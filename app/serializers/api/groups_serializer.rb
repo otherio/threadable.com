@@ -16,11 +16,6 @@ class Api::GroupsSerializer < Serializer
 
       conversations_count: group.conversations.count,
 
-      links: {
-        members:       api_organization_group_members_path(group.organization, group),
-        conversations: api_organization_group_conversations_path(group.organization, group),
-        tasks:         api_organization_group_tasks_path(group.organization, group),
-      }
     }
   end
 

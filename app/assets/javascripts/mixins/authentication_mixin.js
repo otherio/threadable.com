@@ -30,7 +30,6 @@ Covered.AuthenticationMixin = Ember.Mixin.create((function(){
   function signInAs(user){
     console.log('signing is as', user);
     this.set('currentUser', user);
-    this.set('isSignedIn', true);
     return this;
   }
 
@@ -42,7 +41,6 @@ Covered.AuthenticationMixin = Ember.Mixin.create((function(){
 
   function _signOut() {
     this.set('currentUser', null);
-    this.set('isSignedIn', false);
     // TODO we should flush the entire datastore here
   }
 

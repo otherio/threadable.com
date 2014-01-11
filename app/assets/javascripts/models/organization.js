@@ -1,18 +1,18 @@
-Covered.Organization = DS.Model.extend({
-  name:                 DS.attr('string'),
-  slug:                 DS.attr('string'),
-  description:          DS.attr('string'),
-  subjectTag:           DS.attr('string'),
-  emailAddressUsername: DS.attr('string'),
-  createdAt:            DS.attr('date'),
-  updatedAt:            DS.attr('date'),
+Covered.Organization = RL.Model.extend({
+  id:                        RL.attr('number'),
+  slug:                      RL.attr('string'),
+  param:                     RL.attr('string'),
+  name:                      RL.attr('string'),
+  shortName:                 RL.attr('string'),
+  subjectTag:                RL.attr('string'),
+  description:               RL.attr('string'),
 
-  emailAddress:              DS.attr('string'),
-  taskEmailAddress:          DS.attr('string'),
-  formattedEmailAddress:     DS.attr('string'),
-  formattedTaskEmailAddress: DS.attr('string'),
+  emailAddress:              RL.attr('string'),
+  taskEmailAddress:          RL.attr('string'),
+  formattedEmailAddress:     RL.attr('string'),
+  formattedTaskEmailAddress: RL.attr('string'),
+});
 
-  groups:          DS.hasMany('group', {async:true}),
-  conversations:   DS.hasMany('conversation', {async:true}),
-  myConversations: DS.hasMany('conversation', {async:true})
+Covered.RESTAdapter.map("Covered.Organization", {
+  primaryKey: "slug"
 });

@@ -1,26 +1,20 @@
 Covered.ApplicationController = Ember.Controller.extend({
 
-  init: function() {
-    if (Covered.currentUserId){
-      var user = this.store.find('user', Covered.currentUserId,
-        function() {
-          debugger
-        },
-        function() {
-          debugger
-        }
-      );
-
-      this.set('currentUser', user);
-      this.set('isSignedIn', true);
-      delete Covered.currentUserId;
-    }
-  },
-
   transitions: [],
 
-  isSignedIn: false,
-  currentUser: null,
+  currentUser: Ember.computed.alias('model'),
+
+  isSignedIn: function() {
+    return !!this.get('currentUser');
+  }.property('currentUser'),
+
+  // currentUserChanged: function(){
+  //   console.log('CURRENT USER CHANGED');
+  //   $.getJSON('/api/current_user/organizations').then(function(response){
+  //     var organization = response.organizations[0];
+  //     this.transitionTo('organization', organization.slug);
+  //   }.bind(this));
+  // }.observes('currentUser'),
 
   goBack: function(){
     var transition = this.get('transitions')[1];

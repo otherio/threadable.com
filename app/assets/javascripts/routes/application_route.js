@@ -10,6 +10,10 @@ Covered.ApplicationRoute = Ember.Route.extend({
   //   this.controllerFor('navbar').set('currentUser', application.get('currentUser'));
   // },
 
+  model: function() {
+    return Covered.CurrentUser.get();
+  },
+
   actions: {
     willTransition: function(transition) {
       var transitions = this.controllerFor('application').get('transitions');
@@ -17,4 +21,6 @@ Covered.ApplicationRoute = Ember.Route.extend({
       transitions.length = 2;
     }
   }
+
 });
+
