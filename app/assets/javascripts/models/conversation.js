@@ -1,21 +1,20 @@
 Covered.Conversation = RL.Model.extend({
-  id:                 RL.attr('number'),
-  param:              RL.attr('string'),
-  slug:               RL.attr('string'),
-  subject:            RL.attr('string'),
-  task:               RL.attr('boolean'),
-  created_at:         RL.attr('date'),
-  updated_at:         RL.attr('date'),
-  participant_names:  RL.attr('string'),
-  number_of_messages: RL.attr('number'),
-  message_summary:    RL.attr('string'),
-  group_ids:          RL.attr('string'),
-  organization_id:    RL.attr('string'),
+  id:                RL.attr('number'),
+  param:             RL.attr('string'),
+  slug:              RL.attr('string'),
+  subject:           RL.attr('string'),
+  task:              RL.attr('boolean'),
+  createdAt:         RL.attr('date'),
+  updatedAt:         RL.attr('date'),
+  participantNames:  RL.attr('string'),
+  numberOfMessages:  RL.attr('number'),
+  messageSummary:    RL.attr('string'),
+  groupIds:          RL.attr('string'),
+  organizationId:    RL.attr('string'),
 
   hasMessages: function() {
-    // return this.get('numberOfMessages') > 0;
-    return true;
-  }.property('number_of_messages')
+    return this.get('numberOfMessages') > 0;
+  }.property('numberOfMessages')
 });
 
 Covered.RESTAdapter.map("Covered.Conversation", {

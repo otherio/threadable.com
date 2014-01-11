@@ -4,9 +4,9 @@
       <li>
         {{#link-to 'conversation' organization.slug slug conversation.slug}}
           <ol class="recipients">
-            {{#each participant_name in conversation.participantNames}}
-              <li>{{participant_name}}</li>
-            {{/each}}
+            {{!-- {{#each participant_name in conversation.participantNames}} --}}
+              <li>{{conversation.participantNames}}</li>
+            {{!-- {{/each}} --}}
           </ol>
           <div class="updated-at">{{date conversation.updatedAt}}</div>
           <div class="number-of-messages">({{conversation.numberOfMessages}})</div>

@@ -13,13 +13,7 @@ class Api::MessagesController < ApiController
       :to_header, :cc_header
     ).symbolize_keys
 
-    task = !!params[:message][:task]
-
-    if conversation.nil?
-      @conversation = organization.conversations.create! message_params.slice(:subject).merge({task: task})
-    end
-
-    message = conversation.messages.create! message_params.merge(sent_via_web: true) if message_params.present?
+    message = conversation.messages.create! message_params.merge(sent_via_web: true, creator: current_user) if message_params.present?
     if message.present? && message.persisted?
       render json: Api::MessagesSerializer[message], status: 201
     else
@@ -35,7 +29,8 @@ class Api::MessagesController < ApiController
   end
 
   def conversation
-    @conversation ||= (organization.conversations.find_by_slug!(params[:conversation_id]) if params.key?(:conversation_id))
+    conversation_id = params[:conversation_id] || params[:message][:conversation_id]
+    @conversation ||= (organization.conversations.find_by_slug!(conversation_id) if conversation_id)
   end
 
 end

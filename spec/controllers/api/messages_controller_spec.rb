@@ -57,7 +57,7 @@ describe Api::MessagesController do
     describe 'create' do
       context 'when given valid message data' do
         it 'creates and returns the new message' do
-          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey' }
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
           expect(response.status).to eq 201
           message = conversation.messages.latest
           expect(message).to be
@@ -65,50 +65,14 @@ describe Api::MessagesController do
         end
 
         it 'sets sent_via_web to true' do
-          expect_any_instance_of(Covered::Conversation::Messages).to receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true})
-          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey' }
-        end
-
-        context 'with no conversation' do
-          it 'creates the conversation and message, and returns the message' do
-            xhr :post, :create, format: :json, organization_id: raceteam.slug, message: { subject: 'my message', body: 'hey' }
-            expect(response.status).to eq 201
-            conversation = raceteam.conversations.find_by_slug!('my-message')
-            expect(conversation).to be
-            expect(conversation.subject).to eq 'my message'
-            message = conversation.messages.latest
-            expect(message).to be
-            expect(response.body).to eq Api::MessagesSerializer[message].to_json
-          end
-
-          context 'with an invalid subject' do
-            it 'raises a RecordInvalid error' do
-              expect do
-                xhr :post, :create, format: :json, organization_id: raceteam.slug, message: { subject: '', body: 'hey' }
-              end.to raise_error(Covered::RecordInvalid)
-            end
-          end
-
-          context 'with the task flag set to true' do
-            it 'creates a task and returns the new message' do
-              xhr :post, :create, format: :json, organization_id: raceteam.slug, message: { subject: 'my message', body: 'hey', task: true }
-              expect(response.status).to eq 201
-              conversation = raceteam.conversations.find_by_slug!('my-message')
-              expect(conversation).to be
-              expect(conversation.task?).to be_true
-              expect(conversation.subject).to eq 'my message'
-              message = conversation.messages.latest
-              expect(message).to be
-              expect(response.body).to eq Api::MessagesSerializer[message].to_json
-            end
-          end
-
+          expect_any_instance_of(Covered::Conversation::Messages).to receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true, creator: current_user})
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
         end
       end
 
       context 'with an organization that the user is not a member of' do
         it 'returns a 404' do
-          xhr :post, :create, format: :json, organization_id: sfhealth.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey' }
+          xhr :post, :create, format: :json, organization_id: sfhealth.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
           expect(response.status).to eq 404
           expect(response.body).to be_blank
         end
@@ -116,7 +80,7 @@ describe Api::MessagesController do
 
       context 'with a conversation that does not exist' do
         it 'returns a 404' do
-          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: 'foobar', message: { subject: 'my message', body: 'hey' }
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: 'foobar', message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
           expect(response.status).to eq 404
           expect(response.body).to be_blank
         end
