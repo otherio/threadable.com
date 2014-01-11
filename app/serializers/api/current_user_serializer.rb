@@ -1,6 +1,7 @@
 class Api::CurrentUserSerializer < Serializer
 
   def serialize_record user
+    return nil if user.nil?
     json = {
       id:            user.id,
       param:         user.to_param,
