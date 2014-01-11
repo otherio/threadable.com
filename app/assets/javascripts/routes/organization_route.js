@@ -1,6 +1,7 @@
 Covered.OrganizationRoute = Ember.Route.extend({
 
   model: function(params){
+    this.controllerFor('organization').set('organization_slug', params.organization);
     return Covered.Organization.fetch(params.organization);
   },
 

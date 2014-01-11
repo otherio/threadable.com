@@ -4,7 +4,6 @@ class Api::CurrentUserController < ApiController
 
   # GET /api/users/current
   def show
-    return render nothing: true, status: :not_found unless signed_in?
     render json: Api::CurrentUserSerializer[current_user]
   end
 

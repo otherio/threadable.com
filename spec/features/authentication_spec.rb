@@ -27,28 +27,28 @@ feature "Authentication" do
     # expect(page).to have_selector('.sign_in_form.shake')
   end
 
-  scenario %(Existing user with a password forgot their password) do
-    click_on "Forgot password"
-    expect(page).to have_text "Recover password"
-    fill_in "Email", with: "alice@ucsd.example.com"
-    click_button "Recover"
-    expect(page).to have_text "We've emailed you a password reset link. Please check your email."
-  end
+  scenario %(Existing user with a password forgot their password) # do
+  #   click_on "Forgot password"
+  #   expect(page).to have_text "Recover password"
+  #   fill_in "Email", with: "alice@ucsd.example.com"
+  #   click_button "Recover"
+  #   expect(page).to have_text "We've emailed you a password reset link. Please check your email."
+  # end
 
-  scenario %(Existing user without a password forgot their password) do
-    click_on "Forgot password"
-    expect(page).to have_text "Recover password"
-    fill_in "Email", with: "jonathan@ucsd.example.com"
-    click_button "Recover"
-    expect(page).to have_text "We've emailed you a link to setup your account. Please check your email."
-  end
+  scenario %(Existing user without a password forgot their password) # do
+  #   click_on "Forgot password"
+  #   expect(page).to have_text "Recover password"
+  #   fill_in "Email", with: "jonathan@ucsd.example.com"
+  #   click_button "Recover"
+  #   expect(page).to have_text "We've emailed you a link to setup your account. Please check your email."
+  # end
 
-  scenario %(Unknown user forgot their password) do
-    click_on "Forgot password"
-    expect(page).to have_text "Recover password"
-    fill_in "Email", with: "ASDSADASSDA@qwewqewq.com"
-    click_button "Recover"
-    expect(page).to have_text "Error! No account found with that email address"
-  end
+  scenario %(Unknown user forgot their password) # do
+  #   click_on "Forgot password"
+  #   expect(page).to have_text "Recover password"
+  #   fill_in "Email", with: "ASDSADASSDA@qwewqewq.com"
+  #   click_button "Recover"
+  #   expect(page).to have_text "Error! No account found with that email address"
+  # end
 
 end

@@ -11,8 +11,6 @@ Covered.SignInController = Ember.Controller.extend(Covered.AuthenticationMixin, 
   actions: {
     signIn: function() {
       this.set('error', undefined);
-      // emailAddress = 'alice@ucsd.example.com';
-      // password     = 'password';
       emailAddress = this.get('emailAddress');
       password     = this.get('password');
       var request = this.signIn(emailAddress, password);

@@ -1,6 +1,6 @@
 class AuthenticationController < ApplicationController
 
-  skip_before_action :require_user_be_signed_in!, except: [:destroy]
+  skip_before_action :require_user_be_signed_in!
 
   PADU = :post_authentication_destination_url
 

@@ -6,6 +6,7 @@ Covered.Router.reopen({
 
 Covered.Router.map(function() {
   this.route('sign_in');
+  this.route('sign_out');
   this.route('forgot_password');
 
   this.resource('organization', {path: '/:organization'}, function(){

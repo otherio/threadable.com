@@ -23,6 +23,8 @@ Covered = Ember.Application.create({
   LOG_TRANSITIONS_INTERNAL: true
 });
 
+Ember.run.backburner.DEBUG = true;
+
 Ember.TextField.reopen({
   attributeBindings: ['autofocus']
 });

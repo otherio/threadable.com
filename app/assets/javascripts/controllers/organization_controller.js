@@ -2,8 +2,9 @@ Covered.OrganizationController = Ember.ObjectController.extend(Covered.Authentic
 
   focus: null,
   previousFocus: null,
-  group: null,
-  conversation: null,
+  organization_slug: null,
+  // group: null,
+  // conversation: null,
   // group: Ember.computed.alias('controllers.organization.group'),
   // conversation: Ember.computed.alias('controllers.organization.group_conversation'),
 

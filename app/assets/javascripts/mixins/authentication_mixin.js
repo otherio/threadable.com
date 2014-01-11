@@ -1,47 +1,20 @@
 Covered.AuthenticationMixin = Ember.Mixin.create((function(){
 
   function signIn(email_address, password){
-    var request = $.post('/sign_in.json', {
+    var params = {
       email_address: email_address,
       password: password
-    });
-
-    request.done(signInSuccessful.bind(this));
-    request.fail(signInFailed.bind(this));
-
-    return request;
-  }
-
-  function signInSuccessful(response){
-    if (response.current_user){
-      var currentUser = Covered.CurrentUser.get();
-      // var currentUser = this.store.buildRecord(Covered.User, response.current_user.id, response.current_user);
-      this.signInAs(currentUser);
-    }else{
-      this.set('error', 'an unknown error has occured');
     }
-  }
-
-  function signInFailed() {
-    console.log('signin failed');
-    _signOut.apply(this);
-  }
-
-  function signInAs(user){
-    console.log('signing is as', user);
-    this.set('currentUser', user);
-    return this;
+    return $.post('/sign_in.json', params).always(function(){
+      Covered.CurrentUser.reload();
+    });
   }
 
   function signOut(){
-    console.log('signing out');
-    _signOut.apply(this);
-    $.post('/sign_out.json');
-  }
-
-  function _signOut() {
-    this.set('currentUser', null);
-    // TODO we should flush the entire datastore here
+    Covered.CurrentUser.get().set('user_id', null);
+    return $.post('/sign_out.json').always(function(){
+      Covered.CurrentUser.reload();
+    });
   }
 
   return {
@@ -51,8 +24,7 @@ Covered.AuthenticationMixin = Ember.Mixin.create((function(){
     currentUser: Ember.computed.alias('controllers.application.currentUser'),
 
     signIn:   signIn,
-    signOut:  signOut,
-    signInAs: signInAs
+    signOut:  signOut
   };
 
 })());
