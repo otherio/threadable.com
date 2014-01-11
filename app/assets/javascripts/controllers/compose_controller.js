@@ -1,6 +1,17 @@
 Covered.ComposeController = Ember.ObjectController.extend({
   needs: ['organization', 'group'],
 
+  currentOrganization: Ember.computed.alias('controllers.organization'),
+  currentGroup:        Ember.computed.alias('controllers.group'),
+
+  composingTask: function() {
+    return this.get('composing') == 'task';
+  }.property('composing'),
+
+  composingConversation: function() {
+    return this.get('composing') == 'conversation';
+  }.property('composing'),
+
   actions: {
     sendMessage: function() {
       var organizationSlug = this.get('controllers.organization').get('content').get('slug');
