@@ -5,11 +5,11 @@
 
 <div class="right-nav">
   <div data-uk-button-radio class="uk-button-group">
-    {{#link-to 'group_compose_task' currentOrganization.slug classNameBindings=":nav-button :uk-button composingTask:uk-active"}}
+    {{#link-to 'conversation_compose' currentOrganization.slug classNameBindings=":nav-button :uk-button composingTask:uk-active"}}
       <i class="uk-icon-check"></i>
     {{/link-to}}
 
-    {{#link-to 'group_compose_conversation' currentOrganization.slug classNameBindings=":nav-button :uk-button composingConversation:uk-active"}}
+    {{#link-to 'conversation_compose' currentOrganization.slug classNameBindings=":nav-button :uk-button composingConversation:uk-active"}}
       <i class="uk-icon-comment-o"></i>
     {{/link-to}}
   </div>

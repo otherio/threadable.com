@@ -28,7 +28,7 @@
   <li class="uk-nav-header">My Groups</li>
   {{#each group in controller}}
     <li>
-      {{#link-to 'group' organization.slug group.slug }}
+      {{#link-to 'conversations' organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
         <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
       {{/link-to}}
@@ -37,7 +37,7 @@
   <li class="uk-nav-header">All Groups</li>
   {{#each group in controller}}
     <li>
-      {{#link-to 'group' organization.slug group.slug }}
+      {{#link-to 'conversations' organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
         <span class="badge">143</span>
       {{/link-to}}

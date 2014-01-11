@@ -30,7 +30,8 @@ class Api::MessagesController < ApiController
   private
 
   def organization
-    @organization ||= (current_user.organizations.find_by_slug!(params[:organization_id]) if params.key?(:organization_id))
+    organization_id = params[:organization_id] || params[:message][:organization_id]
+    @organization ||= (current_user.organizations.find_by_slug!(organization_id) if organization_id)
   end
 
   def conversation

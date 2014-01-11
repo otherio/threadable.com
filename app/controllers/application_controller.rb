@@ -1,9 +1,4 @@
-class ApplicationController < ActionController::Base
-
-  protect_from_forgery
-
-  include AuthenticationConcern
-  include RescueFromExceptionsConcern
+class ApplicationController < UnauthenticatedController
 
   # before_action do
   #   return unless params["controller"] == "application" && params["action"] == "show"

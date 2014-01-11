@@ -1,4 +1,4 @@
-class FrontendController < ApplicationController
+class FrontendController < UnauthenticatedController
 
   layout false
 

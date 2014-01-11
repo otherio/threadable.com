@@ -21,10 +21,6 @@ class Api::MessagesSerializer < Serializer
       created_at:        message.created_at,
 
       parent_message_id: message.parent_message_id,
-
-      links: {
-        conversation:    api_organization_conversation_path(message.conversation.organization, message.conversation),
-      },
     }
   end
 

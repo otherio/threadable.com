@@ -8,6 +8,8 @@ Covered::Application.routes.draw do
 
     resources :organizations
     resources :groups
+    resources :conversations
+    resources :messages
 
     #   resources :groups do
     #     resources :members
@@ -22,9 +24,7 @@ Covered::Application.routes.draw do
     # resources :organization_members
     # resources :groups
     # resources :group_members
-    # resources :conversations
     # resources :tasks
-    # resources :messages
     # resources :task_doers
 
 

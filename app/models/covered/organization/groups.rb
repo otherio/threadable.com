@@ -23,6 +23,12 @@ class Covered::Organization::Groups < Covered::Groups
     end
   end
 
+  def find_by_email_address_tags! email_address_tags
+    groups = find_by_email_address_tags(email_address_tags)
+    raise Covered::RecordNotFound if groups.reject{|g| g.nil?} != groups
+    groups
+  end
+
   def create attributes={}
     super attributes.merge({organization: @organization.organization_record})
   end

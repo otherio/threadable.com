@@ -13,9 +13,6 @@ class Api::ConversationsSerializer < Serializer
       number_of_messages: conversation.messages.count,
       message_summary:    conversation.messages.latest.try(:body_plain),
       group_ids:          conversation.groups.all.map(&:id),
-      links: {
-        messages: api_organization_conversation_messages_path(conversation.organization, conversation)
-      },
     }
   end
 

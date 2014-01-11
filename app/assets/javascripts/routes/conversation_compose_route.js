@@ -1,4 +1,4 @@
-Covered.ComposeConversationRoute = Ember.Route.extend({
+Covered.ConversationComposeRoute = Ember.Route.extend({
   target: 'conversation',
 
   beforeModel: function() {
@@ -10,12 +10,7 @@ Covered.ComposeConversationRoute = Ember.Route.extend({
     var model = this.controllerFor('compose').get('model');
     var organization = this.modelFor('organization');
     if(!model || !model.get('isNew')) {
-      model = this.store.createRecord('message', {
-        organization: organization,
-        conversation: this.store.createRecord('conversation', {
-          organization: organization
-        })
-      });
+      model = Covered.Message.create();
     }
     return model;
   },
@@ -24,7 +19,7 @@ Covered.ComposeConversationRoute = Ember.Route.extend({
     this.controllerFor('organization').set('focus','conversation');
 
     this.render('compose', {
-      outlet: 'conversation',
+      outlet: 'conversationPane',
       into: 'organization',
       controller: 'compose'
     });
@@ -32,6 +27,7 @@ Covered.ComposeConversationRoute = Ember.Route.extend({
 
   actions: {
     willTransition: function(transition) {
+
       var target = transition.targetName;
       if(target == 'compose.task' || target == 'compose.conversation') {
         return;
