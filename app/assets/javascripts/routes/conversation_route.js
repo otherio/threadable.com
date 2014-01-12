@@ -1,7 +1,10 @@
 Covered.ConversationRoute = Ember.Route.extend({
 
   model: function(params){
-    return this.modelFor('conversations').findBy('slug', params.conversation);
+    var conversation = this.modelFor('conversations').findBy('slug', params.conversation);
+    conversation.loadMessages();
+    return conversation;
+    // return conversation.loadMessages().then(function(){ return conversation });
   },
 
   renderTemplate: function() {
