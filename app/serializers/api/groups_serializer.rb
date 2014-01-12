@@ -16,6 +16,7 @@ class Api::GroupsSerializer < Serializer
 
       conversations_count: group.conversations.count,
 
+      organization_slug: group.organization.slug,
     }
   end
 

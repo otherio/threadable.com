@@ -3,8 +3,8 @@ class Api::ConversationsSerializer < Serializer
   def serialize_record conversation
     {
       id:                 conversation.id,
-      param:              conversation.to_param,
       slug:               conversation.slug,
+      organization_slug:  conversation.organization.slug,
       subject:            conversation.subject,
       task:               conversation.task?,
       created_at:         conversation.created_at,

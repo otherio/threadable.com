@@ -1,14 +1,80 @@
+RL.Model.reopen({
+  prepareRequest: function(request, model){
+    return request;
+  }
+});
+
 Covered.RESTAdapter = RL.RESTAdapter.create({
   namespace: 'api',
   headers: {
     'Accept': 'application/json',
     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-  },
+  }
 });
 
 Covered.Client = RL.Client.create({
   adapter: Covered.RESTAdapter
 });
+
+
+
+
+
+
+
+/**
+  The patches below are pending this pull request:
+  https://github.com/endlessinc/ember-restless/pull/45
+**/
+RL.Model.reopen({
+  prepareRequest: function(request, model){
+    return request;
+  }
+});
+
+Covered.RESTAdapter.reopen({
+  /**
+    Creates and executes an ajax request wrapped in a promise.
+    @method request
+    @param {RESTless.Model} model model to use to build the request
+    @param {Object} [params] Additional ajax params
+    @param {Object} [key] optional resource primary key value
+    @return {Ember.RSVP.Promise}
+   */
+  request: function(model, params, key) {
+    var adapter = this, serializer = this.serializer;
+
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      params = params || {};
+      params.url = adapter.buildUrl(model, key);
+      params.dataType = serializer.dataType;
+      params.contentType = serializer.contentType;
+
+      if(params.data && params.type !== 'GET') {
+        params.data = serializer.prepareData(params.data);
+      }
+
+      params = model.prepareRequest(params);
+
+      params.success = function(data, textStatus, jqXHR) {
+        Ember.run(null, resolve, data);
+      };
+      params.error = function(jqXHR, textStatus, errorThrown) {
+        var errors = adapter.parseAjaxErrors(jqXHR, textStatus, errorThrown);
+        Ember.run(null, reject, errors);
+      };
+
+      var ajax = Ember.$.ajax(params);
+
+      // (private) store current ajax request on the model.
+      model.set('currentRequest', ajax);
+    });
+  }
+
+});
+/**
+  End of patch
+**/
 
 
 

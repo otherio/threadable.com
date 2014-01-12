@@ -1,6 +1,6 @@
 Covered.Conversation = RL.Model.extend({
   id:                RL.attr('number'),
-  param:             RL.attr('string'),
+  organizationSlug:  RL.attr('string'),
   slug:              RL.attr('string'),
   subject:           RL.attr('string'),
   task:              RL.attr('boolean'),
@@ -21,3 +21,11 @@ Covered.RESTAdapter.map("Covered.Conversation", {
   primaryKey: "slug"
 });
 
+
+Covered.Conversation.reopen({
+  prepareRequest: function(request){
+    request.data = request.data || {};
+    request.data.organization_id = request.data.organization_id || this.get('organizationSlug');
+    return this._super(request);
+  }
+});

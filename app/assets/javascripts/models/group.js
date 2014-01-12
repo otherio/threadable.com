@@ -1,6 +1,6 @@
 Covered.Group = RL.Model.extend({
   id:                        RL.attr('number'),
-  param:                     RL.attr('string'),
+  organizationSlug:          RL.attr('string'),
   slug:                      RL.attr('string'),
   name:                      RL.attr('string'),
   emailAddressTag:           RL.attr('string'),
@@ -21,3 +21,10 @@ Covered.RESTAdapter.map("Covered.Group", {
   primaryKey: "slug"
 });
 
+Covered.Group.reopen({
+  prepareRequest: function(request){
+    request.data = request.data || {};
+    request.data.organization_id = request.data.organization_id || this.get('organizationSlug');
+    return this._super(request);
+  }
+});
