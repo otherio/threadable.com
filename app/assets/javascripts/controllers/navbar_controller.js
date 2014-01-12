@@ -8,6 +8,11 @@ Covered.NavbarController = Ember.Controller.extend({
   composingTask:         Ember.computed.alias('controllers.compose.composingTask'),
   composingConversation: Ember.computed.alias('controllers.compose.composingConversation'),
 
+  navbarStyle: function() {
+    var color = this.get('currentGroup.color');
+    return color ? "background-color: "+color+";" : '';
+  }.property('currentGroup.color'),
+
   actions: {
     sendMessage: function() {
       this.get('controllers.compose').send('sendMessage');
