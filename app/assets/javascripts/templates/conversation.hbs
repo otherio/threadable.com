@@ -1,24 +1,26 @@
 <div class="conversation">
+  <div>
 
-  {{#each group in conversationGroups}}
-    <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
-  {{/each}}
-
-  <h2 class="subject">{{subject}}</h2>
-  <ul class="messages">
-    {{#each message in messages}}
-      <li class="message">
-        <div class="uk-clearfix">
-          <div class="avatar">
-            <img {{bind-attr src="message.avatarUrl"}} />
-          </div>
-          <h2 class="sender_name">{{message.senderName}}</h2>
-          <span class="date">{{date message.date_header}}</span>
-        </div>
-        <div class="body">
-          {{message.bodyStripped}}
-        </div>
-      </li>
+    {{#each group in conversationGroups}}
+      <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
     {{/each}}
-  </ul>
+
+    <h2 class="subject">{{subject}}</h2>
+    <ul class="messages">
+      {{#each message in messages}}
+        <li class="message">
+          <div class="uk-clearfix">
+            <div class="avatar">
+              <img {{bind-attr src="message.avatarUrl"}} />
+            </div>
+            <h2 class="sender_name">{{message.senderName}}</h2>
+            <span class="date">{{date message.date_header}}</span>
+          </div>
+          <div class="body">
+            {{message.bodyStripped}}
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
 </div>
