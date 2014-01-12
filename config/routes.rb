@@ -11,7 +11,12 @@ Covered::Application.routes.draw do
     resources :organizations
     resources :groups
     resources :conversations
+    resources :tasks
     resources :messages
+
+    resources :organization_members
+    resources :group_members
+    resources :task_doers
   end
 
   # OLD ROUTES START

@@ -11,12 +11,6 @@ class Api::TasksSerializer < Serializer
 
       created_at:         task.created_at,
       updated_at:         task.updated_at,
-
-      links: {
-        conversations: api_organization_conversation_path(task.organization, task),
-        messages:      api_organization_conversation_messages_path(task.organization, task),
-        doers:         api_organization_task_doers_path(task.organization, task),
-      },
     }
   end
 

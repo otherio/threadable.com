@@ -50,7 +50,7 @@ describe Api::OrganizationsController do
       it "should render the current users's organizations as json" do
         xhr :get, :index, format: :json
         expect(response).to be_ok
-        expect(response.body).to eq Api::OrganizationsSerializer[[raceteam]].to_json
+        expect(response.body).to eq Api::OrganizationsSerializer[[raceteam], current_user.group_ids].to_json
       end
     end
 
@@ -65,7 +65,7 @@ describe Api::OrganizationsController do
         it "should render the current users's organizations as json" do
           xhr :get, :show, format: :json, id: raceteam.slug
           expect(response).to be_ok
-          expect(response.body).to eq Api::OrganizationsSerializer[raceteam].to_json
+          expect(response.body).to eq Api::OrganizationsSerializer[raceteam, current_user.group_ids].to_json
         end
       end
       context 'when given an invalid organization id' do

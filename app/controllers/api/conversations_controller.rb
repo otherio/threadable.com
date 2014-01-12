@@ -11,7 +11,8 @@ class Api::ConversationsController < ApiController
     conversation_params.require :subject
 
     conversation = organization.conversations.create! conversation_params.symbolize_keys
-    conversation.groups.add organization.groups.find_by_email_address_tags!([params[:conversation][:group_ids]])
+    group_ids = Array(params[:conversation][:group_ids])
+    conversation.groups.add organization.groups.find_by_email_address_tags!(group_ids) if group_ids
 
     render json: Api::ConversationsSerializer[conversation], status: 201
   end
