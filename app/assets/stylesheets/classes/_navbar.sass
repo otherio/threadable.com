@@ -1,22 +1,32 @@
 .navbar
+  height: $navbar-height
   overflow: hidden
   background: darkgrey
-  font-size: 130%
+  font-size: 18px
   padding: 0 0.5em
   &,a,a:hover,a:active,a:visited
     color: white
 
+  *
+    line-height: $navbar-height
+
   .left-nav
     float: left
   .right-nav
-    padding-top: 5px
     float: right
 
   a
+    padding: 0 0.25em
     display: inline-block
-    padding: 0.25em
+    height: $navbar-height
+
   i
-    font-size: 130%
+    font-size: 30px
+
+  .current-org-and-group
+    +mini-to-medium-screens
+      position: relative
+      top: -5px
 
   a.nav-button
     height: 1.6em
