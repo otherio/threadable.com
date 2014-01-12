@@ -19,6 +19,10 @@ class Covered::Group < Covered::Model
     destroy
   }, to: :group_record
 
+  def group_id
+    group_record.id
+  end
+
   let(:members){ Members.new(self) }
   let(:conversations){ Conversations.new(self) }
   let(:tasks){ Tasks.new(self) }

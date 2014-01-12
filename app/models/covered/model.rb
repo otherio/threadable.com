@@ -17,9 +17,9 @@ class Covered::Model
     %(#<#{self.class}>)
   end
 
-  def ==(other)
+  def == other
     super ||
-      other.instance_of?(self.class) &&
+      self.class === other &&
       id.present? &&
       other.id == id
   end

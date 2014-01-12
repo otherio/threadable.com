@@ -53,4 +53,38 @@ describe Covered::Organization::Groups do
     end
   end
 
+
+  describe "conversation groups" do
+    it "should be in sync" do
+      all_conversations = organization.conversations.all.map do |conversation|
+        [conversation, conversation.groups.all]
+      end
+
+      all_groups = organization.groups.all.map do |group|
+        [group, group.conversations.all]
+      end
+
+      all_conversations.each do |conversation, groups|
+        all_groups.each do |group, conversations|
+          if groups.include? group
+            expect(conversations).to include conversation
+          else
+            expect(conversations).to_not include conversation
+          end
+        end
+      end
+
+      all_groups.each do |group, conversations|
+        all_conversations.each do |conversation, groups|
+          if conversations.include? conversation
+            expect(groups).to include group
+          else
+            expect(groups).to_not include group
+          end
+        end
+      end
+
+    end
+  end
+
 end

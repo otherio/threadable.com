@@ -10,7 +10,7 @@ class Group < ActiveRecord::Base
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
 
   has_many :conversation_groups, dependent: :destroy
-  has_many :conversations, through: :conversation_groups
+  has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
   has_many :group_members, class_name: 'GroupMembership', dependent: :destroy
   has_many :members, through: :group_members, source: 'user'
   has_many :tasks,

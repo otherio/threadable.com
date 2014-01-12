@@ -7,11 +7,7 @@ class Conversation < ActiveRecord::Base
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
   has_many :conversation_groups, dependent: :destroy
-  has_many :groups, through: :conversation_groups do
-    def active
-      where(conversation_groups: {active: true})
-    end
-  end
+  has_many :groups, ->{ where(conversation_groups: {active: true}) }, through: :conversation_groups
 
   def self.default_scope
     order('conversations.updated_at DESC')

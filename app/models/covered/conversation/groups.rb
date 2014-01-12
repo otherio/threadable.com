@@ -33,7 +33,7 @@ class Covered::Conversation::Groups < Covered::Groups
   private
 
   def scope
-    groups_association.active
+    groups_association
   end
 
   def groups_association
