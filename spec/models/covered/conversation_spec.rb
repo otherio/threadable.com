@@ -81,7 +81,7 @@ describe Covered::Conversation do
     end
 
     it 'returns an array of strings' do
-      expect(conversation.participant_names).to eq ['Jared', 'Peter', 'Jared']
+      expect(conversation.participant_names).to eq ['Jared', 'Peter']
     end
     context "when there are no messages" do
       let(:all_messages){ [] }
