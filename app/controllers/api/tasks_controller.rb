@@ -2,7 +2,7 @@ class Api::TasksController < ApiController
 
   # get /api/tasks
   def index
-    render json: Api::TasksSerializer[tasks.all]
+    render json: serialize(tasks.all)
   end
 
   private

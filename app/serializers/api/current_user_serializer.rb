@@ -1,6 +1,17 @@
+# FYI: this is a special case and should not be an example of how to make a serializer - Jared
 class Api::CurrentUserSerializer
 
-  def self.[] current_user
+  def self.serialize covered, _
+    new(covered).as_json
+  end
+
+  def initialize covered
+    @covered = covered
+  end
+  attr_reader :covered
+  delegate :current_user, to: :covered
+
+  def as_json
     if current_user
       {
         user: {

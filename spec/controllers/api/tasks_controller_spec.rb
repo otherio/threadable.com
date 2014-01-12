@@ -25,7 +25,7 @@ describe Api::TasksController do
           it "renders all the tasks of the given organization as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug
             expect(response).to be_ok
-            expect(response.body).to eq Api::TasksSerializer[raceteam.tasks.all].to_json
+            expect(response.body).to eq Api::TasksSerializer.serialize(covered, raceteam.tasks.all).to_json
           end
 
           # get /api/:organization_id/groups/:group_id/conversations
@@ -34,7 +34,7 @@ describe Api::TasksController do
             it 'gets tasks scoped to the group' do
               xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: electronics.email_address_tag
               expect(response).to be_ok
-              expect(response.body).to eq Api::TasksSerializer[electronics.tasks.all].to_json
+              expect(response.body).to eq Api::TasksSerializer.serialize(covered, electronics.tasks.all).to_json
             end
           end
 

@@ -46,7 +46,7 @@ describe Api::ConversationsController do
           it "renders all the conversations of the given organization as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug
             expect(response).to be_ok
-            expect(response.body).to eq Api::ConversationsSerializer[raceteam.conversations.all].to_json
+            expect(response.body).to eq Api::ConversationsSerializer.serialize(covered, raceteam.conversations.all).to_json
           end
 
           # get /api/:organization_id/groups/:group_id/conversations
@@ -55,7 +55,7 @@ describe Api::ConversationsController do
             it 'gets conversations scoped to the group' do
               xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: electronics.email_address_tag
               expect(response).to be_ok
-              expect(response.body).to eq Api::ConversationsSerializer[electronics.conversations.all].to_json
+              expect(response.body).to eq Api::ConversationsSerializer.serialize(covered, electronics.conversations.all).to_json
             end
           end
 
@@ -93,7 +93,7 @@ describe Api::ConversationsController do
           expect(response.status).to eq 201
           conversation = raceteam.conversations.find_by_slug('my-conversation')
           expect(conversation).to be
-          expect(response.body).to eq Api::ConversationsSerializer[conversation].to_json
+          expect(response.body).to eq Api::ConversationsSerializer.serialize(covered, conversation).to_json
         end
       end
 

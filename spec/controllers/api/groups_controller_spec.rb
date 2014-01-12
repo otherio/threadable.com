@@ -46,7 +46,7 @@ describe Api::GroupsController do
           it "renders all the groups of the given organization as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug
             expect(response).to be_ok
-            expect(response.body).to eq Api::GroupsSerializer[raceteam.groups.all, current_user.group_ids].to_json
+            expect(response.body).to eq Api::GroupsSerializer.serialize(covered, raceteam.groups.all).to_json
           end
         end
         context 'of an group that the current user is not in' do
@@ -74,7 +74,7 @@ describe Api::GroupsController do
         it "renders the current users's groups as json" do
           xhr :get, :show, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag
           expect(response).to be_ok
-          expect(response.body).to eq Api::GroupsSerializer[electronics, current_user.group_ids].to_json
+          expect(response.body).to eq Api::GroupsSerializer.serialize(covered, electronics).to_json
         end
       end
       context 'when given an invalid group id' do
@@ -94,7 +94,7 @@ describe Api::GroupsController do
           expect(response.status).to eq 201
           group = raceteam.groups.find_by_email_address_tag('fluffy')
           expect(group).to be
-          expect(response.body).to eq Api::GroupsSerializer[group, current_user.group_ids].to_json
+          expect(response.body).to eq Api::GroupsSerializer.serialize(covered, group).to_json
         end
       end
 
@@ -125,7 +125,7 @@ describe Api::GroupsController do
           xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8' }
           expect(response).to be_ok
           expect(raceteam.groups.find_by_email_address_tag('electronics').color).to eq '#964bf8'
-          expect(response.body).to eq Api::GroupsSerializer[electronics, current_user.group_ids].to_json
+          expect(response.body).to eq Api::GroupsSerializer.serialize(covered, electronics).to_json
         end
       end
       context 'when given an invalid group id' do

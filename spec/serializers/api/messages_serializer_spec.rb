@@ -9,7 +9,7 @@ describe Api::MessagesSerializer do
   let(:message2) { conversation.messages.all.first }
 
   context 'when given a single record' do
-    subject{ described_class[message] }
+    let(:payload){ message }
     it do
       should eq(
         message: {
@@ -32,17 +32,13 @@ describe Api::MessagesSerializer do
           created_at:        message.created_at,
 
           parent_message_id: message.parent_message_id,
-
-          links: {
-            conversation:  "/api/organizations/#{raceteam.slug}/conversations/#{conversation.slug}",
-          },
         }
       )
     end
   end
 
   context 'when given a collection of records' do
-    subject{ described_class[[message,message2]] }
+    let(:payload){ [message,message2] }
 
     it 'foo' do
       should eq(
@@ -67,10 +63,6 @@ describe Api::MessagesSerializer do
             created_at:        message.created_at,
 
             parent_message_id: message.parent_message_id,
-
-            links: {
-              conversation:  "/api/organizations/#{raceteam.slug}/conversations/#{conversation.slug}",
-            },
           },{
             id:                message2.id,
             unique_id:         message2.unique_id,
@@ -91,10 +83,6 @@ describe Api::MessagesSerializer do
             created_at:        message2.created_at,
 
             parent_message_id: message2.parent_message_id,
-
-            links: {
-              conversation:  "/api/organizations/#{raceteam.slug}/conversations/#{conversation.slug}",
-            },
           }
         ]
       )

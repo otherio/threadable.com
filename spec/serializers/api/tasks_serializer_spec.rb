@@ -7,7 +7,7 @@ describe Api::TasksSerializer do
   let(:trim_body_panels) { raceteam.tasks.find_by_slug!('trim-body-panels') }
 
   context 'when given a single record' do
-    subject{ described_class[layup_body_carbon] }
+    let(:payload){ layup_body_carbon }
     it do
       should eq(
         task: {
@@ -20,19 +20,13 @@ describe Api::TasksSerializer do
 
           created_at:        layup_body_carbon.created_at,
           updated_at:        layup_body_carbon.updated_at,
-
-          links: {
-            conversations: "/api/organizations/#{raceteam.slug}/conversations/#{layup_body_carbon.slug}",
-            messages:      "/api/organizations/#{raceteam.slug}/conversations/#{layup_body_carbon.slug}/messages",
-            doers:         "/api/organizations/#{raceteam.slug}/tasks/#{layup_body_carbon.slug}/doers"
-          },
         }
       )
     end
   end
 
   context 'when given a collection of records' do
-    subject{ described_class[[trim_body_panels, layup_body_carbon]] }
+    let(:payload){ [trim_body_panels, layup_body_carbon] }
     it do
       should eq(
         tasks: [
@@ -46,12 +40,6 @@ describe Api::TasksSerializer do
 
             created_at:        trim_body_panels.created_at,
             updated_at:        trim_body_panels.updated_at,
-
-            links: {
-              conversations: "/api/organizations/#{raceteam.slug}/conversations/#{trim_body_panels.slug}",
-              messages:      "/api/organizations/#{raceteam.slug}/conversations/#{trim_body_panels.slug}/messages",
-              doers:         "/api/organizations/#{raceteam.slug}/tasks/#{trim_body_panels.slug}/doers"
-            },
           },{
             id:                layup_body_carbon.id,
             param:             "layup-body-carbon",
@@ -62,12 +50,6 @@ describe Api::TasksSerializer do
 
             created_at:        layup_body_carbon.created_at,
             updated_at:        layup_body_carbon.updated_at,
-
-            links: {
-              conversations: "/api/organizations/#{raceteam.slug}/conversations/#{layup_body_carbon.slug}",
-              messages:      "/api/organizations/#{raceteam.slug}/conversations/#{layup_body_carbon.slug}/messages",
-              doers:         "/api/organizations/#{raceteam.slug}/tasks/#{layup_body_carbon.slug}/doers"
-            },
           }
         ]
       )

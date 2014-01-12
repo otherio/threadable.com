@@ -6,7 +6,7 @@ describe Api::MembersSerializer do
   let(:marcus){ covered.users.find_by_email_address!('marcus@sfhealth.example.com') }
 
   context 'when given a single record' do
-    subject{ described_class[alice] }
+    let(:payload){ alice }
     it do
       should eq(
         member: {
@@ -22,7 +22,7 @@ describe Api::MembersSerializer do
   end
 
   context 'when given a collection of records' do
-    subject{ described_class[[alice,marcus]] }
+    let(:payload){ [alice,marcus] }
     it do
       should eq(
         members: [

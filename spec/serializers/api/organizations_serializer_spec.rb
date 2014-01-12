@@ -6,7 +6,7 @@ describe Api::OrganizationsSerializer do
   let(:sfhealth) { covered.organizations.find_by_slug!('sfhealth') }
 
   context 'when given a single record' do
-    subject{ described_class[raceteam] }
+    let(:payload){ raceteam }
     it do
       should eq(
         organization: {
@@ -23,19 +23,14 @@ describe Api::OrganizationsSerializer do
           formatted_email_address:      raceteam.formatted_email_address,
           formatted_task_email_address: raceteam.formatted_task_email_address,
 
-          links: {
-            members:       "/api/organizations/#{raceteam.slug}/members",
-            groups:        "/api/organizations/#{raceteam.slug}/groups",
-            conversations: "/api/organizations/#{raceteam.slug}/conversations",
-            tasks:         "/api/organizations/#{raceteam.slug}/tasks",
-          },
+          groups: Api::GroupsSerializer.serialize(covered, raceteam.groups.all).values.first
         }
       )
     end
   end
 
   context 'when given a collection of records' do
-    subject{ described_class[[raceteam,sfhealth]] }
+    let(:payload){ [raceteam,sfhealth] }
     it do
       should eq(
         organizations: [
@@ -53,12 +48,7 @@ describe Api::OrganizationsSerializer do
             formatted_email_address:      raceteam.formatted_email_address,
             formatted_task_email_address: raceteam.formatted_task_email_address,
 
-            links: {
-              members:       "/api/organizations/#{raceteam.slug}/members",
-              groups:        "/api/organizations/#{raceteam.slug}/groups",
-              conversations: "/api/organizations/#{raceteam.slug}/conversations",
-              tasks:         "/api/organizations/#{raceteam.slug}/tasks",
-            },
+            groups: Api::GroupsSerializer.serialize(covered, raceteam.groups.all).values.first
           },{
             id:          sfhealth.id,
             param:       "sfhealth",
@@ -73,12 +63,7 @@ describe Api::OrganizationsSerializer do
             formatted_email_address:      sfhealth.formatted_email_address,
             formatted_task_email_address: sfhealth.formatted_task_email_address,
 
-            links: {
-              members:       "/api/organizations/#{sfhealth.slug}/members",
-              groups:        "/api/organizations/#{sfhealth.slug}/groups",
-              conversations: "/api/organizations/#{sfhealth.slug}/conversations",
-              tasks:         "/api/organizations/#{sfhealth.slug}/tasks",
-            },
+            groups: Api::GroupsSerializer.serialize(covered, sfhealth.groups.all).values.first
           }
         ]
       )

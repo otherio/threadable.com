@@ -3,36 +3,45 @@ class Serializer
   include Rails.application.routes.url_helpers
 
   class << self
-    def serialize *args
-      new(*args).serialize
-    end
-    alias_method :[], :serialize
-
     def plural_record_name
-      name.split('::').last.sub(/Serializer\Z/,'').underscore.to_sym
+      @plural_record_name ||= name.split('::').last.sub(/Serializer\Z/,'').underscore.to_sym
     end
+    attr_writer :plural_record_name
 
     def singular_record_name
-      plural_record_name.to_s.singularize.to_sym
+      @singular_record_name ||= plural_record_name.to_s.singularize.to_sym
+    end
+    attr_writer :singular_record_name
+
+    def serialize covered, payload
+      new(covered, payload).as_json
     end
   end
 
-  def initialize object
-    @object = object
+  def initialize covered, payload
+    @covered, @payload = covered, payload
   end
-  attr_reader :object
-
+  attr_reader :covered, :payload
+  delegate :current_user, to: :covered
   delegate :plural_record_name, :singular_record_name, to: :class
 
-  def serialize
-    if object.is_a? Array
-      {plural_record_name => object.map(&method(:serialize_record)) }
+  def as_json
+    if payload.is_a? Array
+      {plural_record_name => payload.map(&method(:serialize_record)) }
     else
-      {singular_record_name => serialize_record(object)}
+      {singular_record_name => serialize_record(payload)}
     end
   end
 
-  def serialize_record object
+  def serializer type=nil
+    type ? self.class.parent.const_get("#{type.to_s.camelize}Serializer", true) : self.class
+  end
+
+  def serialize type=nil, payload
+    serializer(type).serialize(covered, payload).values.first
+  end
+
+  def serialize_record record
     raise "not implemented by subclass"
   end
 

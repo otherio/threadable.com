@@ -33,7 +33,7 @@ describe Api::MessagesController do
           it "renders all the messages of the given conversation as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug
             expect(response).to be_ok
-            expect(response.body).to eq Api::MessagesSerializer[conversation.messages.all].to_json
+            expect(response.body).to eq Api::MessagesSerializer.serialize(covered, conversation.messages.all).to_json
           end
         end
         context 'of an organization that the current user is not in' do
@@ -61,7 +61,7 @@ describe Api::MessagesController do
           expect(response.status).to eq 201
           message = conversation.messages.latest
           expect(message).to be
-          expect(response.body).to eq Api::MessagesSerializer[message].to_json
+          expect(response.body).to eq Api::MessagesSerializer.serialize(covered, message).to_json
         end
 
         it 'sets sent_via_web to true' do

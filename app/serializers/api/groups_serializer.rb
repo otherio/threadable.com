@@ -1,10 +1,5 @@
 class Api::GroupsSerializer < Serializer
 
-  def initialize groups, current_user_group_ids=[]
-    super(groups)
-    @current_user_group_ids = current_user_group_ids
-  end
-
   def serialize_record group
     {
       id:                           group.id,
@@ -22,8 +17,12 @@ class Api::GroupsSerializer < Serializer
       conversations_count:          group.conversations.count,
       organization_slug:            group.organization.slug,
 
-      current_user_is_a_member:     @current_user_group_ids.include?(group.id),
+      current_user_is_a_member:     current_user_group_ids.include?(group.id),
     }
+  end
+
+  def current_user_group_ids
+    @current_user_group_ids ||= current_user.try(:group_ids) || []
   end
 
 end

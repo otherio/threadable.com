@@ -2,7 +2,7 @@ class Api::ConversationsController < ApiController
 
   # get /api/conversations
   def index
-    render json: Api::ConversationsSerializer[conversations.all]
+    render json: serialize(conversations.all)
   end
 
   # post /api/conversations
@@ -14,13 +14,13 @@ class Api::ConversationsController < ApiController
     group_ids = Array(params[:conversation][:group_ids])
     conversation.groups.add organization.groups.find_by_email_address_tags!(group_ids) if group_ids
 
-    render json: Api::ConversationsSerializer[conversation], status: 201
+    render json: serialize(conversation), status: 201
   end
 
   # get /api/conversations/:id
   def show
     conversation = conversations.find_by_slug!(params[:id])
-    render json: Api::ConversationsSerializer[conversation]
+    render json: serialize(conversation)
   end
 
   # patch /api/conversations/:id

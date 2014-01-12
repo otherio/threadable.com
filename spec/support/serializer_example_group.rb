@@ -9,6 +9,14 @@ module RSpec::Support::SerializerExampleGroup
     )
   end
 
+  included do
+    subject{ described_class.serialize(covered, payload) }
+  end
+
+  def sign_in_as email_address
+    covered.current_user_id = find_user_by_email_address(email_address).id
+  end
+
   delegate :current_user, to: :covered
 
   RSpec.configuration.include self, :type => :serializer, :example_group => {

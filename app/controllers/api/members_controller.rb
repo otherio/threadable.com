@@ -7,7 +7,7 @@ class Api::MembersController < ApiController
     else
       members = organization.members
     end
-    render json: Api::MembersSerializer[members.all]
+    render json: serialize(members.all)
   end
 
   private
