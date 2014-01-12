@@ -1,15 +1,13 @@
 Covered.IndexRoute = Ember.Route.extend({
 
-  // renderTemplate: function() {
-  //   // if we're signed in redirect to the first organization
-  //   if (this.controllerFor('application').get('isSignedIn')){
-  //     $.getJSON('/api/organizations').then(function(response){
-  //       var organization = response.organizations[0];
-  //       this.transitionTo('organization', organization.slug);
-  //     }.bind(this));
-  //   }else{
-  //     this._super();
-  //   }
-  // },
+  redirect: function() {
+    if (!Covered.isSignedIn()) return;
+
+    Covered.Organization.fetch().then(redirectToFirstOrganization.bind(this));
+    function redirectToFirstOrganization(organizations){
+      var organization = organizations.objectAt(0);
+      if (organization) this.transitionTo('organization', organization.get('slug'));
+    }
+  }
 
 });

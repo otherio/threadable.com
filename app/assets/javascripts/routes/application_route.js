@@ -1,7 +1,7 @@
 Covered.ApplicationRoute = Ember.Route.extend({
 
   model: function() {
-    return Covered.CurrentUser.get();
+    return Covered.CurrentUser.fetch();
   },
 
   actions: {

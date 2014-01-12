@@ -22,10 +22,4 @@ Covered.RESTAdapter.map("Covered.Conversation", {
 });
 
 
-Covered.Conversation.reopen({
-  prepareRequest: function(request){
-    request.data = request.data || {};
-    request.data.organization_id = request.data.organization_id || this.get('organizationSlug');
-    return this._super(request);
-  }
-});
+Covered.Conversation.reopen(Covered.AddOrganizationIdToRequestsMixin);

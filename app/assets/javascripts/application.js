@@ -22,8 +22,12 @@ Covered = Ember.Application.create({
   LOG_TRANSITIONS: true,
   LOG_TRANSITIONS_INTERNAL: true
 });
+// Ember.run.backburner.DEBUG = true;
 
-Ember.run.backburner.DEBUG = true;
+Covered.isSignedIn = function(){
+  var currentUser = Covered.CurrentUser.get();
+  return currentUser && currentUser.get && currentUser.get('isSignedIn');
+};
 
 Ember.TextField.reopen({
   attributeBindings: ['autofocus']

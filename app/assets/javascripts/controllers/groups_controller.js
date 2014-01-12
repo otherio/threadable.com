@@ -1,4 +1,4 @@
-Covered.GroupsController = Ember.ArrayController.extend(Covered.AuthenticationMixin, {
+Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin, {
   needs: ['organization'],
   organization: Ember.computed.alias('controllers.organization'),
 

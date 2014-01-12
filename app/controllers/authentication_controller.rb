@@ -19,7 +19,7 @@ class AuthenticationController < ApplicationController
     authentication = Authentication.new(covered, authentication_params)
     if authentication.valid?
       sign_in! authentication.user, remember_me: authentication.remember_me
-      render json: {current_user: current_user}
+      render json: nil
     else
       render json: {error: authentication.errors.full_messages.to_sentence}, status: :unauthorized
     end

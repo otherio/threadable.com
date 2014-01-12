@@ -21,10 +21,4 @@ Covered.RESTAdapter.map("Covered.Group", {
   primaryKey: "slug"
 });
 
-Covered.Group.reopen({
-  prepareRequest: function(request){
-    request.data = request.data || {};
-    request.data.organization_id = request.data.organization_id || this.get('organizationSlug');
-    return this._super(request);
-  }
-});
+Covered.Group.reopen(Covered.AddOrganizationIdToRequestsMixin);

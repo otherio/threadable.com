@@ -1,4 +1,4 @@
-Covered.OrganizationController = Ember.ObjectController.extend(Covered.AuthenticationMixin, {
+Covered.OrganizationController = Ember.ObjectController.extend(Covered.CurrentUserMixin, {
 
   focus: null,
   previousFocus: null,

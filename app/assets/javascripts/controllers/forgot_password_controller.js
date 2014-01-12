@@ -1,4 +1,4 @@
-Covered.ForgotPasswordController = Ember.Controller.extend(Covered.AuthenticationMixin, {
+Covered.ForgotPasswordController = Ember.Controller.extend(Covered.CurrentUserMixin, {
 
   actions: {
     requestPasswordReset: function() {
