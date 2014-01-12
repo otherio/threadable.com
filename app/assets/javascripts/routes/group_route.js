@@ -1,7 +1,7 @@
 Covered.GroupRoute = Ember.Route.extend({
 
   model: function(params){
-    return this.modelFor('groups').findBy('slug', params.group);
+    return this.modelFor('organization').get('groups').findBy('slug', params.group);
   },
 
   renderTemplate: function() {

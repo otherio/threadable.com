@@ -26,7 +26,7 @@
     {{#link-to 'all_my_groups'  organization.slug}}All My Groups{{/link-to}}
   </li>
   <li class="uk-nav-header">My Groups</li>
-  {{#each group in controller}}
+  {{#each group in organization.groups}}
     <li>
       {{#link-to 'conversations' organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
@@ -35,7 +35,7 @@
     </li>
   {{/each}}
   <li class="uk-nav-header">All Groups</li>
-  {{#each group in controller}}
+  {{#each group in organization.groups}}
     <li>
       {{#link-to 'conversations' organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>

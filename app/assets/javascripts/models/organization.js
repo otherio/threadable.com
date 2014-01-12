@@ -11,6 +11,8 @@ Covered.Organization = RL.Model.extend({
   taskEmailAddress:          RL.attr('string'),
   formattedEmailAddress:     RL.attr('string'),
   formattedTaskEmailAddress: RL.attr('string'),
+
+  groups: RL.hasMany('Covered.Group')
 });
 
 Covered.RESTAdapter.map("Covered.Organization", {

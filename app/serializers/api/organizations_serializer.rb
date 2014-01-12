@@ -1,7 +1,7 @@
 class Api::OrganizationsSerializer < Serializer
 
   def serialize_record organization
-    {
+    json = {
       id:          organization.id,
       param:       organization.to_param,
       name:        organization.name,
@@ -14,8 +14,11 @@ class Api::OrganizationsSerializer < Serializer
       task_email_address:           organization.task_email_address,
       formatted_email_address:      organization.formatted_email_address,
       formatted_task_email_address: organization.formatted_task_email_address,
-
     }
+
+    json.merge! Api::GroupsSerializer[organization.groups.all]
+
+    json
   end
 
 end
