@@ -1,3 +1,8 @@
+Ember.onerror = function(error){
+  console.error(error);
+  debugger;
+};
+
 function lookup(name) {
   return Covered.__container__.lookup(name);
 }
