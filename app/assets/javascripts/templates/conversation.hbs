@@ -1,7 +1,18 @@
-<h2>{{subject}}</h2>
+<div class="conversation">
 
-<ul>
-  {{#each message in messages}}
-    <li>{{message.bodyStripped}}</li>
+  {{#each group in conversationGroups}}
+    <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
   {{/each}}
-</ul>
+
+  <h2>{{subject}}</h2>
+  <ul class="messages">
+    {{#each message in messages}}
+      <li class="message">
+      {{date message.date_header}}
+
+      {{message.from}}
+      {{message.bodyStripped}}
+      </li>
+    {{/each}}
+  </ul>
+</div>

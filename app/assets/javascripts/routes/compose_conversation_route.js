@@ -33,7 +33,7 @@ Covered.ComposeConversationRoute = Ember.Route.extend({
         return;
       }
 
-      this.controllerFor('application').set('composing', null);
+      this.controllerFor('compose').set('composing', null);
       var model = this.get('currentModel');
       if (model.get("isDirty") && !model.get("isSaving")) {
         model.set('subject', null);
