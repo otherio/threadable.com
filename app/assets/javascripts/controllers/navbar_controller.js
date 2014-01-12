@@ -17,6 +17,10 @@ Covered.NavbarController = Ember.Controller.extend({
     },
     focusConversations: function() {
       this.get('currentOrganization').set('focus', 'conversations');
+      this.transitionToRoute('conversations',
+        this.get('currentOrganization').get('slug'),
+        this.get('currentGroup').get('slug')
+      );
     }
   }
 
