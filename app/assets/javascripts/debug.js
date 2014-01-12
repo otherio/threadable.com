@@ -1,6 +1,7 @@
 Ember.onerror = function(error){
   console.error(error);
   debugger;
+  throw error;
 };
 
 function lookup(name) {
