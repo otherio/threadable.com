@@ -16,23 +16,12 @@ Covered.Conversation = RL.Model.extend({
     return this.get('numberOfMessages') > 0;
   }.property('numberOfMessages'),
 
-  loadMessages: function() {
-    var
-      conversation = this,
-      promise = conversation.get('loadMessagesPromise');
-    if (promise) return promise;
-
-    promise = Covered.Message.fetch({
+  loadMessages: RL.loadAssociationMethod('messages', function(conversation){
+    return Covered.Message.fetch({
       organization_id: conversation.get('organizationSlug'),
       conversation_id: conversation.get('slug')
     });
-
-    promise.then(function(messages) {
-      conversation.set('messages', messages);
-    });
-    conversation.set('loadMessagesPromise', promise);
-    return promise;
-  }
+  }),
 });
 
 Covered.RESTAdapter.map("Covered.Conversation", {

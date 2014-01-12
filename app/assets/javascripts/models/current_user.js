@@ -9,21 +9,10 @@ Covered.CurrentUser = RL.Model.extend({
 
   isSignedIn: function() { return !!this.get('userId'); }.property('userId'),
 
-  loadOrganizations: function() {
-    var
-      currentUser = this,
-      promise = currentUser.get('loadOrganizationsPromise');
-    if (promise) return promise;
+  loadOrganizations: RL.loadAssociationMethod('organizations', function(){
+    return Covered.Organization.fetch();
+  })
 
-    promise = Covered.Organization.fetch();
-
-    promise.then(function(organizations) {
-      currentUser.set('organizations', organizations);
-    });
-
-    currentUser.set('loadOrganizationsPromise', promise);
-    return promise;
-  }
 });
 
 Covered.CurrentUser.reopenClass({

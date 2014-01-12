@@ -77,6 +77,39 @@ Covered.RESTAdapter.reopen({
 **/
 
 
+/*
+  LoadAssociationMethod
+
+  usage:
+
+    App.User = RL.Model.extend({
+      loadPosts: RL.loadAssociationMethod('posts', function(user){
+        return App.Posts.fetch({users_id: user.get('id')});
+      })
+    });
+
+    user = App.User.find(1)
+    user.loadPosts.then(function(posts) { …; return posts; })
+*/
+RL.loadAssociationMethod = function(property, fetcher){
+  var promiseProperty = 'load'+property.capitalize()+'Promise';
+  return function() {
+    var
+      record = this,
+      promise = record.get(promiseProperty);
+
+    if (promise) return promise;
+
+    promise = fetcher(record);
+
+    promise.then(function(records) {
+      record.set(property, records);
+    });
+
+    record.set(promiseProperty, promise);
+    return promise;
+  };
+};
 
 
 
