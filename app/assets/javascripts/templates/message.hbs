@@ -1,0 +1,19 @@
+<div class="uk-clearfix">
+  <div class="avatar">
+    <img {{bind-attr src="message.avatarUrl"}} />
+  </div>
+  <h2 class="sender_name">{{message.senderName}}</h2>
+  <span class="date">{{date message.date_header}}</span>
+</div>
+
+<div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden"}}>
+  {{message.bodyStripped}}
+</div>
+
+<div {{bind-attr class=":body :complete view.showQuotedText::uk-hidden"}}>
+  {{message.body}}
+</div>
+
+{{#if message.hasQuotedText}}
+  <i {{action 'toggleQuotedText' target='view'}} class="uk-icon-ellipsis-h uk-badge expand-quoted"></i>
+{{/if}}

@@ -91,7 +91,8 @@ FixtureBuilder.build do
 
     conversation_of_cash = create_conversation(
       subject: 'How are we paying for the motor controller?',
-      text:    %(We need cash, baby.),
+      body_plain:    %(We need cash, baby. And this has quoted text.),
+      stripped_plain:    %(We need cash, baby.),
       groups:  [@electronics_group, @fundraising_group],
     )
     remove_conversation_from_group(conversation_of_cash, @electronics_group)
