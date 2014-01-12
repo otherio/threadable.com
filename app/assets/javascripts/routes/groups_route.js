@@ -1,8 +1,7 @@
 Covered.GroupsRoute = Ember.Route.extend({
 
   model: function(params){
-    debugger
-    var organization_slug = this.controllerFor('organization').set('slug');
+    var organization_slug = this.controllerFor('organization').get('organization_slug');
     return Covered.Group.fetch({organization_id: organization_slug});
   },
 
