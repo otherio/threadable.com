@@ -10,6 +10,7 @@ Covered.Group = RL.Model.extend({
   formattedEmailAddress:     RL.attr('string'),
   formattedTaskEmailAddress: RL.attr('string'),
   conversationsCount:        RL.attr('number'),
+  currentUserIsAMember:      RL.attr('boolean'),
 
   badgeStyle: function() {
     return "background-color: "+this.get('color')+";";

@@ -1,4 +1,5 @@
 require_dependency 'covered/organization'
+require_dependency 'covered/organization/group'
 
 class Covered::Organization::Groups < Covered::Groups
 
@@ -41,6 +42,10 @@ class Covered::Organization::Groups < Covered::Groups
 
   def scope
     organization.organization_record.groups
+  end
+
+  def group_for group_record
+    Covered::Organization::Group.new(organization, group_record) if group_record
   end
 
 end

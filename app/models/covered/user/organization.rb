@@ -6,11 +6,14 @@ class Covered::User::Organization < Covered::Organization
     @covered = organizations.covered
     @organizations = organizations
     @organization_record = organization_record
+    @user = organizations.user
   end
-  attr_reader :organizations
+  attr_reader :organizations, :user
 
   def leave!
-    members.remove(user: organizations.user)
+    members.remove(user: user)
   end
+
+  let(:groups){ Covered::User::Organization::Groups.new self }
 
 end

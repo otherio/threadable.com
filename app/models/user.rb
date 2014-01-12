@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :email_addresses, autosave: true, validate: true
   has_many :organization_memberships, dependent: :destroy
   has_many :organizations, :through => :organization_memberships
+  has_many :group_memberships, dependent: :destroy
   has_many :messages
   has_many :organization_messages, through: :organizations, source: :messages
   has_many :conversations, ->{ uniq }, through: :organizations

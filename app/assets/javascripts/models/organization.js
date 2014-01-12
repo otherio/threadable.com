@@ -12,7 +12,15 @@ Covered.Organization = RL.Model.extend({
   formattedEmailAddress:     RL.attr('string'),
   formattedTaskEmailAddress: RL.attr('string'),
 
-  groups: RL.hasMany('Covered.Group')
+  groups: RL.hasMany('Covered.Group'),
+
+  otherGroups: function() {
+    return this.get('groups').filterBy('currentUserIsAMember', false);
+  }.property('groups'),
+
+  myGroups: function() {
+    return this.get('groups').filterBy('currentUserIsAMember', true);
+  }.property('groups')
 });
 
 Covered.RESTAdapter.map("Covered.Organization", {

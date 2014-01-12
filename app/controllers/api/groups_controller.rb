@@ -2,7 +2,7 @@ class Api::GroupsController < ApiController
 
   # get /api/groups
   def index
-    render json: Api::GroupsSerializer[organization.groups.all]
+    render json: Api::GroupsSerializer[organization.groups.all, current_user.group_ids]
   end
 
   # post /api/groups
@@ -20,14 +20,14 @@ class Api::GroupsController < ApiController
   # get /api/groups/:id
   def show
     group = organization.groups.find_by_email_address_tag!(params[:id])
-    render json: Api::GroupsSerializer[group]
+    render json: Api::GroupsSerializer[group, current_user.group_ids]
   end
 
   # patch /api/groups/:id
   def update
     group = organization.groups.find_by_email_address_tag!(params[:id])
     group.update(color: params[:group][:color]) #the only thing you can change right now.
-    render json: Api::GroupsSerializer[group], status: 200
+    render json: Api::GroupsSerializer[group, current_user.group_ids], status: 200
   end
 
   def destroy

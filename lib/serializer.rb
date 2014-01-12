@@ -3,8 +3,8 @@ class Serializer
   include Rails.application.routes.url_helpers
 
   class << self
-    def serialize object
-      new(object).serialize
+    def serialize *args
+      new(*args).serialize
     end
     alias_method :[], :serialize
 

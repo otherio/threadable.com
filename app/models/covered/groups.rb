@@ -1,7 +1,7 @@
 class Covered::Groups < Covered::Collection
 
   def all
-    scope.reload.map{ |group| group_for group }
+    groups_for scope
   end
 
   def create attributes={}
@@ -22,6 +22,10 @@ class Covered::Groups < Covered::Collection
 
   def group_for group_record
     Covered::Group.new(covered, group_record) if group_record
+  end
+
+  def groups_for group_records
+    group_records.map{ |group_record| group_for group_record }
   end
 
 end

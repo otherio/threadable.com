@@ -1,5 +1,10 @@
 class Api::OrganizationsSerializer < Serializer
 
+  def initialize groups, current_user_group_ids=[]
+    super(groups)
+    @current_user_group_ids = current_user_group_ids
+  end
+
   def serialize_record organization
     json = {
       id:          organization.id,
@@ -16,7 +21,7 @@ class Api::OrganizationsSerializer < Serializer
       formatted_task_email_address: organization.formatted_task_email_address,
     }
 
-    json.merge! Api::GroupsSerializer[organization.groups.all]
+    json.merge! Api::GroupsSerializer[organization.groups.all, @current_user_group_ids]
 
     json
   end
