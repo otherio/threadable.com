@@ -1,6 +1,9 @@
 function lookup(name) {
   return Covered.__container__.lookup(name);
 }
+function modelFor(route_name) {
+  return lookup('route:application').modelFor(route_name);
+}
 function store(){
   return lookup('store:main');
 }
