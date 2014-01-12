@@ -67,6 +67,19 @@ class Covered::Message < Covered::Model
     parent_message.nil?
   end
 
+  def avatar_url
+    return unless creator # eventually this will do something for msgs with no creator.
+    creator.avatar_url
+  end
+
+  def sender_name
+    if creator
+      creator.name
+    else
+      from
+    end
+  end
+
   let(:attachments){ Attachments.new(self) }
 
   def update attributes

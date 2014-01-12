@@ -21,6 +21,9 @@ class Api::MessagesSerializer < Serializer
       created_at:        message.created_at,
 
       parent_message_id: message.parent_message_id,
+
+      avatar_url:        message.avatar_url,
+      sender_name:       message.sender_name,
     }
   end
 

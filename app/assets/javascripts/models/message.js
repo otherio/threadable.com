@@ -14,6 +14,8 @@ Covered.Message = RL.Model.extend({
   knowledge:        RL.attr('string'),
   createdAt:        RL.attr('date'),
   parentMessageId:  RL.attr('number'),
+  avatarUrl:        RL.attr('string'),
+  senderName:       RL.attr('string'),
 
   conversationId:   RL.attr('string'),
   organizationId:   RL.attr('string'),

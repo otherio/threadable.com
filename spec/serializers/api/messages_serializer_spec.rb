@@ -31,6 +31,9 @@ describe Api::MessagesSerializer do
           knowledge:         false,
           created_at:        message.created_at,
 
+          avatar_url:        '/fixture_images/bethany.jpg',
+          sender_name:       'Bethany Pattern',
+
           parent_message_id: message.parent_message_id,
         }
       )
@@ -62,6 +65,9 @@ describe Api::MessagesSerializer do
             knowledge:         false,
             created_at:        message.created_at,
 
+            avatar_url:        '/fixture_images/bethany.jpg',
+            sender_name:       'Bethany Pattern',
+
             parent_message_id: message.parent_message_id,
           },{
             id:                message2.id,
@@ -81,6 +87,9 @@ describe Api::MessagesSerializer do
             shareworthy:       false,
             knowledge:         false,
             created_at:        message2.created_at,
+
+            avatar_url:        '/fixture_images/alice.jpg',
+            sender_name:       'Alice Neilson',
 
             parent_message_id: message2.parent_message_id,
           }
