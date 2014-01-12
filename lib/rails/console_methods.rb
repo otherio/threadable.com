@@ -17,6 +17,10 @@ module Rails::ConsoleMethods
     @covered = Covered.new(options)
   end
 
+  def alice
+    @alice ||= covered.users.find_by_email_address!('alice@ucsd.example.com')
+  end
+
   delegate :current_user, to: :covered
 
   def build_fixtures!
