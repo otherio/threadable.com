@@ -21,6 +21,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
     reset: function() {
       this.set('subject', null);
       this.set('body', null);
+      this.set('error', null);
     },
     composeTask: function() {
       this.set('isTask', true);
@@ -35,7 +36,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
         subject          = this.get('subject'),
         body             = this.get('body'),
         organizationSlug = this.get('organization').get('slug'),
-        isTask           = message.get('isTask'),
+        isTask           = this.get('isTask'),
         groups           = this.get('groups') || [];
 
       conversation.set('subject', subject);
