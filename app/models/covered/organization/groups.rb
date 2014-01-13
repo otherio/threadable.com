@@ -9,6 +9,10 @@ class Covered::Organization::Groups < Covered::Groups
   end
   attr_reader :organization
 
+  def find_by_ids group_ids
+    groups_for scope.find(group_ids)
+  end
+
   def find_by_email_address_tag email_address_tag
     group_for (scope.where(email_address_tag: email_address_tag).first or return)
   end
@@ -46,6 +50,10 @@ class Covered::Organization::Groups < Covered::Groups
 
   def group_for group_record
     Covered::Organization::Group.new(organization, group_record) if group_record
+  end
+
+  def groups_for group_records
+    group_records.map{|group_record| group_for group_record }
   end
 
 end

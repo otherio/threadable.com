@@ -73,6 +73,11 @@ class Covered::Conversation < Covered::Model
     update(attributes) or raise Covered::RecordInvalid, "Conversation invalid: #{errors.full_messages.to_sentence}"
   end
 
+  def destroy!
+    conversation_record.destroy!
+    self
+  end
+
   def participant_names
     messages = self.messages.all
     return [creator.name.split(/\s+/).first] if messages.empty? && creator.present?

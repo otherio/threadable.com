@@ -1,4 +1,4 @@
-Covered.MyConversationsRoute = Ember.Route.extend({
+Covered.MyConversationsRoute = Covered.ConversationsRoute.extend({
 
   model: function() {
     return Covered.Conversation.fetch({

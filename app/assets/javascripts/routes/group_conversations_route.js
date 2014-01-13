@@ -1,4 +1,4 @@
-Covered.GroupConversationsRoute = Ember.Route.extend({
+Covered.GroupConversationsRoute = Covered.ConversationsRoute.extend({
 
   model: function(params){
     var organization = this.modelFor('organization');

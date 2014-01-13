@@ -1,43 +1,89 @@
 Covered.ComposeController = Ember.ObjectController.extend({
-  needs: ['organization', 'group'],
+  needs: ['organization'],
 
-  currentOrganization: Ember.computed.alias('controllers.organization'),
-  currentGroup:        Ember.computed.alias('controllers.group'),
+  organization: Ember.computed.alias('controllers.organization'),
 
-  composingTask: function() {
-    return this.get('composing') == 'task';
-  }.property('composing'),
+  conversation: null,
+  message: null,
+  groups: null,
+  isTask: false,
+  subject: null,
+  body: null,
+  error: null,
 
-  composingConversation: function() {
-    return this.get('composing') == 'conversation';
-  }.property('composing'),
+  addGroup: function(group) {
+    var groups = this.get('groups') || [];
+    if (groups.indexOf(group) === -1) groups.push(group);
+    this.set('groups', groups);
+  },
 
   actions: {
+    reset: function() {
+      this.set('subject', null);
+      this.set('body', null);
+    },
+    composeTask: function() {
+      this.set('isTask', true);
+    },
+    composeConversation: function() {
+      this.set('isTask', false);
+    },
     sendMessage: function() {
-      var organizationSlug = this.get('controllers.organization').get('content').get('slug');
-      var groupSlug = this.get('controllers.group').get('content').get('slug');
+      var
+        conversation     = this.get('conversation'),
+        message          = this.get('message'),
+        subject          = this.get('subject'),
+        body             = this.get('body'),
+        organizationSlug = this.get('organization').get('slug'),
+        isTask           = message.get('isTask'),
+        groups           = this.get('groups') || [];
 
-      var message = this.get('content');
-      var isTask = message.get('composing') === 'task';
-      var conversation = Covered.Conversation.create({
-        subject: this.get('subject'),
-        organizationId: organizationSlug,
-        groupIds: groupSlug, // eventually this will be settable in the UI
-        task: isTask
-      });
+      conversation.set('subject', subject);
+      conversation.set('organizationSlug', organizationSlug);
+      conversation.set('groupIds', groups.mapBy('id'));
+      conversation.set('task', isTask);
 
-      conversation.saveRecord().then(function(response) {
-        message.set('conversationId', response.conversation.slug);
-        message.set('organizationId', organizationSlug);
+      message.set('organizationSlug', organizationSlug);
+      message.set('subject', subject);
+      message.set('body', body);
 
-        message.saveRecord().then(function(response) {
-          this.transitionToRoute('conversations', organizationSlug, groupSlug);
-        }.bind(this), function(response){
-          console.log('we would handle an error in saving the message here: ', response);
-        });
-      }.bind(this), function(response) {
-        console.log('we would handle an error in saving the conversation here: ', response);
-      });
+      conversation.saveRecord().then(
+        conversationSaved.bind(this),
+        conversationFailed.bind(this)
+      );
+
+      function conversationSaved(response) {
+        message.set('conversationId',   conversation.get('id'));
+        message.set('conversationSlug', conversation.get('slug'));
+        message.saveRecord().then(
+          messageSaved.bind(this),
+          messageFailed.bind(this)
+        );
+      }
+
+      function conversationFailed(xhr) {
+        error.call(this, xhr);
+      }
+
+      function messageSaved(response) {
+        conversation.set('numberOfMessages', 1);
+        this.send('prependConversation', conversation);
+        this.send('transitionToConversation', conversation);
+      }
+
+      function messageFailed(xhr) {
+        error.call(this, xhr);
+        conversation.deleteRecord();
+        conversation.set('id', null);
+        conversation.set('slug', null);
+        conversation.set('isNew', true);
+      }
+
+      function error(response) {
+        var error = response && response.error || 'an unknown error occurred';
+        this.set('error', error);
+      }
+
     }
   }
 });

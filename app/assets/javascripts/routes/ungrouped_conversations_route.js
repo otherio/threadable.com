@@ -1,4 +1,4 @@
-Covered.UngroupedConversationsRoute = Ember.Route.extend({
+Covered.UngroupedConversationsRoute = Covered.ConversationsRoute.extend({
 
   model: function() {
     return Covered.Conversation.fetch({
@@ -9,10 +9,8 @@ Covered.UngroupedConversationsRoute = Ember.Route.extend({
 
   setupController: function(controller, model) {
     this._super(controller, model);
-    this.controllerFor('navbar').setProperties({
-      group: null,
-      composeTarget: 'ungrouped'
-    });
+    this.controllerFor('navbar').set('group', null);
+    this.controllerFor('organization').set('composeTarget', 'ungrouped');
   },
 
   renderTemplate: function() {

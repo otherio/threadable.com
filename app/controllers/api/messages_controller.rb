@@ -7,7 +7,7 @@ class Api::MessagesController < ApiController
 
   # post /api/organizations
   def create
-    message_params = params[:message].permit(
+    message_params = params[:message].slice(
       :subject, :body, :from, :attachments, :text, :html,
       :body_plain, :body_html, :stripped_plain, :stripped_html,
       :to_header, :cc_header
@@ -24,13 +24,22 @@ class Api::MessagesController < ApiController
   private
 
   def organization
-    organization_id = params[:organization_id] || params[:message][:organization_id]
-    @organization ||= (current_user.organizations.find_by_slug!(organization_id) if organization_id)
+    @organization ||= case
+    when params[:organization_id]
+      current_user.organizations.find_by_slug! params[:organization_id]
+    when params[:message][:organization_slug]
+      current_user.organizations.find_by_slug! params[:message][:organization_slug]
+    end
   end
 
   def conversation
-    conversation_id = params[:conversation_id] || params[:message][:conversation_id]
-    @conversation ||= (organization.conversations.find_by_slug!(conversation_id) if conversation_id)
+    conversation_id = params[:conversation_id] || params[:message][:conversation_slug]
+    @conversation ||= case
+    when params[:conversation_id]
+      organization.conversations.find_by_slug! params[:conversation_id]
+    when params[:message][:conversation_id]
+      organization.conversations.find_by_id! params[:message][:conversation_id]
+    end
   end
 
 end

@@ -21,7 +21,6 @@ module RescueFromExceptionsConcern
   ].freeze
 
   def rescue_from_exception exception
-
     logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
     case exception
     when *NOT_FOUND_EXCEPTION

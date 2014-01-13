@@ -13,6 +13,15 @@ Covered.OrganizationRoute = Ember.Route.extend({
   renderTemplate: function() {
     this.render('organization', {into: 'application'});
     this.render('groups', {into: 'organization', outlet: 'groupsPane'});
+  },
+
+  actions: {
+    goToCompose: function() {
+      var composeTarget = this.controller.get('composeTarget');
+      if (composeTarget === 'my')        this.transitionTo('my_compose');
+      if (composeTarget === 'ungrouped') this.transitionTo('ungrouped_compose');
+      if (composeTarget === 'group')     this.transitionTo('group_compose');
+    }
   }
 
 });

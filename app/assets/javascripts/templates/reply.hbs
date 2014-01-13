@@ -1,4 +1,7 @@
 <div class="reply">
+  {{#if error}}
+    <h2>Error: {{error}}</h2>
+  {{/if}}
   <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
     <fieldset>
       {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
