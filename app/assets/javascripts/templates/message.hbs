@@ -3,7 +3,7 @@
     <img {{bind-attr src="message.avatarUrl"}} />
   </div>
   <h2 class="sender_name">{{message.senderName}}</h2>
-  <span class="date">{{date message.date_header}}</span>
+  <span class="date">{{date message.dateHeader}}</span>
 </div>
 
 <div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden"}}>
