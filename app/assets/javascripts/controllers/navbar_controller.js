@@ -1,7 +1,8 @@
 Covered.NavbarController = Ember.Controller.extend({
-  needs: ['application', 'organization'],
-  currentUser: Ember.computed.alias('controllers.application.currentUser').readOnly(),
-  currentPath: Ember.computed.alias('controllers.application.currentPath').readOnly(),
+  needs: ['application', 'organization', 'compose'],
+  currentUser:     Ember.computed.alias('controllers.application.currentUser').readOnly(),
+  currentPath:     Ember.computed.alias('controllers.application.currentPath').readOnly(),
+  newConversation: Ember.computed.alias('controllers.compose').readOnly(),
 
   group: null,
   conversation: null,
@@ -21,13 +22,21 @@ Covered.NavbarController = Ember.Controller.extend({
       this.get('controllers.organization').set('focus', 'groups');
     },
     focusConversations: function() {
-      // this.set('conversation', null);
-      // this.get('controllers.organization').set('focus', 'conversations');
+      this.set('composing', false);
       this.send('transitionUp');
     },
     goToCompose: function() {
       // this.send('goToCompose');
       return true;
+    },
+    composeTask: function() {
+      this.get('newConversation').send('composeTask');
+    },
+    composeConversation: function() {
+      this.get('newConversation').send('composeConversation');
+    },
+    sendMessage: function() {
+      this.get('newConversation').send('sendMessage');
     }
   }
 

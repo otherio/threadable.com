@@ -1,7 +1,7 @@
 <div class="compose">
   <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
 
-    <div class="uk-float-right">
+    <div class="uk-float-right uk-hidden-small">
       <div data-uk-button-radio class="uk-button-group">
         <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button isTask:uk-active"}}>
           <i class="uk-icon-check"></i>
@@ -12,13 +12,14 @@
       </div>
     </div>
 
-    <h1>
+    <h2>
       {{#if isTask}}
-        <i class="uk-icon-check"></i> New Task
+        <i class="uk-icon-check"></i>
       {{else}}
-        <i class="uk-icon-comment-o"></i> New Conversation
+        <i class="uk-icon-comment-o"></i>
       {{/if}}
-    </h1>
+      {{subject}}
+    </h2>
 
     {{#if error}}
       <h2>Error: {{error}}</h2>
@@ -36,7 +37,7 @@
       </div>
       {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
       <p class="uk-float-right">
-        <a href="" class="uk-button uk-button-primary" {{action 'reset'}}>reset</a>
+        <a href="" class="uk-button" {{action 'reset'}}>reset</a>
         <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
       </p>
     </fieldset>

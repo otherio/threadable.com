@@ -1,5 +1,5 @@
 Covered.ComposeController = Ember.ObjectController.extend({
-  needs: ['organization'],
+  needs: ['organization', 'navbar'],
 
   organization: Ember.computed.alias('controllers.organization'),
 
@@ -67,6 +67,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
 
       function messageSaved(response) {
         conversation.set('numberOfMessages', 1);
+        this.send('reset');
         this.send('prependConversation', conversation);
         this.send('transitionToConversation', conversation);
       }

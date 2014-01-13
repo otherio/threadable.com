@@ -4,26 +4,26 @@
   background: #333333
   font-size: 18px
   padding: 0 0.5em
-  &,a,a:hover,a:active,a:visited
-    color: white
-
-  *
-    line-height: $navbar-height
+  .left-nav, .right-nav
+    > *
+      line-height: $navbar-height
+    > a
+      padding: 0 0.25em
+      display: inline-block
+      height: $navbar-height
+      &, &:hover,&:active,&:visited
+        color: white
+      i
+        font-size: 30px
 
   .left-nav
     float: left
   .right-nav
     float: right
 
-  a
-    padding: 0 0.25em
-    display: inline-block
-    height: $navbar-height
-
-  i
-    font-size: 30px
 
   .current-org-and-group
+    color: white
     +mini-to-medium-screens
       position: relative
       top: -5px
@@ -35,5 +35,3 @@
     text-align: center
     padding-top: 0.12em
 
-  .uk-active
-    color: #ffe200
