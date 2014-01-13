@@ -16,6 +16,7 @@ Covered.Message = RL.Model.extend({
   parentMessageId:  RL.attr('number'),
   avatarUrl:        RL.attr('string'),
   senderName:       RL.attr('string'),
+  attachments:      RL.attr('object'),
 
   conversationId:   RL.attr('string'),
   organizationId:   RL.attr('string'),
