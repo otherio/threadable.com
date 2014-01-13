@@ -1,12 +1,12 @@
 Covered.GroupConversationsRoute = Covered.ConversationsRoute.extend({
 
-  model: function(params){
+  modelFetchOptions: function(params){
     var organization = this.modelFor('organization');
     var group = this.modelFor('group');
-    return Covered.Conversation.fetch({
+    return {
       organization_id: organization.get('slug'),
       group_id: group.get('slug')
-    });
+    };
   },
 
   renderTemplate: function() {

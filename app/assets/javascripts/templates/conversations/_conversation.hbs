@@ -1,12 +1,36 @@
-{{#if conversation.task}}
-  <i class="uk-icon-check"></i>
-{{else}}
-  <i class="uk-icon-comment-o"></i>
-{{/if}}
-<ol class="recipients">
-  <li>{{conversation.participantNames}}</li>
-</ol>
-<div class="updated-at">{{date conversation.updatedAt}}</div>
-<div class="number-of-messages">({{conversation.numberOfMessages}})</div>
-<div class="subject">{{conversation.subject}}</div>
-<div class="message-summary">{{conversation.messageSummary}}</div>
+<section class="icon">
+  {{#if conversation.task}}
+    <i class="uk-icon-check"></i>
+  {{else}}
+    <i class="uk-icon-comment-o"></i>
+  {{/if}}
+</section>
+
+<section class="updated-at">{{date conversation.updatedAt}}</section>
+
+<section class="line line-1">
+  <span class="participant-names">{{conversation.participantNamesString}}</span>
+  <span class="number-of-messages">({{conversation.numberOfMessages}})</span>
+</section>
+
+<section class="line line-2">
+  <span class="subject">{{conversation.subject}}</span>
+</section>
+
+<section class="line line-3">
+  <span class="groups">
+    {{#each group in conversation.groups}}
+      <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
+    {{/each}}
+    <i class="uk-icon-chevron-right"></i>
+  </span>
+  {{#if conversation.messageSummary}}
+    <span class="message-summary">
+      {{conversation.messageSummary}}
+    </span>
+  {{else}}
+    <span class="message-summary no-message-summary">
+      no messages
+    </span>
+  {{/if}}
+</section>

@@ -7,7 +7,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
     sendMessage: function() {
       this.set('error', null);
       var organizationSlug = this.get('controllers.organization').get('content').get('slug');
-      var conversation = this.get('controllers.conversation');
+      var conversation = this.get('controllers.conversation.model');
 
       var message = this.get('content');
 
@@ -20,6 +20,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
       message.saveRecord().then(success.bind(this), error.bind(this));
 
       function success(response) {
+        conversation.deserialize(response.message.conversation);
         conversation.get('messages').pushObject(this.get('content'));
         this.set('content', Covered.Message.create({}));
       }

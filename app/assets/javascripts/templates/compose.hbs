@@ -1,45 +1,47 @@
 <div class="compose">
-  <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
+  <div class="well-when-not-small">
+    <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
 
-    <div class="uk-float-right uk-hidden-small">
-      <div data-uk-button-radio class="uk-button-group">
-        <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button isTask:uk-active"}}>
+      <div class="uk-float-right uk-hidden-small">
+        <div data-uk-button-radio class="uk-button-group">
+          <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button isTask:uk-active"}}>
+            <i class="uk-icon-check"></i>
+          </a>
+          <a href="" {{action composeConversation}} {{bind-attr class=":nav-button :uk-button isTask::uk-active"}}>
+            <i class="uk-icon-comment-o"></i>
+          </a>
+        </div>
+      </div>
+
+      <h2>
+        {{#if isTask}}
           <i class="uk-icon-check"></i>
-        </a>
-        <a href="" {{action composeConversation}} {{bind-attr class=":nav-button :uk-button isTask::uk-active"}}>
+        {{else}}
           <i class="uk-icon-comment-o"></i>
-        </a>
-      </div>
-    </div>
+        {{/if}}
+        {{subject}}
+      </h2>
 
-    <h2>
-      {{#if isTask}}
-        <i class="uk-icon-check"></i>
-      {{else}}
-        <i class="uk-icon-comment-o"></i>
+      {{#if error}}
+        <h2>Error: {{error}}</h2>
       {{/if}}
-      {{subject}}
-    </h2>
 
-    {{#if error}}
-      <h2>Error: {{error}}</h2>
-    {{/if}}
-
-    <fieldset>
-      <div class="form-row">
-        <label>Groups:</label>
-        {{#each group in groups}}
-          <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
-        {{/each}}
-      </div>
-      <div class="form-row">
-        <label>Subject:</label> {{input value=subject classNameBindings=":uk-form-blank"}}
-      </div>
-      {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
-      <p class="uk-float-right">
-        <a href="" class="uk-button" {{action 'reset'}}>reset</a>
-        <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
-      </p>
-    </fieldset>
-  </form>
+      <fieldset>
+        <div class="form-row">
+          <label>Groups:</label>
+          {{#each group in groups}}
+            <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
+          {{/each}}
+        </div>
+        <div class="form-row">
+          <label>Subject:</label> {{input value=subject classNameBindings=":uk-form-blank"}}
+        </div>
+        {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
+        <p class="uk-float-right">
+          <a href="" class="uk-button" {{action 'reset'}}>reset</a>
+          <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
+        </p>
+      </fieldset>
+    </form>
+  </div>
 </div>

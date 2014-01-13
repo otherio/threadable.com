@@ -73,18 +73,18 @@ html, body
     .groups-pane
       top: -$navbar-height
       right: 100.1%
-      width: 300px
+      width: $groups-pane-width
 
     &[data-focus="groups"]
-      left: 300px
+      left: $groups-pane-width
 
   // dual pane
   +medium-screens
     .conversations-pane
       left: 0
-      width: 300px
+      width: $conversations-pane-width
     .conversation-pane
-      left: 300px
+      left: $conversations-pane-width
       right: 0
       width: auto
 
@@ -92,12 +92,12 @@ html, body
   +large-to-xlarge-screens
     .groups-pane
       left: 0
-      width: 300px
+      width: $groups-pane-width
     .conversations-pane
-      left: 300px
-      width: 300px
+      left: $groups-pane-width
+      width: $conversations-pane-width
     .conversation-pane
-      left: 600px
+      left: $groups-pane-width + $conversations-pane-width
       right: 0
       width: auto
 

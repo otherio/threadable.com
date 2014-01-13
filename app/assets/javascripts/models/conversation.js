@@ -6,10 +6,10 @@ Covered.Conversation = RL.Model.extend({
   task:              RL.attr('boolean'),
   createdAt:         RL.attr('date'),
   updatedAt:         RL.attr('date'),
-  participantNames:  RL.attr('string'),
+  participantNames:  RL.attr('array'),
   numberOfMessages:  RL.attr('number'),
   messageSummary:    RL.attr('string'),
-  groupIds:          RL.attr('string'),
+  groupIds:          RL.attr('array'),
   organizationId:    RL.attr('string'),
 
   hasMessages: function() {
@@ -22,6 +22,20 @@ Covered.Conversation = RL.Model.extend({
       conversation_id: conversation.get('slug')
     });
   }),
+
+  participantNamesString: function() {
+    return this.get('participantNames').join(', ');
+  }.property('participantNames'),
+
+  groups: function() {
+    var groups = this.get('organization.groups');
+    if (typeof groups === 'undefined') throw new Error('no groups. did you forget to set organization?');
+    var groupIds = this.get('groupIds');
+    if (!groupIds) return [];
+    return groups.filter(function(group) {
+      return groupIds.indexOf(group.get('id')) > -1;
+    });
+  }.property('groupIds','organization.groups')
 });
 
 Covered.RESTAdapter.map("Covered.Conversation", {

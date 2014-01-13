@@ -1,10 +1,11 @@
 Covered.UngroupedConversationsRoute = Covered.ConversationsRoute.extend({
 
-  model: function() {
-    return Covered.Conversation.fetch({
-      organization_id: this.modelFor('organization').get('slug'),
+  modelFetchOptions: function() {
+    var organization = this.modelFor('organization');
+    return {
+      organization_id: organization.get('slug'),
       ungrouped: true
-    });
+    };
   },
 
   setupController: function(controller, model) {

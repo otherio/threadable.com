@@ -31,11 +31,12 @@ Covered.ComposeController = Ember.ObjectController.extend({
     },
     sendMessage: function() {
       var
+        organization     = this.get('organization').
         conversation     = this.get('conversation'),
         message          = this.get('message'),
         subject          = this.get('subject'),
         body             = this.get('body'),
-        organizationSlug = this.get('organization').get('slug'),
+        organizationSlug = organization.get('slug'),
         isTask           = this.get('isTask'),
         groups           = this.get('groups') || [];
 
@@ -68,6 +69,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
 
       function messageSaved(response) {
         conversation.deserialize(response.message.conversation);
+        conversation.set('organization', organization);
         this.send('reset');
         this.send('prependConversation', conversation);
         this.send('transitionToConversation', conversation);
