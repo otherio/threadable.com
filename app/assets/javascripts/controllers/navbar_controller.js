@@ -15,9 +15,6 @@ Covered.NavbarController = Ember.Controller.extend({
   }.property('group.color'),
 
   actions: {
-    sendMessage: function() {
-      this.get('controllers.compose').send('sendMessage');
-    },
     focusGroups: function() {
       this.get('controllers.organization').set('focus', 'groups');
     },
