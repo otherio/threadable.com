@@ -25,29 +25,29 @@ feature "Conversations" do
       end
     end
 
-    click_on 'Muted'
+    # click_on 'Muted'
 
-    within '.conversation_list' do
-      not_muted_conversations.each do |conversation|
-        expect(page).to_not have_link conversation.subject
-      end
+    # within '.conversation_list' do
+    #   not_muted_conversations.each do |conversation|
+    #     expect(page).to_not have_link conversation.subject
+    #   end
 
-      muted_conversations.each do |conversation|
-        expect(page).to have_link conversation.subject
-      end
-    end
+    #   muted_conversations.each do |conversation|
+    #     expect(page).to have_link conversation.subject
+    #   end
+    # end
 
-    click_on 'Not Muted'
+    # click_on 'Not Muted'
 
-    within '.conversation_list' do
-      not_muted_conversations.each do |conversation|
-        expect(page).to have_link conversation.subject
-      end
+    # within '.conversation_list' do
+    #   not_muted_conversations.each do |conversation|
+    #     expect(page).to have_link conversation.subject
+    #   end
 
-      muted_conversations.each do |conversation|
-        expect(page).to_not have_link conversation.subject
-      end
-    end
+    #   muted_conversations.each do |conversation|
+    #     expect(page).to_not have_link conversation.subject
+    #   end
+    # end
 
   end
 

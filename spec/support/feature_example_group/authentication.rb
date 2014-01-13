@@ -11,7 +11,7 @@ module RSpec::Support::FeatureExampleGroup
     end
     # not sure why we see this error sometimes but retrying seems to fix it - Jared
     begin
-      expect(page).to have_content('Organizations')
+      expect(page).to have_content('My Conversations')
     rescue Capybara::Webkit::InvalidResponseError
       raise if @capybara_webkit_invalid_response_error_seen
       @capybara_webkit_invalid_response_error_seen = true
@@ -24,7 +24,7 @@ module RSpec::Support::FeatureExampleGroup
   def sign_out!
     visit sign_out_path
     visit root_path
-    page.should have_content('Sign in')
+    page.should have_content('sign in')
     covered.current_user_id = nil
   end
 

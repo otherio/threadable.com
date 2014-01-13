@@ -11,7 +11,7 @@ module RSpec::Support::Elements
     when 'the organizations dropdown menu'
       '.organizations.dropdown .dropdown-menu'
     when 'the sign in form'
-      '.sign_in_form .sign-in-form form'
+      'form.sign-in-form'
     when 'the modal'
       '.modal'
     when 'the tasks sidebar'
