@@ -2,7 +2,7 @@
   {{#each conversation in controller}}
     <li>
       {{#link-to 'ungrouped_conversation' organization.slug conversation.slug}}
-        {{partial "conversations/conversation"}}
+        {{view Covered.ConversationListMemberView contextBinding=conversation}}
       {{/link-to}}
     </li>
   {{else}}
