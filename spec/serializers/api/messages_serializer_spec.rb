@@ -35,8 +35,24 @@ describe Api::MessagesSerializer do
           sender_name:       'Bethany Pattern',
 
           parent_message_id: message.parent_message_id,
+          attachments:       [],
         }
       )
+    end
+  end
+
+  context 'with attachments' do
+    let(:conversation){ raceteam.conversations.find_by_slug!('how-are-we-paying-for-the-motor-controller') }
+    let(:payload){ message }
+    it 'has attachments' do
+      attachments = subject[:message][:attachments]
+
+      expect(attachments.length).to eq 3
+
+      expect(attachments[0][:url]).to match /some\.gif$/
+      expect(attachments[0][:filename]).to eq 'some.gif'
+      expect(attachments[0][:mimetype]).to eq 'image/gif'
+      expect(attachments[0][:size]).to eq 1829
     end
   end
 
@@ -69,6 +85,7 @@ describe Api::MessagesSerializer do
             sender_name:       'Bethany Pattern',
 
             parent_message_id: message.parent_message_id,
+            attachments:       [],
           },{
             id:                message2.id,
             unique_id:         message2.unique_id,
@@ -92,6 +109,7 @@ describe Api::MessagesSerializer do
             sender_name:       'Alice Neilson',
 
             parent_message_id: message2.parent_message_id,
+            attachments:       [],
           }
         ]
       )

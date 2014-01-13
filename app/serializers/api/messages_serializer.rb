@@ -24,6 +24,15 @@ class Api::MessagesSerializer < Serializer
 
       avatar_url:        message.avatar_url,
       sender_name:       message.sender_name,
+
+      attachments:       message.attachments.all.map do |attachment|
+        {
+          url:      attachment.url,
+          filename: attachment.filename,
+          mimetype: attachment.mimetype,
+          size:     attachment.size,
+        }
+      end,
     }
   end
 

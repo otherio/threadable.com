@@ -19,7 +19,6 @@ Covered.Message = RL.Model.extend({
 
   conversationId:   RL.attr('string'),
   organizationId:   RL.attr('string'),
-  groupId:          RL.attr('string'),
 
   hasQuotedText: function() {
     return this.get('body') != this.get('bodyStripped');
