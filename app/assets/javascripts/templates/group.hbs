@@ -1,9 +1,8 @@
-{{controller}}
 <ul class="uk-list organization-conversations">
   {{#each conversation in conversations}}
     {{#if conversation.hasMessages}}
       <li>
-        {{#link-to 'conversation' organization.slug slug conversation.slug}}
+        {{#link-to 'group_conversation' organization.slug slug conversation.slug}}
           <ol class="recipients">
             {{#each participant_name in conversation.participantNames}}
               <li>{{participant_name}}</li>

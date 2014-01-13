@@ -10,10 +10,14 @@ class Covered::User::Organization < Covered::Organization
   end
   attr_reader :organizations, :user
 
+  let(:conversations){ Covered::User::Organization::Conversations.new(self) }
+  let(:groups)       { Covered::User::Organization::Groups.new self }
+
   def leave!
     members.remove(user: user)
   end
 
-  let(:groups){ Covered::User::Organization::Groups.new self }
-
 end
+
+require_dependency 'covered/user/organization/conversations'
+require_dependency 'covered/user/organization/groups'

@@ -23,12 +23,15 @@
 
 <ul class="uk-nav uk-nav-offcanvas groups-list">
   <li>
-    {{#link-to 'all_my_groups'  organization.slug}}All My Groups{{/link-to}}
+    {{#link-to 'my_conversations'  organization.slug}}My Conversations{{/link-to}}
+  </li>
+  <li>
+    {{#link-to 'ungrouped_conversations' organization.slug}}Ungrouped Conversations{{/link-to}}
   </li>
   <li class="uk-nav-header">My Groups</li>
   {{#each group in organization.myGroups}}
     <li>
-      {{#link-to 'conversations' organization.slug group.slug }}
+      {{#link-to 'group_conversations' organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
         <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
       {{/link-to}}
@@ -37,7 +40,7 @@
   <li class="uk-nav-header">Other Groups</li>
   {{#each group in organization.otherGroups}}
     <li>
-      {{#link-to 'conversations' organization.slug group.slug }}
+      {{#link-to 'group_conversations' organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
         <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
       {{/link-to}}
@@ -47,6 +50,12 @@
 
 
 <ul class="uk-nav uk-nav-offcanvas bottom-nav">
+  <li>
+    <pre>
+      <div>{{controllers.application.currentPath}}</div>
+      <div>{{controllers.application.currentRouteName}}</div>
+    </pre>
+  </li>
   <li>
     {{#link-to 'sign_out'}}Sign Out{{/link-to}}
   </li>

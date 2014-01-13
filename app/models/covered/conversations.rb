@@ -12,6 +12,12 @@ class Covered::Conversations < Covered::Collection
     conversations_for scope.includes(:participants).includes(:messages)
   end
 
+  def ungrouped
+    conversations_for scope.
+      joins('LEFT JOIN conversation_groups ON conversation_groups.conversation_id = conversations.id').
+      where(conversation_groups:{conversation_id:nil})
+  end
+
   def find_by_id id
     conversation_for (scope.where(id: id).first or return)
   end

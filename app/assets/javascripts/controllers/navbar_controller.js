@@ -1,31 +1,35 @@
 Covered.NavbarController = Ember.Controller.extend({
-  needs: ['application', 'organization', 'group', 'conversation', 'compose'],
-  currentUser:           Ember.computed.alias('controllers.application.currentUser'),
-  currentOrganization:   Ember.computed.alias('controllers.organization'),
-  currentConversation:   Ember.computed.alias('controllers.conversation'),
-  currentGroup:          Ember.computed.alias('controllers.group'),
-  composing:             Ember.computed.alias('controllers.compose.composing'),
-  composingTask:         Ember.computed.alias('controllers.compose.composingTask'),
-  composingConversation: Ember.computed.alias('controllers.compose.composingConversation'),
+  needs: ['application'],
+  currentUser: Ember.computed.alias('controllers.application.currentUser'),
+  currentPath: Ember.computed.alias('controllers.application.currentPath'),
+
+  organization: null,
+  group: null,
+  conversation: null,
+  composeTarget: null,
+  composing: false,
 
   navbarStyle: function() {
-    var color = this.get('currentGroup.color');
+    var color = this.get('group.color');
     return color ? "background-color: "+color+";" : '';
-  }.property('currentGroup.color'),
+  }.property('group.color'),
 
   actions: {
     sendMessage: function() {
       this.get('controllers.compose').send('sendMessage');
     },
     focusGroups: function() {
-      this.get('currentOrganization').set('focus', 'groups');
+      this.controllerFor('organization').set('focus', 'groups');
     },
     focusConversations: function() {
-      this.get('currentOrganization').set('focus', 'conversations');
-      this.transitionToRoute('conversations',
-        this.get('currentOrganization').get('slug'),
-        this.get('currentGroup').get('slug')
-      );
+      this.controllerFor('organization').set('focus', 'conversations');
+      this.set('conversation', null);
+    },
+    goToCompose: function() {
+      var composeTarget = this.get('composeTarget');
+      if (composeTarget === 'my')        this.transitionToRoute('my_compose');
+      if (composeTarget === 'ungrouped') this.transitionToRoute('ungrouped_compose');
+      if (composeTarget === 'group')     this.transitionToRoute('group_compose');
     }
   }
 

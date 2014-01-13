@@ -4,15 +4,15 @@
   </a>
 
   <span class="current-org-and-group">
-    {{#if currentOrganization.subjectTag}}
-      <span>[{{currentOrganization.subjectTag}}]</span>
+    {{#if organization}}
+      <span>[{{organization.subjectTag}}]</span>
     {{/if}}
-    {{#if currentGroup.name}}
-      <span>+{{currentGroup.name}}</span>
+    {{#if group}}
+      <span>+{{group.name}}</span>
     {{/if}}
   </span>
 </div>
 <div class="right-nav">
-  <a href=""><i class="uk-icon-caret-down"></i></a></li>
-  {{#link-to 'compose_conversation' currentOrganization.slug currentGroup.slug }}<i class="uk-icon-edit"></i>{{/link-to}}</li>
+  <a href=""><i class="uk-icon-caret-down"></i></a>
+  <a href="" {{action goToCompose}}><i class="uk-icon-edit"></i></a>
 </div>

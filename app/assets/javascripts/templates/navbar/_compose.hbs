@@ -1,17 +1,20 @@
 <div class="left-nav">
-  {{#link-to 'conversations' currentOrganization.slug currentGroup.slug}}<button class="uk-button">Cancel</button>{{/link-to}}
+  {{!-- {{#link-to 'group_conversations' currentOrganization.slug currentGroup.slug}}<button class="uk-button">Cancel</button>{{/link-to}} --}}
+  <a href="" {{action focusConversations}}>
+    <button class="uk-button">Cancel</button>
+  </a>
 </div>
 
 
 <div class="right-nav">
   <div data-uk-button-radio class="uk-button-group">
-    {{#link-to 'compose_task' currentOrganization.slug currentGroup.slug classNameBindings=":nav-button :uk-button composingTask:uk-active"}}
+{{!--     {{#link-to 'compose_task' currentOrganization.slug currentGroup.slug classNameBindings=":nav-button :uk-button composingTask:uk-active"}}
       <i class="uk-icon-check"></i>
     {{/link-to}}
 
     {{#link-to 'compose_conversation' currentOrganization.slug currentGroup.slug classNameBindings=":nav-button :uk-button composingConversation:uk-active"}}
       <i class="uk-icon-comment-o"></i>
-    {{/link-to}}
+    {{/link-to}} --}}
   </div>
 
   <button class="uk-button uk-button-primary" {{action sendMessage}}>Send</button>

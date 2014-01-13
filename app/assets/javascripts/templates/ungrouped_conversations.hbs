@@ -1,0 +1,11 @@
+<ul class="uk-list organization-conversations">
+  {{#each conversation in controller}}
+    <li>
+      {{#link-to 'ungrouped_conversation' organization.slug conversation.slug}}
+        {{partial "conversations/conversation"}}
+      {{/link-to}}
+    </li>
+  {{else}}
+    <h4>There are no conversations</h4>
+  {{/each}}
+</ul>

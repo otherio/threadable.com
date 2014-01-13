@@ -2,7 +2,7 @@ class Api::ConversationsController < ApiController
 
   # get /api/conversations
   def index
-    render json: serialize(conversations.all)
+    render json: serialize(conversations)
   end
 
   # post /api/conversations
@@ -31,19 +31,31 @@ class Api::ConversationsController < ApiController
   private
 
   def organization
-    organization_id = params[:organization_id] || params[:conversation][:organization_id]
-    @organization ||= (current_user.organizations.find_by_slug!(organization_id) if organization_id)
+    @organization ||= current_user.organizations.find_by_slug!(params.require(:organization_id))
+  end
+
+  def group?
+    params.key? :group_id
   end
 
   def group
-    @group ||= (organization.groups.find_by_email_address_tag!(params[:group_id]) if params.key?(:group_id))
+    @group ||= organization.groups.find_by_email_address_tag!(params.require(:group_id))
+  end
+
+  def my_conversations?
+    params.key? :my
+  end
+
+  def ungrouped_conversations?
+    params.key? :ungrouped
   end
 
   def conversations
-    if group.present?
-      @conversations ||= group.conversations
-    else
-      @conversations ||= organization.conversations
+    @conversations ||= case
+      when group?;                   group.conversations.all
+      when my_conversations?;        organization.conversations.my
+      when ungrouped_conversations?; organization.conversations.ungrouped
+      else; raise "no idea what you want bro"
     end
   end
 

@@ -5,13 +5,14 @@ Covered.OrganizationRoute = Ember.Route.extend({
     return Covered.Organization.fetch(params.organization);
   },
 
+  setupController: function(controller, model) {
+    this._super(controller, model);
+    this.controllerFor('navbar').set('organization', model);
+  },
+
   renderTemplate: function() {
     this.render('organization', {into: 'application'});
     this.render('groups', {into: 'organization', outlet: 'groupsPane'});
-  },
-
-  // setupController: function() {
-  //   this._super.apply(this, arguments);
-  // }
+  }
 
 });

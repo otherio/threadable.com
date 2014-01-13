@@ -28,17 +28,17 @@ Covered.ComposeConversationRoute = Ember.Route.extend({
   actions: {
     willTransition: function(transition) {
 
-      var target = transition.targetName;
-      if(target == 'compose_task' || target == 'compose_conversation') {
-        return;
-      }
+      // var target = transition.targetName;
+      // if(target == 'compose_task' || target == 'compose_conversation') {
+      //   return;
+      // }
 
-      this.controllerFor('compose').set('composing', null);
-      var model = this.get('currentModel');
-      if (model.get("isDirty") && !model.get("isSaving")) {
-        model.set('subject', null);
-        model.set('body', null);
-      }
+      // this.controllerFor('compose').set('composing', null);
+      // var model = this.get('currentModel');
+      // if (model.get("isDirty") && !model.get("isSaving")) {
+      //   model.set('subject', null);
+      //   model.set('body', null);
+      // }
     }
   },
 

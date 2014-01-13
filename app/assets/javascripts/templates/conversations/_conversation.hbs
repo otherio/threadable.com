@@ -1,0 +1,12 @@
+{{#if conversation.task}}
+  <i class="uk-icon-check"></i>
+{{else}}
+  <i class="uk-icon-comment-o"></i>
+{{/if}}
+<ol class="recipients">
+  <li>{{conversation.participantNames}}</li>
+</ol>
+<div class="updated-at">{{date conversation.updatedAt}}</div>
+<div class="number-of-messages">({{conversation.numberOfMessages}})</div>
+<div class="subject">{{conversation.subject}}</div>
+<div class="message-summary">{{conversation.messageSummary}}</div>

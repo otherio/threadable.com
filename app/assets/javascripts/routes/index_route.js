@@ -6,7 +6,7 @@ Covered.IndexRoute = Ember.Route.extend({
     Covered.Organization.fetch().then(redirectToFirstOrganization.bind(this));
     function redirectToFirstOrganization(organizations){
       var organization = organizations.objectAt(0);
-      if (organization) this.transitionTo('organization', organization.get('slug'));
+      if (organization) this.transitionTo('my_conversations', organization.get('slug'));
     }
   }
 
