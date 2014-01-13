@@ -120,7 +120,7 @@ class Covered::Messages::Create < MethodObject
       when ::Attachment; attachment
       when ::Covered::Attachment; attachment.attachment_record
       when Hash
-        ::Attachment.create(attachment)
+        @covered.attachments.create(attachment).attachment_record
       end
     end
   end

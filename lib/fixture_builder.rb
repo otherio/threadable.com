@@ -84,6 +84,17 @@ class FixtureBuilder
     conversation.messages.create!(options.merge(creator: current_user))
   end
 
+  def attachment path, content_type, binary=true
+    attachments_path = Rails.root + 'lib/fixtures/attachments'
+    file = attachments_path + path
+    {
+      content:  file.read,
+      filename: file.basename.to_s,
+      mimetype: content_type,
+      size:     file.size,
+    }
+  end
+
   def reply_to message, options
     message.conversation.messages.create!(options.merge(parent_message: message, creator: current_user))
   end

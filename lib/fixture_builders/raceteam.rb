@@ -90,12 +90,22 @@ FixtureBuilder.build do
     )
 
     conversation_of_cash = create_conversation(
-      subject: 'How are we paying for the motor controller?',
-      body_plain:    %(We need cash, baby. And this has quoted text.),
-      stripped_plain:    %(We need cash, baby.),
-      groups:  [@electronics_group, @fundraising_group],
+      subject:        'How are we paying for the motor controller?',
+      body_plain:     %(We need cash, baby. And this has quoted text.),
+      stripped_plain: %(We need cash, baby.),
+      groups:         [@electronics_group, @fundraising_group]
     )
     remove_conversation_from_group(conversation_of_cash, @electronics_group)
+
+    reply_to(conversation_of_cash,
+      body_plain:     "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time\n> quoted text\n> more quoted text",
+      stripped_plain: "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time",
+      attachments:    [
+        attachment('some.gif', 'image/gif'),
+        attachment('some.jpg', 'image/jpeg'),
+        attachment('some.txt', 'text/plain', false),
+      ],
+    )
   end
 
   as 'alice@ucsd.example.com' do
