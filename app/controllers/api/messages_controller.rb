@@ -15,7 +15,9 @@ class Api::MessagesController < ApiController
 
     message = conversation.messages.create! message_params.merge(sent_via_web: true, creator: current_user) if message_params.present?
     if message.present? && message.persisted?
-      render json: serialize(message), status: 201
+      json = serialize(message)
+      json[:message].merge! serialize(:conversations, message.conversation)
+      render json: json, status: 201
     else
       render nothing: true, status: 422
     end
