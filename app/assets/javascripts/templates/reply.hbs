@@ -1,0 +1,10 @@
+<div class="reply">
+  <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
+    <fieldset>
+      {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
+      <div class="controls">
+        <button class="uk-button uk-button-primary">Send</button>
+      </div>
+    </fieldset>
+  </form>
+</div>

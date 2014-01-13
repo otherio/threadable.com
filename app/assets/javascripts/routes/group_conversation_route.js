@@ -9,11 +9,13 @@ Covered.GroupConversationRoute = Ember.Route.extend({
 
   setupController: function(controller, model) {
     this.controllerFor('conversation').set('model', model);
+    this.controllerFor('reply').set('model', new Covered.Message({}));
     this.controllerFor('navbar').set('conversation', model);
   },
 
   renderTemplate: function() {
     this.render('conversation', {into: 'organization', outlet: 'conversationPane'});
+    this.render('reply', {into: 'conversation', outlet: 'reply'});
     this.controllerFor('organization').set('focus', 'conversation');
   },
 

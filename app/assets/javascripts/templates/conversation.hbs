@@ -1,6 +1,5 @@
 <div class="conversation">
   <div>
-
     {{#each group in conversationGroups}}
       <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
     {{/each}}
@@ -11,5 +10,7 @@
         {{view Covered.MessageView}}
       {{/each}}
     </ul>
+
+    {{outlet reply}}
   </div>
 </div>
