@@ -380,6 +380,16 @@ describe "processing incoming emails 2" do
       end
     end
 
+    context 'the subject begins with some form of re:' do
+      let(:subject) { 'Re: [RaceTeam] this is the subject' }
+      let(:expected_conversation_subject) { 'this is the subject' }
+      let(:expected_message_subject) { 'Re: [RaceTeam] this is the subject' }
+      let(:expected_sent_email_subject) { 'Re: [RaceTeam] this is the subject' }
+      it 'keeps the re: at the beginning' do
+        validate! :delivered
+      end
+    end
+
     context 'a parent message cannot be found' do
       let(:in_reply_to){ '' }
       let(:references) { '' }

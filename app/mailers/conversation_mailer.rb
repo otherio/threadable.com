@@ -11,14 +11,14 @@ class ConversationMailer < Covered::Mailer
 
     @organization_email_address = @task ? @organization.formatted_task_email_address : @organization.formatted_email_address
 
-    subject_tag = @organization.subject_tag
+    subject_tag = "[#{@organization.subject_tag}]"
+    subject_tag = "[✔]#{subject_tag}" if @task
     buffer_length = 100 - @message.body_plain.length
     buffer_length = 0 if buffer_length < 0
     @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
     subject = PrepareEmailSubject.call(@organization, @message)
-    subject = "[#{subject_tag}] #{subject}"
-    subject = "[✔]#{subject}" if @task
+    subject.sub!(/^\s*(re:\s?)*/i, "\\1#{subject_tag} ")
 
     from = @message.from || @message.creator.try(:formatted_email_address ) || @organization.formatted_email_address
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
