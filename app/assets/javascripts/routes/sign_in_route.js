@@ -9,5 +9,10 @@ Covered.SignInRoute = Ember.Route.extend({
   },
   setupController: function(controller, context){
     controller.reset();
+  },
+  actions: {
+    transitionToIndex: function() {
+      this.transitionTo('index');
+    }
   }
 });
