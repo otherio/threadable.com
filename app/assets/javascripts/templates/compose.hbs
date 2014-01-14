@@ -40,10 +40,14 @@
           </label>
         </div>
         {{view Covered.ResizeableTextArea value=body class="uk-form-blank body" name="body"}}
-        <p class="uk-float-right">
-          <a href="" class="uk-button" {{action 'reset'}}>reset</a>
-          <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
-        </p>
+        <div class="uk-hidden-small">
+          <span class="uk-float-left">
+            <a href="" class="uk-button" {{action 'reset'}}>Clear</a>
+          </span>
+          <span class="uk-float-right">
+            <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
+          </span>
+        </div>
       </fieldset>
     </form>
   </div>
