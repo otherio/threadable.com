@@ -1,3 +1,5 @@
+require 'timecop'
+
 class FixtureBuilder
 
   def self.build(&block)
@@ -135,6 +137,5 @@ class FixtureBuilder
     membership = organization.members.find_by_user_id! current_user.id
     membership.unsubscribe!
   end
-
 
 end

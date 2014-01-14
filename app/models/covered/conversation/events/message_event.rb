@@ -6,23 +6,19 @@ class Covered::Conversation::Events::MessageEvent
   attr_reader :message
 
   def event_type
-    'created_message'
+    :created_message
   end
 
   def id
     "message-#{message.id}"
   end
 
-  def content
-    nil
-  end
-
-  def actor_id
-    message.creator.present? ? message.creator.id : nil
+  def actor
+    message.creator
   end
 
   def created_at
-    message.date_header
+    Time.parse(message.date_header)
   end
 
 end

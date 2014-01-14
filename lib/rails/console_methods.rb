@@ -25,6 +25,8 @@ module Rails::ConsoleMethods
 
   def build_fixtures!
     Fixtures.build!
+  ensure
+    Timecop.return
   end
 
   def log_sql!

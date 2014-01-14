@@ -65,6 +65,7 @@ group :development, :test do
   gem "mail_view"
   gem 'fuubar'
   gem 'jasmine'
+  gem 'timecop', require: nil
 end
 
 group :test do
@@ -72,7 +73,6 @@ group :test do
   gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: nil
-  gem 'timecop'
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'ffaker'

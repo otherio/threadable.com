@@ -5,9 +5,9 @@ describe Api::EventsSerializer do
   let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
   let(:sfhealth) { covered.organizations.find_by_slug!('sfhealth') }
   let(:conversation){ raceteam.conversations.find_by_slug!('layup-body-carbon') }
-  let(:message_event) { conversation.events.with_messages.find { |e| e.event_type == 'created_message'} }
+  let(:message_event) { conversation.events.with_messages.find { |e| e.event_type == :created_message} }
   let(:message)       { message_event.message }
-  let(:event)         { conversation.events.with_messages.find { |e| e.event_type != 'created_message'} }
+  let(:event)         { conversation.events.with_messages.find { |e| e.event_type == :task_added_doer} }
 
   context 'when given a single message record' do
     let(:payload){ message_event }
@@ -15,9 +15,9 @@ describe Api::EventsSerializer do
       should eq(
         event: {
           id:         message_event.id,
-          event_type: "created_message",
-          user_id:    message_event.actor_id,
-          content:    nil,
+          event_type: :created_message,
+          actor:      message.creator.name,
+          doer:       nil,
           created_at: message.date_header,
         }.merge(Api::MessagesSerializer.serialize(covered, message))
       )
@@ -30,9 +30,9 @@ describe Api::EventsSerializer do
       should eq(
         event: {
           id:         event.id,
-          event_type: event.event_type,
-          user_id:    event.actor_id,
-          content:    {},
+          event_type: :task_added_doer,
+          actor:      event.actor.name,
+          doer:       event.doer.name,
           created_at: event.created_at,
           message:    nil,
         }
@@ -47,15 +47,15 @@ describe Api::EventsSerializer do
         events: [
           {
             id:         message_event.id,
-            event_type: "created_message",
-            user_id:    message_event.actor_id,
-            content:    nil,
+            event_type: :created_message,
+            actor:      message.creator.name,
+            doer:       nil,
             created_at: message.date_header,
           }.merge(Api::MessagesSerializer.serialize(covered, message)), {
             id:         event.id,
-            event_type: event.event_type,
-            user_id:    event.actor_id,
-            content:    {},
+            event_type: :task_added_doer,
+            actor:      event.actor.name,
+            doer:       event.doer.name,
             created_at: event.created_at,
             message:    nil,
           }

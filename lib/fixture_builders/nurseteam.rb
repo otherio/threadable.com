@@ -1,4 +1,6 @@
 FixtureBuilder.build do
+  Timecop.travel(Date.today - 8.hours)
+  Timecop.scale(8600)
 
   as_an_admin do
     create_organization(
@@ -449,4 +451,5 @@ FixtureBuilder.build do
     mark_task_as_done @review_our_intake_policies_task
   end
 
+  Timecop.return
 end

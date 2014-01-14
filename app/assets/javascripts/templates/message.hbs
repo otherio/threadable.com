@@ -1,26 +1,26 @@
 <div class="uk-clearfix">
   <div class="avatar">
-    <img {{bind-attr src="message.avatarUrl"}} />
+    <img {{bind-attr src="avatarUrl"}} />
   </div>
-  <h2 class="sender_name">{{message.senderName}}</h2>
-  <span class="date">{{date message.dateHeader}}</span>
+  <h2 class="sender_name">{{senderName}}</h2>
+  <span class="date">{{date dateHeader}}</span>
 </div>
 
 <div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden"}}>
-  {{{message.bodyStripped}}}
+  {{{bodyStripped}}}
 </div>
 
 <div {{bind-attr class=":body :complete view.showQuotedText::uk-hidden"}}>
-  {{{message.body}}}
+  {{{body}}}
 </div>
 
-{{#if message.hasQuotedText}}
+{{#if hasQuotedText}}
   <i {{action 'toggleQuotedText' target='view'}} class="uk-icon-ellipsis-h uk-badge expand-quoted"></i>
 {{/if}}
 
-{{#if message.attachments}}
+{{#if attachments}}
 <ul class="attachments uk-clearfix">
-  {{#each attachment in message.attachments}}
+  {{#each attachment in attachments}}
     <a {{bind-attr href="attachment.url"}} target="_new">
     <li class="attachment">
       <i class="uk-icon-file file-thumbnail"></i>

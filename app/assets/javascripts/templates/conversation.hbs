@@ -6,8 +6,14 @@
 
     <h2 class="subject">{{subject}}</h2>
     <ul class="messages">
-      {{#each message in messages}}
-        {{view Covered.MessageView}}
+      {{#each event in events}}
+        {{#if event.display}}
+          {{#if event.message}}
+            {{view Covered.MessageView contextBinding='event.message'}}
+          {{else}}
+            {{view Covered.EventView contextBinding='event'}}
+          {{/if}}
+        {{/if}}
       {{/each}}
     </ul>
 

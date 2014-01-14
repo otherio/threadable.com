@@ -6,7 +6,7 @@ Covered.ConversationRoute = Ember.Route.extend({
   model: function(params){
     var conversations = this.modelFor(this.get('parentRouteName'));
     var conversation = conversations.findBy('slug', params.conversation);
-    conversation.loadMessages();
+    conversation.loadEvents();
     return conversation;
   },
 

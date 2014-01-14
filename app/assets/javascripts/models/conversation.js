@@ -16,8 +16,8 @@ Covered.Conversation = RL.Model.extend({
     return this.get('numberOfMessages') > 0;
   }.property('numberOfMessages'),
 
-  loadMessages: RL.loadAssociationMethod('messages', function(conversation){
-    return Covered.Message.fetch({
+  loadEvents: RL.loadAssociationMethod('events', function(conversation){
+    return Covered.Event.fetch({
       organization_id: conversation.get('organizationSlug'),
       conversation_id: conversation.get('slug')
     });
