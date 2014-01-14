@@ -3,24 +3,12 @@
   %head
     %title Covered
     = stylesheet_link_tag    "old", :media => "all"
-    = javascript_tag %(ENV = #{javascript_env.to_json};)
-    = javascript_include_tag "init"
+    = javascript_include_tag "old"
     = csrf_meta_tags
 
   %body
-    :javascript
-      preventEverything();
 
     .page
       .content
         = yield
       .flash_messages
-
-
-    = filepicker_js_include_tag
-    :javascript
-      filepicker.setKey("#{Rails.application.config.filepicker_rails.api_key}")
-
-
-    %form
-      %input{type:"hidden", value:"0", id: :page_loaded_from_back_button_detection}

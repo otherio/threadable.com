@@ -373,6 +373,7 @@ DEPENDENCIES
   httmultiparty
   incoming (= 0.1.4)
   jasmine
+  jquery-rails
   js-routes
   launchy
   let
