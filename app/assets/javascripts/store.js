@@ -98,13 +98,13 @@ RL.loadAssociationMethod = function(property, fetcher){
       record = this,
       promise = record.get(promiseProperty);
 
-    if (promise && (!reload && promise.fulfilled)) return promise;
+    if (promise && (!reload && promise.settled)) return promise;
 
     promise = fetcher(record);
 
     promise.then(function(records) {
       record.set(property, records);
-      promise.fulfilled = true;
+      promise.settled = true;
     });
 
     record.set(promiseProperty, promise);
