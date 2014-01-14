@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::CurrentUserSerializer do
+describe CurrentUserSerializer do
 
   let(:alice) { covered.users.find_by_email_address!('alice@ucsd.example.com') }
   let(:marcus){ covered.users.find_by_email_address!('marcus@sfhealth.example.com') }
@@ -19,6 +19,7 @@ describe Api::CurrentUserSerializer do
           email_address: alice.email_address.to_s,
           slug:          alice.slug,
           avatar_url:    alice.avatar_url,
+          organizations: serialize(:organizations, alice.organizations.all).values.first,
         }
       )
     end
@@ -36,6 +37,7 @@ describe Api::CurrentUserSerializer do
           email_address: marcus.email_address.to_s,
           slug:          marcus.slug,
           avatar_url:    marcus.avatar_url,
+          organizations: serialize(:organizations, marcus.organizations.all).values.first,
         }
       )
     end

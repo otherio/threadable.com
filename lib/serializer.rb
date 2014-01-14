@@ -13,15 +13,15 @@ class Serializer
     end
     attr_writer :singular_record_name
 
-    def serialize covered, payload
-      new(covered, payload).as_json
+    def serialize covered, payload, options={}
+      new(covered, payload, options).as_json
     end
   end
 
-  def initialize covered, payload
-    @covered, @payload = covered, payload
+  def initialize covered, payload, options={}
+    @covered, @payload, @options = covered, payload, options
   end
-  attr_reader :covered, :payload
+  attr_reader :covered, :payload, :options
   delegate :current_user, to: :covered
   delegate :plural_record_name, :singular_record_name, to: :class
 

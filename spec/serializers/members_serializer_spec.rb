@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::MembersSerializer do
+describe MembersSerializer do
 
   let(:alice) { covered.users.find_by_email_address!('alice@ucsd.example.com') }
   let(:marcus){ covered.users.find_by_email_address!('marcus@sfhealth.example.com') }

@@ -2,12 +2,8 @@ class Api::MembersController < ApiController
 
   # get /api/tasks
   def index
-    if group.present?
-      members = group.members
-    else
-      members = organization.members
-    end
-    render json: serialize(members.all)
+    members = group.present? ? group.members : organization.members
+    render json: serialize(:members, members.all)
   end
 
   private

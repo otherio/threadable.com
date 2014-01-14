@@ -7,35 +7,30 @@ describe Api::OrganizationsController do
       it 'renders unauthorized' do
         xhr :get, :index, format: :json
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
       end
     end
     describe 'create' do
       it 'renders unauthorized' do
         xhr :post, :create, format: :json
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
       end
     end
     describe 'show' do
       it 'renders unauthorized' do
         xhr :get, :show, format: :json, id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
       end
     end
     describe 'update' do
       it 'renders unauthorized' do
         xhr :patch, :update, format: :json, id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
       end
     end
     describe 'destroy' do
       it 'renders unauthorized' do
         xhr :delete, :destroy, format: :json, id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
       end
     end
   end
@@ -50,7 +45,7 @@ describe Api::OrganizationsController do
       it "should render the current users's organizations as json" do
         xhr :get, :index, format: :json
         expect(response).to be_ok
-        expect(response.body).to eq Api::OrganizationsSerializer.serialize(covered, [raceteam]).to_json
+        expect(response.body).to eq serialize(:organizations, [raceteam]).to_json
       end
     end
 
@@ -65,14 +60,13 @@ describe Api::OrganizationsController do
         it "should render the current users's organizations as json" do
           xhr :get, :show, format: :json, id: raceteam.slug
           expect(response).to be_ok
-          expect(response.body).to eq Api::OrganizationsSerializer.serialize(covered, raceteam).to_json
+          expect(response.body).to eq serialize(:organizations, raceteam).to_json
         end
       end
       context 'when given an invalid organization id' do
         it "should render the current users's organizations as json" do
           xhr :get, :show, format: :json, id: 32843874832
           expect(response.status).to eq 404
-          expect(response.body).to be_blank
         end
       end
     end

@@ -1,4 +1,4 @@
-class Api::OrganizationsSerializer < Serializer
+class OrganizationsSerializer < Serializer
 
   def serialize_record organization
     {
@@ -15,7 +15,7 @@ class Api::OrganizationsSerializer < Serializer
       formatted_email_address:      organization.formatted_email_address,
       formatted_task_email_address: organization.formatted_task_email_address,
 
-      groups: serialize(:groups, organization.groups.all)
+      groups: serialize(:groups, organization.groups.all),
     }
   end
 

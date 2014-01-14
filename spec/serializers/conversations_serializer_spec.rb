@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::ConversationsSerializer do
+describe ConversationsSerializer do
 
   let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
   let(:layup_body_carbon) { raceteam.conversations.find_by_slug!('layup-body-carbon') }
@@ -23,7 +23,7 @@ describe Api::ConversationsSerializer do
           message_summary:    "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.\n\n Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass\n like you suggested, since we're under weight on the wheels anyway.\n\n> Wow, thanks Andy! Super helpful. I think we'll\n> just go for the carbon/glass like you suggested,\n> since we're under weight on the wheels anyway.\n"[0..50],
           group_ids:          [],
           done:               true,
-        }.merge(Api::DoersSerializer.serialize(covered, layup_body_carbon.doers.all))
+        }.merge(serialize(:doers, layup_body_carbon.doers.all))
       )
     end
   end
@@ -60,7 +60,7 @@ describe Api::ConversationsSerializer do
             message_summary:    "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny.\n\n Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass\n like you suggested, since we're under weight on the wheels anyway.\n\n> Wow, thanks Andy! Super helpful. I think we'll\n> just go for the carbon/glass like you suggested,\n> since we're under weight on the wheels anyway.\n"[0..50],
             group_ids:          [],
             done:               true,
-          }.merge(Api::DoersSerializer.serialize(covered, layup_body_carbon.doers.all))
+          }.merge(serialize(:doers, layup_body_carbon.doers.all))
         ]
       )
     end

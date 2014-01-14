@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::OrganizationsSerializer do
+describe OrganizationsSerializer do
 
   let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
   let(:sfhealth) { covered.organizations.find_by_slug!('sfhealth') }
@@ -23,7 +23,7 @@ describe Api::OrganizationsSerializer do
           formatted_email_address:      raceteam.formatted_email_address,
           formatted_task_email_address: raceteam.formatted_task_email_address,
 
-          groups: Api::GroupsSerializer.serialize(covered, raceteam.groups.all).values.first
+          groups: serialize(:groups, raceteam.groups.all).values.first
         }
       )
     end
@@ -48,7 +48,7 @@ describe Api::OrganizationsSerializer do
             formatted_email_address:      raceteam.formatted_email_address,
             formatted_task_email_address: raceteam.formatted_task_email_address,
 
-            groups: Api::GroupsSerializer.serialize(covered, raceteam.groups.all).values.first
+            groups: serialize(:groups, raceteam.groups.all).values.first
           },{
             id:          sfhealth.id,
             param:       "sfhealth",
@@ -63,7 +63,7 @@ describe Api::OrganizationsSerializer do
             formatted_email_address:      sfhealth.formatted_email_address,
             formatted_task_email_address: sfhealth.formatted_task_email_address,
 
-            groups: Api::GroupsSerializer.serialize(covered, sfhealth.groups.all).values.first
+            groups: serialize(:groups, sfhealth.groups.all).values.first
           }
         ]
       )

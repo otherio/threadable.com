@@ -2,6 +2,10 @@ module RSpec::Support::ControllerExampleGroup
 
   extend ActiveSupport::Concern
 
+  included do
+    include SerializerConcern
+  end
+
   def covered
     controller.covered
   end
@@ -16,6 +20,10 @@ module RSpec::Support::ControllerExampleGroup
 
   def sign_out!
     controller.sign_out!
+  end
+
+  def response_json
+    JSON.parse(response.body)
   end
 
   module ClassMethods

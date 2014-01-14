@@ -4,7 +4,7 @@ class Api::CurrentUserController < ApiController
 
   # GET /api/users/current
   def show
-    render json: serialize(current_user)
+    render json: serialize(:current_user, current_user)
   end
 
   # authenticate

@@ -7,7 +7,6 @@ describe Api::TasksController do
       it 'renders unauthorized' do
         xhr :get, :index, format: :json, organization_id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
       end
     end
   end
@@ -25,7 +24,7 @@ describe Api::TasksController do
           it "renders all the tasks of the given organization as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug
             expect(response).to be_ok
-            expect(response.body).to eq Api::TasksSerializer.serialize(covered, raceteam.tasks.all).to_json
+            expect(response.body).to eq serialize(:tasks, raceteam.tasks.all).to_json
           end
 
           # get /api/:organization_id/groups/:group_id/conversations
@@ -34,7 +33,7 @@ describe Api::TasksController do
             it 'gets tasks scoped to the group' do
               xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: electronics.email_address_tag
               expect(response).to be_ok
-              expect(response.body).to eq Api::TasksSerializer.serialize(covered, electronics.tasks.all).to_json
+              expect(response.body).to eq serialize(:tasks, electronics.tasks.all).to_json
             end
           end
 
@@ -42,7 +41,6 @@ describe Api::TasksController do
             it 'renders not found' do
               xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: 'foobar'
               expect(response.status).to eq 404
-              expect(response.body).to be_blank
             end
           end
         end
@@ -50,14 +48,12 @@ describe Api::TasksController do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: sfhealth.slug
             expect(response.status).to eq 404
-            expect(response.body).to be_blank
           end
         end
         context 'of an organization that does not exist current user is not in' do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: 'foobar'
             expect(response.status).to eq 404
-            expect(response.body).to be_blank
           end
         end
       end

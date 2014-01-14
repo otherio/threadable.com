@@ -1,4 +1,4 @@
-class Api::MembersSerializer < Serializer
+class MembersSerializer < Serializer
 
   def serialize_record member
     {

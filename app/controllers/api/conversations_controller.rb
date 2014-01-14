@@ -2,7 +2,7 @@ class Api::ConversationsController < ApiController
 
   # get /api/conversations
   def index
-    render json: serialize(conversations)
+    render json: serialize(:conversations, conversations)
   end
 
   # post /api/conversations
@@ -14,13 +14,13 @@ class Api::ConversationsController < ApiController
       conversation = organization.conversations.create! conversation_params.symbolize_keys
       group_ids = Array(params[:conversation][:group_ids])
       conversation.groups.add organization.groups.find_by_ids(group_ids) if group_ids
-      render json: serialize(conversation), status: 201
+      render json: serialize(:conversations, conversation), status: 201
     end
   end
 
   # get /api/conversations/:id
   def show
-    render json: serialize(conversation)
+    render json: serialize(:conversations, conversation)
   end
 
   # patch /api/conversations/:id
@@ -28,7 +28,7 @@ class Api::ConversationsController < ApiController
     conversation_params = params.require(:conversation).permit(:done)
     conversation_params[:done] ? conversation.done! : conversation.undone!
 
-    render json: serialize(conversation)
+    render json: serialize(:conversations, conversation)
   end
 
   def destroy

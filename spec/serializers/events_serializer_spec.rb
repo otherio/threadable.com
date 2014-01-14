@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Api::EventsSerializer do
+describe EventsSerializer do
 
-  let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
-  let(:sfhealth) { covered.organizations.find_by_slug!('sfhealth') }
-  let(:conversation){ raceteam.conversations.find_by_slug!('layup-body-carbon') }
+  let(:raceteam)      { covered.organizations.find_by_slug!('raceteam') }
+  let(:sfhealth)      { covered.organizations.find_by_slug!('sfhealth') }
+  let(:conversation)  { raceteam.conversations.find_by_slug!('layup-body-carbon') }
   let(:message_event) { conversation.events.with_messages.find { |e| e.event_type == :created_message} }
   let(:message)       { message_event.message }
   let(:event)         { conversation.events.with_messages.find { |e| e.event_type == :task_added_doer} }
@@ -19,7 +19,8 @@ describe Api::EventsSerializer do
           actor:      message.creator.name,
           doer:       nil,
           created_at: message.date_header,
-        }.merge(Api::MessagesSerializer.serialize(covered, message))
+          message:    serialize(:messages, message).values.first,
+        }
       )
     end
   end
@@ -51,7 +52,8 @@ describe Api::EventsSerializer do
             actor:      message.creator.name,
             doer:       nil,
             created_at: message.date_header,
-          }.merge(Api::MessagesSerializer.serialize(covered, message)), {
+            message:    serialize(:messages, message).values.first,
+          },{
             id:         event.id,
             event_type: :task_added_doer,
             actor:      event.actor.name,

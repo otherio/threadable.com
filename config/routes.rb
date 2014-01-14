@@ -80,7 +80,7 @@ Covered::Application.routes.draw do
 
   # OLD ROUTES END
 
-  get '/*path' => 'frontend#show'
-  root to: 'frontend#show'
+  match '/*path' => 'frontend#show', via: [:get, :post, :patch, :delete]
+  root to: 'frontend#show', via: [:get, :post, :patch, :delete]
 
 end

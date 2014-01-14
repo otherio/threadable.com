@@ -10,7 +10,9 @@ module RSpec::Support::SerializerExampleGroup
   end
 
   included do
-    subject{ described_class.serialize(covered, payload) }
+    include SerializerConcern
+    let(:options){ {} }
+    subject{ described_class.serialize(covered, payload, options) }
   end
 
   def sign_in_as email_address

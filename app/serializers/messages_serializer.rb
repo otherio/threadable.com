@@ -1,7 +1,7 @@
-class Api::MessagesSerializer < Serializer
+class MessagesSerializer < Serializer
 
   def serialize_record message
-    {
+    json = {
       id:                message.id,
       unique_id:         message.unique_id,
       from:              message.from,
@@ -34,6 +34,12 @@ class Api::MessagesSerializer < Serializer
         }
       end,
     }
+
+    if Array(options[:include]).include? :conversation
+      json[:conversation] = serialize(:conversations, message.conversation)
+    end
+
+    json
   end
 
 end

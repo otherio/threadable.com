@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::TasksSerializer do
+describe TasksSerializer do
 
   let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
   let(:layup_body_carbon) { raceteam.tasks.find_by_slug!('layup-body-carbon') }

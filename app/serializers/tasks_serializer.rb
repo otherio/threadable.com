@@ -1,4 +1,4 @@
-class Api::TasksSerializer < Serializer
+class TasksSerializer < Serializer
 
   def serialize_record task
     {

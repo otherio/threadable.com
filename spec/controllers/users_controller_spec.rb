@@ -5,9 +5,9 @@ describe UsersController do
   when_not_signed_in do
 
     describe 'GET :index' do
-      it 'should render a 404' do
+      it 'redirects to the sign in url with the the current request url as the r param' do
         get :index
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url(r: users_url)
       end
     end
 
@@ -46,44 +46,24 @@ describe UsersController do
       end
     end
 
-    describe 'GET :new' do
-      context 'when signups are enabled' do
-        before{ expect(controller).to receive(:signup_enabled?).and_return(true) }
-        it 'should render the new user page' do
-          new_user = double(:new_user)
-          expect(covered.users).to receive(:new).and_return(new_user)
-          get :new
-          expect(assigns[:user]).to eq new_user
-          expect(response).to render_template :new
-        end
-      end
-      context 'when signups are disabled' do
-        before{ expect(controller).to receive(:signup_enabled?).and_return(false) }
-        it "should render a 404" do
-          get :new
-          expect(response).to render_template "errors/error_404"
-        end
-      end
-    end
-
     describe 'GET :show' do
-      it 'should redirect to a sign in page' do
+      it 'redirects to the sign in url with the the current request url as the r param' do
         get :show, id: 'some-user-slug'
-        expect(response).to be_redirect
+        expect(response).to redirect_to sign_in_url(r: user_url('some-user-slug'))
       end
     end
 
     describe 'GET :edit' do
-      it 'should redirect to a sign in page' do
+      it 'redirects to the sign in url with the the current request url as the r param' do
         get :edit, id: 'some-user-slug'
-        expect(response).to be_redirect
+        expect(response).to redirect_to sign_in_url(r: edit_user_url('some-user-slug'))
       end
     end
 
     describe 'PUT :update' do
-      it 'should redirect to a sign in page' do
+      it 'redirects to the sign in url with the the current request url as the r param' do
         put :update, id: 'some-user-slug'
-        expect(response).to be_redirect
+        expect(response).to redirect_to sign_in_url
       end
     end
 
@@ -92,24 +72,16 @@ describe UsersController do
   when_signed_in_as 'tom@ucsd.example.com' do
 
     describe 'GET :index' do
-      it 'should render a 404' do
+      it 'redirects to the sign in url with the the current request url as the r param' do
         get :index
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url(r: users_url)
       end
     end
 
     describe 'POST :create' do
-      it 'should render a 404' do
+      it 'redirects to the sign in url with the the current request url as the r param' do
         post :create, user: {}
-        expect(response).to render_template "errors/error_404"
-      end
-    end
-
-
-    describe 'GET :new' do
-      it 'should render a 404' do
-        get :new
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 
@@ -130,9 +102,9 @@ describe UsersController do
         end
       end
       context "when visiting an other user's edit page" do
-        it 'should render a 404' do
+        it 'redirects to the sign in url with the the current request url as the r param' do
           get :edit, id: 'someone-else'
-          expect(response).to render_template "errors/error_404"
+          expect(response).to redirect_to sign_in_url(r: edit_user_url('someone-else'))
         end
       end
     end
@@ -162,9 +134,10 @@ describe UsersController do
         end
       end
       context "when visiting an other user's edit page" do
-        it 'should render a 404' do
+        it 'redirects to the sign in url with the the current request url as the r param' do
           put :update, id: 'someone-else'
-          expect(response).to render_template "errors/error_404"
+          expect(response).to be_redirect
+          expect(response.location).to eq sign_in_url
         end
       end
     end

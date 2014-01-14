@@ -2,7 +2,7 @@ class Api::MessagesController < ApiController
 
   # get /api/organizations
   def index
-    render json: serialize(conversation.messages.all)
+    render json: serialize(:messages, conversation.messages.all)
   end
 
   # post /api/organizations
@@ -15,9 +15,7 @@ class Api::MessagesController < ApiController
 
     message = conversation.messages.create! message_params.merge(sent_via_web: true, creator: current_user) if message_params.present?
     if message.present? && message.persisted?
-      json = serialize(message)
-      json[:message].merge! serialize(:conversations, message.conversation)
-      render json: json, status: 201
+      render json: serialize(:messages, message, include: :conversation), status: 201
     else
       render nothing: true, status: 422
     end
@@ -35,7 +33,6 @@ class Api::MessagesController < ApiController
   end
 
   def conversation
-    conversation_id = params[:conversation_id] || params[:message][:conversation_slug]
     @conversation ||= case
     when params[:conversation_id]
       organization.conversations.find_by_slug! params[:conversation_id]

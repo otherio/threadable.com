@@ -1,4 +1,4 @@
-class Api::GroupsSerializer < Serializer
+class GroupsSerializer < Serializer
 
   def serialize_record group
     {

@@ -1,4 +1,4 @@
-class Api::ConversationsSerializer < Serializer
+class ConversationsSerializer < Serializer
 
   def serialize_record conversation
     {

@@ -1,4 +1,4 @@
-class Api::EventsSerializer < Serializer
+class EventsSerializer < Serializer
 
   def serialize_record event
     {
