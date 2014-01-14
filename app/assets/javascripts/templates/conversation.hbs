@@ -1,4 +1,5 @@
 <div class="conversation">
+
   <div>
     {{#each group in groups}}
       <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
@@ -25,6 +26,17 @@
         {{/each}}
       </div>
     {{/if}}
+
+    <div class="task-controls uk-hidden-small">
+      {{#if task}}
+        {{#if done}}
+          <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i>mark as not done</a>
+        {{else}}
+          <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i>mark as done</a>
+        {{/if}}
+      {{/if}}
+      <a class="uk-float-right" href="" {{action 'muteConversation'}}><i class="uk-icon-volume-down"></i>mute conversation</a>
+    </div>
 
     <ul class="messages">
       {{#each event in events}}

@@ -13,7 +13,6 @@ Covered.ConversationRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this.controllerFor('conversation').set('model', model);
     this.controllerFor('reply').set('model', Covered.Message.create({}));
-    this.controllerFor('navbar').set('conversation', model);
   },
 
   renderTemplate: function() {
@@ -25,7 +24,6 @@ Covered.ConversationRoute = Ember.Route.extend({
   actions: {
     willTransition: function(transition) {
       this.controllerFor('conversation').set('model', null);
-      this.controllerFor('navbar').set('conversation', null);
     }
   }
 
