@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'javascript specs', type: :feature, driver: :selenium, fixtures: true, transaction: false do
 
   it "should all pass" do
+    pending "we will have js specs someday"
     visit javascript_tests_path
     Timeout::timeout(120) do
       until results.present?
