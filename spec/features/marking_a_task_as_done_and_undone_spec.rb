@@ -6,17 +6,15 @@ feature "marking a task as done and undone" do
 
   def expect_task_to_be_marked_as_done!
     within_element 'the conversation pane' do
-      expect(page).to have_text 'Alice Neilson marked this task as done'
-      expect(page).to have_text 'a few seconds ago'
       expect(page).to have_selector selector_for 'the mark not done button'
+      expect(page).to have_text 'Alice Neilson marked this task as done a few seconds ago'
     end
   end
 
   def expect_task_to_be_marked_as_not_done!
     within_element 'the conversation pane' do
-      expect(page).to have_text 'Alice Neilson marked this task as not done'
-      expect(page).to have_text 'a few seconds ago'
       expect(page).to have_selector selector_for 'the mark as done button'
+      expect(page).to have_text 'Alice Neilson marked this task as not done a few seconds ago'
     end
   end
 
