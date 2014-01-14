@@ -12,6 +12,7 @@ Covered.Conversation = RL.Model.extend({
   groupIds:          RL.attr('array'),
   organizationId:    RL.attr('string'),
   doers:             RL.hasMany('Covered.User'),
+  done:              RL.attr('boolean'),
 
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;

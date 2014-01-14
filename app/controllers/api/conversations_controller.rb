@@ -8,6 +8,7 @@ class Api::ConversationsController < ApiController
   # post /api/conversations
   def create
     conversation_params = params.require(:conversation).permit(:subject, :task)
+    conversation_params.require :subject
 
     Covered.transaction do
       conversation = organization.conversations.create! conversation_params.symbolize_keys
@@ -24,6 +25,9 @@ class Api::ConversationsController < ApiController
 
   # patch /api/conversations/:id
   def update
+    conversation_params = params.require(:conversation).permit(:done)
+    conversation_params[:done] ? conversation.done! : conversation.undone!
+
     render json: serialize(conversation)
   end
 
@@ -59,7 +63,7 @@ class Api::ConversationsController < ApiController
       when group?;                   group.conversations.all
       when my_conversations?;        organization.conversations.my
       when ungrouped_conversations?; organization.conversations.ungrouped
-      else; raise "no idea what you want bro"
+      else; raise Covered::RecordNotFound
     end
   end
 

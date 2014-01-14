@@ -14,6 +14,7 @@ class Api::ConversationsSerializer < Serializer
       message_summary:    conversation.messages.latest.try(:body_plain).try(:[], 0..50),
       group_ids:          conversation.groups.all.map(&:id),
       doers:              conversation.task? ? serialize(:doers, conversation.doers.all) : [],
+      done:               conversation.task? ? conversation.done? : nil,
     }
   end
 

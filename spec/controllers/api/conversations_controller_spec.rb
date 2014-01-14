@@ -7,28 +7,28 @@ describe Api::ConversationsController do
       it 'renders unauthorized' do
         xhr :get, :index, format: :json, organization_id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
+        expect(response.body).to eq '{"error":"Unauthorized"}'
       end
     end
     describe 'create' do
       it 'renders unauthorized' do
         xhr :post, :create, format: :json, organization_id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
+        expect(response.body).to eq '{"error":"Unauthorized"}'
       end
     end
     describe 'show' do
       it 'renders unauthorized' do
         xhr :get, :show, format: :json, organization_id: 1, id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
+        expect(response.body).to eq '{"error":"Unauthorized"}'
       end
     end
     describe 'update' do
       it 'renders unauthorized' do
         xhr :patch, :update, format: :json, organization_id: 1, id: 1
         expect(response.status).to eq 401
-        expect(response.body).to be_blank
+        expect(response.body).to eq '{"error":"Unauthorized"}'
       end
     end
   end
@@ -43,10 +43,10 @@ describe Api::ConversationsController do
     describe 'index' do
       context 'when given an organization id' do
         context 'of an organization that the current user is in' do
-          it "renders all the conversations of the given organization as json" do
+          it "returns not found when no further scope is present" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug
-            expect(response).to be_ok
-            expect(response.body).to eq Api::ConversationsSerializer.serialize(covered, raceteam.conversations.all).to_json
+            expect(response.status).to eq 404
+            expect(response.body).to eq '{"error":"Not Found"}'
           end
 
           # get /api/:organization_id/groups/:group_id/conversations
@@ -63,7 +63,7 @@ describe Api::ConversationsController do
             it 'renders not found' do
               xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: 'foobar'
               expect(response.status).to eq 404
-              expect(response.body).to be_blank
+              expect(response.body).to eq '{"error":"Not Found"}'
             end
           end
 
@@ -72,14 +72,14 @@ describe Api::ConversationsController do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: sfhealth.slug
             expect(response.status).to eq 404
-            expect(response.body).to be_blank
+            expect(response.body).to eq '{"error":"Not Found"}'
           end
         end
         context 'of an organization that does not exist current user is not in' do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: 'foobar'
             expect(response.status).to eq 404
-            expect(response.body).to be_blank
+            expect(response.body).to eq '{"error":"Not Found"}'
           end
         end
       end
@@ -101,23 +101,23 @@ describe Api::ConversationsController do
         it 'returns a 404' do
           xhr :post, :create, format: :json, organization_id: sfhealth.slug, conversation: { subject: 'my conversation' }
           expect(response.status).to eq 404
-          expect(response.body).to be_blank
+          expect(response.body).to eq '{"error":"Not Found"}'
         end
       end
 
       context 'with no subject' do
-        it 'raises an ParameterMissing error' do
-          expect {
-            xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: {  }
-          }.to raise_error(ActionController::ParameterMissing)
+        it 'returns a param not found error' do
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: {  }
+          expect(response.status).to eq 500
+          expect(response.body).to eq '{"error":"param not found: conversation"}'
         end
       end
 
       context 'with a blank subject' do
-        it 'raises an ParameterMissing error' do
-          expect {
-            xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: { subject: '' }
-          }.to raise_error(ActionController::ParameterMissing)
+        it 'returns a param not found error' do
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: { subject: '' }
+          expect(response.status).to eq 500
+          expect(response.body).to eq '{"error":"param not found: subject"}'
         end
       end
     end
@@ -135,14 +135,38 @@ describe Api::ConversationsController do
       #   it "should render the current users's organizations as json" do
       #     xhr :get, :show, format: :json, id: 32843874832
       #     expect(response.status).to eq 404
-      #     expect(response.body).to be_blank
+      #     expect(response.body).to eq '{"error":"Unauthorized"}'
       #   end
       # end
     end
 
     # patch /api/:organization_id/:id
     describe 'update' do
+      context 'when given valid conversation data' do
+        it 'marks the conversation as done/not done' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: { done: false }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
+          expect(conversation.done?).to be_false
+          expect(response.body).to eq Api::ConversationsSerializer.serialize(covered, conversation).to_json
+        end
+      end
 
+      context 'with an organization that the user is not a member of' do
+        it 'returns a 404' do
+          xhr :put, :update, format: :json, organization_id: sfhealth.slug, id: 'review-our-intake-policies', conversation: { done: true }
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"Not Found"}'
+        end
+      end
+
+      context 'with a conversation that does not exist' do
+        it 'returns a 404' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'babys-first-task', conversation: { done: true }
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"Not Found"}'
+        end
+      end
     end
 
     # delete /api/:organization_id/:id
