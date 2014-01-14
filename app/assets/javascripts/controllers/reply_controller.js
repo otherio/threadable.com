@@ -27,7 +27,16 @@ Covered.ReplyController = Ember.ObjectController.extend({
 
       function onSuccess(response) {
         conversation.deserialize(response.message.conversation);
-        conversation.get('messages').pushObject(this.get('content'));
+
+        var message = this.get('content');
+        var event = Covered.Event.create({
+          id: 'message-' + message.get('id'),
+          eventType: 'created_message',
+          createdAt: message.get('dateHeader'),
+          message: message,
+        });
+
+        conversation.get('events').pushObject(event);
         this.set('content', Covered.Message.create({}));
       }
 
