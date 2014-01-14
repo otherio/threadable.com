@@ -6,9 +6,9 @@
   <span class="date">{{date dateHeader}}</span>
 </div>
 
-<div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden"}}>{{{message.bodyStripped}}}</div>
+<div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden"}}>{{{bodyStripped}}}</div>
 
-<div {{bind-attr class=":body :complete view.showQuotedText::uk-hidden"}}>{{{message.body}}}</div>
+<div {{bind-attr class=":body :complete view.showQuotedText::uk-hidden"}}>{{{body}}}</div>
 
 {{#if hasQuotedText}}
   <i {{action 'toggleQuotedText' target='view'}} class="uk-icon-ellipsis-h uk-badge expand-quoted"></i>

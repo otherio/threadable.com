@@ -4,7 +4,16 @@
       <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
     {{/each}}
 
-    <h2 class="subject">{{subject}}</h2>
+    <h2 class="subject">
+      <span class="uk-hidden-small">
+        {{#if task}}
+          <i class="uk-icon-check"></i>
+        {{else}}
+          <i class="uk-icon-comment-o"></i>
+        {{/if}}
+      </span>
+      {{subject}}
+    </h2>
     <ul class="messages">
       {{#each event in events}}
         {{#if event.display}}
