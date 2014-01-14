@@ -29,6 +29,13 @@ Covered.isSignedIn = function(){
   return currentUser && currentUser.get && currentUser.get('isSignedIn');
 };
 
+Ember.onerror = function(error){
+  var notice = $('<div>');
+  notice.text('ERROR: '+error.message);
+  notice.css({color: 'red'});
+  $('body').prepend(notice);
+};
+
 Ember.TextField.reopen({
   attributeBindings: ['autofocus']
 });
