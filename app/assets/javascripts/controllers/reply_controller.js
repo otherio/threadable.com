@@ -1,15 +1,21 @@
 Covered.ReplyController = Ember.ObjectController.extend({
   needs: ['conversation', 'organization'],
 
+  message: Ember.computed.alias('model'),
+
   error: null,
 
   actions: {
+    reset: function() {
+      this.set('error', null);
+      this.set('message.body', null);
+    },
     sendMessage: function() {
       this.set('error', null);
       var organizationSlug = this.get('controllers.organization').get('content').get('slug');
       var conversation = this.get('controllers.conversation.model');
 
-      var message = this.get('content');
+      var message = this.get('message');
 
       message.setProperties({
         organizationSlug: organizationSlug,
@@ -17,15 +23,15 @@ Covered.ReplyController = Ember.ObjectController.extend({
         body:             this.get('body')
       });
 
-      message.saveRecord().then(success.bind(this), error.bind(this));
+      message.saveRecord().then(onSuccess.bind(this), onError.bind(this));
 
-      function success(response) {
+      function onSuccess(response) {
         conversation.deserialize(response.message.conversation);
         conversation.get('messages').pushObject(this.get('content'));
         this.set('content', Covered.Message.create({}));
       }
 
-      function error(response){
+      function onError(response){
         var error = response && response.error || 'an unknown error occurred';
         this.set('error', error);
       }

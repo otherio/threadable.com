@@ -31,7 +31,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
     },
     sendMessage: function() {
       var
-        organization     = this.get('organization').
+        organization     = this.get('organization'),
         conversation     = this.get('conversation'),
         message          = this.get('message'),
         subject          = this.get('subject'),
