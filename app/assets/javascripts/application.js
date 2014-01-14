@@ -25,7 +25,7 @@ Covered = Ember.Application.create({
 // Ember.run.backburner.DEBUG = true;
 
 Covered.isSignedIn = function(){
-  var currentUser = Covered.CurrentUser.get();
+  var currentUser = Covered.CurrentUser.instance;
   return currentUser && currentUser.get && currentUser.get('isSignedIn');
 };
 

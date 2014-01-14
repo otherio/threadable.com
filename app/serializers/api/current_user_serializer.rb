@@ -1,5 +1,5 @@
 # FYI: this is a special case and should not be an example of how to make a serializer - Jared
-class Api::CurrentUserSerializer
+class Api::CurrentUserSerializer < Serializer
 
   def self.serialize covered, _
     new(covered).as_json
@@ -22,6 +22,7 @@ class Api::CurrentUserSerializer
           email_address: current_user.email_address.to_s,
           slug:          current_user.slug,
           avatar_url:    current_user.avatar_url,
+          organizations: serialize(:organizations, current_user.organizations.all),
         }
       }
     else
@@ -34,6 +35,7 @@ class Api::CurrentUserSerializer
           email_address: nil,
           slug:          nil,
           avatar_url:    nil,
+          organizations: [],
         }
       }
     end
