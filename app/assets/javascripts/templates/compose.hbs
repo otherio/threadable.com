@@ -34,9 +34,12 @@
           {{/each}}
         </div>
         <div class="form-row">
-          <label>Subject:</label> {{input value=subject classNameBindings=":uk-form-blank"}}
+          <label>
+            Subject:
+            {{input value=subject class="uk-form-blank" name="subject"}}
+          </label>
         </div>
-        {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
+        {{view Covered.ResizeableTextArea value=body class="uk-form-blank body" name="body"}}
         <p class="uk-float-right">
           <a href="" class="uk-button" {{action 'reset'}}>reset</a>
           <input type="submit" class="uk-button uk-button-primary" value="Send"></input>

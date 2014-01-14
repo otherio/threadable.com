@@ -4,9 +4,10 @@
   {{/if}}
   <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
     <fieldset>
-      {{view Covered.ResizeableTextArea value=body classNameBindings=":uk-form-blank"}}
+      {{view Covered.ResizeableTextArea value=body class="uk-form-blank" name="body"}}
       <div class="controls">
-        <button class="uk-button uk-button-primary">Send</button>
+        <a href="" class="uk-button" {{action 'reset'}}>reset</a>
+        <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
       </div>
     </fieldset>
   </form>
