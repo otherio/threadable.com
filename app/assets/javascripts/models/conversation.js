@@ -11,6 +11,7 @@ Covered.Conversation = RL.Model.extend({
   messageSummary:    RL.attr('string'),
   groupIds:          RL.attr('array'),
   organizationId:    RL.attr('string'),
+  doers:             RL.hasMany('Covered.User'),
 
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;
