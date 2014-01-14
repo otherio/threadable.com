@@ -1,3 +1,5 @@
+# Encoding: UTF-8
+
 class PrepareEmailSubject < MethodObject
 
   def call organization, email

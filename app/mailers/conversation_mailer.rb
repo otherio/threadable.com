@@ -1,4 +1,5 @@
 # Encoding: UTF-8
+require 'prepare_email_subject'
 
 class ConversationMailer < Covered::Mailer
 

@@ -1,3 +1,5 @@
+require 'validate_email_address'
+
 class Covered::Emails::Validate < MethodObject
 
   def call email
