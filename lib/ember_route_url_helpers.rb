@@ -29,7 +29,18 @@ module EmberRouteUrlHelpers
 
     define_method("#{name}_path") do |*args|
       options_uri = URI.parse(root_path(args.extract_options!))
-      args.map!(&:to_s)
+
+      args.map! do |arg|
+        case
+        when arg.respond_to?(:to_param)
+          arg.to_param
+        when arg.respond_to?(:id)
+          arg.id
+        else
+          arg.to_s
+        end
+      end
+
       path = begin
         path_template % args
       rescue ArgumentError

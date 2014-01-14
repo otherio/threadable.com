@@ -11,7 +11,7 @@ class Api::ConversationsSerializer < Serializer
       updated_at:         conversation.updated_at,
       participant_names:  conversation.participant_names,
       number_of_messages: conversation.messages.count,
-      message_summary:    conversation.messages.latest.try(:body_plain),
+      message_summary:    conversation.messages.latest.try(:body_plain).try(:[], 0..50),
       group_ids:          conversation.groups.all.map(&:id),
     }
   end
