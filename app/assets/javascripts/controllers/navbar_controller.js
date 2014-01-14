@@ -1,8 +1,10 @@
 Covered.NavbarController = Ember.Controller.extend({
-  needs: ['application', 'organization', 'compose'],
+  needs: ['application', 'organization', 'compose', 'conversation'],
   currentUser:     Ember.computed.alias('controllers.application.currentUser').readOnly(),
   currentPath:     Ember.computed.alias('controllers.application.currentPath').readOnly(),
   newConversation: Ember.computed.alias('controllers.compose').readOnly(),
+  task:            Ember.computed.alias('controllers.conversation.task').readOnly(),
+  taskDone:        Ember.computed.alias('controllers.conversation.done').readOnly(),
 
   group: null,
   conversation: null,
@@ -34,6 +36,9 @@ Covered.NavbarController = Ember.Controller.extend({
     },
     sendMessage: function() {
       this.get('newConversation').send('sendMessage');
+    },
+    toggleComplete: function() {
+      this.get('controllers.conversation').send('toggleComplete');
     }
   }
 

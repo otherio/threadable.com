@@ -5,5 +5,12 @@
 
 </div>
 <div class="right-nav">
+  {{#if task}}
+    {{#if taskDone}}
+      <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i></a>
+    {{else}}
+      <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i></a>
+    {{/if}}
+  {{/if}}
   <a href="" {{action 'muteConversation'}}><i class="uk-icon-volume-down"></i></a>
 </div>

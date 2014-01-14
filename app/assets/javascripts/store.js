@@ -93,17 +93,18 @@ Covered.RESTAdapter.reopen({
 */
 RL.loadAssociationMethod = function(property, fetcher){
   var promiseProperty = 'load'+property.capitalize()+'Promise';
-  return function() {
+  return function(reload) {
     var
       record = this,
       promise = record.get(promiseProperty);
 
-    if (promise) return promise;
+    if (promise && (!reload && promise.fulfilled)) return promise;
 
     promise = fetcher(record);
 
     promise.then(function(records) {
       record.set(property, records);
+      promise.fulfilled = true;
     });
 
     record.set(promiseProperty, promise);
