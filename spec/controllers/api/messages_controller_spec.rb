@@ -28,8 +28,8 @@ describe Api::MessagesController do
 
     # get /api/messages
     describe 'index' do
-      context 'when given a message id' do
-        context 'of a message that the current user is in' do
+      context 'when given an organization id' do
+        context 'of an organization that the current user is in' do
           it "renders all the messages of the given conversation as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug
             expect(response).to be_ok
@@ -43,7 +43,7 @@ describe Api::MessagesController do
             expect(response.body).to be_blank
           end
         end
-        context 'of a message that does not exist or the current user is not in' do
+        context 'of a conversation that does not exist or the current user is not in' do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: raceteam.slug, conversation_id: 'foobar'
             expect(response.status).to eq 404

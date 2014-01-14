@@ -43,7 +43,6 @@ class Covered::Conversation < Covered::Model
   let(:participants){ Participants.new(self) }
   let(:groups      ){ Groups.new(self) }
 
-
   def mute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
     muters << covered.current_user.user_record

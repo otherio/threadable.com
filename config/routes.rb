@@ -13,6 +13,7 @@ Covered::Application.routes.draw do
     resources :conversations
     resources :tasks
     resources :messages
+    resources :events
 
     resources :organization_members
     resources :group_members
