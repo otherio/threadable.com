@@ -19,7 +19,9 @@ feature "Admin incoming emails" do
   def incoming_emails_table
     all('.incoming-emails-table tbody tr').map do |tr|
       values = tr.all('td').map(&:text)
-      Hash[columns.zip(values)]
+      hash = Hash[columns.zip(values)]
+      hash.delete("Created at")
+      hash
     end
   end
 
@@ -29,7 +31,7 @@ feature "Admin incoming emails" do
         "Processed"    => incoming_email.processed? ? 'yes' : 'no',
         "Failed"       => incoming_email.processed? ? incoming_email.bounced? ? 'yes' : 'no' : '',
         "Id"           => incoming_email.id.to_s,
-        "Created at"   => "less than a minute ago",
+        # "Created at"   => "less than a minute ago",
         "Recipient"    => incoming_email.recipient.truncate(25),
         "Sender"       => incoming_email.sender.truncate(25),
         "From"         => incoming_email.from.truncate(25),
