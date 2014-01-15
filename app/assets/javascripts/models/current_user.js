@@ -1,3 +1,6 @@
+Covered.currentUserPromise = currentUserPromise;
+delete this.currentUserPromise;
+
 Covered.CurrentUser = RL.Model.extend({
   id:           RL.attr('string'),
   userId:       RL.attr('number'),
@@ -15,23 +18,27 @@ Covered.CurrentUser = RL.Model.extend({
 
 Covered.CurrentUser.reopenClass({
   resourceName: 'user',
-  instance: null,
   fetch: function() {
-    this.promise || (this.promise = this._super('current').then(
-      function(instance) { return this.instance = instance; }.bind(this),
-      function(instance) { return this.instance = null;     }.bind(this)
-    ));
-    return this.promise;
+    if (Covered.currentUser) return Ember.RSVP.Promise.cast(Covered.currentUser);
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      Covered.currentUserPromise.then(function(response) {
+        if (!Covered.currentUser) Covered.currentUser = Covered.CurrentUser.create().deserialize(response.user);
+        resolve(Covered.currentUser);
+      });
+    });
   },
   reload: function(){
-    if (this.instance){
-      return this.promise = this.instance.reloadRecord();
-    }else{
-      return this.fetch();
-    }
+    // if (!Covered.currentUser) return this.fetch();
+    if (this._reloadPromise) return this._reloadPromise;
+    this._reloadPromise = Covered.currentUser.reloadRecord();
+    this._reloadPromise.then(function(currentUser) {
+      this._reloadPromise = null;
+      return currentUser;
+    }.bind(this));
+    return this._reloadPromise;
   },
   signOut: function() {
-    this.instance.setProperties({
+    Covered.currentUser.setProperties({
       userId:        null,
       param:         null,
       name:          null,

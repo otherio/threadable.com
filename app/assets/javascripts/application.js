@@ -1,4 +1,5 @@
 //= require jquery
+//= require preload_current_user
 //= require uikit
 //= require moment
 //= require handlebars
@@ -25,7 +26,7 @@ Covered = Ember.Application.create({
 // Ember.run.backburner.DEBUG = true;
 
 Covered.isSignedIn = function(){
-  var currentUser = Covered.CurrentUser.instance;
+  var currentUser = Covered.currentUser;
   return currentUser && currentUser.get && currentUser.get('isSignedIn');
 };
 
