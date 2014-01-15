@@ -6,11 +6,14 @@
   {{/if}}
 </section>
 
-<section class="updated-at">{{date conversation.updatedAt}}</section>
+
 
 <section class="line line-1">
-  <span class="participant-names">{{conversation.participantNamesString}}</span>
-  <span class="number-of-messages">({{conversation.numberOfMessages}})</span>
+  <span class="updated-at uk-float-right">{{date conversation.updatedAt}}</span>
+  <span class="uk-float-left">
+    <span class="participant-names">{{conversation.participantNamesString}}</span>
+    <span class="number-of-messages">({{conversation.numberOfMessages}})</span>
+  </span>
 </section>
 
 <section class="line line-2">
