@@ -7,9 +7,13 @@ class Covered::Attachments::Create < MethodObject
 
     @filename = @attributes.fetch(:filename)
     @mimetype = @attributes.fetch(:mimetype).to_s.split(';').first
-    @content  = @attributes.fetch(:content)
-
-    store_file!
+    if @attributes.key?(:url)
+      @url  = @attributes[:url]
+      @size = @attributes[:size]
+    else
+      @content = @attributes.fetch(:content)
+      store_file!
+    end
     create_attachment_record!
     Covered::Attachment.new(@covered, @attachment_record)
   end
@@ -28,6 +32,7 @@ class Covered::Attachments::Create < MethodObject
       filename: @filename,
       mimetype: @mimetype,
       size:     @size,
+      writeable: "true",
     )
   end
 

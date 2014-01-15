@@ -15,6 +15,7 @@ require 'factories'
 require 'webmock/rspec'
 require 'sidekiq/testing'
 require 'shoulda-matchers'
+require 'timecop'
 
 Sidekiq::Testing.fake!
 
