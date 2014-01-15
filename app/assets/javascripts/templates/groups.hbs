@@ -15,7 +15,7 @@
     <li class="uk-nav-header">My Organizations</li>
     {{#each organization in currentUser.organizations}}
     <li>
-      {{#link-to 'organization' organization.slug }}{{organization.name}}{{/link-to}}
+      {{#link-to 'my_conversations' organization.slug }}{{organization.name}}{{/link-to}}
     </li>
     {{/each}}
   </ul>
