@@ -1,0 +1,27 @@
+{{!-- <div class="controlls">
+  <a href=""><i class="uk-icon-check"></i></a>
+</div>
+ --}}
+<ul class="uk-list conversations-list">
+  {{#each conversation in view.conversations}}
+    <li>
+      {{#if view.myConversations}}
+        {{#link-to 'my_conversation' organization.slug conversation.slug}}
+          {{view Covered.ConversationListMemberView contextBinding='conversation'}}
+        {{/link-to}}
+      {{/if}}
+      {{#if view.ungroupedConversations}}
+        {{#link-to 'ungrouped_conversation' organization.slug conversation.slug}}
+          {{view Covered.ConversationListMemberView contextBinding='conversation'}}
+        {{/link-to}}
+      {{/if}}
+      {{#if view.groupConversations}}
+        {{#link-to 'group_conversation' organization.slug group.slug conversation.slug}}
+          {{view Covered.ConversationListMemberView contextBinding='conversation'}}
+        {{/link-to}}
+      {{/if}}
+    </li>
+  {{else}}
+    <li><h4>No conversations</h4></li>
+  {{/each}}
+</ul>
