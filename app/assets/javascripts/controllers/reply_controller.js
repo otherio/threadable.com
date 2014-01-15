@@ -20,7 +20,8 @@ Covered.ReplyController = Ember.ObjectController.extend({
       message.setProperties({
         organizationSlug: organizationSlug,
         conversationId:   conversation.get('id'),
-        body:             this.get('body')
+        bodyPlain:        this.get('body'),
+        bodyHtml:         this.get('bodyAsHtml'),
       });
 
       message.saveRecord().then(onSuccess.bind(this), onError.bind(this));

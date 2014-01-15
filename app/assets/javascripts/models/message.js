@@ -9,10 +9,12 @@ Covered.Message = RL.Model.extend({
   subject:          RL.attr('string'),
   body:             RL.attr('string'),
   bodyStripped:     RL.attr('string'),
+  bodyPlain:        RL.attr('string'),
+  bodyHtml:         RL.attr('string'),
   messageIdHeader:  RL.attr('string'),
   referencesHeader: RL.attr('string'),
   dateHeader:       RL.attr('date'),
-  html:             RL.attr('string'),
+  html:             RL.attr('boolean'),
   root:             RL.attr('string'),
   shareworthy:      RL.attr('string'),
   knowledge:        RL.attr('string'),
@@ -25,7 +27,11 @@ Covered.Message = RL.Model.extend({
 
   hasQuotedText: function() {
     return this.get('body') != this.get('bodyStripped');
-  }.property('body', 'bodyStripped')
+  }.property('body', 'bodyStripped'),
+
+  bodyAsHtml: function() {
+    return '<p>' + this.get('body').replace(/\n/g, "<br />\n") + '</p>';
+  }.property('body')
 });
 
 Covered.RESTAdapter.map("Covered.Message", {
