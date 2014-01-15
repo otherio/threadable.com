@@ -16,8 +16,9 @@ describe "Authentication" do
       expect( controller.current_user.id ).to eq alice.id
       expect( controller.covered         ).to eq Covered.new(protocol: 'http', host: request.host, port: request.port, current_user_id: alice.id)
 
-      get sign_out_path
+      post sign_out_path
       expect(response).to be_success
+
       # how do we check signed-outness here?
       expect( controller.current_user    ).to be_nil
       expect( controller.covered         ).to eq Covered.new(protocol: 'http', host: request.host, port: request.port)
