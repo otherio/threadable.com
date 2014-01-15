@@ -39,9 +39,7 @@ class Covered::Message < Covered::Model
   end
 
   def sent_at
-    @sent_at ||= Time.parse(message_record.date_header)
-  rescue ArgumentError, TypeError
-    @sent_at = created_at
+    @sent_at ||= Time.parse(date_header)
   end
 
   def creator
