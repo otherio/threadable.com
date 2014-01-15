@@ -1,7 +1,7 @@
 class Covered::Attachments < Covered::Collection
 
   def all
-    scope.reload.map{ |attachment_record| attachment_for attachment_record }
+    scope.map{ |attachment_record| attachment_for attachment_record }
   end
   alias_method :to_a, :all
 

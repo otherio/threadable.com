@@ -71,7 +71,7 @@ class Covered::Message < Covered::Model
   end
 
   def root?
-    parent_message.nil?
+    parent_message_id.nil?
   end
 
   def avatar_url

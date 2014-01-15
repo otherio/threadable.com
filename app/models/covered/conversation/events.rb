@@ -19,8 +19,7 @@ class Covered::Conversation::Events < Covered::Events
 
   def with_messages
     events = all
-
-    messages = conversation.messages.all
+    messages = conversation.messages.all_with_creator_and_attachments
 
     message_events = messages.map do |message|
       MessageEvent.new(message)

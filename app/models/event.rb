@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
   validates :event_type,   presence: true, inclusion: { in: TYPES }
   validates :organization, presence: true
 
-  default_scope { order :created_at => :asc }
+  default_scope ->{ includes(:user).order(:created_at => :asc) }
 
   def event_type
     read_attribute(:event_type).try(:to_sym)

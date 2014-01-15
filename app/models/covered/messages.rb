@@ -4,6 +4,10 @@ class Covered::Messages < Covered::Collection
     messages_for scope.to_a
   end
 
+  def all_with_creator_and_attachments
+    messages_for scope.includes(:creator, :attachments).to_a
+  end
+
   def latest
     message_for (scope.last or return)
   end
