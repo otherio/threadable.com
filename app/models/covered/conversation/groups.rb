@@ -35,11 +35,11 @@ class Covered::Conversation::Groups < Covered::Groups
   private
 
   def scope
-    groups_association
+    groups_association.where(conversation_groups: {active: true})
   end
 
   def groups_association
-    conversation.conversation_record.groups
+    conversation.conversation_record.groups.unload
   end
 
 end
