@@ -27,4 +27,8 @@ class Covered::Task < Covered::Conversation
     true
   end
 
+  def scope
+    ::Task.order('conversations.position DESC')
+  end
+
 end

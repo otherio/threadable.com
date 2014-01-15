@@ -9,11 +9,15 @@ class Group < ActiveRecord::Base
   validates_format_of :email_address_tag, with: /\A[0-9a-z-]+\z/
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
 
-  has_many :conversation_groups
-  has_many :conversations, through: :conversation_groups
-  has_many :group_members, class_name: 'GroupMembership'
+  has_many :conversation_groups, dependent: :destroy
+  has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
+  has_many :group_members, class_name: 'GroupMembership', dependent: :destroy
   has_many :members, through: :group_members, source: 'user'
-  has_many :tasks, -> { order "position" }, class_name: 'Task'
+  has_many :tasks,
+    -> { order "position" },
+    class_name: 'Task',
+    through: :conversation_groups,
+    source: :conversation
 
   def name= name
     write_attribute(:email_address_tag, name.gsub(/[^0-9A-Za-z-]+/, '-').strip.downcase)

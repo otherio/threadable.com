@@ -1,0 +1,13 @@
+@mixin well
+  margin-top: 1em
+  padding: 1em
+  background-color: $white-color
+  border-radius: 3px
+  border: 1px solid #d2d5d9
+
+.well
+  +well
+
++medium-to-xlarge-screens
+  .well-when-not-small
+    +well

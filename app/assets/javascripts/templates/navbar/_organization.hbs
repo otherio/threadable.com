@@ -1,0 +1,18 @@
+<div class="left-nav">
+  <a href="" {{action focusGroups}} class="uk-hidden-large">
+    <i class="uk-icon-bars"></i>
+  </a>
+
+  <span class="current-org-and-group">
+    {{#if organization}}
+      <span>[{{organization.subjectTag}}]</span>
+    {{/if}}
+    {{#if group}}
+      <span>+{{group.name}}</span>
+    {{/if}}
+  </span>
+</div>
+<div class="right-nav">
+  <a href=""><i class="uk-icon-caret-down"></i></a>
+  <a href="" {{action goToCompose}}><i class="uk-icon-edit"></i></a>
+</div>

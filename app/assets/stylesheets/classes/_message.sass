@@ -1,0 +1,77 @@
+
+.message
+  padding: 10px
+  margin: 0
+  list-style: none
+  min-height: 70px
+
+  & ~ .message
+    border-top: 1px solid #d2d5d9
+
+  .conversation-event
+
+  .sender_name
+    margin: 9px 0 0 60px
+    font-size: 20px
+    line-height: 20px
+
+  .avatar
+    float: left
+
+  .date
+    color: #aeadac
+    margin: 0 9px
+    font-weight: 100
+
+  .body
+    margin-top: 10px
+
+  .expand-quoted
+    display: block
+    width: 20px
+    font-size: 15px
+    line-height: 15px
+    margin-top: 10px
+    cursor: pointer
+
+  .attachments
+    margin: 0
+    padding: 0
+    list-style: none
+
+    a
+      color: #444444
+
+    a:hover
+      color: darkgrey
+
+    .attachment
+      border: 1px solid darkgrey
+      border-radius: 3px
+      background-color: whitesmoke
+      margin: 10px 10px 0 0
+      padding: 10px
+      width: 120px
+      height: 60px
+      float: left
+
+      &:active
+        background-color: lightgrey
+
+      .filename
+        font-size: 12px
+        overflow: hidden
+        text-align: center
+        word-wrap: normal
+        white-space: nowrap
+
+      .file-thumbnail
+        font-size: 60px
+        float: left
+
+      .download-link
+        font-size: 30px
+        display: block
+        margin-left: 70px
+        margin-top: 5px
+

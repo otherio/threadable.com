@@ -1,44 +1,52 @@
 //= require jquery
-//= require jquery_ujs
+//= require uikit
+//= require moment
+//= require handlebars
+//= require ember
+//= require ember-restless
 //= require_self
-//= require rails_widgets
-//= require jquery.rails_widgets
-//= require jquery.growing-inputs
-//= require jquery.sortable
-//= require jquery.animation
-//= require timeago
-//= require bootstrap
-//= require bootstrap-wysihtml5
-//= require uservoice
-
 //= require covered
-//= require_tree ./behaviors
-//= require_tree ./widgets
-//= require logged_in_init
-//= require mixpanel
+//= require debug
 
+$.ajaxSetup({
+  headers: {
+    'Accept': 'application/json',
+    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 
-Object.extend = function(object, extension){
-  if (typeof extension === 'undefined') throw new Error('extension is undefined');
-  for(var p in extension) object[p] = extension[p];
-  return object;
+Covered = Ember.Application.create({
+  // LOG_MODULE_RESOLVER: true,
+  // LOG_ACTIVE_GENERATION: true,
+  // LOG_VIEW_LOOKUPS: true,
+  LOG_TRANSITIONS: true,
+  // LOG_TRANSITIONS_INTERNAL: true
+});
+// Ember.run.backburner.DEBUG = true;
+
+Covered.isSignedIn = function(){
+  var currentUser = Covered.CurrentUser.instance;
+  return currentUser && currentUser.get && currentUser.get('isSignedIn');
 };
 
-// i can't believe this isn't already here.
-// thank you, stackoverflow.
-RegExp.quote = function(str) {
-  return str.toString().replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+Ember.onerror = function(error){
+  var notice = $('<div>');
+  notice.text('ERROR: '+error.message);
+  notice.css({color: 'red'});
+  $('body').prepend(notice);
 };
 
+Ember.TextField.reopen({
+  attributeBindings: ['autofocus']
+});
 
-// $(document).ready(function() {
-//   // English (Template)
-//   $.fn.timeago.defaults.lang.prefixes.about = '';
+$(document).on('click', 'a[href=""]', function(e){ e.preventDefault(); });
 
-//   $('body').timeago();
-// });
-
-
-$(document).on('click', 'a[href=""], a[href="#"]', function(event){
-  event.preventDefault();
+// This disables all css-transitions while resizing
+$(window).on('resize', function(){
+  $('body').addClass('disable-all-transitions');
+  var timeout = $(this).data('disableAllTransitionsTimeout');
+  clearTimeout(timeout);
+  timeout = setTimeout(function(){ $('body').removeClass('disable-all-transitions'); }, 100);
+  $(this).data('disableAllTransitionsTimeout', timeout);
 });

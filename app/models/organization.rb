@@ -24,7 +24,6 @@ class Organization < ActiveRecord::Base
     references(:organization_memberships)
   end
 
-
   validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :name, :slug
   validates_format_of :subject_tag, with: /\A[\w -]+\z/

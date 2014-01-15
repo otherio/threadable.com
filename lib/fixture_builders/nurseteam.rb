@@ -1,4 +1,6 @@
 FixtureBuilder.build do
+  Timecop.travel(Date.today - 8.hours)
+  Timecop.scale(8600)
 
   as_an_admin do
     create_organization(
@@ -108,6 +110,45 @@ FixtureBuilder.build do
     set_avatar! 'venkman.jpg'
   end
 
+  # create some groups and put people in them
+  as 'amywong.phd@gmail.com' do
+    @social_group = create_group 'Social', '#964bf8'
+    add_member_to_group 'social', 'lilith@sfhealth.example.com'
+    add_member_to_group 'social', 'anil@sfhealth.example.com'
+    add_member_to_group 'social', 'yuriz@sfhealth.example.com'
+    add_member_to_group 'social', 'ritsuko@sfhealth.example.com'
+    add_member_to_group 'social', 'amywong.phd@gmail.com'
+    add_member_to_group 'social', 'bj@sfhealth.example.com'
+
+    @triage_group = create_group 'Triage', '#5a9de1'
+    add_member_to_group 'triage', 'amywong.phd@gmail.com'
+    add_member_to_group 'triage', 'anil@sfhealth.example.com'
+    add_member_to_group 'triage', 'sfmedstudent@gmail.com'
+    add_member_to_group 'triage', 'marcus@sfhealth.example.com'
+    add_member_to_group 'triage', 'trapper@sfhealth.example.com'
+    add_member_to_group 'triage', 'mquinn@sfhealth.example.com'
+    add_member_to_group 'triage', 'house@sfhealth.example.com'
+    add_member_to_group 'triage', 'yuriz@sfhealth.example.com'
+    add_member_to_group 'triage', 'smaturin@sfhealth.example.com'
+    add_member_to_group 'triage', 'bj@sfhealth.example.com'
+    add_member_to_group 'triage', 'lcuddy@sfhealth.example.com'
+
+    @anesthiology_group = create_group 'Anesthiology', '#f2ad40'
+    add_member_to_group 'anesthiology', 'ecto@sfhealth.example.com'
+    add_member_to_group 'anesthiology', 'mquinn@sfhealth.example.com'
+    add_member_to_group 'anesthiology', 'house@sfhealth.example.com'
+    add_member_to_group 'anesthiology', 'yuriz@sfhealth.example.com'
+    add_member_to_group 'anesthiology', 'smaturin@sfhealth.example.com'
+    add_member_to_group 'anesthiology', 'bj@sfhealth.example.com'
+
+    @cardiology_group = create_group 'Cardiology', '#d94876'
+    add_member_to_group 'cardiology', 'ecto@sfhealth.example.com'
+    add_member_to_group 'cardiology', 'smaturin@sfhealth.example.com'
+    add_member_to_group 'cardiology', 'bj@sfhealth.example.com'
+    add_member_to_group 'cardiology', 'ritsuko@sfhealth.example.com'
+    add_member_to_group 'cardiology', 'zarkov@sfhealth.example.com'
+    add_member_to_group 'cardiology', 'lcuddy@sfhealth.example.com'
+  end
 
   # Lisa replies to the welcome email
   as 'lcuddy@sfhealth.example.com' do
@@ -123,7 +164,8 @@ FixtureBuilder.build do
         %(This is a reminder for all new hires that the orientation meeting is next wednesday at 10am in room ) +
         %(2202. In the meantime, I encourage you to to review the SF Health employee policies online here: ) +
         %(https://covered.sfhealth.com/hr/employee-policies/ and please feel free to ask me if you have any questions.)
-      )
+      ),
+      groups:  [@social_group],
     )
   end
 
@@ -133,7 +175,8 @@ FixtureBuilder.build do
       text: (
         %(The rep for Replexafil dropped off some 2014 Replexafil calendars and pen sets for us. They're in the )+
         %(2nd floor lunch room if anyone wants one. Help yourself.)
-      )
+      ),
+      groups:  [@social_group],
     )
   end
 
@@ -196,7 +239,7 @@ FixtureBuilder.build do
   end
 
   as 'lilith@sfhealth.example.com' do
-    create_task 'New triage desk vitals monitor'  #triage
+    create_task 'New triage desk vitals monitor', [@triage_group]  #triage
   end
 
   as 'amywong.phd@gmail.com' do
@@ -204,7 +247,7 @@ FixtureBuilder.build do
   end
 
   as 'lilith@sfhealth.example.com' do
-    create_task 'Write current EMS practice review'  #triage
+    create_task 'Write current EMS practice review', [@triage_group]  #triage
   end
 
   as 'lilith@sfhealth.example.com' do
@@ -224,11 +267,11 @@ FixtureBuilder.build do
   end
 
   as 'bj@sfhealth.example.com' do
-    create_task 'Review triage ECG procedures'  #triage
+    create_task 'Review triage ECG procedures', [@triage_group]  #triage
   end
 
   as 'anil@sfhealth.example.com' do
-    create_task 'Review standing orders for ASA and CP'  #triage
+    create_task 'Review standing orders for ASA and CP', [@triage_group, @anesthiology_group]  #triage
   end
 
   as 'amywong.phd@gmail.com' do
@@ -240,15 +283,28 @@ FixtureBuilder.build do
   end
 
   as 'ecto@sfhealth.example.com' do
-    @set_up_conference_room_for_orientation_task = create_task 'Set up conference room for orientation'
+    @set_up_conference_room_for_orientation_task = create_task 'Set up conference room for orientation', [@social_group]
   end
 
   as 'amywong.phd@gmail.com' do
-    create_task 'Write new intake form'  #triage
+    create_task 'Write new intake form', [@triage_group]  #triage
   end
 
   as 'lilith@sfhealth.example.com' do
-    @pick_up_bagels_for_orientation_task = create_task 'Pick up bagels for orientation'
+    @initial_iv_supplies_message = create_message(@check_in_with_iv_supplies_vendor_task,
+      text: "So I think we're at a point where it makes sense to reach out to our...",
+    )
+    add_doer_to_task @check_in_with_iv_supplies_vendor_task, 'lilith@sfhealth.example.com'
+    add_conversation_to_group(@initial_iv_supplies_message, @triage_group)
+    add_conversation_to_group(@initial_iv_supplies_message, @anesthiology_group)
+    @pick_up_bagels_for_orientation_task = create_task 'Pick up bagels for orientation', [@social_group]
+    @drive_me_home_message = create_conversation(
+      subject: 'Can anyone drive me home tonight?',
+      groups: [@social_group],
+      text: "So, my car just died. I took the bus in today, but it really sucked. Can anyone give me a lift home?"
+    )
+    reply_to(@drive_me_home_message, text: "Yuri's going to give me a ride! Thanks all!")
+    reply_to(@drive_me_home_message, text: "Wow, you people are generous! Thanks for all the offers for help and good mechanics!\n\nLilith")
   end
 
   as 'amywong.phd@gmail.com' do
@@ -256,19 +312,34 @@ FixtureBuilder.build do
   end
 
   as 'amywong.phd@gmail.com' do
-    create_task 'Compare waiting times to acuity'  #triage
+    create_task 'Compare waiting times to acuity', [@triage_group]  #triage
   end
 
   as 'bj@sfhealth.example.com' do
-    create_task 'Schedule a triage retrospective'  #triage
+    create_task 'Schedule a triage retrospective', [@triage_group]  #triage
   end
 
   as 'anil@sfhealth.example.com' do
-    create_task 'Meet with SJ clinic about trauma classification'  #triage
+    create_task 'Meet with SJ clinic about trauma classification', [@triage_group, @cardiology_group]  #triage
+    reply_to(@initial_iv_supplies_message,
+      text: (
+        %(Absolutely! Pikachu ipsum dolor sit amet exeggutor sint doduo meowth. Vaporeon hypno occaecat consectetur )+
+        %(aliquip. Culpa ex magna caterpie. Cupidatat incidunt ea tangela, do porygon pariatur venonat grimer voluptate )+
+        %(jolteon raticate id Mr. Mime elit.\n\nEsse ut slowbro poliwrath, weepinbell eiusmod polywhirl charmander enim)+
+        %(nidorina tempor.\n\nAnil)
+      )
+    )
   end
 
   as 'amywong.phd@gmail.com' do
-    create_task 'Summarize triage review findings for board'  #triage
+    create_task 'Summarize triage review findings for board', [@triage_group]  #triage
+    reply_to(@initial_iv_supplies_message,
+      text: (
+        %(I contacted them, and they'll be sending over supplies next week. I'm calling this done.\n\nIf we don't receive)+
+        %(new IV supplies in the next two weeks, maybe reopen this.\n\n~Amy)
+      )
+    )
+    mark_task_as_done @check_in_with_iv_supplies_vendor_task
   end
 
 
@@ -302,6 +373,7 @@ FixtureBuilder.build do
     create_conversation(
       subject: 'Staff halloween party!',
       text: 'Lorem upsum dolor sit amet',
+      groups:  [@social_group],
     )
   end
 
@@ -317,6 +389,25 @@ FixtureBuilder.build do
         %(antihypertensives.)
       )
     )
+    add_conversation_to_group(@hypertension_literature_review_message , @triage_group)
+  end
+
+  as 'smaturin@sfhealth.example.com' do
+    @corgi_conversation =create_conversation(
+      subject:     'Look at these adorable corgis!',
+      text:        "This is simply absurd.",
+      groups:      [@social_group],
+      attachments: [
+        attachment('some.gif', 'image/gif'),
+      ],
+    )
+  end
+
+  as 'ritsuko@sfhealth.example.com' do
+    reply_to @corgi_conversation, {
+      body_plain: "We claim this stick in the name of England and Queen Elizabeth! And more!",
+      stripped_plain: "We claim this stick in the name of England and Queen Elizabeth!",
+    }
   end
 
   as 'amywong.phd@gmail.com' do
@@ -346,6 +437,9 @@ FixtureBuilder.build do
     )
     @last_message = reply_to(@last_message,
       text: "I found it. Looks like Groups I and II both start at 180/110 mmHg. I've attached the PDF.",
+      attachments: [
+        attachment('some.txt', 'text/plain', false),
+      ],
     )
   end
 
@@ -357,4 +451,5 @@ FixtureBuilder.build do
     mark_task_as_done @review_our_intake_policies_task
   end
 
+  Timecop.return
 end

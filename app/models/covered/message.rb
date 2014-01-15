@@ -57,6 +57,7 @@ class Covered::Message < Covered::Model
   def stripped_body
     Body.call(stripped_html, stripped_plain)
   end
+  alias_method :body_stripped, :stripped_body
 
   def html?
     body.html?
@@ -64,6 +65,19 @@ class Covered::Message < Covered::Model
 
   def root?
     parent_message.nil?
+  end
+
+  def avatar_url
+    return unless creator # eventually this will do something for msgs with no creator.
+    creator.avatar_url
+  end
+
+  def sender_name
+    if creator
+      creator.name
+    else
+      from
+    end
   end
 
   let(:attachments){ Attachments.new(self) }
@@ -110,7 +124,7 @@ class Covered::Message < Covered::Model
       subject:           subject,
       html:              html?,
       body:              body,
-      stripped_body:     stripped_body,
+      body_stripped:     body_stripped,
       body_html:         body_html,
       body_plain:        body_plain,
       stripped_html:     stripped_html,

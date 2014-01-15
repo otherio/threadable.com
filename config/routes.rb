@@ -1,8 +1,26 @@
 Covered::Application.routes.draw do
 
-  unless Rails.env.production?
-    get '/test/javascripts' => 'test/javascripts#show', as: 'javascript_tests'
+  post '/sign_in'  => 'authentication#create'
+  post '/sign_out' => 'authentication#destroy'
+
+  namespace :api, except: [:new, :edit] do
+    scope :users do
+      resource :current, controller: 'current_user', only: [:show, :update]
+    end
+
+    resources :organizations
+    resources :groups
+    resources :conversations
+    resources :tasks
+    resources :messages
+    resources :events
+
+    resources :organization_members
+    resources :group_members
+    resources :task_doers
   end
+
+  # OLD ROUTES START
 
   get '/admin' => 'admin#show'
   namespace :admin do
@@ -25,14 +43,7 @@ Covered::Application.routes.draw do
     mount MailPreview => '/mail_preview' if defined?(MailView)
   end
 
-  get '/development' => 'development#index'
-  get '/demoauth' => 'demo_auth#index', as: 'demo_auth'
-
-  get  '/sign_up'  => 'users#new',              as: 'sign_up'
-  get  '/sign_in'  => 'authentication#new',     as: 'sign_in'
-  post '/sign_in'  => 'authentication#create'
-  get  '/sign_out' => 'authentication#destroy', as: 'sign_out'
-
+  # OLD ROUTES START
 
   get   '/reset_password/:token' => 'users/reset_password#show', as: 'reset_password'
   patch '/reset_password/:token' => 'users/reset_password#reset'
@@ -53,31 +64,10 @@ Covered::Application.routes.draw do
   match '/email_addresses/confirm/:token' => 'email_addresses#confirm', as: 'confirm_email_address', via: [:get, :post]
 
   scope '/:organization_id', :as => 'organization' do
-    resources :members, :only => [:index, :create, :destroy], controller: 'organization/members'
-
-    resources :conversations, :except => [:edit] do
-      member do
-        match 'mute', via: [:get, :post]
-        match 'unmute', via: [:post]
-      end
-      resources :messages, :only => [:create, :update]
-    end
 
     resources :held_messages, :only => [:index], controller: 'organization/held_messages' do
       post :accept, on: :member
       post :reject, on: :member
-    end
-
-    # resources :invites, :only => [:create]
-
-    resources :tasks, :only => [:index, :create, :update] do
-      post   'doers'          => 'task/doers#add',    as: 'doers'
-      delete 'doers/:user_id' => 'task/doers#remove', as: 'doer'
-
-      match 'ill_do_it', via: [:get, :post]
-      match 'remove_me', via: [:get, :post]
-      match 'mark_as_done', via: [:get, :post]
-      match 'mark_as_undone', via: [:get, :post]
     end
 
     match '/unsubscribe/:token' => 'organization/email_subscriptions#unsubscribe', as: 'unsubscribe', via: [:get, :post]
@@ -86,18 +76,15 @@ Covered::Application.routes.draw do
 
   resources :emails, :only => :create
 
-  get   '/:id/edit'      => 'organizations#edit',      :as => 'edit_organization'
-  get   '/:id'           => 'organizations#show',      :as => 'organization'
-  put   '/:id'           => 'organizations#update'
-  patch '/:id'           => 'organizations#update'
-  get   '/:id/user_list' => 'organizations#user_list', :as => 'user_list'
-
-  resources :organizations, except: [:index, :show, :update, :patch] do
+  resources :organizations, except: [:index, :show] do
     member do
       put :leave
     end
   end
 
-  root :to => 'homepage#show'
+  # OLD ROUTES END
+
+  match '/*path' => 'frontend#show', via: [:get, :post, :patch, :delete]
+  root to: 'frontend#show', via: [:get, :post, :patch, :delete]
 
 end

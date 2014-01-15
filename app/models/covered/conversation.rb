@@ -43,7 +43,6 @@ class Covered::Conversation < Covered::Model
   let(:participants){ Participants.new(self) }
   let(:groups      ){ Groups.new(self) }
 
-
   def mute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
     muters << covered.current_user.user_record
@@ -73,6 +72,11 @@ class Covered::Conversation < Covered::Model
     update(attributes) or raise Covered::RecordInvalid, "Conversation invalid: #{errors.full_messages.to_sentence}"
   end
 
+  def destroy!
+    conversation_record.destroy!
+    self
+  end
+
   def participant_names
     messages = self.messages.all
     return [creator.name.split(/\s+/).first] if messages.empty? && creator.present?
@@ -83,7 +87,7 @@ class Covered::Conversation < Covered::Model
       else
         ExtractNamesFromEmailAddresses.call([message.from]).first
       end
-    end.compact
+    end.compact.uniq
   end
 
   def as_json options=nil

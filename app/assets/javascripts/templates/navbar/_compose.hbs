@@ -1,0 +1,20 @@
+<div class="left-nav">
+  {{!-- {{#link-to 'group_conversations' currentOrganization.slug currentGroup.slug}}<button class="uk-button">Cancel</button>{{/link-to}} --}}
+  <span>
+    <button class="uk-button" {{action focusConversations}}>Cancel</button>
+  </span>
+</div>
+
+<div class="right-nav">
+  <div data-uk-button-radio class="uk-button-group">
+    <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button compose.isTask:uk-active"}}>
+      <i class="uk-icon-check"></i>
+    </a>
+    <a href="" {{action composeConversation}} {{bind-attr class=":nav-button :uk-button compose.isTask::uk-active"}}>
+      <i class="uk-icon-comment-o"></i>
+    </a>
+  </div>
+  <span>
+    <button class="uk-button" {{action sendMessage}}>Send</button>
+  </span>
+</div>

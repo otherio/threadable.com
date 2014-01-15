@@ -7,7 +7,7 @@ describe AdminController do
     describe 'GET :show' do
       it 'should render a 404' do
         get :show
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url(r: admin_url)
       end
     end
 

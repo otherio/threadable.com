@@ -1,0 +1,32 @@
+<a {{bind-attr name="view.anchor"}}></a>
+<div class="uk-clearfix">
+  <div class="avatar">
+    <img {{bind-attr src="avatarUrl"}} />
+  </div>
+  <h2 class="sender_name">{{senderName}}</h2>
+  <span class="date">{{date dateHeader}}</span>
+</div>
+
+<div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden"}}>{{{bodyStripped}}}</div>
+
+<div {{bind-attr class=":body :complete view.showQuotedText::uk-hidden"}}>{{{body}}}</div>
+
+{{#if hasQuotedText}}
+  <i {{action 'toggleQuotedText' target='view'}} class="uk-icon-ellipsis-h uk-badge expand-quoted"></i>
+{{/if}}
+
+{{#if attachments}}
+<ul class="attachments uk-clearfix">
+  {{#each attachment in attachments}}
+    <a {{bind-attr href="attachment.url"}} target="_new">
+    <li class="attachment">
+      <i class="uk-icon-file file-thumbnail"></i>
+      <div class="filename">
+        {{attachment.filename}}
+      </div>
+      <i class="uk-icon-cloud-download download-link"></i>
+    </li>
+    </a>
+  {{/each}}
+</ul>
+{{/if}}

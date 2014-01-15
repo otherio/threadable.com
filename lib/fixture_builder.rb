@@ -1,3 +1,5 @@
+require 'timecop'
+
 class FixtureBuilder
 
   def self.build(&block)
@@ -45,12 +47,16 @@ class FixtureBuilder
     organization.members.add(name: name, email_address: email_address)
   end
 
-  def create_group name
-    organization.groups.create!(name: name)
+  def create_group name, color=nil
+    organization.groups.create!(name: name, color: color)
   end
 
   def remove_conversation_from_group message, group
     message.conversation.groups.remove(group)
+  end
+
+  def add_conversation_to_group message, group
+    message.conversation.groups.add(group)
   end
 
   def add_member_to_group email_address_tag, email_address
@@ -84,6 +90,17 @@ class FixtureBuilder
     conversation.messages.create!(options.merge(creator: current_user))
   end
 
+  def attachment path, content_type, binary=true
+    attachments_path = Rails.root + 'lib/fixtures/attachments'
+    file = attachments_path + path
+    {
+      content:  file.read,
+      filename: file.basename.to_s,
+      mimetype: content_type,
+      size:     file.size,
+    }
+  end
+
   def reply_to message, options
     message.conversation.messages.create!(options.merge(parent_message: message, creator: current_user))
   end
@@ -92,8 +109,8 @@ class FixtureBuilder
     conversation.mute!
   end
 
-  def create_task subject
-    organization.tasks.create!(subject: subject, creator: current_user)
+  def create_task subject, groups = nil
+    organization.tasks.create!(subject: subject, creator: current_user, groups: groups)
   end
 
   def add_doer_to_task task, email_address
@@ -120,6 +137,5 @@ class FixtureBuilder
     membership = organization.members.find_by_user_id! current_user.id
     membership.unsubscribe!
   end
-
 
 end

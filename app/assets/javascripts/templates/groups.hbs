@@ -1,0 +1,56 @@
+<div class="current-user-controls">
+  <div class="avatar">
+    <img {{bind-attr src="currentUser.avatarUrl"}} />
+  </div>
+  <div class="details">
+    <div class="name">{{currentUser.name}}</div>
+    <div class="organization-name">{{organization.name}}</div>
+    <div class="organization-email-address">{{organization.emailAddress}}</div>
+  </div>
+  <a class="settings-gear" href="" {{action toggleSettings}}><i class="uk-icon-gear"></i></a>
+</div>
+
+<div {{bind-attr class=":settings settingsVisible:visible"}}>
+  <ul class="uk-nav uk-nav-offcanvas">
+    <li class="uk-nav-header">My Organizations</li>
+    {{#each organization in currentUser.organizations}}
+    <li>
+      {{#link-to 'organization' organization.slug }}{{organization.name}}{{/link-to}}
+    </li>
+    {{/each}}
+  </ul>
+</div>
+
+<ul class="uk-nav uk-nav-offcanvas groups-list">
+  <li>
+    {{#link-to 'my_conversations'  organization.slug}}My Conversations{{/link-to}}
+  </li>
+  <li>
+    {{#link-to 'ungrouped_conversations' organization.slug}}Ungrouped Conversations{{/link-to}}
+  </li>
+  <li class="uk-nav-header">My Groups</li>
+  {{#each group in organization.myGroups}}
+    <li>
+      {{#link-to 'group_conversations' organization.slug group.slug }}
+        <span class="name">+{{group.name}}</span>
+        <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
+      {{/link-to}}
+    </li>
+  {{/each}}
+  <li class="uk-nav-header">Other Groups</li>
+  {{#each group in organization.otherGroups}}
+    <li>
+      {{#link-to 'group_conversations' organization.slug group.slug }}
+        <span class="name">+{{group.name}}</span>
+        <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
+      {{/link-to}}
+    </li>
+  {{/each}}
+</ul>
+
+
+<ul class="uk-nav uk-nav-offcanvas bottom-nav">
+  <li>
+    {{#link-to 'sign_out'}}Sign Out{{/link-to}}
+  </li>
+</ul>

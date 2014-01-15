@@ -1,5 +1,6 @@
 class EmailsController < ApplicationController
 
+  skip_before_action :require_user_be_signed_in!
   before_filter :authenticate
 
   # POST /emails

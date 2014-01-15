@@ -19,7 +19,7 @@ describe Covered::Messages do
   describe 'all' do
     it 'returns all messages' do
       all_message_records = [1,2,3]
-      expect(scope).to receive(:reload).and_return(all_message_records)
+      expect(scope).to receive(:to_a).and_return(all_message_records)
       expect(Covered::Message).to receive(:new).with(covered, 1).and_return(1)
       expect(Covered::Message).to receive(:new).with(covered, 2).and_return(2)
       expect(Covered::Message).to receive(:new).with(covered, 3).and_return(3)

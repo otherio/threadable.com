@@ -1,0 +1,54 @@
+<div class="compose">
+  <div class="well-when-not-small">
+    <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
+
+      <div class="uk-float-right uk-hidden-small">
+        <div data-uk-button-radio class="uk-button-group">
+          <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button isTask:uk-active"}}>
+            <i class="uk-icon-check"></i>
+          </a>
+          <a href="" {{action composeConversation}} {{bind-attr class=":nav-button :uk-button isTask::uk-active"}}>
+            <i class="uk-icon-comment-o"></i>
+          </a>
+        </div>
+      </div>
+
+      <h2>
+        {{#if isTask}}
+          <i class="uk-icon-check"></i>
+        {{else}}
+          <i class="uk-icon-comment-o"></i>
+        {{/if}}
+        {{subject}}
+      </h2>
+
+      {{#if error}}
+        <h2>Error: {{error}}</h2>
+      {{/if}}
+
+      <fieldset>
+        <div class="form-row">
+          <label>Groups:</label>
+          {{#each group in groups}}
+            <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
+          {{/each}}
+        </div>
+        <div class="form-row">
+          <label>
+            Subject:
+            {{input value=subject class="uk-form-blank" name="subject"}}
+          </label>
+        </div>
+        {{view Covered.ResizeableTextArea value=body class="uk-form-blank body" name="body"}}
+        <div class="uk-hidden-small">
+          <span class="uk-float-left">
+            <a href="" class="uk-button" {{action 'reset'}}>Clear</a>
+          </span>
+          <span class="uk-float-right">
+            <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
+          </span>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

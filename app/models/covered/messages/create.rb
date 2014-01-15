@@ -46,11 +46,11 @@ class Covered::Messages::Create < MethodObject
   end
 
   let :stripped_plain do
-    @options.stripped_plain
+    @options.stripped_plain.presence || body_plain
   end
 
   let :stripped_html do
-    @options.stripped_html
+    @options.stripped_html.presence || body_html
   end
 
   let :subject do
@@ -120,7 +120,7 @@ class Covered::Messages::Create < MethodObject
       when ::Attachment; attachment
       when ::Covered::Attachment; attachment.attachment_record
       when Hash
-        ::Attachment.create(attachment)
+        @covered.attachments.create(attachment).attachment_record
       end
     end
   end

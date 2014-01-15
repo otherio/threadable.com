@@ -1,9 +1,0 @@
-%h4 Logged out
-= render_widget :page_navigation
-
-%h4 Logged in
-= render_widget :page_navigation, current_user: current_user
-
-%h4 Logged in viewing a organization
-= render_widget :page_navigation, current_user: current_user, current_organization: current_user.organizations.all.first
-

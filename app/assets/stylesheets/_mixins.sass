@@ -1,0 +1,59 @@
+@mixin mini-screens
+  @media (max-width: $min-screen-max-width)
+    @content
+
+@mixin small-screens
+  @media (min-width: $small-screen-min-width) and (max-width: $small-screen-max-width)
+    @content
+
+@mixin medium-screens
+  @media (min-width: $medium-screen-min-width) and (max-width: $medium-screen-max-width)
+    @content
+
+@mixin large-screens
+  @media (min-width: $large-screen-min-width) and (max-width: $large-screen-max-width)
+    @content
+
+@mixin xlarge-screens
+  @media (min-width: $xlarge-screen-min-width)
+    @content
+
+
+@mixin mini-to-small-screens
+  @media (max-width: $small-screen-max-width)
+    @content
+
+@mixin mini-to-medium-screens
+  @media (max-width: $medium-screen-max-width)
+    @content
+
+@mixin mini-to-large-screens
+  @media (max-width: $large-screen-max-width)
+    @content
+
+
+@mixin small-to-medium-screens
+  @media (min-width: $small-screen-min-width) and (max-width: $medium-screen-max-width)
+    @content
+
+@mixin small-to-large-screens
+  @media (min-width: $small-screen-min-width) and (max-width: $large-screen-max-width)
+    @content
+
+@mixin small-to-xlarge-screens
+  @media (min-width: $small-screen-min-width)
+    @content
+
+
+@mixin medium-to-large-screens
+  @media (min-width: $medium-screen-min-width) and (max-width: $large-screen-max-width)
+    @content
+
+@mixin medium-to-xlarge-screens
+  @media (min-width: $medium-screen-min-width)
+    @content
+
+
+@mixin large-to-xlarge-screens
+  @media (min-width: $large-screen-min-width)
+    @content

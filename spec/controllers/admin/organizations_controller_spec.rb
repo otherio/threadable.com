@@ -7,42 +7,42 @@ describe Admin::OrganizationsController do
     describe 'GET :index' do
       it 'should render a 404' do
         get :index
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url(r: admin_organizations_url)
       end
     end
 
     describe 'GET :new' do
       it 'should render a 404' do
         get :new
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url(r: admin_new_organization_url)
       end
     end
 
     describe 'POST :create' do
       it 'should render a 404' do
         post :create
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 
     describe 'GET :edit' do
       it 'should render a 404' do
         get :edit, id: 'foo'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url(r: admin_edit_organization_url)
       end
     end
 
     describe 'PUT :update' do
       it 'should render a 404' do
         put :update, id: 'foo'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 
     describe 'DELETE :destroy' do
       it 'should render a 404' do
         delete :destroy, id: 'foo'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 

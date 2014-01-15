@@ -56,15 +56,15 @@ FixtureBuilder.build do
 
   # create some groups and put people in them
   as 'alice@ucsd.example.com' do
-    @electronics_group = create_group 'Electronics'
+    @electronics_group = create_group 'Electronics', '#964bf8'
     add_member_to_group 'electronics', 'tom@ucsd.example.com'
     add_member_to_group 'electronics', 'bethany@ucsd.example.com'
 
-    @fundraising_group = create_group 'Fundraising'
+    @fundraising_group = create_group 'Fundraising', '#5a9de1'
     add_member_to_group 'fundraising', 'alice@ucsd.example.com'
     add_member_to_group 'fundraising', 'bob@ucsd.example.com'
 
-    @graphic_design_group = create_group 'Graphic Design'
+    @graphic_design_group = create_group 'Graphic Design', '#f2ad40'
     add_member_to_group 'graphic-design', 'jonathan@ucsd.example.com'
   end
 
@@ -90,11 +90,22 @@ FixtureBuilder.build do
     )
 
     conversation_of_cash = create_conversation(
-      subject: 'How are we paying for the motor controller?',
-      text:    %(We need cash, baby.),
-      groups:  [@electronics_group, @fundraising_group],
+      subject:        'How are we paying for the motor controller?',
+      body_plain:     %(We need cash, baby. And this has quoted text.),
+      stripped_plain: %(We need cash, baby.),
+      groups:         [@electronics_group, @fundraising_group]
     )
     remove_conversation_from_group(conversation_of_cash, @electronics_group)
+
+    reply_to(conversation_of_cash,
+      body_plain:     "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time\n> quoted text\n> more quoted text",
+      stripped_plain: "Totally!\nI'm thinking we can do this on our first January workday. I'll make sure we get the supplies in time",
+      attachments:    [
+        attachment('some.gif', 'image/gif'),
+        attachment('some.jpg', 'image/jpeg'),
+        attachment('some.txt', 'text/plain', false),
+      ],
+    )
   end
 
   as 'alice@ucsd.example.com' do

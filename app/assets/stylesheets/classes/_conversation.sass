@@ -1,0 +1,36 @@
+.conversation
+  background-color: $lighter-grey-color
+  min-height: 100%
+
+  > div
+    padding: 10px
+
+  h2.subject
+    margin: 7px 0 2px 0
+    font-weight: 100
+
+  ul.messages
+    margin: 4px 0 0 0
+    padding: 0
+    background-color: #ffffff
+    border-radius: 3px
+    border: 1px solid #d2d5d9
+
+  .task-controls
+    a
+      color: $grey-text-color
+
+  .doers
+    font-size: 20px
+    line-height: 20px
+    font-weight: 200
+
+    .doers-label
+      float: left
+      margin-top: 3px
+      i
+        font-size: 22px
+
+  .body
+    // TODO: eventually we need to handle HTML emails too
+    white-space: pre-wrap

@@ -12,10 +12,10 @@ Rails.application.eager_load!
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'factories'
-require 'rails/widgets/rspec'
 require 'webmock/rspec'
 require 'sidekiq/testing'
 require 'shoulda-matchers'
+require 'timecop'
 
 Sidekiq::Testing.fake!
 

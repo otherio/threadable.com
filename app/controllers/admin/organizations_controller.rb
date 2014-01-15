@@ -1,6 +1,6 @@
 class Admin::OrganizationsController < ApplicationController
 
-  before_filter :require_user_be_admin!
+  before_action :require_user_be_admin!
 
   # GET /admin/organizations
   def index

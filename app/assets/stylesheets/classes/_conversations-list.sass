@@ -1,0 +1,80 @@
+.conversations-list
+  $icon-width: 20px
+  $padding: 5px
+
+  color: $light-grey-color
+
+  &, > li
+    margin: 0
+    padding: 0
+  > li
+    border-bottom: 1px solid $light-grey-color
+
+    > a
+      position: relative
+      overflow: hidden
+      display: block
+      padding: $padding $padding $padding 35px
+      text-decoration: none
+      color: inherit
+      &.active
+        background-color: $faint-blue-color
+
+    // &.unread   <- use this when we have unread
+    &
+      .participant-names,
+      .number-of-messages,
+      .subject
+        color: black
+
+
+  section.icon
+    position: absolute
+    top: 0
+    left: 0
+    font-size: $icon-width
+    font-weight: 300
+    padding: 0.1em 0.2em 0.2em 0.1em
+    +border-bottom-right-radius(5px)
+    background-color: $light-grey-color
+    color: $white-color
+
+  section.updated-at
+    position: absolute
+    top: $padding
+    right: $padding
+    color: $grey-text-color
+
+  section.line
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+  section.line-1
+    font-size: 18px
+    margin-bottom: 3px
+    .participant-names
+      max-width: 90%
+      display: inline-block
+      text-overflow: ellipsis
+      overflow: hidden
+      vertical-align: top
+
+  section.line-2
+    .subject
+
+
+  section.line-3
+    padding-top: 1px
+    .message-summary
+      color: $grey-text-color
+
+    .no-message-summary
+      color: lighten($grey-text-color, 15%)
+      font-style: italic
+
+    .groups
+      float: right
+      margin-left: 0.5em
+      .badge
+        position: relative
+        top: -2px

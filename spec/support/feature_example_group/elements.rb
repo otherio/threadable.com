@@ -8,4 +8,8 @@ module RSpec::Support::FeatureExampleGroup
     within(selector_for(name), &block)
   end
 
+  def click_element name
+    find_element(name).click
+  end
+
 end

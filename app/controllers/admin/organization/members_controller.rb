@@ -1,7 +1,7 @@
 class Admin::Organization::MembersController < ApplicationController
 
-  before_filter :require_user_be_admin!
-  before_filter :find_or_create_user!, only: :add
+  before_action :require_user_be_admin!
+  before_action :find_or_create_user!, only: :add
 
   # POST /admin/organizations/:organization_slug/members
   def add

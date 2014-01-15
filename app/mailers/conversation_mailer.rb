@@ -34,10 +34,10 @@ class ConversationMailer < Covered::Mailer
 
     reply_to_address = @task ? @organization.formatted_task_email_address : @organization.formatted_email_address
 
-    @message_url = organization_conversation_url(@organization, @conversation, anchor: "message-#{@message.id}")
+    @message_url = my_conversation_url(@organization, @conversation, anchor: "message-#{@message.id}")
     @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
     @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
-    @mute_conversation_url = mute_organization_conversation_url(@organization, @conversation)
+    # @mute_conversation_url = mute_organization_conversation_url(@organization, @conversation)
 
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
@@ -70,9 +70,9 @@ class ConversationMailer < Covered::Mailer
       :'Date'              => @message.date_header,
       :'In-Reply-To'       => @message.parent_message.try(:message_id_header),
       :'List-ID'           => @organization.formatted_list_id,
-      :'List-Archive'      => "<#{organization_conversations_url(@organization)}>",
+      :'List-Archive'      => "<#{my_conversations_url(@organization)}>",
       :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",
-      :'List-Post'         => "<mailto:#{@organization.email_address}>, <#{new_organization_conversation_url(@organization)}>"
+      :'List-Post'         => "<mailto:#{@organization.email_address}>, <#{my_compose_url(@organization)}>"
     )
 
     email.smtp_envelope_from = @task ? @organization.task_email_address : @organization.email_address

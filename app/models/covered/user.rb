@@ -25,9 +25,14 @@ class Covered::User < Covered::Model
 
   alias_method :user_id, :id
 
-  let(:email_addresses){ EmailAddresses.new(self) }
-  let(:organizations)  { Organizations.new(self)  }
-  let(:messages)       { Messages.new(self)       }
+  let(:email_addresses)  { EmailAddresses.new(self)   }
+  let(:organizations)    { Organizations.new(self)    }
+  let(:messages)         { Messages.new(self)         }
+  let(:group_memberships){ GroupMemberships.new(self) }
+
+  def group_ids
+    group_memberships.all.map(&:group_id)
+  end
 
   def web_enabled?
     user_record.encrypted_password.present?

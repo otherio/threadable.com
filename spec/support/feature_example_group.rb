@@ -5,6 +5,7 @@ module RSpec::Support::FeatureExampleGroup
   extend ActiveSupport::Concern
 
   included do
+    metadata[:driver] = :selenium
     metadata[:fixtures] = true
     metadata[:transaction] = false
     default_url_options[:host] = Capybara.server_host

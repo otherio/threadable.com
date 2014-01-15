@@ -1,6 +1,6 @@
 class Admin::IncomingEmailsController < ApplicationController
 
-  before_filter :require_user_be_admin!
+  before_action :require_user_be_admin!
 
   PAGE_SIZE = 10
 

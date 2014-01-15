@@ -28,7 +28,7 @@ class Covered::Organization::Tasks < Covered::Tasks
   private
 
   def scope
-    organization.organization_record.tasks
+    organization.organization_record.tasks.unload
   end
 
 end

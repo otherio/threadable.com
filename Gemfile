@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 ruby "2.0.0"
 
 gem 'rails', '4.0.0'
-gem 'haml-rails'
 gem 'jquery-rails'
 gem 'unicorn'
 gem 'sinatra'
@@ -17,7 +16,6 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'stringex'
 gem 'method_object'
 gem 'options_hash-method_object'
-gem 'rails-widgets', git: 'https://github.com/deadlyicon/rails-widgets'
 gem 'js-routes'
 gem 'incoming', '0.1.4'
 gem 'mail'
@@ -32,12 +30,13 @@ gem 'sanitize'
 gem 'htmlentities'
 gem 'fog', '1.12.1'
 gem 'httmultiparty'
-gem 'rails_autolink'
 gem 'let'
 
+gem 'haml-rails'
 gem 'compass-rails', '~> 1.1.2'
 gem 'sass-rails'
-gem 'font-awesome-sass-rails'
+gem 'ember-rails'
+gem 'ember-source'
 gem 'uglifier', '>= 1.0.3'
 gem 'animate-sass'
 gem 'roadie'
@@ -53,9 +52,7 @@ group :production, :staging do
 end
 
 group :development do
-  gem 'meta_request'
   gem 'active_record_query_trace'
-  gem 'better_errors'
 end
 
 group :development, :test do
@@ -68,6 +65,8 @@ group :development, :test do
   gem 'binding_of_caller'
   gem "mail_view"
   gem 'fuubar'
+  gem 'jasmine'
+  gem 'timecop', require: nil
 end
 
 group :test do
@@ -75,7 +74,6 @@ group :test do
   gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: nil
-  gem 'timecop'
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'ffaker'

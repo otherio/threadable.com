@@ -45,8 +45,8 @@ describe Covered::Messages::Create do
   let(:expected_creator_id)         { nil }
   let(:expected_body_plain)         { 'hi there' }
   let(:expected_body_html)          { '<p>hi there</p>' }
-  let(:expected_stripped_plain)     { nil }
-  let(:expected_stripped_html)      { nil }
+  let(:expected_stripped_plain)     { 'hi there' }
+  let(:expected_stripped_html)      { '<p>hi there</p>' }
   let(:expected_message_id_header)  { "<529695e5b8b3a_13b723fe73985e6d876688@127.0.0.1>" }
   let(:expected_references_header)  { nil }
   let(:expected_date_header)        { "Sat, 26 Oct 1985 08:22:00 -0000" }
@@ -83,9 +83,9 @@ describe Covered::Messages::Create do
         stripped_html:     expected_stripped_html,
         message_id_header: expected_message_id_header,
         references_header: expected_references_header,
-        date_header:       expected_date_header,
         to_header:         expected_to_header,
         cc_header:         expected_cc_header,
+        date_header:       expected_date_header,
       ).and_return(message_record)
 
       expect(covered).to receive(:track).with('Composed Message', {

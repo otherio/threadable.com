@@ -28,7 +28,6 @@ feature "Admin organizations CRUD" do
     visit admin_new_organization_path
     fill_in 'Name', with: 'United Nations'
     click_on 'Create Organization'
-    expect(page).to have_text 'Notice! Organization was successfully created.'
     expect(page).to have_text 'Edit organization'
     expect(current_url).to eq admin_edit_organization_url('united-nations')
 
@@ -52,7 +51,6 @@ feature "Admin organizations CRUD" do
       fill_in "Email address username", with: "united-hations"
       click_on 'Update Organization'
     end
-    expect(page).to have_text 'Notice! Organization was successfully updated.'
     organization = covered.organizations.find_by_name!("United Hations")
     expect(organization.name                  ).to eq "United Hations"
     expect(organization.subject_tag           ).to eq "United Hations"
