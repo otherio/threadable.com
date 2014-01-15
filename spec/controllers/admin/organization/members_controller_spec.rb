@@ -7,21 +7,21 @@ describe Admin::Organization::MembersController do
     describe 'POST :add' do
       it 'should render a 404' do
         post :add, organization_id: 'fish-eating-contest'
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 
     describe 'PUT :update' do
       it 'should render a 404' do
         put :update, organization_id: 'fish-eating-contest', user_id: 42
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 
     describe 'DELETE :remove' do
       it 'should render a 404' do
         delete :remove, organization_id: 'fish-eating-contest', user_id: 42
-        expect(response).to render_template "errors/error_404"
+        expect(response).to redirect_to sign_in_url
       end
     end
 

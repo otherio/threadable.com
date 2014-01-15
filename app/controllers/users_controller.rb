@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :require_user_be_current_user!,  only: [:edit, :update]
 
   def index
-    unauthorized!
+    not_found!
   end
 
   def create
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   end
 
   def require_user_be_current_user!
-    unauthorized! if current_user.to_param != params[:id]
+    not_found! if current_user.to_param != params[:id]
     @user = current_user
   end
 

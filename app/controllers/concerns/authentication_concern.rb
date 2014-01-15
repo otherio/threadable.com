@@ -52,6 +52,10 @@ module AuthenticationConcern
     raise Covered::AuthenticationError, message
   end
 
+  def not_found! message=nil
+    raise Covered::RecordNotFound, message
+  end
+
   def require_user_be_signed_in!
     unauthenticated! unless signed_in?
   end

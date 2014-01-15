@@ -5,9 +5,9 @@ describe UsersController do
   when_not_signed_in do
 
     describe 'GET :index' do
-      it 'redirects to the sign in url with the the current request url as the r param' do
+      it 'renders not found' do
         get :index
-        expect(response).to redirect_to sign_in_url(r: users_url)
+        expect(response.status).to eq 404
       end
     end
 
@@ -72,16 +72,16 @@ describe UsersController do
   when_signed_in_as 'tom@ucsd.example.com' do
 
     describe 'GET :index' do
-      it 'redirects to the sign in url with the the current request url as the r param' do
+      it 'renders not found' do
         get :index
-        expect(response).to redirect_to sign_in_url(r: users_url)
+        expect(response.status).to eq 404
       end
     end
 
     describe 'POST :create' do
-      it 'redirects to the sign in url with the the current request url as the r param' do
+      it 'renders unauthorized' do
         post :create, user: {}
-        expect(response).to redirect_to sign_in_url
+        expect(response.status).to eq 401
       end
     end
 
@@ -102,9 +102,9 @@ describe UsersController do
         end
       end
       context "when visiting an other user's edit page" do
-        it 'redirects to the sign in url with the the current request url as the r param' do
+        it 'renders not found' do
           get :edit, id: 'someone-else'
-          expect(response).to redirect_to sign_in_url(r: edit_user_url('someone-else'))
+          expect(response.status).to eq 404
         end
       end
     end
@@ -134,10 +134,9 @@ describe UsersController do
         end
       end
       context "when visiting an other user's edit page" do
-        it 'redirects to the sign in url with the the current request url as the r param' do
+        it 'renders not found' do
           put :update, id: 'someone-else'
-          expect(response).to be_redirect
-          expect(response.location).to eq sign_in_url
+          expect(response.status).to eq 404
         end
       end
     end

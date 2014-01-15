@@ -27,7 +27,7 @@ module RescueFromExceptionsConcern
   ].freeze
 
   def rescue_from_exception exception
-    # logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
+    logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
 
     sign_out! if Covered::CurrentUserNotFound === exception
 
