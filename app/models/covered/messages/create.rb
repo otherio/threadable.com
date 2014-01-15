@@ -58,7 +58,7 @@ class Covered::Messages::Create < MethodObject
   end
 
   let :parent_message do
-    @options.parent_message
+    @options.parent_message || @conversation.messages.latest
   end
 
   let :from do

@@ -53,8 +53,9 @@ describe Covered::Messages::Create do
   let(:expected_to_header)          { nil }
   let(:expected_cc_header)          { nil }
 
-  let(:message_record){ double :message_record }
-  let(:message){ double :message, persisted?: true, recipients: double(:recipients, all: []) }
+  let(:message_record) { double :message_record }
+  let(:message)        { double :message, persisted?: true, recipients: double(:recipients, all: []) }
+  let(:latest_message) { nil }
 
   before do
     Mail.stub random_tag: '529695e5b8b3a_13b723fe73985e6d876688'
@@ -65,6 +66,8 @@ describe Covered::Messages::Create do
 
     expect(::Attachment).to receive(:create).with(attachment1).and_return(attachment_record1)
     expect(::Attachment).to receive(:create).with(attachment2).and_return(attachment_record2)
+
+    conversation.stub_chain(:messages, :latest).and_return(latest_message)
 
     expect(message_record).to receive(:attachments=).with([attachment_record1, attachment_record2])
   end
@@ -93,6 +96,57 @@ describe Covered::Messages::Create do
         'Conversation' => conversation.id,
         'Organization Name' => organization.name,
         'Reply' => false,
+        'Task' => false,
+        'Message ID' => expected_message_id_header,
+      })
+
+      expect(message).to receive(:send_emails!).with(false)
+
+      return_value = described_class.call(messages,
+        conversation: conversation,
+        body: '<p>hi there</p>',
+        attachments: attachments,
+      )
+
+
+      expect(return_value).to eq(message)
+    end
+  end
+
+  context "when not given a parent message" do
+    let(:latest_message) { double(
+      :message,
+      id: 235,
+      references_header: "REFERENCES_HEADER_OMG",
+      message_id_header: "MESSAGE_ID_HEADER_OMG"
+    ) }
+
+    let(:expected_parent_message_id) { 235 }
+    let(:expected_references_header) { "REFERENCES_HEADER_OMG MESSAGE_ID_HEADER_OMG" }
+
+    it "gets the parent message from the conversation" do
+
+      expect(conversation_record.messages).to receive(:create).with(
+        parent_message_id: expected_parent_message_id,
+        subject:           expected_subject,
+        from:              expected_from,
+        creator_id:        expected_creator_id,
+        body_plain:        expected_body_plain,
+        body_html:         expected_body_html,
+        stripped_plain:    expected_stripped_plain,
+        stripped_html:     expected_stripped_html,
+        message_id_header: expected_message_id_header,
+        references_header: expected_references_header,
+        to_header:         expected_to_header,
+        cc_header:         expected_cc_header,
+        date_header:       expected_date_header,
+      ).and_return(message_record)
+
+      expect(covered).to receive(:track).with('Composed Message', {
+        'Organization' => organization.id,
+        'Conversation' => conversation.id,
+        'Organization Name' => organization.name,
+        'Reply' => true,
         'Task' => false,
         'Message ID' => expected_message_id_header,
       })
