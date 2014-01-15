@@ -18,7 +18,7 @@ class Covered::Conversation::Events::MessageEvent
   end
 
   def created_at
-    Time.parse(message.date_header)
+    message.sent_at
   end
 
 end

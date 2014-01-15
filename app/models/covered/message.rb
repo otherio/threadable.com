@@ -19,7 +19,6 @@ class Covered::Message < Covered::Model
     references_header
     to_header
     cc_header
-    date_header
     shareworthy?
     knowledge?
     body_html
@@ -33,6 +32,16 @@ class Covered::Message < Covered::Model
 
   def organization
     conversation.try(:organization)
+  end
+
+  def date_header
+    @date_header ||= message_record.date_header.presence || created_at.rfc2822
+  end
+
+  def sent_at
+    @sent_at ||= Time.parse(message_record.date_header)
+  rescue ArgumentError, TypeError
+    @sent_at = created_at
   end
 
   def creator

@@ -17,6 +17,7 @@ Covered.Message = RL.Model.extend({
   shareworthy:      RL.attr('string'),
   knowledge:        RL.attr('string'),
   createdAt:        RL.attr('date'),
+  sentAt:           RL.attr('date'),
   parentMessageId:  RL.attr('number'),
   avatarUrl:        RL.attr('string'),
   senderName:       RL.attr('string'),

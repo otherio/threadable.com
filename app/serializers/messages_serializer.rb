@@ -19,6 +19,7 @@ class MessagesSerializer < Serializer
       shareworthy:       message.shareworthy?,
       knowledge:         message.knowledge?,
       created_at:        message.created_at,
+      sent_at:           message.sent_at,
 
       parent_message_id: message.parent_message_id,
 

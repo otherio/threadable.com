@@ -30,10 +30,10 @@ Covered.ReplyController = Ember.ObjectController.extend({
 
         var message = this.get('content');
         var event = Covered.Event.create({
-          id: 'message-' + message.get('id'),
+          id:        'message-' + message.get('id'),
           eventType: 'created_message',
-          createdAt: message.get('dateHeader'),
-          message: message,
+          createdAt: message.get('sentAt'),
+          message:   message,
         });
 
         conversation.get('events').pushObject(event);
