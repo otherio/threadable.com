@@ -27,10 +27,11 @@ module Covered
     config.i18n.default_locale = :en
 
     config.assets.precompile += %w{
-      init.js
-      bootstrap-wysihtml5.css
-      bootstrap-wysihtml5.js
-      bootstrap-wysihtml5/wysiwyg-color.css
+      FontAwesome.otf
+      fontawesome-webfont.eot
+      fontawesome-webfont.svg
+      fontawesome-webfont.ttf
+      fontawesome-webfont.woff
     }
 
 
