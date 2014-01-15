@@ -10,7 +10,7 @@ class Covered::Conversation::Groups < Covered::Groups
 
   def add *groups
     Covered.transaction do
-      group_records = groups.flatten.compact.map(&:group_record) - groups_association.to_a
+      group_records = groups.flatten.compact.map(&:group_record) - groups_association.reload.to_a
       groups_association << group_records
       group_ids = groups.flatten.compact.map(&:group_record).map(&:id)
       conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: true)
@@ -19,8 +19,10 @@ class Covered::Conversation::Groups < Covered::Groups
   end
 
   def add_unless_removed *groups
-    group_records = groups.flatten.compact.map(&:group_record) - groups_association.to_a
-    groups_association << group_records
+    groups = groups.flatten.compact
+    existing_group_ids = conversation.conversation_record.conversation_groups.map(&:group_id)
+    groups.reject!{ |group| existing_group_ids.include? group.group_id }
+    groups_association << groups.map(&:group_record)
     self
   end
 

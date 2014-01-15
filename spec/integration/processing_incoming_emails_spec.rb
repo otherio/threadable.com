@@ -208,7 +208,7 @@ describe "processing incoming emails 2" do
     # only validating delivered messages beyond this point
 
     expect(incoming_email_attachments).to eq posted_attachments
-    expect( message.attachments.all   ).to eq incoming_email.attachments.all
+    expect( message.attachments.all.to_set ).to eq incoming_email.attachments.all.to_set
 
     recipients = message.recipients.all.reject do |user|
       message.creator.same_user?(user) if message.creator
@@ -310,8 +310,8 @@ describe "processing incoming emails 2" do
   let(:expected_sent_email_smtp_envelope_from) { 'raceteam@127.0.0.1' }
   let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
   let(:expected_sent_email_list_id)            { expected_organization.formatted_list_id }
-  let(:expected_sent_email_list_archive)       { "<#{organization_conversations_url(expected_organization)}>" }
-  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{new_organization_conversation_url(expected_organization)}>" }
+  let(:expected_sent_email_list_archive)       { "<#{my_conversations_url(expected_organization)}>" }
+  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{my_compose_url(expected_organization)}>" }
   let(:expected_groups)                        { [] }
 
   it 'delivers the email' do
