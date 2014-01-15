@@ -25,7 +25,7 @@ class Covered::Class
   end
 
   def current_user= user
-    self.current_user_id = user.id
+    self.current_user_id = user.try(:user_id)
   end
 
   def current_user
