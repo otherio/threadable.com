@@ -34,15 +34,6 @@ describe OrganizationsController do
     }
   end
 
-  describe "GET show" do
-    before{ organization }
-    it "assigns the requested organization as @organization" do
-      get :show, {:id => organization.to_param}
-      assigns(:organization).should eq(organization)
-      response.should redirect_to organization_conversations_url(organization)
-    end
-  end
-
   describe "GET new" do
     it "assigns a new organization as @organization" do
       get :new, {}

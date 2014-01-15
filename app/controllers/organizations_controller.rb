@@ -2,15 +2,6 @@ class OrganizationsController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 
-  # GET /make-a-tank
-  # GET /make-a-tank.json
-  def show
-    respond_to do |format|
-      format.html { redirect_to organization_conversations_url(organization) }
-      format.json { render json: organization }
-    end
-  end
-
   # GET /organizations/new
   # GET /organizations/new.json
   def new

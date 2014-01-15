@@ -76,7 +76,11 @@ Covered::Application.routes.draw do
 
   resources :emails, :only => :create
 
-  get   '/:id/edit'      => 'organizations#edit',      :as => 'edit_organization'
+  resources :organizations, except: [:index, :show] do
+    member do
+      put :leave
+    end
+  end
 
   # OLD ROUTES END
 
