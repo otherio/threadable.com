@@ -16,7 +16,7 @@ describe Covered::IncomingEmail::Deliver do
       recipient:      recipient,
       message:        preexisting_message,
       creator:        double(:creator, id: 54),
-      attachments:    double(:attachments),
+      attachments:    double(:attachments, all: double(:all_attachments)),
       organization:   double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks)),
       message_id:     double(:incoming_email_message_id),
       references:     double(:incoming_email_references),
@@ -70,7 +70,7 @@ describe Covered::IncomingEmail::Deliver do
       body_html:         'stripped incoming_email.body_html',
       stripped_plain:    'stripped incoming_email.stripped_plain',
       stripped_html:     'stripped incoming_email.stripped_html',
-      attachments:       incoming_email.attachments,
+      attachments:       incoming_email.attachments.all,
     ).and_return(message)
 
     expect(incoming_email).to receive(:message=).with(message)

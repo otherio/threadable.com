@@ -18,7 +18,7 @@ describe Covered::Attachments do
     end
 
     before do
-      ::Attachment.stub_chain(:all, :reload).and_return(all_attachment_records)
+      ::Attachment.stub all: all_attachment_records
     end
 
     it 'returns all the attachments as Covered::Attachment instances' do
@@ -37,14 +37,6 @@ describe Covered::Attachments do
     end
     it 'returns a count all the attachments' do
       expect(attachments.count).to eq 45
-    end
-  end
-
-  describe 'build' do
-    it 'returns an unsaved attachment' do
-      attachment = attachments.build(filename: 'kitties.jpg')
-      expect(attachment).to be_a Covered::Attachment
-      expect(attachment.filename).to eq 'kitties.jpg'
     end
   end
 

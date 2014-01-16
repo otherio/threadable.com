@@ -72,7 +72,7 @@ class Covered::IncomingEmail::Deliver < MethodObject
       body_html:         strip_user_specific_content(@incoming_email.body_html),
       stripped_plain:    strip_user_specific_content(@incoming_email.stripped_plain),
       stripped_html:     strip_user_specific_content(@incoming_email.stripped_html),
-      attachments:       @incoming_email.attachments,
+      attachments:       @incoming_email.attachments.all,
     )
   end
 

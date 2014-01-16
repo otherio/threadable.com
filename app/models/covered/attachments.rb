@@ -1,14 +1,8 @@
 class Covered::Attachments < Covered::Collection
 
   def all
-    scope.map{ |attachment_record| attachment_for attachment_record }
+    attachments_for scope
   end
-  alias_method :to_a, :all
-
-  def build attributes
-    attachment_for scope.build(attributes)
-  end
-  alias_method :new, :build
 
   # create(filename: 'cat.jpg', mimetype: 'image/jpg', content: "CONTENT")
   def create attributes
@@ -29,6 +23,10 @@ class Covered::Attachments < Covered::Collection
 
   def attachment_for attachment_record
     Covered::Attachment.new(covered, attachment_record)
+  end
+
+  def attachments_for attachment_records
+    attachment_records.map{ |attachment_record| attachment_for attachment_record }
   end
 
 end
