@@ -3,6 +3,7 @@ class Covered::Task < Covered::Conversation
   alias_method :task_record, :conversation_record
 
   delegate *%w{
+    done_at
     done?
     position
   }, to: :task_record

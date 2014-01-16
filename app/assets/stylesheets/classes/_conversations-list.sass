@@ -2,12 +2,22 @@
 
   color: $light-grey-color
 
-  > .controlls
+  .scrollable
+    position: absolute
+    left: 0
+    right: 0
+    bottom: 0
+
+  .controls, .task-controls
+    a.active
+      color: $yellow-color
+
+  .controls
     padding-top: 5px
     background-color: $grey-color
     font-size: 0
     overflow: hidden
-    white-space: nowarp
+    white-space: nowrap
     > a
       display: inline-block
       height: 50px
@@ -16,8 +26,6 @@
       &, &:hover, &:visited, &:active
         text-decoration: none
         color: $white-color
-        &.active
-          color: $yellow-color
       > *
         display: block
       > i
@@ -25,7 +33,8 @@
       > span
         font-size: 10px
 
-  > .task-controlls
+  .task-controls
+    display: none
     overflow: hidden
     padding: 5px 15px
     background-color: $lighter-grey-color
@@ -54,25 +63,12 @@
       left: -1px
       +border-right-radius(4px)
 
-  > ol
-    &, > li
+  .all-conversations, .done-tasks
+    ol, li
       margin: 0
       padding: 0
 
-    > li.muted
-      display: none
-
-    &.conversations-mode
-
-    &.tasks-mode
-      > li.conversation
-        display: none
-
-    &.muted-mode
-      > li.muted
-        display: block
-
-    > li
+    li
       border-bottom: 1px solid $light-grey-color
 
       > a
@@ -80,5 +76,50 @@
         text-decoration: none
         &.active
           background-color: $faint-blue-color
+
+
+  .all-conversations
+    li.muted, li.done
+      display: none
+
+  .done-tasks
+    display: none
+
+
+
+  // state changing
+
+  .conversations-mode
+    .scrollable
+      top: 55px
+
+
+  .tasks-mode
+    .scrollable
+      top: 117px
+
+    .task-controls
+      display: block
+
+    .all-conversations .conversation
+      display: none
+
+    &.all-tasks-mode
+
+    &.my-tasks-mode
+      .not-my-task
+        display: none
+
+    &.show-done
+      .done-tasks
+        display: block
+
+    &.prioritizing
+
+
+
+  .muted-mode
+    > li.muted
+      display: block
 
 

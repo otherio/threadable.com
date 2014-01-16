@@ -14,6 +14,9 @@ Covered.Conversation = RL.Model.extend({
   doers:             RL.hasMany('Covered.User'),
   done:              RL.attr('boolean'),
 
+  isTask: Ember.computed.alias('task'),
+  isDone: Ember.computed.alias('done'),
+
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;
   }.property('numberOfMessages'),
@@ -37,7 +40,17 @@ Covered.Conversation = RL.Model.extend({
     return groups.filter(function(group) {
       return groupIds.indexOf(group.get('id')) > -1;
     });
-  }.property('groupIds','organization.groups')
+  }.property('groupIds','organization.groups'),
+
+
+  myTask: function() {
+    if (!this.get('isTask')) return false;
+    var userId = Covered.currentUser.get('userId');
+    var doers = this.get('doers');
+    if (!doers) return false;
+    var userIds = doers.mapBy('userId');
+    return userIds.indexOf(userId) !== -1;
+  }.property('isTask', 'doers')
 });
 
 Covered.RESTAdapter.map("Covered.Conversation", {

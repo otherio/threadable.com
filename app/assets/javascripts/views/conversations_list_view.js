@@ -10,6 +10,12 @@ Covered.ConversationsListView = Ember.View.extend({
 
   myConversations:        function() { return this.get('type') == 'my';        }.property('type'),
   ungroupedConversations: function() { return this.get('type') == 'ungrouped'; }.property('type'),
-  groupConversations:     function() { return this.get('type') == 'group';     }.property('type')
+  groupConversations:     function() { return this.get('type') == 'group';     }.property('type'),
+
+  doneTasks: function() {
+    return this.get('conversations').filter(function(conversation) {
+      return conversation.get('isTask') && conversation.get('isDone');
+    });
+  }.property('conversations')
 
 });
