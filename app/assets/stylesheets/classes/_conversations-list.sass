@@ -1,80 +1,84 @@
 .conversations-list
-  $icon-width: 20px
-  $padding: 5px
 
   color: $light-grey-color
 
-  &, > li
-    margin: 0
-    padding: 0
-  > li
-    border-bottom: 1px solid $light-grey-color
-
-    > a
-      position: relative
-      overflow: hidden
-      display: block
-      padding: $padding $padding $padding 35px
-      text-decoration: none
-      color: inherit
-      &.active
-        background-color: $faint-blue-color
-
-    // &.unread   <- use this when we have unread
-    &
-      .participant-names,
-      .number-of-messages,
-      .subject
-        color: black
-
-
-  section.icon
-    position: absolute
-    top: 0
-    left: 0
-    font-size: $icon-width
-    font-weight: 300
-    padding: 0.1em 0.2em 0.2em 0.1em
-    +border-bottom-right-radius(5px)
-    background-color: $light-grey-color
-    color: $white-color
-
-  section.line
-    white-space: nowrap
+  > .controlls
+    padding-top: 5px
+    background-color: $grey-color
+    font-size: 0
     overflow: hidden
-    text-overflow: ellipsis
-  section.line-1
-    .uk-float-left
-      max-width: 70%
-    .updated-at
-      color: $grey-text-color
-    .participant-names,
-    .number-of-messages
-      font-size: 18px
-      margin-bottom: 3px
-    .participant-names
-      max-width: 90%
+    white-space: nowarp
+    > a
       display: inline-block
-      text-overflow: ellipsis
-      overflow: hidden
-      vertical-align: top
+      height: 50px
+      width: 25%
+      text-align: center
+      &, &:hover, &:visited, &:active
+        text-decoration: none
+        color: $white-color
+        &.active
+          color: $yellow-color
+      > *
+        display: block
+      > i
+        font-size: 30px
+      > span
+        font-size: 10px
 
-  section.line-2
-    .subject
+  > .task-controlls
+    overflow: hidden
+    padding: 5px 15px
+    background-color: $lighter-grey-color
+    font-size: 0
+    a
+      padding: 0.35em 0 0.25em 0
+      margin: 0 0.75em
+      font-size: 14px
+      border: 1px solid transparent
+    color: $dark-grey-color
+
+    .my-tasks, .all-tasks
+      border: 1px solid $light-grey-color
+      background: rgba(0,0,0,0.1)
+      background-color: white
+      margin: 0
+      padding: 0.35em 0.75em 0.25em
+      &.active
+        background-color: #dadada
+        color: lighten($dark-grey-color, 40%)
+
+    .my-tasks
+      +border-left-radius(4px)
+    .all-tasks
+      position: relative
+      left: -1px
+      +border-right-radius(4px)
+
+  > ol
+    &, > li
+      margin: 0
+      padding: 0
+
+    > li.muted
+      display: none
+
+    &.conversations-mode
+
+    &.tasks-mode
+      > li.conversation
+        display: none
+
+    &.muted-mode
+      > li.muted
+        display: block
+
+    > li
+      border-bottom: 1px solid $light-grey-color
+
+      > a
+        display: block
+        text-decoration: none
+        &.active
+          background-color: $faint-blue-color
 
 
-  section.line-3
-    padding-top: 1px
-    .message-summary
-      color: $grey-text-color
-
-    .no-message-summary
-      color: lighten($grey-text-color, 15%)
-      font-style: italic
-
-    .groups
-      float: right
-      margin-left: 0.5em
-      .badge
-        position: relative
-        top: -2px

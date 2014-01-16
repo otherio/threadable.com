@@ -1,6 +1,7 @@
 Covered.ConversationListMemberView = Ember.View.extend({
-  templateName: 'conversations/conversation',
+  templateName: 'conversations_list/member',
   tagName: 'div',
+  classNames: 'conversation-list-member',
 
   conversation: Ember.computed.alias('context').readOnly(),
   group:        Ember.computed.alias('parentView.context.group.model').readOnly(),
