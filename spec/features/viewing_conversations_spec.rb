@@ -8,7 +8,7 @@ feature "Viewing conversations" do
 
   def conversations
     conversations = evaluate_script <<-JS
-      $('.conversations-list > li').map(function(){
+      $('.conversations-list .all-conversations .conversation').map(function(){
           var
             conversation       = $(this),
             icon               = conversation.find('.icon i'),
