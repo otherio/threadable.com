@@ -11,6 +11,7 @@ describe MembersSerializer do
     it do
       should eq(
         id:            alice.id,
+        user_id:       alice.user_id,
         param:         "alice-neilson",
         name:          "Alice Neilson",
         email_address: "alice@ucsd.example.com",
@@ -27,6 +28,7 @@ describe MembersSerializer do
       should eq [
         {
           id:            alice.id,
+          user_id:       alice.user_id,
           param:         "alice-neilson",
           name:          "Alice Neilson",
           email_address: "alice@ucsd.example.com",
@@ -34,6 +36,7 @@ describe MembersSerializer do
           avatar_url:    "/fixture_images/alice.jpg",
         },{
           id:            marcus.id,
+          user_id:       marcus.user_id,
           param:         "marcus-welby",
           name:          "Marcus Welby",
           email_address: "marcus@sfhealth.example.com",
