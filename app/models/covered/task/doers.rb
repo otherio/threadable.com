@@ -23,7 +23,7 @@ class Covered::Task::Doers
 
 
   def add *doers
-    doer_user_ids = (doers.map(&:user_id) - task.task_record.doer_ids).uniq
+    doer_user_ids = (doers.flatten.map(&:user_id) - task.task_record.doer_ids).uniq
 
     Covered.transaction do
       task.task_record.doer_ids += doer_user_ids
@@ -38,7 +38,9 @@ class Covered::Task::Doers
   end
 
   def remove *doers
-    doer_user_ids = (doers.map(&:user_id) & task.task_record.doer_ids).uniq
+    doer_user_ids = (doers.flatten.map do |doer|
+      doer.instance_of?(Fixnum) ? doer : doer.user_id
+    end & task.task_record.doer_ids).uniq
 
     Covered.transaction do
       task.task_record.doer_ids -= doer_user_ids
@@ -51,8 +53,6 @@ class Covered::Task::Doers
     end
     self
   end
-
-
 
 
   def inspect

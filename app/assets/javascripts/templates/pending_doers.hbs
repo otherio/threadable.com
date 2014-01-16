@@ -1,0 +1,12 @@
+{{#each doer in controller}}
+  {{#if doer.isChanged}}
+    <strong>
+      {{#if doer.isAdded}}
+        +{{doer.name}}
+      {{else}}
+        -{{doer.name}}
+      {{/if}}
+    </strong>
+    as a doer<br />
+  {{/if}}
+{{/each}}

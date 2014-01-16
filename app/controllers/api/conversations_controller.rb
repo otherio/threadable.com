@@ -25,8 +25,21 @@ class Api::ConversationsController < ApiController
 
   # patch /api/conversations/:id
   def update
-    conversation_params = params.require(:conversation).permit(:done)
-    conversation_params[:done] ? conversation.done! : conversation.undone!
+    conversation_params = params.require(:conversation).permit(:done, doers: :id )
+    Covered.transaction do
+      conversation_params[:done] ? conversation.done! : conversation.undone!
+      if conversation_params[:doers]
+        existing_doer_ids = conversation.doers.all.map(&:id)
+        supplied_doer_ids = conversation_params[:doers].map{ |doer| doer[:id] }
+        remove_doer_ids = existing_doer_ids - supplied_doer_ids
+        conversation.doers.remove(remove_doer_ids)
+
+        doers = supplied_doer_ids.map do |doer_id|
+          organization.members.find_by_user_id!(doer_id)
+        end
+        conversation.doers.add(doers)
+      end
+    end
 
     render json: serialize(:conversations, conversation)
   end

@@ -13,11 +13,16 @@ Covered.ConversationRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this.controllerFor('conversation').set('model', model);
     this.controllerFor('reply').set('model', Covered.Message.create({}));
+    this.controllerFor('doerSelection').set('model', this.controllerFor('organization').get('members'));
+    this.controllerFor('doerSelection').set('doers', this.controllerFor('conversation').get('doers').toArray());
+    this.controllerFor('pendingDoers').set('model', this.controllerFor('doerSelection'));
   },
 
   renderTemplate: function() {
     this.render('conversation', {into: 'organization', outlet: 'conversationPane'});
     this.render('reply', {into: 'conversation', outlet: 'reply'});
+    this.render('doerSelection', {into: 'conversation', outlet: 'doerSelection'});
+    this.render('pendingDoers', {into: 'reply', outlet: 'pendingDoers'});
     this.controllerFor('organization').set('focus', 'conversation');
   },
 

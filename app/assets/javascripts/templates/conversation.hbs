@@ -24,8 +24,10 @@
             <img {{bind-attr src="doer.avatarUrl"}} />
           </div>
         {{/each}}
+        {{outlet doerSelection}}
       </div>
     {{/if}}
+
 
     <div class="task-controls uk-hidden-small">
       {{#if task}}
@@ -37,6 +39,7 @@
       {{/if}}
       <a class="uk-float-right" href="" {{action 'muteConversation'}}><i class="uk-icon-volume-down"></i>mute conversation</a>
     </div>
+
 
     <ul class="messages">
       {{#each event in events}}

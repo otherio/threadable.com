@@ -1,5 +1,5 @@
 Covered.ReplyController = Ember.ObjectController.extend({
-  needs: ['conversation', 'organization'],
+  needs: ['conversation', 'organization', 'doerSelection'],
 
   message: Ember.computed.alias('model'),
 
@@ -12,7 +12,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
     },
     sendMessage: function() {
       this.set('error', null);
-      var organizationSlug = this.get('controllers.organization').get('content').get('slug');
+      var organizationSlug = this.get('controllers.organization.content.slug');
       var conversation = this.get('controllers.conversation.model');
 
       var message = this.get('message');
@@ -24,9 +24,32 @@ Covered.ReplyController = Ember.ObjectController.extend({
         bodyHtml:         this.get('bodyAsHtml'),
       });
 
-      message.saveRecord().then(onSuccess.bind(this), onError.bind(this));
+      var newDoerIds = this.get('controllers.doerSelection.doers').map(function(doer) {
+        return doer.get('id');
+      }).sort();
+      var oldDoerIds = conversation.get('doers').map(function(doer) {
+        return doer.get('id');
+      }).sort();
 
-      function onSuccess(response) {
+      if(newDoerIds != oldDoerIds) {
+        var newDoers = RL.RecordArray.createWithContent();
+        this.get('controllers.doerSelection.doers').forEach(function(doer) {
+          newDoers.pushObject(doer);
+        });
+        conversation.set('doers', newDoers);
+        conversation.saveRecord().then(onDoersSuccess.bind(this), onError.bind(this));
+      } else {
+        message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+      }
+
+      function onDoersSuccess(response) {
+        message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+        conversation.get('doers').deserializeMany(response.conversation.doers);
+        this.get('controllers.doerSelection').set('doers', conversation.get('doers').toArray());
+        conversation.loadEvents(true);
+      }
+
+      function onMessageSuccess(response) {
         conversation.deserialize(response.message.conversation);
 
         var message = this.get('content');

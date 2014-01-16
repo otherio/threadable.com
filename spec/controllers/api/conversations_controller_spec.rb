@@ -133,7 +133,7 @@ describe Api::ConversationsController do
 
     # patch /api/:organization_id/:id
     describe 'update' do
-      context 'when given valid conversation data' do
+      context 'when given done/not done conversation data' do
         it 'marks the conversation as done/not done' do
           xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: { done: false }
           expect(response.status).to eq 200
@@ -146,6 +146,19 @@ describe Api::ConversationsController do
           conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
           expect(conversation).to be_done
           expect(response.body).to eq serialize(:conversations, conversation).to_json
+        end
+      end
+
+      context 'when given doers' do
+        let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com')}
+        let(:tom)   { raceteam.members.find_by_email_address('tom@ucsd.example.com')}
+        it 'sets the doers' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: {
+            doers: [{id: alice.id}, {id: tom.id}]
+          }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
+          expect(conversation.doers.all.map(&:id)).to match_array [alice.id, tom.id]
         end
       end
 

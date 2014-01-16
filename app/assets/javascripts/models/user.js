@@ -7,3 +7,7 @@ Covered.User = RL.Model.extend({
   slug:         RL.attr('string'),
   avatarUrl:    RL.attr('string'),
 });
+
+Covered.Member = Covered.User.extend({
+
+});

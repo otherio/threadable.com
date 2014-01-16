@@ -3,7 +3,9 @@ Covered.OrganizationRoute = Ember.Route.extend({
   model: function(params){
     this.controllerFor('organization').set('organization_slug', params.organization);
     return Covered.CurrentUser.fetch().then(function(currentUser) {
-      return currentUser.get('organizations').findBy('slug', params.organization);
+      var organization = currentUser.get('organizations').findBy('slug', params.organization);
+      organization.loadMembers();
+      return organization;
     });
   },
 

@@ -1,0 +1,17 @@
+<div class="doers-selection" data-uk-dropdown="{mode:'click'}">
+  <div><i class="uk-icon-user"></i>see/change</div>
+  <ul class="uk-dropdown">
+    {{#each member in controller}}
+      <li {{bind-attr class="member.isChanged:changed"}}>
+        <div class="avatar-small">
+          <img {{bind-attr src="member.avatarUrl"}} />
+        </div>
+
+        {{member.name}}
+        {{member.emailAddress}}
+        <a href="" {{action 'toggleDoer'}}><i {{bind-attr class=":uk-float-right member.isDoer:uk-icon-minus:uk-icon-plus"}}></i></a>
+        {{member.change}}
+      </li>
+    {{/each}}
+  </ul>
+</div>

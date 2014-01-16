@@ -14,6 +14,12 @@ Covered.Organization = RL.Model.extend({
 
   groups: RL.hasMany('Covered.Group'),
 
+  loadMembers: RL.loadAssociationMethod('members', function(organization){
+    return Covered.Member.fetch({
+      organization_id: organization.get('slug')
+    });
+  }),
+
   otherGroups: function() {
     return this.get('groups').filterBy('currentUserIsAMember', false);
   }.property('groups'),
