@@ -13,9 +13,11 @@ Covered.Conversation = RL.Model.extend({
   organizationId:    RL.attr('string'),
   doers:             RL.hasMany('Covered.User'),
   done:              RL.attr('boolean'),
+  muted:             RL.attr('boolean'),
 
-  isTask: Ember.computed.alias('task'),
-  isDone: Ember.computed.alias('done'),
+  isTask:  Ember.computed.alias('task'),
+  isDone:  Ember.computed.alias('done'),
+  isMuted: Ember.computed.alias('muted'),
 
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;

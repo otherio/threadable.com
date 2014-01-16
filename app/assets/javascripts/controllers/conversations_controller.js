@@ -1,10 +1,12 @@
 // This is a base class. We should never actually endup here
 Covered.ConversationsController = Ember.ArrayController.extend({
-  needs: ['organization'],
+  needs: ['organization', 'conversations_state'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 
-  mode: 'conversations-mode', // conversations-mode | tasks-mode | muted-mode
-  taskMode: 'my-tasks-mode', // my-tasks-mode | all-tasks-mode
+  mode:         Ember.computed.alias('controllers.conversations_state.mode'),
+  taskMode:     Ember.computed.alias('controllers.conversations_state.taskMode'),
+  showDone:     Ember.computed.alias('controllers.conversations_state.showDone'),
+  prioritizing: Ember.computed.alias('controllers.conversations_state.prioritizing'),
 
   conversationsMode: function() { return this.get('mode') == 'conversations-mode'; }.property('mode'),
   tasksMode:         function() { return this.get('mode') == 'tasks-mode';         }.property('mode'),
@@ -12,10 +14,6 @@ Covered.ConversationsController = Ember.ArrayController.extend({
 
   myTasksMode:  function() { return this.get('taskMode') == 'my-tasks-mode';  }.property('taskMode'),
   allTasksMode: function() { return this.get('taskMode') == 'all-tasks-mode'; }.property('taskMode'),
-
-
-  showDone: false,
-  prioritizing: false,
 
   actions: {
     conversationsMode: function() {
@@ -45,4 +43,12 @@ Covered.ConversationsController = Ember.ArrayController.extend({
       this.toggleProperty('prioritizing');
     }
   }
+});
+
+// this controller saves the state across all ConversationsController subclasses
+Covered.ConversationsStateController = Ember.Object.extend({
+  mode:         'conversations-mode', // conversations-mode | tasks-mode | muted-mode
+  taskMode:     'all-tasks-mode', // my-tasks-mode | all-tasks-mode
+  showDone:     false,
+  prioritizing: false,
 });

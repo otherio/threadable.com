@@ -1,4 +1,4 @@
-<div {{bind-attr class="mode taskMode showDone:show-done prioritizing:prioritizing"}}>
+<div {{bind-attr class=":wrapper mode taskMode showDone:show-done prioritizing:prioritizing view.noConversations:no-conversations"}}>
   <div class="controls">
     <a href="" {{action conversationsMode}} {{bind-attr class=":icon-with-text conversationsMode:active"}}>
       <i class="uk-icon-comment-o"></i>
@@ -31,8 +31,14 @@
     </div>
     <div class="uk-float-right">
       <a href="" {{action showDone}} {{bind-attr class=":show-completed :icon-with-text showDone:active"}}>
-        <i class="uk-icon-check-circle-o"></i>
-        <span>Show Completed</span>
+        <i {{bind-attr class="showDone:uk-icon-check-circle:uk-icon-check-circle-o"}}></i>
+        <span>
+          {{#if showDone}}
+            Hide Completed
+          {{else}}
+            Show Completed
+          {{/if}}
+        </span>
       </a>
       <a href="" {{action togglePrioritizing}} {{bind-attr class=":prioritize :icon-with-text prioritizing:active"}}>
         <i class="uk-icon-sort-amount-desc"></i>
@@ -44,10 +50,45 @@
 
   <div class="scrollable">
 
+
+
+    <div class="uk-list done-tasks">
+      <ol>
+        {{#each conversation in view.doneTasks}}
+          <li {{bind-attr class=":conversation :task conversation.myTask:my-task:not-my-task conversation.isDone:done:not-done"}}>
+            {{#if view.myConversations}}
+              {{#link-to 'my_conversation' organization.slug conversation.slug}}
+                {{view Covered.ConversationListMemberView contextBinding='conversation'}}
+              {{/link-to}}
+            {{/if}}
+            {{#if view.ungroupedConversations}}
+              {{#link-to 'ungrouped_conversation' organization.slug conversation.slug}}
+                {{view Covered.ConversationListMemberView contextBinding='conversation'}}
+              {{/link-to}}
+            {{/if}}
+            {{#if view.groupConversations}}
+              {{#link-to 'group_conversation' organization.slug group.slug conversation.slug}}
+                {{view Covered.ConversationListMemberView contextBinding='conversation'}}
+              {{/link-to}}
+            {{/if}}
+          </li>
+        {{/each}}
+      </ol>
+
+      <div class="empty-list-message">
+        <h4>{{view.noDoneTasksMessage}}</h4>
+      </div>
+
+      <div class="list-divider">
+        <i class="uk-icon-arrow-circle-o-up"></i>
+        Completed Tasks
+      </div>
+    </div>
+
     <div class="all-conversations">
       <ol class="uk-list">
         {{#each conversation in view.conversations}}
-          <li {{bind-attr class="conversation.isTask:task:conversation conversation.myTask:my-task:not-my-task conversation.isDone:done:not-done"}}>
+          <li {{bind-attr class=":conversation conversation.isTask:task:not-task conversation.myTask:my-task:not-my-task conversation.isDone:done:not-done conversation.isMuted:muted:not-muted"}}>
             {{#if view.myConversations}}
               {{#link-to 'my_conversation' organization.slug conversation.slug}}
                 {{view Covered.ConversationListMemberView contextBinding='conversation'}}
@@ -64,45 +105,27 @@
               {{/link-to}}
             {{/if}}
           </li>
-        {{else}}
-          <li>
-            {{#if taskMode}}
-              <h4>No Tasks</h4>
-            {{else}}
-              <h4>No Conversations</h4>
-            {{/if}}
-          </li>
         {{/each}}
       </ol>
-    </div>
+      <div class="empty-list-message">
+        <h4>{{view.noConversationsMessage}}</h4>
+{{!--           {{#if conversationMode}} No Conversations {{/if}}
+          {{#if tasksMode}}
+            {{#if myTasksMode}}
+              {{type}}
+              {{#if myConversations}} You Have No Tasks {{/if}}
+              {{#if ungroupedConversations}} You Have Ungrouped No Tasks {{/if}}
+              {{#if groupConversations}} You have no tasks in +{{group.name}} {{/if}}
+            {{/if}}
+            {{#if allTasksMode}}
+              {{#if myConversations}} You Have No Tasks {{/if}}
+              {{#if ungroupedConversations}} You Have Ungrouped No Tasks {{/if}}
+              {{#if groupConversations}} +{{group.name}} has no tasks {{/if}}
+            {{/if}}
+          {{/if}}
+          {{#if mutedMode}} No Muted Conversations {{/if}} --}}
 
-    <div class="uk-list done-tasks">
-      <h2>Completed Tasks</h2>
-      <ol>
-        {{#each conversation in view.doneTasks}}
-          <li {{bind-attr class="conversation.isTask:task:conversation conversation.myTask:my-task:not-my-task conversation.isDone:done:not-done"}}>
-            {{#if view.myConversations}}
-              {{#link-to 'my_conversation' organization.slug conversation.slug}}
-                {{view Covered.ConversationListMemberView contextBinding='conversation'}}
-              {{/link-to}}
-            {{/if}}
-            {{#if view.ungroupedConversations}}
-              {{#link-to 'ungrouped_conversation' organization.slug conversation.slug}}
-                {{view Covered.ConversationListMemberView contextBinding='conversation'}}
-              {{/link-to}}
-            {{/if}}
-            {{#if view.groupConversations}}
-              {{#link-to 'group_conversation' organization.slug group.slug conversation.slug}}
-                {{view Covered.ConversationListMemberView contextBinding='conversation'}}
-              {{/link-to}}
-            {{/if}}
-          </li>
-        {{else}}
-          <li>
-            <h4>No Completed Tasks</h4>
-          </li>
-        {{/each}}
-      </ol>
+      </div>
     </div>
 
   </div>

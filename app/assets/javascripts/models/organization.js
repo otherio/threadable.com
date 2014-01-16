@@ -20,7 +20,9 @@ Covered.Organization = RL.Model.extend({
 
   myGroups: function() {
     return this.get('groups').filterBy('currentUserIsAMember', true);
-  }.property('groups')
+  }.property('groups'),
+
+  // myGroups: Ember.computed.filterBy('groups', 'currentUserIsAMember', true)
 });
 
 Covered.RESTAdapter.map("Covered.Organization", {

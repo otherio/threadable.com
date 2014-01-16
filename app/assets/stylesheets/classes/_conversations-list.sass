@@ -9,8 +9,10 @@
     bottom: 0
 
   .controls, .task-controls
-    a.active
-      color: $yellow-color
+    > a
+      &, &:hover, &:visited, &:active
+        &.active
+          color: $yellow-color
 
   .controls
     padding-top: 5px
@@ -64,11 +66,14 @@
       +border-right-radius(4px)
 
   .all-conversations, .done-tasks
+    ol
+      position: relative
+
     ol, li
       margin: 0
       padding: 0
 
-    li
+    li.conversation
       border-bottom: 1px solid $light-grey-color
 
       > a
@@ -79,12 +84,20 @@
 
 
   .all-conversations
-    li.muted, li.done
+    li.muted
       display: none
 
   .done-tasks
     display: none
+    .list-divider
+      color: black
+      padding: 0 15px
 
+    li.task
+      background-color: $faint-yellow-color
+
+  .empty-list-message
+    display: none
 
 
   // state changing
@@ -101,8 +114,13 @@
     .task-controls
       display: block
 
-    .all-conversations .conversation
-      display: none
+    .all-conversations
+      .conversation
+        display: none
+      .task
+        display: block
+        &.done
+          display: none
 
     &.all-tasks-mode
 
@@ -111,6 +129,7 @@
         display: none
 
     &.show-done
+
       .done-tasks
         display: block
 
@@ -119,7 +138,14 @@
 
 
   .muted-mode
-    > li.muted
+    .scrollable
+      top: 55px
+
+    .muted
       display: block
+    .not-muted
+      display: none
 
-
+  .show-no-conversations .all-conversations .empty-list-message,
+  .show-no-done-tasks .done-tasks .empty-list-message
+    display: block
