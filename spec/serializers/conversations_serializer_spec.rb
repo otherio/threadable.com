@@ -6,6 +6,10 @@ describe ConversationsSerializer do
   let(:layup_body_carbon) { raceteam.conversations.find_by_slug!('layup-body-carbon') }
   let(:welcome) { raceteam.conversations.find_by_slug!('welcome-to-our-covered-organization') }
 
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
+
   context 'when given a single record' do
     let(:payload){ layup_body_carbon }
     let(:expected_key){ :conversation }
@@ -25,6 +29,7 @@ describe ConversationsSerializer do
           group_ids:          [],
           done:               true,
           done_at:            layup_body_carbon.done_at,
+          muted:              false,
         }.merge(serialize(:doers, layup_body_carbon.doers.all))
       )
     end
@@ -50,6 +55,7 @@ describe ConversationsSerializer do
           doers:              [],
           done:               nil,
           done_at:            nil,
+          muted:              false,
         },{
           id:                 layup_body_carbon.id,
           slug:               "layup-body-carbon",
@@ -64,6 +70,7 @@ describe ConversationsSerializer do
           group_ids:          [],
           done:               true,
           done_at:            layup_body_carbon.done_at,
+          muted:              false,
         }.merge(serialize(:doers, layup_body_carbon.doers.all))
       ]
     end

@@ -16,6 +16,7 @@ class ConversationsSerializer < Serializer
       doers:              conversation.task? ? serialize(:doers, conversation.doers.all) : [],
       done_at:            conversation.task? ? conversation.done_at : nil,
       done:               conversation.task? ? conversation.done? : nil,
+      muted:              conversation.muted?,
     }
   end
 
