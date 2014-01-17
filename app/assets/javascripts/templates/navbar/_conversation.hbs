@@ -13,5 +13,5 @@
     {{/if}}
     <a href="" {{action 'toggleDoerSelector'}}><i class="uk-icon-user"></i></a>
   {{/if}}
-  <a href="" {{action 'muteConversation'}}><i class="uk-icon-volume-down"></i></a>
+  <a href="" {{action 'toggleMuted'}}><i {{bind-attr class="conversation.isMuted:uk-icon-volume-down:uk-icon-volume-up"}}></i></a>
 </div>

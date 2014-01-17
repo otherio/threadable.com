@@ -39,7 +39,14 @@
           <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i>mark as done</a>
         {{/if}}
       {{/if}}
-      <a class="uk-float-right" href="" {{action 'muteConversation'}}><i class="uk-icon-volume-down"></i>mute conversation</a>
+
+      <a class="uk-float-right" href="" {{action 'toggleMuted'}}>
+        {{#if isMuted}}
+          <i class="uk-icon-volume-down"></i>mute conversation
+        {{else}}
+          <i class="uk-icon-volume-up"></i>unmute conversation
+        {{/if}}
+      </a>
     </div>
 
 

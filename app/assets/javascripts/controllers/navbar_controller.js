@@ -38,6 +38,9 @@ Covered.NavbarController = Ember.Controller.extend({
     toggleComplete: function() {
       this.get('conversation').send('toggleComplete');
     },
+    toggleMuted: function() {
+      this.get('conversation').send('toggleMuted');
+    },
     toggleDoerSelector: function() {
       this.get('controllers.doerSelection').send('toggleDoerSelector');
     }
