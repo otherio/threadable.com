@@ -1,12 +1,16 @@
 {{#each doer in controller}}
   {{#if doer.isChanged}}
-    <strong>
-      {{#if doer.isAdded}}
-        +{{doer.name}}
-      {{else}}
-        -{{doer.name}}
-      {{/if}}
-    </strong>
-    as a doer<br />
+    <div class="pending-doer">
+      <strong>
+        {{#if doer.isAdded}}
+          +{{doer.name}}
+        {{else}}
+          -{{doer.name}}
+        {{/if}}
+      </strong>
+      <span class="subtitle">
+        as a doer
+      </span>
+    </div>
   {{/if}}
 {{/each}}

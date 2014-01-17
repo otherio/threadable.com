@@ -152,13 +152,15 @@ describe Api::ConversationsController do
       context 'when given doers' do
         let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com')}
         let(:tom)   { raceteam.members.find_by_email_address('tom@ucsd.example.com')}
+        let(:yan)   { raceteam.members.find_by_email_address('yan@ucsd.example.com')}
         it 'sets the doers' do
           xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: {
-            doers: [{id: alice.id}, {id: tom.id}]
+            doers: [{id: alice.id}, {id: tom.id}, {id: "#{yan.id}"}]
           }
           expect(response.status).to eq 200
           conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
-          expect(conversation.doers.all.map(&:id)).to match_array [alice.id, tom.id]
+          expect(conversation.doers.all.map(&:id)).to match_array [alice.id, tom.id, yan.id]
+          expect(conversation.events.all.length).to eq(5)
         end
       end
 

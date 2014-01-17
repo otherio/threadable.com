@@ -1,0 +1,49 @@
+.change-doers-button
+  position: absolute
+  top: 6px
+  right: 0
+  font-size: 15px
+
+.doer-selector
+  position: fixed
+  min-width: 320px
+  background-color: $lighter-grey-color
+  margin: 0
+  padding: 0
+  list-style: none
+
+  li:hover
+    background-color: $faint-blue-color
+
+  li
+    display: block
+    overflow: hidden
+    padding: 3px 8px
+
+
+    & ~ li
+      border-top: 1px solid $light-grey-color
+
+
+  .avatar-small
+    margin-top: 3px
+
+  .name
+    font-size: 15px
+    margin-left: 37px
+
+  .email
+    font-size: 12px
+    margin-left: 37px
+
+  .changed
+    background-color: $faint-yellow-color
+
+  .changed:hover
+    background-color: $faint-blue-color
+
+  .toggle-doer
+    margin-top: 10px
+    color: $dark-grey-color
+
+

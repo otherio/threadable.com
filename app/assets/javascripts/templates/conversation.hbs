@@ -19,11 +19,13 @@
     {{#if task}}
       <div class="doers uk-clearfix">
         <div class="doers-label"><i class="uk-icon-bolt"></i>doers:</div>
-        {{#each doer in doers}}
-          <div class="avatar-small" data-uk-tooltip {{bind-attr title="doer.name"}}>
-            <img {{bind-attr src="doer.avatarUrl"}} />
-          </div>
-        {{/each}}
+        <div class="doer-avatars">
+          {{#each doer in doers}}
+            <span class="avatar-small" data-uk-tooltip {{bind-attr title="doer.name"}}>
+              <img {{bind-attr src="doer.avatarUrl"}} />
+            </span>
+          {{/each}}
+        </div>
         {{outlet doerSelection}}
       </div>
     {{/if}}

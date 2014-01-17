@@ -40,7 +40,7 @@ class Api::ConversationsController < ApiController
 
       if conversation_params.key?(:doers)
         existing_doer_ids = conversation.doers.all.map(&:id)
-        supplied_doer_ids = conversation_params[:doers].map{ |doer| doer[:id] }
+        supplied_doer_ids = conversation_params[:doers].map{ |doer| doer[:id].to_i }
         remove_doer_ids = existing_doer_ids - supplied_doer_ids
         conversation.doers.remove(remove_doer_ids)
 

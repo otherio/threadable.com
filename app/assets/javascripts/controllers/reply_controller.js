@@ -31,7 +31,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
         return doer.get('id');
       }).sort();
 
-      if(newDoerIds != oldDoerIds) {
+      if(Ember.compare(newDoerIds, oldDoerIds) != 0) {
         var newDoers = RL.RecordArray.createWithContent();
         this.get('controllers.doerSelection.doers').forEach(function(doer) {
           newDoers.pushObject(doer);
@@ -39,14 +39,21 @@ Covered.ReplyController = Ember.ObjectController.extend({
         conversation.set('doers', newDoers);
         conversation.saveRecord().then(onDoersSuccess.bind(this), onError.bind(this));
       } else {
-        message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+        saveMessage.bind(this)();
       }
 
       function onDoersSuccess(response) {
-        message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+        saveMessage.bind(this)();
         conversation.get('doers').deserializeMany(response.conversation.doers);
         this.get('controllers.doerSelection').set('doers', conversation.get('doers').toArray());
         conversation.loadEvents(true);
+      }
+
+      function saveMessage() {
+        var body = message.get('body');
+        if(body && body.match(/\w/)){
+          message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+        }
       }
 
       function onMessageSuccess(response) {

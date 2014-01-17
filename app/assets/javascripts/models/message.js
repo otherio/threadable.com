@@ -30,7 +30,9 @@ Covered.Message = RL.Model.extend({
   }.property('body', 'bodyStripped'),
 
   bodyAsHtml: function() {
-    return '<p>' + this.get('body').replace(/\n/g, "<br />\n") + '</p>';
+    if(this.get('body')){
+      return '<p>' + this.get('body').replace(/\n/g, "<br />\n") + '</p>';
+    }
   }.property('body')
 });
 

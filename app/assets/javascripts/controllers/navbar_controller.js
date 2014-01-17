@@ -1,5 +1,5 @@
 Covered.NavbarController = Ember.Controller.extend({
-  needs: ['application', 'organization', 'compose', 'conversation'],
+  needs: ['application', 'organization', 'compose', 'conversation', 'doerSelection'],
   currentUser:     Ember.computed.alias('controllers.application.currentUser').readOnly(),
   currentPath:     Ember.computed.alias('controllers.application.currentPath').readOnly(),
   newConversation: Ember.computed.alias('controllers.compose').readOnly(),
@@ -37,6 +37,9 @@ Covered.NavbarController = Ember.Controller.extend({
     },
     toggleComplete: function() {
       this.get('conversation').send('toggleComplete');
+    },
+    toggleDoerSelector: function() {
+      this.get('controllers.doerSelection').send('toggleDoerSelector');
     }
   }
 

@@ -1,6 +1,13 @@
 Covered.DoerSelectionController = Ember.ArrayController.extend({
   itemController: 'doer',
-  doers: null
+  showDoerSelector: false,
+  doers: null,
+
+  actions: {
+    toggleDoerSelector: function() {
+      this.set('showDoerSelector', !this.get('showDoerSelector'));
+    }
+  }
 
 });
 
@@ -65,7 +72,8 @@ Covered.DoerController = Ember.ObjectController.extend({
       } else {
         doers.pushObject(doer);
       }
-
+      this.get('controllers.doerSelection').send('toggleDoerSelector');
+      $(".conversation-pane").animate({ scrollTop: $('.conversation-pane')[0].scrollHeight}, 250);
     }
   }
 });
