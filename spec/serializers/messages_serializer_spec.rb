@@ -8,6 +8,10 @@ describe MessagesSerializer do
   let(:message) { conversation.messages.latest }
   let(:message2) { conversation.messages.all.first }
 
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
+
   context 'when given a single record' do
     let(:payload){ message }
     let(:expected_key){ :message }
