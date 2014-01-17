@@ -2,7 +2,7 @@
 
 Covered.GroupTasksRoute = Covered.TasksRoute.extend({
 
-  modelFetchOptions: function(params){
+  modelFetchOptions: function(){
     var organization = this.modelFor('organization');
     var group = this.modelFor('group');
     return {
