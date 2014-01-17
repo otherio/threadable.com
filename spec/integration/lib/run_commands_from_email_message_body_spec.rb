@@ -1,0 +1,73 @@
+require 'spec_helper'
+
+describe RunCommandsFromEmailMessageBody do
+
+  delegate :call, to: :described_class
+
+  let(:organization ){ current_user.organizations.find_by_slug! 'raceteam' }
+  let(:task         ){ organization.tasks.find_by_slug! 'trim-body-panels' }
+  let(:body         ){ "hi" }
+
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
+
+  def call!
+    described_class.call(task, body)
+  end
+
+  context "with &done in the body" do
+    let(:body) { "&done \nyo mama got this done last night." }
+
+    it "marks the task as done" do
+      expect(task.done?).to be_false
+      call!
+      expect(task.done?).to be_true
+    end
+  end
+
+  context "with &undone in the body" do
+    let(:task) { organization.tasks.find_by_slug! 'layup-body-carbon' }
+    let(:body) { "&undone \nguys this is terrible. try again." }
+
+    it "marks the task as undone" do
+      expect(task.done?).to be_true
+      call!
+      expect(task.done?).to be_false
+    end
+  end
+
+  context "with &mute in the body" do
+    let(:body) { "&mute \nI am so tired of hearing this conversation. Muted." }
+
+    it "marks the task as muted" do
+      expect(task.muted?).to be_false
+      call!
+      expect(task.muted?).to be_true
+    end
+  end
+
+  context "with +My Name in the body" do
+    let(:body) { "+Alice Neilson \nI got this. I'm so ready to trim body panels." }
+
+    it "adds Alice as a doer" do
+      expect(task.doers.all.map(&:id)).to_not include current_user.id
+      call!
+      expect(task.doers.all.map(&:id)).to include current_user.id
+    end
+  end
+
+  context "with -My Name in the body" do
+    let(:body) { "-Tom Canver \nTom has decided that Carbon fiber is awful. Find an intern somewhere." }
+
+    it "removes Tom as a doer" do
+      tom = organization.members.find_by_email_address('tom@ucsd.example.com')
+      expect(task.doers.all.map(&:id)).to include tom.id
+      call!
+      expect(task.doers.all.map(&:id)).to_not include tom.id
+    end
+  end
+
+
+
+end
