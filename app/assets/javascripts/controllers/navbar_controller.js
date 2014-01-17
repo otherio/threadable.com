@@ -1,7 +1,7 @@
-Covered.NavbarController = Ember.Controller.extend({
-  needs: ['application', 'organization', 'compose', 'conversation'],
-  currentUser:     Ember.computed.alias('controllers.application.currentUser').readOnly(),
-  currentPath:     Ember.computed.alias('controllers.application.currentPath').readOnly(),
+Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, {
+  needs: ['organization', 'compose', 'conversation'],
+
+  focus:           Ember.computed.alias('controllers.organization.focus'),
   newConversation: Ember.computed.alias('controllers.compose').readOnly(),
   conversation:    Ember.computed.alias('controllers.conversation').readOnly(),
 
@@ -14,11 +14,24 @@ Covered.NavbarController = Ember.Controller.extend({
     return color ? "background-color: "+color+";" : '';
   }.property('group.color'),
 
+  showComposing: function() {
+    return this.get('composing') && this.get('focus') == 'conversation';
+  }.property('composing', 'focus'),
+
+  showConversation: function() {
+    return !this.get('composing') && this.get('focus') == 'conversation';
+  }.property('composing', 'focus'),
+
+  showOrganization: function() {
+    return !this.get('showComposing') && !this.get('showConversation');
+  }.property('showComposing', 'showConversation'),
+
   actions: {
     focusGroups: function() {
-      this.get('controllers.organization').set('focus', 'groups');
+      this.set('focus', 'groups');
     },
     focusConversations: function() {
+      this.set('focus', 'conversations');
       this.set('composing', false);
       this.send('transitionUp');
     },

@@ -3,14 +3,8 @@
     {{partial "navbar/organization"}}
   </div>
   <div class="task-controls uk-visible-small">
-    {{#if composing}}
-      {{partial "navbar/compose"}}
-    {{else}}
-      {{#if conversation}}
-        {{partial "navbar/conversation"}}
-      {{else}}
-        {{partial "navbar/organization"}}
-      {{/if}}
-    {{/if}}
+    {{#if showComposing   }} {{partial "navbar/compose"     }} {{/if}}
+    {{#if showConversation}} {{partial "navbar/conversation"}} {{/if}}
+    {{#if showOrganization}} {{partial "navbar/organization"}} {{/if}}
   </div>
 </nav>
