@@ -118,7 +118,6 @@ feature "Viewing conversations" do
       end
     rescue
       puts $!.backtrace.first(10)
-      binding.pry
       raise
     end
     end
