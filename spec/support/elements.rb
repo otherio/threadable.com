@@ -16,6 +16,8 @@ module RSpec::Support::Elements
       '.task-controls .uk-icon-check'
     when 'the mark not done button'
       '.task-controls .uk-icon-check-square'
+    when 'the change doers button'
+      '.change-doers-button'
     # when 'the current user dropdown'
     #   '.page_navigation .current_user.dropdown .dropdown-toggle'
     # when 'the organizations dropdown toggle'

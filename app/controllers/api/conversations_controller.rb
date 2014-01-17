@@ -38,9 +38,14 @@ class Api::ConversationsController < ApiController
         conversation_params[:done] ? conversation.done! : conversation.undone!
       end
 
-      if conversation_params.key?(:doers)
+      if params[:conversation].key?(:doers)
+        supplied_doer_ids = if conversation_params[:doers].present?
+          conversation_params[:doers].map{ |doer| doer[:id].to_i }
+        else
+          []
+        end
+
         existing_doer_ids = conversation.doers.all.map(&:id)
-        supplied_doer_ids = conversation_params[:doers].map{ |doer| doer[:id].to_i }
         remove_doer_ids = existing_doer_ids - supplied_doer_ids
         conversation.doers.remove(remove_doer_ids)
 

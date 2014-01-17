@@ -164,6 +164,18 @@ describe Api::ConversationsController do
         end
       end
 
+      context 'when given empty doers' do
+        it 'sets the doers' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: {
+            doers: nil
+          }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
+          expect(conversation.doers.all.length).to eq 0
+          expect(conversation.events.all.length).to eq(6)
+        end
+      end
+
       context 'with an organization that the user is not a member of' do
         it 'renders a 404' do
           xhr :put, :update, format: :json, organization_id: sfhealth.slug, id: 'review-our-intake-policies', conversation: { done: true }
