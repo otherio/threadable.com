@@ -1,5 +1,5 @@
 Covered.ReplyController = Ember.ObjectController.extend({
-  needs: ['conversation', 'organization', 'doerSelection'],
+  needs: ['conversation', 'organization', 'doerSelector'],
 
   message: Ember.computed.alias('model'),
 
@@ -24,7 +24,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
         bodyHtml:         this.get('bodyAsHtml'),
       });
 
-      var newDoerIds = this.get('controllers.doerSelection.doers').map(function(doer) {
+      var newDoerIds = this.get('controllers.doerSelector.doers').map(function(doer) {
         return doer.get('id');
       }).sort();
       var oldDoerIds = conversation.get('doers').map(function(doer) {
@@ -33,7 +33,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
 
       if(Ember.compare(newDoerIds, oldDoerIds) != 0) {
         var newDoers = RL.RecordArray.createWithContent();
-        this.get('controllers.doerSelection.doers').forEach(function(doer) {
+        this.get('controllers.doerSelector.doers').forEach(function(doer) {
           newDoers.pushObject(doer);
         });
         conversation.set('doers', newDoers);
@@ -45,7 +45,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
       function onDoersSuccess(response) {
         saveMessage.bind(this)();
         conversation.get('doers').deserializeMany(response.conversation.doers);
-        this.get('controllers.doerSelection').set('doers', conversation.get('doers').toArray());
+        this.get('controllers.doerSelector').set('doers', conversation.get('doers').toArray());
         conversation.loadEvents(true);
       }
 

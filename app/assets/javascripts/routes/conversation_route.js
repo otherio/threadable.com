@@ -32,16 +32,16 @@ Covered.ConversationRoute = Ember.Route.extend({
     this._super(controller, model);
     this.controllerFor('conversation').set('model', model);
     this.controllerFor('reply').set('model', Covered.Message.create({}));
-    this.controllerFor('doerSelection').set('model', this.controllerFor('organization').get('members'));
+    this.controllerFor('doerSelector').set('model', this.controllerFor('organization').get('members'));
     var doers = model && model.get('doers');
-    if (doers) this.controllerFor('doerSelection').set('doers', doers.toArray());
-    this.controllerFor('pendingDoers').set('model', this.controllerFor('doerSelection'));
+    if (doers) this.controllerFor('doerSelector').set('doers', doers.toArray());
+    this.controllerFor('pendingDoers').set('model', this.controllerFor('doerSelector'));
   },
 
   renderTemplate: function() {
     this.render('conversation', {into: 'organization', outlet: 'conversationPane'});
     this.render('reply', {into: 'conversation', outlet: 'reply'});
-    this.render('doerSelection', {into: 'conversation', outlet: 'doerSelection'});
+    this.render('doerSelector', {into: 'conversation', outlet: 'doerSelector'});
     this.render('pendingDoers', {into: 'reply', outlet: 'pendingDoers'});
     this.controllerFor('organization').set('focus', 'conversation');
   },

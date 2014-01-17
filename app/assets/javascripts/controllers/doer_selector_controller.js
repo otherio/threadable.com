@@ -1,20 +1,19 @@
-Covered.DoerSelectionController = Ember.ArrayController.extend({
+Covered.DoerSelectorController = Ember.ArrayController.extend({
+  needs: ['conversation'],
   itemController: 'doer',
-  showDoerSelector: false,
   doers: null,
 
   actions: {
     toggleDoerSelector: function() {
-      this.set('showDoerSelector', !this.get('showDoerSelector'));
+      this.get('controllers.conversation').send('toggleDoerSelector');
     }
   }
-
 });
 
 Covered.DoerController = Ember.ObjectController.extend({
-  needs: ['doerSelection', 'conversation'],
+  needs: ['doerSelector', 'conversation'],
 
-  doers: Ember.computed.alias('controllers.doerSelection.doers'),
+  doers: Ember.computed.alias('controllers.doerSelector.doers'),
 
   isDoer: function() {
     var doerIds;
@@ -66,14 +65,19 @@ Covered.DoerController = Ember.ObjectController.extend({
       var doer  = this.get('content');
       var doers = this.get('doers');
       if(this.get('isDoer') ){
-        this.get('controllers.doerSelection').set('doers', doers.reject(function(filteredDoer) {
+        this.get('controllers.doerSelector').set('doers', doers.reject(function(filteredDoer) {
           return doer.get('id') === filteredDoer.get('id');
         }));
       } else {
         doers.pushObject(doer);
       }
-      this.get('controllers.doerSelection').send('toggleDoerSelector');
-      $(".conversation-pane").animate({ scrollTop: $('.conversation-pane')[0].scrollHeight}, 250);
+      this.get('controllers.conversation').send('toggleDoerSelector');
+      Ember.run(function() {
+        var container = $('.conversation-show:first');
+        var reply = container.find('.reply');
+        var newScrollTop = container.scrollTop() + reply.position().top;
+        $(".conversation-show").animate({scrollTop: newScrollTop}, 250);
+      });
     }
   }
 });

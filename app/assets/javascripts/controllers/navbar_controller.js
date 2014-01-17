@@ -1,5 +1,5 @@
 Covered.NavbarController = Ember.Controller.extend({
-  needs: ['application', 'organization', 'compose', 'conversation', 'doerSelection'],
+  needs: ['application', 'organization', 'compose', 'conversation'],
   currentUser:     Ember.computed.alias('controllers.application.currentUser').readOnly(),
   currentPath:     Ember.computed.alias('controllers.application.currentPath').readOnly(),
   newConversation: Ember.computed.alias('controllers.compose').readOnly(),
@@ -42,7 +42,7 @@ Covered.NavbarController = Ember.Controller.extend({
       this.get('conversation').send('toggleMuted');
     },
     toggleDoerSelector: function() {
-      this.get('controllers.doerSelection').send('toggleDoerSelector');
+      this.get('controllers.conversation').send('toggleDoerSelector');
     }
   }
 

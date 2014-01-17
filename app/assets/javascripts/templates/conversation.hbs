@@ -1,4 +1,4 @@
-<div class="conversation-show">
+<div {{bind-attr class=":conversation-show :scrollable showDoerSelector:show-doer-selector"}}>
 
   <div>
     {{#each group in groups}}
@@ -18,17 +18,22 @@
 
     {{#if task}}
       <div class="doers uk-clearfix">
-        <div class="doers-label"><i class="uk-icon-bolt"></i>doers:</div>
-        <div class="doer-avatars">
+        <a href="" class="label not-link" {{action toggleDoerSelector}}>
+          <i class="caret-icon uk-icon-caret-right"></i>
+          doers:
+        </a>
+        <span class="doer-avatars">
           {{#each doer in doers}}
-            <span class="avatar-small" data-uk-tooltip {{bind-attr title="doer.name"}}>
+            <span class="avatar avatar-small" data-uk-tooltip {{bind-attr title="doer.name"}}>
               <img {{bind-attr src="doer.avatarUrl"}} />
             </span>
           {{/each}}
-        </div>
-        {{outlet doerSelection}}
+        </span>
+        {{outlet doerSelector}}
       </div>
     {{/if}}
+
+
 
 
     <div class="task-controls uk-hidden-small">

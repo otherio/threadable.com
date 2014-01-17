@@ -1,0 +1,50 @@
+.doer-selector
+  font-size: $normal-font-size
+  background-color: $lighter-grey-color
+
+  > .label
+    font-size: 20px
+
+  +mini-to-small-screens
+    .caret-icon
+      display: none
+
+  > ul
+    margin: 0
+    padding: 0
+    list-style: none
+
+  li:hover
+    background-color: $faint-blue-color
+
+  li
+    > a
+      display: block
+      padding: 3px 8px
+      white-space: nowrap
+      overflow: hidden
+      line-height: $avatar-small-height
+    & ~ li
+      border-top: 1px solid $light-grey-color
+
+
+  .left-content
+    margin-right: 1em
+    overflow: hidden
+    text-overflow: ellipsis
+
+  .avatar
+    margin-right: 1em
+
+  .name
+
+  .email
+
+  .changed
+    background-color: $faint-yellow-color
+
+  .changed:hover
+    background-color: $faint-blue-color
+
+  .toggle-doer
+    color: $dark-grey-color
