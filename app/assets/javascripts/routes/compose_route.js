@@ -24,9 +24,8 @@ Covered.ComposeRoute = Ember.Route.extend({
       this.controllerFor('navbar').set('composing', false);
     },
     transitionToConversation: function(conversation) {
-      var routeName = this.routeName.replace('compose', 'conversation');
+      var routeName = this.routeName.replace('compose_','');
       this.transitionTo(routeName, conversation.get('slug'));
-      // this.send('transitionUp', {refresh: true});
     }
   }
 
