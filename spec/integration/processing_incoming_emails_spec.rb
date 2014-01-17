@@ -154,7 +154,7 @@ describe "processing incoming emails 2" do
     expect( incoming_email.conversation ).to be_present
 
     message      = covered.messages.latest
-    conversation = covered.conversations.latest
+    conversation = expected_organization.conversations.latest
 
     expect( incoming_email.message      ).to eq message
     expect( incoming_email.conversation ).to eq conversation
@@ -297,7 +297,7 @@ describe "processing incoming emails 2" do
   # default expected values for the default incoming email params above
 
   let(:expected_parent_message)                { nil }
-  let(:expected_conversation)                  { covered.conversations.latest }
+  let(:expected_conversation)                  { expected_organization.conversations.latest }
   let(:expected_creator)                       { covered.users.find_by_email_address('yan@ucsd.example.com') }
   let(:expected_organization)                  { covered.organizations.find_by_slug!('raceteam') }
   let(:expected_conversation_subject)          { 'OMG guys I love covered!' }
@@ -400,7 +400,7 @@ describe "processing incoming emails 2" do
         let(:envelope_from) { "<alice@ucsd.example.com>" }
         let(:sender)        { "alice@ucsd.example.com" }
 
-        let(:expected_conversation)      { covered.conversations.latest }
+        let(:expected_conversation)      { expected_organization.conversations.latest }
         let(:expected_creator)           { covered.users.find_by_email_address(sender) }
         let(:expected_sent_email_smtp_envelope_from){ expected_organization.email_address }
         let(:expected_sent_email_subject){ "[#{expected_organization.subject_tag}] #{subject}" }
