@@ -27,15 +27,19 @@ class Api::ConversationsController < ApiController
   def update
 
     conversation_params = if conversation.task?
-      params.require(:conversation).permit(:done, doers: :id)
+      params.require(:conversation).permit(:done, :muted, doers: :id)
     else
-      params.require(:conversation).permit()
+      params.require(:conversation).permit(:muted)
     end
 
     Covered.transaction do
 
       if conversation_params.key?(:done)
         conversation_params[:done] ? conversation.done! : conversation.undone!
+      end
+
+      if conversation_params.key?(:muted)
+        conversation_params[:muted] ? conversation.mute! : conversation.unmute!
       end
 
       if params[:conversation].key?(:doers)

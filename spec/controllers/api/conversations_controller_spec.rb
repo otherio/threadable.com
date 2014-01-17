@@ -176,6 +176,17 @@ describe Api::ConversationsController do
         end
       end
 
+      context 'when given mute/unmute' do
+        it 'mutes and unmutes the conversation' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: {
+            muted: true
+          }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
+          expect(conversation.muted?).to be_true
+        end
+      end
+
       context 'with an organization that the user is not a member of' do
         it 'renders a 404' do
           xhr :put, :update, format: :json, organization_id: sfhealth.slug, id: 'review-our-intake-policies', conversation: { done: true }
