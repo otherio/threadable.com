@@ -5,6 +5,7 @@ describe Covered::IncomingEmail::Deliver do
   let(:params){ ::IncomingEmail.create(params: create_incoming_email_params).params }
   let(:conversation){ double(:conversation, messages: double(:messages)) }
   let(:subject){ 'I love this community!' }
+  let(:stripped_plain){ 'i am a message body' }
   let(:recipient){ 'raceteam@127.0.0.1' }
   let(:preexisting_message){ nil }
   let :incoming_email do
@@ -27,7 +28,7 @@ describe Covered::IncomingEmail::Deliver do
       from:           double(:incoming_email_from),
       body_plain:     double(:incoming_email_body_plain),
       body_html:      double(:incoming_email_body_html),
-      stripped_plain: 'i am a message body',
+      stripped_plain: stripped_plain,
       stripped_html:  double(:incoming_email_stripped_html),
       groups:         [double(:group1),double(:group2)],
     )
@@ -55,6 +56,9 @@ describe Covered::IncomingEmail::Deliver do
       with(incoming_email.stripped_plain).and_return('stripped incoming_email.stripped_plain')
     expect(StripUserSpecificContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.stripped_html).and_return('stripped incoming_email.stripped_html')
+
+    expect(RunCommandsFromEmailMessageBody).to receive(:call).
+      with(conversation, stripped_plain)
 
     expect(conversation.messages).to receive(:create!).with(
       creator_id:        54,
@@ -103,7 +107,7 @@ describe Covered::IncomingEmail::Deliver do
     before do
       expect(incoming_email).to receive(:conversation).once.and_return(nil)
       expect(incoming_email).to receive(:conversation=).with(conversation)
-      expect(incoming_email).to receive(:conversation).once.and_return(conversation)
+      expect(incoming_email).to receive(:conversation).twice.and_return(conversation)
     end
 
     context 'and recipient is not a +task email address, and the subject does not contain [task] or [✔]' do
@@ -181,7 +185,7 @@ describe Covered::IncomingEmail::Deliver do
         ).and_return(conversation)
       end
 
-      it 'saves off the attachments, and creates a conveesation and a conversation message' do
+      it 'saves off the attachments, and creates a conversation and a conversation message' do
         call!
       end
     end
