@@ -311,7 +311,7 @@ describe "processing incoming emails 2" do
   let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
   let(:expected_sent_email_list_id)            { expected_organization.formatted_list_id }
   let(:expected_sent_email_list_archive)       { "<#{my_conversations_url(expected_organization)}>" }
-  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{my_compose_url(expected_organization)}>" }
+  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{compose_my_conversation_url(expected_organization)}>" }
   let(:expected_groups)                        { [] }
 
   it 'delivers the email' do

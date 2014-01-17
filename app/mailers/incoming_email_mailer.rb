@@ -45,7 +45,7 @@ class IncomingEmailMailer < Covered::Mailer
       :'References'     => [@incoming_email.message_id],
       :'List-ID'        => @organization.formatted_list_id,
       :'List-Archive'   => "<#{my_conversations_url(@organization)}>",
-      :'List-Post'      => "<mailto:#{@organization.email_address}>, <#{my_compose_url(@organization)}>"
+      :'List-Post'      => "<mailto:#{@organization.email_address}>, <#{compose_my_conversation_url(@organization)}>"
     }.merge(options))
 
     message.smtp_envelope_from = "no-reply-auto@#{covered.email_host}"

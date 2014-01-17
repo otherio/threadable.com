@@ -40,7 +40,7 @@ describe 'sending emails' do
         expect( email.header['List-Archive'].to_s ).to eq "<#{my_conversations_url(organization)}>"
 
         expect( email.header["List-Unsubscribe"].to_s ).to match %r{/raceteam/unsubscribe/}
-        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{my_compose_url(organization)}>"
+        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{compose_my_conversation_url(organization)}>"
       end
 
       context "sync" do

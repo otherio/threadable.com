@@ -72,7 +72,7 @@ class ConversationMailer < Covered::Mailer
       :'List-ID'           => @organization.formatted_list_id,
       :'List-Archive'      => "<#{my_conversations_url(@organization)}>",
       :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",
-      :'List-Post'         => "<mailto:#{@organization.email_address}>, <#{my_compose_url(@organization)}>"
+      :'List-Post'         => "<mailto:#{@organization.email_address}>, <#{compose_my_conversation_url(@organization)}>"
     )
 
     email.smtp_envelope_from = @task ? @organization.task_email_address : @organization.email_address
