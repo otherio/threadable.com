@@ -36,7 +36,6 @@ Ember.onerror = function(error){
   notice.css({color: 'red'});
   $('body').prepend(notice);
   console.error(error);
-  debugger
 };
 
 Ember.TextField.reopen({
