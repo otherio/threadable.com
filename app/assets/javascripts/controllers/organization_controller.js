@@ -3,7 +3,8 @@ Covered.OrganizationController = Ember.ObjectController.extend(Covered.CurrentUs
   focus: null,
   previousFocus: null,
   organization_slug: null,
-  composeTarget: null,
+  composeTarget: null, // my || ungrouped || group
+
 
   focusChanged: function(){
     this.set('previousFocus', this.get('focus'));

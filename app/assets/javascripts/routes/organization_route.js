@@ -22,9 +22,13 @@ Covered.OrganizationRoute = Ember.Route.extend({
   actions: {
     goToCompose: function() {
       var composeTarget = this.controller.get('composeTarget');
-      if (composeTarget === 'my')        this.transitionTo('my_compose');
-      if (composeTarget === 'ungrouped') this.transitionTo('ungrouped_compose');
-      if (composeTarget === 'group')     this.transitionTo('group_compose');
+      if (composeTarget === 'my-conversations')        return this.transitionTo('compose_my_conversation');
+      if (composeTarget === 'my-tasks')                return this.transitionTo('compose_my_task');
+      if (composeTarget === 'ungrouped-conversations') return this.transitionTo('compose_ungrouped_conversation');
+      if (composeTarget === 'ungrouped-tasks')         return this.transitionTo('compose_ungrouped_task');
+      if (composeTarget === 'group-conversations')     return this.transitionTo('compose_group_conversation');
+      if (composeTarget === 'group-tasks')             return this.transitionTo('compose_group_task');
+      throw new Error('unknonw composeTarget '+composeTarget);
     }
   }
 

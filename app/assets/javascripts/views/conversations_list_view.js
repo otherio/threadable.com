@@ -12,30 +12,18 @@ Covered.ConversationsListView = Ember.View.extend({
   ungroupedConversations: function() { return this.get('type') == 'ungrouped'; }.property('type'),
   groupConversations:     function() { return this.get('type') == 'group';     }.property('type'),
 
-  doneTasks: function() {
-    return this.get('conversations').filter(function(conversation) {
-      return conversation.get('isTask') && conversation.get('isDone');
-    });
-  }.property('conversations'),
 
-  noDoneTasksMessage: function() {
-    return 'no done tasks: ';
-  }.property('type', 'context.mode', 'context.taskMode'),
-
-  noConversationsMessage: function() {
-    return this.get('context.taskMode') ? 'no tasks' : 'no conversations';
-  }.property('type', 'mode', 'taskMode'),
+  // this is crazy but I don't know a better way - Jared
 
   detectNoConversations: function() {
     this.updateNoConversations();
-  }.observes('conversations.@each', 'context.mode', 'context.taskMode', 'context.showDone'),
+  }.observes('conversations.@each', 'context.mode'),
 
   didInsertElement: function() {
     this.updateNoConversations();
     return this._super();
   },
 
-  // this is crazy but I don't know a better way - Jared
   updateNoConversations: function() {
     setTimeout(function() {
       Ember.run(function() {
@@ -53,5 +41,7 @@ Covered.ConversationsListView = Ember.View.extend({
       });
     });
   }
+
+  // /crazy
 
 });

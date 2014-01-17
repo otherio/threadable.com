@@ -4,17 +4,37 @@ Covered.ConversationRoute = Ember.Route.extend({
   parentRouteName: null,
 
   model: function(params){
-    var conversations = this.modelFor(this.get('parentRouteName'));
-    var conversation = conversations.findBy('slug', params.conversation);
-    conversation.loadEvents();
+    var conversations, conversation;
+
+    conversations = this.modelFor(this.get('parentRouteName'));
+    if (conversations && conversations.isLoaded){
+      conversation = conversations.findBy('slug', params.conversation);
+      if (conversation) conversation.loadEvents();
+    }else{
+      conversations = Covered.Conversation.fetch({
+        slug: params.conversation,
+        organization_id: this.modelFor('organization').get('slug'),
+      });
+    }
     return conversation;
   },
 
+  afterModel: function(conversation, transition) {
+    if (conversation) return;
+    transition.abort();
+    this.transitionTo(this.get('parentRouteName'),
+      transition.state.params.organization.organization,
+      transition.state.params.group.group
+    );
+  },
+
   setupController: function(controller, model) {
+    this._super(controller, model);
     this.controllerFor('conversation').set('model', model);
     this.controllerFor('reply').set('model', Covered.Message.create({}));
     this.controllerFor('doerSelection').set('model', this.controllerFor('organization').get('members'));
-    this.controllerFor('doerSelection').set('doers', this.controllerFor('conversation').get('doers').toArray());
+    var doers = model && model.get('doers');
+    if (doers) this.controllerFor('doerSelection').set('doers', doers.toArray());
     this.controllerFor('pendingDoers').set('model', this.controllerFor('doerSelection'));
   },
 
@@ -26,10 +46,10 @@ Covered.ConversationRoute = Ember.Route.extend({
     this.controllerFor('organization').set('focus', 'conversation');
   },
 
-  actions: {
-    willTransition: function(transition) {
-      this.controllerFor('conversation').set('model', null);
-    }
-  }
+  // actions: {
+  //   willTransition: function(transition) {
+  //     // this.controllerFor('conversation').set('model', null);
+  //   }
+  // }
 
 });

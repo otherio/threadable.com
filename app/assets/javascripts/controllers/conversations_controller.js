@@ -3,6 +3,7 @@ Covered.ConversationsController = Ember.ArrayController.extend({
   needs: ['organization', 'conversations_state'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 
+
   mode:         Ember.computed.alias('controllers.conversations_state.mode'),
   taskMode:     Ember.computed.alias('controllers.conversations_state.taskMode'),
   showDone:     Ember.computed.alias('controllers.conversations_state.showDone'),
@@ -14,6 +15,28 @@ Covered.ConversationsController = Ember.ArrayController.extend({
 
   myTasksMode:  function() { return this.get('taskMode') == 'my-tasks-mode';  }.property('taskMode'),
   allTasksMode: function() { return this.get('taskMode') == 'all-tasks-mode'; }.property('taskMode'),
+
+  conversationsFindOptions: function() {
+    return {};
+  },
+
+  tasks: function() {
+    console.debug('RECALCING TASKS FOR MODE: ', this.get('mode'));
+    var
+      organization  = this.get('organization.model'),
+      conversations = Covered.Conversation.find(this.conversationsFindOptions());
+
+    if (!organization) debugger;
+
+    conversations.on('didLoad', function(conversations){
+      console.log(conversations.toArray());
+      conversations.forEach(function(conversation){
+        conversation.set('organization', organization);
+      });
+    });
+    return conversations;
+  }.property('organization.model'),
+
 
   actions: {
     conversationsMode: function() {
@@ -28,7 +51,6 @@ Covered.ConversationsController = Ember.ArrayController.extend({
     toggleSeach: function() {
       this.toggleProperty('showSearch');
     },
-
 
     myTasksMode: function() {
       this.set('taskMode','my-tasks-mode');

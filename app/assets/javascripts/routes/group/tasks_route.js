@@ -1,4 +1,6 @@
-Covered.GroupConversationsRoute = Covered.ConversationsRoute.extend({
+//= require ../tasks_route
+
+Covered.GroupTasksRoute = Covered.TasksRoute.extend({
 
   modelFetchOptions: function(params){
     var organization = this.modelFor('organization');
@@ -12,6 +14,7 @@ Covered.GroupConversationsRoute = Covered.ConversationsRoute.extend({
   renderTemplate: function() {
     this.render('group_conversations', {into: 'organization', outlet: 'conversationsPane'});
     this.controllerFor('organization').set('focus', 'conversations');
+    this.controllerFor('organization').set('composeTarget', 'group-tasks');
   }
 
 });

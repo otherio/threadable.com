@@ -16,13 +16,21 @@ Covered.Router.map(function() {
     this.resource('my', {path: '/my'}, function(){
       this.resource('my_conversations', {path: '/conversations'}, function(){
         this.resource('my_conversation', {path: '/:conversation'});
-        this.resource('my_compose', {path: '/compose'});
+        this.resource('compose_my_conversation', {path: '/compose'});
+      });
+      this.resource('my_tasks', {path: '/tasks'}, function(){
+        this.resource('my_task', {path: '/:task'});
+        this.resource('compose_my_task', {path: '/compose'});
       });
     });
     this.resource('ungrouped', {path: '/ungrouped'}, function(){
       this.resource('ungrouped_conversations', {path: '/conversations'}, function(){
         this.resource('ungrouped_conversation', {path: '/:conversation'});
-        this.resource('ungrouped_compose', {path: '/compose'});
+        this.resource('compose_ungrouped_conversation', {path: '/compose'});
+      });
+      this.resource('ungrouped_tasks', {path: '/tasks'}, function(){
+        this.resource('ungrouped_task', {path: '/:task'});
+        this.resource('compose_ungrouped_task', {path: '/compose'});
       });
     });
     this.resource('groups', {path: '/groups'}, function() {
@@ -32,11 +40,12 @@ Covered.Router.map(function() {
         });
         this.resource('group_conversations', {path: '/conversations'}, function(){
           this.resource('group_conversation', {path: '/:conversation'});
-          this.resource('group_compose', {path: '/compose'});
+          this.resource('compose_group_conversation', {path: '/compose'});
         });
-        // this.resource('tasks', {path: '/tasks'}, function(){
-        //   this.resource('conversation', {path: '/:conversation'});
-        // });
+        this.resource('group_tasks', {path: '/tasks'}, function(){
+          this.resource('group_task', {path: '/:task'});
+          this.resource('compose_group_task', {path: '/compose'});
+        });
       });
     });
   });

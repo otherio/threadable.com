@@ -8,11 +8,8 @@
     right: 0
     bottom: 0
 
-  .controls, .task-controls
-    > a
-      &, &:hover, &:visited, &:active
-        &.active
-          color: $yellow-color
+    // TODO split on media size
+    top: 55px
 
   .controls
     padding-top: 5px
@@ -28,6 +25,8 @@
       &, &:hover, &:visited, &:active
         text-decoration: none
         color: $white-color
+        &.active
+          color: $yellow-color
       > *
         display: block
       > i
@@ -35,41 +34,11 @@
       > span
         font-size: 10px
 
-  .task-controls
-    display: none
-    overflow: hidden
-    padding: 5px 15px
-    background-color: $lighter-grey-color
-    font-size: 0
-    a
-      padding: 0.35em 0 0.25em 0
-      margin: 0 0.75em
-      font-size: 14px
-      border: 1px solid transparent
-    color: $dark-grey-color
 
-    .my-tasks, .all-tasks
-      border: 1px solid $light-grey-color
-      background: rgba(0,0,0,0.1)
-      background-color: white
-      margin: 0
-      padding: 0.35em 0.75em 0.25em
-      &.active
-        background-color: #dadada
-        color: lighten($dark-grey-color, 40%)
+  > .wrapper > .scrollable > ol
+    position: relative
 
-    .my-tasks
-      +border-left-radius(4px)
-    .all-tasks
-      position: relative
-      left: -1px
-      +border-right-radius(4px)
-
-  .all-conversations, .done-tasks
-    ol
-      position: relative
-
-    ol, li
+    &, li
       margin: 0
       padding: 0
 
@@ -82,70 +51,5 @@
         &.active
           background-color: $faint-blue-color
 
-
-  .all-conversations
-    li.muted
-      display: none
-
-  .done-tasks
-    display: none
-    .list-divider
-      color: black
-      padding: 0 15px
-
-    li.task
-      background-color: $faint-yellow-color
-
   .empty-list-message
     display: none
-
-
-  // state changing
-
-  .conversations-mode
-    .scrollable
-      top: 55px
-
-
-  .tasks-mode
-    .scrollable
-      top: 117px
-
-    .task-controls
-      display: block
-
-    .all-conversations
-      .conversation
-        display: none
-      .task
-        display: block
-        &.done
-          display: none
-
-    &.all-tasks-mode
-
-    &.my-tasks-mode
-      .not-my-task
-        display: none
-
-    &.show-done
-
-      .done-tasks
-        display: block
-
-    &.prioritizing
-
-
-
-  .muted-mode
-    .scrollable
-      top: 55px
-
-    .muted
-      display: block
-    .not-muted
-      display: none
-
-  .show-no-conversations .all-conversations .empty-list-message,
-  .show-no-done-tasks .done-tasks .empty-list-message
-    display: block

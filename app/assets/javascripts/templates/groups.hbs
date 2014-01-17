@@ -15,7 +15,7 @@
     <li class="uk-nav-header">My Organizations</li>
     {{#each organization in currentUser.organizations}}
     <li>
-      {{#link-to 'my_conversations' organization.slug }}{{organization.name}}{{/link-to}}
+      {{#link-to myConversationsRoute organization.slug }}{{organization.name}}{{/link-to}}
     </li>
     {{/each}}
   </ul>
@@ -23,15 +23,15 @@
 
 <ul class="uk-nav uk-nav-offcanvas groups-list">
   <li>
-    {{#link-to 'my_conversations'  organization.slug}}My Conversations{{/link-to}}
+    {{#link-to myConversationsRoute organization.slug}}My Conversations{{/link-to}}
   </li>
   <li>
-    {{#link-to 'ungrouped_conversations' organization.slug}}Ungrouped Conversations{{/link-to}}
+    {{#link-to ungroupedConversationsRoute organization.slug}}Ungrouped Conversations{{/link-to}}
   </li>
   <li class="uk-nav-header">My Groups</li>
   {{#each group in organization.myGroups}}
     <li>
-      {{#link-to 'group_conversations' organization.slug group.slug }}
+      {{#link-to groupConversationsRoute organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
         <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
       {{/link-to}}
@@ -40,7 +40,7 @@
   <li class="uk-nav-header">Other Groups</li>
   {{#each group in organization.otherGroups}}
     <li>
-      {{#link-to 'group_conversations' organization.slug group.slug }}
+      {{#link-to groupConversationsRoute organization.slug group.slug }}
         <span class="name">+{{group.name}}</span>
         <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
       {{/link-to}}

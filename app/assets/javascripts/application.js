@@ -21,7 +21,7 @@ Covered = Ember.Application.create({
   // LOG_ACTIVE_GENERATION: true,
   // LOG_VIEW_LOOKUPS: true,
   LOG_TRANSITIONS: true,
-  // LOG_TRANSITIONS_INTERNAL: true
+  // LOG_TRANSITIONS_INTERNAL: true,
 });
 // Ember.run.backburner.DEBUG = true;
 
@@ -35,6 +35,8 @@ Ember.onerror = function(error){
   notice.text('ERROR: '+error.message);
   notice.css({color: 'red'});
   $('body').prepend(notice);
+  console.error(error);
+  debugger
 };
 
 Ember.TextField.reopen({
@@ -51,3 +53,8 @@ $(window).on('resize', function(){
   timeout = setTimeout(function(){ $('body').removeClass('disable-all-transitions'); }, 100);
   $(this).data('disableAllTransitionsTimeout', timeout);
 });
+
+
+String.prototype.includes = function(string) {
+  return this.indexOf(string) !== -1;
+};
