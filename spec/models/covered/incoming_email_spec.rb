@@ -447,7 +447,7 @@ describe Covered::IncomingEmail do
     context 'with a body that contains commands and covered tips' do
       let(:body){
         %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
-        %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+        %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
         %(&done\n)
       }
       it { should be_false }
@@ -456,7 +456,7 @@ describe Covered::IncomingEmail do
     context 'with a body that contains commands and real live text' do
       let(:body){
         %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
-        %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+        %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
         %(&done\n\n Hello Seattle, I am a mountaineer, in the hills and highlands. I fall asleep in hospital parking lots.)
       }
       it { should be_true }

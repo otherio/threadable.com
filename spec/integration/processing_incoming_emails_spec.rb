@@ -494,12 +494,12 @@ describe "processing incoming emails 2" do
 
       let(:body_html){
         %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
-        %(<p>-- tip: control covered by putting commands in your reply, just like this:</p>\n\n)+
+        %(<p>-- tip: control covered by putting commands at the top of your reply, just like this:</p>\n\n)+
         %(&amp;done\nI marked this shit done.)
       }
       let(:body_plain){
         %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
-        %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+        %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
         %(&done\nI marked this shit done.)
       }
       let(:stripped_html){ body_html }
@@ -613,12 +613,12 @@ describe "processing incoming emails 2" do
         context 'but the body contains only commands and whitespace' do
           let(:body_html){
             %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
-            %(<p>-- tip: control covered by putting commands in your reply, just like this:</p>\n\n)+
+            %(<p>-- tip: control covered by putting commands at the top of your reply, just like this:</p>\n\n)+
             %(&amp;done\n)
           }
           let(:body_plain){
             %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
-            %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+            %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
             %(&done\n)
           }
           let(:stripped_html){ body_html }

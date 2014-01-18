@@ -9,7 +9,7 @@ module EmailHelper
       option = options.delete(item) || next
       "#{item}=#{Rack::Utils.escape_path(option)}"
     }.compact
-    extras = extras.empty? ? '' : '?' + ERB::Util.html_escape(extras.join('&'))
+    extras = extras.empty? ? '' : '?' + extras.join('&')
 
     "mailto:#{email_address}#{extras}".html_safe
   end

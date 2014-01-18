@@ -326,7 +326,7 @@ BODY
     let :body do
 <<-BODY
 -- don't delete this: [ref: this-is-a-message]
--- tip: control covered by putting commands in your reply, just like this:
+-- tip: control covered by putting commands at the top of your reply, just like this:
 
 &done
 

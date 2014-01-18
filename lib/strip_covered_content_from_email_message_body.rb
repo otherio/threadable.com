@@ -2,7 +2,7 @@ class StripCoveredContentFromEmailMessageBody < MethodObject
 
   around = '##CovMid:\s?[a-zA-Z0-9+\/=-]+\s?##'
   REMOVE_CONTROLS_REGEXP = %r(#{around}.*?#{around})msu
-  REMOVE_EMAIL_BUTTON_TIPS_REGEXP = %r(-- tip: control covered by putting commands in your reply, just like this:\n?)msu
+  REMOVE_EMAIL_BUTTON_TIPS_REGEXP = %r(-- tip: control covered by putting commands at the top of your reply, just like this:\n?)msu
   REMOVE_EMAIL_BUTTON_REF_REGEXP = %r(-- don't delete this: \[ref: .*\]\n?)msu
 
   def call body

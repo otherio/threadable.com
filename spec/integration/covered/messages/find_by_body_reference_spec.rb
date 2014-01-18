@@ -6,7 +6,7 @@ describe Covered::Messages::FindByBodyReference do
 
   let(:body){
     %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
-    %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+    %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
     %(&done\n)
   }
 
@@ -26,7 +26,7 @@ describe Covered::Messages::FindByBodyReference do
     let(:parent_message   ){ conversation.messages.latest }
     let(:body){
       %(do what you wanna do [ref: welcome-to-our-covered-organization]\n)+
-      %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+      %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
       %(&done\n)
     }
 

@@ -18,8 +18,8 @@ class ConversationMailer < Covered::Mailer
     buffer_length = 0 if buffer_length < 0
     @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
-    subject = PrepareEmailSubject.call(@organization, @message)
-    subject.sub!(/^\s*(re:\s?)*/i, "\\1#{subject_tag} ")
+    @subject = PrepareEmailSubject.call(@organization, @message)
+    @subject.sub!(/^\s*(re:\s?)*/i, "\\1#{subject_tag} ")
 
     from = @message.from || @message.creator.try(:formatted_email_address ) || @organization.formatted_email_address
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
@@ -63,7 +63,7 @@ class ConversationMailer < Covered::Mailer
       :'from'              => from,
       :'to'                => to,
       :'cc'                => cc,
-      :'subject'           => subject,
+      :'subject'           => @subject,
       :'Reply-To'          => reply_to_address,
       :'Message-ID'        => @message.message_id_header,
       :'References'        => @message.references_header,

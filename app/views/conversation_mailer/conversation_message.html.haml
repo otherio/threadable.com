@@ -15,16 +15,16 @@
 
         %table.covered-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
           %tr
-            -# = email_button "Mute", @mute_conversation_url, class: 'mute-button'
+            = email_button "Mute", email_command_link(@conversation, @subject, "mute"), class: 'mute-button'
             - if @task
               - if @task.doers.include? @recipient
-                = email_button "Remove me", '' # organization_task_remove_me_url(@organization, @task)
+                = email_button "Remove me", email_command_link(@conversation, @subject, "remove #{@recipient.name}")
               - else
-                = email_button "I'll do it!", '' # organization_task_ill_do_it_url(@organization, @task)
+                = email_button "I'll do it!", email_command_link(@conversation, @subject, "add #{@recipient.name}")
               - if @task.done?
-                = email_button "Mark as undone", '' # organization_task_mark_as_undone_url(@organization, @task)
+                = email_button "Mark as undone", email_command_link(@conversation, @subject, "undone")
               - else
-                = email_button "Mark as done", '' # organization_task_mark_as_done_url(@organization, @task)
+                = email_button "Mark as done", email_command_link(@conversation, @subject, "done")
             - else
               %td
               %td
