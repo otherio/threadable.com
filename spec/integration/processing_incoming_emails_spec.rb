@@ -183,10 +183,10 @@ describe "processing incoming emails 2" do
     expect( message.date_header       ).to eq date.rfc2822
     expect( message.references_header ).to eq references
     expect( message.subject           ).to eq expected_message_subject
-    expect( message.body_plain        ).to eq body_plain
-    expect( message.body_html         ).to eq body_html
-    expect( message.stripped_html     ).to eq stripped_html
-    expect( message.stripped_plain    ).to eq stripped_text
+    expect( message.body_plain        ).to eq expected_message_body_plain
+    expect( message.body_html         ).to eq expected_message_body_html
+    expect( message.stripped_html     ).to eq expected_message_stripped_html
+    expect( message.stripped_plain    ).to eq expected_message_stripped_text
 
     expect( message.conversation.groups.all.map(&:name) ).to match_array expected_groups
 
@@ -237,13 +237,16 @@ describe "processing incoming emails 2" do
       expect( recipient_email_addresses             ).to include email.smtp_envelope_to.first
       expect( email.smtp_envelope_from              ).to eq expected_sent_email_smtp_envelope_from
       expect( email.subject                         ).to eq expected_sent_email_subject
-      expect( email.html_content                    ).to include body_html
-      expect( email.text_content                    ).to include body_plain
+      expect( email.html_content                    ).to include expected_sent_email_body_html
+      expect( email.text_content                    ).to include expected_sent_email_body_plain
       expect( email.header['Reply-To'].to_s         ).to eq expected_sent_email_reply_to
       expect( email.header['List-ID'].to_s          ).to eq expected_sent_email_list_id
       expect( email.header['List-Archive'].to_s     ).to eq expected_sent_email_list_archive
       expect( email.header['List-Unsubscribe'].to_s ).to be_present
       expect( email.header['List-Post'].to_s        ).to eq expected_sent_email_list_post
+
+      expect(email.text_content).to_not include "-- don't delete this:"
+      expect(email.text_content).to_not include "-- tip: control covered"
     end
   end
 
@@ -302,6 +305,10 @@ describe "processing incoming emails 2" do
   let(:expected_organization)                  { covered.organizations.find_by_slug!('raceteam') }
   let(:expected_conversation_subject)          { 'OMG guys I love covered!' }
   let(:expected_message_subject)               { 'OMG guys I love covered!' }
+  let(:expected_message_body_html)             { body_html }
+  let(:expected_message_body_plain)            { body_plain }
+  let(:expected_message_stripped_html)         { stripped_html }
+  let(:expected_message_stripped_text)        { stripped_text }
   let(:expect_conversation_to_be_a_task)       { false }
   let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
   let(:expected_sent_email_to)                 { ['raceteam@127.0.0.1'] }
@@ -312,6 +319,8 @@ describe "processing incoming emails 2" do
   let(:expected_sent_email_list_id)            { expected_organization.formatted_list_id }
   let(:expected_sent_email_list_archive)       { "<#{my_conversations_url(expected_organization)}>" }
   let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{compose_my_conversation_url(expected_organization)}>" }
+  let(:expected_sent_email_body_html)          { body_html }
+  let(:expected_sent_email_body_plain)         { body_plain }
   let(:expected_groups)                        { [] }
 
   it 'delivers the email' do
@@ -465,7 +474,39 @@ describe "processing incoming emails 2" do
       end
     end
 
-    context 'a parent message can be found via the In-Reply-To header and the Referenes header' do
+    context 'a parent message can be found via the body' do
+      let(:in_reply_to){ '' }
+      let(:references) { '' }
+
+      let(:body_html){
+        %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
+        %(<p>-- tip: control covered by putting commands in your reply, just like this:</p>\n\n)+
+        %(&amp;done\n)
+      }
+      let(:body_plain){
+        %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
+        %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+        %(&done\n)
+      }
+      let(:stripped_html){ body_html }
+      let(:stripped_text){ body_plain }
+
+      let(:expected_conversation)          { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
+      let!(:expected_parent_message)       { expected_conversation.messages.latest }
+      let(:expected_email_recipients)      { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+      let(:expected_sent_email_body_html)  { "&amp;done\n" }
+      let(:expected_sent_email_body_plain) { "&done\n" }
+      let(:expected_message_body_html)     { "<p></p>\n<p></p>\n\n&amp;done\n" }
+      let(:expected_message_body_plain)    { "\n&done\n" }
+      let(:expected_message_stripped_html)     { "<p></p>\n<p></p>\n\n&amp;done\n" }
+      let(:expected_message_stripped_text)    { "\n&done\n" }
+
+      it 'delivers the email' do
+        validate! :delivered
+      end
+    end
+
+    context 'a parent message can be found via the In-Reply-To header and the References header' do
       let(:in_reply_to){ expected_parent_message.message_id_header }
       let(:references) { expected_organization.conversations.find_by_slug("layup-body-carbon").messages.all.map(&:message_id_header).join(' ') }
 

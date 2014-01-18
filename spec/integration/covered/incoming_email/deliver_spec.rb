@@ -48,13 +48,13 @@ describe Covered::IncomingEmail::Deliver do
       )
     end
 
-    expect(StripUserSpecificContentFromEmailMessageBody).to receive(:call).
+    expect(StripCoveredContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.body_plain).and_return('stripped incoming_email.body_plain')
-    expect(StripUserSpecificContentFromEmailMessageBody).to receive(:call).
+    expect(StripCoveredContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.body_html).and_return('stripped incoming_email.body_html')
-    expect(StripUserSpecificContentFromEmailMessageBody).to receive(:call).
+    expect(StripCoveredContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.stripped_plain).and_return('stripped incoming_email.stripped_plain')
-    expect(StripUserSpecificContentFromEmailMessageBody).to receive(:call).
+    expect(StripCoveredContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.stripped_html).and_return('stripped incoming_email.stripped_html')
 
     expect(RunCommandsFromEmailMessageBody).to receive(:call).

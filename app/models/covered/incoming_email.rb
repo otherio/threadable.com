@@ -224,6 +224,7 @@ class Covered::IncomingEmail < Covered::Model
   def find_parent_message!
     return self if parent_message || organization.nil?
     self.parent_message = organization.messages.find_by_child_message_header(params)
+    self.parent_message = organization.messages.find_by_body_reference(stripped_plain) unless self.parent_message
     return self
   end
 

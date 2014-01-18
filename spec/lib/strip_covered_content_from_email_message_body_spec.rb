@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripUserSpecificContentFromEmailMessageBody do
+describe StripCoveredContentFromEmailMessageBody do
 
   delegate :call, to: :described_class
 
@@ -314,6 +314,32 @@ Consider it fuckin&#39; tried!
 </div>
 <img width="1px" height="1px" alt=""></div></div></blockquote></div><br></div>
 </div></div></blockquote></div><br></div>
+BODY
+    end
+
+    it "should strip covered controls" do
+      expect(call(body)).to eq stripped_body
+    end
+  end
+
+  context "with covered email button cruft" do
+    let :body do
+<<-BODY
+-- don't delete this: [ref: this-is-a-message]
+-- tip: control covered by putting commands in your reply, just like this:
+
+&done
+
+Yo momma.
+BODY
+    end
+
+    let :stripped_body do
+<<-BODY
+
+&done
+
+Yo momma.
 BODY
     end
 

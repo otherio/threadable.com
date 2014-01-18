@@ -69,10 +69,10 @@ class Covered::IncomingEmail::Deliver < MethodObject
       subject:           @incoming_email.subject[0..254],
       parent_message:    @incoming_email.parent_message,
       from:              @incoming_email.from,
-      body_plain:        strip_user_specific_content(@incoming_email.body_plain),
-      body_html:         strip_user_specific_content(@incoming_email.body_html),
-      stripped_plain:    strip_user_specific_content(@incoming_email.stripped_plain),
-      stripped_html:     strip_user_specific_content(@incoming_email.stripped_html),
+      body_plain:        strip_covered_content(@incoming_email.body_plain),
+      body_html:         strip_covered_content(@incoming_email.body_html),
+      stripped_plain:    strip_covered_content(@incoming_email.stripped_plain),
+      stripped_html:     strip_covered_content(@incoming_email.stripped_html),
       attachments:       @incoming_email.attachments.all,
     )
   end
@@ -85,8 +85,8 @@ class Covered::IncomingEmail::Deliver < MethodObject
     @incoming_email.save!
   end
 
-  def strip_user_specific_content body
-    StripUserSpecificContentFromEmailMessageBody.call(body) unless body.nil?
+  def strip_covered_content body
+    StripCoveredContentFromEmailMessageBody.call(body) unless body.nil?
   end
 
   def run_commands!
