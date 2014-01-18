@@ -93,6 +93,10 @@ class Covered::IncomingEmail::Deliver < MethodObject
     RunCommandsFromEmailMessageBody.call(@incoming_email.conversation, @incoming_email.stripped_plain) unless @incoming_email.stripped_plain.nil?
   end
 
+  def run_commands!
+    RunCommandsFromEmailMessageBody.call(@incoming_email.conversation, @incoming_email.stripped_plain) unless @incoming_email.stripped_plain.nil?
+  end
+
   def send_emails!
     @message.recipients.all.each do |recipient|
       next if recipient.same_user?(creator)
