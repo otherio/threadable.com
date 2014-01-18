@@ -1,14 +1,15 @@
-<div {{bind-attr class=":wrapper mode taskMode showDone:show-done prioritizing:prioritizing view.noConversations:no-conversations"}}>
+<div {{bind-attr class=":wrapper view.listTypeClassname"}}>
+
   <div class="controls">
-    <a href="" {{bind-attr class=":icon-with-text"}}>
+    <a href="" {{action showNotMutedConversations}} {{bind-attr class=":icon-with-text showingNotMutedConversations:active"}}>
       <i class="uk-icon-comment-o"></i>
       <span>Conversations</span>
     </a>
-    <a href="" {{action showTasks}} {{bind-attr class=":icon-with-text"}}>
+    <a href="" {{action showTasks}} {{bind-attr class=":icon-with-text showingTasks:active"}}>
       <i class="uk-icon-check"></i>
       <span>Tasks</span>
     </a>
-    <a href="" {{bind-attr class=":icon-with-text"}}>
+    <a href="" {{action showMutedConversations}} {{bind-attr class=":icon-with-text showingMutedConversations:active"}}>
       <i class="uk-icon-volume-off"></i>
       <span>Muted</span>
     </a>
@@ -18,8 +19,39 @@
     </a>
   </div>
 
-  <div class="scrollable">
-    <ol class="uk-list">
+  <div class="task-controls">
+    <div class="uk-float-left">
+      <a href="" {{action showDoingTasks}} {{bind-attr class=":my-tasks :icon-with-text showingDoingTasks:active"}}>
+        <i class="uk-icon-th-large"></i>
+        <span>My Tasks</span>
+      </a>
+      <a href="" {{action showAllTasks}} {{bind-attr class=":all-tasks :icon-with-text showingAllTasks:active"}}>
+        <i class="uk-icon-th"></i>
+        <span>All Tasks</span>
+      </a>
+    </div>
+    <div class="uk-float-right">
+      <a href="" {{action toggleShowDone}} {{bind-attr class=":show-completed :icon-with-text showingDoneTasks:active"}}>
+        <i {{bind-attr class="showDone:uk-icon-check-circle:uk-icon-check-circle-o"}}></i>
+        <span>
+          {{#if showDone}}
+            Hide Done
+          {{else}}
+            Show Done
+          {{/if}}
+        </span>
+      </a>
+      <a href="" {{action togglePrioritizing}} {{bind-attr class=":prioritize :icon-with-text prioritizing:active"}}>
+        <i class="uk-icon-sort-amount-desc"></i>
+        <span>Prioritize</span>
+      </a>
+    </div>
+  </div>
+
+  <ol class="uk-list scrollable">
+    {{#if loading}}
+      Loading…
+    {{else}}
       {{#each conversation in view.conversations}}
         <li {{bind-attr class=":conversation conversation.isTask:task:not-task conversation.myTask:my-task:not-my-task conversation.isDone:done:not-done conversation.isMuted:muted:not-muted"}}>
           {{#if view.myConversations}}
@@ -38,10 +70,9 @@
             {{/link-to}}
           {{/if}}
         </li>
+      {{else}}
+        No Conversations
       {{/each}}
-    </ol>
-    <div class="empty-list-message">
-      <h4>no conversations</h4>
-    </div>
-  </div>
+    {{/if}}
+  </ol>
 </div>

@@ -35,7 +35,6 @@ FixtureBuilder.build do
       subject: 'Welcome to our new Covered organization!',
       text:    'Hey all! I think we should try this way to organize our conversation and work. Thanks for joining up!',
     )
-
   end
 
 

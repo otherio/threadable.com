@@ -8,6 +8,8 @@ module RSpec::Support::Elements
       '.navbar'
     when 'the groups pane'
       '.groups-pane'
+    when 'the conversations pane'
+      '.conversations-pane'
     when 'the conversation pane'
       '.conversation-pane'
     when 'the compose button'

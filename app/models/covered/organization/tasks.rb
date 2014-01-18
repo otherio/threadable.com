@@ -8,6 +8,20 @@ class Covered::Organization::Tasks < Covered::Tasks
   end
   attr_reader :organization
 
+  let(:ungrouped){ Covered::Organization::Tasks::Ungrouped.new(organization) }
+  let(:my)       { Covered::Organization::Tasks::My       .new(organization) }
+
+  def doing
+    return [] if covered.current_user_id.nil?
+    conversations_for scope.doing_by(covered.current_user_id)
+  end
+
+  def not_doing
+    return [] if covered.current_user_id.nil?
+    conversations_for scope.not_doing_by(covered.current_user_id)
+  end
+
+
   def find_by_slug! slug
     find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find Task with slug #{slug.inspect}"
   end
@@ -32,3 +46,6 @@ class Covered::Organization::Tasks < Covered::Tasks
   end
 
 end
+
+require_dependency 'covered/organization/tasks/ungrouped'
+require_dependency 'covered/organization/tasks/my'

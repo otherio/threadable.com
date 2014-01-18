@@ -89,6 +89,12 @@ FixtureBuilder.build do
       groups:  [@electronics_group],
     )
 
+    @parts_for_the_drive_train = create_conversation(
+      subject: 'Parts for the drive train',
+      text:    %(Where are all the parts for the drive train? I left them at the shop last night),
+      groups:  [@electronics_group],
+    )
+
     conversation_of_cash = create_conversation(
       subject:        'How are we paying for the motor controller?',
       body_plain:     %(We need cash, baby. And this has quoted text.),
@@ -131,6 +137,10 @@ FixtureBuilder.build do
     @get_epoxy_task                 = create_task 'get epoxy'
     @get_release_agent_task         = create_task 'get release agent'
     @get_carbon_and_fiberglass_task = create_task 'get carbon and fiberglass'
+    @get_a_new_soldering_iron       = create_task 'get a new soldering iron'
+    add_conversation_to_group @get_a_new_soldering_iron, @electronics_group
+    @get_some_4_gauge_wite          = create_task 'get some 4 gauge wire'
+    add_conversation_to_group @get_some_4_gauge_wite, @electronics_group
   end
 
   as 'yan@ucsd.example.com' do
@@ -147,6 +157,7 @@ FixtureBuilder.build do
     add_doer_to_task @get_release_agent_task, 'yan@ucsd.example.com'
     add_doer_to_task @get_carbon_and_fiberglass_task, 'tom@ucsd.example.com'
     add_doer_to_task @trim_body_panels_task, 'tom@ucsd.example.com'
+    add_doer_to_task @get_a_new_soldering_iron, 'bethany@ucsd.example.com'
 
     mark_task_as_done @get_epoxy_task
     mark_task_as_done @get_release_agent_task
@@ -262,5 +273,14 @@ FixtureBuilder.build do
       subject:   %(Who wants to pick up breakfast?),
       text:      %(I like foodz. I've been here all night!!!!!),
     )
+  end
+
+
+  as 'bethany@ucsd.example.com' do
+    mute_conversation @layup_body_carbon_task
+    mute_conversation @get_epoxy_task
+    mute_conversation @get_release_agent_task
+    mute_conversation @get_carbon_and_fiberglass_task
+    mute_conversation @parts_for_the_drive_train
   end
 end

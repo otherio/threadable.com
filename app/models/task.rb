@@ -25,6 +25,15 @@ class Task < Conversation
       where('task_doers.task_id IS NULL')
   }
 
+  scope :doing_by, ->(user_id){
+    joins('LEFT JOIN task_doers ON task_doers.task_id = conversations.id').where('task_doers.user_id = ?', user_id)
+  }
+
+  scope :not_doing_by, ->(user_id){
+    joins("LEFT JOIN task_doers ON task_doers.task_id = conversations.id AND task_doers.user_id = #{user_id}").where('task_doers.user_id IS NULL')
+  }
+
+
   before_validation :set_position
 
   def done?

@@ -5,43 +5,23 @@ Covered.ConversationsListView = Ember.View.extend({
 
   type: null, // my | ungrouped | group
 
-  group:         Ember.computed.alias('parentView.context.group.model').readOnly(),
-  conversations: Ember.computed.alias('context').readOnly(),
+  mode: Ember.computed.alias('context.mode'),
+  group: Ember.computed.alias('parentView.context.group.model').readOnly(),
+  // conversations: Ember.computed.alias('context').readOnly(),
 
   myConversations:        function() { return this.get('type') == 'my';        }.property('type'),
   ungroupedConversations: function() { return this.get('type') == 'ungrouped'; }.property('type'),
   groupConversations:     function() { return this.get('type') == 'group';     }.property('type'),
 
+  listTypeClassname: function() {
+    var mode = this.get('mode');
+    if (/conversations/i.test(mode)) return 'list-of-conversations';
+    if (/task/i.test(mode))          return 'list-of-tasks';
+  }.property('mode'),
 
-  // this is crazy but I don't know a better way - Jared
-
-  detectNoConversations: function() {
-    this.updateNoConversations();
-  }.observes('conversations.@each', 'context.mode'),
-
-  didInsertElement: function() {
-    this.updateNoConversations();
-    return this._super();
-  },
-
-  updateNoConversations: function() {
-    setTimeout(function() {
-      Ember.run(function() {
-        var wrapper = $('.conversations-list > .wrapper');
-        if (wrapper.find('.all-conversations .conversation:visible').length === 0){
-          wrapper.addClass('show-no-conversations');
-        }else{
-          wrapper.removeClass('show-no-conversations');
-        }
-        if (wrapper.find('.done-tasks .conversation:visible').length === 0){
-          wrapper.addClass('show-no-done-tasks');
-        }else{
-          wrapper.removeClass('show-no-done-tasks');
-        }
-      });
-    });
-  }
-
-  // /crazy
+  conversations: function() {
+    var conversationsCacheKey = this.get('context.conversationsCacheKey');
+    return this.get('context').get(conversationsCacheKey);
+  }.property('context.conversationsCacheKey', 'context.loading', 'type')
 
 });

@@ -10,8 +10,9 @@ class Covered::User::Organization < Covered::Organization
   end
   attr_reader :organizations, :user
 
-  let(:conversations){ Covered::User::Organization::Conversations.new(self) }
-  let(:groups)       { Covered::User::Organization::Groups.new self }
+  let(:groups)          { Covered::User::Organization::Groups.new self }
+  let(:my_conversations){ Covered::User::Organization::MyConversations.new self }
+  let(:my_tasks)        { Covered::User::Organization::MyTasks.new self }
 
   def leave!
     members.remove(user: user)
@@ -19,5 +20,4 @@ class Covered::User::Organization < Covered::Organization
 
 end
 
-require_dependency 'covered/user/organization/conversations'
 require_dependency 'covered/user/organization/groups'

@@ -61,3 +61,113 @@ Covered.RESTAdapter.map("Covered.Conversation", {
 
 
 Covered.Conversation.reopen(Covered.AddOrganizationIdToRequestsMixin);
+
+Covered.Conversation.reopenClass({
+
+  _cacheBySlug: {},
+
+  getCache: function(organizationSlug) {
+    var _cacheBySlug = this._cacheBySlug;
+    return _cacheBySlug[organizationSlug] || (_cacheBySlug[organizationSlug] = {});
+  },
+
+  getCached: function(organizationSlug, conversation_slug) {
+    return this.getCache(organizationSlug)[conversation_slug];
+  },
+
+  cache: function(conversation) {
+    var
+      organizationSlug   = conversation.get('organizationSlug'),
+      conversationSlug   = conversation.get('slug'),
+      cache              = this.getCache(organizationSlug),
+      cachedConversation = cache[conversationSlug];
+
+    if (cachedConversation){
+      cachedConversation.deserialize(conversation.serialize()['conversation']);
+      return cachedConversation;
+    }else{
+      cache[conversationSlug] = conversation;
+      return conversation;
+    }
+  },
+
+  _setOrganizationAndStoreInCache: function(organization, conversation){
+    conversation.set('organization', organization);
+    return this.cache(conversation);
+  },
+
+  fetchBySlug: function(organization, conversation_slug) {
+    var organizationSlug = organization.get('slug');
+    var conversation = this.getCached(organizationSlug, conversation_slug);
+    if (conversation) return Ember.RSVP.Promise.cast(conversation);
+    var setOrganizationAndStoreInCache = this._setOrganizationAndStoreInCache.bind(this);
+    var promise = this.fetch({
+      organization_id: organizationSlug,
+      slug: conversation_slug,
+    });
+    promise.then(function(conversation) {
+      setOrganizationAndStoreInCache(organization, conversation);
+    });
+    return promise;
+  },
+
+  _fetch: function(organization, context, scope, group_slug) {
+    var
+      promise,
+      organizationSlug = organization.get('slug'),
+      setOrganizationAndStoreInCache = this._setOrganizationAndStoreInCache.bind(this);
+
+    promise = this.fetch({
+      organization_id: organizationSlug,
+      context: context,
+      scope: scope,
+      group_id: group_slug
+    });
+
+    promise.then(function(conversations) {
+      return conversations.map(function(conversation) {
+        return setOrganizationAndStoreInCache(organization, conversation);
+      });
+    });
+
+    return promise;
+  },
+
+  myNotMutedConversations: function(organization) {
+    return this._fetch(organization, 'my', 'not_muted_conversations');
+  },
+  myMutedConversations: function(organization) {
+    return this._fetch(organization, 'my', 'muted_conversations');
+  },
+  myAllTask: function(organization) {
+    return this._fetch(organization, 'my', 'all_task');
+  },
+  myDoingTasks: function(organization) {
+    return this._fetch(organization, 'my', 'doing_tasks');
+  },
+  ungroupedNotMutedConversations: function(organization) {
+    return this._fetch(organization, 'ungrouped', 'not_muted_conversations');
+  },
+  ungroupedMutedConversations: function(organization) {
+    return this._fetch(organization, 'ungrouped', 'muted_conversations');
+  },
+  ungroupedAllTask: function(organization) {
+    return this._fetch(organization, 'ungrouped', 'all_task');
+  },
+  ungroupedDoingTasks: function(organization) {
+    return this._fetch(organization, 'ungrouped', 'doing_tasks');
+  },
+  groupNotMutedConversations: function(organization, group_slug) {
+    return this._fetch(organization, 'group', 'not_muted_conversations', group_slug);
+  },
+  groupMutedConversations: function(organization, group_slug) {
+    return this._fetch(organization, 'group', 'muted_conversations', group_slug);
+  },
+  groupAllTask: function(organization, group_slug) {
+    return this._fetch(organization, 'group', 'all_task', group_slug);
+  },
+  groupDoingTasks: function(organization, group_slug) {
+    return this._fetch(organization, 'group', 'doing_tasks', group_slug);
+  },
+
+});

@@ -51,12 +51,14 @@ class FixtureBuilder
     organization.groups.create!(name: name, color: color)
   end
 
-  def remove_conversation_from_group message, group
-    message.conversation.groups.remove(group)
+  def remove_conversation_from_group conversation, group
+    conversation = conversation.conversation if conversation.respond_to?(:conversation)
+    conversation.groups.remove(group)
   end
 
-  def add_conversation_to_group message, group
-    message.conversation.groups.add(group)
+  def add_conversation_to_group conversation, group
+    conversation = conversation.conversation if conversation.respond_to?(:conversation)
+    conversation.groups.add(group)
   end
 
   def add_member_to_group email_address_tag, email_address
@@ -106,6 +108,7 @@ class FixtureBuilder
   end
 
   def mute_conversation conversation
+    conversation = conversation.conversation if conversation.respond_to?(:conversation)
     conversation.mute!
   end
 

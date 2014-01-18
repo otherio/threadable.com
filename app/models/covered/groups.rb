@@ -4,14 +4,12 @@ class Covered::Groups < Covered::Collection
     groups_for scope
   end
 
-  def create attributes={}
-    Create.call(self, attributes)
+  def include? group
+    !!scope.where(id: group.group_id).exists?
   end
 
-  def create! attributes={}
-    group = create(attributes)
-    group.persisted? or raise Covered::RecordInvalid, "Group invalid: #{group.errors.full_messages.to_sentence}"
-    group
+  def empty?
+    count == 0
   end
 
   private

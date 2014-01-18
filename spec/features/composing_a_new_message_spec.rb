@@ -48,6 +48,9 @@ feature "Composing a new message" do
     within_element 'the groups pane' do
       click_on 'My Conversations'
     end
+    within_element 'the conversations pane' do
+      click_on 'Conversations'
+    end
     expect(page).to be_at my_conversations_url('raceteam')
     send_new_message!
     expect(page).to be_at my_conversation_url('raceteam','hey-party-people')
@@ -61,6 +64,9 @@ feature "Composing a new message" do
     within_element 'the groups pane' do
       click_on 'Ungrouped Conversations'
     end
+    within_element 'the conversations pane' do
+      click_on 'Conversations'
+    end
     expect(page).to be_at ungrouped_conversations_url('raceteam')
     send_new_message!
     expect(page).to be_at ungrouped_conversation_url('raceteam','hey-party-people')
@@ -73,6 +79,9 @@ feature "Composing a new message" do
   scenario %(In a group's "Conversations" section) do
     within_element 'the groups pane' do
       click_on '+Fundraising'
+    end
+    within_element 'the conversations pane' do
+      click_on 'Conversations'
     end
     expect(page).to be_at group_conversations_url('raceteam', 'fundraising')
     send_new_message!

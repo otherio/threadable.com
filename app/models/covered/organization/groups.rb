@@ -35,7 +35,13 @@ class Covered::Organization::Groups < Covered::Groups
   end
 
   def create attributes={}
-    super attributes.merge({organization: @organization.organization_record})
+    Create.call(self, attributes);
+  end
+
+  def create! attributes={}
+    group = create(attributes)
+    group.persisted? or raise Covered::RecordInvalid, "Group invalid: #{group.errors.full_messages.to_sentence}"
+    group
   end
 
   def inspect
@@ -57,3 +63,5 @@ class Covered::Organization::Groups < Covered::Groups
   end
 
 end
+
+require 'covered/organization/groups/create'

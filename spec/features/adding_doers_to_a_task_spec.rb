@@ -4,12 +4,21 @@ feature "Adding doers to a task" do
 
   scenario %(adding doers to a task) do
     sign_in_as 'alice@ucsd.example.com'
-    visit my_conversation_url('raceteam', 'make-wooden-form-for-carbon-layup')
+
+    within_element 'the groups pane' do
+      click_on 'My Conversations'
+    end
+    within_element 'the conversations pane' do
+      click_on 'Conversations'
+      click_on 'make wooden form for carbon layup'
+    end
+
+    expect(page).to be_at my_conversation_url('raceteam', 'make-wooden-form-for-carbon-layup')
 
     expect(doers).to eq Set[]
 
     click_element 'the change doers button'
-    first('li.member').click
+    first('.doer-selector li.member', text: 'Alice Neilson').click
     expect(page).to have_text '+Alice Neilson as a doer'
     click_on 'Send'
 
@@ -21,7 +30,7 @@ feature "Adding doers to a task" do
     expect(doers).to eq Set['Alice Neilson']
 
     click_element 'the change doers button'
-    first('li.member').click
+    first('.doer-selector li.member', text: 'Alice Neilson').click
     expect(page).to have_text '-Alice Neilson as a doer'
     click_on 'Send'
 
@@ -31,7 +40,8 @@ feature "Adding doers to a task" do
 
 
   def doers
-    all('.doers .avatar-small').map{|d| d['title']}.to_set
+    wait_for_ember!
+    all('.doers .avatar').map{|d| d['title'] }.to_set
   end
 
 end

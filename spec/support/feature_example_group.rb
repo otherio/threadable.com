@@ -19,6 +19,30 @@ module RSpec::Support::FeatureExampleGroup
     visit current_url
   end
 
+  def wait_for_ember!
+    evaluate_script('ember_is_done = false')
+    evaluate_script('Ember.run(function(){ ember_is_done = true })')
+    Timeout.timeout(Capybara.default_wait_time) do
+      sleep 0.01 until evaluate_script('ember_is_done')
+    end
+  end
+
+  def wait_until_expectation
+    exception = nil
+    begin
+      page.current_scope.synchronize do
+        begin
+          yield
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          exception = e
+          raise Capybara::ExpectationNotMet
+        end
+      end
+    rescue Capybara::ExpectationNotMet
+      raise exception
+    end
+  end
+
   RSpec.configuration.include self, :type => :feature
 
 end

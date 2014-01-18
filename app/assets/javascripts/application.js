@@ -2,6 +2,7 @@
 //= require preload_current_user
 //= require uikit
 //= require moment
+//= require storage
 //= require handlebars
 //= require ember
 //= require ember-restless

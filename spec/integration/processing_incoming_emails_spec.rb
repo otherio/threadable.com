@@ -601,7 +601,7 @@ describe "processing incoming emails 2" do
           let(:expect_task_to_be_done)           { false }
           let(:expected_sent_email_to)           { ['raceteam+task@127.0.0.1'] }
           let(:expected_sent_email_subject)      { "[✔][RaceTeam] OMG guys I love covered!" }
-          let(:expected_email_recipients)        { ["bethany@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+          let(:expected_email_recipients)        { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
           let(:expected_conversation)            { expected_organization.conversations.find_by_slug('layup-body-carbon') }
           let!(:expected_parent_message)         { expected_conversation.messages.latest }
 
@@ -927,6 +927,7 @@ describe "processing incoming emails 2" do
 
     let(:expected_sent_email_to){ ['raceteam+task@127.0.0.1'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('layup-body-carbon') }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
     let(:expected_parent_message){ expected_conversation.messages.latest }
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expect_conversation_to_be_a_task) { true }

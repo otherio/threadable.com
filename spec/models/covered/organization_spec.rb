@@ -43,10 +43,13 @@ describe Covered::Organization do
   its(:list_id                      ){ should eq "C02-cleaners.127.0.0.1" }
   its(:formatted_list_id            ){ should eq "C02 Cleaners <C02-cleaners.127.0.0.1>" }
 
-  its(:members      ){ should be_a Covered::Organization::Members }
-  its(:conversations){ should be_a Covered::Organization::Conversations }
-  its(:tasks        ){ should be_a Covered::Organization::Tasks }
-  its(:messages     ){ should be_a Covered::Organization::Messages }
+  its(:members)        { should be_a Covered::Organization::Members        }
+  its(:conversations)  { should be_a Covered::Organization::Conversations  }
+  its(:messages)       { should be_a Covered::Organization::Messages       }
+  its(:tasks)          { should be_a Covered::Organization::Tasks          }
+  its(:incoming_emails){ should be_a Covered::Organization::IncomingEmails }
+  its(:held_messages)  { should be_a Covered::Organization::HeldMessages   }
+  its(:groups)         { should be_a Covered::Organization::Groups         }
 
   its(:inspect){ should eq %(#<Covered::Organization organization_id: 5479, name: "C02 Cleaners">) }
 

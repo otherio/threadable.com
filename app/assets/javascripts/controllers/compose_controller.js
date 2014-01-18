@@ -71,6 +71,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
       function messageSaved(response) {
         conversation.deserialize(response.message.conversation);
         conversation.set('organization', organization);
+        Covered.Conversation.cache(conversation);
         this.send('reset');
         this.send('prependConversation', conversation);
         this.send('transitionToConversation', conversation);

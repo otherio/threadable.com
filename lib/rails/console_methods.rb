@@ -21,6 +21,18 @@ module Rails::ConsoleMethods
     @alice ||= covered.users.find_by_email_address!('alice@ucsd.example.com')
   end
 
+  def raceteam
+    @raceteam ||= alice.organizations.find_by_slug!('raceteam')
+  end
+
+  def amy
+    @amy ||= covered.users.find_by_email_address!('amywong.phd@gmail.com')
+  end
+
+  def sfhealth
+    @sfhealth ||= amy.organizations.find_by_slug!('sfhealth')
+  end
+
   delegate :current_user, to: :covered
 
   def build_fixtures!

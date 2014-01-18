@@ -51,13 +51,13 @@ class Covered::Organization < Covered::Model
     "#{name} <#{list_id}>"
   end
 
-  let(:members){ Members.new(self) }
-  let(:conversations){ Conversations.new(self) }
-  let(:messages){ Messages.new(self) }
-  let(:tasks){ Tasks.new(self) }
-  let(:incoming_emails){ IncomingEmails.new(self) }
-  let(:held_messages){ HeldMessages.new(self) }
-  let(:groups){ Groups.new(self) }
+  let(:members)        { Covered::Organization::Members       .new(self) }
+  let(:conversations)  { Covered::Organization::Conversations .new(self) }
+  let(:messages)       { Covered::Organization::Messages      .new(self) }
+  let(:tasks)          { Covered::Organization::Tasks         .new(self) }
+  let(:incoming_emails){ Covered::Organization::IncomingEmails.new(self) }
+  let(:held_messages)  { Covered::Organization::HeldMessages  .new(self) }
+  let(:groups)         { Covered::Organization::Groups        .new(self) }
 
   # TODO remove me in favor of a rails json view file
   def as_json options=nil

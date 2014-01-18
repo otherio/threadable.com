@@ -8,14 +8,27 @@ class Covered::Organization::Conversations < Covered::Conversations
   end
   attr_reader :organization
 
-  def not_muted_with_participants
+  let(:ungrouped){ Covered::Organization::Conversations::Ungrouped.new(organization) }
+  let(:my)       { Covered::Organization::Conversations::My       .new(organization) }
+
+  def muted
     return [] if covered.current_user_id.nil?
-    conversations_for scope.not_muted_by(covered.current_user_id).includes(:participants)
+    conversations_for muted_scope
+  end
+
+  def not_muted
+    return [] if covered.current_user_id.nil?
+    conversations_for not_muted_scope
   end
 
   def muted_with_participants
     return [] if covered.current_user_id.nil?
-    conversations_for scope.muted_by(covered.current_user_id).includes(:participants)
+    conversations_for muted_scope.includes(:participants)
+  end
+
+  def not_muted_with_participants
+    return [] if covered.current_user_id.nil?
+    conversations_for not_muted_scope.includes(:participants)
   end
 
   def build attributes={}
@@ -37,4 +50,15 @@ class Covered::Organization::Conversations < Covered::Conversations
     organization.organization_record.conversations.unload
   end
 
+  def muted_scope
+    scope.muted_by(covered.current_user_id)
+  end
+
+  def not_muted_scope
+    scope.not_muted_by(covered.current_user_id)
+  end
+
 end
+
+require_dependency 'covered/organization/conversations/ungrouped'
+require_dependency 'covered/organization/conversations/my'

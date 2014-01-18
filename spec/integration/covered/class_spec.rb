@@ -33,9 +33,9 @@ describe Covered::Class do
       Covered::Events::TaskAddedDoer,
       Covered::Events::TaskDone,
     ]
-    expect( events[Covered::Events::ConversationCreated].count ).to eq 15
-    expect( events[Covered::Events::TaskCreated        ].count ).to eq 31
-    expect( events[Covered::Events::TaskAddedDoer      ].count ).to eq 10
+    expect( events[Covered::Events::ConversationCreated].count ).to eq 16
+    expect( events[Covered::Events::TaskCreated        ].count ).to eq 33
+    expect( events[Covered::Events::TaskAddedDoer      ].count ).to eq 11
     expect( events[Covered::Events::TaskDone           ].count ).to eq 11
 
     expect( covered.organizations.all.map{|p| [p.name, p.members.count] } ).to eq [
@@ -44,8 +44,8 @@ describe Covered::Class do
 
     covered.organizations.all.each do |organization|
       expect( organization.members       .count ).to eq ::OrganizationMembership .where(organization_id: organization.id).count
-      expect( organization.conversations .count ).to eq ::Conversation      .where(organization_id: organization.id).count
-      expect( organization.tasks         .count ).to eq ::Task              .where(organization_id: organization.id).count
+      expect( organization.conversations .count ).to eq ::Conversation           .where(organization_id: organization.id).count
+      expect( organization.tasks         .count ).to eq ::Task                   .where(organization_id: organization.id).count
       expect( organization.messages      .count ).to eq ::Organization.find(organization.id).messages.count
     end
 

@@ -11,6 +11,9 @@ Covered.GroupTasksRoute = Covered.TasksRoute.extend({
     };
   },
 
+  conversationFetchMethod: 'groupNotMutedConversations',
+
+
   renderTemplate: function() {
     this.render('group_conversations', {into: 'organization', outlet: 'conversationsPane'});
     this.controllerFor('organization').set('focus', 'conversations');

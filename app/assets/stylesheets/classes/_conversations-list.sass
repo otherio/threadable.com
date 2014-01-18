@@ -2,15 +2,6 @@
 
   color: $light-grey-color
 
-  .scrollable
-    position: absolute
-    left: 0
-    right: 0
-    bottom: 0
-
-    // TODO split on media size
-    top: 55px
-
   .controls
     padding-top: 5px
     background-color: $grey-color
@@ -34,22 +25,62 @@
       > span
         font-size: 10px
 
-
-  > .wrapper > .scrollable > ol
-    position: relative
-
-    &, li
-      margin: 0
-      padding: 0
-
-    li.conversation
-      border-bottom: 1px solid $light-grey-color
-
-      > a
-        display: block
-        text-decoration: none
-        &.active
-          background-color: $faint-blue-color
-
-  .empty-list-message
+  .task-controls
     display: none
+    overflow: hidden
+    padding: 5px 15px
+    background-color: $lighter-grey-color
+    font-size: 0
+    a
+      padding: 0.35em 0 0.25em 0
+      margin: 0 0.75em
+      font-size: 14px
+      border: 1px solid transparent
+    color: $dark-grey-color
+
+    .my-tasks, .all-tasks
+      border: 1px solid $light-grey-color
+      background: rgba(0,0,0,0.1)
+      background-color: white
+      margin: 0
+      padding: 0.35em 0.75em 0.25em
+      &.active
+        background-color: #dadada
+        color: lighten($dark-grey-color, 40%)
+
+
+  > .wrapper
+    &.list-of-conversations
+      > ol.scrollable
+        // TODO split on media size
+        top: 55px
+      .task-controls
+        display: none
+    &.list-of-tasks
+      > ol.scrollable
+        // TODO split on media size
+        top: 118px
+      .task-controls
+        display: block
+    > ol.scrollable
+      position: absolute
+      left: 0
+      right: 0
+      bottom: 0
+
+      &, li
+        margin: 0
+        padding: 0
+
+      li.conversation
+        border-bottom: 1px solid $light-grey-color
+
+        > a
+          display: block
+          text-decoration: none
+          &.active
+            background-color: $faint-blue-color
+
+
+
+

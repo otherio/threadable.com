@@ -2,11 +2,17 @@
 
 Covered.MyConversationsController = Covered.ConversationsController.extend({
 
-  conversationsFindOptions: function() {
-    return {
-      organization_id: this.get('organization.slug'),
-      my: true
-    };
-  }
+  fetchNotMutedConversations: function() {
+    return Covered.Conversation.myNotMutedConversations(this.get('organization'));
+  },
+  fetchMutedConversations: function() {
+    return Covered.Conversation.myMutedConversations(this.get('organization'));
+  },
+  fetchAllTasks: function() {
+    return Covered.Conversation.myAllTask(this.get('organization'));
+  },
+  fetchDoingTasks: function() {
+    return Covered.Conversation.myDoingTasks(this.get('organization'));
+  },
 
 });

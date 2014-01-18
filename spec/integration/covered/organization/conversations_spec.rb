@@ -5,50 +5,77 @@ describe Covered::Organization::Conversations do
   let(:organization){ covered.organizations.find_by_slug! 'raceteam' }
   let(:conversations){ described_class.new(organization) }
 
-  describe 'not_muted_with_participants' do
-
-    when_not_signed_in do
+  when_not_signed_in do
+    describe '#muted' do
       it 'returns an empty array' do
-        expect(conversations.not_muted_with_participants).to eq []
+        expect(conversations.muted.map(&:slug)).to eq []
       end
     end
-
-    when_signed_in_as 'tom@ucsd.example.com' do
-      it 'returns all the conversations' do
-        expect(conversations.not_muted_with_participants).to eq conversations.all
+    describe '#not_muted' do
+      it 'returns an empty array' do
+        expect(conversations.not_muted.map(&:slug)).to eq []
       end
     end
-
-    when_signed_in_as 'bethany@ucsd.example.com' do
-      let(:muted_conversation){ conversations.find_by_slug!('welcome-to-our-covered-organization') }
-      it 'returns all but the one muted conversation' do
-        expect(conversations.not_muted_with_participants).to eq(conversations.all - [muted_conversation])
+    describe '#muted_with_participants' do
+      it 'returns an empty array' do
+        expect(conversations.muted_with_participants.map(&:slug)).to eq []
       end
     end
-
+    describe '#not_muted_with_participants' do
+      it 'returns an empty array' do
+        expect(conversations.not_muted_with_participants.map(&:slug)).to eq []
+      end
+    end
   end
 
-  describe 'muted_with_participants' do
+  when_signed_in_as 'bethany@ucsd.example.com' do
+    let :muted_conversation_slugs do
+      [
+        "layup-body-carbon",
+        "get-carbon-and-fiberglass",
+        "get-release-agent",
+        "get-epoxy",
+        "parts-for-the-drive-train",
+        "welcome-to-our-covered-organization",
+      ]
+    end
 
-    when_not_signed_in do
+    let :not_muted_conversation_slugs do
+      [
+        "who-wants-to-pick-up-breakfast",
+        "who-wants-to-pick-up-dinner",
+        "who-wants-to-pick-up-lunch",
+        "get-some-4-gauge-wire",
+        "get-a-new-soldering-iron",
+        "make-wooden-form-for-carbon-layup",
+        "trim-body-panels",
+        "install-mirrors",
+        "how-are-we-paying-for-the-motor-controller",
+        "parts-for-the-motor-controller",
+        "how-are-we-going-to-build-the-body",
+      ]
+    end
+
+    describe '#muted' do
       it 'returns an empty array' do
-        expect(conversations.muted_with_participants).to eq []
+        expect(conversations.muted.map(&:slug)).to eq muted_conversation_slugs
       end
     end
-
-    when_signed_in_as 'tom@ucsd.example.com' do
+    describe '#not_muted' do
       it 'returns an empty array' do
-        expect(conversations.muted_with_participants).to eq []
+        expect(conversations.not_muted.map(&:slug)).to eq not_muted_conversation_slugs
       end
     end
-
-    when_signed_in_as 'bethany@ucsd.example.com' do
-      let(:muted_conversation){ conversations.find_by_slug!('welcome-to-our-covered-organization') }
-      it 'returns all but the one muted conversation' do
-        expect(conversations.muted_with_participants).to eq [muted_conversation]
+    describe '#muted_with_participants' do
+      it 'returns an empty array' do
+        expect(conversations.muted_with_participants.map(&:slug)).to eq muted_conversation_slugs
       end
     end
-
+    describe '#not_muted_with_participants' do
+      it 'returns an empty array' do
+        expect(conversations.not_muted_with_participants.map(&:slug)).to eq not_muted_conversation_slugs
+      end
+    end
   end
 
 end

@@ -4,18 +4,12 @@ Covered.ConversationRoute = Ember.Route.extend({
   parentRouteName: null,
 
   model: function(params){
-    var conversations, conversation;
-
-    conversations = this.modelFor(this.get('parentRouteName'));
-    if (conversations && conversations.isLoaded){
-      conversation = conversations.findBy('slug', params.conversation);
-      if (conversation) conversation.loadEvents();
-    }else{
-      conversations = Covered.Conversation.fetch({
-        slug: params.conversation,
-        organization_id: this.modelFor('organization').get('slug'),
-      });
-    }
+    var organization = this.modelFor('organization');
+    var conversation = Covered.Conversation.fetchBySlug(organization, params.conversation);
+    conversation.then(function(conversation) {
+      conversation.loadEvents();
+      return conversation;
+    });
     return conversation;
   },
 

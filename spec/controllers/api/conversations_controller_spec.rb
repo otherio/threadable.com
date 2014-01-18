@@ -37,43 +37,192 @@ describe Api::ConversationsController do
 
     # get /api/:organization_id/conversations
     describe 'index' do
-      context 'when given an organization id' do
-        context 'of an organization that the current user is in' do
-          it "returns not found when no further scope is present" do
-            xhr :get, :index, format: :json, organization_id: raceteam.slug
-            expect(response.status).to eq 404
-          end
 
-          # get /api/:organization_id/groups/:group_id/conversations
-          context 'when given a valid group id' do
-            let(:electronics) { raceteam.groups.find_by_email_address_tag('electronics') }
-            it 'gets conversations scoped to the group' do
-              xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: electronics.email_address_tag
-              expect(response).to be_ok
-              expect(response.body).to eq serialize(:conversations, electronics.conversations.all).to_json
+      let :params do
+        {
+          format: :json,
+          organization_id: organization_id,
+          context: context,
+          scope: scope,
+          group_id: group_id,
+        }
+      end
+
+      let(:organization_id){ 'raceteam' }
+      let(:context)        { 'my' }
+      let(:scope)          { 'not_muted_conversations' }
+      let(:group_id)       { nil }
+
+      def request!
+        xhr :get, :index, params
+      end
+
+      context 'when not given an organization id' do
+        let(:organization_id){ nil }
+        it 'renders not acceptable' do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
+      context 'when not given a context' do
+        let(:context){ nil }
+        it 'renders not acceptable' do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
+      context 'when not given a scope' do
+        let(:scope){ nil }
+        it 'renders not acceptable' do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
+      context 'when not given an invalid context' do
+        let(:context){ 'poop' }
+        it 'renders not acceptable' do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
+      context 'when not given an invalid scope' do
+        let(:scope){ 'cookies' }
+        it 'renders not acceptable' do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
+      context 'when given an invalid organization id' do
+        let(:organization_id){ 'h834jh54h54h534h' }
+        it 'renders not found' do
+          request!
+          expect(response.status).to eq 404
+        end
+      end
+
+      context 'when given the context "group" but not given a group id' do
+        let(:context){ 'group' }
+        let(:group_id){ nil }
+        it "renders not acceptable" do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
+      context 'when given a valid organization id' do
+        let(:organization_id){ 'raceteam' }
+
+        let(:organization)       { double(:organization) }
+        let(:collection)         { double(:collection) }
+        let(:organization_groups){ double(:organization_groups)   }
+        let(:group)              { double(:group) }
+        let(:stub_chain)         { [] }
+
+        before do
+          expect(current_user.organizations).to receive(:find_by_slug!).with(organization_id).and_return(organization)
+          if context == 'group'
+            expect(organization).to receive(:groups).and_return(organization_groups)
+            expect(organization_groups).to receive(:find_by_email_address_tag!).with(group_id).and_return(group)
+            group.stub_chain(*stub_chain).and_return(collection)
+          else
+            organization.stub_chain(*stub_chain).and_return(collection)
+          end
+          expect(controller).to receive(:serialize).with(:conversations, collection).and_return({conversations: []})
+          request!
+          expect(response.status).to eq 200
+        end
+
+        context 'when given the context "my"' do
+          let(:context){ 'my' }
+          context 'and the scope "not_muted_conversations"' do
+            let(:scope){ 'not_muted_conversations'}
+            let(:stub_chain){ [:conversations, :my, :not_muted] }
+            it "calls organization.conversations.my.not_muted" do
+            end
+          end
+          context 'and the scope "muted_conversations"' do
+            let(:scope){ 'muted_conversations'}
+            let(:stub_chain){ [:conversations, :my, :muted] }
+            it "calls organization.conversations.my.muted" do
+            end
+          end
+          context 'and the scope "all_task"' do
+            let(:scope){ 'all_task'}
+            let(:stub_chain){ [:tasks, :my, :all] }
+            it "calls organization.tasks.my.all" do
+            end
+          end
+          context 'and the scope "doing_tasks"' do
+            let(:scope){ 'doing_tasks'}
+            let(:stub_chain){ [:tasks, :my, :doing] }
+            it "calls organization.tasks.my.doing" do
+            end
+          end
+        end
+
+        context 'when given the context "ungrouped"' do
+          let(:context){ 'ungrouped' }
+          context 'and the scope "not_muted_conversations"' do
+            let(:scope){ 'not_muted_conversations'}
+            let(:stub_chain){ [:conversations, :ungrouped, :not_muted] }
+            it "calls organization.conversations.ungrouped.not_muted" do
+            end
+          end
+          context 'and the scope "muted_conversations"' do
+            let(:scope){ 'muted_conversations'}
+            let(:stub_chain){ [:conversations, :ungrouped, :muted] }
+            it "calls organization.conversations.ungrouped.muted" do
+            end
+          end
+          context 'and the scope "all_task"' do
+            let(:scope){ 'all_task'}
+            let(:stub_chain){ [:tasks, :ungrouped, :all] }
+            it "calls organization.tasks.ungrouped.all" do
+            end
+          end
+          context 'and the scope "doing_tasks"' do
+            let(:scope){ 'doing_tasks'}
+            let(:stub_chain){ [:tasks, :ungrouped, :doing] }
+            it "calls organization.tasks.ungrouped.doing" do
             end
           end
 
-          context 'when given an invalid or nonexistant group id' do
-            it 'renders not found' do
-              xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: 'foobar'
-              expect(response.status).to eq 404
+        end
+
+        context 'when given the context "group"' do
+          let(:context){ 'group' }
+          let(:group_id){ 'electronics' }
+          context 'and the scope "not_muted_conversations"' do
+            let(:scope){ 'not_muted_conversations'}
+            let(:stub_chain){ [:conversations, :not_muted] }
+            it "calls group.conversations.not_muted" do
             end
           end
+          context 'and the scope "muted_conversations"' do
+            let(:scope){ 'muted_conversations'}
+            let(:stub_chain){ [:conversations, :muted] }
+            it "calls group.conversations.muted" do
+            end
+          end
+          context 'and the scope "all_task"' do
+            let(:scope){ 'all_task'}
+            let(:stub_chain){ [:tasks, :all] }
+            it "calls group.tasks.all" do
+            end
+          end
+          context 'and the scope "doing_tasks"' do
+            let(:scope){ 'doing_tasks'}
+            let(:stub_chain){ [:tasks, :doing] }
+            it "calls group.tasks.doing" do
+            end
+          end
+        end
 
-        end
-        context 'of an organization that the current user is not in' do
-          it 'renders not found' do
-            xhr :get, :index, format: :json, organization_id: sfhealth.slug
-            expect(response.status).to eq 404
-          end
-        end
-        context 'of an organization that does not exist current user is not in' do
-          it 'renders not found' do
-            xhr :get, :index, format: :json, organization_id: 'foobar'
-            expect(response.status).to eq 404
-          end
-        end
       end
     end
 
