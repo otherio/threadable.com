@@ -20,13 +20,15 @@ class Covered::IncomingEmail::Process < MethodObject
 
       sign_in_as_creator!
 
+      duplicate = @incoming_email.message.present?
+
       deliver! if @incoming_email.deliverable?
       hold!    if @incoming_email.holdable?
       drop!    if @incoming_email.droppable?
       bounce!  if @incoming_email.bounceable?
 
 
-      if @incoming_email.message.present? && @covered.current_user
+      if !duplicate && @covered.current_user
         run_commands!
       end
 
