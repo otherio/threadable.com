@@ -47,8 +47,21 @@ describe RunCommandsFromEmailMessageBody do
     end
   end
 
-  context "with +My Name in the body" do
-    let(:body) { "+Alice Neilson \nI got this. I'm so ready to trim body panels." }
+  context "with &unmute in the body" do
+    let(:body) { "&unmute \nOh god I didn't mean to mute this at all. I love you people!" }
+    before do |variable|
+      task.mute!
+    end
+
+    it "marks the task as unmuted" do
+      expect(task.muted?).to be_true
+      call!
+      expect(task.muted?).to be_false
+    end
+  end
+
+  context "with &add My Name in the body" do
+    let(:body) { "&add Alice Neilson \nI got this. I'm so ready to trim body panels." }
 
     it "adds Alice as a doer" do
       expect(task.doers.all.map(&:id)).to_not include current_user.id
@@ -57,8 +70,8 @@ describe RunCommandsFromEmailMessageBody do
     end
   end
 
-  context "with -My Name in the body" do
-    let(:body) { "-Tom Canver \nTom has decided that Carbon fiber is awful. Find an intern somewhere." }
+  context "with &remove My Name in the body" do
+    let(:body) { "&remove Tom Canver \nTom has decided that Carbon fiber is awful. Find an intern somewhere." }
 
     it "removes Tom as a doer" do
       tom = organization.members.find_by_email_address('tom@ucsd.example.com')
@@ -67,6 +80,34 @@ describe RunCommandsFromEmailMessageBody do
       expect(task.doers.all.map(&:id)).to_not include tom.id
     end
   end
+
+  context "with &remove My Name &mute in the beginning of the body" do
+    let(:body) { "&remove Tom Canver \n&mute \nTom has decided that Carbon fiber is awful. Find an intern somewhere. Also, I'm so over this thread. Manage your own shit" }
+
+    it "removes Tom as a doer, mutes the conversation" do
+      tom = organization.members.find_by_email_address('tom@ucsd.example.com')
+      expect(task.doers.all.map(&:id)).to include tom.id
+      expect(task.muted?).to be_false
+      call!
+      expect(task.muted?).to be_true
+      expect(task.doers.all.map(&:id)).to_not include tom.id
+    end
+  end
+
+  context "with &remove My Name in the beginning of the body, and &mute after some text" do
+    let(:body) { "&remove Tom Canver \nTom has decided that Carbon fiber is awful. Find an intern somewhere. \n&mute \nAlso, I'm so over this thread. Manage your own shit" }
+
+    it "removes Tom as a doer, but doesn't mute the conversation" do
+      tom = organization.members.find_by_email_address('tom@ucsd.example.com')
+      expect(task.doers.all.map(&:id)).to include tom.id
+      expect(task.muted?).to be_false
+      call!
+      expect(task.muted?).to be_false
+      expect(task.doers.all.map(&:id)).to_not include tom.id
+    end
+  end
+
+
 
 
 

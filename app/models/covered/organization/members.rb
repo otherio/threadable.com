@@ -45,9 +45,24 @@ class Covered::Organization::Members < Covered::Collection
     )
   end
 
+  def find_by_name name
+    member_for (scope.includes(:user).where('users.name ILIKE ?', name).references(:users).first or return)
+  end
+
   def find_by_email_address! email_address
     member = find_by_email_address(email_address)
     member or raise Covered::RecordNotFound, "unable to find organization member with email_address: #{email_address}"
+    member
+  end
+
+  def fuzzy_find query
+    return nil if query.nil?
+    query.gsub!(/\s+/,' ')
+    query.strip!
+    return nil if query.blank?
+    member = @covered.current_user if query.downcase == 'me'
+    member = find_by_email_address(query) unless member
+    member = find_by_name(query) unless member
     member
   end
 
