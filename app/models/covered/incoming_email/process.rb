@@ -25,7 +25,8 @@ class Covered::IncomingEmail::Process < MethodObject
       drop!    if @incoming_email.droppable?
       bounce!  if @incoming_email.bounceable?
 
-      if !@incoming_email.message.present? && @covered.current_user
+
+      if @incoming_email.message.present? && @covered.current_user
         run_commands!
       end
 

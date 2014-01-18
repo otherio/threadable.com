@@ -170,6 +170,11 @@ describe "processing incoming emails 2" do
 
     if expect_conversation_to_be_a_task
       expect( conversation ).to be_task
+      if expect_task_to_be_done
+        expect( conversation ).to be_done
+      else
+        expect( conversation ).to_not be_done
+      end
     else
       expect( conversation ).to_not be_task
     end
@@ -316,8 +321,9 @@ describe "processing incoming emails 2" do
   let(:expected_message_body_html)             { body_html }
   let(:expected_message_body_plain)            { body_plain }
   let(:expected_message_stripped_html)         { stripped_html }
-  let(:expected_message_stripped_text)        { stripped_text }
+  let(:expected_message_stripped_text)         { stripped_text }
   let(:expect_conversation_to_be_a_task)       { false }
+  let(:expect_task_to_be_done)                 { false }
   let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
   let(:expected_sent_email_to)                 { ['raceteam@127.0.0.1'] }
   let(:expected_sent_email_cc)                 { '' }
@@ -574,6 +580,36 @@ describe "processing incoming emails 2" do
           validate! :delivered
         end
 
+        context 'and the body contains commands' do
+          let(:body_html){
+            %(<p>&amp;undone</p>\n\n\n)+
+            %(<p>I think we're quite through here</p>\n\n)+
+            %(seriously what is going on.\n)
+          }
+          let(:body_plain){
+            %(&undone\n\n\n)+
+            %(I think we're quite through here\n\n)+
+            %(seriously what is going on.\n)
+          }
+          let(:stripped_html){ body_html }
+          let(:stripped_text){ body_plain }
+
+          let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
+          let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
+
+          let(:expect_conversation_to_be_a_task) { true }
+          let(:expect_task_to_be_done)           { false }
+          let(:expected_sent_email_to)           { ['raceteam+task@127.0.0.1'] }
+          let(:expected_sent_email_subject)      { "[✔][RaceTeam] OMG guys I love covered!" }
+          let(:expected_email_recipients)        { ["bethany@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+          let(:expected_conversation)            { expected_organization.conversations.find_by_slug('layup-body-carbon') }
+          let!(:expected_parent_message)         { expected_conversation.messages.latest }
+
+          it 'delivers the email' do
+            validate! :delivered
+          end
+        end
+
         context 'but the body contains only commands and whitespace' do
           let(:body_html){
             %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
@@ -588,7 +624,8 @@ describe "processing incoming emails 2" do
           let(:stripped_html){ body_html }
           let(:stripped_text){ body_plain }
 
-          let(:expected_conversation)          { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
+          let(:expect_conversation_to_be_a_task)      { true }
+          let(:expected_conversation)          { expected_organization.conversations.find_by_slug('layup-body-carbon') }
           let!(:expected_parent_message)       { expected_conversation.messages.latest }
 
           it 'delivers the email' do
@@ -893,6 +930,7 @@ describe "processing incoming emails 2" do
     let(:expected_parent_message){ expected_conversation.messages.latest }
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expect_conversation_to_be_a_task) { true }
+    let(:expect_task_to_be_done) { true }
     let(:expected_sent_email_subject){ "[✔][RaceTeam] #{subject}" }
     let(:expected_sent_email_reply_to){ expected_organization.formatted_task_email_address }
     it 'replace that email with the task version' do
