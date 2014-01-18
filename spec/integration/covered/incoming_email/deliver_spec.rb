@@ -57,9 +57,6 @@ describe Covered::IncomingEmail::Deliver do
     expect(StripCoveredContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.stripped_html).and_return('stripped incoming_email.stripped_html')
 
-    expect(RunCommandsFromEmailMessageBody).to receive(:call).
-      with(conversation, stripped_plain)
-
     expect(conversation.messages).to receive(:create!).with(
       creator_id:        54,
       message_id_header: incoming_email.message_id,
@@ -107,7 +104,7 @@ describe Covered::IncomingEmail::Deliver do
     before do
       expect(incoming_email).to receive(:conversation).once.and_return(nil)
       expect(incoming_email).to receive(:conversation=).with(conversation)
-      expect(incoming_email).to receive(:conversation).twice.and_return(conversation)
+      expect(incoming_email).to receive(:conversation).once.and_return(conversation)
     end
 
     context 'and recipient is not a +task email address, and the subject does not contain [task] or [✔]' do

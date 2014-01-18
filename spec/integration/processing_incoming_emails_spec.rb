@@ -105,16 +105,24 @@ describe "processing incoming emails 2" do
       expect( incoming_email ).to     be_bounced
       expect( incoming_email ).to_not be_held
       expect( incoming_email ).to_not be_delivered
+      expect( incoming_email ).to_not be_dropped
     when :held
       expect( incoming_email ).to_not be_bounced
       expect( incoming_email ).to     be_held
       expect( incoming_email ).to_not be_delivered
+      expect( incoming_email ).to_not be_dropped
+    when :dropped
+      expect( incoming_email ).to_not be_bounced
+      expect( incoming_email ).to_not be_held
+      expect( incoming_email ).to_not be_delivered
+      expect( incoming_email ).to     be_dropped
     when :delivered, :duplicate
       expect( incoming_email ).to_not be_bounced
       expect( incoming_email ).to_not be_held
       expect( incoming_email ).to     be_delivered
+      expect( incoming_email ).to_not be_dropped
     else
-      raise "expect result to :bounced, :held, :delivered or :duplicate. got #{result.inspect}"
+      raise "expect result to :bounced, :held, :delivered, :dropped or :duplicate. got #{result.inspect}"
     end
 
     expect( incoming_email.organization   ).to eq expected_organization
@@ -122,7 +130,7 @@ describe "processing incoming emails 2" do
     expect( incoming_email.conversation   ).to eq expected_conversation
     expect( incoming_email.creator        ).to eq expected_creator
 
-    if result == :bounced || result == :held
+    if result == :bounced || result == :held || result == :dropped
       expect( incoming_email.message                    ).to be_nil
       expect( incoming_email.params['attachment-count'] ).to eq attachments.count.to_s
       expect( incoming_email.params['attachment-1']     ).to be_present
@@ -461,7 +469,7 @@ describe "processing incoming emails 2" do
       end
     end
 
-    context 'a parent message can be found via the Referenes header' do
+    context 'a parent message can be found via the References header' do
       let(:in_reply_to){ '' }
       let(:references) { expected_conversation.messages.all.map(&:message_id_header).join(' ') }
 
@@ -481,12 +489,12 @@ describe "processing incoming emails 2" do
       let(:body_html){
         %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
         %(<p>-- tip: control covered by putting commands in your reply, just like this:</p>\n\n)+
-        %(&amp;done\n)
+        %(&amp;done\nI marked this shit done.)
       }
       let(:body_plain){
         %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
         %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
-        %(&done\n)
+        %(&done\nI marked this shit done.)
       }
       let(:stripped_html){ body_html }
       let(:stripped_text){ body_plain }
@@ -494,12 +502,12 @@ describe "processing incoming emails 2" do
       let(:expected_conversation)          { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
       let!(:expected_parent_message)       { expected_conversation.messages.latest }
       let(:expected_email_recipients)      { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
-      let(:expected_sent_email_body_html)  { "&amp;done\n" }
-      let(:expected_sent_email_body_plain) { "&done\n" }
-      let(:expected_message_body_html)     { "<p></p>\n<p></p>\n\n&amp;done\n" }
-      let(:expected_message_body_plain)    { "\n&done\n" }
-      let(:expected_message_stripped_html)     { "<p></p>\n<p></p>\n\n&amp;done\n" }
-      let(:expected_message_stripped_text)    { "\n&done\n" }
+      let(:expected_sent_email_body_html)  { "&amp;done\nI marked this shit done." }
+      let(:expected_sent_email_body_plain) { "&done\nI marked this shit done." }
+      let(:expected_message_body_html)     { "<p></p>\n<p></p>\n\n&amp;done\nI marked this shit done." }
+      let(:expected_message_body_plain)    { "\n&done\nI marked this shit done." }
+      let(:expected_message_stripped_html) { "<p></p>\n<p></p>\n\n&amp;done\nI marked this shit done." }
+      let(:expected_message_stripped_text) { "\n&done\nI marked this shit done." }
 
       it 'delivers the email' do
         validate! :delivered
@@ -564,6 +572,28 @@ describe "processing incoming emails 2" do
 
         it 'it delivers the message' do
           validate! :delivered
+        end
+
+        context 'but the body contains only commands and whitespace' do
+          let(:body_html){
+            %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
+            %(<p>-- tip: control covered by putting commands in your reply, just like this:</p>\n\n)+
+            %(&amp;done\n)
+          }
+          let(:body_plain){
+            %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
+            %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+            %(&done\n)
+          }
+          let(:stripped_html){ body_html }
+          let(:stripped_text){ body_plain }
+
+          let(:expected_conversation)          { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
+          let!(:expected_parent_message)       { expected_conversation.messages.latest }
+
+          it 'delivers the email' do
+            validate! :dropped
+          end
         end
       end
     end

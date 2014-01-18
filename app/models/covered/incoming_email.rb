@@ -30,6 +30,10 @@ class Covered::IncomingEmail < Covered::Model
     incoming_email_record.save!
   end
 
+  def dropped!
+    processed!
+  end
+
   def bounced!
     incoming_email_record.bounced = true
     incoming_email_record.save!
@@ -57,6 +61,11 @@ class Covered::IncomingEmail < Covered::Model
   def unhold!
     incoming_email_record.held = false
     incoming_email_record.save!
+  end
+
+  def drop!
+    return if dropped?
+    dropped!
   end
 
   def bounce!
@@ -87,6 +96,10 @@ class Covered::IncomingEmail < Covered::Model
     processed? && !held? && !bounced? && message.present?
   end
 
+  def dropped?
+    processed? && !held? && !bounced? && ! message.present?
+  end
+
   def bounceable?
     organization.nil? || !subject_valid? || !groups_valid?
   end
@@ -96,7 +109,11 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def deliverable?
-    !bounceable? && !holdable?
+    !bounceable? && !holdable? && !droppable?
+  end
+
+  def droppable?
+    !parent_message.nil? && !body_has_content?
   end
 
   def subject_valid?
@@ -107,6 +124,14 @@ class Covered::IncomingEmail < Covered::Model
     email_address_tags.to_set == groups.map(&:email_address_tag).to_set
   end
 
+  def body_has_content?
+    body = StripCoveredContentFromEmailMessageBody.call(stripped_plain)
+    lines = body[0..1024].split(/\n/)
+    lines.reject! do |line|
+      line =~ /^\s*&(done|undone|add|remove|mute|unmute)/
+    end
+    true if lines.join('') =~ /\S/m
+  end
 
   def subject
     params['subject']

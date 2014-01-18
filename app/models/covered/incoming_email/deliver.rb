@@ -14,7 +14,6 @@ class Covered::IncomingEmail::Deliver < MethodObject
       else
         save_off_attachments!
         create_message!
-        run_commands!
       end
       save!
     end
@@ -87,14 +86,6 @@ class Covered::IncomingEmail::Deliver < MethodObject
 
   def strip_covered_content body
     StripCoveredContentFromEmailMessageBody.call(body) unless body.nil?
-  end
-
-  def run_commands!
-    RunCommandsFromEmailMessageBody.call(@incoming_email.conversation, @incoming_email.stripped_plain) unless @incoming_email.stripped_plain.nil?
-  end
-
-  def run_commands!
-    RunCommandsFromEmailMessageBody.call(@incoming_email.conversation, @incoming_email.stripped_plain) unless @incoming_email.stripped_plain.nil?
   end
 
   def send_emails!

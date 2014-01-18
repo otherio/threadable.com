@@ -57,6 +57,14 @@ describe Covered::IncomingEmail do
     end
   end
 
+  describe 'dropped!' do
+    it 'sets processed to true but does not send email or create a message' do
+      expect(incoming_email_record).to receive(:processed=).with(true)
+      expect(incoming_email_record).to receive(:save!)
+      incoming_email.dropped!
+    end
+  end
+
   describe 'process!' do
     context 'when processed? returns false' do
       before{ expect(incoming_email).to receive(:processed?).and_return(false)}
@@ -127,7 +135,23 @@ describe Covered::IncomingEmail do
     end
   end
 
-
+  describe 'drop!' do
+    context 'when dropped? returns false' do
+      before{ expect(incoming_email).to receive(:dropped?).and_return(false)}
+      it 'runs the drop method object on its self' do
+        expect(incoming_email_record).to receive(:processed=).with(true)
+        expect(incoming_email_record).to receive(:save!)
+        incoming_email.drop!
+      end
+    end
+    context 'when dropped? returns true' do
+      before{ expect(incoming_email).to receive(:dropped?).and_return(true)}
+      it 'does not run the drop method object on its self' do
+        expect(incoming_email_record).to_not receive(:processed=).with(true)
+        incoming_email.drop!
+      end
+    end
+  end
 
   describe 'creator_is_a_organization_member?' do
     subject{ incoming_email.creator_is_a_organization_member? }
@@ -198,6 +222,48 @@ describe Covered::IncomingEmail do
     end
   end
 
+  describe 'dropped?' do
+    subject{ incoming_email.dropped? }
+
+    context 'when processed? returns false' do
+      before{ expect(incoming_email).to receive(:processed?).and_return(false) }
+      it { should be_false }
+    end
+
+    context 'when processed? returns true' do
+      before{ expect(incoming_email).to receive(:processed?).and_return(true) }
+
+      context 'when held? returns true' do
+        before{ expect(incoming_email).to receive(:held?).and_return(true) }
+        it { should be_false }
+      end
+
+      context 'when held? returns false' do
+        before{ expect(incoming_email).to receive(:held?).and_return(false) }
+
+        context 'when bounced? returns true' do
+          before{ expect(incoming_email).to receive(:bounced?).and_return(true) }
+          it { should be_false }
+        end
+
+        context 'when bounced? returns false' do
+          before{ expect(incoming_email).to receive(:bounced?).and_return(false) }
+
+          context 'when a message is present' do
+            before{ expect(incoming_email).to receive(:message).and_return(nil) }
+            it { should be_true }
+          end
+
+          context 'when a message is not present' do
+            before{ expect(incoming_email).to receive(:message).and_return('6') }
+            it { should be_false }
+          end
+        end
+      end
+    end
+  end
+
+
   describe 'bounceable?' do
     subject{ incoming_email.bounceable? }
     context 'when organization is nil' do
@@ -266,8 +332,41 @@ describe Covered::IncomingEmail do
       end
       context 'when holdable? is false' do
         before{ expect(incoming_email).to receive(:holdable?).and_return(false) }
+        context 'when droppable? is false' do
+          before{ expect(incoming_email).to receive(:droppable?).and_return(false) }
+          it { should be_true }
+        end
+        context 'when droppable? is true' do
+          before{ expect(incoming_email).to receive(:droppable?).and_return(true) }
+          it { should be_false }
+        end
+      end
+    end
+  end
+
+  describe 'droppable?' do
+    subject{ incoming_email.droppable? }
+
+    context 'when there is a parent message' do
+      before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+
+      context 'and it contains only commands and whitespace' do
+        before { expect(incoming_email).to receive(:body_has_content?).and_return(false) }
+
         it { should be_true }
       end
+
+      context 'and it has non-command content' do
+        before { expect(incoming_email).to receive(:body_has_content?).and_return(true) }
+
+        it { should be_false }
+      end
+    end
+
+    context 'when there is no parent message' do
+      before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+
+      it { should be_false }
     end
   end
 
@@ -328,6 +427,41 @@ describe Covered::IncomingEmail do
     end
   end
 
+  describe '#body_has_content?' do
+    subject{ incoming_email.body_has_content? }
+
+    before do
+      incoming_email.stub(:stripped_plain).and_return(body)
+    end
+
+    context 'with a blank body' do
+      let(:body) { '' }
+      it { should be_false }
+    end
+
+    context 'with a body that contains only commands and random whitespace' do
+      let(:body) { '&add Maria Rivera\n\n \n' }
+      it { should be_false }
+    end
+
+    context 'with a body that contains commands and covered tips' do
+      let(:body){
+        %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
+        %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+        %(&done\n)
+      }
+      it { should be_false }
+    end
+
+    context 'with a body that contains commands and real live text' do
+      let(:body){
+        %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
+        %(-- tip: control covered by putting commands in your reply, just like this:\n\n)+
+        %(&done\n\n Hello Seattle, I am a mountaineer, in the hills and highlands. I fall asleep in hospital parking lots.)
+      }
+      it { should be_true }
+    end
+  end
 
   its(:subject)                { should eq params['subject'] }
   its(:message_id)             { should eq params['Message-Id'] }
