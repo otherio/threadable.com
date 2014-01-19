@@ -22,7 +22,7 @@ feature "Composing a new message" do
     conversation_list_member = first('.conversations-list li')
     expect(conversation_list_member).to have_text 'Bethany'
     expect(conversation_list_member).to have_text '(1)'
-    expect(conversation_list_member).to have_text 'a few seconds ago'
+    expect(conversation_list_member).to have_text 'moments ago'
     expect(conversation_list_member).to have_text new_message_body[0..10]
   end
 
@@ -40,7 +40,7 @@ feature "Composing a new message" do
     conversation_list_member = first('.conversations-list li')
     expect(conversation_list_member).to have_text 'Bethany'
     expect(conversation_list_member).to have_text '(2)'
-    expect(conversation_list_member).to have_text 'a few seconds ago'
+    expect(conversation_list_member).to have_text 'moments ago'
     expect(conversation_list_member).to have_text reply_body[0..10]
   end
 

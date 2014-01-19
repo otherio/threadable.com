@@ -725,7 +725,7 @@
         _relativeTime : {
             future : "in %s",
             past : "%s ago",
-            s : "a few seconds",
+            s : "moments",
             m : "a minute",
             mm : "%d minutes",
             h : "an hour",
