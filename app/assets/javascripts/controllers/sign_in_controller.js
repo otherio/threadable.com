@@ -1,4 +1,5 @@
 Covered.SignInController = Ember.Controller.extend({
+  needs: ['application'],
 
   reset: function(){
     this.setProperties({
@@ -21,7 +22,12 @@ Covered.SignInController = Ember.Controller.extend({
 
       request.done(function() {
         Covered.CurrentUser.reload().then(function(currentUser) {
-          this.send('transitionToIndex');
+          var redirect = this.get('controllers.application.r');
+          if(redirect) {
+            window.location = redirect;
+          }else{
+            this.send('transitionToIndex');
+          }
           return currentUser;
         }.bind(this));
       }.bind(this));

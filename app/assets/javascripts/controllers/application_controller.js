@@ -1,4 +1,6 @@
 Covered.ApplicationController = Ember.Controller.extend({
+  queryParams: ['r'],
+  r: null,
 
   transitions: [],
 
