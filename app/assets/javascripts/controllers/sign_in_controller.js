@@ -24,7 +24,7 @@ Covered.SignInController = Ember.Controller.extend({
         Covered.CurrentUser.reload().then(function(currentUser) {
           var redirect = this.get('controllers.application.r');
           if(redirect) {
-            window.location = redirect;
+            window.location.replace(redirect);
           }else{
             var previousTransition = this.get('previousTransition');
             if (previousTransition) {
