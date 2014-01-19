@@ -26,7 +26,13 @@ Covered.SignInController = Ember.Controller.extend({
           if(redirect) {
             window.location = redirect;
           }else{
-            this.send('transitionToIndex');
+            var previousTransition = this.get('previousTransition');
+            if (previousTransition) {
+              this.set('previousTransition', null);
+              previousTransition.retry();
+            } else {
+              this.send('transitionToIndex');
+            }
           }
           return currentUser;
         }.bind(this));

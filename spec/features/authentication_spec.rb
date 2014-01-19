@@ -65,4 +65,15 @@ feature "Authentication" do
     end
   end
 
+  context "retrying a transition" do
+    before { visit compose_my_conversation_url('raceteam') }
+
+    scenario %(A user with an account and a password can sign in) do
+      fill_in "Email", with: "alice@ucsd.example.com"
+      fill_in "Password", with: "password"
+      click_button "Sign in"
+      expect_to_be_signed_in_as! "Alice Neilson"
+      expect(page).to be_at compose_my_conversation_url('raceteam')
+    end
+  end
 end

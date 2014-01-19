@@ -1,4 +1,11 @@
 Covered.OrganizationRoute = Ember.Route.extend({
+  beforeModel: function(transition) {
+    if (!Covered.isSignedIn()) {
+      var signInController = this.controllerFor('sign_in');
+      signInController.set('previousTransition', transition);
+      this.transitionTo('sign_in');
+    }
+  },
 
   model: function(params){
     this.controllerFor('organization').set('organization_slug', params.organization);
