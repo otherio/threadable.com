@@ -13,6 +13,7 @@
     margin: 0
     padding: 0
     list-style: none
+    min-width: 350px
 
   li:hover
     background-color: $faint-blue-color
@@ -27,6 +28,11 @@
     & ~ li
       border-top: 1px solid $light-grey-color
 
+  .is-doer
+    font-weight: 500
+
+  .right-content
+    margin-top: 4px
 
   .left-content
     margin-right: 1em
@@ -34,11 +40,16 @@
     text-overflow: ellipsis
 
   .avatar
-    margin-right: 1em
+    margin-top: .25em
+    margin-right: .5em
 
   .name
+    line-height: 21px
 
   .email
+    line-height: 16px
+    font-size: 12px
+    margin-bottom: 2px
 
   .changed
     background-color: $faint-yellow-color

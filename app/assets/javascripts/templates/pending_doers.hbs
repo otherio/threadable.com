@@ -3,9 +3,9 @@
     <div class="pending-doer">
       <strong>
         {{#if doer.isAdded}}
-          +{{doer.name}}
+          &add {{doer.name}}
         {{else}}
-          -{{doer.name}}
+          &remove {{doer.name}}
         {{/if}}
       </strong>
       <span class="subtitle">

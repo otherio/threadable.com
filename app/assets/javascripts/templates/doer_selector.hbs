@@ -5,7 +5,7 @@
   </a>
   <ul>
     {{#each member in controller}}
-      <li {{bind-attr class="member.isChanged:changed :member :uk-clearfix"}}>
+      <li {{bind-attr class="member.isChanged:changed member.isDoer:is-doer :member :uk-clearfix"}}>
         <a href="" class="not-link" {{action 'toggleDoer'}}>
           <div class="right-content uk-float-right">
             <i {{bind-attr class=":toggle-doer member.isDoer:uk-icon-minus:uk-icon-plus"}}></i>
@@ -15,9 +15,8 @@
             <span class="avatar avatar-small uk-float-left">
               <img {{bind-attr src="member.avatarUrl"}}></img>
             </span>
-
-            <span class="name">{{member.name}}</span>
-            <span class="email">&lt;{{member.emailAddress}}&gt;</span>
+            <div class="name">{{member.name}}</div>
+            <div class="email">{{member.emailAddress}}</div>
           </div>
         </a>
       </li>
