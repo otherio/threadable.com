@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.0.0"
+ruby "2.1.0"
 
 gem 'rails', '4.0.0'
 gem 'jquery-rails'
@@ -57,7 +57,6 @@ end
 
 group :development, :test do
   gem 'dotenv-rails'
-  gem 'debugger'
   gem 'rspec-rails'
   gem 'pry-rails'
   gem 'pry-debugger'
