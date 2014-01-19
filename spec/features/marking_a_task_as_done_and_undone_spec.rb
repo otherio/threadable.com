@@ -22,6 +22,7 @@ feature "marking a task as done and undone" do
 
     visit my_conversation_url('raceteam','make-wooden-form-for-carbon-layup')
 
+    expect(page).to have_selector selector_for 'the mark as done button'
     click_element 'the mark as done button'
     expect_task_to_be_marked_as_done!
 

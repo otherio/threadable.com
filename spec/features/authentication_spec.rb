@@ -69,6 +69,7 @@ feature "Authentication" do
     before { visit compose_my_conversation_url('raceteam') }
 
     scenario %(A user with an account and a password can sign in) do
+      expect(page).to have_selector ".sign-in-button"
       fill_in "Email", with: "alice@ucsd.example.com"
       fill_in "Password", with: "password"
       click_button "Sign in"
