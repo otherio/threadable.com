@@ -5,7 +5,7 @@ Covered.GroupConversationsController = Covered.ConversationsController.extend({
   group: Ember.computed.alias('controllers.group').readOnly(),
 
   conversationsCacheKeyForMode: function(mode) {
-    return this.get('group.slug')+'-'+mode;
+    return this._super(mode)+'-forGroup-'+this.get('group').get('slug');
   },
 
   conversationsCacheKey: function() { return this._super(); }.property('mode', 'group.slug'),

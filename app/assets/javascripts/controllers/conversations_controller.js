@@ -9,12 +9,12 @@ Covered.ConversationsController = Ember.Controller.extend({
   lastTasksMode: Ember.computed.alias('controllers.conversations_state.lastTasksMode').readOnly(),
 
   conversationsCacheKeyForMode: function(mode) {
-    return mode;
+    return this.get('organization').get('slug')+'-'+mode;
   },
 
   conversationsCacheKey: function() {
     return this.conversationsCacheKeyForMode(this.get('mode'));
-  }.property('mode'),
+  }.property('organization.slug','mode'),
 
   conversationsCacheKeyChanged: function() {
     this.fetchConversations();
