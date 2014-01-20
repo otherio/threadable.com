@@ -17,7 +17,7 @@ gem 'stringex'
 gem 'method_object'
 gem 'options_hash-method_object'
 gem 'js-routes'
-gem 'incoming', '0.1.4'
+gem 'incoming'
 gem 'mail'
 gem 'encryptor'
 gem 'acts_as_list'
@@ -28,7 +28,7 @@ gem 'filepicker-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'sanitize'
 gem 'htmlentities'
-gem 'fog', '1.12.1'
+gem 'fog'
 gem 'httmultiparty'
 gem 'let'
 
@@ -46,6 +46,8 @@ gem 'newrelic_rpm'
 gem 'appsignal'
 
 gem 'honeybadger'
+
+gem 'thread_safe', :git => 'git://github.com/headius/thread_safe.git', :ref => 'f89cc783fbe'
 
 group :production, :staging do
   gem 'rails_12factor'
