@@ -19,7 +19,7 @@ feature "Adding doers to a task" do
 
     click_element 'the change doers button'
     first('.doer-selector li.member', text: 'Alice Neilson').click
-    expect(page).to have_text '+Alice Neilson as a doer'
+    expect(page).to have_text '&add Alice Neilson as a doer'
     click_on 'Send'
 
     expect(page).to have_text 'added Alice Neilson as a doer'
@@ -31,7 +31,7 @@ feature "Adding doers to a task" do
 
     click_element 'the change doers button'
     first('.doer-selector li.member', text: 'Alice Neilson').click
-    expect(page).to have_text '-Alice Neilson as a doer'
+    expect(page).to have_text '&remove Alice Neilson as a doer'
     click_on 'Send'
 
     expect(page).to have_text 'removed Alice Neilson as a doer'
