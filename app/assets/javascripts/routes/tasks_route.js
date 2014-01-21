@@ -16,6 +16,7 @@ Covered.TasksRoute = Covered.ConversationsRoute.extend({
   },
 
   setupController: function(controller, context, transition) {
+    this.controllerFor('navbar').set('showingConversationsListControls', false);
     this.controllerFor('doneTasks').set('model', context.doneTasks);
     this.controllerFor('notDoneTasks').set('model', context.notDoneTasks);
   },
@@ -24,6 +25,12 @@ Covered.TasksRoute = Covered.ConversationsRoute.extend({
     this.render('tasks', {into: 'organization', outlet: 'conversationsPane'});
     this.render('doneTasks', {into: 'tasks', outlet: 'doneTasks'});
     this.render('notDoneTasks', {into: 'tasks', outlet: 'notDoneTasks'});
+  },
+
+  actions: {
+    addConversation: function(conversation) {
+      // this.controller.get('model').unshiftObject(conversation);
+    }
   }
 
 });

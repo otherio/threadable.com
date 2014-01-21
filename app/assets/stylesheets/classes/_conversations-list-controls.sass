@@ -1,12 +1,18 @@
 .conversations-list-controls
+  $height: 50px
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  height: $height
   padding-top: 5px
   background-color: $grey-color
   font-size: 0
   overflow: hidden
   white-space: nowrap
   > a
+    height: $height
     display: inline-block
-    height: 50px
     width: 25%
     text-align: center
     &, &:hover, &:visited, &:active
@@ -20,3 +26,10 @@
       font-size: 30px
     > span
       font-size: 10px
+
+
+
+  +mini-to-small-screens
+    background-color: transparentize($grey-color, 0.2)
+    &.hidden
+      display: none

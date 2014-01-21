@@ -1,12 +1,15 @@
 Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
-  needs: ['organization', 'compose', 'conversation'],
+  needs: ['organization', 'conversations', 'compose', 'conversation'],
 
   focus:           Ember.computed.alias('controllers.organization.focus'),
   newConversation: Ember.computed.alias('controllers.compose').readOnly(),
   conversation:    Ember.computed.alias('controllers.conversation').readOnly(),
+  conversations:   Ember.computed.alias('controllers.conversations').readOnly(),
 
   group: null,
   composing: false,
+
+  showingConversationsListControls: false,
 
   navbarStyle: function() {
     var color = this.get('group.color');
@@ -51,6 +54,9 @@ Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Cov
     },
     toggleDoerSelector: function() {
       this.get('controllers.conversation').send('toggleDoerSelector');
+    },
+    toggleConversationsListControls: function() {
+      this.toggleProperty('showingConversationsListControls');
     }
   }
 

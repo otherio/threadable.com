@@ -1,8 +1,5 @@
 <div {{bind-attr class=":tasks-list showingDone"}}>
 
-  {{partial 'conversations/list/controls'}}
-  {{partial 'tasks/list/controls'}}
-
   <div class="scrollable">
     <div class="done">
       {{outlet doneTasks}}
@@ -16,4 +13,9 @@
       {{outlet notDoneTasks}}
     </div>
   </div>
+
+  {{partial 'tasks/list/controls'}}
+
+  {{partial 'conversations/list/controls'}}
+
 </div>

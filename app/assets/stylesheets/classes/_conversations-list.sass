@@ -4,10 +4,13 @@
 
   > ol
     position: absolute
-    top: 55px
     left: 0
     right: 0
     bottom: 0
+    +mini-to-small-screens
+      top: 0
+    +medium-to-xlarge-screens
+      top: 55px
 
     &, li
       margin: 0

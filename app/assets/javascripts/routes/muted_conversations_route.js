@@ -1,4 +1,4 @@
-Covered.MutedConversationsRoute = Ember.Route.extend({
+Covered.MutedConversationsRoute = Covered.ConversationsRoute.extend({
 
   model: function(params) {
     var
@@ -8,12 +8,10 @@ Covered.MutedConversationsRoute = Ember.Route.extend({
     return Covered.Conversation.fetchByGroupAndScope(organization, groupSlug, 'muted_conversations');
   },
 
-  setupController: function(controller, context, transition) {
-    this._super(this.controllerFor('conversations'), context, transition);
-  },
-
-  renderTemplate: function() {
-    this.render('conversations', {into: 'organization', outlet: 'conversationsPane'});
+  actions: {
+    addConversation: function(conversation) {
+      // this.controller.get('model').unshiftObject(conversation);
+    }
   }
 
 });

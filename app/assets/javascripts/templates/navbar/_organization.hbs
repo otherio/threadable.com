@@ -12,7 +12,14 @@
     {{/if}}
   </span>
 </div>
+
 <div class="right-nav">
-  <a href=""><i class="uk-icon-caret-down"></i></a>
+  <a href="" class="uk-visible-small" {{action toggleConversationsListControls}}>
+    {{#if showingConversationsListControls}}
+      <i class="uk-icon-caret-up"></i>
+    {{else}}
+      <i class="uk-icon-caret-down"></i>
+    {{/if}}
+  </a>
   {{#link-to composeRoute}}<i class="uk-icon-edit"></i>{{/link-to}}
 </div>
