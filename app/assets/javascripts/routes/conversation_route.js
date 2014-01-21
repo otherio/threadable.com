@@ -40,10 +40,10 @@ Covered.ConversationRoute = Ember.Route.extend({
     this.controllerFor('organization').set('focus', 'conversation');
   },
 
-  // actions: {
-  //   willTransition: function(transition) {
-  //     // this.controllerFor('conversation').set('model', null);
-  //   }
-  // }
+  actions: {
+    willTransition: function(transition) {
+      this.controllerFor('organization').set('focus', 'conversations');
+    }
+  }
 
 });
