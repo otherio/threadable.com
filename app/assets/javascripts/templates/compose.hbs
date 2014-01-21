@@ -36,16 +36,19 @@
         <div class="form-row">
           <label>
             Subject:
-            {{input value=subject class="uk-form-blank" name="subject"}}
+            {{input value=subject tabindex="1" class="uk-form-blank" name="subject"}}
           </label>
         </div>
-        {{view Covered.ResizeableTextArea value=body class="uk-form-blank body" name="body"}}
+        {{view Covered.ResizeableTextArea value=body tabindex="2" class="uk-form-blank body" name="body"}}
         <div class="uk-hidden-small">
           <span class="uk-float-left">
-            <a href="" class="uk-button" {{action 'reset'}}>Clear</a>
+            <a href="" class="uk-button" {{action 'reset'}}>
+              <i class="uk-icon-trash-o"></i>
+              Clear
+            </a>
           </span>
           <span class="uk-float-right">
-            <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
+            <input type="submit" tabindex="3" class="uk-button uk-button-primary" value="Send"></input>
           </span>
         </div>
       </fieldset>
