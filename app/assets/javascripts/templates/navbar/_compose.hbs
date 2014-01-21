@@ -6,14 +6,14 @@
 </div>
 
 <div class="right-nav">
-  <div data-uk-button-radio class="uk-button-group">
+  <span data-uk-button-radio class="uk-button-group">
     <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button compose.isTask:uk-active"}}>
       <i class="uk-icon-check"></i>
     </a>
     <a href="" {{action composeConversation}} {{bind-attr class=":nav-button :uk-button compose.isTask::uk-active"}}>
       <i class="uk-icon-comment-o"></i>
     </a>
-  </div>
+  </span>
   <span>
     <button class="uk-button" {{action sendMessage}}>Send</button>
   </span>
