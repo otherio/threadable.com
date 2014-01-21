@@ -1,10 +1,41 @@
-<form class="uk-form sign-in-form" {{action signIn on='submit'}}>
-  {{#if error}}
-    {{error}}
-  {{/if}}
-  <fieldset>
-    {{input type="text" placeholder="Email" value=emailAddress autofocus=true}}
-    {{input type="password" placeholder="Password" value=password}}
-    {{input class='uk-btn sign-in-button' type='submit' value='Sign in'}}
-  </fieldset>
-</form>
+<div class="uk-container-center uk-width-large-1-3 uk-width-medium-1-2 sign-in-form">
+  <h2>Covered</h2>
+  <form class="uk-form uk-form-stacked well-when-not-small" {{action signIn on='submit'}}>
+    {{#if error}}
+      {{error}}
+    {{/if}}
+    <fieldset>
+      <div class="uk-form-row">
+        {{input type="text" class="uk-width-1-1 uk-form-large" placeholder="Email" value=emailAddress autofocus=true}}
+      </div>
+
+      <div class="uk-form-row">
+        {{input type="password" class="uk-width-1-1 uk-form-large" placeholder="Password" value=password}}
+      </div>
+
+      <div class="uk-form-row">
+
+        {{#link-to 'forgot_password' class="uk-float-right"}}
+          No password yet?<br>
+          Forgot Password?
+        {{/link-to}}
+
+        {{input class='uk-button uk-button-primary uk-button-large sign-in-button' type='submit' value='Sign in'}}
+      </div>
+
+    </fieldset>
+  </form>
+
+  <div class="promotext">
+    Covered is coming really soon.<br><br>
+
+    We'd love for you to join us. Learn more, and sign up for our early beta at <a href="http://signup.other.io">http://signup.other.io</a>
+  </div>
+
+  <div class="footer">
+    Made by <a href="http://other.io">Other People.</a>
+    <a class="mixpanel-button uk-float-right" href="https://mixpanel.com/f/partner">
+      <img alt="Mobile Analytics" src="//cdn.mxpnl.com/site_media/images/partner/badge_blue.png">
+    </a>
+  </div>
+</div>
