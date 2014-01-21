@@ -3,6 +3,12 @@
   $task-controls-height: 60px
 
   .task-controls
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    +medium-to-xlarge-screens
+      top: $conversations-list-controls-height
     overflow: hidden
     height: $task-controls-height - 10px
     padding: 5px 15px
@@ -49,7 +55,7 @@
     +mini-to-small-screens
       top: $task-controls-height
     +medium-to-xlarge-screens
-      top: $task-controls-height + 50px
+      top: $task-controls-height + $conversations-list-controls-height
 
 
   .done, .not-done
