@@ -5,9 +5,12 @@ Covered.User = RL.Model.extend({
   name:         RL.attr('string'),
   emailAddress: RL.attr('string'),
   slug:         RL.attr('string'),
-  avatarUrl:    RL.attr('string'),
+  avatarUrl:    RL.attr('string')
 });
 
 Covered.Member = Covered.User.extend({
-
+  organizationSlug: RL.attr('string'),
+  personalMessage:  RL.attr('string')
 });
+
+Covered.Member.reopen(Covered.AddOrganizationIdToRequestsMixin);

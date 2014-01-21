@@ -1,4 +1,4 @@
-class Users::SetupController < ApplicationController
+class Users::SetupController < UnauthenticatedController
 
   before_action :require_valid_token!
 

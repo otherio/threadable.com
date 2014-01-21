@@ -1,0 +1,42 @@
+<div class="add-member scrollable">
+  <div class="well-when-not-small">
+    <form class="uk-form-horizontal" {{action addMember on='submit'}}>
+
+      <h2>Add a member</h2>
+      {{#if error}}
+        <h2>Error: {{error}}</h2>
+      {{/if}}
+
+      <fieldset>
+        <div class="form-row">
+          <label>
+            Name:
+            {{input value=name class="uk-form-blank" name="name"}}
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Email:
+            {{input value=emailAddress class="uk-form-blank" name="emailAddress"}}
+          </label>
+        </div>
+        {{view Covered.ResizeableTextArea value=personalMessage class="uk-form-blank body" name="personalMessage" placeholder="Message..."}}
+
+        <div>
+          <p>
+            You've been added to the {{organization.name}} organization on Covered!
+          </p><p>
+            Covered is a communications platform that helps you and your friends get more done.
+            It works just like any mailing list you've ever used, but has awesome features
+            to help you organize!
+          </p>
+        </div>
+
+        <span class="uk-float-right">
+          <input type="submit" class="uk-button uk-button-primary" value="Add member"></input>
+        </span>
+
+      </fieldset>
+    </form>
+  </div>
+</div>

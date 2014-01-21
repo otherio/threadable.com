@@ -53,12 +53,45 @@ describe Api::MembersController do
             expect(response.body).to eq '{"error":"Not Found"}'
           end
         end
-        context 'of an organization that does not exist current user is not in' do
+        context 'of an organization that does not exist' do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: 'foobar'
             expect(response.status).to eq 404
             expect(response.body).to eq '{"error":"Not Found"}'
           end
+        end
+      end
+    end
+
+    describe '#create' do
+      context "when given a valid organization id" do
+        it "renders the newly invited member as json, and creates the member" do
+          member_count = raceteam.members.all.length
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
+          expect(response.status).to eq 201
+          expect(response.body).to eq serialize(:members, raceteam.members.all.last).to_json
+          expect(raceteam.members.all.length).to eq member_count + 1
+        end
+      end
+      context "when given an organization id of an organization that does not exist" do
+        it 'renders not found' do
+          xhr :post, :create, format: :json, organization_id: 'foobar', member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"Not Found"}'
+        end
+      end
+      context 'when given an organization id of an organization that the current user is not in' do
+        it 'renders not found' do
+          xhr :post, :create, format: :json, organization_id: sfhealth.slug, member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"Not Found"}'
+        end
+      end
+      context 'when given no organization id' do
+        it 'renders not found' do
+          xhr :post, :create, format: :json, member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"Not Found"}'
         end
       end
     end

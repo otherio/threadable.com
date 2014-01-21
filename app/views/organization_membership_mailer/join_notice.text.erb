@@ -5,18 +5,18 @@
 <% end %>
 You've been added to the <%= @organization.name.html_safe %> organization on Covered!
 
-Covered is a magical mailing list that helps you and your friends get more done.
+Covered is a communications platform that helps you and your friends get more done.
 It works just like any mailing list you've ever used, but has awesome features
 to help you organize!
 
 <% if @recipient.web_enabled? %>
 You can view this organization on covered.io here: <%= @organization_url.html_safe %>
 <% else %>
-Covered also has a beautiful web view, which lets you see the entire organization
-archive, view the member roster, and organize conversations! Click here to set
-up a password for Covered.io: <%= @recipient_setup_url.html_safe %>
+Covered also has a web view, which lets you see the entire message archive, view the
+member roster, and organize conversations! Click here to set up a password for
+Covered.io: <%= @recipient_setup_url.html_safe %>
 <% end %>
 
 
-If you aren't into this, don't worry! We can stop these cretins from sending you
-mail in a jiffy! Just click <%= @organization_unsubscribe_url.html_safe %>
+If you aren't into this, don't worry! We'll stop sending you mail the moment you ask.
+Just click <%= @organization_unsubscribe_url.html_safe %>

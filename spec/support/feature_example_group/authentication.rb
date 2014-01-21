@@ -23,7 +23,6 @@ module RSpec::Support::FeatureExampleGroup
 
   def sign_out!
     visit sign_out_path
-    visit root_path
     page.should have_content('sign in')
     covered.current_user_id = nil
   end

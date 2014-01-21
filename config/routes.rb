@@ -15,7 +15,7 @@ Covered::Application.routes.draw do
     resources :messages
     resources :events
 
-    resources :members, only: [:index]
+    resources :members, only: [:index, :create]
     resources :task_doers
   end
 

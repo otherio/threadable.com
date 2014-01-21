@@ -12,6 +12,7 @@ Covered.Router.map(function() {
   this.resource('organization', {path: '/:organization'}, function(){
     this.resource('organization_members', {path: '/members'}, function(){
       this.resource('organization_member', {path: '/:member'});
+      this.resource('add_organization_member', {path: '/add'});
     });
     this.resource('my', {path: '/my'}, function(){
       this.resource('my_conversations', {path: '/conversations'}, function(){
@@ -37,6 +38,7 @@ Covered.Router.map(function() {
       this.resource('group', {path: '/:group'}, function(){
         this.resource('group_members', {path: '/members'}, function(){
           this.resource('group_member', {path: '/:member'});
+          this.resource('add_group_member', {path: '/add'});
         });
         this.resource('group_conversations', {path: '/conversations'}, function(){
           this.resource('group_conversation', {path: '/:conversation'});

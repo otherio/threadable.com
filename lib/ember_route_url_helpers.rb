@@ -6,6 +6,7 @@ module EmberRouteUrlHelpers
     forgot_password:                '/forgot_password',
     organization_member:            '/:organization/members/:member',
     organization_members:           '/:organization/members',
+    organization_members_add:       '/:organization/members/add',
     compose_my_conversation:        '/:organization/my/conversations/compose',
     compose_my_task:                '/:organization/my/tasks/compose',
     compose_ungrouped_conversation: '/:organization/ungrouped/conversations/compose',
