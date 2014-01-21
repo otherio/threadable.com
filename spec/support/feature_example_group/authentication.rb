@@ -23,7 +23,7 @@ module RSpec::Support::FeatureExampleGroup
 
   def sign_out!
     visit sign_out_path
-    page.should have_content('sign in')
+    page.should have_content('No password yet? Forgot Password?')
     covered.current_user_id = nil
   end
 
