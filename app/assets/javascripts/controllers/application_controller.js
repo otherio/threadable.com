@@ -15,6 +15,11 @@ Covered.ApplicationController = Ember.Controller.extend({
     if (transition) transition.retry();
   },
 
+  router: function() {
+    return this.container.lookup('router:main');
+  }.property(),
+
+
   actions: {
     signOut: function(){
       Covered.signOut();

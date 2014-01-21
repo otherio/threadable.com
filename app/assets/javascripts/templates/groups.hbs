@@ -9,13 +9,14 @@
   </div>
   <a class="settings-gear" href="" {{action toggleSettings}}><i class="uk-icon-gear"></i></a>
 </div>
+
 <div class="main-nav scrollable">
   <div {{bind-attr class=":settings settingsVisible:visible"}}>
     <ul class="uk-nav uk-nav-offcanvas">
       <li class="uk-nav-header">My Organizations</li>
       {{#each organization in currentUser.organizations}}
       <li>
-        {{#link-to 'organization' organization.slug}}{{organization.name}}{{/link-to}}
+        {{#link-to 'conversations' organization.slug}}{{organization.name}}{{/link-to}}
       </li>
       {{/each}}
     </ul>

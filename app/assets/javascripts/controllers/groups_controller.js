@@ -4,6 +4,10 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
   currentPath: Ember.computed.alias('controllers.application.currentPath').readOnly(),
   currentConversation: Ember.computed.alias('controllers.conversation.model').readOnly(),
 
+  closeGroupsSidebar: function() {
+    this.set('organization.focus', 'conversations');
+  },
+
   actions: {
     signOut: function() {
       this.signOut();
@@ -11,6 +15,9 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     },
     toggleSettings: function(){
       this.set('settingsVisible', !this.get('settingsVisible'));
+    },
+    closeGroupsSidebar: function() {
+      this.closeGroupsSidebar();
     }
   }
 
