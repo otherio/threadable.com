@@ -11,14 +11,23 @@
     {{/link-to}}
   </div>
   <div class="uk-float-right">
-    <a href="" {{action showDone}} {{bind-attr class=":toggle-done :icon-with-text showingDone:active"}}>
-      <i {{bind-attr class="showDone:uk-icon-check-circle:uk-icon-check-circle-o"}}></i>
-      <span class="hide">Hide Done</span>
-      <span class="show">Show Done</span>
+    <a href="" {{action toggleDone}} {{bind-attr class=":toggle-done :icon-with-text"}}>
+      {{#if showingDone}}
+        <i class="uk-icon-check-circle"></i>
+        <span class="hide">Hide Done</span>
+      {{else}}
+        <i class="uk-icon-check-circle-o"}}></i>
+        <span class="show">Show Done</span>
+      {{/if}}
     </a>
-    <a href="" {{action togglePrioritizing}} {{bind-attr class=":prioritize :icon-with-text prioritizing:active"}}>
-      <i class="uk-icon-sort-amount-desc"></i>
-      <span>Prioritize</span>
+    <a href="" {{action togglePrioritizing}} {{bind-attr class=":prioritize :icon-with-text"}}>
+      {{#if prioritizing}}
+        <i class="uk-icon-list"></i>
+        <span>List</span>
+      {{else}}
+        <i class="uk-icon-sort-amount-desc"></i>
+        <span>Prioritize</span>
+      {{/if}}
     </a>
   </div>
 </div>

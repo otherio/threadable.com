@@ -33,15 +33,9 @@
 
     .toggle-done
       min-width: 56px
-      .hide
-        display: none
-      .show
-        display: block
-      &.active
-        .hide
-          display: block
-        .show
-          display: none
+
+    .prioritize
+      min-width: 41px
 
   .list-divider
     padding: 0 5px 0 15px
@@ -77,7 +71,7 @@
           height: $height - $padding - $padding
           padding: $padding $padding $padding 15px
 
-        .arrow
+        .arrow, .burger
           position: absolute
           top: 0
           right: 15px
@@ -85,6 +79,17 @@
           height: 100%
           line-height: $height
           font-size: 120%
+        .burger
+          display: none
+
+  &.prioritizing
+    .not-done
+      li.task > a
+        cursor: move
+      .arrow
+        display: none
+      .burger
+        display: block
 
 
   .done

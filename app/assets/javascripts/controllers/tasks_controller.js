@@ -6,11 +6,15 @@ Covered.TasksController = Ember.ObjectController.extend(Covered.RoutesMixin, {
   doneTasksPromise: null,
 
   showingDone: false,
+  prioritizing: false,
   showingConversationsListControls: Ember.computed.alias('controllers.navbar.showingConversationsListControls'),
 
   actions: {
-    showDone: function() {
+    toggleDone: function() {
       this.toggleProperty('showingDone');
+    },
+    togglePrioritizing: function() {
+      this.toggleProperty('prioritizing');
     }
   }
 });
