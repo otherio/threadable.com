@@ -9,45 +9,45 @@
   </div>
   <a class="settings-gear" href="" {{action toggleSettings}}><i class="uk-icon-gear"></i></a>
 </div>
+<div class="main-nav scrollable">
+  <div {{bind-attr class=":settings settingsVisible:visible"}}>
+    <ul class="uk-nav uk-nav-offcanvas">
+      <li class="uk-nav-header">My Organizations</li>
+      {{#each organization in currentUser.organizations}}
+      <li>
+        {{#link-to 'organization' organization.slug}}{{organization.name}}{{/link-to}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
 
-<div {{bind-attr class=":settings settingsVisible:visible"}}>
-  <ul class="uk-nav uk-nav-offcanvas">
-    <li class="uk-nav-header">My Organizations</li>
-    {{#each organization in currentUser.organizations}}
+  <ul class="uk-nav uk-nav-offcanvas groups-list">
     <li>
-      {{#link-to 'organization' organization.slug}}{{organization.name}}{{/link-to}}
+      {{#link-to 'conversations' 'my'}}My Conversations{{/link-to}}
     </li>
+    <li>
+      {{#link-to 'conversations' 'ungrouped'}}Ungrouped Conversations{{/link-to}}
+    </li>
+    <li class="uk-nav-header">My Groups</li>
+    {{#each group in organization.myGroups}}
+      <li>
+        {{#link-to 'conversations' group.slug }}
+          <span class="name">+{{group.name}}</span>
+          <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
+        {{/link-to}}
+      </li>
+    {{/each}}
+    <li class="uk-nav-header">Other Groups</li>
+    {{#each group in organization.otherGroups}}
+      <li>
+        {{#link-to 'conversations' group.slug }}
+          <span class="name">+{{group.name}}</span>
+          <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
+        {{/link-to}}
+      </li>
     {{/each}}
   </ul>
 </div>
-
-<ul class="uk-nav uk-nav-offcanvas groups-list">
-  <li>
-    {{#link-to 'conversations' 'my'}}My Conversations{{/link-to}}
-  </li>
-  <li>
-    {{#link-to 'conversations' 'ungrouped'}}Ungrouped Conversations{{/link-to}}
-  </li>
-  <li class="uk-nav-header">My Groups</li>
-  {{#each group in organization.myGroups}}
-    <li>
-      {{#link-to 'conversations' group.slug }}
-        <span class="name">+{{group.name}}</span>
-        <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
-      {{/link-to}}
-    </li>
-  {{/each}}
-  <li class="uk-nav-header">Other Groups</li>
-  {{#each group in organization.otherGroups}}
-    <li>
-      {{#link-to 'conversations' group.slug }}
-        <span class="name">+{{group.name}}</span>
-        <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
-      {{/link-to}}
-    </li>
-  {{/each}}
-</ul>
-
 
 <ul class="uk-nav uk-nav-offcanvas bottom-nav">
   <li>

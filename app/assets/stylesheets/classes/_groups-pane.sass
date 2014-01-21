@@ -4,7 +4,11 @@
   overflow-x: hidden
 
   .current-user-controls
-    position: relative
+    position: absolute
+    height: 90px
+    left: 0
+    top: 0
+    right: 0
     padding: 1em
     color: #ccc
     min-height: 50px
@@ -33,25 +37,35 @@
       font-size: 200%
 
   .bottom-nav
+    background-color: $dark-grey-color
     position: absolute
     left: 0
     bottom: 0
     right: 0
+    height: 82px
 
-  .groups-list
-    > li
-      position: relative
+  .main-nav
+    position: absolute
+    left: 0
+    bottom: 82px
+    right: 0
+    top: 90px
 
-      a.active
-        background: #404040
-        color: #ffffff
-        outline: none
+    .groups-list
 
-      .badge
-        position: absolute
-        top: 10px
-        right: 10px
-        bottom: 10px
+      > li
+        position: relative
+
+        a.active
+          background: #404040
+          color: #ffffff
+          outline: none
+
+        .badge
+          position: absolute
+          top: 10px
+          right: 10px
+          bottom: 10px
 
   .settings
     margin-bottom: 4em
