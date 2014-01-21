@@ -1,6 +1,8 @@
 //= require jquery
 //= require preload_current_user
 //= require uikit
+//= require sortable
+//= require notify
 //= require moment
 //= require storage
 //= require handlebars
