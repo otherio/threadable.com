@@ -54,7 +54,7 @@ feature "Authentication" do
   end
 
   context "with a redirect" do
-    pending "breaks circle"
+    # pending "breaks circle"
     before { visit sign_in_url + "?r=" + URI::encode(compose_my_conversation_url('raceteam')) }
 
     scenario %(A user with an account and a password can sign in) do
@@ -67,7 +67,7 @@ feature "Authentication" do
   end
 
   context "retrying a transition" do
-    pending "breaks circle"
+    # pending "breaks circle"
     before { visit compose_my_conversation_url('raceteam') }
 
     scenario %(A user with an account and a password can sign in) do
