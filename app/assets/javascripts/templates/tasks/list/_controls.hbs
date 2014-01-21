@@ -1,0 +1,24 @@
+<div class="task-controls">
+  <div class="uk-float-left">
+
+    {{#link-to 'doing_tasks' class="doing-tasks icon-with-text"}}
+      <i class="uk-icon-th-large"></i>
+      <span>My Tasks</span>
+    {{/link-to}}
+    {{#link-to 'tasks' class="tasks icon-with-text"}}
+      <i class="uk-icon-th"></i>
+      <span>All Tasks</span>
+    {{/link-to}}
+  </div>
+  <div class="uk-float-right">
+    <a href="" {{action showDone}} {{bind-attr class=":toggle-done :icon-with-text showingDone:active"}}>
+      <i {{bind-attr class="showDone:uk-icon-check-circle:uk-icon-check-circle-o"}}></i>
+      <span class="hide">Hide Done</span>
+      <span class="show">Show Done</span>
+    </a>
+    <a href="" {{action togglePrioritizing}} {{bind-attr class=":prioritize :icon-with-text prioritizing:active"}}>
+      <i class="uk-icon-sort-amount-desc"></i>
+      <span>Prioritize</span>
+    </a>
+  </div>
+</div>

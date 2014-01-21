@@ -41,32 +41,31 @@ describe Api::ConversationsController do
       let :params do
         {
           format: :json,
-          organization_id: organization_id,
-          context: context,
+          organization: organization,
+          group: group,
           scope: scope,
-          group_id: group_id,
+          group: group,
         }
       end
 
-      let(:organization_id){ 'raceteam' }
-      let(:context)        { 'my' }
-      let(:scope)          { 'not_muted_conversations' }
-      let(:group_id)       { nil }
+      let(:organization){ 'raceteam' }
+      let(:group)       { 'my' }
+      let(:scope)       { 'not_muted_conversations' }
 
       def request!
         xhr :get, :index, params
       end
 
       context 'when not given an organization id' do
-        let(:organization_id){ nil }
+        let(:organization){ nil }
         it 'renders not acceptable' do
           request!
           expect(response.status).to eq 406
         end
       end
 
-      context 'when not given a context' do
-        let(:context){ nil }
+      context 'when not given a group' do
+        let(:group){ nil }
         it 'renders not acceptable' do
           request!
           expect(response.status).to eq 406
@@ -81,11 +80,11 @@ describe Api::ConversationsController do
         end
       end
 
-      context 'when not given an invalid context' do
-        let(:context){ 'poop' }
+      context 'when given an invalid group' do
+        let(:group){ 'poop' }
         it 'renders not acceptable' do
           request!
-          expect(response.status).to eq 406
+          expect(response.status).to eq 404
         end
       end
 
@@ -98,130 +97,179 @@ describe Api::ConversationsController do
       end
 
       context 'when given an invalid organization id' do
-        let(:organization_id){ 'h834jh54h54h534h' }
+        let(:organization){ 'h834jh54h54h534h' }
+        let(:group){ 'my' }
+        let(:scope){ 'not_muted_conversations' }
         it 'renders not found' do
           request!
           expect(response.status).to eq 404
         end
       end
 
-      context 'when given the context "group" but not given a group id' do
-        let(:context){ 'group' }
-        let(:group_id){ nil }
-        it "renders not acceptable" do
-          request!
-          expect(response.status).to eq 406
-        end
-      end
+      context 'when given a valid organization' do
+        let(:organization){ 'raceteam' }
 
-      context 'when given a valid organization id' do
-        let(:organization_id){ 'raceteam' }
-
-        let(:organization)       { double(:organization) }
-        let(:collection)         { double(:collection) }
-        let(:organization_groups){ double(:organization_groups)   }
-        let(:group)              { double(:group) }
-        let(:stub_chain)         { [] }
+        let(:organization_double) { double(:organization) }
+        let(:conversations_double){ double(:conversations) }
+        # let(:collection)         { double(:collection) }
+        # let(:organization_groups){ double(:organization_groups)   }
+        # let(:group)              { double(:group) }
+        # let(:stub_chain)         { [] }
 
         before do
-          expect(current_user.organizations).to receive(:find_by_slug!).with(organization_id).and_return(organization)
-          if context == 'group'
-            expect(organization).to receive(:groups).and_return(organization_groups)
-            expect(organization_groups).to receive(:find_by_email_address_tag!).with(group_id).and_return(group)
-            group.stub_chain(*stub_chain).and_return(collection)
-          else
-            organization.stub_chain(*stub_chain).and_return(collection)
-          end
-          expect(controller).to receive(:serialize).with(:conversations, collection).and_return({conversations: []})
-          request!
-          expect(response.status).to eq 200
+
+
+
+
+          # if context == 'group'
+          #   expect(organization).to receive(:groups).and_return(organization_groups)
+          #   expect(organization_groups).to receive(:find_by_email_address_tag!).with(group_id).and_return(group)
+          #   group.stub_chain(*stub_chain).and_return(collection)
+          # else
+          #   organization.stub_chain(*stub_chain).and_return(collection)
+          # end
+          # expect(controller).to receive(:serialize).with(:conversations, collection).and_return({conversations: []})
+
+          # expect(response.status).to eq 200
         end
 
-        context 'when given the context "my"' do
-          let(:context){ 'my' }
-          context 'and the scope "not_muted_conversations"' do
-            let(:scope){ 'not_muted_conversations'}
-            let(:stub_chain){ [:conversations, :my, :not_muted] }
-            it "calls organization.conversations.my.not_muted" do
-            end
+        context 'and the group "my"' do
+          let(:group){ 'my' }
+
+          let(:my_double){ double :my }
+          before do
+            expect(current_user.organizations).to receive(:find_by_slug!).with(organization).and_return(organization_double)
+            expect(organization_double).to receive(:my).and_return(my_double)
+            expect(my_double).to receive(scope.to_sym).and_return(conversations_double)
+            expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
+            request!
+            expect(response.status).to eq 200
           end
+
           context 'and the scope "muted_conversations"' do
-            let(:scope){ 'muted_conversations'}
-            let(:stub_chain){ [:conversations, :my, :muted] }
-            it "calls organization.conversations.my.muted" do
+            let(:scope){ 'muted_conversations' }
+            it 'calls organization.muted_conversations' do
             end
           end
-          context 'and the scope "all_task"' do
-            let(:scope){ 'all_task'}
-            let(:stub_chain){ [:tasks, :my, :all] }
-            it "calls organization.tasks.my.all" do
-            end
-          end
-          context 'and the scope "doing_tasks"' do
-            let(:scope){ 'doing_tasks'}
-            let(:stub_chain){ [:tasks, :my, :doing] }
-            it "calls organization.tasks.my.doing" do
-            end
-          end
-        end
-
-        context 'when given the context "ungrouped"' do
-          let(:context){ 'ungrouped' }
           context 'and the scope "not_muted_conversations"' do
-            let(:scope){ 'not_muted_conversations'}
-            let(:stub_chain){ [:conversations, :ungrouped, :not_muted] }
-            it "calls organization.conversations.ungrouped.not_muted" do
+            let(:scope){ 'not_muted_conversations' }
+            it 'calls organization.not_muted_conversations' do
             end
           end
-          context 'and the scope "muted_conversations"' do
-            let(:scope){ 'muted_conversations'}
-            let(:stub_chain){ [:conversations, :ungrouped, :muted] }
-            it "calls organization.conversations.ungrouped.muted" do
+          context 'and the scope "done_tasks"' do
+            let(:scope){ 'done_tasks' }
+            it 'calls organization.done_tasks' do
             end
           end
-          context 'and the scope "all_task"' do
-            let(:scope){ 'all_task'}
-            let(:stub_chain){ [:tasks, :ungrouped, :all] }
-            it "calls organization.tasks.ungrouped.all" do
+          context 'and the scope "not_done_tasks"' do
+            let(:scope){ 'not_done_tasks' }
+            it 'calls organization.not_done_tasks' do
             end
           end
-          context 'and the scope "doing_tasks"' do
-            let(:scope){ 'doing_tasks'}
-            let(:stub_chain){ [:tasks, :ungrouped, :doing] }
-            it "calls organization.tasks.ungrouped.doing" do
+          context 'and the scope "done_doing_tasks"' do
+            let(:scope){ 'done_doing_tasks' }
+            it 'calls organization.done_doing_tasks' do
             end
           end
-
+          context 'and the scope "not_done_doing_tasks"' do
+            let(:scope){ 'not_done_doing_tasks' }
+            it 'calls organization.not_done_doing_tasks' do
+            end
+          end
         end
 
-        context 'when given the context "group"' do
-          let(:context){ 'group' }
-          let(:group_id){ 'electronics' }
+        context 'and the group "ungrouped"' do
+          let(:group){ 'ungrouped' }
+
+          let(:ungrouped_double){ double :ungrouped }
+          before do
+            expect(current_user.organizations).to receive(:find_by_slug!).with(organization).and_return(organization_double)
+            expect(organization_double).to receive(:ungrouped).and_return(ungrouped_double)
+            expect(ungrouped_double).to receive(scope.to_sym).and_return(conversations_double)
+            expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
+            request!
+            expect(response.status).to eq 200
+          end
+
+          context 'and the scope "muted_conversations"' do
+            let(:scope){ 'muted_conversations' }
+            it 'calls organization.muted_conversations' do
+            end
+          end
           context 'and the scope "not_muted_conversations"' do
-            let(:scope){ 'not_muted_conversations'}
-            let(:stub_chain){ [:conversations, :not_muted] }
-            it "calls group.conversations.not_muted" do
+            let(:scope){ 'not_muted_conversations' }
+            it 'calls organization.not_muted_conversations' do
             end
           end
-          context 'and the scope "muted_conversations"' do
-            let(:scope){ 'muted_conversations'}
-            let(:stub_chain){ [:conversations, :muted] }
-            it "calls group.conversations.muted" do
+          context 'and the scope "done_tasks"' do
+            let(:scope){ 'done_tasks' }
+            it 'calls organization.done_tasks' do
             end
           end
-          context 'and the scope "all_task"' do
-            let(:scope){ 'all_task'}
-            let(:stub_chain){ [:tasks, :all] }
-            it "calls group.tasks.all" do
+          context 'and the scope "not_done_tasks"' do
+            let(:scope){ 'not_done_tasks' }
+            it 'calls organization.not_done_tasks' do
             end
           end
-          context 'and the scope "doing_tasks"' do
-            let(:scope){ 'doing_tasks'}
-            let(:stub_chain){ [:tasks, :doing] }
-            it "calls group.tasks.doing" do
+          context 'and the scope "done_doing_tasks"' do
+            let(:scope){ 'done_doing_tasks' }
+            it 'calls organization.done_doing_tasks' do
+            end
+          end
+          context 'and the scope "not_done_doing_tasks"' do
+            let(:scope){ 'not_done_doing_tasks' }
+            it 'calls organization.not_done_doing_tasks' do
             end
           end
         end
+
+        context 'and the group is a group name' do
+          let(:group){ 'electronics' }
+
+          let(:group_double){ double :group }
+          before do
+            expect(current_user.organizations).to receive(:find_by_slug!).with(organization).and_return(organization_double)
+            groups_double = double :groups
+            expect(organization_double).to receive(:groups).and_return(groups_double)
+            expect(groups_double).to receive(:find_by_slug!).with(group).and_return(group_double)
+            expect(group_double).to receive(scope.to_sym).and_return(conversations_double)
+            expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
+            request!
+            expect(response.status).to eq 200
+          end
+
+          context 'and the scope "muted_conversations"' do
+            let(:scope){ 'muted_conversations' }
+            it 'calls organization.muted_conversations' do
+            end
+          end
+          context 'and the scope "not_muted_conversations"' do
+            let(:scope){ 'not_muted_conversations' }
+            it 'calls organization.not_muted_conversations' do
+            end
+          end
+          context 'and the scope "done_tasks"' do
+            let(:scope){ 'done_tasks' }
+            it 'calls organization.done_tasks' do
+            end
+          end
+          context 'and the scope "not_done_tasks"' do
+            let(:scope){ 'not_done_tasks' }
+            it 'calls organization.not_done_tasks' do
+            end
+          end
+          context 'and the scope "done_doing_tasks"' do
+            let(:scope){ 'done_doing_tasks' }
+            it 'calls organization.done_doing_tasks' do
+            end
+          end
+          context 'and the scope "not_done_doing_tasks"' do
+            let(:scope){ 'not_done_doing_tasks' }
+            it 'calls organization.not_done_doing_tasks' do
+            end
+          end
+        end
+
 
       end
     end

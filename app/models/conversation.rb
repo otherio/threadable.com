@@ -12,6 +12,7 @@ class Conversation < ActiveRecord::Base
   def self.default_scope
     order('conversations.updated_at DESC')
   end
+
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
   scope :task, ->{ where(type: 'Task') }
   scope :not_task, ->{ where(type: nil) }
@@ -24,6 +25,13 @@ class Conversation < ActiveRecord::Base
     user_id = Conversation.sanitize(user_id)
     joins("LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id AND m.user_id = #{user_id}").where('m.user_id IS NULL')
   }
+
+  scope :for_user, ->(user_id){
+    joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
+    joins('LEFT JOIN group_memberships ON conversation_groups.group_id = group_memberships.group_id').
+    where('(group_memberships.user_id = ? and conversation_groups.active = \'t\') or conversation_groups.group_id is null', user_id)
+  }
+
 
   acts_as_url :subject, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 

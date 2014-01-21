@@ -10,6 +10,10 @@ class Covered::Task < Covered::Conversation
 
   let(:doers){ Doers.new(self) }
 
+  def being_done_by? user
+    doers.include? user
+  end
+
   def done! now=Time.now
     return false if done?
     Covered.transaction do

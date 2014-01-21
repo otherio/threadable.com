@@ -1,0 +1,7 @@
+<ol class="uk-list done">
+  {{#each task in controller}}
+    {{partial 'tasks/list/member'}}
+  {{else}}
+    <h4>No Done Tasks</h4>
+  {{/each}}
+</ol>

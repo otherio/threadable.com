@@ -1,24 +1,27 @@
-Covered.ComposeController = Ember.ObjectController.extend({
-  needs: ['organization', 'navbar'],
+Covered.ComposeController = Ember.Controller.extend({
+  needs: ['organization', 'group', 'navbar'],
 
   organization: Ember.computed.alias('controllers.organization'),
 
   conversation: null,
   message: null,
-  groups: null,
+  groups: Ember.ArrayProxy.create({content:[]}),
   isTask: false,
   subject: null,
   body: null,
   error: null,
 
   addGroup: function(group) {
-    var groups = this.get('groups') || [];
-    if (groups.indexOf(group) === -1) groups.push(group);
-    this.set('groups', groups);
+    var groups = this.get('groups');
+    if (typeof group === 'string') group = this.get('organization.groups').findBy('slug', group);
+    if (!group) return;
+    if (groups.indexOf(group) === -1) groups.pushObject(group);
   },
 
   actions: {
     reset: function() {
+      this.get('groups').clear();
+      this.addGroup(this.get('controllers.group.model'));
       this.set('subject', null);
       this.set('body', null);
       this.set('error', null);
@@ -32,12 +35,12 @@ Covered.ComposeController = Ember.ObjectController.extend({
     sendMessage: function() {
       var
         organization     = this.get('organization'),
-        conversation     = this.get('conversation'),
-        message          = this.get('message'),
-        subject          = this.get('subject'),
         organizationSlug = organization.get('slug'),
+        conversation     = Covered.Conversation.create(),
+        message          = Covered.Message.create(),
+        subject          = this.get('subject'),
         isTask           = this.get('isTask'),
-        groups           = this.get('groups') || [];
+        groups           = this.get('groups').toArray();
 
       conversation.set('subject', subject);
       conversation.set('organizationSlug', organizationSlug);
@@ -48,7 +51,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
       message.set('subject', subject);
       message.set('body', this.get('body'));
       message.set('bodyPlain', this.get('body'));
-      message.set('bodyHtml', this.get('message').get('bodyAsHtml'));
+      message.set('bodyHtml', message.get('bodyAsHtml'));
 
       conversation.saveRecord().then(
         conversationSaved.bind(this),
@@ -73,7 +76,7 @@ Covered.ComposeController = Ember.ObjectController.extend({
         conversation.set('organization', organization);
         Covered.Conversation.cache(conversation);
         this.send('reset');
-        this.send('prependConversation', conversation);
+        this.send('addConversation', conversation);
         this.send('transitionToConversation', conversation);
       }
 

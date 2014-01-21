@@ -11,7 +11,7 @@ class Covered::CurrentUser < Covered::User
     @user_record ||= ::User.find(user_id)
   rescue ActiveRecord::RecordNotFound
     covered.current_user_id = nil
-    raise Covered::AuthenticationError, "unable to find user with id: #{user_id}"
+    raise Covered::CurrentUserNotFound, "unable to find user with id: #{user_id}"
   end
 
 end

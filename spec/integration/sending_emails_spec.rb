@@ -37,10 +37,10 @@ describe 'sending emails' do
         expect( email.header['Subject'].to_s     ).to eq "[✔][RaceTeam] layup body carbon"
 
         expect( email.header['List-ID'].to_s      ).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
-        expect( email.header['List-Archive'].to_s ).to eq "<#{my_conversations_url(organization)}>"
+        expect( email.header['List-Archive'].to_s ).to eq "<#{conversations_url(organization,'my')}>"
 
         expect( email.header["List-Unsubscribe"].to_s ).to match %r{/raceteam/unsubscribe/}
-        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{compose_my_conversation_url(organization)}>"
+        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@127.0.0.1>, <#{compose_conversation_url(organization, 'my')}>"
       end
 
       context "sync" do

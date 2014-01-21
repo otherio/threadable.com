@@ -1,4 +1,4 @@
-Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, {
+Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
   needs: ['organization', 'compose', 'conversation'],
 
   focus:           Ember.computed.alias('controllers.organization.focus'),
@@ -6,7 +6,6 @@ Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, {
   conversation:    Ember.computed.alias('controllers.conversation').readOnly(),
 
   group: null,
-  composeTarget: null,
   composing: false,
 
   navbarStyle: function() {
@@ -34,10 +33,6 @@ Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, {
       this.set('focus', 'conversations');
       this.set('composing', false);
       this.send('transitionUp');
-    },
-    goToCompose: function() {
-      // this.send('goToCompose');
-      return true;
     },
     composeTask: function() {
       this.get('newConversation').send('composeTask');

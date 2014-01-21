@@ -17,6 +17,7 @@ $.ajaxSetup({
   }
 });
 
+
 Covered = Ember.Application.create({
   // LOG_MODULE_RESOLVER: true,
   // LOG_ACTIVE_GENERATION: true,

@@ -14,6 +14,7 @@ class ConversationsSerializer < Serializer
       message_summary:    conversation.messages.latest.try(:body_plain).try(:[], 0..50),
       group_ids:          conversation.groups.all.map(&:id),
       doers:              conversation.task? ? serialize(:doers, conversation.doers.all) : [],
+      doing:              conversation.task? ? conversation.doers.include?(current_user) : nil,
       done_at:            conversation.task? ? conversation.done_at : nil,
       done:               conversation.task? ? conversation.done? : nil,
       muted:              conversation.muted?,

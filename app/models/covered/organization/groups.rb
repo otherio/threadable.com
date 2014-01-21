@@ -16,9 +16,14 @@ class Covered::Organization::Groups < Covered::Groups
   def find_by_email_address_tag email_address_tag
     group_for (scope.where(email_address_tag: email_address_tag).first or return)
   end
+  alias_method :find_by_slug, :find_by_email_address_tag
 
   def find_by_email_address_tag! email_address_tag
     find_by_email_address_tag(email_address_tag) or raise Covered::RecordNotFound, "unable to find group with email address tag #{email_address_tag.inspect}"
+  end
+
+  def find_by_slug! slug
+    find_by_slug(slug) or raise Covered::RecordNotFound, "unable to find group with slug #{slug.inspect}"
   end
 
   def find_by_email_address_tags email_address_tags

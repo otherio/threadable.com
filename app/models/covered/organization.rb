@@ -51,6 +51,7 @@ class Covered::Organization < Covered::Model
     "#{name} <#{list_id}>"
   end
 
+  # collections
   let(:members)        { Covered::Organization::Members       .new(self) }
   let(:conversations)  { Covered::Organization::Conversations .new(self) }
   let(:messages)       { Covered::Organization::Messages      .new(self) }
@@ -58,6 +59,20 @@ class Covered::Organization < Covered::Model
   let(:incoming_emails){ Covered::Organization::IncomingEmails.new(self) }
   let(:held_messages)  { Covered::Organization::HeldMessages  .new(self) }
   let(:groups)         { Covered::Organization::Groups        .new(self) }
+
+  # scopes
+  include Covered::Conversation::Scopes
+  private
+  def conversations_scope
+    organization_record.conversations
+  end
+  def tasks_scope
+    organization_record.tasks
+  end
+  public
+  let(:my)       { Covered::Organization::My       .new(self) }
+  let(:ungrouped){ Covered::Organization::Ungrouped.new(self) }
+
 
   # TODO remove me in favor of a rails json view file
   def as_json options=nil

@@ -111,17 +111,15 @@ Covered.Conversation.reopenClass({
     return promise;
   },
 
-  _fetch: function(organization, context, scope, group_slug) {
+  fetchByGroupAndScope: function(organization, groupSlug, scope) {
     var
       promise,
-      organizationSlug = organization.get('slug'),
       setOrganizationAndStoreInCache = this._setOrganizationAndStoreInCache.bind(this);
 
     promise = this.fetch({
-      organization_id: organizationSlug,
-      context: context,
+      organization: organization.get('slug'),
+      group: groupSlug,
       scope: scope,
-      group_id: group_slug
     });
 
     promise.then(function(conversations) {
@@ -131,43 +129,5 @@ Covered.Conversation.reopenClass({
     });
 
     return promise;
-  },
-
-  myNotMutedConversations: function(organization) {
-    return this._fetch(organization, 'my', 'not_muted_conversations');
-  },
-  myMutedConversations: function(organization) {
-    return this._fetch(organization, 'my', 'muted_conversations');
-  },
-  myAllTask: function(organization) {
-    return this._fetch(organization, 'my', 'all_task');
-  },
-  myDoingTasks: function(organization) {
-    return this._fetch(organization, 'my', 'doing_tasks');
-  },
-  ungroupedNotMutedConversations: function(organization) {
-    return this._fetch(organization, 'ungrouped', 'not_muted_conversations');
-  },
-  ungroupedMutedConversations: function(organization) {
-    return this._fetch(organization, 'ungrouped', 'muted_conversations');
-  },
-  ungroupedAllTask: function(organization) {
-    return this._fetch(organization, 'ungrouped', 'all_task');
-  },
-  ungroupedDoingTasks: function(organization) {
-    return this._fetch(organization, 'ungrouped', 'doing_tasks');
-  },
-  groupNotMutedConversations: function(organization, group_slug) {
-    return this._fetch(organization, 'group', 'not_muted_conversations', group_slug);
-  },
-  groupMutedConversations: function(organization, group_slug) {
-    return this._fetch(organization, 'group', 'muted_conversations', group_slug);
-  },
-  groupAllTask: function(organization, group_slug) {
-    return this._fetch(organization, 'group', 'all_task', group_slug);
-  },
-  groupDoingTasks: function(organization, group_slug) {
-    return this._fetch(organization, 'group', 'doing_tasks', group_slug);
-  },
-
+  }
 });

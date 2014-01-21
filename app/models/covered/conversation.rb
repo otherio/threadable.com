@@ -30,10 +30,7 @@ class Covered::Conversation < Covered::Model
     persisted?
     new_record?
     errors
-    muters
   }, to: :conversation_record
-
-  private :muters
 
   let(:organization){ covered.organizations.find_by_id(organization_id) }
   let(:creator     ){ Creator.new(self) if creator_id }
@@ -45,13 +42,13 @@ class Covered::Conversation < Covered::Model
 
   def mute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
-    muters << covered.current_user.user_record
+    conversation_record.muters << covered.current_user.user_record
     self
   end
 
   def unmute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
-    muters.delete(covered.current_user.user_record)
+    conversation_record.muters.delete(covered.current_user.user_record)
     self
   end
 
@@ -61,7 +58,7 @@ class Covered::Conversation < Covered::Model
   end
 
   def muted_by? user
-    muters.map(&:id).include?(user.user_id)
+    conversation_record.muters.map(&:id).include?(user.user_id)
   end
 
   def update attributes

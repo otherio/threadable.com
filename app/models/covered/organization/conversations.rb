@@ -8,9 +8,6 @@ class Covered::Organization::Conversations < Covered::Conversations
   end
   attr_reader :organization
 
-  let(:ungrouped){ Covered::Organization::Conversations::Ungrouped.new(organization) }
-  let(:my)       { Covered::Organization::Conversations::My       .new(organization) }
-
   def muted
     return [] if covered.current_user_id.nil?
     conversations_for muted_scope
@@ -59,6 +56,3 @@ class Covered::Organization::Conversations < Covered::Conversations
   end
 
 end
-
-require_dependency 'covered/organization/conversations/ungrouped'
-require_dependency 'covered/organization/conversations/my'

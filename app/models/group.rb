@@ -31,4 +31,8 @@ class Group < ActiveRecord::Base
     email_address_tag
   end
 
+  def slug
+    email_address_tag
+  end
+
 end

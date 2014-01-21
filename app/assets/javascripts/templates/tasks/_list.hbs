@@ -1,0 +1,19 @@
+<div {{bind-attr class=":tasks-list showingDone"}}>
+
+  {{partial 'conversations/list/controls'}}
+  {{partial 'tasks/list/controls'}}
+
+  <div class="scrollable">
+    <div class="done">
+      {{outlet doneTasks}}
+      <div class="list-divider">
+        <i class="uk-icon-arrow-circle-o-up"></i>
+        Done Tasks
+      </div>
+    </div>
+
+    <div class="not-done">
+      {{outlet notDoneTasks}}
+    </div>
+  </div>
+</div>

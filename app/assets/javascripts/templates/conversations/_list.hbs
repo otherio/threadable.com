@@ -1,0 +1,10 @@
+<div class="conversations-list">
+
+  {{partial 'conversations/list/controls'}}
+
+  <ol class="uk-list scrollable">
+    {{#each conversation in controller}}
+      {{partial 'conversations/list/member'}}
+    {{/each}}
+  </ol>
+</div>

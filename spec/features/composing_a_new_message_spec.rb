@@ -51,12 +51,12 @@ feature "Composing a new message" do
     within_element 'the conversations pane' do
       click_on 'Conversations'
     end
-    expect(page).to be_at my_conversations_url('raceteam')
+    expect(page).to be_at conversations_url('raceteam','my')
     send_new_message!
-    expect(page).to be_at my_conversation_url('raceteam','hey-party-people')
+    expect(page).to be_at conversation_url('raceteam','my','hey-party-people')
     expect_new_message_to_be_created!
     send_reply!
-    expect(page).to be_at my_conversation_url('raceteam','hey-party-people')
+    expect(page).to be_at conversation_url('raceteam','my','hey-party-people')
     expect_reply_to_be_created!
   end
 
@@ -67,12 +67,12 @@ feature "Composing a new message" do
     within_element 'the conversations pane' do
       click_on 'Conversations'
     end
-    expect(page).to be_at ungrouped_conversations_url('raceteam')
+    expect(page).to be_at conversations_url('raceteam', 'ungrouped')
     send_new_message!
-    expect(page).to be_at ungrouped_conversation_url('raceteam','hey-party-people')
+    expect(page).to be_at conversation_url('raceteam', 'ungrouped','hey-party-people')
     expect_new_message_to_be_created!
     send_reply!
-    expect(page).to be_at ungrouped_conversation_url('raceteam','hey-party-people')
+    expect(page).to be_at conversation_url('raceteam', 'ungrouped','hey-party-people')
     expect_reply_to_be_created!
   end
 
@@ -83,12 +83,12 @@ feature "Composing a new message" do
     within_element 'the conversations pane' do
       click_on 'Conversations'
     end
-    expect(page).to be_at group_conversations_url('raceteam', 'fundraising')
+    expect(page).to be_at conversations_url('raceteam', 'fundraising')
     send_new_message!
-    expect(page).to be_at group_conversation_url('raceteam', 'fundraising','hey-party-people')
+    expect(page).to be_at conversation_url('raceteam', 'fundraising','hey-party-people')
     expect_new_message_to_be_created!
     send_reply!
-    expect(page).to be_at group_conversation_url('raceteam', 'fundraising','hey-party-people')
+    expect(page).to be_at conversation_url('raceteam', 'fundraising','hey-party-people')
     expect_reply_to_be_created!
   end
 end

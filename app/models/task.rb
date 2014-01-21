@@ -17,6 +17,7 @@ class Task < Conversation
 
   acts_as_list :scope => :organization
 
+
   scope :done, ->{ where('conversations.done_at IS NOT NULL') }
   scope :not_done, ->{ where('conversations.done_at IS NULL') }
   scope :with_doers, ->{ includes(:doers).where('task_doers.id IS NOT NULL').references(:doers) }
@@ -32,6 +33,7 @@ class Task < Conversation
   scope :not_doing_by, ->(user_id){
     joins("LEFT JOIN task_doers ON task_doers.task_id = conversations.id AND task_doers.user_id = #{user_id}").where('task_doers.user_id IS NULL')
   }
+
 
 
   before_validation :set_position

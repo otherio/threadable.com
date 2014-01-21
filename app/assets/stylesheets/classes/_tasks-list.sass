@@ -1,42 +1,6 @@
 .tasks-list
 
-  color: $light-grey-color
-
-  .scrollable
-    position: absolute
-    left: 0
-    right: 0
-    bottom: 0
-
-  .controls, .task-controls
-    > a
-      &, &:hover, &:visited, &:active
-        &.active
-          color: $yellow-color
-
-  .controls
-    padding-top: 5px
-    background-color: $grey-color
-    font-size: 0
-    overflow: hidden
-    white-space: nowrap
-    > a
-      display: inline-block
-      height: 50px
-      width: 25%
-      text-align: center
-      &, &:hover, &:visited, &:active
-        text-decoration: none
-        color: $white-color
-      > *
-        display: block
-      > i
-        font-size: 30px
-      > span
-        font-size: 10px
-
   .task-controls
-    display: none
     overflow: hidden
     padding: 5px 15px
     background-color: $lighter-grey-color
@@ -48,7 +12,7 @@
       border: 1px solid transparent
     color: $dark-grey-color
 
-    .my-tasks, .all-tasks
+    .tasks, .doing-tasks
       border: 1px solid $light-grey-color
       background: rgba(0,0,0,0.1)
       background-color: white
@@ -58,94 +22,56 @@
         background-color: #dadada
         color: lighten($dark-grey-color, 40%)
 
-    .my-tasks
-      +border-left-radius(4px)
-    .all-tasks
-      position: relative
-      left: -1px
-      +border-right-radius(4px)
-
-  .all-conversations, .done-tasks
-    ol
-      position: relative
-
-    ol, li
-      margin: 0
-      padding: 0
-
-    li.conversation
-      border-bottom: 1px solid $light-grey-color
-
-      > a
-        display: block
-        text-decoration: none
-        &.active
-          background-color: $faint-blue-color
-
-
-  .all-conversations
-    li.muted
-      display: none
-
-  .done-tasks
-    display: none
-    .list-divider
-      color: black
-      padding: 0 15px
-
-    li.task
-      background-color: $faint-yellow-color
-
-  .empty-list-message
-    display: none
-
-
-  // state changing
-
-  .conversations-mode
-    .scrollable
-      top: 55px
-
-
-  .tasks-mode
-    .scrollable
-      top: 117px
-
-    .task-controls
-      display: block
-
-    .all-conversations
-      .conversation
+    .toggle-done
+      min-width: 56px
+      .hide
         display: none
-      .task
+      .show
         display: block
-        &.done
+      &.active
+        .hide
+          display: block
+        .show
           display: none
 
-    &.all-tasks-mode
+  .list-divider
+    padding: 0 5px 0 15px
 
-    &.my-tasks-mode
-      .not-my-task
-        display: none
+  .done, .not-done
+    > ol
+      &, > li
+        margin: 0
+        padding: 0
+      > li
+        $height: 60px
+        $padding: 5px
 
-    &.show-done
+        position: relative
+        overflow: hidden
+        color: black
+        border-bottom: 1px solid $light-grey-color
 
-      .done-tasks
-        display: block
+        > a
+          display: block
+          height: $height - $padding - $padding
+          padding: $padding $padding $padding 15px
 
-    &.prioritizing
+        .arrow
+          position: absolute
+          top: 0
+          right: 15px
+          bottom: 0
+          height: 100%
+          line-height: $height
+          font-size: 120%
 
 
+  .done
+    display: none
+    > ol > li
+      background-color: $faint-yellow-color
 
-  .muted-mode
-    .scrollable
-      top: 55px
-
-    .muted
+  &.showing-done
+    .done
       display: block
-    .not-muted
-      display: none
 
-  .show-no-conversations .all-conversations .empty-list-message,
-  .show-no-done-tasks .done-tasks .empty-list-message
-    display: block

@@ -4,6 +4,10 @@ class Covered::Groups < Covered::Collection
     groups_for scope
   end
 
+  def my
+    groups_for scope.joins(:group_members).where(group_memberships:{ user_id: covered.current_user_id })
+  end
+
   def include? group
     !!scope.where(id: group.group_id).exists?
   end

@@ -218,7 +218,7 @@ describe "covered", fixtures: false do
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.html_content).to include "feedback"
       expect(email.urls.map(&:to_s)).to include organization_url(htp)
-      expect(email.urls.map(&:to_s)).to include my_conversation_url(htp, fat_cops, anchor: "message-#{msg1.id}")
+      expect(email.urls.map(&:to_s)).to include conversation_url(htp, 'my', fat_cops, anchor: "message-#{msg1.id}")
       expect(email.organization_unsubscribe_url).to be_present
 
       sent_emails.clear
@@ -270,7 +270,7 @@ describe "covered", fixtures: false do
       expect(email.html_content).to include "<p>I like to pinch their belly buttons</p>"
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.urls.map(&:to_s)).to include organization_url(htp)
-      expect(email.urls.map(&:to_s)).to include my_conversation_url(htp, fat_cops, anchor: "message-#{msg2.id}")
+      expect(email.urls.map(&:to_s)).to include conversation_url(htp, 'my', fat_cops, anchor: "message-#{msg2.id}")
       expect(email.organization_unsubscribe_url).to be_present
     end
   end

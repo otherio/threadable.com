@@ -331,8 +331,8 @@ describe "processing incoming emails 2" do
   let(:expected_sent_email_smtp_envelope_from) { 'raceteam@127.0.0.1' }
   let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
   let(:expected_sent_email_list_id)            { expected_organization.formatted_list_id }
-  let(:expected_sent_email_list_archive)       { "<#{my_conversations_url(expected_organization)}>" }
-  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{compose_my_conversation_url(expected_organization)}>" }
+  let(:expected_sent_email_list_archive)       { "<#{conversations_url(expected_organization, 'my')}>" }
+  let(:expected_sent_email_list_post)          { "<mailto:#{expected_organization.email_address}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
   let(:expected_sent_email_body_html)          { body_html }
   let(:expected_sent_email_body_plain)         { body_plain }
   let(:expected_groups)                        { [] }

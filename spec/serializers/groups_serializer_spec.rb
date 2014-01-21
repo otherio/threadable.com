@@ -12,7 +12,6 @@ describe GroupsSerializer do
     it do
       should eq(
         id:          electronics.id,
-        param:       "electronics",
         slug:        "electronics",
         name:        "Electronics",
         email_address_tag: "electronics",
@@ -38,7 +37,6 @@ describe GroupsSerializer do
       should eq [
         {
           id:          electronics.id,
-          param:       "electronics",
           slug:        "electronics",
           name:        "Electronics",
           email_address_tag: "electronics",
@@ -55,7 +53,6 @@ describe GroupsSerializer do
           current_user_is_a_member: false,
         },{
           id:          fundraising.id,
-          param:       "fundraising",
           slug:        "fundraising",
           name:        "Fundraising",
           email_address_tag: "fundraising",
@@ -82,7 +79,6 @@ describe GroupsSerializer do
         should eq [
           {
             id:          electronics.id,
-            param:       "electronics",
             slug:        "electronics",
             name:        "Electronics",
             email_address_tag: "electronics",
@@ -99,7 +95,6 @@ describe GroupsSerializer do
             current_user_is_a_member: false,
           },{
             id:          fundraising.id,
-            param:       "fundraising",
             slug:        "fundraising",
             name:        "Fundraising",
             email_address_tag: "fundraising",

@@ -2,9 +2,29 @@ class Api::ConversationsController < ApiController
 
   # get /api/conversations
   def index
-    params.require(:organization_id)
-    params.require(:context)
-    params.require(:scope)
+    organization_slug = params.require(:organization)
+    group_slug        = params.require(:group)
+    scope             = params.require(:scope)
+
+    organization = current_user.organizations.find_by_slug!(organization_slug)
+
+    group = case group_slug
+    when 'my';        organization.my
+    when 'ungrouped'; organization.ungrouped
+    else; organization.groups.find_by_slug!(group_slug)
+    end
+
+    conversations = case scope
+    when 'muted_conversations';     group.muted_conversations
+    when 'not_muted_conversations'; group.not_muted_conversations
+    when 'done_tasks';              group.done_tasks
+    when 'not_done_tasks';          group.not_done_tasks
+    when 'done_doing_tasks';        group.done_doing_tasks
+    when 'not_done_doing_tasks';    group.not_done_doing_tasks
+    else
+      raise ActionController::ParameterMissing, "unknown scope: #{scope.inspect}"
+    end
+
     render json: serialize(:conversations, conversations)
   end
 
@@ -80,45 +100,6 @@ class Api::ConversationsController < ApiController
 
   def conversation
     @conversation ||= organization.conversations.find_by_slug!(params[:id])
-  end
-
-
-
-  def conversations
-    @conversations ||= begin
-      organization
-      group = organization.groups.find_by_email_address_tag!(params.require(:group_id)) if params[:context] == 'group'
-
-      case [params[:context], params[:scope]]
-      when %w{ my not_muted_conversations }
-        organization.conversations.my.not_muted
-      when %w{ my muted_conversations }
-        organization.conversations.my.muted
-      when %w{ my all_task }
-        organization.tasks.my.all
-      when %w{ my doing_tasks }
-        organization.tasks.my.doing
-      when %w{ ungrouped not_muted_conversations }
-        organization.conversations.ungrouped.not_muted
-      when %w{ ungrouped muted_conversations }
-        organization.conversations.ungrouped.muted
-      when %w{ ungrouped all_task }
-        organization.tasks.ungrouped.all
-      when %w{ ungrouped doing_tasks }
-        organization.tasks.ungrouped.doing
-      when %w{ group not_muted_conversations }
-        group.conversations.not_muted
-      when %w{ group muted_conversations }
-        group.conversations.muted
-      when %w{ group all_task }
-        group.tasks.all
-      when %w{ group doing_tasks }
-        group.tasks.doing
-      else
-        raise ActionController::ParameterMissing,
-          "unknown context / scope combination: #{params[:context].inspect} #{params[:scope].inspect}"
-      end
-    end
   end
 
 end

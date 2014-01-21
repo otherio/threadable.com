@@ -1,0 +1,43 @@
+<li class="conversation">
+  {{#link-to conversationRoute organizationSlug groupSlug conversation.slug class="not-link"}}
+
+    <section class="icon">
+      {{#if conversation.task}}
+        <i class="uk-icon-check"></i>
+      {{else}}
+        <i class="uk-icon-comment-o"></i>
+      {{/if}}
+    </section>
+
+    <section class="line line-1">
+      <span class="updated-at uk-float-right">{{date conversation.updatedAt}}</span>
+      <span class="uk-float-left">
+        <span class="participant-names">{{conversation.participantNamesString}}</span>
+        <span class="number-of-messages">({{conversation.numberOfMessages}})</span>
+      </span>
+    </section>
+
+    <section class="line line-2">
+      <span class="subject">{{conversation.subject}}</span>
+    </section>
+
+    <section class="line line-3">
+      <span class="groups">
+        {{#each group in conversation.groups}}
+          <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
+        {{/each}}
+        <i class="uk-icon-chevron-right arrow"></i>
+      </span>
+      {{#if conversation.messageSummary}}
+        <span class="message-summary">
+          {{conversation.messageSummary}}
+        </span>
+      {{else}}
+        <span class="message-summary no-message-summary">
+          no messages
+        </span>
+      {{/if}}
+    </section>
+
+  {{/link-to}}
+</li>

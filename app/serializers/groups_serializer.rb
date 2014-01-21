@@ -3,8 +3,7 @@ class GroupsSerializer < Serializer
   def serialize_record group
     {
       id:                           group.id,
-      param:                        group.to_param,
-      slug:                         group.to_param,
+      slug:                         group.slug,
       name:                         group.name,
       email_address_tag:            group.email_address_tag,
       color:                        group.color,

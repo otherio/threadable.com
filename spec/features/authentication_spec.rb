@@ -55,20 +55,20 @@ feature "Authentication" do
 
   context "with a redirect" do
     # pending "breaks circle"
-    before { visit sign_in_url + "?r=" + URI::encode(compose_my_conversation_url('raceteam')) }
+    before { visit sign_in_url + "?r=" + URI::encode(compose_conversation_url('raceteam', 'my')) }
 
     scenario %(A user with an account and a password can sign in) do
       fill_in "Email", with: "alice@ucsd.example.com"
       fill_in "Password", with: "password"
       click_button "Sign in"
       expect_to_be_signed_in_as! "Alice Neilson"
-      expect(page).to be_at compose_my_conversation_url('raceteam')
+      expect(page).to be_at compose_conversation_url('raceteam', 'my')
     end
   end
 
   context "retrying a transition" do
     # pending "breaks circle"
-    before { visit compose_my_conversation_url('raceteam') }
+    before { visit compose_conversation_url('raceteam', 'my') }
 
     scenario %(A user with an account and a password can sign in) do
       expect(page).to have_selector ".sign-in-button"
@@ -76,7 +76,7 @@ feature "Authentication" do
       fill_in "Password", with: "password"
       click_button "Sign in"
       expect_to_be_signed_in_as! "Alice Neilson"
-      expect(page).to be_at compose_my_conversation_url('raceteam')
+      expect(page).to be_at compose_conversation_url('raceteam', 'my')
     end
   end
 end

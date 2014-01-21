@@ -10,6 +10,7 @@ class Covered::Group < Covered::Model
   delegate *%w{
     id
     to_param
+    slug
     name
     email_address_tag
     color
@@ -23,9 +24,23 @@ class Covered::Group < Covered::Model
     group_record.id
   end
 
+  # collections
   let(:members){ Members.new(self) }
   let(:conversations){ Conversations.new(self) }
   let(:tasks){ Tasks.new(self) }
+
+
+  # scopes
+  include Covered::Conversation::Scopes
+  private
+  def conversations_scope
+    group_record.conversations
+  end
+  def tasks_scope
+    group_record.tasks
+  end
+  public
+
 
   def organization_record
     group_record.organization

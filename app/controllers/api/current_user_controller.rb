@@ -5,6 +5,9 @@ class Api::CurrentUserController < ApiController
   # GET /api/users/current
   def show
     render json: serialize(:current_user, current_user)
+  rescue Covered::CurrentUserNotFound
+    sign_out!
+    render json: serialize(:current_user, nil)
   end
 
   # authenticate

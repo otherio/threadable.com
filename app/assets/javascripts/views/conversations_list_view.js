@@ -13,11 +13,13 @@ Covered.ConversationsListView = Ember.View.extend({
   ungroupedConversations: function() { return this.get('type') == 'ungrouped'; }.property('type'),
   groupConversations:     function() { return this.get('type') == 'group';     }.property('type'),
 
+  listOfConversations: function() { return /conversations/i.test(this.get('mode')); }.property('mode'),
+  listOfTasks:         function() { return         /tasks/i.test(this.get('mode')); }.property('mode'),
+
   listTypeClassname: function() {
-    var mode = this.get('mode');
-    if (/conversations/i.test(mode)) return 'list-of-conversations';
-    if (/task/i.test(mode))          return 'list-of-tasks';
-  }.property('mode'),
+    if (this.get('listOfConversations')) return 'list-of-conversations';
+    if (this.get('listOfTasks'))         return 'list-of-tasks';
+  }.property('listOfConversations', 'listOfTasks'),
 
   conversations: function() {
     var conversationsCacheKey = this.get('context.conversationsCacheKey');

@@ -2,334 +2,119 @@ require 'spec_helper'
 
 describe 'getting conversations' do
 
-
-  # org.conversations.not_muted
-  # org.conversations.muted
-  # org.tasks.all
-  # org.tasks.doing
-
-  # org.conversations.my.not_muted
-  # org.conversations.my.muted
-  # org.tasks.my.all
-  # org.tasks.my.doing
-
-  # org.conversations.ungrouped.not_muted
-  # org.conversations.ungrouped.muted
-  # org.tasks.ungrouped.all
-  # org.tasks.ungrouped.doing
-
-  # group.conversations.my.not_muted
-  # group.conversations.my.muted
-  # group.tasks.my.all
-  # group.tasks.my.doing
+  # organization.       my.    muted_conversations
+  # organization.       my.not_muted_conversations
+  # organization.       my.    done_doing_tasks
+  # organization.       my.not_done_doing_tasks
+  # organization.       my.    done_not_doing_task
+  # organization.       my.not_done_not_doing_task
+  # organization.ungrouped.    muted_conversations
+  # organization.ungrouped.not_muted_conversations
+  # organization.ungrouped.    done_doing_tasks
+  # organization.ungrouped.not_done_doing_tasks
+  # organization.ungrouped.    done_not_doing_task
+  # organization.ungrouped.not_done_not_doing_task
+  # group.                     muted_conversations
+  # group.                 not_muted_conversations
+  # group.                     done_doing_tasks
+  # group.                 not_done_doing_tasks
+  # group.                     done_not_doing_task
+  # group.                 not_done_not_doing_task
 
   when_signed_in_as 'bethany@ucsd.example.com' do
+
+    let(:organization){ covered.organizations.find_by_slug! 'raceteam' }
+
+    it 'works as expected' do
+          @muted_conversations = organization.    muted_conversations
+      @not_muted_conversations = organization.not_muted_conversations
+          @done_tasks          = organization.    done_tasks
+      @not_done_tasks          = organization.not_done_tasks
+          @done_doing_tasks    = organization.    done_doing_tasks
+      @not_done_doing_tasks    = organization.not_done_doing_tasks
+
+      check_consistancy!
+
+      # my
+
+          @muted_conversations = organization.my.    muted_conversations
+      @not_muted_conversations = organization.my.not_muted_conversations
+          @done_tasks          = organization.my.    done_tasks
+      @not_done_tasks          = organization.my.not_done_tasks
+          @done_doing_tasks    = organization.my.    done_doing_tasks
+      @not_done_doing_tasks    = organization.my.not_done_doing_tasks
+
+      check_consistancy!
+
+      all.each do |conversation|
+        conversation.groups.empty? || (conversation.groups.all & my_groups).present? or fail("#{conversation.inspect} is not mine.")
+      end
+
+      # ungrouped
+
+          @muted_conversations = organization.ungrouped.    muted_conversations
+      @not_muted_conversations = organization.ungrouped.not_muted_conversations
+          @done_tasks          = organization.ungrouped.    done_tasks
+      @not_done_tasks          = organization.ungrouped.not_done_tasks
+          @done_doing_tasks    = organization.ungrouped.    done_doing_tasks
+      @not_done_doing_tasks    = organization.ungrouped.not_done_doing_tasks
+
+      check_consistancy!
+
+      all.each do |conversation|
+        expect(conversation.groups).to be_empty
+      end
+
+      # for each group
+
+      organization.groups.all.each do |group|
+
+            @muted_conversations = group.    muted_conversations
+        @not_muted_conversations = group.not_muted_conversations
+            @done_tasks          = group.    done_tasks
+        @not_done_tasks          = group.not_done_tasks
+            @done_doing_tasks    = group.    done_doing_tasks
+        @not_done_doing_tasks    = group.not_done_doing_tasks
+        check_consistancy!
+
+        all.each do |conversation|
+          expect(conversation.groups).to include group
+        end
+
+      end
+
+    end
+
+
+
     def check_consistancy!
-      expect(@muted_conversations & @not_muted_conversations).to eq []
-      expect(@all_conversations - @muted_conversations).to eq @not_muted_conversations
-      expect(@all_conversations - @not_muted_conversations).to eq @muted_conversations
-      expect(@all_tasks & @doing_tasks).to eq @doing_tasks
+      expect(@muted_conversations  & @not_muted_conversations).to eq []
+      expect(@done_tasks           & @not_done_tasks         ).to eq []
+      expect(@done_doing_tasks     & @not_done_doing_tasks   ).to eq []
 
           @muted_conversations.each{|conversation| expect(conversation).to     be_muted }
       @not_muted_conversations.each{|conversation| expect(conversation).to_not be_muted }
 
-      @doing_tasks.each{|task| expect(task.doers).to include current_user }
+          @done_tasks      .each{|task| expect(task).to     be_done }
+      @not_done_tasks      .each{|task| expect(task).to_not be_done }
+          @done_doing_tasks.each{|task| expect(task).to     be_done }
+      @not_done_doing_tasks.each{|task| expect(task).to_not be_done }
+
+          @done_doing_tasks.each{|task| expect(task).to be_being_done_by current_user }
+      @not_done_doing_tasks.each{|task| expect(task).to be_being_done_by current_user }
     end
 
-    it 'can get conversations' do
-      raceteam = current_user.organizations.find_by_slug!('raceteam')
+    def my_groups
+      @my_groups ||= organization.groups.my.freeze
+    end
 
-            @all_conversations = nil
-          @muted_conversations = nil
-      @not_muted_conversations = nil
-                    @all_tasks = nil
-                  @doing_tasks = nil
-
-
-
-      # conversations and tasks for the whole organization
-
-            @all_conversations = raceteam.conversations.all
-          @muted_conversations = raceteam.conversations.muted
-      @not_muted_conversations = raceteam.conversations.not_muted
-                    @all_tasks = raceteam.tasks.all
-                  @doing_tasks = raceteam.tasks.doing
-
-      check_consistancy!
-
-      expect(@all_conversations.map(&:slug)).to eq [
-        "who-wants-to-pick-up-breakfast",
-        "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch",
-        "layup-body-carbon",
-        "get-carbon-and-fiberglass",
-        "get-release-agent",
-        "get-epoxy",
-        "get-some-4-gauge-wire",
-        "get-a-new-soldering-iron",
-        "make-wooden-form-for-carbon-layup",
-        "trim-body-panels",
-        "install-mirrors",
-        "how-are-we-paying-for-the-motor-controller",
-        "parts-for-the-drive-train",
-        "parts-for-the-motor-controller",
-        "how-are-we-going-to-build-the-body",
-        "welcome-to-our-covered-organization",
-      ]
-
-      expect(@muted_conversations.map(&:slug)).to eq [
-        "layup-body-carbon",
-        "get-carbon-and-fiberglass",
-        "get-release-agent",
-        "get-epoxy",
-        "parts-for-the-drive-train",
-        "welcome-to-our-covered-organization",
-      ]
-
-      expect(@not_muted_conversations.map(&:slug)).to eq [
-        "who-wants-to-pick-up-breakfast",
-        "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch",
-        "get-some-4-gauge-wire",
-        "get-a-new-soldering-iron",
-        "make-wooden-form-for-carbon-layup",
-        "trim-body-panels",
-        "install-mirrors",
-        "how-are-we-paying-for-the-motor-controller",
-        "parts-for-the-motor-controller",
-        "how-are-we-going-to-build-the-body",
-      ]
-
-      expect(@all_tasks.map(&:slug)).to eq [
-        "layup-body-carbon",
-        "install-mirrors",
-        "trim-body-panels",
-        "make-wooden-form-for-carbon-layup",
-        "get-epoxy",
-        "get-release-agent",
-        "get-carbon-and-fiberglass",
-        "get-a-new-soldering-iron",
-        "get-some-4-gauge-wire",
-      ]
-
-      expect(@doing_tasks.map(&:slug)).to eq [
-        "get-a-new-soldering-iron",
-      ]
-
-
-      # conversations and tasks for the electronics group
-
-      electronics = raceteam.groups.find_by_email_address_tag('electronics')
-
-            @all_conversations = electronics.conversations.all
-          @muted_conversations = electronics.conversations.muted
-      @not_muted_conversations = electronics.conversations.not_muted
-                    @all_tasks = electronics.tasks.all
-                  @doing_tasks = electronics.tasks.doing
-
-      check_consistancy!
-
-      (@all_conversations + @muted_conversations + @not_muted_conversations + @all_tasks + @doing_tasks).each do |conversation|
-        expect(conversation.groups).to include electronics
-      end
-
-      expect(@all_conversations.map(&:slug)).to eq [
-        "get-some-4-gauge-wire",
-        "get-a-new-soldering-iron",
-        "parts-for-the-drive-train",
-        "parts-for-the-motor-controller",
-      ]
-
-      expect(@muted_conversations.map(&:slug)).to eq [
-        "parts-for-the-drive-train",
-      ]
-
-      expect(@not_muted_conversations.map(&:slug)).to eq [
-        "get-some-4-gauge-wire",
-        "get-a-new-soldering-iron",
-        "parts-for-the-motor-controller",
-      ]
-
-      expect(@all_tasks.map(&:slug)).to eq [
-        "get-a-new-soldering-iron",
-        "get-some-4-gauge-wire"
-      ]
-
-      expect(@doing_tasks.map(&:slug)).to eq [
-        "get-a-new-soldering-iron"
-      ]
-
-
-      # conversations and tasks for the fundraising group
-
-      fundraising = raceteam.groups.find_by_email_address_tag('fundraising')
-
-            @all_conversations = fundraising.conversations.all
-          @muted_conversations = fundraising.conversations.muted
-      @not_muted_conversations = fundraising.conversations.not_muted
-                    @all_tasks = fundraising.tasks.all
-                  @doing_tasks = fundraising.tasks.doing
-
-      check_consistancy!
-
-      (@all_conversations + @muted_conversations + @not_muted_conversations + @all_tasks + @doing_tasks).each do |conversation|
-        expect(conversation.groups).to include fundraising
-      end
-
-
-      expect(@all_conversations.map(&:slug)).to eq [
-        "how-are-we-paying-for-the-motor-controller"
-      ]
-
-      expect(@muted_conversations.map(&:slug)).to eq [
-
-      ]
-
-      expect(@not_muted_conversations.map(&:slug)).to eq [
-        "how-are-we-paying-for-the-motor-controller"
-      ]
-
-      expect(@all_tasks.map(&:slug)).to eq [
-
-      ]
-
-      expect(@doing_tasks.map(&:slug)).to eq [
-
-      ]
-
-      # conversations and tasks for the current user
-
-            @all_conversations = raceteam.conversations.my.all
-          @muted_conversations = raceteam.conversations.my.muted
-      @not_muted_conversations = raceteam.conversations.my.not_muted
-                    @all_tasks = raceteam.tasks.my.all
-                  @doing_tasks = raceteam.tasks.my.doing
-
-      check_consistancy!
-
-      (@all_conversations + @muted_conversations + @not_muted_conversations + @all_tasks + @doing_tasks).each do |conversation|
-        conversation.groups.empty? || (conversation.groups.all & raceteam.groups.my).present? or fail("#{conversation.inspect} is not mine.")
-      end
-
-      expect(@all_conversations.map(&:slug)).to eq [
-        "who-wants-to-pick-up-breakfast",
-        "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch",
-        "layup-body-carbon",
-        "get-carbon-and-fiberglass",
-        "get-release-agent",
-        "get-epoxy",
-        "get-some-4-gauge-wire",
-        "get-a-new-soldering-iron",
-        "make-wooden-form-for-carbon-layup",
-        "trim-body-panels",
-        "install-mirrors",
-        "parts-for-the-drive-train",
-        "parts-for-the-motor-controller",
-        "how-are-we-going-to-build-the-body",
-        "welcome-to-our-covered-organization"
-      ]
-
-      expect(@muted_conversations.map(&:slug)).to eq [
-        "layup-body-carbon",
-        "get-carbon-and-fiberglass",
-        "get-release-agent",
-        "get-epoxy",
-        "parts-for-the-drive-train",
-        "welcome-to-our-covered-organization"
-      ]
-
-      expect(@not_muted_conversations.map(&:slug)).to eq [
-        "who-wants-to-pick-up-breakfast",
-        "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch",
-        "get-some-4-gauge-wire",
-        "get-a-new-soldering-iron",
-        "make-wooden-form-for-carbon-layup",
-        "trim-body-panels",
-        "install-mirrors",
-        "parts-for-the-motor-controller",
-        "how-are-we-going-to-build-the-body"
-      ]
-
-      expect(@all_tasks.map(&:slug)).to eq [
-        "layup-body-carbon",
-        "install-mirrors",
-        "trim-body-panels",
-        "make-wooden-form-for-carbon-layup",
-        "get-epoxy",
-        "get-release-agent",
-        "get-carbon-and-fiberglass",
-        "get-a-new-soldering-iron",
-        "get-some-4-gauge-wire"
-      ]
-
-      expect(@doing_tasks.map(&:slug)).to eq [
-        "get-a-new-soldering-iron",
-      ]
-
-
-      # conversations and tasks not in any group
-
-            @all_conversations = raceteam.conversations.ungrouped.all
-          @muted_conversations = raceteam.conversations.ungrouped.muted
-      @not_muted_conversations = raceteam.conversations.ungrouped.not_muted
-                    @all_tasks = raceteam.tasks.ungrouped.all
-                  @doing_tasks = raceteam.tasks.ungrouped.doing
-
-      check_consistancy!
-
-      (@all_conversations + @muted_conversations + @not_muted_conversations + @all_tasks + @doing_tasks).each do |conversation|
-        expect(conversation.groups).to be_empty
-      end
-
-      expect(@all_conversations.map(&:slug)).to eq [
-        "who-wants-to-pick-up-breakfast",
-        "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch",
-        "layup-body-carbon",
-        "get-carbon-and-fiberglass",
-        "get-release-agent",
-        "get-epoxy",
-        "make-wooden-form-for-carbon-layup",
-        "trim-body-panels",
-        "install-mirrors",
-        "how-are-we-going-to-build-the-body",
-        "welcome-to-our-covered-organization",
-      ]
-
-      expect(@muted_conversations.map(&:slug)).to eq [
-        "layup-body-carbon",
-        "get-carbon-and-fiberglass",
-        "get-release-agent",
-        "get-epoxy",
-        "welcome-to-our-covered-organization",
-      ]
-
-      expect(@not_muted_conversations.map(&:slug)).to eq [
-        "who-wants-to-pick-up-breakfast",
-        "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch",
-        "make-wooden-form-for-carbon-layup",
-        "trim-body-panels",
-        "install-mirrors",
-        "how-are-we-going-to-build-the-body",
-      ]
-
-      expect(@all_tasks.map(&:slug)).to eq [
-        "layup-body-carbon",
-        "install-mirrors",
-        "trim-body-panels",
-        "make-wooden-form-for-carbon-layup",
-        "get-epoxy",
-        "get-release-agent",
-        "get-carbon-and-fiberglass",
-      ]
-
-      expect(@doing_tasks.map(&:slug)).to eq [
-
-      ]
-
+    def all
+          @muted_conversations +
+      @not_muted_conversations +
+          @done_tasks          +
+      @not_done_tasks          +
+          @done_doing_tasks    +
+      @not_done_doing_tasks
     end
   end
 

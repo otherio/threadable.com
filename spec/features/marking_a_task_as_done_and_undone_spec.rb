@@ -6,7 +6,7 @@ feature "marking a task as done and undone" do
 
   scenario %(marking a task as done and undone) do
 
-    visit my_conversation_url('raceteam','make-wooden-form-for-carbon-layup')
+    visit conversation_url('raceteam','my','make-wooden-form-for-carbon-layup')
 
     within_element 'the conversation pane' do
       expect(page).to have_selector selector_for 'the mark as done button'
@@ -20,4 +20,5 @@ feature "marking a task as done and undone" do
       expect(page).to have_text 'Alice Neilson marked this task as not done moments ago'
     end
   end
+
 end

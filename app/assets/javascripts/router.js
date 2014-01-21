@@ -14,56 +14,30 @@ Covered.Router.map(function() {
       this.resource('organization_member', {path: '/:member'});
       this.resource('add_organization_member', {path: '/add'});
     });
-    this.resource('my', {path: '/my'}, function(){
-      this.resource('my_conversations', {path: '/conversations'}, function(){
-        this.resource('my_conversation', {path: '/:conversation'});
-        this.resource('compose_my_conversation', {path: '/compose'});
+
+    this.resource('group', {path: '/:group'}, function(){
+      this.resource('group_members', {path: '/members'}, function(){
+        this.resource('group_member', {path: '/:member'});
+        this.resource('add_group_member', {path: '/add'});
       });
-      this.resource('my_tasks', {path: '/tasks'}, function(){
-        this.resource('my_task', {path: '/:task'});
-        this.resource('compose_my_task', {path: '/compose'});
+      this.resource('conversations', {path: '/conversations'}, function(){
+        conversationRoutes.call(this, 'conversation');
       });
-    });
-    this.resource('ungrouped', {path: '/ungrouped'}, function(){
-      this.resource('ungrouped_conversations', {path: '/conversations'}, function(){
-        this.resource('ungrouped_conversation', {path: '/:conversation'});
-        this.resource('compose_ungrouped_conversation', {path: '/compose'});
+      this.resource('muted_conversations', {path: '/muted-conversations'}, function(){
+        conversationRoutes.call(this, 'muted_conversation');
       });
-      this.resource('ungrouped_tasks', {path: '/tasks'}, function(){
-        this.resource('ungrouped_task', {path: '/:task'});
-        this.resource('compose_ungrouped_task', {path: '/compose'});
+      this.resource('tasks', {path: '/tasks'}, function(){
+        conversationRoutes.call(this, 'task');
       });
-    });
-    this.resource('groups', {path: '/groups'}, function() {
-      this.resource('group', {path: '/:group'}, function(){
-        this.resource('group_members', {path: '/members'}, function(){
-          this.resource('group_member', {path: '/:member'});
-          this.resource('add_group_member', {path: '/add'});
-        });
-        this.resource('group_conversations', {path: '/conversations'}, function(){
-          this.resource('group_conversation', {path: '/:conversation'});
-          this.resource('compose_group_conversation', {path: '/compose'});
-        });
-        this.resource('group_tasks', {path: '/tasks'}, function(){
-          this.resource('group_task', {path: '/:task'});
-          this.resource('compose_group_task', {path: '/compose'});
-        });
+      this.resource('doing_tasks', {path: '/doing-tasks'}, function(){
+        conversationRoutes.call(this, 'doing_task');
       });
     });
   });
 
+  function conversationRoutes(scope, param) {
+    this.resource(scope, {path: '/:conversation'});
+    this.resource('compose_'+scope, {path: '/compose'});
+  }
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

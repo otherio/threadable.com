@@ -1,31 +1,66 @@
 module EmberRouteUrlHelpers
 
+  # How to generate these routes:
+  #
+  #  Step 1:
+  #
+  #    run this function in the javascript console:
+  #
+  #  !function(){
+  #    var ROUTES = [];
+  #    $.each(Covered.Router.router.recognizer.names, function(name, route) {
+  #      if (name === 'index') return;
+  #      if (/(^|\.)(error|loading)/.test(name)) return;
+  #      name = name.replace('.index', '');
+  #      var segments = route.segments, path = "";
+  #      for (var i=0, l=segments.length; i<l; i++) {
+  #        var segment = segments[i];
+  #        if ('name' in segment) {
+  #          path += "/:";
+  #          path += segment.name;
+  #        }
+  #        if ('string' in segment) {
+  #          path += "/";
+  #          path += segment.string;
+  #        }
+  #      }
+  #      if (/unused_dummy/.test(path)) return;
+  #      ROUTES.push([name,path]);
+  #    });
+  #    console.log(JSON.stringify(ROUTES));
+  #  }();
+  #
+  #
+  #  Step 2:
+  #
+  #     Copy the output of the previous command and then run this in your rails console:
+  #
+  #  JSON.parse(`pbpaste`).each{|name,path| printf("%-40s '%s',\n", "#{name}:", path) }; 1
+  #
+  #
   ember_routes = {
-    sign_in:                        '/sign_in',
-    sign_out:                       '/sign_out',
-    forgot_password:                '/forgot_password',
-    organization_member:            '/:organization/members/:member',
-    organization_members:           '/:organization/members',
-    organization_members_add:       '/:organization/members/add',
-    compose_my_conversation:        '/:organization/my/conversations/compose',
-    compose_my_task:                '/:organization/my/tasks/compose',
-    compose_ungrouped_conversation: '/:organization/ungrouped/conversations/compose',
-    compose_ungrouped_task:         '/:organization/ungrouped/tasks/compose',
-    compose_group_conversation:     '/:organization/:group/conversations/compose',
-    compose_group_task:             '/:organization/:group/tasks/compose',
-    my_conversation:                '/:organization/my/conversations/:conversation',
-    my_conversations:               '/:organization/my/conversations',
-    my:                             '/:organization/my',
-    ungrouped_conversation:         '/:organization/ungrouped/conversations/:conversation',
-    ungrouped_conversations:        '/:organization/ungrouped/conversations',
-    ungrouped:                      '/:organization/ungrouped',
-    group_member:                   '/:organization/groups/:group/members/:member',
-    group_members:                  '/:organization/groups/:group/members',
-    group_conversation:             '/:organization/groups/:group/conversations/:conversation',
-    group_conversations:            '/:organization/groups/:group/conversations',
-    group:                          '/:organization/groups/:group',
-    groups:                         '/:organization/groups',
-    organization:                   '/:organization',
+    sign_in:                    '/sign_in',
+    sign_out:                   '/sign_out',
+    forgot_password:            '/forgot_password',
+    organization_member:        '/:organization/members/:member',
+    organization_members:       '/:organization/members',
+    organization_members_add:   '/:organization/members/add',
+    group_member:               '/:organization/:group/members/:member',
+    group_members:              '/:organization/:group/members',
+    conversation:               '/:organization/:group/conversations/:conversation',
+    compose_conversation:       '/:organization/:group/conversations/compose',
+    conversations:              '/:organization/:group/conversations',
+    muted_conversation:         '/:organization/:group/muted-conversations/:conversation',
+    compose_muted_conversation: '/:organization/:group/muted-conversations/compose',
+    muted_conversations:        '/:organization/:group/muted-conversations',
+    task:                       '/:organization/:group/tasks/:conversation',
+    compose_task:               '/:organization/:group/tasks/compose',
+    tasks:                      '/:organization/:group/tasks',
+    doing_task:                 '/:organization/:group/doing-tasks/:conversation',
+    compose_doing_task:         '/:organization/:group/doing-tasks/compose',
+    doing_tasks:                '/:organization/:group/doing-tasks',
+    group:                      '/:organization/:group',
+    organization:               '/:organization',
   }.freeze
 
   ember_routes.each do |name, pretty_path_template|

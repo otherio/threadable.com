@@ -1,12 +1,13 @@
 Covered.GroupRoute = Ember.Route.extend({
 
   model: function(params){
-    return this.modelFor('groups').findBy('slug', params.group);
+    return params.group;
   },
 
-  setupController: function(controller, model) {
-    this._super(controller, model);
-    this.controllerFor('navbar').set('group', model);
+  setupController: function(controller, context, tranisition) {
+    this._super(controller, context, tranisition);
+    var group = this.modelFor('organization').get('groups').findBy('slug', context);
+    this.controllerFor('navbar').set('group', group);
   }
 
 });

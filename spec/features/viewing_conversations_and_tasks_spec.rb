@@ -9,34 +9,34 @@ feature "Viewing conversations and tasks" do
   scenario %(should render the expected lists of conversations and tasks) do
     goto :my_conversations
     goto :conversations
-    expect_listed_conversations_to_eq organization.conversations.my.not_muted
+    expect_listed_conversations_to_eq organization.my.not_muted_conversations
     goto :muted
-    expect_listed_conversations_to_eq organization.conversations.my.muted
+    expect_listed_conversations_to_eq organization.my.muted_conversations
     goto :all_tasks
-    expect_listed_conversations_to_eq organization.tasks.my.all
+    expect_listed_tasks_to_eq organization.my.not_done_tasks
     goto :my_tasks
-    expect_listed_conversations_to_eq organization.tasks.my.doing
+    expect_listed_tasks_to_eq organization.my.not_done_doing_tasks
 
     goto :ungrouped_conversations
     goto :conversations
-    expect_listed_conversations_to_eq organization.conversations.ungrouped.not_muted
+    expect_listed_conversations_to_eq organization.ungrouped.not_muted_conversations
     goto :muted
-    expect_listed_conversations_to_eq organization.conversations.ungrouped.muted
+    expect_listed_conversations_to_eq organization.ungrouped.muted_conversations
     goto :all_tasks
-    expect_listed_conversations_to_eq organization.tasks.ungrouped.all
+    expect_listed_tasks_to_eq organization.ungrouped.not_done_tasks
     goto :my_tasks
-    expect_listed_conversations_to_eq organization.tasks.ungrouped.doing
+    expect_listed_tasks_to_eq organization.ungrouped.not_done_doing_tasks
 
     organization.groups.all.each do |group|
       goto group
       goto :conversations
-      expect_listed_conversations_to_eq group.conversations.not_muted, group
+      expect_listed_conversations_to_eq group.not_muted_conversations, group
       goto :muted
-      expect_listed_conversations_to_eq  group.conversations.muted, group
+      expect_listed_conversations_to_eq group.muted_conversations, group
       goto :all_tasks
-      expect_listed_conversations_to_eq  group.tasks.all, group
+      expect_listed_tasks_to_eq group.not_done_tasks, group
       goto :my_tasks
-      expect_listed_conversations_to_eq  group.tasks.doing, group
+      expect_listed_tasks_to_eq group.not_done_doing_tasks, group
     end
   end
 
@@ -92,6 +92,7 @@ feature "Viewing conversations and tasks" do
       }).get();
     JS
     listed_conversations.each do |conversation|
+      conversation['subject'].strip!
       conversation['message_summary'].strip!
       conversation['number_of_messages'] = conversation['number_of_messages'][1..-2].to_i
       conversation['groups'] = conversation['groups'].to_set
@@ -102,18 +103,60 @@ feature "Viewing conversations and tasks" do
     conversations.map do |conversation|
       message_summary = conversation.messages.latest.try(:body_plain).try(:[], 0..50) || "no messages"
       message_summary = message_summary.gsub("\n", ' ').strip
-      groups = conversation.groups.all.map do |group|
-        "+#{group.name}" if group != current_group
-      end.compact.to_set
       {
         'task'               => conversation.task?,
         'participant_names'  => conversation.participant_names.join(', '),
         'number_of_messages' => conversation.messages.count,
         'subject'            => conversation.subject,
         'message_summary'    => message_summary,
-        'groups'             => groups,
+        'groups'             => groups_for(conversation, current_group),
       }
     end
   end
+
+
+  def expect_listed_tasks_to_eq tasks, current_group=nil
+    serailized_tasks = serailize_tasks(tasks, current_group)
+    wait_until_expectation do
+      expect(listed_tasks).to eq serailized_tasks
+    end
+  end
+
+
+  def listed_tasks
+    listed_tasks = evaluate_script <<-JS
+      $('.tasks-list li.task:visible').map(function(){
+          var
+            task    = $(this),
+            subject = task.find('.subject').text(),
+            groups  = task.find('.groups .badge').map(function(){ return $(this).text(); }).get();
+
+        return {
+          subject: subject,
+          groups:  groups
+        };
+      }).get();
+    JS
+    listed_tasks.each do |task|
+      task['subject'].strip!
+      task['groups'] = task['groups'].to_set
+    end
+  end
+
+  def serailize_tasks tasks, current_group=nil
+    tasks.map do |task|
+      {
+        'subject' => task.subject,
+        'groups'  => groups_for(task, current_group),
+      }
+    end
+  end
+
+  def groups_for conversation, current_group
+    conversation.groups.all.map do |group|
+      "+#{group.name}" if group != current_group
+    end.compact.to_set
+  end
+
 
 end
