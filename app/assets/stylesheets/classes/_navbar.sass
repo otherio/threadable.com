@@ -1,34 +1,66 @@
 .navbar
+  $padding: 10px
   height: $navbar-height
   overflow: hidden
+  white-space: nowrap
   background: $dark-grey-color
   font-size: 18px
   padding: 0 0.5em
+  color: white
+
   .left-nav, .right-nav
+    position: absolute
+    top: 0
+    bottom: 0
+    height: $navbar-height
     > *
-      line-height: $navbar-height
-    > a
-      padding: 0 0.25em
+      line-height: $navbar-height + 8px
       display: inline-block
       height: $navbar-height
+      padding: 0 0.25em
+    > a
+
+
       &, &:hover,&:active,&:visited
         color: white
       i
         font-size: 30px
 
   .left-nav
-    float: left
+    left: $padding
+    right: 80px
+    overflow: hidden
+
+    > .burger
+      position: absolute
+      top: 0
+      left: 0
+      bottom: 0
+      width: 1.5em
+    > .current-org-and-group
+      position: absolute
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+      overflow: hidden
+      text-overflow: ellipsis
+      line-height: 47px
+      +mini-to-medium-screens
+        left: 2em
+
   .right-nav
-    float: right
+    right: $padding
+
+    +medium-to-xlarge-screens
+      .toggle-conversations-controls
+        display: none
 
   .uk-active
     color: #f39c12
 
   .current-org-and-group
-    color: white
-    +mini-to-medium-screens
-      position: relative
-      top: -5px
+
 
   a.nav-button
     height: 1.6em
