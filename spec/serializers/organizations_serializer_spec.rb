@@ -10,13 +10,14 @@ describe OrganizationsSerializer do
     let(:expected_key){ :organization }
     it do
       should eq(
-        id:          raceteam.id,
-        param:       "raceteam",
-        name:        "UCSD Electric Racing",
-        short_name:  "RaceTeam",
-        slug:        "raceteam",
-        subject_tag: "RaceTeam",
-        description: "Senior engineering electric race team!",
+        id:                raceteam.id,
+        param:             "raceteam",
+        name:              "UCSD Electric Racing",
+        short_name:        "RaceTeam",
+        slug:              "raceteam",
+        subject_tag:       "RaceTeam",
+        description:       "Senior engineering electric race team!",
+        has_held_messages: false,
 
         email_address:                raceteam.email_address,
         task_email_address:           raceteam.task_email_address,
@@ -34,13 +35,14 @@ describe OrganizationsSerializer do
     it do
       should eq [
         {
-          id:          raceteam.id,
-          param:       "raceteam",
-          name:        "UCSD Electric Racing",
-          short_name:  "RaceTeam",
-          slug:        "raceteam",
-          subject_tag: "RaceTeam",
-          description: "Senior engineering electric race team!",
+          id:                raceteam.id,
+          param:             "raceteam",
+          name:              "UCSD Electric Racing",
+          short_name:        "RaceTeam",
+          slug:              "raceteam",
+          subject_tag:       "RaceTeam",
+          description:       "Senior engineering electric race team!",
+          has_held_messages: false,
 
           email_address:                raceteam.email_address,
           task_email_address:           raceteam.task_email_address,
@@ -49,13 +51,14 @@ describe OrganizationsSerializer do
 
           groups: serialize(:groups, raceteam.groups.all).values.first
         },{
-          id:          sfhealth.id,
-          param:       "sfhealth",
-          name:        "SF Health Center",
-          short_name:  "SFHealth",
-          slug:        "sfhealth",
-          subject_tag: "SFHealth",
-          description: "San Francisco Health Center",
+          id:                sfhealth.id,
+          param:             "sfhealth",
+          name:              "SF Health Center",
+          short_name:        "SFHealth",
+          slug:              "sfhealth",
+          subject_tag:       "SFHealth",
+          description:       "San Francisco Health Center",
+          has_held_messages: false,
 
           email_address:                sfhealth.email_address,
           task_email_address:           sfhealth.task_email_address,
