@@ -4,6 +4,10 @@ Covered.OrganizationController = Ember.ObjectController.extend(Covered.CurrentUs
   previousFocus: null,
   organization_slug: null,
 
+  heldMessagesUrl: function(){
+    return '/' + this.get('slug') + '/held_messages'
+  }.property('hasHeldMessages'),
+
 
   focusChanged: function(){
     this.set('previousFocus', this.get('focus'));

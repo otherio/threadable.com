@@ -12,6 +12,8 @@ Covered.Organization = RL.Model.extend({
   formattedEmailAddress:     RL.attr('string'),
   formattedTaskEmailAddress: RL.attr('string'),
 
+  hasHeldMessages:           RL.attr('boolean'),
+
   groups: RL.hasMany('Covered.Group'),
 
   loadMembers: RL.loadAssociationMethod('members', function(organization){

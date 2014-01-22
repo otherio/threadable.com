@@ -27,6 +27,15 @@ Covered.OrganizationRoute = Ember.Route.extend({
   renderTemplate: function() {
     this.render('organization', {into: 'application'});
     this.render('groups', {into: 'organization', outlet: 'groupsPane'});
+    var organization = this.controllerFor('organization');
+    if(organization.get('hasHeldMessages')){
+      $.UIkit.notify({
+          message : '<i class="uk-icon-envelope-o"></i> You\'ve got <a href="/' + organization.get('slug') + '/held_messages">held messages</a>',
+          status  : 'warning',
+          timeout : 3000,
+          pos     : 'top-right'
+      });
+    }
   }
 
 });
