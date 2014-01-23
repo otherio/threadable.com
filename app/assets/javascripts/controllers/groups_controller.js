@@ -16,6 +16,9 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     toggleSettings: function(){
       this.set('settingsVisible', !this.get('settingsVisible'));
     },
+    toggleOrganization: function(){
+      this.set('organizationVisible', !this.get('organizationVisible'));
+    },
     closeGroupsSidebar: function() {
       this.closeGroupsSidebar();
     }

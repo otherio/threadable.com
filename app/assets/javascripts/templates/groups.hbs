@@ -11,11 +11,25 @@
 </div>
 
 <div class="main-nav scrollable">
-  <div {{bind-attr class=":settings settingsVisible:visible"}}>
+  <div {{bind-attr class=":settings settingsVisible:uk-visible:uk-hidden"}}>
     <ul class="uk-nav uk-nav-offcanvas">
-      <li class="uk-nav-header">My Organizations</li>
-      {{#each organization in currentUser.organizations}}
+      <li class="uk-nav-header" >
+        Settings
+      </li>
       <li>
+        <a href="/profile">Edit Profile</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="organization">
+    <ul class="uk-nav uk-nav-offcanvas">
+      <li class="uk-nav-header" {{action toggleOrganization}}>
+        <i {{bind-attr class="organizationVisible:uk-icon-caret-down:uk-icon-caret-right"}}></i>
+        {{organization.name}}
+      </li>
+      {{#each organization in currentUser.organizations}}
+      <li {{bind-attr class=":change-organization organizationVisible:uk-visible:uk-hidden"}}>
         {{#link-to 'conversations' organization.slug}}{{organization.name}}{{/link-to}}
       </li>
       {{/each}}
