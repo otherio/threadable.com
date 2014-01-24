@@ -6,6 +6,8 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
 
   closeGroupsSidebar: function() {
     this.set('organization.focus', 'conversations');
+    this.set('settingsVisible', false);
+    this.set('organizationVisible', false);
   },
 
   actions: {
@@ -14,10 +16,10 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
       this.transitionToRoute('index');
     },
     toggleSettings: function(){
-      this.set('settingsVisible', !this.get('settingsVisible'));
+      this.toggleProperty('settingsVisible');
     },
     toggleOrganization: function(){
-      this.set('organizationVisible', !this.get('organizationVisible'));
+      this.toggleProperty('organizationVisible');
     },
     closeGroupsSidebar: function() {
       this.closeGroupsSidebar();
