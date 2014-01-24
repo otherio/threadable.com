@@ -32,6 +32,8 @@ module Covered
       fontawesome-webfont.svg
       fontawesome-webfont.ttf
       fontawesome-webfont.woff
+      old.js
+      old.css
     }
 
 
