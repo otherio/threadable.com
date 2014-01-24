@@ -15,11 +15,10 @@
 
       <h2>
         {{#if isTask}}
-          <i class="uk-icon-check"></i>
+          <i class="uk-icon-check"></i> New Task
         {{else}}
-          <i class="uk-icon-comment-o"></i>
+          <i class="uk-icon-comment-o"></i> New Conversation
         {{/if}}
-        {{subject}}
       </h2>
 
       {{#if error}}
@@ -36,7 +35,7 @@
         <div class="form-row">
           <label>
             Subject:
-            {{input value=subject tabindex="1" class="uk-form-blank" name="subject"}}
+            {{input value=subject tabindex="1" class="uk-form-blank subject" name="subject"}}
           </label>
         </div>
         {{view Covered.ResizeableTextArea value=body tabindex="2" class="uk-form-blank body" name="body"}}
