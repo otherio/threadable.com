@@ -5,5 +5,5 @@ bundle exec rspec -b -f documentation
 if [ ${CIRCLE_ARTIFACTS:+x} ]
 then
   mkdir $CIRCLE_ARTIFACTS/tmp
-  cp -r tmp/* tmp
+  cp -r tmp/* $CIRCLE_ARTIFACTS/tmp
 fi
