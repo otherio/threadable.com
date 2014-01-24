@@ -25,11 +25,13 @@
     </ul>
   </div>
 
-  <div class="organization">
+  <div class="organization" >
     <ul class="uk-nav uk-nav-offcanvas">
-      <li class="uk-nav-header" {{action toggleOrganization}}>
-        <i {{bind-attr class="organizationVisible:uk-icon-caret-down:uk-icon-caret-right"}}></i>
-        {{organization.name}}
+      <li class="uk-nav-header">
+        <a href="" class="a-header" {{action toggleOrganization}}>
+          <i {{bind-attr class="organizationVisible:uk-icon-caret-down:uk-icon-caret-right"}}></i>
+          {{organization.name}}
+        </a>
       </li>
       {{#each organization in currentUser.organizations}}
       <li {{bind-attr class=":change-organization organizationVisible:uk-visible:uk-hidden"}}>
