@@ -9,7 +9,7 @@ machine:
 
 test:
   override:
-    - bundle exec rspec -b -f documentation: {timeout: 600}
+    - script/ci-build: {timeout: 600}
 
 deployment:
   staging:

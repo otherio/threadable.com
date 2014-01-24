@@ -51,4 +51,7 @@ Covered::Application.configure do
   config.redis[:db] = 2
 
   config.track_in_memory = true
+  if ENV['CIRCLE_ARTIFACTS']
+    Rails.logger = Logger.new File.open("#{ENV['CIRCLE_ARTIFACTS']}/test.log", 'a')
+  end
 end
