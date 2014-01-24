@@ -1,17 +1,8 @@
 <div {{bind-attr class=":tasks-list showingDone prioritizing"}}>
 
   <div class="scrollable">
-    <div class="done">
-      {{outlet doneTasks}}
-      <div class="list-divider">
-        <i class="uk-icon-arrow-circle-o-up"></i>
-        Done Tasks
-      </div>
-    </div>
-
-    <div class="not-done">
-      {{outlet notDoneTasks}}
-    </div>
+    {{render "doneTasks"}}
+    {{render "notDoneTasks"}}
   </div>
 
   {{partial 'tasks/list/controls'}}

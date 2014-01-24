@@ -23,13 +23,14 @@ Covered.TasksRoute = Covered.ConversationsRoute.extend({
 
   renderTemplate: function() {
     this.render('tasks', {into: 'organization', outlet: 'conversationsPane'});
-    this.render('doneTasks', {into: 'tasks', outlet: 'doneTasks'});
-    this.render('notDoneTasks', {into: 'tasks', outlet: 'notDoneTasks'});
   },
 
   actions: {
     addConversation: function(conversation) {
       // this.controller.get('model').unshiftObject(conversation);
+    },
+    refresh: function(callback) {
+      this.refresh().then(callback || Ember.K);
     }
   }
 

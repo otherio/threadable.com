@@ -1,18 +1,19 @@
-<li class="task">
-  {{#link-to conversationRoute organizationSlug groupSlug task.slug class="not-link"}}
+<li class="task" {{bind-attr draggable=draggable}} data-task-id="{{unbound task.id}}">
+  {{#if prioritizing}}
+    <div>
+      <i class="uk-icon-bars burger"></i>
+      {{partial 'tasks/list/member/details'}}
+    </div>
 
-    <i class="uk-icon-chevron-right arrow"></i>
-    <i class="uk-icon-bars burger"></i>
+  {{else}}
 
-    <section class="subject">
-      {{task.subject}}
-    </section>
+    {{#link-to conversationRoute organizationSlug groupSlug task.slug class="not-link"}}
 
-    <section class="groups">
-      {{#each group in task.groups}}
-        <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
-      {{/each}}
-    </section>
+      <i class="uk-icon-chevron-right arrow"></i>
+      {{partial 'tasks/list/member/details'}}
 
-  {{/link-to}}
+    {{/link-to}}
+
+  {{/if}}
+
 </li>

@@ -52,52 +52,57 @@
       top: $task-controls-height + $conversations-list-controls-height
 
 
-  .done, .not-done
-    > ol
+  .done-tasks, .not-done-tasks
+    > ul
       &, > li
         margin: 0
         padding: 0
-      > li
-        $height: 60px
-        $padding: 5px
 
-        position: relative
-        overflow: hidden
-        color: black
-        border-bottom: 1px solid $light-grey-color
+    li.task
+      $height: 60px
+      $padding: 5px
 
-        > a
-          display: block
-          height: $height - $padding - $padding
-          padding: $padding $padding $padding 15px
+      position: relative
+      overflow: hidden
+      color: black
+      border-bottom: 1px solid $light-grey-color
 
-        .arrow, .burger
-          position: absolute
-          top: 0
-          right: 15px
-          bottom: 0
-          height: 100%
-          line-height: $height
-          font-size: 120%
-        .burger
-          display: none
+      > a, > div
+        display: block
+        height: $height - $padding - $padding
+        padding: $padding $padding $padding 15px
+
+      .arrow, .burger
+        position: absolute
+        top: 0
+        right: 15px
+        bottom: 0
+        height: 100%
+        line-height: $height
+        font-size: 120%
+      .burger
+        display: none
+
+      &.being-dragged
+        +opacity(0.5)
+        border-bottom-color: transparent
+        outline: 3px dotted $light-grey-color
+
 
   &.prioritizing
-    .not-done
-      li.task > a
-        cursor: move
+    .not-done-tasks li.task
       .arrow
         display: none
       .burger
         display: block
 
 
-  .done
+  .done-tasks
     display: none
-    > ol > li
+    > ul > li
       background-color: $faint-yellow-color
 
   &.showing-done
-    .done
+    .done-tasks
       display: block
 

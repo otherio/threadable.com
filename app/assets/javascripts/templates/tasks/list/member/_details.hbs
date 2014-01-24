@@ -1,0 +1,7 @@
+<section class="subject">{{task.subject}}</section>
+
+<section class="groups">
+  {{#each group in task.groups}}
+    <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
+  {{/each}}
+</section>

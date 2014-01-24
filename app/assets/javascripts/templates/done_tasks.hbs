@@ -1,7 +1,11 @@
-<ol class="uk-list done">
+<ul class="uk-list">
   {{#each task in controller}}
     {{partial 'tasks/list/member'}}
   {{else}}
     <h4>No Done Tasks</h4>
   {{/each}}
-</ol>
+</ul>
+<div class="list-divider">
+  <i class="uk-icon-arrow-circle-o-up"></i>
+  Done Tasks
+</div>

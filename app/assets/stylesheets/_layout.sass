@@ -4,9 +4,14 @@ html, body, .page, body > .ember-view
 
 html, body
   overflow: hidden
+  +user-select(none)
 
 .disable-all-transitions *
   +transition(none !important)
+
+[draggable]
+  +user-select(none)
+  cursor: move
 
 .page
   position: relative

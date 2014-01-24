@@ -50,7 +50,7 @@ class Api::ConversationsController < ApiController
   def update
 
     conversation_params = if conversation.task?
-      params.require(:conversation).permit(:done, :muted, doers: :id)
+      params.require(:conversation).permit(:muted, :position, :done, doers:[:id])
     else
       params.require(:conversation).permit(:muted)
     end
@@ -58,20 +58,15 @@ class Api::ConversationsController < ApiController
     Covered.transaction do
 
       if conversation_params.key?(:done)
-        conversation_params[:done] ? conversation.done! : conversation.undone!
+        conversation_params.delete(:done) ? conversation.done! : conversation.undone!
       end
 
       if conversation_params.key?(:muted)
-        conversation_params[:muted] ? conversation.mute! : conversation.unmute!
+        conversation_params.delete(:muted) ? conversation.mute! : conversation.unmute!
       end
 
       if params[:conversation].key?(:doers)
-        supplied_doer_ids = if conversation_params[:doers].present?
-          conversation_params[:doers].map{ |doer| doer[:id].to_i }
-        else
-          []
-        end
-
+        supplied_doer_ids = Array(conversation_params.delete(:doers)).map{ |doer| doer[:id].to_i }
         existing_doer_ids = conversation.doers.all.map(&:id)
         remove_doer_ids = existing_doer_ids - supplied_doer_ids
         conversation.doers.remove(remove_doer_ids)
@@ -81,6 +76,8 @@ class Api::ConversationsController < ApiController
         end
         conversation.doers.add(doers)
       end
+
+      conversation.update!(conversation_params)
 
     end
 

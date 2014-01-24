@@ -17,6 +17,7 @@ class ConversationsSerializer < Serializer
       doing:              conversation.task? ? conversation.doers.include?(current_user) : nil,
       done_at:            conversation.task? ? conversation.done_at : nil,
       done:               conversation.task? ? conversation.done? : nil,
+      position:           conversation.task? ? conversation.position : -1,
       muted:              conversation.muted?,
     }
   end

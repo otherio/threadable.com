@@ -10,10 +10,12 @@ Covered.Conversation = RL.Model.extend({
   numberOfMessages:  RL.attr('number'),
   messageSummary:    RL.attr('string'),
   groupIds:          RL.attr('array'),
+
   organizationId:    RL.attr('string'),
   doers:             RL.hasMany('Covered.Member'),
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
+  position:          RL.attr('number'),
 
   isTask:  Ember.computed.alias('task'),
   isDone:  Ember.computed.alias('done'),
