@@ -6,9 +6,9 @@ when 'staging'
 when 'production'
   exec 'heroku run console --app covered-production'
 when 'local'
-  exec 'rails c'
+  exec 'bundle exec rails c'
 else
-  exec 'rails c'
+  exec 'bundle exec rails c'
 end
 
 
