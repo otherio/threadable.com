@@ -37,5 +37,4 @@ Covered.OrganizationRoute = Ember.Route.extend({
       });
     }
   }
-
 });

@@ -1,25 +1,32 @@
 .organization-members
-  font-size: $normal-font-size
-  list-style: none
-  margin: 0
-  padding: 0
-  width: 100%
-  font-weight: 200
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
 
-  li:hover
-    background-color: $faint-blue-color
+  ul
+    font-size: $normal-font-size
+    list-style: none
+    margin: 0
+    padding: 0
+    width: 100%
+    font-weight: 200
 
-  li
-    > a
-      display: block
-      padding: 3px 8px
-      white-space: nowrap
-      overflow: hidden
-      line-height: $avatar-small-height
-    & ~ li
-      border-top: 1px solid $light-grey-color
-  li.add-member
-    height: 49px
+    li:hover
+      background-color: $faint-blue-color
+
+    li
+      > a
+        display: block
+        padding: 3px 8px
+        white-space: nowrap
+        overflow: hidden
+        line-height: $avatar-small-height
+      & ~ li
+        border-top: 1px solid $light-grey-color
+    li.add-member
+      height: 49px
 
   .right-content
     margin-top: 4px

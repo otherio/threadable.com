@@ -1,21 +1,23 @@
-<ul class="organization-members">
-  <li class="add-button">
-    <a href="" class="not-link" {{action 'goToAdd'}}>
-      <i class="uk-icon-plus uk-float-left"></i>
-      <div>Add member</div>
-    </a>
-  </li>
-  {{#each member in controller}}
-  <li class="member uk-clearfix">
-    <a href="" class="not-link">
-      <div class="left-content">
-        <span class="avatar avatar-small uk-float-left">
-          <img {{bind-attr src="member.avatarUrl"}}></img>
-        </span>
-        <div class="name">{{member.name}}</div>
-        <div class="email">{{member.emailAddress}}</div>
-      </div>
-    </a>
-  </li>
-  {{/each}}
-</ul>
+<div class="organization-members scrollable">
+  <ul>
+    <li class="add-button">
+      <a href="" class="not-link" {{action 'goToAdd'}}>
+        <i class="uk-icon-plus uk-float-left"></i>
+        <div>Add member</div>
+      </a>
+    </li>
+    {{#each member in controller}}
+    <li class="member uk-clearfix">
+      <a href="" class="not-link">
+        <div class="left-content">
+          <span class="avatar avatar-small uk-float-left">
+            <img {{bind-attr src="member.avatarUrl"}}></img>
+          </span>
+          <div class="name">{{member.name}}</div>
+          <div class="email">{{member.emailAddress}}</div>
+        </div>
+      </a>
+    </li>
+    {{/each}}
+  </ul>
+</div>

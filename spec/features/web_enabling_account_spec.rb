@@ -31,6 +31,7 @@ feature "web enabling account" do
     click_button 'Update'
     expect(page).to have_text "Yan Hzu"
 
+    page.find('.uk-icon-gear').click
     click_link 'Sign Out'
     expect(page).to have_text "No password yet?"
 

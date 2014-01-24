@@ -48,6 +48,8 @@ Ember.TextField.reopen({
 
 $(document).on('click', 'a[href=""]', function(e){ e.preventDefault(); });
 
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/MMrElWgvuRBk0LjwGqQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
 // This disables all css-transitions while resizing
 $(window).on('resize', function(){
   $('body').addClass('disable-all-transitions');

@@ -31,6 +31,7 @@ feature "recovering password" do
     click_button 'Update'
     expect(page).to have_text "Alice Neilson"
 
+    page.find('.uk-icon-gear').click
     click_link 'Sign Out'
     expect(page).to have_text "No password yet?"
 

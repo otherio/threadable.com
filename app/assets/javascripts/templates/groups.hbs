@@ -19,6 +19,9 @@
       <li>
         <a href="/profile">Edit Profile</a>
       </li>
+      <li>
+        {{#link-to 'sign_out'}}Sign Out{{/link-to}}
+      </li>
     </ul>
   </div>
 
@@ -69,10 +72,13 @@
 </div>
 
 <ul class="uk-nav uk-nav-offcanvas bottom-nav">
-  <li>
+  <li class="members-button">
     {{#link-to 'organization_members' organization.slug}}Members{{/link-to}}
   </li>
-  <li>
-    {{#link-to 'sign_out'}}Sign Out{{/link-to}}
+  <li class="feedback" >
+    <a class="keep-sidebar-open" id="feedback-button" href="">
+      <i class="uk-icon-bullhorn"></i>
+      Feedback / Help
+    </a>
   </li>
 </ul>
