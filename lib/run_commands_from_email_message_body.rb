@@ -39,7 +39,6 @@ class RunCommandsFromEmailMessageBody < MethodObject
     else
       return
     end
-
   end
 
 end
