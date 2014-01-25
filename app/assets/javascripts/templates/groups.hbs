@@ -7,7 +7,7 @@
     <div class="organization-name">{{organization.name}}</div>
     <div class="organization-email-address">{{organization.emailAddress}}</div>
   </div>
-  <a class="settings-gear" href="" {{action toggleSettings}}><i class="uk-icon-gear"></i></a>
+  <a class="settings-gear keep-sidebar-open" href="" {{action toggleSettings}}><i class="uk-icon-gear"></i></a>
 </div>
 
 <div class="main-nav scrollable">
@@ -28,14 +28,14 @@
   <div class="organization">
     <ul class="uk-nav uk-nav-offcanvas">
       <li class="uk-nav-header">
-        <a href="" class="a-header" {{action toggleOrganization}}>
+        <a href="" class="a-header keep-sidebar-open" {{action toggleOrganization}}>
           <i {{bind-attr class="organizationVisible:uk-icon-caret-down:uk-icon-caret-right"}}></i>
           {{organization.name}}
         </a>
       </li>
       {{#each organization in currentUser.organizations}}
       <li {{bind-attr class=":change-organization organizationVisible:uk-visible:uk-hidden"}}>
-        {{#link-to 'conversations' organization.slug}}{{organization.name}}{{/link-to}}
+        {{#link-to 'organization' organization.slug}}{{organization.name}}{{/link-to}}
       </li>
       {{/each}}
     </ul>

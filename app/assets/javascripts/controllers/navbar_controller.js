@@ -1,5 +1,5 @@
 Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
-  needs: ['organization', 'conversations', 'compose', 'conversation'],
+  needs: ['organization', 'groups', 'conversations', 'conversation', 'compose'],
 
   focus:           Ember.computed.alias('controllers.organization.focus'),
   newConversation: Ember.computed.alias('controllers.compose').readOnly(),
@@ -29,8 +29,8 @@ Covered.NavbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Cov
   }.property('showComposing', 'showConversation'),
 
   actions: {
-    focusGroups: function() {
-      this.set('focus', 'groups');
+    openGroupsSidebar: function() {
+      this.get('controllers.groups').send('openGroupsSidebar');
     },
     focusConversations: function() {
       this.set('focus', 'conversations');

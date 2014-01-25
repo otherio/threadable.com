@@ -1,15 +1,17 @@
 Covered.GroupsView = Ember.View.extend({
 
   didInsertElement: function() {
-    this.$('a').off('click');
-    this.$('.settings, .groups-list, .bottom-nav').find('li > a').on('click', function(e) {
-      if(! $(e.currentTarget).hasClass('keep-sidebar-open')) {
-        this.get('controller').send('closeGroupsSidebar');
-      }
-    }.bind(this));
+    var
+      controller   = this.get('controller'),
+      organization = this.get('context.organization'),
+      currentUser  = this.get('context.currentUser');
 
-    var organization = this.get('context.organization');
-    var currentUser = this.get('context.currentUser');
+    this.$('a').off('click.closeGroupsSidebar');
+
+    this.$('a:not(.keep-sidebar-open)').on('click.closeGroupsSidebar', function(e) {
+      controller.send('closeGroupsSidebar');
+    });
+
 
     UserVoice.push(['identify', {
       email:      currentUser.get('emailAddress'),
@@ -28,7 +30,7 @@ Covered.GroupsView = Ember.View.extend({
   },
 
   willClearRender: function() {
-    this.$('a').off('click');
+    this.$('a').off('click.closeGroupsSidebar');
   }
 
 });
