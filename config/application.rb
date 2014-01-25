@@ -21,7 +21,6 @@ module Covered
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += [
       Rails.root.join('lib'),
-      Rails.root.join('app/widgets'),
     ]
 
     config.i18n.default_locale = :en
