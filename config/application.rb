@@ -11,6 +11,7 @@ Bundler.require(*Rails.groups(:assets => %w(development test)))
 $:.unshift Bundler.root.join('lib')
 require 'rails/console_methods'
 require 'covered'
+require 'roadie_no_external_asset_provider'
 
 module Covered
   class Application < Rails::Application
@@ -50,6 +51,7 @@ module Covered
     config.filepicker_rails.api_key = ENV.fetch('COVERED_FILEPICKER_API_KEY')
 
     config.roadie.enabled = true
+    config.roadie.provider = RoadieNoExternalAssetProvider.new
 
     config.force_ssl = false
 
