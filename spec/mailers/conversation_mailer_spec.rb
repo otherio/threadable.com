@@ -19,6 +19,7 @@ describe ConversationMailer do
     let(:expected_from         ){ message.from }
     let(:expected_envelope_to  ){ recipient.email_address }
     let(:expected_envelope_from){ organization.task_email_address }
+    let(:expected_html_part    ){ message.body_html.gsub(/\n/,'') }
 
     let(:mail_as_string){ mail.to_s }
     let(:text_part){ mail.text_part.body.to_s }
@@ -39,9 +40,8 @@ describe ConversationMailer do
       mail_as_string.should =~ /Message-ID:/
 
       text_part.should include message.body_plain
-      html_part.gsub(/\n/,'').should include message.body_html.gsub(/\n/,'')
+      html_part.gsub(/\n/,'').should include expected_html_part
       text_part.should include "View on Covered:\n#{conversation_url(organization, 'my', conversation)}"
-
 
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
@@ -70,6 +70,18 @@ describe ConversationMailer do
       it "should parse and construct the correct subject" do
         message.stub(subject: "RE: Re: [RaceTeam] #{conversation.subject}")
         validate_mail!
+      end
+
+      context "with a stylesheet link tag in the body" do
+        let(:expected_html_part) { 'so identifiable' }
+        before do
+          message.update(body_html: "<html><head><link rel=\"stylesheet\" href=\"/zimbra/css/msgview.css?v=201306050001\"></head><body>so identifiable</body></html>")
+        end
+
+        it "should return a mail message without choking on Roadie" do
+          validate_mail!
+          mail.html_part.body.to_s.should_not include 'zimbra/css/msgview.css'
+        end
       end
     end
 
