@@ -1,14 +1,12 @@
-<div class="reply well">
-  {{outlet pendingDoers}}
-  {{#if error}}
-    <h2>Error: {{error}}</h2>
-  {{/if}}
-  <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
-    <fieldset>
-      {{view Covered.ResizeableTextArea value=body class="uk-form-blank" name="body" placeholder="Add your voice..."}}
-      <div class="controls">
-        <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
-      </div>
-    </fieldset>
-  </form>
-</div>
+{{outlet pendingDoers}}
+{{#if error}}
+  <h2>Error: {{error}}</h2>
+{{/if}}
+<form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
+  <fieldset>
+    {{view Covered.ResizeableTextArea value=body class="uk-form-blank reply-content" name="body" placeholder="Add your voice..."}}
+    <div class="controls">
+      <input type="submit" class="uk-button uk-button-primary" value="Send"></input>
+    </div>
+  </fieldset>
+</form>
