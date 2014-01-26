@@ -1,5 +1,7 @@
 class Admin::Organization::MembersController < ApplicationController
 
+  layout 'old'
+
   before_action :require_user_be_admin!
   before_action :find_or_create_user!, only: :add
 

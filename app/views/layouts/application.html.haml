@@ -1,2 +1,13 @@
-= layout_wrapper do
-  = yield
+!!!
+%html
+  %head
+    %title Covered
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", :name => "viewport"}/
+    %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}/
+    %link{:href => asset_path('icon.png'), :rel => "apple-touch-icon"}/
+    %link{:href => asset_path('splash.png'), :rel => "apple-touch-startup-image"}/
+    %meta{:content => "black", :name => "apple-mobile-web-app-status-bar-style"}/
+    = stylesheet_link_tag 'application', :media => "all"
+    = csrf_meta_tags
+  %body
+    = yield

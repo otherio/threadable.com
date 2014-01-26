@@ -1,5 +1,7 @@
 class Admin::OrganizationsController < ApplicationController
 
+  layout 'old'
+
   before_action :require_user_be_admin!
 
   # GET /admin/organizations

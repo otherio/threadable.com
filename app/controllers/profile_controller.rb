@@ -1,5 +1,7 @@
 class ProfileController < ApplicationController
 
+  layout 'old'
+
   before_filter :require_user_be_signed_in!
 
   def show

@@ -1,6 +1,6 @@
-class FrontendController < UnauthenticatedController
+class FrontendController < ApplicationController
 
-  layout false
+  skip_before_action :require_user_be_signed_in!
 
   def show
     if request.xhr? || !request.get? || request.accepts.exclude?(:html)
