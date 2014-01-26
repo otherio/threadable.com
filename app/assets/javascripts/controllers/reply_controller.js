@@ -2,8 +2,36 @@ Covered.ReplyController = Ember.ObjectController.extend({
   needs: ['conversation', 'organization', 'doerSelector'],
 
   message: Ember.computed.alias('model'),
+  doerSelector: Ember.computed.alias('controllers.doerSelector'),
 
   error: null,
+
+  emptyAction: function() {
+    return !this.get('hasText') && !this.get('changedDoers');
+  }.property('hasText', 'changedDoers'),
+
+  buttonText: function() {
+    var changedDoers = this.get('changedDoers');
+    var hasText = this.get('hasText');
+
+    if(hasText && changedDoers) {
+      return 'Send & Update';
+    } else if(hasText) {
+      return 'Send';
+    } else if(changedDoers) {
+      return 'Update Doers';
+    } else {
+      return 'Send/Update Doers';
+    }
+  }.property('hasText', 'changedDoers'),
+
+  changedDoers: function() {
+    return !!this.get('doerSelector').filterBy('isChanged', true).length;
+  }.property('doerSelector.@each.isChanged'),
+
+  hasText: function() {
+    return !!this.get('body');
+  }.property('body'),
 
   actions: {
     reset: function() {
@@ -24,14 +52,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
         bodyHtml:         this.get('bodyAsHtml'),
       });
 
-      var newDoerIds = this.get('controllers.doerSelector.doers').map(function(doer) {
-        return doer.get('id');
-      }).sort();
-      var oldDoerIds = conversation.get('doers').map(function(doer) {
-        return doer.get('id');
-      }).sort();
-
-      if(Ember.compare(newDoerIds, oldDoerIds) != 0) {
+      if(this.get('changedDoers')) {
         var newDoers = RL.RecordArray.createWithContent();
         this.get('controllers.doerSelector.doers').forEach(function(doer) {
           newDoers.pushObject(doer);
