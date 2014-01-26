@@ -229,6 +229,7 @@ describe "processing incoming emails 2" do
 
     recipients.each do |recipient|
       expect(message.sent_to?(recipient)).to be_true
+      expect(message.sent_email(recipient).relayed?).to be_true
     end
 
     recipient_email_addresses = recipients.map(&:email_address)

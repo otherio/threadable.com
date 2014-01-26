@@ -109,6 +109,10 @@ class Covered::Message < Covered::Model
     message_record.sent_emails.where(user_id: recipient.user_id).exists?
   end
 
+  def sent_email recipient
+    message_record.sent_emails.where(user_id: recipient.user_id).first
+  end
+
   def sent_to! recipient
     message_record.sent_emails.create!(
       user_id: recipient.user_id,

@@ -13,6 +13,9 @@ class SendEmailWorker < Covered::Worker
     message   = organization.messages.find_by_id! message_id
     recipient = organization.members.find_by_user_id! recipient_id
     covered.emails.send_email(:conversation_message, organization, message, recipient)
+
+    # there is a tiny chance an email could get sent a second time here. email is nonatomic. deal with it.
+    message.sent_email(recipient).relayed!
   end
 
   def join_notice organization_id, recipient_id, personal_message=nil

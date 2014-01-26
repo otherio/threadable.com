@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140126090518) do
+ActiveRecord::Schema.define(version: 20140126220105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,9 +189,11 @@ ActiveRecord::Schema.define(version: 20140126090518) do
     t.integer  "user_id"
     t.integer  "email_address_id"
     t.datetime "created_at"
+    t.datetime "relayed_at"
   end
 
   add_index "sent_emails", ["message_id", "user_id"], name: "index_sent_emails_on_message_id_and_user_id", unique: true, using: :btree
+  add_index "sent_emails", ["relayed_at", "created_at"], name: "index_sent_emails_on_relayed_at_and_created_at", using: :btree
 
   create_table "task_doers", force: true do |t|
     t.integer "user_id"
