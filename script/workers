@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+export DB_POOL=20
+
 # 20 worker processes
 bundle exec sidekiq -c 20
