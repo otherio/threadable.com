@@ -81,6 +81,5 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'minitest', require: nil
   gem 'webmock'
-  gem 'simplecov'
   gem 'rest-client'
 end

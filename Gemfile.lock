@@ -403,7 +403,6 @@ DEPENDENCIES
   sidekiq
   sidekiq-failures
   simple_form
-  simplecov
   sinatra
   stringex
   thread_safe!
