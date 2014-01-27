@@ -45,26 +45,24 @@ RSpec.configure do |config|
   end
 
   config.around :each do |example|
-    Timeout::timeout(180) do  # this must be less than our CI timeout in circle.yml
-      use_fixtures    = example.metadata[:fixtures] != false
-      use_transaction = example.metadata[:transaction] != false
+    use_fixtures    = example.metadata[:fixtures] != false
+    use_transaction = example.metadata[:transaction] != false
 
-      ensure_no_open_transactions!
+    ensure_no_open_transactions!
 
-      load_fixtures! if use_fixtures
+    load_fixtures! if use_fixtures
 
-      if use_transaction
-        test_transaction do
-          empty_databases! if !use_fixtures
-          example.call
-        end
-      else
+    if use_transaction
+      test_transaction do
         empty_databases! if !use_fixtures
-        begin
-          example.call
-        ensure
-          empty_databases!
-        end
+        example.call
+      end
+    else
+      empty_databases! if !use_fixtures
+      begin
+        example.call
+      ensure
+        empty_databases!
       end
     end
 

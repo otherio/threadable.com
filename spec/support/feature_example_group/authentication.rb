@@ -1,24 +1,31 @@
 module RSpec::Support::FeatureExampleGroup
 
   def sign_in! user=covered.current_user
-    user.present? or raise ArgumentError, "sign_in! requires a user"
-    sign_out!
-    visit sign_in_path if current_path != sign_in_path
-    within_element 'the sign in form' do
-      fill_in 'Email Address', :with => user.email_address.to_s
-      fill_in 'Password', :with => 'password'
-      click_on 'Sign in'
+    Timeout::timeout(5) do
+      user.present? or raise ArgumentError, "sign_in! requires a user"
+      sign_out!
+      visit sign_in_path if current_path != sign_in_path
+      within_element 'the sign in form' do
+        fill_in 'Email Address', :with => user.email_address.to_s
+        fill_in 'Password', :with => 'password'
+        click_on 'Sign in'
+      end
+      # not sure why we see this error sometimes but retrying seems to fix it - Jared
+      begin
+        expect(page).to have_content('My Conversations')
+      rescue Capybara::Webkit::InvalidResponseError
+        raise if @capybara_webkit_invalid_response_error_seen
+        @capybara_webkit_invalid_response_error_seen = true
+        retry
+      end
+      covered.current_user_id = user.id
+      covered.current_user
     end
-    # not sure why we see this error sometimes but retrying seems to fix it - Jared
-    begin
-      expect(page).to have_content('My Conversations')
-    rescue Capybara::Webkit::InvalidResponseError
-      raise if @capybara_webkit_invalid_response_error_seen
-      @capybara_webkit_invalid_response_error_seen = true
-      retry
-    end
-    covered.current_user_id = user.id
-    covered.current_user
+  rescue Timeout::Error
+    raise if @timed_out_while_singing_in
+    @timed_out_while_singing_in = true
+    binding.pry
+    retry
   end
 
   def sign_out!
