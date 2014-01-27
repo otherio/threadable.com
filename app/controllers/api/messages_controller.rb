@@ -8,7 +8,7 @@ class Api::MessagesController < ApiController
   # post /api/organizations
   def create
     message_params = params[:message].slice(
-      :subject, :body, :from, :attachments, :text, :html,
+      :subject, :from, :attachments, :text, :html,
       :body_plain, :body_html, :stripped_plain, :stripped_html,
       :to_header, :cc_header
     ).symbolize_keys

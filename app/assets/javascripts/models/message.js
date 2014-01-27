@@ -27,13 +27,7 @@ Covered.Message = RL.Model.extend({
 
   hasQuotedText: function() {
     return this.get('body') != this.get('bodyStripped');
-  }.property('body', 'bodyStripped'),
-
-  bodyAsHtml: function() {
-    if(this.get('body')){
-      return '<p>' + this.get('body').replace(/\n/g, "<br />\n") + '</p>';
-    }
-  }.property('body')
+  }.property('body', 'bodyStripped')
 });
 
 Covered.RESTAdapter.map("Covered.Message", {

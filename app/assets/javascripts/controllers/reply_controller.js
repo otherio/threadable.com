@@ -34,13 +34,13 @@ Covered.ReplyController = Ember.ObjectController.extend({
   }.property('doerSelector.@each.isChanged'),
 
   hasText: function() {
-    return !!this.get('body');
-  }.property('body'),
+    return !!this.get('bodyHtml');
+  }.property('bodyHtml'),
 
   actions: {
     reset: function() {
       this.set('error', null);
-      this.set('message.body', null);
+      this.set('bodyHtml', null);
     },
     sendMessage: function() {
       this.set('error', null);
@@ -52,8 +52,8 @@ Covered.ReplyController = Ember.ObjectController.extend({
       message.setProperties({
         organizationSlug: organizationSlug,
         conversationId:   conversation.get('id'),
-        bodyPlain:        this.get('body'),
-        bodyHtml:         this.get('bodyAsHtml'),
+        bodyHtml:         this.get('bodyHtml'),
+        html:             true
       });
 
       if(this.get('changedDoers')) {
@@ -75,7 +75,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
       }
 
       function saveMessage() {
-        var body = message.get('body');
+        var body = message.get('bodyHtml');
         if(body && body.match(/\w/)){
           message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
         }
@@ -94,6 +94,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
 
         conversation.get('events').pushObject(event);
         this.set('content', Covered.Message.create({}));
+        this.send('reset');
       }
 
       function onError(response){

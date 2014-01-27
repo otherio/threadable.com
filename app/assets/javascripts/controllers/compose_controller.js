@@ -23,7 +23,7 @@ Covered.ComposeController = Ember.Controller.extend({
       this.get('groups').clear();
       this.addGroup(this.get('controllers.group.model'));
       this.set('subject', null);
-      this.set('body', null);
+      this.set('bodyHtml', null);
       this.set('error', null);
     },
     composeTask: function() {
@@ -47,11 +47,12 @@ Covered.ComposeController = Ember.Controller.extend({
       conversation.set('groupIds', groups.mapBy('id'));
       conversation.set('task', isTask);
 
-      message.set('organizationSlug', organizationSlug);
-      message.set('subject', subject);
-      message.set('body', this.get('body'));
-      message.set('bodyPlain', this.get('body'));
-      message.set('bodyHtml', message.get('bodyAsHtml'));
+      message.setProperties({
+        organizationSlug: organizationSlug,
+        subject:          subject,
+        bodyHtml:         this.get('bodyHtml'),
+        html:             true
+      });
 
       conversation.saveRecord().then(
         conversationSaved.bind(this),

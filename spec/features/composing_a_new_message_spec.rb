@@ -13,7 +13,7 @@ feature "Composing a new message" do
   def send_new_message!
     click_element 'the compose button'
     fill_in 'subject', with: 'Hey Party People!'
-    fill_in 'body', with: new_message_body
+    fill_in_element '.contenteditable', with: new_message_body
     click_on 'Send'
   end
 
@@ -31,7 +31,7 @@ feature "Composing a new message" do
   end
 
   def send_reply!
-    fill_in 'body', with: reply_body
+    fill_in_element '.contenteditable', with: reply_body
     click_on 'Send'
   end
 
