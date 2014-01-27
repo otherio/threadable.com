@@ -3,5 +3,10 @@
   %head
     = render 'layouts/headers'
     = javascript_include_tag 'rails_app'
-  %body
-    = yield
+  %body.rails-app
+    .content= yield
+    .footer
+      Made by
+      %a{:href => "http://other.io"} Other People.
+      %a.mixpanel-button.uk-float-right{:href => "https://mixpanel.com/f/partner"}
+        %img{:alt => "Mobile Analytics", :src => "//cdn.mxpnl.com/site_media/images/partner/badge_blue.png"}/
