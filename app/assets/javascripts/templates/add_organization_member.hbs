@@ -11,16 +11,16 @@
         <div class="form-row">
           <label>
             Name:
-            {{input value=name class="uk-form-blank" name="name"}}
+            {{input value=name class="uk-form-blank" name="name" tabindex="1"}}
           </label>
         </div>
         <div class="form-row">
           <label>
             Email:
-            {{input value=emailAddress class="uk-form-blank" name="emailAddress"}}
+            {{input value=emailAddress class="uk-form-blank" name="emailAddress" tabindex="2"}}
           </label>
         </div>
-        {{view Covered.ResizeableTextArea value=personalMessage class="uk-form-blank body" name="personalMessage" placeholder="Message..."}}
+        {{view Ember.ContenteditableView valueBinding="personalMessage" editable=true tabindex='3'}}
 
         <div>
           <p>
@@ -33,7 +33,7 @@
         </div>
 
         <span class="uk-float-right">
-          <input type="submit" class="uk-button uk-button-primary" value="Add member"></input>
+          <input type="submit" class="uk-button uk-button-primary" value="Add member" tabindex="4"></input>
         </span>
 
       </fieldset>

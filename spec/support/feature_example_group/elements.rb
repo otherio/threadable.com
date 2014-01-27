@@ -13,6 +13,7 @@ module RSpec::Support::FeatureExampleGroup
   end
 
   def fill_in_element selector, options
+    return if options[:with].blank?
     page.execute_script %{
       $('#{selector}').html("#{options[:with].gsub(/"/, '\"').gsub(/\n/, '\n')}");
       $('#{selector}').keydown();
