@@ -28,6 +28,7 @@ describe SendEmailWorker do
   let(:organization     ){ double :organization }
   let(:message     ){ double :message }
   let(:recipient   ){ double :recipient }
+  let(:sent_email   ){ double :sent_email }
 
   describe 'conversation_message' do
     let(:arguments){ [:conversation_message, organization_id, message_id, recipient_id] }
@@ -40,6 +41,9 @@ describe SendEmailWorker do
 
       expect(organization ).to receive(:members         ).and_return(members)
       expect(members ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
+
+      expect(message).to receive(:sent_email).with(recipient).and_return(sent_email)
+      expect(sent_email).to receive(:relayed!)
 
       expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:conversation_message, organization, message, recipient)
 
