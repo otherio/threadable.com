@@ -1,9 +1,12 @@
 #!/bin/bash
 
-bundle exec rspec -b -f documentation || exit 1
+bundle exec rspec -b -f documentation
+exit_code=$?
 
 if [ ${CIRCLE_ARTIFACTS:+x} ]
 then
   mkdir $CIRCLE_ARTIFACTS/tmp
   cp -r tmp/* $CIRCLE_ARTIFACTS/tmp
 fi
+
+exit $exit_code
