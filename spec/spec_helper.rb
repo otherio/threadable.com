@@ -45,7 +45,7 @@ RSpec.configure do |config|
   end
 
   config.around :each do |example|
-    Timeout::timeout(1080) do  # 2 minutes less than our CI timeout.
+    Timeout::timeout(180) do  # this must be less than our CI timeout in circle.yml
       use_fixtures    = example.metadata[:fixtures] != false
       use_transaction = example.metadata[:transaction] != false
 

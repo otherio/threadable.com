@@ -9,7 +9,7 @@ machine:
 
 test:
   override:
-    - script/ci-build: {timeout: 1200}
+    - script/ci-build: {timeout: 200}
 
 deployment:
   staging:
