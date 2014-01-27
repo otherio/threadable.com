@@ -42,30 +42,30 @@ class EmailAction
   def pending_description
     case @type
     when 'done'
-      "mark the conversation #{@conversation.subject.inspect} as done"
+      "mark #{@conversation.subject.inspect} as done"
     when 'undone'
-      "mark the conversation #{@conversation.subject.inspect} as not done"
+      "mark #{@conversation.subject.inspect} as not done"
     when 'mute'
-      "mute the conversation #{@conversation.subject.inspect}"
+      "mute #{@conversation.subject.inspect}"
     when 'add'
-      "add yourself as a doer of the task #{@conversation.subject.inspect}"
+      "add yourself as a doer of #{@conversation.subject.inspect}"
     when 'remove'
-      "remove yourself from the doers of the task #{@conversation.subject.inspect}"
+      "remove yourself as a doer of #{@conversation.subject.inspect}"
     end
   end
 
   def description
     case @type
     when 'done'
-      "we've marked #{@conversation.subject.inspect} as done"
+      "You marked #{@conversation.subject.inspect} as done"
     when 'undone'
-      "we've marked #{@conversation.subject.inspect} as not done"
+      "You marked #{@conversation.subject.inspect} as not done"
     when 'mute'
-      "we've muted #{@conversation.subject.inspect} for you"
+      "You muted #{@conversation.subject.inspect}"
     when 'add'
-      "we've added you as a doer of the task #{@conversation.subject.inspect}"
+      "You're added as a doer of #{@conversation.subject.inspect}"
     when 'remove'
-      "we've removed you from the doers of the task #{@conversation.subject.inspect}"
+      "You're no longer a doer of #{@conversation.subject.inspect}"
     end
   end
 

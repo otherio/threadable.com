@@ -14,13 +14,13 @@ describe "Email actions" do
       it "should ask me to sign in" do
         visit url
         expect(page).to have_text 'Hey Bethany Pattern'
-        expect(page).to have_text 'Please sign in to mark the conversation "layup body carbon" as done'
+        expect(page).to have_text 'Please sign in to mark "layup body carbon" as done'
         fill_in 'Password', with: 'password'
         click_on 'Sign in &done'
         expect(page).to be_at conversation_url(conversation.organization, 'my', conversation)
         conversation.reload
         expect(conversation).to be_done
-        expect(page).to have_text "we've marked #{conversation.subject.inspect} as done"
+        expect(page).to have_text "You marked #{conversation.subject.inspect} as done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
       end
     end
@@ -30,13 +30,13 @@ describe "Email actions" do
       it "should ask me to sign in" do
         visit url
         expect(page).to have_text 'Hey Bethany Pattern'
-        expect(page).to have_text 'Please sign in to mark the conversation "layup body carbon" as not done'
+        expect(page).to have_text 'Please sign in to mark "layup body carbon" as not done'
         fill_in 'Password', with: 'password'
         click_on 'Sign in &undone'
         expect(page).to be_at conversation_url(conversation.organization, 'my', conversation)
         conversation.reload
         expect(conversation).to_not be_done
-        expect(page).to have_text "we've marked #{conversation.subject.inspect} as not done"
+        expect(page).to have_text "You marked #{conversation.subject.inspect} as not done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
       end
     end
@@ -46,13 +46,13 @@ describe "Email actions" do
       it "should ask me to sign in" do
         visit url
         expect(page).to have_text 'Hey Bethany Pattern'
-        expect(page).to have_text 'Please sign in to mute the conversation "layup body carbon"'
+        expect(page).to have_text 'Please sign in to mute "layup body carbon"'
         fill_in 'Password', with: 'password'
         click_on 'Sign in &mute'
         expect(page).to be_at conversation_url(conversation.organization, 'my', conversation)
         conversation.reload
         expect(conversation).to be_muted_by user
-        expect(page).to have_text "we've muted #{conversation.subject.inspect} for you"
+        expect(page).to have_text "You muted #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
       end
     end
@@ -62,13 +62,13 @@ describe "Email actions" do
       it "should ask me to sign in" do
         visit url
         expect(page).to have_text 'Hey Bethany Pattern'
-        expect(page).to have_text 'Please sign in to add yourself as a doer of the task "layup body carbon"'
+        expect(page).to have_text 'Please sign in to add yourself as a doer of "layup body carbon"'
         fill_in 'Password', with: 'password'
         click_on 'Sign in &add'
         expect(page).to be_at conversation_url(conversation.organization, 'my', conversation)
         conversation.reload
         expect(conversation.doers).to include user
-        expect(page).to have_text "we've added you as a doer of the task #{conversation.subject.inspect}"
+        expect(page).to have_text "You're added as a doer of #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
       end
     end
@@ -78,13 +78,13 @@ describe "Email actions" do
       it "should ask me to sign in" do
         visit url
         expect(page).to have_text 'Hey Bethany Pattern'
-        expect(page).to have_text 'Please sign in to remove yourself from the doers of the task "layup body carbon"'
+        expect(page).to have_text 'Please sign in to remove yourself as a doer of "layup body carbon"'
         fill_in 'Password', with: 'password'
         click_on 'Sign in &remove'
         expect(page).to be_at conversation_url(conversation.organization, 'my', conversation)
         conversation.reload
         expect(conversation.doers).to_not include user
-        expect(page).to have_text "we've removed you from the doers of the task #{conversation.subject.inspect}"
+        expect(page).to have_text "You're no longer a doer of #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
       end
     end

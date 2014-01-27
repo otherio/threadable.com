@@ -22,12 +22,16 @@
           %a.uk-float-right{href: "/forgot_password"}
             No password yet?
             %br/
-            Forgot Password?
+            Forgot password?
           %input.uk-button.uk-button-primary.uk-button-large.sign-in-button{type: "submit", value: "Sign in &#{@email_action.type}"}/
 
   %h3 Or:
   .well-when-not-small
     %p
-      You can #{@email_action.pending_description} via email by replying to the conversation and adding
+      You can #{@email_action.pending_description} via email!
+      %br/
+      Just reply to the conversation and add
+      %br/
       %strong "&#{@email_action.type}"
-      to the begining of the first line.
+      %br/
+      to the top of your response.
