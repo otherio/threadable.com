@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bundle exec rspec -b -f documentation
+bundle exec rspec -b -f documentation || exit 1
 
 if [ ${CIRCLE_ARTIFACTS:+x} ]
 then
