@@ -78,7 +78,6 @@ group :test do
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'ffaker'
-  gem 'codeclimate-test-reporter', require: nil
   gem 'minitest', require: nil
   gem 'webmock'
   gem 'rest-client'
