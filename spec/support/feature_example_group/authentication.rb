@@ -24,7 +24,6 @@ module RSpec::Support::FeatureExampleGroup
   rescue Timeout::Error
     raise if @timed_out_while_singing_in
     @timed_out_while_singing_in = true
-    binding.pry
     retry
   end
 
