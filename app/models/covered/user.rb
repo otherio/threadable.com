@@ -25,10 +25,11 @@ class Covered::User < Covered::Model
 
   alias_method :user_id, :id
 
-  let(:email_addresses)  { EmailAddresses.new(self)   }
-  let(:organizations)    { Organizations.new(self)    }
-  let(:messages)         { Messages.new(self)         }
-  let(:group_memberships){ GroupMemberships.new(self) }
+  let(:email_addresses)  { Covered::User::EmailAddresses  .new(self) }
+  let(:organizations)    { Covered::User::Organizations   .new(self) }
+  let(:conversations)    { Covered::User::Conversations   .new(self) }
+  let(:messages)         { Covered::User::Messages        .new(self) }
+  let(:group_memberships){ Covered::User::GroupMemberships.new(self) }
 
   def group_ids
     group_memberships.all.map(&:group_id)
