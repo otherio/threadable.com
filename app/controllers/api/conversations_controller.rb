@@ -65,7 +65,7 @@ class Api::ConversationsController < ApiController
         conversation_params.delete(:muted) ? conversation.mute! : conversation.unmute!
       end
 
-      if params[:conversation].key?(:doers)
+      if params[:conversation].key?(:doers) && conversation.task?
         supplied_doer_ids = Array(conversation_params.delete(:doers)).map{ |doer| doer[:id].to_i }
         existing_doer_ids = conversation.doers.all.map(&:id)
         remove_doer_ids = existing_doer_ids - supplied_doer_ids
