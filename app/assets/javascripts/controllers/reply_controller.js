@@ -11,6 +11,10 @@ Covered.ReplyController = Ember.ObjectController.extend({
   }.property('hasText', 'changedDoers'),
 
   buttonText: function() {
+    if(!this.get('controllers.conversation.isTask')) {
+      return 'Send';
+    }
+
     var changedDoers = this.get('changedDoers');
     var hasText = this.get('hasText');
 
