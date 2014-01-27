@@ -1,7 +1,6 @@
 //= require_self
 //= require core
 //= require preload_current_user
-//= require sortable
 //= require moment
 //= require storage
 //= require handlebars
