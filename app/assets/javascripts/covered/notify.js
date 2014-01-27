@@ -21,9 +21,11 @@ Covered.notifyPendingNotifications = function() {
 
 
 !function(){
-  var queryParams, search;
+  var parseQueryString, queryParams, search;
 
   if (location.search === "") return;
+
+  parseQueryString = Covered.__container__.lookup('router:main').router.recognizer.parseQueryString;
 
   queryParams = parseQueryString(location.search.slice(1));
 
@@ -42,37 +44,5 @@ Covered.notifyPendingNotifications = function() {
   search  = $.param(queryParams);
 
   history.replaceState({}, null, location.origin + location.pathname + (search ? '?'+search : ''));
-
-  // this is take from the Ember source. I couldn't find a way to get at it :( - Jared
-  function parseQueryString(queryString) {
-    var pairs = queryString.split("&"), queryParams = {};
-    for(var i=0; i < pairs.length; i++) {
-      var pair      = pairs[i].split('='),
-          key       = decodeURIComponent(pair[0]),
-          keyLength = key.length,
-          isArray = false,
-          value;
-      if (pair.length === 1) {
-        value = true;
-      } else {
-        //Handle arrays
-        if (keyLength > 2 && key.slice(keyLength -2) === '[]') {
-          isArray = true;
-          key = key.slice(0, keyLength - 2);
-          if(!queryParams[key]) {
-            queryParams[key] = [];
-          }
-        }
-        value = pair[1] ? decodeURIComponent(pair[1]) : '';
-      }
-      if (isArray) {
-        queryParams[key].push(value);
-      } else {
-        queryParams[key] = value;
-      }
-
-    }
-    return queryParams;
-  }
 
 }();
