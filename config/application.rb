@@ -27,6 +27,8 @@ module Covered
     config.i18n.default_locale = :en
 
     config.assets.precompile += %w{
+      client_app.js
+      rails_app.js
       FontAwesome.otf
       fontawesome-webfont.eot
       fontawesome-webfont.svg
