@@ -207,7 +207,7 @@ GEM
     options_hash (0.0.1)
     options_hash-method_object (0.1.0)
       options_hash
-    pg (0.17.1)
+    pg (0.17.0)
     phantomjs (1.9.2.1)
     polyglot (0.3.3)
     pry (0.9.12.4)
@@ -378,7 +378,7 @@ DEPENDENCIES
   mixpanel-ruby
   newrelic_rpm
   options_hash-method_object
-  pg
+  pg (= 0.17.0)
   pry-debugger
   pry-rails
   rails (= 4.0.0)

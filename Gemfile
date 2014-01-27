@@ -10,7 +10,7 @@ gem 'sidekiq'
 gem 'sidekiq-failures'
 
 gem 'redis'
-gem 'pg'
+gem 'pg', '0.17.0'
 
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'stringex'
