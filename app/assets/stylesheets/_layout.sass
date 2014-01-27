@@ -4,12 +4,9 @@ html, body, .page, body > .ember-view
   margin: 0
   padding: 0
 
-body
-  position: absolute /* fixed margin spill over on body element */
-
-
 body.rails-app
   > .content
+    overflow: hidden
     padding-bottom: $footer-height
 
 body.client-app
