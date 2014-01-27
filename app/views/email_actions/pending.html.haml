@@ -28,10 +28,12 @@
   %h3 Or:
   .well-when-not-small
     %p
-      You can #{@email_action.pending_description} via email!
+      You can #{@email_action.pending_description} via email! Just reply to the conversation and add
       %br/
-      Just reply to the conversation and add
-      %br/
-      %strong "&#{@email_action.type}"
+      - case @email_action.type
+      - when 'add', 'remove'
+        %strong "&#{@email_action.type} #{@email_action.user.name}"
+      - else
+        %strong "&#{@email_action.type}"
       %br/
       to the top of your response.
