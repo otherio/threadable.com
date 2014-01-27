@@ -51,6 +51,7 @@ describe Api::MessagesController do
 
     # post /api/messages
     describe 'create' do
+      let(:message){ double :message, id: 34900, present?: true, persisted?: true }
       context 'when given valid message data' do
         it 'creates and returns the new message' do
           expect{
@@ -61,8 +62,13 @@ describe Api::MessagesController do
         end
 
         it 'sets sent_via_web to true' do
-          expect_any_instance_of(Covered::Conversation::Messages).to receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true, creator: current_user})
+          expect_any_instance_of(Covered::Conversation::Messages).to \
+            receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true, creator: current_user}).
+            and_return(message)
+          expect(controller).to receive(:serialize).with(:messages, message, include: :conversation).and_return(some: 'json')
           xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
+          expect(response.status).to eq 201
+          expect(response.body).to eq({some: 'json'}.to_json)
         end
       end
 
