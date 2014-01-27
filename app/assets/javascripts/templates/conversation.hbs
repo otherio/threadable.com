@@ -54,18 +54,24 @@
       </a>
     </div>
 
-
-    <ul class="messages">
-      {{#each event in events}}
-        {{#if event.display}}
-          {{#if event.message}}
-            {{view Covered.MessageView contextBinding='event.message'}}
-          {{else}}
-            {{view Covered.EventView contextBinding='event'}}
+    {{#if events}}
+      <ul class="messages">
+        {{#each event in events}}
+          {{#if event.display}}
+            {{#if event.message}}
+              {{view Covered.MessageView contextBinding='event.message'}}
+            {{else}}
+              {{view Covered.EventView contextBinding='event'}}
+            {{/if}}
           {{/if}}
-        {{/if}}
-      {{/each}}
-    </ul>
+        {{/each}}
+      </ul>
+    {{else}}
+      <div class="spinner">
+        <div class="cube1"></div>
+        <div class="cube2"></div>
+      </div>
+    {{/if}}
 
     {{outlet reply}}
   </div>
