@@ -1,7 +1,12 @@
 Covered::Application.routes.draw do
 
-  post '/sign_in'  => 'authentication#create'
-  post '/sign_out' => 'authentication#destroy'
+  get   '/sign_in'           => 'authentication#show'
+  post  '/sign_in'           => 'authentication#sign_in'
+  post  '/recover-password'  => 'authentication#recover_password', as: 'recover_password'
+  match '/sign_out'          => 'authentication#sign_out', via: [:get, :delete], as: 'sign_out'
+
+  get  '/ea/:token' => 'email_actions#show', as: 'email_action'
+  post '/ea/:token' => 'email_actions#take'
 
   namespace :api, except: [:new, :edit] do
     scope :users do
@@ -83,7 +88,7 @@ Covered::Application.routes.draw do
 
   # OLD ROUTES END
 
-  match '/*path' => 'frontend#show', via: [:get, :post, :patch, :delete]
-  root to: 'frontend#show', via: [:get, :post, :patch, :delete]
+  get '/*path' => 'client_app#show'
+  root to: 'homepage#show'
 
 end

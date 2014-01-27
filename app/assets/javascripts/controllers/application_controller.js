@@ -1,14 +1,8 @@
 Covered.ApplicationController = Ember.Controller.extend({
-  queryParams: ['r'],
-  r: null,
 
   transitions: [],
 
   currentUser: Ember.computed.alias('model'),
-
-  isSignedIn: function() {
-    return this.get('currentUser') && this.get('currentUser').get('userId');
-  }.property('currentUser.userId'),
 
   goBack: function(){
     var transition = this.get('transitions')[1];

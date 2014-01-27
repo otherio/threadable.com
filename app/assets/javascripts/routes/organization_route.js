@@ -1,22 +1,15 @@
 Covered.OrganizationRoute = Ember.Route.extend({
-  beforeModel: function(transition) {
-    if (!Covered.isSignedIn()) {
-      var signInController = this.controllerFor('sign_in');
-      signInController.set('previousTransition', transition);
-      this.transitionTo('sign_in');
-    }
-  },
 
   model: function(params){
     return Covered.CurrentUser.fetch().then(function(currentUser) {
       var organization = currentUser.get('organizations').findBy('slug', params.organization);
-      organization.loadMembers();
+      if (organization) organization.loadMembers();
       return organization;
     });
   },
 
   redirect: function(model, transition) {
-    if (!model) this.transitionTo('sign_out');
+    if (!model) this.transitionTo('/');
   },
 
   setupController: function(controller, model) {

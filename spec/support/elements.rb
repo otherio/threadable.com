@@ -3,7 +3,7 @@ module RSpec::Support::Elements
   def selector_for name
     case name
     when 'the sign in form'
-      '.sign-in-form form'
+      '.sign-in-form'
     when 'the navbar'
       '.navbar'
     when 'the groups pane'

@@ -1,5 +1,6 @@
-class Users::SetupController < UnauthenticatedController
+class Users::SetupController < ApplicationController
 
+  skip_before_action :require_user_be_signed_in!
   before_action :require_valid_token!
 
   def edit

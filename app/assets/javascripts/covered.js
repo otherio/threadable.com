@@ -1,10 +1,12 @@
 //= require_self
 //= require ./store
+//= require_tree ./covered
 //= require_tree ./mixins
 //= require_tree ./models
 //= require_tree ./controllers
 //= require_tree ./views
 //= require_tree ./helpers
+//= require_tree ./components
 //= require_tree ./components
 //= require_tree ./templates
 //= require ./router
@@ -27,10 +29,6 @@ Covered = Ember.Application.create({
 });
 // Ember.run.backburner.DEBUG = true;
 
-Covered.isSignedIn = function(){
-  var currentUser = Covered.currentUser;
-  return currentUser && currentUser.get && currentUser.get('isSignedIn');
-};
 
 // Ember.onerror = function(error){
 //   var notice = $('<div>');
@@ -43,8 +41,6 @@ Covered.isSignedIn = function(){
 Ember.TextField.reopen({
   attributeBindings: ['autofocus']
 });
-
-$(document).on('click', 'a[href=""]', function(e){ e.preventDefault(); });
 
 UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/MMrElWgvuRBk0LjwGqQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
 

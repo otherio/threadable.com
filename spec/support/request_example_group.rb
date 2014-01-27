@@ -16,10 +16,12 @@ module RSpec::Support::RequestExampleGroup
 
   def sign_in! user, remember_me: false
     post sign_in_path, {
-      "email_address" => user.email_address,
-      "password"      => "password",
+      "authentication" => {
+        "email_address" => user.email_address,
+        "password"      => "password",
+      }
     }
-    expect(response).to be_success
+    expect(response).to redirect_to root_url
     covered.current_user_id = user.id
   end
 

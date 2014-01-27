@@ -12,10 +12,10 @@ class Authentication
   end
   attr_reader :covered
 
-  attribute :user,        User
-  attribute :email_address,       String
-  attribute :password,    String
-  attribute :remember_me, Boolean, :default => false
+  attribute :user,          User
+  attribute :email_address, String
+  attribute :password,      String
+  attribute :remember_me,   Boolean, :default => true
 
   def valid?
     errors.clear
@@ -26,7 +26,7 @@ class Authentication
     end
     user = covered.users.find_by_email_address(email_address.downcase)
     if user.nil? || !user.web_enabled? || !user.authenticate(password)
-      errors.add(:base, 'bad email address or password')
+      errors.add(:base, 'Bad email address or password')
       return false
     end
     self.user = user

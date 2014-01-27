@@ -1,0 +1,33 @@
+.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2
+  .well-when-not-small
+    .uk-clearfix
+      .uk-float-left
+        .avatar{style: "margin-right: 1em"}
+          = image_tag @email_action.user.avatar_url
+      .uk-float-left
+        %h2 Hey #{@email_action.user.name}
+        %div #{@email_action.user.email_address}
+
+  %h3 Please sign in to #{@email_action.pending_description}
+
+  .uk-form.uk-form-stacked.well-when-not-small
+    = form_tag sign_in_path, method: 'POST' do
+      %input{type: 'hidden', name: 'r', value: current_url}
+      %fieldset
+        .uk-form-row
+          %input.uk-width-1-1.uk-form-large{placeholder: "Email", type: "email", name: 'authentication[email_address]', value: @email_action.user.email_address}/
+        .uk-form-row
+          %input.uk-width-1-1.uk-form-large{placeholder: "Password", type: "password", name: 'authentication[password]', autofocus: true}/
+        .uk-form-row
+          %a.uk-float-right{href: "/forgot_password"}
+            No password yet?
+            %br/
+            Forgot Password?
+          %input.uk-button.uk-button-primary.uk-button-large.sign-in-button{type: "submit", value: "Sign in &#{@email_action.type}"}/
+
+  %h3 Or:
+  .well-when-not-small
+    %p
+      You can #{@email_action.pending_description} via email by replying to the conversation and adding
+      %strong "&#{@email_action.type}"
+      to the begining of the first line.

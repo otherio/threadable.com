@@ -69,7 +69,9 @@ describe Api::MembersController do
           member_count = raceteam.members.all.length
           xhr :post, :create, format: :json, organization_id: raceteam.slug, member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
           expect(response.status).to eq 201
-          expect(response.body).to eq serialize(:members, raceteam.members.all.last).to_json
+          member = raceteam.members.all.find{|m| m.email_address == 'john@varvatos.com'}
+          expect(member).to be_present
+          expect(response.body).to eq serialize(:members, member).to_json
           expect(raceteam.members.all.length).to eq member_count + 1
         end
       end

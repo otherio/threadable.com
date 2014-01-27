@@ -48,13 +48,18 @@ module RescueFromExceptionsConcern
     respond_to do |format|
       format.json { render json: {error: message}, status: status }
       format.html {
-        if !request.xhr? && status == :unauthorized && !signed_in?
+        case
+        when request.xhr?
+          render nothing: true, status: status
+        when status == :unauthorized && !signed_in?
           redirect_to(request.get? ? sign_in_path(r: request.original_url) : sign_in_path)
+        when status == :not_found
+          render 'errors/not_found', status: status
         else
-          render text: "<h1>#{message}</h1>", layout: false, status: status
+          render 'errors/internal_server_error', status: status
         end
       }
-      format.all  { render text: message, layout: false, status: status }
+      format.all { render text: message, layout: false, status: status }
     end
   end
 

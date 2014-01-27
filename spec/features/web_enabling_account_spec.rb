@@ -7,9 +7,9 @@ feature "web enabling account" do
   scenario "Users who are not web enabled should be able web enable their account" do
     visit '/'
     click_link 'Forgot Password'
-    fill_in 'Email', with: user.email_address
+    fill_in 'Email Address', with: user.email_address
     click_button 'Recover'
-    expect(page).to have_text "We've emailed you instructions for how to set your password. Thanks!"
+    expect(page).to have_text "We've emailed you a password reset link."
 
     drain_background_jobs!
 
@@ -35,7 +35,7 @@ feature "web enabling account" do
     click_link 'Sign Out'
     expect(page).to have_text "No password yet?"
 
-    fill_in 'Email', with: user.email_address
+    fill_in 'Email Address', with: user.email_address
     fill_in 'Password', with: 'p@$$w0rd'
     click_button 'Sign in'
 

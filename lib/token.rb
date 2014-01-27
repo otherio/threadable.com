@@ -15,7 +15,11 @@ module Token
     rescue ArgumentError
       raise Invalid, token
     end
-    uuid, type, payload = Marshal.load(cleartext_token)
+    begin
+      uuid, type, payload = Marshal.load(cleartext_token)
+    rescue TypeError
+      raise Invalid, token
+    end
     raise TypeMismatch, type if type != expected_type
     return payload
   end

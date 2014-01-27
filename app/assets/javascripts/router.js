@@ -5,9 +5,6 @@ Covered.Router.reopen({
 });
 
 Covered.Router.map(function() {
-  this.route('sign_in');
-  this.route('sign_out');
-  this.route('forgot_password');
 
   this.resource('organization', {path: '/:organization'}, function(){
     this.resource('organization_members', {path: '/members'}, function(){
@@ -34,6 +31,8 @@ Covered.Router.map(function() {
       });
     });
   });
+
+  this.route("not_found", { path: "*path"});
 
   function conversationRoutes(scope, param) {
     this.resource(scope, {path: '/:conversation'});

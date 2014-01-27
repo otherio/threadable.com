@@ -1,7 +1,11 @@
 Covered.ApplicationRoute = Ember.Route.extend({
 
-  model: function() {
+  model: function(params) {
     return Covered.CurrentUser.fetch();
+  },
+
+  afterModel: function(model, transition) {
+    Covered.notifyPendingNotifications();
   },
 
   actions: {

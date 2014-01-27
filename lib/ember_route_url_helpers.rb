@@ -39,8 +39,6 @@ module EmberRouteUrlHelpers
   #
   #
   ember_routes = {
-    sign_in:                    '/sign_in',
-    sign_out:                   '/sign_out',
     forgot_password:            '/forgot_password',
     organization_member:        '/:organization/members/:member',
     organization_members:       '/:organization/members',

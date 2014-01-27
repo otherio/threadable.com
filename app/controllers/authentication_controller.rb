@@ -2,10 +2,7 @@ class AuthenticationController < ApplicationController
 
   skip_before_action :require_user_be_signed_in!
 
-  PADU = :post_authentication_destination_url
-
-  def new
-    session[PADU] = params[:r] || session[PADU]
+  def show
     if signed_in?
       redirect_to redirect_url!
     else
@@ -14,26 +11,56 @@ class AuthenticationController < ApplicationController
     end
   end
 
-  def create
-    authentication_params = params.slice(:email_address, :password, :remember_me)
-    authentication = Authentication.new(covered, authentication_params)
-    if authentication.valid?
-      sign_in! authentication.user, remember_me: authentication.remember_me
-      render json: nil
-    else
-      render json: {error: authentication.errors.full_messages.to_sentence}, status: :unauthorized
+  def sign_in
+    sign_out! if signed_in?
+    authentication_params = params[:authentication].slice(:email_address, :password, :remember_me)
+    @authentication    = Authentication.new(covered, authentication_params)
+    @password_recovery = PasswordRecovery.new(email_address: authentication_params[:email_address])
+
+    respond_to do |format|
+      if @authentication.valid?
+        sign_in! @authentication.user, remember_me: @authentication.remember_me
+        format.html { redirect_to redirect_url! }
+        format.json { render json: nil }
+      else
+        @warning = 'Bad email address or password'
+        format.html { render :show }
+        format.json { render json: {error: @warning}, status: :unauthorized }
+      end
     end
   end
 
-  def destroy
+  def recover_password
+    email_address = params[:password_recovery].try(:[], :email_address)
+    @password_recovery = PasswordRecovery.new(email_address: email_address)
+    @authentication    = Authentication.new(covered, email_address: email_address)
+
+    user = covered.users.find_by_email_address(email_address)
+
+    case
+    when user && user.web_enabled?
+      covered.emails.send_email_async(:reset_password, user.id)
+    when user
+      covered.emails.send_email_async(:reset_password, user.id)
+    end
+
+    @success = "We've emailed you a password reset link."
+
+    render :show
+  end
+
+  def sign_out
     sign_out!
-    render nothing: true
+    respond_to do |format|
+      format.html { redirect_to redirect_url! }
+      format.json { render nothing: true }
+    end
   end
 
   private
 
   def redirect_url!
-    session.delete(PADU) || root_url
+    params[:r] || root_url
   end
 
 end

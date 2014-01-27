@@ -10,13 +10,8 @@ module ConversationMailerHelper
     }
   end
 
-  def email_command_link conversation, subject, command
-    organization = conversation.organization
-    address = conversation.task? ? organization.task_email_address : organization.email_address
-    body = %(-- don't delete this: [ref: #{conversation.slug}]\n)+
-           %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
-           %(&#{command})
-    mail_to_href address, subject: subject, body: body
+  def email_action_link conversation, recipient, action
+    email_action_url token: EmailActionToken.encrypt(conversation.id, recipient.id, action)
   end
 
 end

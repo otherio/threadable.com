@@ -1,4 +1,6 @@
-class Users::ResetPasswordController < UnauthenticatedController
+class Users::ResetPasswordController < ApplicationController
+
+  skip_before_action :require_user_be_signed_in!
 
   def request_link
     email = params.require(:password_recovery).require(:email)

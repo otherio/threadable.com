@@ -1,9 +1,17 @@
-.well.well-centered.well-centered-wide
-  %h1 You're almost in!
-  = simple_form_for @user, url: setup_users_path() do |f|
-    = hidden_field_tag :token, @user_setup_token
-    = f.input :email_address, as: :string, disabled: true
-    = f.input :name, as: :string
-    = f.input :password, required: true
-    = f.input :password_confirmation, required: true
-    = f.submit 'Setup my account', class: 'btn btn-primary'
+.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2
+  %h2 Covered
+  .well-when-not-small
+    %h1 You're almost in!
+    = simple_form_for @user, url: setup_users_path, html: {class: 'uk-form uk-form-stacked'} do |f|
+      = hidden_field_tag :token, @user_setup_token
+      %fieldset
+        .uk-form-row
+          = f.input :email_address, as: :string, disabled: true, placeholder: 'Email Address', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+        .uk-form-row
+          = f.input :name, as: :string, placeholder: 'Name', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+        .uk-form-row
+          = f.input :password, required: true, placeholder: 'Password', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+        .uk-form-row
+          = f.input :password_confirmation, required: true, placeholder: 'Password confirmation', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+        .uk-form-row
+          = f.submit 'Setup my account', class: 'btn btn-primary'

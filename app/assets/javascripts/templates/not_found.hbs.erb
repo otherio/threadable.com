@@ -1,0 +1,10 @@
+{{!-- FYI this page is a duplucate of app/views/errors/not_found.html.haml --}}
+<div class="uk-container-center uk-width-large-1-2 uk-width-medium-1-2 authentication-form">
+  <div class="uk-text-center">
+    <h1> Darn! </h1>
+    <h2> We couldn't find the page you were looking for. </h2>
+
+    <img class="sad-kitten" src=<%= image_path('kitten.jpg').inspect %></img>
+    <p>
+      {{#link-to 'index'}}Try going to our homepage{{/link-to}}
+    </p>

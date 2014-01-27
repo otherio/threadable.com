@@ -61,8 +61,8 @@ class Covered::Organization::Members < Covered::Collection
     query.strip!
     return nil if query.blank?
     member = @covered.current_user if query.downcase == 'me'
-    member = find_by_email_address(query) unless member
-    member = find_by_name(query) unless member
+    member ||= find_by_email_address(query)
+    member ||= find_by_name(query)
     member
   end
 

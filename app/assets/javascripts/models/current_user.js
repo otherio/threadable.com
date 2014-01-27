@@ -11,9 +11,6 @@ Covered.CurrentUser = RL.Model.extend({
   avatarUrl:    RL.attr('string'),
 
   organizations: RL.hasMany('Covered.Organization'),
-
-  isSignedIn: function() { return !!this.get('userId'); }.property('userId')
-
 });
 
 Covered.CurrentUser.reopenClass({
@@ -36,17 +33,5 @@ Covered.CurrentUser.reopenClass({
       return currentUser;
     }.bind(this));
     return this._reloadPromise;
-  },
-  signOut: function() {
-    Covered.currentUser.setProperties({
-      userId:        null,
-      param:         null,
-      name:          null,
-      emailAddress:  null,
-      slug:          null,
-      avatarUrl:     null,
-      organizations: null,
-    });
-    return $.post('/sign_out.json');
   }
 });

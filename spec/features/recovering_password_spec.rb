@@ -7,9 +7,9 @@ feature "recovering password" do
 
     visit '/'
     click_link 'Forgot Password'
-    fill_in 'Email', with: current_user.email_address
+    fill_in 'Email Address', with: current_user.email_address
     click_button 'Recover'
-    expect(page).to have_text "We've emailed you instructions for how to set your password. Thanks!"
+    expect(page).to have_text "We've emailed you a password reset link."
 
     drain_background_jobs!
 
@@ -35,7 +35,7 @@ feature "recovering password" do
     click_link 'Sign Out'
     expect(page).to have_text "No password yet?"
 
-    fill_in 'Email', with: current_user.email_address
+    fill_in 'Email Address', with: current_user.email_address
     fill_in 'Password', with: 'p@$$w0rd'
     click_button 'Sign in'
 

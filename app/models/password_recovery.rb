@@ -5,7 +5,7 @@ class PasswordRecovery
   def persisted?; false; end
   include Virtus
 
-  attribute :email, String
+  attribute :email_address, String
 
   def == other
     attributes == other.attributes

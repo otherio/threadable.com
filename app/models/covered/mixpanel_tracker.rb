@@ -26,7 +26,7 @@ class Covered::MixpanelTracker < Covered::Tracker
   def recover_from_expected_errors
     yield
   rescue Errno::ECONNRESET => error
-    Honeybadger.notify(error)
+    covered.report_exception!(error)
   ensure
     return nil
   end

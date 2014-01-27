@@ -9,7 +9,7 @@ class EmailsController < ApplicationController
     covered.incoming_emails.create!(mailgun_params)
     render nothing: true, status: :ok
   rescue Covered::RecordInvalid => error
-    Honeybadger.notify(error)
+    covered.report_exception!(error)
     render nothing: true, status: :bad_request
   end
 

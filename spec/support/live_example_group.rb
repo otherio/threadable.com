@@ -16,7 +16,7 @@ module RSpec::Support::LiveExampleGroup
 
   def sign_in_as email_address, password
     visit '/sign_in'
-    fill_in 'Email', with: email_address
+    fill_in 'Email Address', with: email_address
     fill_in 'Password', with: password
     click_button 'Sign in'
     page.should have_content 'Organizations'

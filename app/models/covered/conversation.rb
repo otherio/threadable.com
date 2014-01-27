@@ -16,6 +16,11 @@ class Covered::Conversation < Covered::Model
   end
   attr_reader :conversation_record
 
+  def reload
+    conversation_record.reload
+    self
+  end
+
   delegate *%w{
     id
     to_param
@@ -40,15 +45,29 @@ class Covered::Conversation < Covered::Model
   let(:participants){ Participants.new(self) }
   let(:groups      ){ Groups.new(self) }
 
+  def mute_for user
+    if conversation_record.muters.exclude? user.user_record
+      conversation_record.muters << user.user_record
+    end
+    self
+  end
+
+  def unmute_for user
+    if conversation_record.muters.include? user.user_record
+      conversation_record.muters.delete user.user_record
+    end
+    self
+  end
+
   def mute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
-    conversation_record.muters << covered.current_user.user_record
+    mute_for covered.current_user
     self
   end
 
   def unmute!
     raise ArgumentError, "covered.current_user is nil" if covered.current_user.nil?
-    conversation_record.muters.delete(covered.current_user.user_record)
+    unmute_for covered.current_user
     self
   end
 
@@ -60,6 +79,7 @@ class Covered::Conversation < Covered::Model
   def muted_by? user
     conversation_record.muters.map(&:id).include?(user.user_id)
   end
+  alias_method :muted_by, :muted_by?
 
   def update attributes
     !!conversation_record.update_attributes(attributes)
