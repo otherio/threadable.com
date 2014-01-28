@@ -1,6 +1,7 @@
 #!/bin/bash
 
-bundle exec rspec --color --format Fuubar
+
+bundle exec rspec --require rspec/instafail --format RSpec::Instafail
 exit_code=$?
 
 if [ ${CIRCLE_ARTIFACTS:+x} ]

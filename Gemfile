@@ -66,6 +66,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem "mail_view"
   gem 'fuubar'
+  gem 'rspec-instafail'
   gem 'jasmine'
   gem 'timecop', require: nil
 end

@@ -386,6 +386,7 @@ DEPENDENCIES
   redis
   rest-client
   roadie
+  rspec-instafail
   rspec-rails
   sanitize
   sass-rails
