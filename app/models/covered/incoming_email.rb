@@ -170,7 +170,7 @@ class Covered::IncomingEmail < Covered::Model
   end
 
   def date
-    @date ||= Time.parse(params['Date']).in_time_zone
+    @date ||= params['Date'] ? Time.parse(params['Date']).in_time_zone : Time.now.in_time_zone
   end
 
   def in_reply_to
