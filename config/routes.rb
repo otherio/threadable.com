@@ -86,6 +86,15 @@ Covered::Application.routes.draw do
     end
   end
 
+  get '/:organization_id/conversations/:conversation_id', to: redirect('/%{organization_id}/my/conversations/%{conversation_id}')
+  get '/:organization_id/tasks/:conversation_id',         to: redirect('/%{organization_id}/my/tasks/%{conversation_id}')
+
+  get '/:organization_id/tasks/:conversation_id/ill_do_it'      => 'old_email_actions#ill_do_it'
+  get '/:organization_id/tasks/:conversation_id/remove_me'      => 'old_email_actions#remove_me'
+  get '/:organization_id/tasks/:conversation_id/mark_as_done'   => 'old_email_actions#mark_as_done'
+  get '/:organization_id/tasks/:conversation_id/mark_as_undone' => 'old_email_actions#mark_as_undone'
+  get '/:organization_id/conversations/:conversation_id/mute'   => 'old_email_actions#mute'
+
   # OLD ROUTES END
 
   get '/*path' => 'client_app#show'
