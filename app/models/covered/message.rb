@@ -30,6 +30,11 @@ class Covered::Message < Covered::Model
     errors
   }, to: :message_record
 
+  def reload
+    message_record.reload
+    self
+  end
+
   def organization
     conversation.try(:organization)
   end

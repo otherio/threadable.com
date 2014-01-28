@@ -56,7 +56,7 @@ describe Api::MessagesController do
         it 'creates and returns the new message' do
           expect{
             xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
-          }.to change{ conversation.messages.count }.by(1)
+          }.to change{ conversation.reload.messages.count }.by(1)
           expect(response.status).to eq 201
           expect(response.body).to eq serialize(:messages, conversation.messages.latest, include: :conversation).to_json
         end
@@ -66,6 +66,7 @@ describe Api::MessagesController do
             receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true, creator: current_user}).
             and_return(message)
           expect(controller).to receive(:serialize).with(:messages, message, include: :conversation).and_return(some: 'json')
+          message.stub_chain(:conversation, :reload)
           xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
           expect(response.status).to eq 201
           expect(response.body).to eq({some: 'json'}.to_json)

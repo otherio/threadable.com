@@ -95,8 +95,9 @@ class Covered::Conversation < Covered::Model
   end
 
   def participant_names
-    participants = User.all.distinct.joins(:messages).where(messages:{conversation_id:id}).limit(3).select(:name).map(&:name)
-    participants = [creator.name] if participants.empty?
+    participants = User.all.distinct.joins(:messages).where(messages:{conversation_id:id}).
+      select('name, messages.created_at').order('messages.created_at ASC').limit(3).map(&:name)
+    participants = [creator.name] if participants.empty? && creator
     participants.map do |participant|
       participant.split(/\s+/).first
     end.compact.uniq
