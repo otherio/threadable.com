@@ -8,6 +8,10 @@ class Covered::Conversation::Messages < Covered::Messages
   end
   attr_reader :conversation
 
+  def count
+    conversation.conversation_record.messages_count
+  end
+
   def create attributes
     super attributes.merge(conversation: conversation)
   end
