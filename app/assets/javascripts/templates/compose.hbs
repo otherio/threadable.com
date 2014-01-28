@@ -1,5 +1,5 @@
 <div class="compose scrollable">
-  <div class="well-when-not-small">
+  <div class="well-when-not-small composition">
     <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
 
       <div class="uk-float-right uk-hidden-small">
@@ -35,10 +35,10 @@
         <div class="form-row">
           <label>
             Subject:
-            {{input value=subject tabindex="1" class="uk-form-blank subject" name="subject"}}
+            {{input value=subject tabindex="1" class="uk-form-blank subject" name="subject" autofocus="autofocus"}}
           </label>
         </div>
-        {{view Covered.ResizeableTextArea value=body tabindex="2" class="uk-form-blank body" name="body"}}
+        {{textarea value=body tabindex="2" class="uk-form-blank body" name="body"}}
         <div class="uk-hidden-small">
           <span class="uk-float-left">
             <a href="" class="uk-button" {{action 'reset'}}>

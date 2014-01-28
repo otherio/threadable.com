@@ -4,7 +4,7 @@
 {{/if}}
 <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
   <fieldset>
-    {{view Covered.ResizeableTextArea value=body class="uk-form-blank reply-content" name="body" placeholder="Add your voice..."}}
+    {{textarea value=body class="uk-form-blank reply-content" name="body" placeholder="Add your voice..."}}
     <div class="controls">
       <input type="submit" class="uk-button uk-button-primary" {{bind-attr disabled="emptyAction" value="buttonText"}}></input>
     </div>

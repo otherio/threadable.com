@@ -44,6 +44,7 @@ Covered.ConversationRoute = Ember.Route.extend({
   actions: {
     willTransition: function(transition) {
       this.controllerFor('organization').set('focus', 'conversations');
+      $("#inputWithFocus").blur();
     }
   }
 

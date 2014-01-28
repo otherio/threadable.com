@@ -11,7 +11,7 @@
         <div class="form-row">
           <label>
             Name:
-            {{input value=name class="uk-form-blank" name="name"}}
+            {{input value=name class="uk-form-blank" name="name" autofocus="autofocus"}}
           </label>
         </div>
         <div class="form-row">
@@ -20,7 +20,7 @@
             {{input value=emailAddress class="uk-form-blank" name="emailAddress"}}
           </label>
         </div>
-        {{view Covered.ResizeableTextArea value=personalMessage class="uk-form-blank body" name="personalMessage" placeholder="Message..."}}
+        {{textarea value=personalMessage class="uk-form-blank body" name="personalMessage" placeholder="Message..."}}
 
         <div>
           <p>

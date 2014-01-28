@@ -14,6 +14,7 @@ Covered.ComposeRoute = Ember.Route.extend({
   actions: {
     willTransition: function() {
       this.controllerFor('navbar').set('composing', false);
+      $("#inputWithFocus").blur();
     },
     transitionToConversation: function(conversation) {
       var routeName = this.routeName.replace('compose_','');
