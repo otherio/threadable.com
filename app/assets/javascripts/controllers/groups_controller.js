@@ -8,21 +8,8 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     this.set('organization.focus', 'groups');
 
     var closeGroupsSidebar = this.closeGroupsSidebar.bind(this);
-
-    $('.groups-pane a:first').focus();
-
-    $(document).on('focus.closeGroupsSidebar keydown.closeGroupsSidebar', '*', function(event) {
-      if ($(event.target).parents('.groups-pane').length !== 0) return;
-      event.preventDefault();
-      setTimeout(function() { $('.groups-pane a:first').focus(); });
-      return false;
-    });
-    $(document).on('keydown.closeGroupsSidebar', '*', function(event) {
-      if (event.which !== 27) return;
-      event.preventDefault();
-      closeGroupsSidebar();
-      return false;
-    });
+    // there was code here to make the sidebar not suck when you hit tab. however, it broke everything else.
+    // we should fix that, though.
   },
 
   closeGroupsSidebar: function() {
