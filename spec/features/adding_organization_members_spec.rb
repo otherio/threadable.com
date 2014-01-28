@@ -85,10 +85,11 @@ feature "Adding organization members" do
 
   def add_member_to_organization name, email_address, organization_slug, personal_message=nil
     visit organization_members_add_url(organization_slug)
+
     within '.add-member' do
       fill_in 'Name', with: name
       fill_in 'Email', with: email_address
-      fill_in_element '.contenteditable', with: personal_message
+      fill_in 'Message...', with: personal_message
       click_on 'Add member'
     end
   end

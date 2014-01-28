@@ -51,7 +51,7 @@ class Covered::Organization::Members::Add < MethodObject
   end
 
   def sent_join_notice!
-    @covered.emails.send_email_async(:join_notice, @organization.id, user_id, StripHtml.call(@options[:personal_message]))
+    @covered.emails.send_email_async(:join_notice, @organization.id, user_id, @options[:personal_message])
   end
 
   def find_or_create_user
