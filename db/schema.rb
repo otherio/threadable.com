@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140128030523) do
+ActiveRecord::Schema.define(version: 20140128061446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140128030523) do
   end
 
   add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
+  add_index "conversations", ["slug"], name: "index_conversations_on_slug", using: :btree
 
   create_table "conversations_muters", id: false, force: true do |t|
     t.integer "conversation_id"
@@ -111,6 +112,7 @@ ActiveRecord::Schema.define(version: 20140128030523) do
     t.string   "color",             default: "", null: false
   end
 
+  add_index "groups", ["email_address_tag"], name: "index_groups_on_email_address_tag", using: :btree
   add_index "groups", ["organization_id", "name"], name: "index_groups_on_organization_id_and_name", unique: true, using: :btree
   add_index "groups", ["organization_id"], name: "index_groups_on_organization_id", using: :btree
 
