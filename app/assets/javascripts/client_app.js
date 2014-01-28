@@ -6,11 +6,10 @@
 //= require handlebars
 //= require ember
 //= require ember-restless
+//= require ember-google-analytics
 //= require covered
 //= require debug
 
-ENV = {
-  FEATURES: {
-    'query-params-new': true
-  }
+ENV.FEATURES = {
+  'query-params-new': true
 };

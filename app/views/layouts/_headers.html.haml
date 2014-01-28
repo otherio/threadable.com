@@ -6,3 +6,4 @@
 %meta{:content => "black", :name => "apple-mobile-web-app-status-bar-style"}/
 = stylesheet_link_tag 'application', :media => "all"
 = csrf_meta_tags
+= javascript_tag %(ENV = #{javascript_env.to_json};)
