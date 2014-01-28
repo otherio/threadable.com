@@ -601,7 +601,7 @@ describe "processing incoming emails 2" do
           let(:expect_conversation_to_be_a_task) { true }
           let(:expect_task_to_be_done)           { false }
           let(:expected_sent_email_to)           { ['raceteam+task@127.0.0.1'] }
-          let(:expected_sent_email_subject)      { "[✔][RaceTeam] OMG guys I love covered!" }
+          let(:expected_sent_email_subject)      { "[✔︎][RaceTeam] OMG guys I love covered!" }
           let(:expected_email_recipients)        { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
           let(:expected_conversation)            { expected_organization.conversations.find_by_slug('layup-body-carbon') }
           let!(:expected_parent_message)         { expected_conversation.messages.latest }
@@ -739,7 +739,7 @@ describe "processing incoming emails 2" do
     let(:expect_conversation_to_be_a_task)      { true }
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
-    let(:expected_sent_email_subject)           { "[✔][RaceTeam] #{subject}" }
+    let(:expected_sent_email_subject)           { "[✔︎][RaceTeam] #{subject}" }
     let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
 
     it 'creates the conversation as a task' do
@@ -754,7 +754,7 @@ describe "processing incoming emails 2" do
     let(:expected_message_subject)              { '[task] pickup some cheese' }
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
-    let(:expected_sent_email_subject)           { "[✔][RaceTeam] pickup some cheese" }
+    let(:expected_sent_email_subject)           { "[✔︎][RaceTeam] pickup some cheese" }
     let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
 
     it 'creates the conversation as a task' do
@@ -775,14 +775,14 @@ describe "processing incoming emails 2" do
   end
 
 
-  context "and the subject contains [✔]" do
+  context "and the subject contains the bare form of [✔]" do
     let(:subject){ '[✔] pickup some cake' }
 
     let(:expect_conversation_to_be_a_task)      { true }
     let(:expected_message_subject)              { '[✔] pickup some cake' }
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
-    let(:expected_sent_email_subject)           { "[✔][RaceTeam] pickup some cake" }
+    let(:expected_sent_email_subject)           { "[✔︎][RaceTeam] pickup some cake" }
     let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
 
     it 'creates the conversation as a task' do
@@ -790,6 +790,35 @@ describe "processing incoming emails 2" do
     end
   end
 
+  context "and the subject contains the text form of [✔︎]" do
+    let(:subject){ '[✔︎] pickup some cake' }
+
+    let(:expect_conversation_to_be_a_task)      { true }
+    let(:expected_message_subject)              { '[✔︎] pickup some cake' }
+    let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
+    let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
+    let(:expected_sent_email_subject)           { "[✔︎][RaceTeam] pickup some cake" }
+    let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
+
+    it 'creates the conversation as a task' do
+      validate! :delivered
+    end
+  end
+
+  context "and the subject contains the emoji form of [✔️]" do
+    let(:subject){ '[✔️] pickup some cake' }
+
+    let(:expect_conversation_to_be_a_task)      { true }
+    let(:expected_message_subject)              { '[✔️] pickup some cake' }
+    let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
+    let(:expected_sent_email_to)                { [expected_organization.task_email_address] }
+    let(:expected_sent_email_subject)           { "[✔︎][RaceTeam] pickup some cake" }
+    let(:expected_sent_email_reply_to)          { expected_organization.formatted_task_email_address }
+
+    it 'creates the conversation as a task' do
+      validate! :delivered
+    end
+  end
 
   # from, envelope from, sender
 
@@ -933,7 +962,7 @@ describe "processing incoming emails 2" do
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expect_conversation_to_be_a_task) { true }
     let(:expect_task_to_be_done) { true }
-    let(:expected_sent_email_subject){ "[✔][RaceTeam] #{subject}" }
+    let(:expected_sent_email_subject){ "[✔︎][RaceTeam] #{subject}" }
     let(:expected_sent_email_reply_to){ expected_organization.formatted_task_email_address }
     it 'replace that email with the task version' do
       validate! :delivered

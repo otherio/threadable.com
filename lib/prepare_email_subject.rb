@@ -3,7 +3,7 @@
 class PrepareEmailSubject < MethodObject
 
   def call organization, email
-    subject = email.subject.gsub(%r{\s*\[(#{Regexp.escape organization.subject_tag}|task|✔)\](\s*)}, '\2').sub(/^\s+/, '')
+    subject = email.subject.gsub(%r{\s*\[(#{Regexp.escape organization.subject_tag}|task|✔|✔\uFE0E|✔\uFE0F)\](\s*)}, '\2').sub(/^\s+/, '')
     return subject[0..254] if subject.present?
     split_body = email.stripped_plain.split(/\s+/)
     if split_body[8]

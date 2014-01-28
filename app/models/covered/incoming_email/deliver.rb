@@ -41,7 +41,8 @@ class Covered::IncomingEmail::Deliver < MethodObject
     @incoming_email.conversation.present? ? update_conversation! : create_conversation!
   end
 
-  TASK_SUBJECT_PREFIX_REGEXP = /^\[(✔|task)\]\s*/i
+  # believe it or not, these three checkmarks are different!
+  TASK_SUBJECT_PREFIX_REGEXP = /^\[(✔|✔\uFE0E|✔\uFE0F|task)\]\s*/i
   TASK_RECIPIENT_REGEXP = /\+task\b/i
   def create_conversation!
     is_task = @incoming_email.subject =~ TASK_SUBJECT_PREFIX_REGEXP || @incoming_email.recipient =~ TASK_RECIPIENT_REGEXP
