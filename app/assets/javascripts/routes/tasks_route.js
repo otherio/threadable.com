@@ -3,14 +3,19 @@ Covered.TasksRoute = Covered.ConversationsRoute.extend({
   doneTasksScope: 'done_tasks',
   notDoneTasksScope: 'not_done_tasks',
 
-  model: function(params) {
-    var
-      groupSlug = this.modelFor('group'),
-      organization = this.modelFor('organization'),
-      doneTasksPromise    = Covered.Conversation.fetchByGroupAndScope(organization, groupSlug, this.doneTasksScope),
-      notDoneTasksPromise = Covered.Conversation.fetchByGroupAndScope(organization, groupSlug, this.notDoneTasksScope);
+  groupSlug:    function() { return this.modelFor('group'); },
+  organization: function() { return this.modelFor('organization'); },
 
-    return Ember.RSVP.Promise.all([doneTasksPromise, notDoneTasksPromise]).then(function(results) {
+  doneTasks: function() {
+    return Covered.Conversation.fetchByGroupAndScope(this.organization(), this.groupSlug(), this.doneTasksScope);
+  },
+
+  notDoneTasks: function() {
+    return Covered.Conversation.fetchByGroupAndScope(this.organization(), this.groupSlug(), this.notDoneTasksScope);
+  },
+
+  model: function(params) {
+    return Ember.RSVP.Promise.all([this.doneTasks(), this.notDoneTasks()]).then(function(results) {
       return {doneTasks: results[0], notDoneTasks: results[1]};
     });
   },
@@ -30,7 +35,11 @@ Covered.TasksRoute = Covered.ConversationsRoute.extend({
       // this.controller.get('model').unshiftObject(conversation);
     },
     refresh: function(callback) {
-      this.refresh().then(callback || Ember.K);
+      var notDoneTasks = this.controllerFor('notDoneTasks');
+
+      this.notDoneTasks().then(function(newTasks) {
+        notDoneTasks.set('model', newTasks);
+      });
     }
   }
 
