@@ -42,7 +42,7 @@ describe Api::MembersController do
             it 'renders not found' do
               xhr :get, :index, format: :json, organization_id: raceteam.slug, group_id: 'foobar'
               expect(response.status).to eq 404
-              expect(response.body).to eq '{"error":"Not Found"}'
+              expect(response.body).to eq '{"error":"unable to find group with email address tag \"foobar\""}'
             end
           end
         end
@@ -50,14 +50,14 @@ describe Api::MembersController do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: sfhealth.slug
             expect(response.status).to eq 404
-            expect(response.body).to eq '{"error":"Not Found"}'
+            expect(response.body).to eq '{"error":"unable to find organization with slug \"sfhealth\""}'
           end
         end
         context 'of an organization that does not exist' do
           it 'renders not found' do
             xhr :get, :index, format: :json, organization_id: 'foobar'
             expect(response.status).to eq 404
-            expect(response.body).to eq '{"error":"Not Found"}'
+            expect(response.body).to eq '{"error":"unable to find organization with slug \"foobar\""}'
           end
         end
       end
@@ -79,21 +79,21 @@ describe Api::MembersController do
         it 'renders not found' do
           xhr :post, :create, format: :json, organization_id: 'foobar', member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
           expect(response.status).to eq 404
-          expect(response.body).to eq '{"error":"Not Found"}'
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"foobar\""}'
         end
       end
       context 'when given an organization id of an organization that the current user is not in' do
         it 'renders not found' do
           xhr :post, :create, format: :json, organization_id: sfhealth.slug, member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
           expect(response.status).to eq 404
-          expect(response.body).to eq '{"error":"Not Found"}'
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"sfhealth\""}'
         end
       end
       context 'when given no organization id' do
         it 'renders not found' do
           xhr :post, :create, format: :json, member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
           expect(response.status).to eq 404
-          expect(response.body).to eq '{"error":"Not Found"}'
+          expect(response.body).to eq '{"error":"unable to find organization with slug nil"}'
         end
       end
     end
