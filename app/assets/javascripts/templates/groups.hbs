@@ -35,7 +35,7 @@
       </li>
       {{#each organization in currentUser.organizations}}
       <li {{bind-attr class=":change-organization organizationVisible:uk-visible:uk-hidden"}}>
-        {{#link-to 'organization' organization.slug}}{{organization.name}}{{/link-to}}
+        {{#link-to 'conversations' organization.slug 'my'}}{{organization.name}}{{/link-to}}
       </li>
       {{/each}}
     </ul>
