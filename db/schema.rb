@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140126220105) do
+ActiveRecord::Schema.define(version: 20140128030523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,7 +157,8 @@ ActiveRecord::Schema.define(version: 20140126220105) do
     t.text     "cc_header"
   end
 
-  add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+  add_index "messages", ["conversation_id", "user_id"], name: "index_messages_on_conversation_id_and_user_id", using: :btree
+  add_index "messages", ["created_at"], name: "index_messages_on_created_at", using: :btree
   add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
 
   create_table "organization_memberships", force: true do |t|
@@ -224,6 +225,7 @@ ActiveRecord::Schema.define(version: 20140126220105) do
   end
 
   add_index "users", ["created_at"], name: "index_users_on_created_at", using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 
