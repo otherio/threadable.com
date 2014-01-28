@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   include AuthenticationConcern
   include RescueFromExceptionsConcern
+  include DebugCookie
 
   # before_action do
   #   return unless params["controller"] == "application" && params["action"] == "show"

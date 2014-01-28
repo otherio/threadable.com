@@ -28,6 +28,10 @@ Covered::Application.routes.draw do
 
   get '/admin' => 'admin#show'
   namespace :admin do
+    get    'debug'         => 'debug#show'
+    get    'debug/enable'  => 'debug#enable'
+    get    'debug/disable' => 'debug#disable'
+
     post   'organizations/:organization_id/members'          => 'organization/members#add',    as: 'add_organization_member'
     patch  'organizations/:organization_id/members/:user_id' => 'organization/members#update', as: 'update_organization_member'
     delete 'organizations/:organization_id/members/:user_id' => 'organization/members#remove', as: 'remove_organization_member'

@@ -27,6 +27,7 @@ module RescueFromExceptionsConcern
   ].freeze
 
   def rescue_from_exception exception
+    raise exception if debug_enabled?
     logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
 
     sign_out! if Covered::CurrentUserNotFound === exception
@@ -45,6 +46,7 @@ module RescueFromExceptionsConcern
   end
 
   def render_error status: :bad, message: ""
+
     respond_to do |format|
       format.json { render json: {error: message}, status: status }
       format.html {
