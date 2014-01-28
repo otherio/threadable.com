@@ -33,11 +33,11 @@ module RescueFromExceptionsConcern
 
     case exception
     when *UNAUTHORIZED_EXCEPTIONS
-      render_error status: :unauthorized, message: 'Unauthorized'
+      render_error status: :unauthorized, message: exception || 'Unauthorized'
     when *NOT_ACCEPTABLE_EXCEPTIONS
       render_error status: :not_acceptable, message: exception.message || 'Not Acceptable'
     when *NOT_FOUND_EXCEPTIONS
-      render_error status: :not_found, message: 'Not Found'
+      render_error status: :not_found, message: exception.message || 'Not Found'
     else
       covered.report_exception! exception
       render_error message: exception.message
