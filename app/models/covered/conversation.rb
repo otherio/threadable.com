@@ -95,15 +95,10 @@ class Covered::Conversation < Covered::Model
   end
 
   def participant_names
-    messages = self.messages.all
-    return [creator.name.split(/\s+/).first] if messages.empty? && creator.present?
-    messages.map do |message|
-      case
-      when message.creator.present?
-        message.creator.name.split(/\s+/).first
-      else
-        ExtractNamesFromEmailAddresses.call([message.from]).first
-      end
+    participants = User.all.distinct.joins(:messages).where(messages:{conversation_id:id}).limit(3).select(:name).map(&:name)
+    participants = [creator.name] if participants.empty?
+    participants.map do |participant|
+      participant.split(/\s+/).first
     end.compact.uniq
   end
 
