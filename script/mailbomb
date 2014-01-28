@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+
+require 'dotenv'
+Dotenv.load
+require 'ffaker'
+require 'time'
+require 'pry'
+
+N = Integer(ARGV.first || 10)
+
+class Email
+
+  COVERED_MAILGUN_KEY = ENV['COVERED_MAILGUN_KEY'] or abort "COVERED_MAILGUN_KEY is not set"
+
+  def initialize
+    @to            = 'testing+task@staging.covered.io'
+    @from          = 'Jared Grippe <jared@other.io>'
+    @name          = Faker::Name.name
+    @email_address = Faker::Internet.email
+    @subject       = Faker::Lorem.sentence
+    @text_body     = Faker::Lorem.paragraphs.join("\n\n")
+    @html_body     = Faker::Lorem.paragraphs.map{|s| "<p>#{s}</p>\n"}
+  end
+
+  def formatted_email_address
+    "#{@name} <#{@email_address}>"
+  end
+
+  def command
+    <<-SH
+      curl -s --user 'api:#{COVERED_MAILGUN_KEY}' \
+        https://api.mailgun.net/v2/staging.covered.io/messages \
+        -F from='#{@from}' \
+        -F to='#{@to}'\
+        -F subject='#{@subject}' \
+        -F text=#{@text_body.inspect} \
+        -F Date='#{Time.now.rfc2822}'
+    SH
+  end
+
+  def send
+    system(command)
+  end
+end
+
+
+N.times do
+  fork do
+    Email.new.send
+  end
+end
