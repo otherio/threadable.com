@@ -12,12 +12,4 @@ module RSpec::Support::FeatureExampleGroup
     find_element(name).click
   end
 
-  def fill_in_element selector, options
-    page.execute_script %{
-      $('#{selector}').html("#{options[:with].gsub(/"/, '\"').gsub(/\n/, '\n')}");
-      $('#{selector}').keydown();
-      $('#{selector}').keyup();
-    }
-  end
-
 end
