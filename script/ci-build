@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bundle exec rspec -b -f documentation
+bundle exec rspec --color --format Fuubar
 exit_code=$?
 
 if [ ${CIRCLE_ARTIFACTS:+x} ]
