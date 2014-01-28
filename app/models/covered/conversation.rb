@@ -77,7 +77,7 @@ class Covered::Conversation < Covered::Model
   end
 
   def muted_by? user
-    conversation_record.muters.map(&:id).include?(user.user_id)
+    !!conversation_record.muters.where(conversations_muters: {:user_id => user.user_id}).exists?
   end
   alias_method :muted_by, :muted_by?
 
