@@ -1,7 +1,5 @@
-/* /:organization */
 Covered.OrganizationIndexRoute = Ember.Route.extend({
-  // // we never want to visit this route
-  // redirect: function(){
-  //   this.transitionTo('group.index', 'all');
-  // }
+  redirect: function(organization){
+    this.transitionTo('conversations', organization, 'my');
+  }
 });

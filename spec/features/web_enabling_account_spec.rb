@@ -42,6 +42,7 @@ feature "web enabling account" do
     within '.current-user-controls' do
       expect(page).to have_text user.name
     end
+    expect(page).to have_text "carbon"
   end
 
 end
