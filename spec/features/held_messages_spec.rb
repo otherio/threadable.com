@@ -37,6 +37,7 @@ feature "Held messages" do
     expect(page).to_not have_text email_subject
 
     visit conversations_url(organization, 'ungrouped')
+    expect(page).to have_text "Held Messages"
     click_on 'held messages'
 
     expect(page).to have_text email_subject
