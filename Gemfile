@@ -47,7 +47,7 @@ gem 'appsignal'
 
 gem 'honeybadger'
 
-gem 'thread_safe', :git => 'git://github.com/headius/thread_safe.git', :ref => 'f89cc783fbe'
+gem 'thread_safe', :git => 'git://github.com/headius/thread_safe.git', :ref => '177381261d4'
 
 group :production, :staging do
   gem 'rails_12factor'
