@@ -62,9 +62,9 @@ feature "Viewing conversations and tasks" do
   end
 
   def expect_listed_conversations_to_eq conversations, current_group=nil
-    serailized_conversations = serailize_conversations(conversations, current_group)
+    serialized_conversations = serialize_conversations(conversations, current_group)
     wait_until_expectation do
-      expect(listed_conversations).to eq serailized_conversations
+      expect(listed_conversations).to eq serialized_conversations
     end
   end
 
@@ -99,7 +99,7 @@ feature "Viewing conversations and tasks" do
     end
   end
 
-  def serailize_conversations conversations, current_group=nil
+  def serialize_conversations conversations, current_group=nil
     conversations.map do |conversation|
       message_summary = conversation.messages.latest.try(:body_plain).try(:[], 0..50) || "no messages"
       message_summary = message_summary.gsub("\n", ' ').strip
@@ -116,9 +116,9 @@ feature "Viewing conversations and tasks" do
 
 
   def expect_listed_tasks_to_eq tasks, current_group=nil
-    serailized_tasks = serailize_tasks(tasks, current_group)
+    serialized_tasks = serialize_tasks(tasks, current_group)
     wait_until_expectation do
-      expect(listed_tasks).to eq serailized_tasks
+      expect(listed_tasks).to eq serialized_tasks
     end
   end
 
@@ -143,7 +143,7 @@ feature "Viewing conversations and tasks" do
     end
   end
 
-  def serailize_tasks tasks, current_group=nil
+  def serialize_tasks tasks, current_group=nil
     tasks.map do |task|
       {
         'subject' => task.subject,
