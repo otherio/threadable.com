@@ -45,6 +45,10 @@ class Covered::Conversation < Covered::Model
   let(:participants){ Participants.new(self) }
   let(:groups      ){ Groups.new(self) }
 
+  def muter_ids
+    conversation_record.muter_ids_cache
+  end
+
   def mute_for user
     if conversation_record.muters.exclude? user.user_record
       Covered.transaction do
@@ -87,8 +91,7 @@ class Covered::Conversation < Covered::Model
   end
 
   def muted_by? user
-    cache = conversation_record.muter_ids_cache
-    cache && cache.include?(user.id)
+    muter_ids.include?(user.user_id)
   end
   alias_method :muted_by, :muted_by?
 
@@ -106,7 +109,7 @@ class Covered::Conversation < Covered::Model
   end
 
   def participant_names
-    conversation_record.reload.participant_names_cache
+    conversation_record.participant_names_cache
   end
 
   def cache_participant_names!
