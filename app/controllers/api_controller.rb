@@ -8,7 +8,7 @@ class ApiController < ApplicationController
 
   def ensure_request_accepts_json!
     return if request.accepts.include?(:json) || request.format == :json
-    render_error status: :not_acceptable, message: 'Not Acceptable'
+    render_error nil, :not_acceptable, 'Not Acceptable'
   end
 
 end

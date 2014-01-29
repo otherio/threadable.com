@@ -46,7 +46,7 @@ module RescueFromExceptionsConcern
   end
 
   def render_error exception, status, message
-    message = exception.message != exception.class.name && exception.message.presence || message
+    message = exception && exception.message != exception.class.name && exception.message.presence || message
 
     respond_to do |format|
       format.json { render json: {error: message}, status: status }
