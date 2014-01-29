@@ -18,6 +18,7 @@ describe Covered::Conversation::Groups do
       expect(conversation.groups.all).to eq []
       conversation.groups.add(new_groups)
       expect(conversation.groups.all).to match_array new_groups
+      expect(conversation.group_ids).to match_array new_groups.map(&:id)
     end
 
     context 'when a given group was already removed from the conversation' do
@@ -30,6 +31,7 @@ describe Covered::Conversation::Groups do
         expect(conversation.groups.all).to eq []
         conversation.groups.add(group)
         expect(conversation.groups.all).to eq [group]
+        expect(conversation.group_ids).to eq [group.id]
       end
 
     end
@@ -43,6 +45,7 @@ describe Covered::Conversation::Groups do
       expect(conversation.groups.all).to eq []
       conversation.groups.add_unless_removed(groups)
       expect(conversation.groups.all).to match_array groups
+      expect(conversation.group_ids).to match_array groups.map(&:id)
     end
 
     context 'when a given group was already removed from the conversation' do
@@ -55,6 +58,7 @@ describe Covered::Conversation::Groups do
         expect(conversation.groups.all).to eq []
         conversation.groups.add_unless_removed(group)
         expect(conversation.groups.all).to eq []
+        expect(conversation.group_ids).to eq []
       end
 
     end
@@ -72,6 +76,7 @@ describe Covered::Conversation::Groups do
       expect(groups.length).to eq 2
       conversation.groups.remove(groups.first)
       expect(conversation.groups.all).to eq [groups.last]
+      expect(conversation.group_ids).to eq [groups.last.id]
     end
 
   end

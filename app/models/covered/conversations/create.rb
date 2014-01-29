@@ -39,6 +39,7 @@ class Covered::Conversations::Create < MethodObject
   def add_groups!
     return unless @options.groups.present?
     @conversation_record.groups = @options.groups.map(&:group_record)
+    @conversation.cache_group_ids!
   end
 
   def create_created_at_event!

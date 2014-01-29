@@ -45,7 +45,7 @@ describe "/api/conversations" do
             @done_doing_tasks    = request! 'my', 'done_doing_tasks'
         @not_done_doing_tasks    = request! 'my', 'not_done_doing_tasks'
 
-        check_consistancy!
+        check_consistency!
 
         all.each do |conversation|
           conversation['group_ids'].empty? || (conversation['group_ids'] & my_group_ids).present? or fail("#{conversation['slug'].inspect} is not mine.")
@@ -59,7 +59,7 @@ describe "/api/conversations" do
         @not_done_doing_tasks    = request! 'ungrouped', 'not_done_doing_tasks'
 
 
-        check_consistancy!
+        check_consistency!
 
         all.each do |conversation|
           expect(conversation['group_ids']).to be_empty
@@ -74,7 +74,7 @@ describe "/api/conversations" do
               @done_doing_tasks    = request! group.slug, 'done_doing_tasks'
           @not_done_doing_tasks    = request! group.slug, 'not_done_doing_tasks'
 
-          check_consistancy!
+          check_consistency!
 
           all.each do |conversation|
             expect(conversation['group_ids']).to include group.group_id
@@ -98,7 +98,7 @@ describe "/api/conversations" do
         @my_group_ids ||= organization.groups.my.map(&:id)
       end
 
-      def check_consistancy!
+      def check_consistency!
         expect(@muted_conversations  & @not_muted_conversations).to eq []
         expect(@done_tasks           & @not_done_tasks         ).to eq []
         expect(@done_doing_tasks     & @not_done_doing_tasks   ).to eq []

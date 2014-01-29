@@ -9,6 +9,10 @@ class Conversation < ActiveRecord::Base
   has_many :conversation_groups, dependent: :destroy
   has_many :groups, ->{ where(conversation_groups: {active: true}) }, through: :conversation_groups
 
+  serialize :participant_names_cache, Array
+  serialize :group_ids_cache, Array
+  serialize :muter_ids_cache, Array
+
   def self.default_scope
     order('conversations.updated_at DESC')
   end

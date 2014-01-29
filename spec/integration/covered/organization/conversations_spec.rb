@@ -58,22 +58,22 @@ describe Covered::Organization::Conversations do
 
     describe '#muted' do
       it 'returns an empty array' do
-        expect(conversations.muted.map(&:slug)).to eq muted_conversation_slugs
+        expect(conversations.muted.map(&:slug)).to match_array muted_conversation_slugs
       end
     end
     describe '#not_muted' do
       it 'returns an empty array' do
-        expect(conversations.not_muted.map(&:slug)).to eq not_muted_conversation_slugs
+        expect(conversations.not_muted.map(&:slug)).to match_array not_muted_conversation_slugs
       end
     end
     describe '#muted_with_participants' do
       it 'returns an empty array' do
-        expect(conversations.muted_with_participants.map(&:slug)).to eq muted_conversation_slugs
+        expect(conversations.muted_with_participants.map(&:slug)).to match_array muted_conversation_slugs
       end
     end
     describe '#not_muted_with_participants' do
       it 'returns an empty array' do
-        expect(conversations.not_muted_with_participants.map(&:slug)).to eq not_muted_conversation_slugs
+        expect(conversations.not_muted_with_participants.map(&:slug)).to match_array not_muted_conversation_slugs
       end
     end
   end

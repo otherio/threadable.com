@@ -61,7 +61,5 @@ describe Covered::Conversation do
         expect{ conversation.muted? }.to raise_error ArgumentError
       end
     end
-
   end
-
 end

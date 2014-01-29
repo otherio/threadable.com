@@ -36,7 +36,7 @@ describe Covered::Organization do
             expect(conversation).to be_muted_by current_user
           end
 
-          expect( slugs_for conversations ).to eq [
+          expect( slugs_for conversations ).to match_array [
             "layup-body-carbon",
             "get-carbon-and-fiberglass",
             "get-release-agent",
@@ -53,7 +53,7 @@ describe Covered::Organization do
             expect(conversation).to be_a Covered::Conversation
             expect(conversation).to_not be_muted_by current_user
           end
-          expect( slugs_for conversations ).to eq [
+          expect( slugs_for conversations ).to match_array [
             "who-wants-to-pick-up-breakfast",
             "who-wants-to-pick-up-dinner",
             "who-wants-to-pick-up-lunch",

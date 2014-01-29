@@ -32,7 +32,7 @@ describe Covered::Conversation::Scopes do
         @not_done_doing_tasks     = object.not_done_doing_tasks
 
 
-        expect( slugs_for @muted_conversations ).to eq [
+        expect( slugs_for @muted_conversations ).to match_array [
           "layup-body-carbon",
           "get-carbon-and-fiberglass",
           "get-release-agent",
@@ -41,7 +41,7 @@ describe Covered::Conversation::Scopes do
           "welcome-to-our-covered-organization",
         ]
 
-        expect( slugs_for @not_muted_conversations ).to eq [
+        expect( slugs_for @not_muted_conversations ).to match_array [
           "who-wants-to-pick-up-breakfast",
           "who-wants-to-pick-up-dinner",
           "who-wants-to-pick-up-lunch",
@@ -55,14 +55,14 @@ describe Covered::Conversation::Scopes do
           "how-are-we-going-to-build-the-body",
         ]
 
-        expect( slugs_for @done_tasks ).to eq [
+        expect( slugs_for @done_tasks ).to match_array [
           "layup-body-carbon",
           "get-epoxy",
           "get-release-agent",
           "get-carbon-and-fiberglass",
         ]
 
-        expect( slugs_for @not_done_tasks ).to eq [
+        expect( slugs_for @not_done_tasks ).to match_array [
           "install-mirrors",
           "trim-body-panels",
           "make-wooden-form-for-carbon-layup",
@@ -70,11 +70,11 @@ describe Covered::Conversation::Scopes do
           "get-some-4-gauge-wire",
         ]
 
-        expect( slugs_for @done_doing_tasks ).to eq [
+        expect( slugs_for @done_doing_tasks ).to match_array [
 
         ]
 
-        expect( slugs_for @not_done_doing_tasks ).to eq [
+        expect( slugs_for @not_done_doing_tasks ).to match_array [
           "get-a-new-soldering-iron",
         ]
       end

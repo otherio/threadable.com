@@ -47,16 +47,26 @@ class Covered::Conversation < Covered::Model
 
   def mute_for user
     if conversation_record.muters.exclude? user.user_record
-      conversation_record.muters << user.user_record
+      Covered.transaction do
+        conversation_record.muters << user.user_record
+        cache_muter_ids!
+      end
     end
     self
   end
 
   def unmute_for user
     if conversation_record.muters.include? user.user_record
-      conversation_record.muters.delete user.user_record
+      Covered.transaction do
+        conversation_record.muters.delete user.user_record
+        cache_muter_ids!
+      end
     end
     self
+  end
+
+  def cache_muter_ids!
+    update(muter_ids_cache: conversation_record.muters.map(&:id))
   end
 
   def mute!
@@ -77,7 +87,8 @@ class Covered::Conversation < Covered::Model
   end
 
   def muted_by? user
-    !!conversation_record.muters.where(conversations_muters: {:user_id => user.user_id}).exists?
+    cache = conversation_record.muter_ids_cache
+    cache && cache.include?(user.id)
   end
   alias_method :muted_by, :muted_by?
 
@@ -95,12 +106,38 @@ class Covered::Conversation < Covered::Model
   end
 
   def participant_names
-    participants = User.all.distinct.joins(:messages).where(messages:{conversation_id:id}).
-      select('name, messages.created_at').order('messages.created_at ASC').limit(3).map(&:name)
-    participants = [creator.name] if participants.empty? && creator
-    participants.map do |participant|
-      participant.split(/\s+/).first
+    conversation_record.reload.participant_names_cache
+  end
+
+  def cache_participant_names!
+    messages = self.messages.all
+    names = messages.map do |message|
+      case
+      when message.creator.present?
+        message.creator.name.split(/\s+/).first
+      else
+        ExtractNamesFromEmailAddresses.call([message.from]).first
+      end
     end.compact.uniq
+    names ||= creator.present? ? [creator.name.split(/\s+/).first] : []
+    update(participant_names_cache: names)
+    conversation_record.reload.participant_names_cache
+  end
+
+  def message_summary
+    conversation_record.message_summary_cache
+  end
+
+  def cache_message_summary!
+    update(message_summary_cache: messages.latest.try(:body_plain).try(:[], 0..50))
+  end
+
+  def group_ids
+    conversation_record.group_ids_cache
+  end
+
+  def cache_group_ids!
+    update(group_ids_cache: groups.all.map(&:id))
   end
 
   def as_json options=nil

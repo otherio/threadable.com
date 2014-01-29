@@ -36,6 +36,9 @@ describe Covered::Messages::Create do
       subject: 'I like your face',
       task?: false,
       id: 1234,
+      cache_participant_names!: true,
+      cache_message_summary!: true,
+      cache_muter_ids!: true,
     )
   end
 

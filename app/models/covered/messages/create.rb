@@ -109,6 +109,8 @@ class Covered::Messages::Create < MethodObject
       cc_header:         cc_header,
       date_header:       date_header,
     )
+    @conversation.cache_participant_names!
+    @conversation.cache_message_summary!
     @message = Covered::Message.new(@covered, @message_record)
   end
 

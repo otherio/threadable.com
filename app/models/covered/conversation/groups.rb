@@ -14,6 +14,7 @@ class Covered::Conversation::Groups < Covered::Groups
       groups_association << group_records
       group_ids = groups.flatten.compact.map(&:group_record).map(&:id)
       conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: true)
+      conversation.cache_group_ids!
     end
     self
   end
@@ -22,13 +23,19 @@ class Covered::Conversation::Groups < Covered::Groups
     groups = groups.flatten.compact
     existing_group_ids = conversation.conversation_record.conversation_groups.map(&:group_id)
     groups.reject!{ |group| existing_group_ids.include? group.group_id }
-    groups_association << groups.map(&:group_record)
+    Covered.transaction do
+      groups_association << groups.map(&:group_record)
+      conversation.cache_group_ids!
+    end
     self
   end
 
   def remove *groups
     group_ids = groups.flatten.compact.map(&:group_record).map(&:id)
-    conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: false)
+    Covered.transaction do
+      conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: false)
+      conversation.cache_group_ids!
+    end
     self
   end
 
