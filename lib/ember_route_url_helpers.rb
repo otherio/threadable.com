@@ -39,7 +39,6 @@ module EmberRouteUrlHelpers
   #
   #
   ember_routes = {
-    forgot_password:            '/forgot_password',
     organization_member:        '/:organization/members/:member',
     organization_members:       '/:organization/members',
     organization_members_add:   '/:organization/members/add',
@@ -76,6 +75,10 @@ module EmberRouteUrlHelpers
         else
           arg.to_s
         end
+      end
+
+      args.map! do |arg|
+        URI.encode(arg)
       end
 
       path = begin
