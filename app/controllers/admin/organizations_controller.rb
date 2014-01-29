@@ -69,9 +69,4 @@ class Admin::OrganizationsController < ApplicationController
     @organization_params
   end
 
-  # this is here so the page navigation organization section is not rendered
-  def current_organization
-  end
-  helper_method :current_organization
-
 end
