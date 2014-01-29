@@ -57,11 +57,14 @@ group :development do
   gem 'active_record_query_trace'
 end
 
+group :development, :test, :staging do
+  gem 'pry-rails'
+  gem 'pry-debugger'
+end
+
 group :development, :test do
   gem 'dotenv-rails'
   gem 'rspec-rails'
-  gem 'pry-rails'
-  gem 'pry-debugger'
   gem 'activerecord-fixture_builder'
   gem 'binding_of_caller'
   gem "mail_view"
