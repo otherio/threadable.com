@@ -296,6 +296,7 @@ FixtureBuilder.build do
     add_doer_to_task @check_in_with_iv_supplies_vendor_task, 'lilith@sfhealth.example.com'
     add_conversation_to_group(@initial_iv_supplies_message, @triage_group)
     add_conversation_to_group(@initial_iv_supplies_message, @anesthiology_group)
+    @check_in_with_iv_supplies_vendor_task.reload
     @pick_up_bagels_for_orientation_task = create_task 'Pick up bagels for orientation', [@social_group]
     @drive_me_home_message = create_conversation(
       subject: 'Can anyone drive me home tonight?',
@@ -389,6 +390,7 @@ FixtureBuilder.build do
       )
     )
     add_conversation_to_group(@hypertension_literature_review_message , @triage_group)
+    @hypertension_literature_review_task.reload
   end
 
   as 'smaturin@sfhealth.example.com' do

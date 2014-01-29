@@ -121,7 +121,7 @@ class Covered::Conversation < Covered::Model
     end.compact.uniq
     names ||= creator.present? ? [creator.name.split(/\s+/).first] : []
     update(participant_names_cache: names)
-    conversation_record.reload.participant_names_cache
+    conversation_record.reload
   end
 
   def message_summary
