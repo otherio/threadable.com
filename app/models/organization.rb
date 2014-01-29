@@ -27,12 +27,17 @@ class Organization < ActiveRecord::Base
   validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :name, :slug
   validates_format_of :subject_tag, with: /\A[\w -]+\z/
+  validates_format_of :email_address_username, with: /\A[\.a-z0-9_-]+\z/
 
   acts_as_url :short_name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 
   def name= name
     self.short_name = name if short_name.blank?
     super
+  end
+
+  def email_address_username= email_address_username
+    super email_address_username.to_s.downcase
   end
 
   def short_name

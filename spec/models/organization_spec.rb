@@ -76,4 +76,20 @@ describe Organization do
     end
   end
 
+  describe "#email_address_username" do
+
+    def email_address_username_errors email_address_username
+      organization = described_class.new(:email_address_username => email_address_username)
+      organization.valid?
+      organization.errors[:email_address_username]
+    end
+
+    it "validates the format of" do
+      expect( email_address_username_errors("hello") ).to be_blank
+      expect( email_address_username_errors("hello there") ).to eq ["is invalid"]
+      expect( email_address_username_errors("hello_there") ).to be_blank
+      expect( email_address_username_errors("hello-there") ).to be_blank
+    end
+  end
+
 end
