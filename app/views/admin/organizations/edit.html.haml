@@ -40,7 +40,7 @@
     .inputs
       %select{name: 'user[id]'}
         %option{selected: true}
-        - @all_users.each do |user|
+        - @all_users.sort_by(&:name).each do |user|
           - next if @members.map(&:id).include? user.id
           %option{value: user.id}= user.formatted_email_address
       = option_inputs
