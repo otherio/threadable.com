@@ -10,7 +10,7 @@ Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMix
   conversationsScope: null,
   loading: true,
 
-  PAGE_SIZE: 10, // this should be matched by the server
+  PAGE_SIZE: 20, // this should be matched by the server
   currentPage: 0,
   fullyLoaded: false,
 

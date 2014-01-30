@@ -13,7 +13,7 @@ Covered.DoneTasksController = Ember.ArrayController.extend(Covered.RoutesMixin, 
   tasksScope: null,
   loading: true,
 
-  PAGE_SIZE: 10, // this should be matched by the server
+  PAGE_SIZE: 20, // this should be matched by the server
   currentPage: 0,
   fullyLoaded: false,
 

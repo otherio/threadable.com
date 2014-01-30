@@ -2,7 +2,7 @@ require_dependency 'covered/conversation'
 
 module Covered::Conversation::Scopes
 
-  PAGE_SIZE = 10
+  PAGE_SIZE = 20
 
   def muted_conversations page
     conversations_for conversations_scope_with_includes.
