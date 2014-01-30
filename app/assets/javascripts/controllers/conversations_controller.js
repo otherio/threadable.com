@@ -13,6 +13,7 @@ Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMix
   PAGE_SIZE: 20, // this should be matched by the server
   currentPage: 0,
   fullyLoaded: false,
+  loadFailed: false,
 
   setup: function(groupSlug, conversationsScope) {
     this.set('content', Ember.ArrayProxy.create({content:[]}));
@@ -31,15 +32,24 @@ Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMix
       page         = this.get('currentPage') + 1,
       organization = this.get('organization.model'),
       groupSlug    = this.get('groupSlug'),
-      scope        = this.get('conversationsScope');
+      scope        = this.get('conversationsScope'),
+      promise;
 
     this.set('loading', true);
+    this.set('loadFailed', false);
 
-    Covered.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page).then(function(conversations) {
+    promise = Covered.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page);
+
+    promise.then(function(conversations) {
       if (conversations.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);
       self.set('loading', false);
       self.get('content').pushObjects(conversations.content);
       self.set('currentPage', page);
+    });
+
+    promise.catch(function(response) {
+      self.set('loadFailed', true);
+      self.set('loading', false);
     });
   },
 
