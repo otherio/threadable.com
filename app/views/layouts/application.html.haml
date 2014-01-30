@@ -1,9 +1,9 @@
 !!!
-%html
+%html.rails-app
   %head
     = render 'layouts/headers'
     = javascript_include_tag 'rails_app'
-  %body.rails-app
+  %body
     .content= yield
     .footer
       Made by
