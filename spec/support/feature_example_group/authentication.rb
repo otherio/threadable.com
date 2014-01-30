@@ -10,20 +10,11 @@ module RSpec::Support::FeatureExampleGroup
         fill_in 'Password', :with => 'password'
         click_on 'Sign in'
       end
-      # not sure why we see this error sometimes but retrying seems to fix it - Jared
-      begin
-        expect(page).to have_content('My Conversations')
-      # rescue Capybara::Webkit::InvalidResponseError
-      #   raise if @capybara_webkit_invalid_response_error_seen
-      #   @capybara_webkit_invalid_response_error_seen = true
-      #   retry
-      end
+      expect(page).to have_text 'My Conversations'
       covered.current_user_id = user.id
       covered.current_user
     end
   rescue Timeout::Error
-    binding.pry if @timed_out_while_signing_in
-
     raise if @timed_out_while_signing_in
     @timed_out_while_signing_in = true
     retry

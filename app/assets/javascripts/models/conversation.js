@@ -113,7 +113,7 @@ Covered.Conversation.reopenClass({
     return promise;
   },
 
-  fetchByGroupAndScope: function(organization, groupSlug, scope) {
+  fetchPageByGroupAndScope: function(organization, groupSlug, scope, page) {
     var
       promise,
       setOrganizationAndStoreInCache = this._setOrganizationAndStoreInCache.bind(this);
@@ -122,6 +122,7 @@ Covered.Conversation.reopenClass({
       organization: organization.get('slug'),
       group: groupSlug,
       scope: scope,
+      page: page,
     });
 
     promise.then(function(conversations) {

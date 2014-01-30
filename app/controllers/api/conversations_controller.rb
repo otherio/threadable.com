@@ -5,6 +5,7 @@ class Api::ConversationsController < ApiController
     organization_slug = params.require(:organization)
     group_slug        = params.require(:group)
     scope             = params.require(:scope)
+    page              = params.require(:page).to_i
 
     organization = current_user.organizations.find_by_slug!(organization_slug)
 
@@ -15,12 +16,12 @@ class Api::ConversationsController < ApiController
     end
 
     conversations = case scope
-    when 'muted_conversations';     group.muted_conversations
-    when 'not_muted_conversations'; group.not_muted_conversations
-    when 'done_tasks';              group.done_tasks
-    when 'not_done_tasks';          group.not_done_tasks
-    when 'done_doing_tasks';        group.done_doing_tasks
-    when 'not_done_doing_tasks';    group.not_done_doing_tasks
+    when 'muted_conversations';     group.muted_conversations(page)
+    when 'not_muted_conversations'; group.not_muted_conversations(page)
+    when 'done_tasks';              group.done_tasks(page)
+    when 'not_done_tasks';          group.not_done_tasks(page)
+    when 'done_doing_tasks';        group.done_doing_tasks(page)
+    when 'not_done_doing_tasks';    group.not_done_doing_tasks(page)
     else
       raise ActionController::ParameterMissing, "unknown scope: #{scope.inspect}"
     end

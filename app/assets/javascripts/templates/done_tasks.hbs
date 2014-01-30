@@ -1,14 +1,23 @@
-{{#if initialLoading}}
+{{#if loading}}
   {{partial 'lines_spinner'}}
 {{else}}
-  <ul class="uk-list">
-    {{#each task in controller}}
-      {{partial 'tasks/list/member'}}
+  {{#if fullyLoaded}}
+  {{else}}
+    <a href="" class="load-more-button" {{action loadMore}}>Load More</a>
+  {{/if}}
+{{/if}}
+
+<ul class="uk-list">
+  {{#each task in controller}}
+    {{partial 'tasks/list/member'}}
+  {{else}}
+    {{#if loading}}
     {{else}}
       <li class="empty-list"><h4>No Done Tasks</h4></li>
-    {{/each}}
-  </ul>
-{{/if}}
+    {{/if}}
+  {{/each}}
+</ul>
+
 <div class="list-divider">
   <i class="uk-icon-arrow-circle-o-up"></i>
   Done Tasks

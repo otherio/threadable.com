@@ -1,8 +1,7 @@
 .conversations-list
-
   color: $light-grey-color
 
-  > ol
+  > .scrollable
     position: absolute
     left: 0
     right: 0
@@ -12,86 +11,87 @@
     +medium-to-xlarge-screens
       top: 55px
 
-    &, li
-      margin: 0
-      padding: 0
+    > ol
+      &, li
+        margin: 0
+        padding: 0
 
-    > li.conversation
-      $padding: 5px
-      $icon-width: 20px
+      > li.conversation
+        $padding: 5px
+        $icon-width: 20px
 
-      position: relative
-      overflow: hidden
-      border-bottom: 1px solid $light-grey-color
-
-      > a
-        display: block
-        padding: $padding $padding $padding 35px
-        color: inherit
-        &.active
-          background-color: $faint-blue-color
-
-      .arrow
-        color: $light-grey-color
-
-
-      section.line
-        white-space: nowrap
+        position: relative
         overflow: hidden
-        text-overflow: ellipsis
+        border-bottom: 1px solid $light-grey-color
 
-      section.line-3
-        padding-top: 1px
-        .badge
-          position: relative
-          top: -2px
+        > a
+          display: block
+          padding: $padding $padding $padding 35px
+          color: inherit
+          &.active
+            background-color: $faint-blue-color
 
-      // &.unread   <- use this when we have unread
-      &
-        .participant-names,
-        .number-of-messages,
-        .subject
-          color: black
+        .arrow
+          color: $light-grey-color
 
-      section.icon
-        position: absolute
-        top: 0
-        left: 0
-        font-size: $icon-width
-        font-weight: 300
-        padding: 0.1em 0.2em 0.2em 0.1em
-        +border-bottom-right-radius(5px)
-        background-color: $light-grey-color
-        color: $white-color
 
-      section.line-1
-        .uk-float-left
-          max-width: 70%
-        .updated-at
-          color: $grey-text-color
-        .participant-names,
-        .number-of-messages
-          font-size: 18px
-          margin-bottom: 3px
-        .participant-names
-          max-width: 90%
-          display: inline-block
-          text-overflow: ellipsis
+        section.line
+          white-space: nowrap
           overflow: hidden
-          vertical-align: top
+          text-overflow: ellipsis
 
-      section.line-2
-        .subject
+        section.line-3
+          padding-top: 1px
+          .badge
+            position: relative
+            top: -2px
+
+        // &.unread   <- use this when we have unread
+        &
+          .participant-names,
+          .number-of-messages,
+          .subject
+            color: black
+
+        section.icon
+          position: absolute
+          top: 0
+          left: 0
+          font-size: $icon-width
+          font-weight: 300
+          padding: 0.1em 0.2em 0.2em 0.1em
+          +border-bottom-right-radius(5px)
+          background-color: $light-grey-color
+          color: $white-color
+
+        section.line-1
+          .uk-float-left
+            max-width: 70%
+          .updated-at
+            color: $grey-text-color
+          .participant-names,
+          .number-of-messages
+            font-size: 18px
+            margin-bottom: 3px
+          .participant-names
+            max-width: 90%
+            display: inline-block
+            text-overflow: ellipsis
+            overflow: hidden
+            vertical-align: top
+
+        section.line-2
+          .subject
 
 
-      section.line-3
-        .message-summary
-          color: $grey-text-color
+        section.line-3
+          .message-summary
+            color: $grey-text-color
 
-        .no-message-summary
-          color: lighten($grey-text-color, 15%)
-          font-style: italic
+          .no-message-summary
+            color: lighten($grey-text-color, 15%)
+            font-style: italic
 
-        .groups
-          float: right
-          margin-left: 0.5em
+          .groups
+            float: right
+            margin-left: 0.5em

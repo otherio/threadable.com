@@ -9,34 +9,34 @@ feature "Viewing conversations and tasks" do
   scenario %(should render the expected lists of conversations and tasks) do
     goto :my_conversations
     goto :conversations
-    expect_listed_conversations_to_eq organization.my.not_muted_conversations
+    expect_listed_conversations_to_eq organization.my.not_muted_conversations(0)
     goto :muted
-    expect_listed_conversations_to_eq organization.my.muted_conversations
+    expect_listed_conversations_to_eq organization.my.muted_conversations(0)
     goto :all_tasks
-    expect_listed_tasks_to_eq organization.my.not_done_tasks
+    expect_listed_tasks_to_eq organization.my.not_done_tasks(0)
     goto :my_tasks
-    expect_listed_tasks_to_eq organization.my.not_done_doing_tasks
+    expect_listed_tasks_to_eq organization.my.not_done_doing_tasks(0)
 
     goto :ungrouped_conversations
     goto :conversations
-    expect_listed_conversations_to_eq organization.ungrouped.not_muted_conversations
+    expect_listed_conversations_to_eq organization.ungrouped.not_muted_conversations(0)
     goto :muted
-    expect_listed_conversations_to_eq organization.ungrouped.muted_conversations
+    expect_listed_conversations_to_eq organization.ungrouped.muted_conversations(0)
     goto :all_tasks
-    expect_listed_tasks_to_eq organization.ungrouped.not_done_tasks
+    expect_listed_tasks_to_eq organization.ungrouped.not_done_tasks(0)
     goto :my_tasks
-    expect_listed_tasks_to_eq organization.ungrouped.not_done_doing_tasks
+    expect_listed_tasks_to_eq organization.ungrouped.not_done_doing_tasks(0)
 
     organization.groups.all.each do |group|
       goto group
       goto :conversations
-      expect_listed_conversations_to_eq group.not_muted_conversations, group
+      expect_listed_conversations_to_eq group.not_muted_conversations(0), group
       goto :muted
-      expect_listed_conversations_to_eq group.muted_conversations, group
+      expect_listed_conversations_to_eq group.muted_conversations(0), group
       goto :all_tasks
-      expect_listed_tasks_to_eq group.not_done_tasks, group
+      expect_listed_tasks_to_eq group.not_done_tasks(0), group
       goto :my_tasks
-      expect_listed_tasks_to_eq group.not_done_doing_tasks, group
+      expect_listed_tasks_to_eq group.not_done_doing_tasks(0), group
     end
   end
 

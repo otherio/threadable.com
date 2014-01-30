@@ -24,12 +24,12 @@ describe Covered::Conversation::Scopes do
       let(:tasks_scope)        { raceteam.organization_record.tasks         }
 
       it "returns the expected conversations and tasks" do
-        @muted_conversations      = object.muted_conversations
-        @not_muted_conversations  = object.not_muted_conversations
-        @done_tasks               = object.done_tasks
-        @not_done_tasks           = object.not_done_tasks
-        @done_doing_tasks         = object.done_doing_tasks
-        @not_done_doing_tasks     = object.not_done_doing_tasks
+        @muted_conversations      = object.muted_conversations(0)
+        @not_muted_conversations  = object.not_muted_conversations(0)
+        @done_tasks               = object.done_tasks(0)
+        @not_done_tasks           = object.not_done_tasks(0)
+        @done_doing_tasks         = object.done_doing_tasks(0)
+        @not_done_doing_tasks     = object.not_done_doing_tasks(0)
 
 
         expect( slugs_for @muted_conversations ).to match_array [
@@ -52,7 +52,7 @@ describe Covered::Conversation::Scopes do
           "install-mirrors",
           "how-are-we-paying-for-the-motor-controller",
           "parts-for-the-motor-controller",
-          "how-are-we-going-to-build-the-body",
+          # "how-are-we-going-to-build-the-body", # we page 10 at a time
         ]
 
         expect( slugs_for @done_tasks ).to match_array [

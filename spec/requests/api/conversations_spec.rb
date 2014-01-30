@@ -23,15 +23,19 @@ describe "/api/conversations" do
           expect(response.body).to include 'param not found: scope'
 
           get('/api/conversations.json', organization: 'raceteam', group: 'my', scope: 'muted_conversations')
+          expect(response.status).to eq 406
+          expect(response.body).to include 'param not found: page'
+
+          get('/api/conversations.json', organization: 'raceteam', group: 'my', scope: 'muted_conversations', page: 0)
           expect(response.status).to eq 200
 
-          get('/api/conversations.json', organization: 'raceteam', group: 'my', scope: 'asdsadsa')
+          get('/api/conversations.json', organization: 'raceteam', group: 'my', scope: 'asdsadsa', page: 0)
           expect(response.status).to eq 406
 
-          get('/api/conversations.json', organization: '12121', group: 'my', scope: 'muted_conversations')
+          get('/api/conversations.json', organization: '12121', group: 'my', scope: 'muted_conversations', page: 0)
           expect(response.status).to eq 404
 
-          get('/api/conversations.json', organization: 'raceteam', group: 'foobar', scope: 'muted_conversations')
+          get('/api/conversations.json', organization: 'raceteam', group: 'foobar', scope: 'muted_conversations', page: 0)
           expect(response.status).to eq 404
         end
       end
@@ -89,6 +93,7 @@ describe "/api/conversations" do
           organization: 'raceteam',
           group:        group,
           scope:        scope,
+          page:         0,
         )
         expect(response.status).to eq 200
         JSON.parse(response.body)["conversations"]

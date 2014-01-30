@@ -7,17 +7,45 @@ Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMix
   sortAscending: false,
 
   groupSlug: null,
-  initialLoading: true,
+  conversationsScope: null,
+  loading: true,
 
-  loadConversations: function(n) {
+  PAGE_SIZE: 10, // this should be matched by the server
+  currentPage: 0,
+  fullyLoaded: false,
+
+  setup: function(groupSlug, conversationsScope) {
+    this.set('content', Ember.ArrayProxy.create({content:[]}));
+    this.set('groupSlug', groupSlug);
+    this.set('conversationsScope', conversationsScope);
+    this.set('currentPage', -1);
+    this.set('fullyLoaded', false);
+    this.set('loading', false);
+    this.loadConversations();
+  },
+
+  loadConversations: function() {
+    if (this.get('loading') || this.get('fullyLoaded')) return;
     var
       self         = this,
-      groupSlug    = this.get('groupSlug'),
+      page         = this.get('currentPage') + 1,
       organization = this.get('organization.model'),
+      groupSlug    = this.get('groupSlug'),
       scope        = this.get('conversationsScope');
-    Covered.Conversation.fetchByGroupAndScope(organization, groupSlug, scope).then(function(conversations) {
-      self.set('initialLoading', false);
-      self.set('content', conversations);
+
+    this.set('loading', true);
+
+    Covered.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page).then(function(conversations) {
+      if (conversations.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);
+      self.set('loading', false);
+      self.get('content').pushObjects(conversations.content);
+      self.set('currentPage', page);
     });
+  },
+
+  actions:{
+    loadMore: function() {
+      this.loadConversations();
+    }
   }
 });

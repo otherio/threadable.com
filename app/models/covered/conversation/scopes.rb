@@ -2,28 +2,54 @@ require_dependency 'covered/conversation'
 
 module Covered::Conversation::Scopes
 
-  def muted_conversations
-    conversations_for conversations_scope_with_includes.muted_by(covered.current_user_id)
+  PAGE_SIZE = 10
+
+  def muted_conversations page
+    conversations_for conversations_scope_with_includes.
+      muted_by(covered.current_user_id).
+      limit(PAGE_SIZE).
+      offset(PAGE_SIZE * page)
   end
 
-  def not_muted_conversations
-    conversations_for conversations_scope_with_includes.not_muted_by(covered.current_user_id)
+  def not_muted_conversations page
+    conversations_for conversations_scope_with_includes.
+      not_muted_by(covered.current_user_id).
+      limit(PAGE_SIZE).
+      offset(PAGE_SIZE * page)
   end
 
-  def done_tasks
-    conversations_for tasks_scope_with_includes.done # TODO: sort by done_at
+  def done_tasks page
+    conversations_for tasks_scope_with_includes.
+      done.
+      order(done_at: :asc).
+      limit(PAGE_SIZE).
+      offset(PAGE_SIZE * page)
   end
 
-  def not_done_tasks
-    conversations_for tasks_scope_with_includes.not_done # TODO: sort by position
+  def not_done_tasks page
+    conversations_for tasks_scope_with_includes.
+      not_done.
+      order(position: :asc).
+      limit(PAGE_SIZE).
+      offset(PAGE_SIZE * page)
   end
 
-  def done_doing_tasks
-    conversations_for tasks_scope_with_includes.doing_by(covered.current_user_id).done # TODO: sort by done_at
+  def done_doing_tasks page
+    conversations_for tasks_scope_with_includes.
+      doing_by(covered.current_user_id).
+      done.
+      order(done_at: :asc).
+      limit(PAGE_SIZE).
+      offset(PAGE_SIZE * page)
   end
 
-  def not_done_doing_tasks
-    conversations_for tasks_scope_with_includes.doing_by(covered.current_user_id).not_done # TODO: sort by position
+  def not_done_doing_tasks page
+    conversations_for tasks_scope_with_includes.
+      doing_by(covered.current_user_id).
+      not_done.
+      order(position: :asc).
+      limit(PAGE_SIZE).
+      offset(PAGE_SIZE * page)
   end
 
   private

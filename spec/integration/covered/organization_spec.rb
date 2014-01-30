@@ -17,11 +17,11 @@ describe Covered::Organization do
       event_ids        = organization_record.events.map(&:id)
 
       organization.destroy!
-      expect( ::Organization.where(id: organization_id)               ).to be_empty
+      expect( ::Organization.where(id: organization_id)          ).to be_empty
       expect( ::OrganizationMembership.where(id: membership_ids) ).to be_empty
-      expect( ::Conversation.where(id: conversation_ids)    ).to be_empty
-      expect( ::Message.where(id: message_ids)              ).to be_empty
-      expect( ::Event.where(id: event_ids)                  ).to be_empty
+      expect( ::Conversation.where(id: conversation_ids)         ).to be_empty
+      expect( ::Message.where(id: message_ids)                   ).to be_empty
+      expect( ::Event.where(id: event_ids)                       ).to be_empty
     end
   end
 
@@ -30,7 +30,7 @@ describe Covered::Organization do
 
       describe 'muted_conversations' do
         it "returns the conversations bethany has muted" do
-          conversations = organization.muted_conversations
+          conversations = organization.muted_conversations(0)
           conversations.each do |conversation|
             expect(conversation).to be_a Covered::Conversation
             expect(conversation).to be_muted_by current_user
@@ -48,7 +48,7 @@ describe Covered::Organization do
       end
       describe 'not_muted_conversations' do
         it "returns the conversations bethany has not muted" do
-          conversations = organization.not_muted_conversations
+          conversations = organization.not_muted_conversations(0)
           conversations.each do |conversation|
             expect(conversation).to be_a Covered::Conversation
             expect(conversation).to_not be_muted_by current_user
@@ -64,28 +64,28 @@ describe Covered::Organization do
             "install-mirrors",
             "how-are-we-paying-for-the-motor-controller",
             "parts-for-the-motor-controller",
-            "how-are-we-going-to-build-the-body",
+            # "how-are-we-going-to-build-the-body", # we page 10 at a time
           ]
         end
       end
       describe 'done_tasks' do
         it "returns all the done tasks" do
-          tasks = organization.done_tasks
+          tasks = organization.done_tasks(0)
           tasks.each do |task|
             expect(task).to be_a Covered::Task
             expect(task).to be_done
           end
           expect( slugs_for tasks ).to eq [
-            "layup-body-carbon",
             "get-epoxy",
             "get-release-agent",
             "get-carbon-and-fiberglass",
+            "layup-body-carbon",
           ]
         end
       end
       describe 'not_done_tasks' do
         it "returns all the not done tasks" do
-          tasks = organization.not_done_tasks
+          tasks = organization.not_done_tasks(0)
           tasks.each do |task|
             expect(task).to be_a Covered::Task
             expect(task).to_not be_done
@@ -101,7 +101,7 @@ describe Covered::Organization do
       end
       describe 'done_doing_tasks' do
         it "returns all the done tasks bethany is doing" do
-          tasks = organization.done_doing_tasks
+          tasks = organization.done_doing_tasks(0)
           tasks.each do |task|
             expect(task).to be_a Covered::Task
             expect(task).to be_done
@@ -114,7 +114,7 @@ describe Covered::Organization do
       end
       describe 'not_done_doing_tasks' do
         it "returns all the not done tasks bethany is doing" do
-          tasks = organization.not_done_doing_tasks
+          tasks = organization.not_done_doing_tasks(0)
           tasks.each do |task|
             expect(task).to be_a Covered::Task
             expect(task).to_not be_done

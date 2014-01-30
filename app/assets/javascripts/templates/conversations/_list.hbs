@@ -1,14 +1,20 @@
 <div class="conversations-list">
-  {{#if initialLoading}}
-    {{partial 'boxes_spinner'}}
-  {{else}}
-    <ol class="uk-list scrollable">
+  <div class="scrollable">
+    <ol class="uk-list">
       {{#each conversation in controller}}
         {{partial 'conversations/list/member'}}
       {{else}}
         <li class="empty-list"><h4>No Conversations</h4></li>
       {{/each}}
     </ol>
-  {{/if}}
+    {{#if loading}}
+      {{partial 'boxes_spinner'}}
+    {{else}}
+      {{#if fullyLoaded}}
+      {{else}}
+        <a href="" class="load-more-button" {{action loadMore}}>Load More</a>
+      {{/if}}
+    {{/if}}
+  </div>
   {{partial 'conversations/list/controls'}}
 </div>

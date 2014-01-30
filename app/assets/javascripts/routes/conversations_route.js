@@ -3,11 +3,7 @@ Covered.ConversationsRoute = Ember.Route.extend({
   conversationsScope: 'not_muted_conversations',
 
   setupController: function(controller, context, transition) {
-    controller = this.controllerFor('conversations');
-    controller.set('groupSlug', this.modelFor('group'));
-    controller.set('conversationsScope', this.conversationsScope);
-    controller.set('initialLoading', true);
-    controller.loadConversations();
+    this.controllerFor('conversations').setup(this.modelFor('group'), this.conversationsScope);
     this.controllerFor('navbar').set('showingConversationsListControls', false);
   },
 

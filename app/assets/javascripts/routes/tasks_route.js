@@ -7,18 +7,8 @@ Covered.TasksRoute = Ember.Route.extend({
   groupSlug:    function() { return this.modelFor('group'); },
 
   setupController: function(controller, context, transition) {
-    this.controllerFor('doneTasks').setProperties({
-      groupSlug:      this.modelFor('group'),
-      tasksScope:     this.doneTasksScope,
-      initialLoading: true
-    }).loadTasks();
-
-    this.controllerFor('notDoneTasks').setProperties({
-      groupSlug:      this.modelFor('group'),
-      tasksScope:     this.notDoneTasksScope,
-      initialLoading: true
-    }).loadTasks();
-
+    this.controllerFor('doneTasks').setup(this.modelFor('group'), this.doneTasksScope);
+    this.controllerFor('notDoneTasks').setup(this.modelFor('group'), this.notDoneTasksScope);
     this.controllerFor('navbar').set('showingConversationsListControls', false);
   },
 

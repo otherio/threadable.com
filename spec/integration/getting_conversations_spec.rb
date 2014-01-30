@@ -26,23 +26,23 @@ describe 'getting conversations' do
     let(:organization){ covered.organizations.find_by_slug! 'raceteam' }
 
     it 'works as expected' do
-          @muted_conversations = organization.    muted_conversations
-      @not_muted_conversations = organization.not_muted_conversations
-          @done_tasks          = organization.    done_tasks
-      @not_done_tasks          = organization.not_done_tasks
-          @done_doing_tasks    = organization.    done_doing_tasks
-      @not_done_doing_tasks    = organization.not_done_doing_tasks
+          @muted_conversations = organization.    muted_conversations(0)
+      @not_muted_conversations = organization.not_muted_conversations(0)
+          @done_tasks          = organization.    done_tasks(0)
+      @not_done_tasks          = organization.not_done_tasks(0)
+          @done_doing_tasks    = organization.    done_doing_tasks(0)
+      @not_done_doing_tasks    = organization.not_done_doing_tasks(0)
 
       check_consistancy!
 
       # my
 
-          @muted_conversations = organization.my.    muted_conversations
-      @not_muted_conversations = organization.my.not_muted_conversations
-          @done_tasks          = organization.my.    done_tasks
-      @not_done_tasks          = organization.my.not_done_tasks
-          @done_doing_tasks    = organization.my.    done_doing_tasks
-      @not_done_doing_tasks    = organization.my.not_done_doing_tasks
+          @muted_conversations = organization.my.    muted_conversations(0)
+      @not_muted_conversations = organization.my.not_muted_conversations(0)
+          @done_tasks          = organization.my.    done_tasks(0)
+      @not_done_tasks          = organization.my.not_done_tasks(0)
+          @done_doing_tasks    = organization.my.    done_doing_tasks(0)
+      @not_done_doing_tasks    = organization.my.not_done_doing_tasks(0)
 
       check_consistancy!
 
@@ -52,12 +52,12 @@ describe 'getting conversations' do
 
       # ungrouped
 
-          @muted_conversations = organization.ungrouped.    muted_conversations
-      @not_muted_conversations = organization.ungrouped.not_muted_conversations
-          @done_tasks          = organization.ungrouped.    done_tasks
-      @not_done_tasks          = organization.ungrouped.not_done_tasks
-          @done_doing_tasks    = organization.ungrouped.    done_doing_tasks
-      @not_done_doing_tasks    = organization.ungrouped.not_done_doing_tasks
+          @muted_conversations = organization.ungrouped.    muted_conversations(0)
+      @not_muted_conversations = organization.ungrouped.not_muted_conversations(0)
+          @done_tasks          = organization.ungrouped.    done_tasks(0)
+      @not_done_tasks          = organization.ungrouped.not_done_tasks(0)
+          @done_doing_tasks    = organization.ungrouped.    done_doing_tasks(0)
+      @not_done_doing_tasks    = organization.ungrouped.not_done_doing_tasks(0)
 
       check_consistancy!
 
@@ -69,12 +69,12 @@ describe 'getting conversations' do
 
       organization.groups.all.each do |group|
 
-            @muted_conversations = group.    muted_conversations
-        @not_muted_conversations = group.not_muted_conversations
-            @done_tasks          = group.    done_tasks
-        @not_done_tasks          = group.not_done_tasks
-            @done_doing_tasks    = group.    done_doing_tasks
-        @not_done_doing_tasks    = group.not_done_doing_tasks
+            @muted_conversations = group.    muted_conversations(0)
+        @not_muted_conversations = group.not_muted_conversations(0)
+            @done_tasks          = group.    done_tasks(0)
+        @not_done_tasks          = group.not_done_tasks(0)
+            @done_doing_tasks    = group.    done_doing_tasks(0)
+        @not_done_doing_tasks    = group.not_done_doing_tasks(0)
         check_consistancy!
 
         all.each do |conversation|

@@ -45,12 +45,14 @@ describe Api::ConversationsController do
           group: group,
           scope: scope,
           group: group,
+          page:  page,
         }
       end
 
       let(:organization){ 'raceteam' }
       let(:group)       { 'my' }
       let(:scope)       { 'not_muted_conversations' }
+      let(:page)        { 0 }
 
       def request!
         xhr :get, :index, params
@@ -80,6 +82,14 @@ describe Api::ConversationsController do
         end
       end
 
+      context 'when not given a page' do
+        let(:page){ nil }
+        it 'renders not acceptable' do
+          request!
+          expect(response.status).to eq 406
+        end
+      end
+
       context 'when given an invalid group' do
         let(:group){ 'poop' }
         it 'renders not acceptable' do
@@ -88,7 +98,7 @@ describe Api::ConversationsController do
         end
       end
 
-      context 'when not given an invalid scope' do
+      context 'when given an invalid scope' do
         let(:scope){ 'cookies' }
         it 'renders not acceptable' do
           request!
@@ -98,8 +108,6 @@ describe Api::ConversationsController do
 
       context 'when given an invalid organization id' do
         let(:organization){ 'h834jh54h54h534h' }
-        let(:group){ 'my' }
-        let(:scope){ 'not_muted_conversations' }
         it 'renders not found' do
           request!
           expect(response.status).to eq 404
@@ -108,30 +116,8 @@ describe Api::ConversationsController do
 
       context 'when given a valid organization' do
         let(:organization){ 'raceteam' }
-
         let(:organization_double) { double(:organization) }
         let(:conversations_double){ double(:conversations) }
-        # let(:collection)         { double(:collection) }
-        # let(:organization_groups){ double(:organization_groups)   }
-        # let(:group)              { double(:group) }
-        # let(:stub_chain)         { [] }
-
-        before do
-
-
-
-
-          # if context == 'group'
-          #   expect(organization).to receive(:groups).and_return(organization_groups)
-          #   expect(organization_groups).to receive(:find_by_email_address_tag!).with(group_id).and_return(group)
-          #   group.stub_chain(*stub_chain).and_return(collection)
-          # else
-          #   organization.stub_chain(*stub_chain).and_return(collection)
-          # end
-          # expect(controller).to receive(:serialize).with(:conversations, collection).and_return({conversations: []})
-
-          # expect(response.status).to eq 200
-        end
 
         context 'and the group "my"' do
           let(:group){ 'my' }
@@ -140,7 +126,7 @@ describe Api::ConversationsController do
           before do
             expect(current_user.organizations).to receive(:find_by_slug!).with(organization).and_return(organization_double)
             expect(organization_double).to receive(:my).and_return(my_double)
-            expect(my_double).to receive(scope.to_sym).and_return(conversations_double)
+            expect(my_double).to receive(scope.to_sym).with(page).and_return(conversations_double)
             expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
             request!
             expect(response.status).to eq 200
@@ -185,7 +171,7 @@ describe Api::ConversationsController do
           before do
             expect(current_user.organizations).to receive(:find_by_slug!).with(organization).and_return(organization_double)
             expect(organization_double).to receive(:ungrouped).and_return(ungrouped_double)
-            expect(ungrouped_double).to receive(scope.to_sym).and_return(conversations_double)
+            expect(ungrouped_double).to receive(scope.to_sym).with(page).and_return(conversations_double)
             expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
             request!
             expect(response.status).to eq 200
@@ -232,7 +218,7 @@ describe Api::ConversationsController do
             groups_double = double :groups
             expect(organization_double).to receive(:groups).and_return(groups_double)
             expect(groups_double).to receive(:find_by_slug!).with(group).and_return(group_double)
-            expect(group_double).to receive(scope.to_sym).and_return(conversations_double)
+            expect(group_double).to receive(scope.to_sym).with(page).and_return(conversations_double)
             expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
             request!
             expect(response.status).to eq 200
