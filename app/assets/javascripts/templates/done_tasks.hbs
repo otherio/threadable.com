@@ -1,10 +1,14 @@
-<ul class="uk-list">
-  {{#each task in controller}}
-    {{partial 'tasks/list/member'}}
-  {{else}}
-    <li class="empty-list"><h4>No Done Tasks</h4></li>
-  {{/each}}
-</ul>
+{{#if initialLoading}}
+  {{partial 'lines_spinner'}}
+{{else}}
+  <ul class="uk-list">
+    {{#each task in controller}}
+      {{partial 'tasks/list/member'}}
+    {{else}}
+      <li class="empty-list"><h4>No Done Tasks</h4></li>
+    {{/each}}
+  </ul>
+{{/if}}
 <div class="list-divider">
   <i class="uk-icon-arrow-circle-o-up"></i>
   Done Tasks

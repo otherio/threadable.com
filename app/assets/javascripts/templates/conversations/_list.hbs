@@ -1,10 +1,14 @@
 <div class="conversations-list">
-  <ol class="uk-list scrollable">
-    {{#each conversation in controller}}
-      {{partial 'conversations/list/member'}}
-    {{else}}
-      <li class="empty-list"><h4>No Conversations</h4></li>
-    {{/each}}
-  </ol>
+  {{#if initialLoading}}
+    {{partial 'boxes_spinner'}}
+  {{else}}
+    <ol class="uk-list scrollable">
+      {{#each conversation in controller}}
+        {{partial 'conversations/list/member'}}
+      {{else}}
+        <li class="empty-list"><h4>No Conversations</h4></li>
+      {{/each}}
+    </ol>
+  {{/if}}
   {{partial 'conversations/list/controls'}}
 </div>

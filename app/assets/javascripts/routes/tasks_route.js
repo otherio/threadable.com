@@ -1,31 +1,25 @@
-//= require ./conversations_route
-
-Covered.TasksRoute = Covered.ConversationsRoute.extend({
+Covered.TasksRoute = Ember.Route.extend({
 
   doneTasksScope: 'done_tasks',
   notDoneTasksScope: 'not_done_tasks',
 
-  groupSlug:    function() { return this.modelFor('group'); },
   organization: function() { return this.modelFor('organization'); },
-
-  doneTasks: function() {
-    return Covered.Conversation.fetchByGroupAndScope(this.organization(), this.groupSlug(), this.doneTasksScope);
-  },
-
-  notDoneTasks: function() {
-    return Covered.Conversation.fetchByGroupAndScope(this.organization(), this.groupSlug(), this.notDoneTasksScope);
-  },
-
-  model: function(params) {
-    return Ember.RSVP.Promise.all([this.doneTasks(), this.notDoneTasks()]).then(function(results) {
-      return {doneTasks: results[0], notDoneTasks: results[1]};
-    });
-  },
+  groupSlug:    function() { return this.modelFor('group'); },
 
   setupController: function(controller, context, transition) {
+    this.controllerFor('doneTasks').setProperties({
+      groupSlug:      this.modelFor('group'),
+      tasksScope:     this.doneTasksScope,
+      initialLoading: true
+    }).loadTasks();
+
+    this.controllerFor('notDoneTasks').setProperties({
+      groupSlug:      this.modelFor('group'),
+      tasksScope:     this.notDoneTasksScope,
+      initialLoading: true
+    }).loadTasks();
+
     this.controllerFor('navbar').set('showingConversationsListControls', false);
-    this.controllerFor('doneTasks').set('model', context.doneTasks);
-    this.controllerFor('notDoneTasks').set('model', context.notDoneTasks);
   },
 
   renderTemplate: function() {

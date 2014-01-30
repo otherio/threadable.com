@@ -67,10 +67,7 @@
         {{/each}}
       </ul>
     {{else}}
-      <div class="spinner">
-        <div class="cube1"></div>
-        <div class="cube2"></div>
-      </div>
+      {{partial 'boxes_spinner'}}
     {{/if}}
 
     {{outlet reply}}
