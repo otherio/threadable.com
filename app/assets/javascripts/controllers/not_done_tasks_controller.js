@@ -35,12 +35,13 @@ Covered.NotDoneTasksController = Ember.ArrayController.extend(Covered.RoutesMixi
       groupSlug    = this.get('groupSlug'),
       scope        = this.get('tasksScope');
 
+    this.set('loading', true);
+
     Covered.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page).then(function(tasks) {
       if (tasks.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);
       self.set('loading', false);
       self.set('currentPage', page);
       self.get('content').pushObjects(tasks.content);
-      console.log('new not done tasks', tasks.content);
     });
   },
 
