@@ -34,4 +34,16 @@ describe Covered::Messages::FindByBodyReference do
       expect( call(organization, body) ).to be_nil
     end
   end
+
+  context 'when the body is blank' do
+    let(:conversation){ organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
+    let(:parent_message   ){ conversation.messages.latest }
+    let(:body){
+      %()
+    }
+
+    it "returns nil" do
+      expect( call(organization, body) ).to be_nil
+    end
+  end
 end

@@ -1,6 +1,7 @@
 class Covered::Messages::FindByBodyReference < MethodObject
 
   def call organization, body
+    return nil if body.blank?
     body[0..1024] =~ /^-- don't delete this: \[ref: (.*)\]/
     slug = $1
 
