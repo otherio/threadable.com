@@ -1,10 +1,10 @@
 module RSpec::Support::FeatureExampleGroup
 
   def sign_in! user=covered.current_user
-    Timeout::timeout(5) do
-      user.present? or raise ArgumentError, "sign_in! requires a user"
-      sign_out!
-      visit sign_in_path if current_path != sign_in_path
+    user.present? or raise ArgumentError, "sign_in! requires a user"
+    sign_out!
+    visit sign_in_path if current_path != sign_in_path
+    Timeout::timeout(10) do
       within_element 'the sign in form' do
         fill_in 'Email Address', :with => user.email_address.to_s
         fill_in 'Password', :with => 'password'
@@ -22,8 +22,10 @@ module RSpec::Support::FeatureExampleGroup
       covered.current_user
     end
   rescue Timeout::Error
-    raise if @timed_out_while_singing_in
-    @timed_out_while_singing_in = true
+    binding.pry if @timed_out_while_signing_in
+
+    raise if @timed_out_while_signing_in
+    @timed_out_while_signing_in = true
     retry
   end
 

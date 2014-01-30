@@ -73,7 +73,8 @@ feature "Adding organization members" do
     fill_in "Password confirmation", with: "password"
     click_on "Setup my account"
 
-    expect(current_url).to eq organization_url('raceteam')
+    expect(page).to have_text 'carbon'
+    expect(current_url).to eq conversations_url('raceteam', 'my')
     expect_to_be_signed_in_as! 'Archimedes Van-Dérhimen'
 
     user = covered.users.find_by_email_address('archimedes@ucsd.example.com')
