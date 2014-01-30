@@ -52,7 +52,7 @@ describe Covered::Conversation::Scopes do
           "install-mirrors",
           "how-are-we-paying-for-the-motor-controller",
           "parts-for-the-motor-controller",
-          # "how-are-we-going-to-build-the-body", # we page 10 at a time
+          "how-are-we-going-to-build-the-body",
         ]
 
         expect( slugs_for @done_tasks ).to match_array [
