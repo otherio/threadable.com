@@ -1,3 +1,5 @@
+//= require ./conversations_route
+
 Covered.TasksRoute = Covered.ConversationsRoute.extend({
 
   doneTasksScope: 'done_tasks',

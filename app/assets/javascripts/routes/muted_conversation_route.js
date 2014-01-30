@@ -1,4 +1,5 @@
-// This is a base class. We should never actually endup here
+//= require ./conversation_route
+
 Covered.MutedConversationRoute = Covered.ConversationRoute.extend({
 
 });

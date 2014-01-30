@@ -1,3 +1,5 @@
+//= require ./conversations_route
+
 Covered.MutedConversationsRoute = Covered.ConversationsRoute.extend({
 
   model: function(params) {
