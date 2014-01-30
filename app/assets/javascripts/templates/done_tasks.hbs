@@ -1,20 +1,18 @@
 {{#if loading}}
   {{partial 'lines_spinner'}}
 {{else}}
-  {{#if fullyLoaded}}
-  {{else}}
+  {{#unless fullyLoaded}}
     <a href="" class="load-more-button" {{action loadMore}}>Load More</a>
-  {{/if}}
+  {{/unless}}
 {{/if}}
 
 <ul class="uk-list">
   {{#each task in controller}}
     {{partial 'tasks/list/member'}}
   {{else}}
-    {{#if loading}}
-    {{else}}
+    {{#unless loading}}
       <li class="empty-list"><h4>No Done Tasks</h4></li>
-    {{/if}}
+    {{/unless}}
   {{/each}}
 </ul>
 

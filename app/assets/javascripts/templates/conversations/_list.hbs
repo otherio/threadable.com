@@ -4,16 +4,17 @@
       {{#each conversation in controller}}
         {{partial 'conversations/list/member'}}
       {{else}}
-        <li class="empty-list"><h4>No Conversations</h4></li>
+        {{#unless loading}}
+          <li class="empty-list"><h4>No Conversations</h4></li>
+        {{/unless}}
       {{/each}}
     </ol>
     {{#if loading}}
       {{partial 'lines_spinner'}}
     {{else}}
-      {{#if fullyLoaded}}
-      {{else}}
+      {{#unless fullyLoaded}}
         <a href="" class="load-more-button" {{action loadMore}}>Load More</a>
-      {{/if}}
+      {{/unless}}
     {{/if}}
   </div>
   {{partial 'conversations/list/controls'}}
