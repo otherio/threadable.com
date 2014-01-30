@@ -13,10 +13,10 @@ module RSpec::Support::FeatureExampleGroup
       # not sure why we see this error sometimes but retrying seems to fix it - Jared
       begin
         expect(page).to have_content('My Conversations')
-      rescue Capybara::Webkit::InvalidResponseError
-        raise if @capybara_webkit_invalid_response_error_seen
-        @capybara_webkit_invalid_response_error_seen = true
-        retry
+      # rescue Capybara::Webkit::InvalidResponseError
+      #   raise if @capybara_webkit_invalid_response_error_seen
+      #   @capybara_webkit_invalid_response_error_seen = true
+      #   retry
       end
       covered.current_user_id = user.id
       covered.current_user

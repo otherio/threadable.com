@@ -25,7 +25,6 @@ gem 'simple_form'
 gem 'virtus'
 
 gem 'filepicker-rails'
-gem 'bootstrap-wysihtml5-rails'
 gem 'sanitize'
 gem 'htmlentities'
 gem 'fog'
@@ -43,7 +42,6 @@ gem 'roadie'
 gem 'mixpanel-ruby'
 
 gem 'newrelic_rpm'
-gem 'appsignal'
 
 gem 'honeybadger'
 
@@ -76,13 +74,11 @@ end
 
 group :test do
   gem 'capybara', '>= 2.0.2'
-  gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: nil
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'ffaker'
-  gem 'minitest', require: nil
   gem 'webmock'
   gem 'rest-client'
 end
