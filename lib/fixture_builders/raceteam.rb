@@ -95,6 +95,12 @@ FixtureBuilder.build do
       groups:  [@electronics_group],
     )
 
+    @drive_trains_are_expensive = create_conversation(
+      subject: 'Drive trains are expensive!',
+      text:    %(We should get some nice renders of the motor and transmission for our fundraising video.),
+      groups:  [@electronics_group, @fundraising_group],
+    )
+
     conversation_of_cash = create_conversation(
       subject:        'How are we paying for the motor controller?',
       body_plain:     %(We need cash, baby. And this has quoted text.),
@@ -138,9 +144,11 @@ FixtureBuilder.build do
     @get_release_agent_task         = create_task 'get release agent'
     @get_carbon_and_fiberglass_task = create_task 'get carbon and fiberglass'
     @get_a_new_soldering_iron       = create_task 'get a new soldering iron'
-    add_conversation_to_group @get_a_new_soldering_iron, @electronics_group
-    @get_some_4_gauge_wite          = create_task 'get some 4 gauge wire'
-    add_conversation_to_group @get_some_4_gauge_wite, @electronics_group
+    @get_some_4_gauge_wire          = create_task 'get some 4 gauge wire'
+
+    add_conversation_to_group       @get_a_new_soldering_iron, @electronics_group
+    add_conversation_to_group       @get_some_4_gauge_wire, @electronics_group
+    add_conversation_to_group       @get_some_4_gauge_wire, @fundraising_group
   end
 
   as 'yan@ucsd.example.com' do

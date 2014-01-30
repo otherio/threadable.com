@@ -32,12 +32,11 @@ class ConversationMailer < Covered::Mailer
       }
     end
 
-    reply_to_address = @task ? @organization.formatted_task_email_address : @organization.formatted_email_address
+    reply_to_address = @conversation.canonical_formatted_email_address
 
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
     @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
     @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
-    # @mute_conversation_url = mute_organization_conversation_url(@organization, @conversation)
 
     to = begin
       to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
@@ -75,7 +74,7 @@ class ConversationMailer < Covered::Mailer
       :'List-Post'         => "<mailto:#{@organization.email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
     )
 
-    email.smtp_envelope_from = @task ? @organization.task_email_address : @organization.email_address
+    email.smtp_envelope_from = @conversation.canonical_email_address
     email.smtp_envelope_to = @recipient.email_address.to_s
 
     email

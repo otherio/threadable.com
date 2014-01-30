@@ -53,6 +53,7 @@ describe Covered::Organization::Conversations do
         "how-are-we-paying-for-the-motor-controller",
         "parts-for-the-motor-controller",
         "how-are-we-going-to-build-the-body",
+        "drive-trains-are-expensive",
       ]
     end
 

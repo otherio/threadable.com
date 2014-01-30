@@ -143,6 +143,33 @@ class Covered::Conversation < Covered::Model
     update(group_ids_cache: groups.all.map(&:id))
   end
 
+  def formatted_email_addresses
+    if groups.count > 0
+      if task?
+        return groups.all.map(&:formatted_task_email_address)
+      end
+
+      return groups.all.map(&:formatted_email_address)
+    end
+
+    [task? ? organization.formatted_task_email_address : organization.formatted_email_address]
+  end
+
+  def email_addresses
+    formatted_email_addresses.map{ |email| ExtractEmailAddresses.call(email) }.flatten
+  end
+
+  def canonical_email_address
+    ExtractEmailAddresses.call(canonical_formatted_email_address).first
+  end
+
+  def canonical_formatted_email_address
+    if groups.count == 1
+      return formatted_email_addresses.first
+    end
+    task? ? organization.formatted_task_email_address : organization.formatted_email_address
+  end
+
   def as_json options=nil
     {
       id:         id,
