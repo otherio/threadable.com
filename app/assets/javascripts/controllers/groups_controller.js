@@ -28,6 +28,14 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     return organizations;
   }.property('organization.model','currentUser.organizations'),
 
+  otherGroups: function() {
+    return this.get('organization.groups').filterBy('currentUserIsAMember', false);
+  }.property('organization.groups'),
+
+  myGroups: function() {
+    return this.get('organization.groups').filterBy('currentUserIsAMember', true);
+  }.property('organization.groups'),
+
   actions: {
     signOut: function() {
       this.signOut();

@@ -20,15 +20,7 @@ Covered.Organization = RL.Model.extend({
     return Covered.Member.fetch({
       organization_id: organization.get('slug')
     });
-  }),
-
-  otherGroups: function() {
-    return this.get('groups').filterBy('currentUserIsAMember', false);
-  }.property('groups'),
-
-  myGroups: function() {
-    return this.get('groups').filterBy('currentUserIsAMember', true);
-  }.property('groups'),
+  })
 });
 
 Covered.RESTAdapter.map("Covered.Organization", {

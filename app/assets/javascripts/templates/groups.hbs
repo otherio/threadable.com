@@ -32,23 +32,27 @@
     </li>
 
     <li class="uk-nav-header">My Groups</li>
-    {{#each group in organization.myGroups}}
+    {{#each group in myGroups}}
       <li>
         {{#link-to 'conversations' group.slug }}
           <span class="name">+{{group.name}}</span>
           <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
         {{/link-to}}
       </li>
+    {{else}}
+      <li class="empty-list"><div>You are not subscribed to any groups</div></li>
     {{/each}}
 
     <li class="uk-nav-header">Other Groups</li>
-    {{#each group in organization.otherGroups}}
+    {{#each group in otherGroups}}
       <li>
         {{#link-to 'conversations' group.slug }}
           <span class="name">+{{group.name}}</span>
           <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
         {{/link-to}}
       </li>
+    {{else}}
+      <li class="empty-list"><div>There are no other groups</div></li>
     {{/each}}
   </ul>
 
