@@ -38,22 +38,38 @@ class ConversationMailer < Covered::Mailer
     @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
     @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
 
-    to = begin
-      to_addresses = Mail::AddressList.new(@message.to_header.to_s).addresses
-      to_addresses = correct_organization_email_address(to_addresses)
-      to_addresses = filter_out_organization_members(to_addresses)
-      to_addresses.map(&:to_s).join(', ').presence || nil
-    end
+    to_addresses = as_address_objects(@message.to_header.to_s)
+    cc_addresses = as_address_objects(@message.cc_header.to_s)
 
+    @missing_addresses = missing_covered_addresses([to_addresses, cc_addresses].flatten)
+    @has_groups = @conversation.groups.count > 0
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
 
-    cc = begin
-      cc_addresses = Mail::AddressList.new(@message.cc_header.to_s).addresses
-      cc_addresses = filter_out_organization_members(cc_addresses)
-      cc_addresses = to.present? ? correct_organization_email_address(cc_addresses) : filter_out_organization_email_address(cc_addresses)
-      cc_addresses << @message.from if !sender_is_a_member && @message.from.present?
-      cc_addresses.map(&:to_s).join(', ').presence || nil
+    to_addresses = transform_stale_group_references(to_addresses)
+    to_addresses = correct_covered_email_addresses(to_addresses)
+    to_addresses = filter_out_recipients(to_addresses)
+    to_addresses = filter_organization_email_addresses(to_addresses)
+
+    if to_addresses.empty?
+      # if there are missing addresses, use those.
+      if @missing_addresses.present? && !@missing_addresses_inserted
+        to_addresses = @missing_addresses
+        @missing_addresses_inserted = true
+      else
+        # all the covered addresses are in the cc. steal them.
+        to_addresses = formatted_email_addresses
+      end
     end
+
+    cc_addresses = transform_stale_group_references(cc_addresses)
+    cc_addresses = filter_out_recipients(cc_addresses)
+    cc_addresses = subtract_addresses(cc_addresses, to_addresses)
+    cc_addresses = correct_covered_email_addresses(cc_addresses)
+    cc_addresses << Mail::Address.new(@message.from) if !sender_is_a_member && @message.from.present?
+    cc_addresses = filter_organization_email_addresses(cc_addresses)
+
+    to = to_addresses.map(&:to_s).join(', ').presence || nil
+    cc = cc_addresses.map(&:to_s).join(', ').presence || nil
 
     to ||= reply_to_address
 
@@ -82,30 +98,80 @@ class ConversationMailer < Covered::Mailer
 
   private
 
-  def organization_member_emails_addresses
-    @organization_member_emails_addresses ||= @organization.members.email_addresses.map(&:address)
+  def recipient_email_addresses
+    @recipient_email_addresses ||= @conversation.recipients.all.map(&:email_address)
   end
 
-  def filter_out_organization_members email_addresses
+  def filter_out_recipients email_addresses
     email_addresses.select do |email_address|
-      organization_member_emails_addresses.exclude? email_address.address
+      recipient_email_addresses.exclude? email_address.address
     end
   end
 
-  def filter_out_organization_email_address email_addresses
-    email_addresses.select do |email_address|
-      @organization.email_addresses.exclude? email_address.address
-    end
-  end
-
-  def correct_organization_email_address email_addresses
+  def transform_stale_group_references email_addresses
     email_addresses.map do |email_address|
-      if @organization.email_addresses.include? email_address.address
-        Mail::Address.new(@organization_email_address)
+      if IdentifyCoveredEmailAddress.call(email_address)
+        @conversation.all_email_addresses.include?(email_address.address) ? email_address : Mail::Address.new(@organization_email_address)
       else
         email_address
       end
     end
   end
 
+  def filter_organization_email_addresses email_addresses
+    organization_email_address = Mail::Address.new(@organization_email_address)
+    addresses_to_insert = @has_groups ? @missing_addresses : organization_email_address
+
+    email_addresses.map do |email_address|
+      if email_address.address == organization_email_address.address
+        unless @missing_addresses_inserted
+          @missing_addresses_inserted = true
+          addresses_to_insert
+        else
+          nil
+        end
+      else
+        email_address
+      end
+    end.flatten.compact
+  end
+
+  def missing_covered_addresses header_addresses
+    header_addresses = header_addresses.map do |email_address|
+      email_address.address
+    end
+    formatted_email_addresses = @conversation.formatted_email_addresses.map{ |addr| Mail::Address.new(addr) }
+    formatted_email_addresses.map{ |addr| header_addresses.include?(addr.address) ? nil : addr }.compact
+  end
+
+  def subtract_addresses master_list, remove_list
+    remove_list_addresses = remove_list.map{ |addr| addr.address }
+    master_list.reject{ |addr| remove_list_addresses.include? addr.address }
+  end
+
+  def find_covered_addresses addresses
+    addresses.find_all{ |email_address| IdentifyCoveredEmailAddress.call(email_address) }
+  end
+
+  def correct_covered_email_addresses email_addresses
+    email_address_pairs = formatted_email_addresses.map do |formatted_email_address|
+      [formatted_email_address.address, formatted_email_address]
+    end
+    email_address_hash = Hash[email_address_pairs]
+
+    email_addresses.map do |email_address|
+      email_address_hash[email_address.address] || email_address
+    end
+  end
+
+  def formatted_email_addresses
+    @formatted_email_addresses ||= as_address_objects(@conversation.formatted_email_addresses)
+  end
+
+  def as_address_objects email_addresses
+    if email_addresses.kind_of?(Array)
+      email_addresses = email_addresses.join(', ')
+    end
+    Mail::AddressList.new(email_addresses).addresses
+  end
 end

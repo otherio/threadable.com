@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "processing incoming emails 2" do
+describe "processing incoming emails" do
 
   let :params do
     create_incoming_email_params(
@@ -658,9 +658,25 @@ describe "processing incoming emails 2" do
       let(:expected_creator)         { covered.users.find_by_email_address!(sender) }
       let(:expected_email_recipients){ ["tom@ucsd.example.com", "bethany@ucsd.example.com", 'bob@ucsd.example.com'] }
       let(:expected_groups)          { ['Electronics', 'Fundraising'] }
+      let(:expected_sent_email_to)   { ["raceteam+electronics@127.0.0.1", "raceteam+fundraising@127.0.0.1"] }
 
       it "delivers the message to only those groups' members" do
         validate! :delivered
+      end
+
+      context "and the conversation is to a single group" do
+        let(:recipient) { 'raceteam+electronics@127.0.0.1' }
+        let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+
+        let(:expected_groups)                        { ['Electronics'] }
+        let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+        let(:expected_sent_email_to)                 { ["raceteam+electronics@127.0.0.1"] }
+        let(:expected_email_recipients)              { ["tom@ucsd.example.com", "bethany@ucsd.example.com"] }
+        let(:expected_sent_email_smtp_envelope_from) { 'raceteam+electronics@127.0.0.1' }
+
+        it "delivers the message to only those groups' members" do
+          validate! :delivered
+        end
       end
 
       context 'and the message is a reply to a conversation that is in different group(s)' do
@@ -674,10 +690,15 @@ describe "processing incoming emails 2" do
         end
 
         context 'and the conversation was previously removed from one of those groups' do
-          let(:expected_conversation){ expected_organization.conversations.find_by_slug('how-are-we-paying-for-the-motor-controller') }
+          let(:to) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>, "UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>' }
+          let(:expected_sent_email_to) { ['raceteam+fundraising@127.0.0.1'] }
 
+          let(:expected_conversation){ expected_organization.conversations.find_by_slug('how-are-we-paying-for-the-motor-controller') }
           let(:expected_groups) { ['Fundraising'] }
           let(:expected_email_recipients){ ['bob@ucsd.example.com'] }
+          let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>' }
+          let(:expected_sent_email_smtp_envelope_from) { 'raceteam+fundraising@127.0.0.1' }
+
           it 'does not add the previously-used groups to the conversation' do
             validate! :delivered
           end
@@ -932,6 +953,126 @@ describe "processing incoming emails 2" do
     end
   end
 
+  context 'header rearranging: with groups' do
+    let(:recipient) { 'raceteam+electronics@127.0.0.1' }
+    let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+
+    let(:expected_sent_email_to)                 { ['raceteam+electronics@127.0.0.1'] }
+    let(:expected_groups)                        { ['Electronics'] }
+    let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+    let(:expected_email_recipients)              { ["tom@ucsd.example.com", "bethany@ucsd.example.com"] }
+    let(:expected_sent_email_smtp_envelope_from) { 'raceteam+electronics@127.0.0.1' }
+
+    context 'when there are only group members in the to header, and the cc is blank' do
+      let(:to) { "Tom Canver <tom@ucsd.example.com>" }
+      let(:cc) { '' }
+
+      let(:expected_sent_email_to){ ['raceteam+electronics@127.0.0.1'] }
+      let(:expected_sent_email_cc){ '' }
+
+      it 'adds the organization to the to' do
+        validate! :delivered
+      end
+    end
+
+    context 'when the group email address does not include the name-part' do
+      let(:to) { 'some@guy.com' }
+      let(:cc) { 'raceteam+electronics@127.0.0.1' }
+
+      let(:expected_sent_email_to){ ['some@guy.com'] }
+      let(:expected_sent_email_cc){ '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+
+      it 'adds the organization to the to' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are only members in the to header, and the group is in the CC' do
+      let(:to) { "Tom Canver <tom@ucsd.example.com>" }
+      let(:cc) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+
+      let(:expected_sent_email_to){ ['raceteam+electronics@127.0.0.1'] }
+      let(:expected_sent_email_cc){ '' }
+
+      it 'moves the group from the cc header to the to header' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are only members in the to header, and the group and organization are in the CC' do
+      let(:to) { "Tom Canver <tom@ucsd.example.com>" }
+      let(:cc) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>, UCSD Electric Racing <raceteam@127.0.0.1>' }
+
+      let(:expected_sent_email_to){ ['raceteam+electronics@127.0.0.1'] }
+      let(:expected_sent_email_cc){ '' }
+
+      it 'moves the group from the cc header to the to header, and removes the organization from the cc header' do
+        validate! :delivered
+      end
+    end
+
+    context 'when the organization is in the to header, and the group is not present in the headers' do
+      let(:to) { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
+      let(:cc) { '' }
+
+      let(:expected_sent_email_to){ ['raceteam+electronics@127.0.0.1'] }
+      let(:expected_sent_email_cc){ '' }
+
+      it 'removes the organization from the to header, and adds the group' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are non-members in the to header, and the group is in the CC' do
+      let(:to) { "Frank Rizzo <frank.rizzo@jerkyboys.co>" }
+      let(:cc) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+
+      let(:expected_sent_email_to){ ['frank.rizzo@jerkyboys.co'] }
+      let(:expected_sent_email_cc){ '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
+
+      it 'does not move the group from the cc header to the to header' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are group members in the to header' do
+      let(:to) { "Tom Canver <tom@ucsd.example.com>, Someone Else <someone.else@example.com>, bethany@ucsd.example.com" }
+
+      let(:expected_sent_email_to){ ['someone.else@example.com'] }
+
+      it 'filters group members out of the to header' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are organization members and group members in the to header' do
+      let(:to) { "Alice Neilson <alice@ucsd.example.com>, Someone Else <someone.else@example.com>, bethany@ucsd.example.com" }
+
+      let(:expected_sent_email_to){ ['alice@ucsd.example.com', 'someone.else@example.com'] }
+
+      it 'filters group members out of the to header' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are group members in the cc header' do
+      let(:cc) { "Tom Canver <tom@ucsd.example.com>, Someone Else <someone.else@example.com>, bethany@ucsd.example.com" }
+
+      let(:expected_sent_email_cc){ 'Someone Else <someone.else@example.com>' }
+      it 'filters group members out of the cc header' do
+        validate! :delivered
+      end
+    end
+
+    context 'when there are organization members and group members in the cc header' do
+      let(:cc) { "Alice Neilson <alice@ucsd.example.com>, Someone Else <someone.else@example.com>, bethany@ucsd.example.com" }
+
+      let(:expected_sent_email_cc){ 'Alice Neilson <alice@ucsd.example.com>, Someone Else <someone.else@example.com>' }
+      it 'filters group members out of the cc header' do
+        validate! :delivered
+      end
+    end
+  end
 
   context 'when the message is a reply to a non-task conversation but the message was sent to the organization task email addresss' do
     let(:recipient)  { 'raceteam+task@127.0.0.1' }

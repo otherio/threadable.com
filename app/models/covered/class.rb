@@ -2,7 +2,8 @@ class Covered::Class
 
   EMAIL_HOSTS = {
     'beta.covered.io'        => 'covered.io',
-    'www-staging.covered.io' => 'staging.covered.io'
+    'www-staging.covered.io' => 'staging.covered.io',
+    '127.0.0.1'              => '127.0.0.1', # for dev
   }.freeze
 
   include Let

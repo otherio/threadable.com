@@ -159,6 +159,10 @@ class Covered::Conversation < Covered::Model
     formatted_email_addresses.map{ |email| ExtractEmailAddresses.call(email) }.flatten
   end
 
+  def all_email_addresses
+    [formatted_email_addresses, email_addresses].flatten
+  end
+
   def canonical_email_address
     ExtractEmailAddresses.call(canonical_formatted_email_address).first
   end

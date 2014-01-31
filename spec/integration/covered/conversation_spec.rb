@@ -160,5 +160,17 @@ describe Covered::Conversation do
         end
       end
     end
+
+    describe '#all_email_addresses' do
+      let(:conversation) { covered.conversations.find_by_slug!(multiple_group_conversation) }
+      it 'returns all the email addresses in all formats' do
+        expect(conversation.all_email_addresses).to match_array [
+          '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>',
+          '"UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>',
+          'raceteam+electronics@127.0.0.1',
+          'raceteam+fundraising@127.0.0.1',
+        ]
+      end
+    end
   end
 end
