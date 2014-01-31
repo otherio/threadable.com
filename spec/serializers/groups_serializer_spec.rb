@@ -23,6 +23,7 @@ describe GroupsSerializer do
         formatted_task_email_address: electronics.formatted_task_email_address,
 
         conversations_count:          electronics.conversations.count,
+        members_count:                electronics.members.count,
         organization_slug:            electronics.organization.slug,
 
         current_user_is_a_member: false,
@@ -48,6 +49,7 @@ describe GroupsSerializer do
           formatted_task_email_address: electronics.formatted_task_email_address,
 
           conversations_count:          electronics.conversations.count,
+          members_count:                electronics.members.count,
           organization_slug:            electronics.organization.slug,
 
           current_user_is_a_member: false,
@@ -64,6 +66,7 @@ describe GroupsSerializer do
           formatted_task_email_address: fundraising.formatted_task_email_address,
 
           conversations_count:          fundraising.conversations.count,
+          members_count:                fundraising.members.count,
           organization_slug:            fundraising.organization.slug,
 
           current_user_is_a_member: false,
@@ -90,6 +93,7 @@ describe GroupsSerializer do
             formatted_task_email_address: electronics.formatted_task_email_address,
 
             conversations_count:          electronics.conversations.count,
+            members_count:                electronics.members.count,
             organization_slug:            electronics.organization.slug,
 
             current_user_is_a_member: false,
@@ -106,6 +110,7 @@ describe GroupsSerializer do
             formatted_task_email_address: fundraising.formatted_task_email_address,
 
             conversations_count:          fundraising.conversations.count,
+            members_count:                fundraising.members.count,
             organization_slug:            fundraising.organization.slug,
 
             current_user_is_a_member: true,
