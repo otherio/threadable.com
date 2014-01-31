@@ -1,0 +1,12 @@
+{{#if groups}}
+  <a href="" class="plus-button" {{action toggleGroups}}><i class="uk-icon-plus"></i></a>
+{{/if}}
+<div class="groups">
+  {{#each group in groups}}
+    <a href="" {{action addGroup group}} class="badge" {{bind-attr style="group.badgeStyle"}}>
+      <div class="members-count">{{group.membersCount}}</div>
+      <div class="name">+{{group.name}}</div>
+      <div class="email-address">{{group.emailAddress}}</div>
+    </a>
+  {{/each}}
+</div>

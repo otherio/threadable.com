@@ -22,10 +22,8 @@
     color: #b9c0c7
     border-bottom: 1px solid #e3e3e3
     font-weight: 100
-    height: 46px
-    line-height: 46px
     font-size: 18px
-    padding: 0 5px
+    padding: 0.75em 5px
     position: relative
 
     .subject
@@ -41,3 +39,19 @@
     margin: 0
     padding: 5px
     height: 208px
+
+  label
+    +user-select(none)
+
+  .groups.form-row
+    +user-select(none)
+    line-height: 1.5em
+    > .badge, > .no-groups
+      margin-right: 0.25em
+      display: inline-block
+    .no-groups
+      font-size: 14px
+      font-style: italic
+    .group-selector .plus-button
+      color: inherit
+      font-size: 14px

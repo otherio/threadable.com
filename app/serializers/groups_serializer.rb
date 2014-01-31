@@ -14,9 +14,11 @@ class GroupsSerializer < Serializer
       formatted_task_email_address: group.formatted_task_email_address,
 
       conversations_count:          group.conversations.count,
+      members_count:                group.members.count,
       organization_slug:            group.organization.slug,
 
       current_user_is_a_member:     current_user_group_ids.include?(group.id),
+
     }
   end
 

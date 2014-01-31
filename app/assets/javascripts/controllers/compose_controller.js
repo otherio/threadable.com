@@ -11,6 +11,13 @@ Covered.ComposeController = Ember.Controller.extend({
   body: null,
   error: null,
 
+  unselectedGroups: function() {
+    var groups = Ember.ArrayProxy.create({content:[]});
+    groups.addObjects(this.get('organization.groups'));
+    groups.removeObjects(this.get('groups'));
+    return groups;
+  }.property('allGroups.length', 'groups.length'),
+
   addGroup: function(group) {
     var groups = this.get('groups');
     if (typeof group === 'string') group = this.get('organization.groups').findBy('slug', group);
@@ -31,6 +38,12 @@ Covered.ComposeController = Ember.Controller.extend({
     },
     composeConversation: function() {
       this.set('isTask', false);
+    },
+    removeGroup: function(group) {
+      this.get('groups').removeObject(group);
+    },
+    addGroup: function(group) {
+      this.get('groups').addObject(group);
     },
     sendMessage: function() {
       var

@@ -49,7 +49,6 @@ class Api::ConversationsController < ApiController
 
   # patch /api/conversations/:id
   def update
-
     conversation_params = if conversation.task?
       params.require(:conversation).permit(:muted, :position, :done, doers:[:id])
     else
