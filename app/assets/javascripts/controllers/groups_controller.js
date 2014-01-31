@@ -20,6 +20,14 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     UserVoice.hide();
   },
 
+
+  otherOrganizations: function(organization) {
+    var organizations = Ember.ArrayProxy.create({content:[]});
+    organizations.addObjects(this.get('currentUser.organizations'));
+    organizations.removeObject(this.get('organization.model'));
+    return organizations;
+  }.property('organization.model','currentUser.organizations'),
+
   actions: {
     signOut: function() {
       this.signOut();

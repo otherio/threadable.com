@@ -18,7 +18,6 @@ class GroupsSerializer < Serializer
       organization_slug:            group.organization.slug,
 
       current_user_is_a_member:     current_user_group_ids.include?(group.id),
-
     }
   end
 
