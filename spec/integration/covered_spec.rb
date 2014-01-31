@@ -214,7 +214,6 @@ describe "covered", fixtures: false do
       email = sent_emails.first
       expect(email.text_content).to include 'OMG I love their belly fat'
       expect(email.text_content).to include 'support@127.0.0.1'
-      expect(email.text_content).to include '%5Btask%5D%20'
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.html_content).to include "feedback"
       expect(email.urls.map(&:to_s)).to include organization_url(htp)

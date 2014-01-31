@@ -161,6 +161,66 @@ describe Covered::Conversation do
       end
     end
 
+    describe '#list_id' do
+      context 'and there are no groups' do
+        let(:conversation) { covered.conversations.find_by_slug!(no_group_conversation) }
+        it 'returns the organization list id' do
+          expect(conversation.list_id).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
+        end
+
+        context 'and it is a task' do
+          let(:conversation) { covered.conversations.find_by_slug!(no_group_task) }
+          it 'returns the organization list id' do
+            expect(conversation.list_id).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
+          end
+        end
+      end
+
+      context 'and there is one group' do
+        let(:conversation) { covered.conversations.find_by_slug!(single_group_conversation) }
+        it 'returns the group list id' do
+          expect(conversation.list_id).to eq '"UCSD Electric Racing: Electronics" <raceteam+electronics.127.0.0.1>'
+        end
+      end
+
+      context 'and there are many groups' do
+        let(:conversation) { covered.conversations.find_by_slug!(multiple_group_conversation) }
+        it 'returns the organization list id' do
+          expect(conversation.list_id).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
+        end
+      end
+    end
+
+    describe '#list_post_email_address' do
+      context 'and there are no groups' do
+        let(:conversation) { covered.conversations.find_by_slug!(no_group_conversation) }
+        it 'returns the organization list post address' do
+          expect(conversation.list_post_email_address).to eq 'raceteam@127.0.0.1'
+        end
+
+        context 'and it is a task' do
+          let(:conversation) { covered.conversations.find_by_slug!(no_group_task) }
+          it 'returns the organization list post address' do
+            expect(conversation.list_post_email_address).to eq 'raceteam@127.0.0.1'
+          end
+        end
+      end
+
+      context 'and there is one group' do
+        let(:conversation) { covered.conversations.find_by_slug!(single_group_conversation) }
+        it 'returns the group list post address' do
+          expect(conversation.list_post_email_address).to eq 'raceteam+electronics@127.0.0.1'
+        end
+      end
+
+      context 'and there are many groups' do
+        let(:conversation) { covered.conversations.find_by_slug!(multiple_group_conversation) }
+        it 'returns the organization list post address' do
+          expect(conversation.list_post_email_address).to eq 'raceteam@127.0.0.1'
+        end
+      end
+    end
+
     describe '#all_email_addresses' do
       let(:conversation) { covered.conversations.find_by_slug!(multiple_group_conversation) }
       it 'returns all the email addresses in all formats' do

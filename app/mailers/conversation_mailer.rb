@@ -84,10 +84,10 @@ class ConversationMailer < Covered::Mailer
       :'References'        => @message.references_header,
       :'Date'              => @message.date_header,
       :'In-Reply-To'       => @message.parent_message.try(:message_id_header),
-      :'List-ID'           => @organization.formatted_list_id,
-      :'List-Archive'      => "<#{conversations_url(@organization,'my')}>",
+      :'List-ID'           => @conversation.list_id,
+      :'List-Archive'      => "<#{conversations_url(@organization, 'my')}>",
       :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",
-      :'List-Post'         => "<mailto:#{@organization.email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
+      :'List-Post'         => "<mailto:#{@conversation.list_post_email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
     )
 
     email.smtp_envelope_from = @conversation.canonical_email_address

@@ -44,11 +44,7 @@ class Covered::Organization < Covered::Model
   end
 
   def list_id
-    "#{organization_record.email_address_username}.#{covered.email_host}"
-  end
-
-  def formatted_list_id
-    "#{name} <#{list_id}>"
+    "#{name} <#{email_address_username}.#{covered.email_host}>"
   end
 
   # collections

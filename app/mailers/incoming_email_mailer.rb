@@ -43,7 +43,7 @@ class IncomingEmailMailer < Covered::Mailer
       :'to'             => to,
       :'In-Reply-To'    => @incoming_email.message_id,
       :'References'     => [@incoming_email.message_id],
-      :'List-ID'        => @organization.formatted_list_id,
+      :'List-ID'        => @organization.list_id,
       :'List-Archive'   => "<#{conversations_url(@organization,'my')}>",
       :'List-Post'      => "<mailto:#{@organization.email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
     }.merge(options))

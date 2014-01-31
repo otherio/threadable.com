@@ -167,11 +167,26 @@ class Covered::Conversation < Covered::Model
     ExtractEmailAddresses.call(canonical_formatted_email_address).first
   end
 
+  def list_id
+    if groups.count == 1
+      group = groups.all.first
+      return "\"#{organization.name}: #{group.name}\" <#{organization.email_address_username}+#{group.email_address_tag}.#{covered.email_host}>"
+    end
+    organization.list_id
+  end
+
   def canonical_formatted_email_address
     if groups.count == 1
       return formatted_email_addresses.first
     end
     task? ? organization.formatted_task_email_address : organization.formatted_email_address
+  end
+
+  def list_post_email_address
+    if groups.count == 1
+      return groups.all.first.email_address
+    end
+    organization.email_address
   end
 
   def as_json options=nil

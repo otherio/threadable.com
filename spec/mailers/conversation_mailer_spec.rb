@@ -52,7 +52,7 @@ describe ConversationMailer do
       expect(text_part).to include "mailto:#{organization.task_email_address}"
 
       expect(mail.header[:'Reply-To'].to_s).to eq organization.formatted_task_email_address
-      expect(mail.header[:'List-ID'].to_s ).to eq organization.formatted_list_id
+      expect(mail.header[:'List-ID'].to_s ).to eq conversation.list_id
       expect(mail.header[:'Cc'].to_s      ).to eq expected_cc
       expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
       expect(mail.message_id              ).to eq message.message_id_header[1..-2]
