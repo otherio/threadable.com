@@ -46,6 +46,17 @@
   %table.covered-details{:align => "left", :border => "0", :cellpadding => "2", :cellspacing => "0", :width => "100%"}
     %tr
       %td.covered-details-inner{:style => "color: #95A5A6; text-align: left;"}
+        - if @conversation.groups.count > 0
+          .covered-groups
+            = "Conversation in #{'group'.pluralize(@conversation.groups.count)}:"
+            - @conversation.groups.all.each do |group|
+              .covered-group
+                %b
+                  = link_to "+#{group.name}", conversations_url(@organization, group)
+                |
+                = mail_to group.formatted_email_address, group.email_address
+                = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
+
         .covered-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
           = link_to @organization.name, organization_url(@organization)
           |

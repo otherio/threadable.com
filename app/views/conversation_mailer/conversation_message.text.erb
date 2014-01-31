@@ -2,6 +2,13 @@
 
 
 _____
+<% if @conversation.groups.count > 0 %>
+In <%= "#{'Group'.pluralize(@conversation.groups.count)}" %>:
+<% @conversation.groups.all.each do |group| %>
+  +<%= group.name %>: <%= group.email_address %>
+<% end %>
+
+<% end %>
 View on Covered:
 <%= @message_url %>
 
@@ -9,7 +16,7 @@ Start a new conversation:
 <%= mail_to_href @organization.email_address %>
 
 Start a new task:
-<%= mail_to_href @organization.task_email_address, subject: "[task] " %>
+<%= mail_to_href @organization.task_email_address %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>
