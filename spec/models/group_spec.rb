@@ -98,14 +98,14 @@ describe Group do
       group.email_address_tag.should == 'fall-down-a-hole'
     end
 
-    it "resets the email_address_tag when the group is renamed" do
+    it "does not reset the email_address_tag when the group is renamed" do
       group = Group.create(name: 'Fall Down a Hole', organization_id: 1)
       group.save.should be_true
       group.email_address_tag.should == 'fall-down-a-hole'
 
       group.name = 'foo bar'
       group.save.should be_true
-      group.email_address_tag.should == 'foo-bar'
+      group.email_address_tag.should == 'fall-down-a-hole'
     end
   end
 end

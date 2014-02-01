@@ -44,6 +44,7 @@ module EmberRouteUrlHelpers
     organization_members_add:   '/:organization/members/add',
     group_member:               '/:organization/:group/members/:member',
     group_members:              '/:organization/:group/members',
+    group_settings:             '/:organization/:group/settings',
     conversation:               '/:organization/:group/conversations/:conversation',
     compose_conversation:       '/:organization/:group/conversations/compose',
     conversations:              '/:organization/:group/conversations',

@@ -21,7 +21,9 @@ class Group < ActiveRecord::Base
     source: :conversation
 
   def name= name
-    write_attribute(:email_address_tag, name.gsub(/[^0-9A-Za-z-]+/, '-').strip.downcase)
+    unless email_address_tag.present?
+      write_attribute(:email_address_tag, name.gsub(/[^0-9A-Za-z-]+/, '-').strip.downcase)
+    end
     super
   end
 

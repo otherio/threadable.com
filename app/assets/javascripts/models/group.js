@@ -4,6 +4,7 @@ Covered.Group = RL.Model.extend({
   slug:                      RL.attr('string'),
   name:                      RL.attr('string'),
   emailAddressTag:           RL.attr('string'),
+  subjectTag:                RL.attr('string'),
   color:                     RL.attr('string'),
   emailAddress:              RL.attr('string'),
   taskEmailAddress:          RL.attr('string'),

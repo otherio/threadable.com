@@ -11,6 +11,10 @@ Covered.TopbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Cov
 
   showingConversationsListControls: false,
 
+  subjectTag: function() {
+    return this.get('group.subjectTag') || this.get('organization.subjectTag');
+  }.property('organization.subjectTag', 'group.subjectTag'),
+
   topbarStyle: function() {
     var color = this.get('group.color');
     return color ? "background-color: "+color+";" : '';

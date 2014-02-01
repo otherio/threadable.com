@@ -24,7 +24,9 @@ class Api::GroupsController < ApiController
 
   # patch /api/groups/:id
   def update
-    group.update(color: params[:group][:color]) #the only thing you can change right now.
+    group_params = params.require(:group).permit(:color, :name, :subject_tag)
+    group = organization.groups.find_by_email_address_tag!(params[:id])
+    group.update(group_params)
     render json: serialize(:groups, group), status: 200
   end
 

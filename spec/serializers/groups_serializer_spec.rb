@@ -11,11 +11,12 @@ describe GroupsSerializer do
     let(:expected_key){ :group }
     it do
       should eq(
-        id:          electronics.id,
-        slug:        "electronics",
-        name:        "Electronics",
+        id:                electronics.id,
+        slug:              "electronics",
+        name:              "Electronics",
         email_address_tag: "electronics",
-        color:       "#964bf8",
+        subject_tag:       "RaceTeam+Electronics",
+        color:             "#964bf8",
 
         email_address:                electronics.email_address,
         task_email_address:           electronics.task_email_address,
@@ -37,11 +38,12 @@ describe GroupsSerializer do
     it do
       should eq [
         {
-          id:          electronics.id,
-          slug:        "electronics",
-          name:        "Electronics",
+          id:                electronics.id,
+          slug:              "electronics",
+          name:              "Electronics",
           email_address_tag: "electronics",
-          color:       "#964bf8",
+          subject_tag:       "RaceTeam+Electronics",
+          color:             "#964bf8",
 
           email_address:                electronics.email_address,
           task_email_address:           electronics.task_email_address,
@@ -54,11 +56,12 @@ describe GroupsSerializer do
 
           current_user_is_a_member: false,
         },{
-          id:          fundraising.id,
-          slug:        "fundraising",
-          name:        "Fundraising",
+          id:                fundraising.id,
+          slug:              "fundraising",
+          name:              "Fundraising",
           email_address_tag: "fundraising",
-          color:       "#5a9de1",
+          subject_tag:       "RaceTeam+Fundraising",
+          color:             "#5a9de1",
 
           email_address:                fundraising.email_address,
           task_email_address:           fundraising.task_email_address,
@@ -81,11 +84,12 @@ describe GroupsSerializer do
       it do
         should eq [
           {
-            id:          electronics.id,
-            slug:        "electronics",
-            name:        "Electronics",
+            id:                electronics.id,
+            slug:              "electronics",
+            name:              "Electronics",
             email_address_tag: "electronics",
-            color:       "#964bf8",
+            subject_tag:       "RaceTeam+Electronics",
+            color:             "#964bf8",
 
             email_address:                electronics.email_address,
             task_email_address:           electronics.task_email_address,
@@ -98,11 +102,12 @@ describe GroupsSerializer do
 
             current_user_is_a_member: false,
           },{
-            id:          fundraising.id,
-            slug:        "fundraising",
-            name:        "Fundraising",
+            id:                fundraising.id,
+            slug:              "fundraising",
+            name:              "Fundraising",
             email_address_tag: "fundraising",
-            color:       "#5a9de1",
+            subject_tag:       "RaceTeam+Fundraising",
+            color:             "#5a9de1",
 
             email_address:                fundraising.email_address,
             task_email_address:           fundraising.task_email_address,
