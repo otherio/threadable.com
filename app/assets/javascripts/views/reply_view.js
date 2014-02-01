@@ -7,5 +7,4 @@ Covered.ReplyView = Ember.View.extend({
       $('.conversation-show').scrollTop($('.conversation-show')[0].scrollHeight);
     });
   }
-
 });
