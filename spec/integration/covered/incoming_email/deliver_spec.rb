@@ -18,7 +18,7 @@ describe Covered::IncomingEmail::Deliver do
       message:        preexisting_message,
       creator:        double(:creator, id: 54),
       attachments:    double(:attachments, all: double(:all_attachments)),
-      organization:   double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks)),
+      organization:   double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks), groups: double(:groups, all: [])),
       message_id:     double(:incoming_email_message_id),
       references:     double(:incoming_email_references),
       date:           double(:incoming_email_date, rfc2822: 'rfc2822 version of date'),

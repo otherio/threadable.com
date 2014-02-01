@@ -379,7 +379,7 @@ describe Covered::IncomingEmail do
     before do
       incoming_email.stub(:subject).and_return(subject_line)
       incoming_email.stub(:stripped_plain).and_return(body)
-      incoming_email.stub(:organization).and_return(double(:organization, subject_tag: 'subject-tag'))
+      incoming_email.stub(:organization).and_return(double(:organization, subject_tag: 'subject-tag', groups: double(:groups, all: [])))
     end
 
     it { should be_true }

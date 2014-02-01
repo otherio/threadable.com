@@ -5,7 +5,12 @@ describe Covered::Organization::Groups do
   it { should have_constant :Create }
 
   let(:organization_record){ double(:organization_record, id: 18) }
-  let(:organization){ double(:organization, covered: covered, organization_record: organization_record, id: organization_record.id) }
+  let(:organization){ double(:organization,
+    covered: covered,
+    organization_record: organization_record,
+    id: organization_record.id,
+    subject_tag: 'foo')
+  }
   let(:groups){ described_class.new(organization) }
   subject{ groups }
 
