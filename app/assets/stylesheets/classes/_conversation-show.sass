@@ -4,13 +4,13 @@
 
   .doer-selector
     display: none
-    +mini-to-small-screens
+    +small-screens
       position: absolute
       top: 0
       right: 0
       left: 0
       bottom: 0
-    +medium-to-xlarge-screens
+    +medium-to-large-screens
       position: absolute
       top: 0
       left: 0
@@ -21,9 +21,9 @@
   &.show-doer-selector
     .doer-selector
       display: block
-    +mini-to-small-screens
+    +small-screens
       overflow-y: hidden
-    +medium-to-xlarge-screens
+    +medium-to-large-screens
       .doer-avatars
         display: none
 
@@ -49,14 +49,14 @@
     font-size: 20px
     line-height: $avatar-small-height
     font-weight: 200
-    +medium-to-xlarge-screens
+    +medium-to-large-screens
       position: relative
 
     .doer-avatars
       > .avatar-small
         vertical-align: bottom
 
-    +mini-to-small-screens
+    +small-screens
       .caret-icon
         display: none
 

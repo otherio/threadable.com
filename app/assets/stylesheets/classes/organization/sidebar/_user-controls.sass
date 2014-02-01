@@ -1,0 +1,26 @@
+.user-controls
+  $padding: $horizontal-padding
+  $avatar-size: 48px
+
+  position: relative
+  height: $padding + $avatar-size + $padding
+  background-color: $background-color
+  +bottom-border
+
+  > .avatar
+    +absolute($padding, $padding, null, null)
+    height: $avatar-size
+    width: $avatar-size
+  > .details
+    +absolute($padding + 6, $padding + $avatar-size + $padding)
+    > .name
+      font-size: $large-font-size
+    > .email-address
+      font-size: $small-font-size
+  > .toggle-user-settings
+    +absolute(0, null, 0, 0)
+    padding: 0 $horizontal-padding
+    line-height: 78px
+    width: $large-font-size
+    font-size: $large-font-size
+    text-align: center

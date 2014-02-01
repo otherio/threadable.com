@@ -1,0 +1,27 @@
+.group
+  position: relative
+
+  .badge
+    float: right
+
+  > a:first-child
+    padding-left: $horizontal-padding * 3
+
+  > .disclosure-triangle
+    +absolute(0, 0, null, null)
+    > i
+      width: auto
+
+  > .group-controls
+    position: relative
+    overflow: hidden
+    height: 0
+    +animate-property(height)
+    > ul
+      +absolute(null, 0, 0, 0)
+
+  &.open
+    > .group-controls
+      height: 123px
+    > .disclosure-triangle > .caret
+      +rotate(90deg)

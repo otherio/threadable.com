@@ -14,12 +14,11 @@ Covered.OrganizationRoute = Ember.Route.extend({
 
   setupController: function(controller, model) {
     this._super(controller, model);
-    this.controllerFor('navbar').set('organization', model);
+    this.controllerFor('topbar').set('organization', model);
   },
 
   renderTemplate: function() {
     this.render('organization', {into: 'application'});
-    this.render('groups', {into: 'organization', outlet: 'groupsPane'});
     var organization = this.controllerFor('organization');
     if(organization.get('hasHeldMessages')){
       $.UIkit.notify({

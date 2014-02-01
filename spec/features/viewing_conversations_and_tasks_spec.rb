@@ -2,7 +2,10 @@ require 'spec_helper'
 
 feature "Viewing conversations and tasks" do
 
-  before { sign_in_as 'amywong.phd@gmail.com' }
+  before {
+    sign_in_as 'amywong.phd@gmail.com'
+    resize_window_to :large
+  }
 
   let(:organization){ current_user.organizations.find_by_slug!('sfhealth') }
 
@@ -43,11 +46,11 @@ feature "Viewing conversations and tasks" do
   def goto destination
     case destination
     when :my_conversations
-      within_element('the groups pane'){ click_on 'My Conversations' }
+      within_element('the sidebar'){ click_on 'My Conversations' }
     when :ungrouped_conversations
-      within_element('the groups pane'){ click_on 'Ungrouped Conversations' }
+      within_element('the sidebar'){ click_on 'Ungrouped Conversations' }
     when Covered::Group
-      within_element('the groups pane'){ click_on "+#{destination.name}" }
+      within_element('the sidebar'){ click_on "+#{destination.name}" }
     when :conversations
       within_element('the conversations pane'){ click_on 'Conversations' }
     when :muted

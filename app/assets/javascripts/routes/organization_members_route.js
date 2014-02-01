@@ -4,7 +4,7 @@ Covered.OrganizationMembersRoute = Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('organization_members', {into: 'organization', outlet: 'conversationsPane'});
+    this.render('organization_members', {into: 'organization', outlet: 'pane1'});
     this.controllerFor('organization').set('focus', 'conversations');
   },
 

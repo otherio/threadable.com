@@ -1,0 +1,124 @@
+<div class="user-controls">
+  <div class="avatar">
+    <img {{bind-attr src="currentUser.avatarUrl"}} />
+  </div>
+  <div class="details">
+    <div class="name">{{currentUser.name}}</div>
+    <div class="email-address">{{currentUser.emailAddress}}</div>
+  </div>
+  <a class="toggle-user-settings" href="">
+    <i class="caret uk-icon-caret-left"></i>
+  </a>
+</div>
+
+<div class="current-organization scrollable">
+
+  <div class="user-settings">
+    <ul class="nested">
+      <li>
+        <a href="/profile">
+          <i class="uk-icon-user"></i>
+          Edit profile
+        </a>
+      </li>
+      <li>
+        <a href="/sign_out">
+          <i class="uk-icon-sign-out"></i>
+          Sign out
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="organization-details">
+    <div class="name">{{organization.name}}</div>
+    <div class="email-address">{{organization.emailAddress}}</div>
+    <a class="toggle-organization-settings" href="">
+      <i class="caret uk-icon-caret-left"></i>
+    </a>
+  </div>
+
+  <div class="organization-settings">
+    <ul class="nested">
+      <li>
+        {{#link-to 'organization_settings' organization.slug}}
+          <i class="uk-icon-gear"></i>
+          Settings
+        {{/link-to}}
+      </li>
+      <li>
+        {{#link-to 'organization_members' organization.slug}}
+          <i class="uk-icon-users"></i>
+          Members
+        {{/link-to}}
+      </li>
+      <li>
+        <a href="" class="open-other-organizations dont-close-sidebar">
+          <i class="uk-icon-sign-out"></i>
+          Switch organizations
+        </a>
+      </li>
+
+    </ul>
+  </div>
+
+  <ul>
+    <li>
+      {{#link-to 'conversations' 'my'}}My Conversations{{/link-to}}
+    </li>
+    <li>
+      {{#link-to 'conversations' 'ungrouped'}}Ungrouped Conversations{{/link-to}}
+    </li>
+
+    <li {{bind-attr class=":held-message-button organization.hasHeldMessages:uk-visible:uk-hidden"}}>
+      <a {{bind-attr href='organization.heldMessagesUrl'}}>Held Messages</a>
+    </li>
+  </ul>
+
+  <div class="header">My groups</div>
+  <div class="my-groups">
+    <ul>
+      {{#each group in myGroups}}
+        {{partial "sidebar/group"}}
+      {{else}}
+        <div class="empty-list">
+          You are not subscribed to any groups
+        </div>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="header">Other groups</div>
+  <div class="other-groups">
+    <ul>
+      {{#each group in otherGroups}}
+        {{partial "sidebar/group"}}
+      {{else}}
+        <div class="empty-list">
+          There are no other groups
+        </div>
+      {{/each}}
+    </ul>
+  </div>
+
+</div>
+
+<div class="other-organizations">
+  <div class="header">Organizations</div>
+  <ul>
+    {{#each organization in currentUser.organizations}}
+      <li>
+        {{#link-to 'conversations' organization.slug 'my'}}{{organization.name}}{{/link-to}}
+      </li>
+    {{/each}}
+  </ul>
+</div>
+
+<ul class="bottom-controls">
+  <li>
+    <a id="feedback-button" href="">
+      <i class="uk-icon-bullhorn"></i>
+      Feedback / Help
+    </a>
+  </li>
+</ul>

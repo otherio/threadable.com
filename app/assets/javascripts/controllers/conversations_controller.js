@@ -1,8 +1,8 @@
 Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMixin, {
-  needs: ['organization', 'navbar'],
+  needs: ['organization', 'topbar'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
   itemController: 'conversations_item',
-  showingConversationsListControls: Ember.computed.alias('controllers.navbar.showingConversationsListControls'),
+  showingConversationsListControls: Ember.computed.alias('controllers.topbar.showingConversationsListControls'),
   sortProperties: ['updatedAt'],
   sortAscending: false,
 

@@ -1,5 +1,5 @@
 Covered.TasksController = Ember.ObjectController.extend(Covered.RoutesMixin, {
-  needs: ['organization', 'navbar'],
+  needs: ['organization', 'topbar'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 
   notDoneTasks: null,
@@ -7,7 +7,7 @@ Covered.TasksController = Ember.ObjectController.extend(Covered.RoutesMixin, {
 
   showingDone: false,
   prioritizing: false,
-  showingConversationsListControls: Ember.computed.alias('controllers.navbar.showingConversationsListControls'),
+  showingConversationsListControls: Ember.computed.alias('controllers.topbar.showingConversationsListControls'),
 
   actions: {
     toggleDone: function() {

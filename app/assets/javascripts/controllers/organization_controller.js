@@ -1,7 +1,7 @@
 Covered.OrganizationController = Ember.ObjectController.extend(Covered.CurrentUserMixin, {
-  needs: ['groups'],
+  needs: ['sidebar'],
 
-  focus: null,
+  focus: 'conversations',
   organization_slug: null,
 
   heldMessagesUrl: function(){
@@ -9,8 +9,8 @@ Covered.OrganizationController = Ember.ObjectController.extend(Covered.CurrentUs
   }.property('hasHeldMessages'),
 
   actions: {
-    closeGroupsSidebar: function() {
-      this.get('controllers.groups').send('closeGroupsSidebar');
+    closeSidebar: function() {
+      this.get('controllers.sidebar').send('closeSidebar');
     }
   }
 

@@ -11,5 +11,6 @@
 //= require debug
 
 ENV.FEATURES = {
-  'query-params-new': true
+  'query-params-new': true,
+  'ember-routing-drop-deprecated-action-style': true
 };

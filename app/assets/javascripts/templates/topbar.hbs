@@ -1,0 +1,10 @@
+<nav class="topbar" {{bind-attr style="topbarStyle"}}>
+  <div class="hidden-on-small-screens">
+    {{partial "topbar/organization"}}
+  </div>
+  <div class="task-controls uk-visible-small">
+    {{#if showComposing   }} {{partial "topbar/compose"     }} {{/if}}
+    {{#if showConversation}} {{partial "topbar/conversation"}} {{/if}}
+    {{#if showOrganization}} {{partial "topbar/organization"}} {{/if}}
+  </div>
+</nav>

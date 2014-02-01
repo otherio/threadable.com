@@ -6,8 +6,9 @@ feature "Editing my profile" do
     sign_in_as 'yan@ucsd.example.com'
     visit root_url
     expect(page).to have_text 'My Conversations'
-    find('.settings-gear').click
-    click_on 'Edit Profile'
+    resize_window_to :large
+    find('.sidebar .user-controls .toggle-user-settings').click
+    click_on 'Edit profile'
   end
 
   scenario %(changing my name) do

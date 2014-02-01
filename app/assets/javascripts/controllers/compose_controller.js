@@ -1,5 +1,5 @@
 Covered.ComposeController = Ember.Controller.extend({
-  needs: ['organization', 'group', 'navbar'],
+  needs: ['organization', 'group', 'topbar'],
 
   organization: Ember.computed.alias('controllers.organization'),
 

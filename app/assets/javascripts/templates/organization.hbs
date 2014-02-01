@@ -1,21 +1,20 @@
-<div class="page" {{bind-attr data-focus="focus"}}>
+<div class="organization" {{bind-attr data-focus="focus"}}>
 
-  <a href="" {{action closeGroupsSidebar}} class="shroud"></a>
+  <a href="" class="shroud" {{action closeSidebar}}></a>
 
-  {{render "navbar"}}
+  {{render "topbar"}}
 
-  <div class="canvas">
-    <section class="groups-pane pane">
-      {{outlet groupsPane}}
-    </section>
+  {{render "sidebar"}}
 
-    <section class="conversations-pane pane">
-      {{outlet conversationsPane}}
-    </section>
-
-    <section class="conversation-pane pane">
-      {{outlet conversationPane}}
-    </section>
+  <div class="panes">
+    <div class="slider">
+      <div class="pane1">
+        {{outlet "pane1"}}
+      </div>
+      <div class="pane2">
+        {{outlet "pane2"}}
+      </div>
+    </div>
   </div>
 
 </div>

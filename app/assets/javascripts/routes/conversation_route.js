@@ -6,12 +6,16 @@ Covered.ConversationRoute = Ember.Route.extend({
 
   model: function(params){
     var organization = this.modelFor('organization');
-    var conversation = Covered.Conversation.fetchBySlug(organization, params.conversation);
-    conversation.then(function(conversation) {
-      conversation.loadEvents();
-      return conversation;
+
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      var promise = Covered.Conversation.fetchBySlug(organization, params.conversation);
+      promise.catch(reject);
+      promise.then(function(conversation) {
+        conversation.loadEvents().catch(reject).then(function() {
+          resolve(conversation);
+        });
+      });
     });
-    return conversation;
   },
 
   afterModel: function(conversation, transition) {
@@ -34,7 +38,7 @@ Covered.ConversationRoute = Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('conversation', {into: 'organization', outlet: 'conversationPane'});
+    this.render('conversation', {into: 'organization', outlet: 'pane2'});
     this.render('reply', {into: 'conversation', outlet: 'reply'});
     this.render('doerSelector', {into: 'conversation', outlet: 'doerSelector'});
     this.render('pendingDoers', {into: 'reply', outlet: 'pendingDoers'});

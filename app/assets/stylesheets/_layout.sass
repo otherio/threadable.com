@@ -10,108 +10,23 @@ html.rails-app
     overflow: hidden
     padding-bottom: $footer-height
 
-html.client-app body
-  [draggable]
-    +user-select(none)
-    cursor: move
-
-  &,
-  > .ember-view,
-  .page
+html.client-app
+  &, > .ember-view, .page
     width: 100%
     height: 100%
 
-  .page
-    position: relative
-    left: 0
-    +transition-property(left)
-    +transition-duration(0.2s)
-    +transition-timing-function(ease-in)
-    +pie-clearfix
+.hidden-on-small-screens
+  +small-screens
+    display: none !important
 
-    .shroud
-      display: none
-      z-index: 10
-      position: absolute
-      top: 0
-      left: 0
-      bottom: 0
-      right: 0
-      background-color: rgba(0,0,0,0.75)
+.hidden-on-small-and-medium-screens
+  +small-to-medium-screens
+    display: none !important
 
-    .canvas
-      position: absolute
-      top: $navbar-height
-      left: 0
-      bottom: 0
-      width: 100%
-      +transition-property(left)
-      +transition-duration(0.2s)
-      +transition-timing-function(ease-in)
+.hidden-on-medium-and-large-screens
+  +medium-to-large-screens
+    display: none !important
 
-    .pane
-      position: absolute
-      top: 0
-      bottom: 0
-
-    // single pane
-    +mini-to-small-screens
-      .pane
-        width: 100%
-      .groups-pane
-        top: -$navbar-height
-        right: 100%
-        width: 90%
-      .conversations-pane
-        left: 0%
-      .conversation-pane
-        left: 100%
-
-      &[data-focus="groups"]
-        left: 90%
-
-      &[data-focus="conversations"]
-        .canvas
-          left: 0
-      &[data-focus="conversation"]
-        .canvas
-          left: -100%
-
-    // groups is an off canvas
-    +mini-to-medium-screens
-      &[data-focus="groups"]
-        .shroud
-          display: block
-      .groups-pane
-        top: -$navbar-height
-        right: 100%
-        width: $groups-pane-width
-
-      &[data-focus="groups"]
-        left: $groups-pane-width
-
-    // dual pane
-    +medium-screens
-      .conversations-pane
-        left: 0
-        width: $conversations-pane-width
-      .conversation-pane
-        left: $conversations-pane-width
-        right: 0
-        width: auto
-
-    // tripple pane
-    +large-to-xlarge-screens
-      .groups-pane
-        left: 0
-        width: $groups-pane-width
-      .conversations-pane
-        left: $groups-pane-width
-        width: $conversations-pane-width
-      .conversation-pane
-        left: $groups-pane-width + $conversations-pane-width
-        right: 0
-        width: auto
-
-
-
+.hidden-on-large-screens
+  +large-screens
+    display: none !important

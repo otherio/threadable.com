@@ -1,0 +1,19 @@
+.organization-details
+  position: relative
+  padding: 6px $horizontal-padding
+  background-color: $grey-color
+  // color: $white-color
+  +bottom-border
+
+  > .name
+    font-size: $large-font-size
+  > .email-address
+    font-size: $small-font-size
+
+  > .toggle-organization-settings
+    +absolute(0, null, 0, 0)
+    padding: 0 $horizontal-padding
+    line-height: 52px
+    width: $large-font-size
+    font-size: $large-font-size
+    text-align: center

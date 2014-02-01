@@ -1,0 +1,112 @@
+&
+  $horizontal-padding: 15px
+  $user-controls-height: 79px
+  $bottom-controls-height: 41px
+
+  $background-color: $dark-grey-color
+  background-color: $background-color
+
+  =bottom-border
+    border-bottom: 1px solid rgba(0,0,0,0.3)
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05)
+
+  &, a
+    color: $light-grey-color
+
+  .caret
+    +animate-property(transform)
+
+  .header
+    display: block
+    padding: 5px $horizontal-padding
+    text-transform: uppercase
+    font-weight: bold
+    font-size: 12px
+    background-color: $grey-color
+    color: #777777
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5)
+    +bottom-border
+    +no-select
+
+  ul
+    +bottom-border
+    &, li
+      padding: 0
+      margin: 0
+    li
+      > a
+        color: inherit
+        display: block
+        text-decoration: none
+        padding: 10px $horizontal-padding
+        border-top: 1px solid rgba(0,0,0,0.3)
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05)
+        text-shadow: 0 1px 0 rgba(0,0,0,0.5)
+        &.active, &:hover
+          background-color: $grey-color
+          color: $white-color
+        > i
+          position: relative
+          width: 1.5em
+          &.uk-icon-sign-in
+            left: -1px
+          &.uk-icon-users
+            left: -2px
+    &.nested
+      li > a
+        padding-left: $horizontal-padding * 1.5
+
+
+
+  @import ./sidebar/user-controls
+  @import ./sidebar/organization-details
+  @import ./sidebar/group
+
+
+
+
+
+
+  > .current-organization, > .other-organizations
+    +absolute($user-controls-height, null, $bottom-controls-height, 0)
+    width: 100%
+
+  > .other-organizations
+    left: -100%
+    +animate-property(left)
+    background-color: $background-color
+
+  &.other-organizations-open
+    > .other-organizations
+      left: 0
+
+
+  > .bottom-controls
+    +absolute(null, 0, 0, 0)
+    height: $bottom-controls-height
+    a
+      background-color: #1b5479
+      &:hover
+        background-color: #226a99
+
+
+  .user-settings, .organization-settings
+    position: relative
+    height: 0
+    +animate-property(height)
+    overflow: hidden
+    > ul
+      +absolute(null, 0, 0, 0)
+
+  // state changes
+  &.user-settings-open
+    .user-controls > .toggle-user-settings > .caret
+      +rotate(-90deg)
+    .user-settings
+      height: 83px
+
+  &.organization-settings-open
+    .organization-details > .toggle-organization-settings > .caret
+      +rotate(-90deg)
+    .organization-settings
+      height: 124px

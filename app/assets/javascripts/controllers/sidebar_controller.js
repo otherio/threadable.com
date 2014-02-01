@@ -1,25 +1,19 @@
-Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
+Covered.SidebarController = Ember.ArrayController.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
   needs: ['organization', 'application', 'conversation'],
   organization: Ember.computed.alias('controllers.organization'),
   currentPath: Ember.computed.alias('controllers.application.currentPath').readOnly(),
   currentConversation: Ember.computed.alias('controllers.conversation.model').readOnly(),
 
-  openGroupsSidebar: function() {
+  open: function() {
     this.set('organization.focus', 'groups');
-
-    var closeGroupsSidebar = this.closeGroupsSidebar.bind(this);
-    // there was code here to make the sidebar not suck when you hit tab. however, it broke everything else.
-    // we should fix that, though.
   },
 
-  closeGroupsSidebar: function() {
-    $(document).off('focus.closeGroupsSidebar keydown.closeGroupsSidebar');
+  close: function() {
     this.set('organization.focus', 'conversations');
     this.set('settingsVisible', false);
     this.set('organizationVisible', false);
     UserVoice.hide();
   },
-
 
   otherOrganizations: function(organization) {
     var organizations = Ember.ArrayProxy.create({content:[]});
@@ -28,13 +22,13 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     return organizations;
   }.property('organization.model','currentUser.organizations'),
 
-  otherGroups: function() {
-    return this.get('organization.groups').filterBy('currentUserIsAMember', false);
-  }.property('organization.groups'),
-
   myGroups: function() {
     return this.get('organization.groups').filterBy('currentUserIsAMember', true);
-  }.property('organization.groups'),
+  }.property('organization.groups.@each.currentUserIsAMember'),
+
+  otherGroups: function() {
+    return this.get('organization.groups').filterBy('currentUserIsAMember', false);
+  }.property('organization.groups.@each.currentUserIsAMember'),
 
   actions: {
     signOut: function() {
@@ -47,12 +41,36 @@ Covered.GroupsController = Ember.ArrayController.extend(Covered.CurrentUserMixin
     toggleOrganization: function(){
       this.toggleProperty('organizationVisible');
     },
-    openGroupsSidebar: function() {
-      this.openGroupsSidebar();
+    openSidebar: function() {
+      this.open();
     },
-    closeGroupsSidebar: function() {
-      this.closeGroupsSidebar();
+    closeSidebar: function() {
+      this.close();
+    },
+    joinGroup: function(group) {
+      this.reopenGroups();
+      group.set('currentUserIsAMember', true);
+
+    },
+    leaveGroup: function(group) {
+      this.reopenGroups();
+      group.set('currentUserIsAMember', false);
     }
+  },
+
+  // this is a lame hack - Jared
+  reopenGroups: function() {
+    var openGroups = $('.sidebar .group.open');
+    Ember.run.later(function() {
+      openGroups.map(function() {
+        var group = $('.sidebar .group[data-group-id='+$(this).data('groupId')+']');
+        group.addClass('disable-all-transitions open');
+        return group;
+      });
+    });
+    Ember.run.later(function() {
+      $('.disable-all-transitions').removeClass('disable-all-transitions');
+    }, 200); // this should match the animation length
   }
 
 });

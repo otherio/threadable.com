@@ -6,7 +6,7 @@
     {{/each}}
 
     <h2 class="subject">
-      <span class="uk-hidden-small">
+      <span class="hidden-on-small-screens">
         {{#if task}}
           <i class="uk-icon-check"></i>
         {{else}}
@@ -36,7 +36,7 @@
 
 
 
-    <div class="task-controls uk-hidden-small">
+    <div class="task-controls hidden-on-small-screens">
       {{#if task}}
         {{#if done}}
           <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i>mark as not done</a>

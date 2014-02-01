@@ -1,0 +1,38 @@
+<li class="group" data-group-id="{{unbound group.id}}">
+  {{#link-to 'conversations' group.slug}}
+    <span class="name">+{{group.name}}</span>
+    <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
+  {{/link-to}}
+  <a href="" class="disclosure-triangle">
+    <i class="caret uk-icon-caret-right"></i>
+  </a>
+  <div class="group-controls">
+    <ul class="nested">
+      <li>
+        {{#link-to 'group_members' group.slug}}
+          <i class="uk-icon-users"></i>
+          Members
+        {{/link-to}}
+      </li>
+      <li>
+        {{#link-to 'group_settings' group.slug}}
+          <i class="uk-icon-gear"></i>
+          Settings
+        {{/link-to}}
+      </li>
+      <li>
+        {{#if group.currentUserIsAMember}}
+          <a href="" {{action leaveGroup group}}>
+            <i class="uk-icon-sign-out"></i>
+            Leave Group
+          </a>
+        {{else}}
+          <a href="" {{action joinGroup group}}>
+            <i class="uk-icon-sign-in"></i>
+            Join Group
+          </a>
+        {{/if}}
+      </li>
+    </ul>
+  </div>
+</li>

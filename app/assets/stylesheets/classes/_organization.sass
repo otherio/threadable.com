@@ -1,0 +1,128 @@
+.organization
+  position: absolute
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+
+  &, > .panes > .slider
+    +animate-property(left)
+
+  > .shroud
+    display: none
+    z-index: 10
+    position: absolute
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    background-color: rgba(0,0,0,0.75)
+
+  > .topbar
+    position: absolute
+    top: 0
+    left: $sidebar-width
+    right: 0
+    height: $topbar-height
+    @import classes/organization/topbar
+
+  > .sidebar
+    position: absolute
+    top: 0
+    bottom: 0
+    width: $sidebar-width
+    @import classes/organization/sidebar
+
+  > .panes
+    position: absolute
+    top: $topbar-height
+    left: $sidebar-width
+    right: 0
+    bottom: 0
+    > .slider
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      height: 100%
+      width: 100%
+      > *
+        position: absolute
+        top: 0
+        bottom: 0
+
+  .pane1
+
+  .pane2
+    background-color: $lighter-grey-color
+
+  +small-screens
+    > .topbar
+      left: 0
+    > .sidebar
+      right: 100%
+    > .panes
+      left: 0
+      overflow: hidden
+      > .slider
+        > .pane1
+          left: 0
+          width: 100%
+        > .pane2
+          left: 100%
+          width: 100%
+    &[data-focus="groups"] // change to sidebar
+      left: $sidebar-width
+      .shroud
+        display: block
+      > .slider > .pane2
+        display: none
+    &[data-focus="conversations"] // change to pane1
+      > .sidebar *
+        +transition(none !important)
+
+    &[data-focus="conversation"] // change to pane2
+      > .panes > .slider
+        left: -100%
+      > .sidebar
+        display: none
+
+  // 2 pane
+  +medium-screens
+    > .topbar
+      left: 0
+    > .sidebar
+      right: 100%
+    > .panes
+      left: 0
+      > .slider
+        > .pane1
+          left: 0
+          width: $pane1-width
+        > .pane2
+          left: $pane1-width
+          right: 0
+
+    &[data-focus="groups"] // change to sidebar
+      left: $sidebar-width
+      .shroud
+        display: block
+
+    &[data-focus="conversations"] // change to pane1
+      > .sidebar *
+        +transition(none !important)
+
+  // 3 pane
+  +large-screens
+    > .sidebar
+      left: 0
+    > .panes
+      left: $sidebar-width
+      > .slider
+        > .pane1
+          left: 0
+          width: $pane1-width
+        > .pane2
+          left: $pane1-width
+          right: 0

@@ -2,7 +2,7 @@
   <div class="well-when-not-small composition">
     <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
 
-      <div class="uk-float-right uk-hidden-small">
+      <div class="uk-float-right hidden-on-small-screens">
         <div data-uk-button-radio class="uk-button-group">
           <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button isTask:uk-active"}}>
             <i class="uk-icon-check"></i>
@@ -45,7 +45,7 @@
           </label>
         </div>
         {{textarea value=body tabindex="2" class="uk-form-blank body" name="body"}}
-        <div class="uk-hidden-small">
+        <div class="hidden-on-small-screens">
           <span class="uk-float-left">
             <a href="" class="uk-button" {{action 'reset'}}>
               <i class="uk-icon-trash-o"></i>

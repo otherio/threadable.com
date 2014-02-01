@@ -4,11 +4,11 @@ Covered.ConversationsRoute = Ember.Route.extend({
 
   setupController: function(controller, context, transition) {
     this.controllerFor('conversations').setup(this.modelFor('group'), this.conversationsScope);
-    this.controllerFor('navbar').set('showingConversationsListControls', false);
+    this.controllerFor('topbar').set('showingConversationsListControls', false);
   },
 
   renderTemplate: function() {
-    this.render('conversations', {into: 'organization', outlet: 'conversationsPane'});
+    this.render('conversations', {into: 'organization', outlet: 'pane1'});
   },
 
   actions: {

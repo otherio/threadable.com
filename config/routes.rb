@@ -14,7 +14,10 @@ Covered::Application.routes.draw do
     end
 
     resources :organizations
-    resources :groups
+    resources :groups do
+      post :join
+      post :leave
+    end
     resources :conversations
     resources :tasks
     resources :messages

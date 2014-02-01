@@ -9,11 +9,11 @@ Covered.TasksRoute = Ember.Route.extend({
   setupController: function(controller, context, transition) {
     this.controllerFor('doneTasks').setup(this.modelFor('group'), this.doneTasksScope);
     this.controllerFor('notDoneTasks').setup(this.modelFor('group'), this.notDoneTasksScope);
-    this.controllerFor('navbar').set('showingConversationsListControls', false);
+    this.controllerFor('topbar').set('showingConversationsListControls', false);
   },
 
   renderTemplate: function() {
-    this.render('tasks', {into: 'organization', outlet: 'conversationsPane'});
+    this.render('tasks', {into: 'organization', outlet: 'pane1'});
   },
 
   actions: {

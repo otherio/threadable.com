@@ -4,8 +4,9 @@ feature "Adding doers to a task" do
 
   scenario %(adding doers to a task) do
     sign_in_as 'alice@ucsd.example.com'
+    resize_window_to :large
 
-    within_element 'the groups pane' do
+    within_element 'the sidebar' do
       click_on 'My Conversations'
     end
     within_element 'the conversations pane' do

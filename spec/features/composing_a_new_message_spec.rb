@@ -2,7 +2,10 @@ require 'spec_helper'
 
 feature "Composing a new message" do
 
-  before { sign_in_as 'bethany@ucsd.example.com' }
+  before {
+    sign_in_as 'bethany@ucsd.example.com'
+    resize_window_to :large
+  }
 
   def new_message_body
     %(Whos ready to Party!?!?\n\n)+
@@ -45,7 +48,7 @@ feature "Composing a new message" do
   end
 
   scenario %(In the "My Conversations" section) do
-    within_element 'the groups pane' do
+    within_element 'the sidebar' do
       click_on 'My Conversations'
     end
     within_element 'the conversations pane' do
@@ -61,7 +64,7 @@ feature "Composing a new message" do
   end
 
   scenario %(In the "Ungrouped Conversations" section) do
-    within_element 'the groups pane' do
+    within_element 'the sidebar' do
       click_on 'Ungrouped Conversations'
     end
     within_element 'the conversations pane' do
@@ -77,7 +80,7 @@ feature "Composing a new message" do
   end
 
   scenario %(In a group's "Conversations" section) do
-    within_element 'the groups pane' do
+    within_element 'the sidebar' do
       click_on '+Fundraising'
     end
     within_element 'the conversations pane' do

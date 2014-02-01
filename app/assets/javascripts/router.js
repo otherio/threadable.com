@@ -7,6 +7,7 @@ Covered.Router.reopen({
 Covered.Router.map(function() {
 
   this.resource('organization', {path: '/:organization'}, function(){
+    this.resource('organization_settings', {path: '/settings'});
     this.resource('organization_members', {path: '/members'}, function(){
       this.resource('organization_member', {path: '/:member'});
       this.resource('add_organization_member', {path: '/add'});
@@ -17,6 +18,7 @@ Covered.Router.map(function() {
         this.resource('group_member', {path: '/:member'});
         this.resource('add_group_member', {path: '/add'});
       });
+      this.resource('group_settings', {path: '/settings'});
       this.resource('conversations', {path: '/conversations'}, function(){
         conversationRoutes.call(this, 'conversation');
       });

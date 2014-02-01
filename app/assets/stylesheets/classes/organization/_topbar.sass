@@ -1,9 +1,9 @@
-.navbar
+&
   $padding: 10px
-  height: $navbar-height
+
   overflow: hidden
   white-space: nowrap
-  background: $dark-grey-color
+  background-color: $dark-grey-color
   font-size: 18px
   padding: 0 0.5em
   color: white
@@ -12,11 +12,11 @@
     position: absolute
     top: 0
     bottom: 0
-    height: $navbar-height
+    height: $topbar-height
     > *
-      line-height: $navbar-height + 8px
+      line-height: $topbar-height + 8px
       display: inline-block
-      height: $navbar-height
+      height: $topbar-height
       padding: 0 0.25em
       vertical-align: baseline
     .uk-button
@@ -47,13 +47,13 @@
       overflow: hidden
       text-overflow: ellipsis
       line-height: 47px
-      +mini-to-medium-screens
+      +small-to-medium-screens
         left: 2em
 
   .right-nav
     right: $padding
 
-    +medium-to-xlarge-screens
+    +medium-to-large-screens
       .toggle-conversations-controls
         display: none
 
@@ -69,4 +69,3 @@
     width: 2.5em
     text-align: center
     padding-top: 0.12em
-
