@@ -12,7 +12,7 @@ class ConversationMailer < Covered::Mailer
 
     @organization_email_address = @task ? @organization.formatted_task_email_address : @organization.formatted_email_address
 
-    buffer_length = 100 - @message.body_plain.length
+    buffer_length = 100 - @message.body_plain.to_s.length
     buffer_length = 0 if buffer_length < 0
     @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
