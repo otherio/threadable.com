@@ -1,0 +1,2 @@
+.event-text== view.eventText
+.date= date createdAt
