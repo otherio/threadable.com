@@ -56,7 +56,6 @@ describe Covered::Events do
     context 'when given a valid event type' do
       it 'returns an instance of that event type subclass' do
         event = events.create('conversation_created', organization: organization)
-        p event.errors
         expect(event).to be_persisted
         expect(event.event_type).to eq :conversation_created
         expect(event).to be_a Covered::Events::ConversationCreated
@@ -71,7 +70,6 @@ describe Covered::Events do
     context "when given virtual attributes" do
       it 'serialized them in the content hash' do
         event = events.create(:task_added_doer, organization: organization, doer_id: 42)
-        p event.errors
         expect(event).to be_persisted
         expect(event).to be_a Covered::Events::TaskAddedDoer
         expect(event.doer_id).to eq 42
