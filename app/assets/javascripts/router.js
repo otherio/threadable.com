@@ -8,6 +8,7 @@ Covered.Router.map(function() {
 
   this.resource('organization', {path: '/:organization'}, function(){
     this.resource('organization_settings', {path: '/settings'});
+    this.resource('add_organization_group', {path: '/add-group'});
     this.resource('organization_members', {path: '/members'}, function(){
       this.resource('organization_member', {path: '/:member'});
       this.resource('add_organization_member', {path: '/add'});

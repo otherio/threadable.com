@@ -7,9 +7,9 @@ class Api::GroupsController < ApiController
 
   # post /api/groups
   def create
-    group_params = params.require(:group).permit(:color, :name)
+    group_params = params.require(:group).permit(:color, :name, :subject_tag, :email_address_tag)
     group_params.require :name
-    group = organization.groups.create name: group_params[:name], color: group_params[:color]
+    group = organization.groups.create(group_params)
     if group.persisted?
       render json: serialize(:groups, group), status: 201
     else

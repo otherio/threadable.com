@@ -27,9 +27,6 @@ class Group < ActiveRecord::Base
     super
   end
 
-  def email_address_tag= email_address_tag
-  end
-
   def to_param
     email_address_tag
   end

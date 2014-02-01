@@ -83,10 +83,12 @@ describe Api::GroupsController do
     describe 'create' do
       context 'when given a unique group name' do
         it 'creates and returns the new group' do
-          xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { name: 'Fluffy', color: '#bebebe' }
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { name: 'Fluffy', color: '#bebebe', email_address_tag: 'floofy', subject_tag: 'FL' }
           expect(response.status).to eq 201
-          group = raceteam.groups.find_by_email_address_tag('fluffy')
+          group = raceteam.groups.find_by_email_address_tag('floofy')
           expect(group).to be
+          expect(group.name).to eq 'Fluffy'
+          expect(group.subject_tag).to eq 'FL'
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end
@@ -122,6 +124,17 @@ describe Api::GroupsController do
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end
+
+      context 'when given a new email address tag' do
+        it "ignores the new email address tag" do
+          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', name: "foopytronics", subject_tag: "superheroes", email_address_tag: "hey" }
+          expect(response).to be_ok
+          group = raceteam.groups.find_by_email_address_tag('electronics')
+          expect(group.name).to eq 'foopytronics'
+          expect(response.body).to eq serialize(:groups, group).to_json
+        end
+      end
+
       context 'when given an invalid group id' do
         it "returns a 404" do
           xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: 'foobar', group: { color: '#964bf8', name: "foopytronics", subject_tag: "superheroes" }

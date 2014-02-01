@@ -1,0 +1,85 @@
+<div class="group-settings scrollable">
+  <div>
+    <form class="uk-form" {{action createGroup on='submit'}}>
+
+      <h3 class="uk-text-bold">Create new group</h3>
+      {{#if error}}
+        <h3>Error: {{error}}</h3>
+      {{/if}}
+
+      <fieldset>
+        <div class="uk-form-row">
+          <label class="uk-text-bold uk-form-label input-label">
+            Name:
+          </label>
+          <div class="uk-form-controls input-field">
+            {{input value=name name="name"}}
+          </div>
+        </div>
+
+        <div class="uk-form-row">
+          <label class="uk-text-bold uk-form-label input-label">
+            Email address:
+          </label>
+          {{#if editingEmailAddressTag}}
+            <div class="uk-form-controls input-field">
+              {{controllers.organization.slug}}+{{input value=emailAddressTag name="emailAddressTag"}}@covered.io
+            </div>
+          {{else}}
+            <div class="uk-form-controls input-field">
+              {{controllers.organization.slug}}+{{calculatedEmailAddressTag}}@covered.io
+              <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"></i></a>
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="uk-form-row">
+          <label class="uk-text-bold uk-form-label input-label">
+            Subject tag:
+          </label>
+          {{#if editingSubjectTag}}
+            <div class="uk-form-controls input-field">
+              [{{input value=subjectTag name="subjectTag"}}] Example email subject!
+            </div>
+          {{else}}
+            <div class="uk-form-controls input-field">
+              [{{calculatedSubjectTag}}] Example email subject!
+              <a href {{action editSubjectTag}}><i class="uk-icon-edit"></i></a>
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="uk-form-row">
+          <label class="uk-text-bold uk-form-label input-label">
+            Color (in hex... <a href="http://flatuicolors.com/" target="_blank">these are good</a>):
+          </label>
+          <div class="uk-form-controls input-field">
+            {{input value=color name="color"}}
+          </div>
+        </div>
+
+        <div class="uk-form-row">
+          <input type="submit" class="uk-button uk-button-primary" value="Create new group"></input>
+        </div>
+
+      </fieldset>
+    </form>
+
+    <div class="example-email well">
+      <h4 class="uk-text-bold">Your group's email address:</h4>
+      <div>
+        <span class="email">"{{controllers.organization.name}}: {{name}}" &lt;{{calculatedEmailAddress}}&gt;</span>
+      </div>
+
+      <h4 class="uk-text-bold">Example email subject:</h4>
+      <div>
+        <span class="subject">[{{#if editingSubjectTag}}{{subjectTag}}{{else}}{{calculatedSubjectTag}}{{/if}}] Hey! I'm writing you an email!</span>
+      </div>
+
+      <h4 class="uk-text-bold">Conversation list badge:</h4>
+      <div>
+        <span class="badge" {{bind-attr style="badgeStyle"}}>+{{name}}</span>
+      </div>
+    </div>
+  </div>
+</div>

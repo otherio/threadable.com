@@ -86,12 +86,6 @@ describe Group do
       group.email_address_tag.should == 'fall-down-a-hole'
     end
 
-    it "always uses the generated email_address_tag" do
-      group = Group.create(name: 'fall down a hole', email_address_tag: 'foo-bar', organization_id: 1)
-      group.save.should be_true
-      group.email_address_tag.should == 'fall-down-a-hole'
-    end
-
     it "generates lowercase email_address_tags from uppercase names" do
       group = Group.create(name: 'Fall Down a Hole', organization_id: 1)
       group.save.should be_true
