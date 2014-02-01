@@ -189,6 +189,11 @@ class Covered::Conversation < Covered::Model
     organization.email_address
   end
 
+  def subject_tag
+    subject_tag = "[#{groups.count == 1 ? groups.all.first.subject_tag : organization.subject_tag}]"
+    task? ? "[✔\uFE0E]#{subject_tag}" : subject_tag
+  end
+
   def as_json options=nil
     {
       id:         id,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140129212811) do
+ActiveRecord::Schema.define(version: 20140131233805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 20140129212811) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "color",             default: "", null: false
+    t.string   "subject_tag"
   end
 
   add_index "groups", ["email_address_tag"], name: "index_groups_on_email_address_tag", using: :btree

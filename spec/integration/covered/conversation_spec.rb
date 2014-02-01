@@ -221,6 +221,50 @@ describe Covered::Conversation do
       end
     end
 
+    describe '#subject_tag' do
+      context 'and there are no groups' do
+        let(:conversation) { covered.conversations.find_by_slug!(no_group_conversation) }
+        it 'returns the organization subject tag' do
+          expect(conversation.subject_tag).to eq '[RaceTeam]'
+        end
+
+        context 'and it is a task' do
+          let(:conversation) { covered.conversations.find_by_slug!(no_group_task) }
+          it 'returns the organization task subject tag' do
+            expect(conversation.subject_tag).to eq "[✔\uFE0E][RaceTeam]"
+          end
+        end
+      end
+
+      context 'and there is one group' do
+        let(:conversation) { covered.conversations.find_by_slug!(single_group_conversation) }
+        it 'returns the group subject tag' do
+          expect(conversation.subject_tag).to eq '[RaceTeam+Electronics]'
+        end
+
+        context 'and it is a task' do
+          let(:conversation) { covered.conversations.find_by_slug!(single_group_task) }
+          it 'returns the group task subject tag' do
+            expect(conversation.subject_tag).to eq "[✔\uFE0E][RaceTeam+Electronics]"
+          end
+        end
+      end
+
+      context 'and there are many groups' do
+        let(:conversation) { covered.conversations.find_by_slug!(multiple_group_conversation) }
+        it 'returns the organization subject tag' do
+          expect(conversation.subject_tag).to eq '[RaceTeam]'
+        end
+
+        context 'and it is a task' do
+          let(:conversation) { covered.conversations.find_by_slug!(multiple_group_task) }
+          it 'returns the organization task subject tag' do
+            expect(conversation.subject_tag).to eq "[✔\uFE0E][RaceTeam]"
+          end
+        end
+      end
+    end
+
     describe '#all_email_addresses' do
       let(:conversation) { covered.conversations.find_by_slug!(multiple_group_conversation) }
       it 'returns all the email addresses in all formats' do

@@ -33,6 +33,8 @@ describe Covered::Group do
   it { should delegate(:errors            ).to(:group_record) }
   it { should delegate(:new_record?       ).to(:group_record) }
   it { should delegate(:persisted?        ).to(:group_record) }
+  it { should delegate(:subject_tag       ).to(:group_record) }
+  it { should delegate(:destroy           ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }

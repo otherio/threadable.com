@@ -5,7 +5,13 @@ describe PrepareEmailSubject do
   delegate :call, to: :described_class
 
   let(:email_subject){ self.class.description }
-  let(:organization){ double(:organization, subject_tag: 'foobar') }
+  let(:organization){ double(:organization, subject_tag: 'foobar', groups: groups) }
+  let(:groups) do
+    double(:groups, all: [
+      double(:group1, subject_tag: 'foobar+friends'),
+      double(:group2, subject_tag: 'yourmom'),
+    ])
+  end
   let(:stripped_plain) { 'i am a message body' }
   let(:email) { double(:email, subject: email_subject, stripped_plain: stripped_plain ) }
   subject{ call(organization, email) }
@@ -28,6 +34,18 @@ describe PrepareEmailSubject do
 
   context "[walmart] where the [✔] kids at?" do
     it { should eq "[walmart] where the kids at?" }
+  end
+
+  context "[foobar+friends] where the [✔] kids at?" do
+    it { should eq "where the kids at?" }
+  end
+
+  context "[walmart][yourmom] where the [✔] kids at?" do
+    it { should eq "[walmart] where the kids at?" }
+  end
+
+  context "[✔][foobar+friends][yourmom] RE: [walmart] where the kids at?" do
+    it { should eq "RE: [walmart] where the kids at?" }
   end
 
   context "#{'a'*300}" do

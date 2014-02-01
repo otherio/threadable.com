@@ -13,6 +13,7 @@ class Covered::Group < Covered::Model
     slug
     name
     email_address_tag
+    subject_tag
     color
     errors
     new_record?

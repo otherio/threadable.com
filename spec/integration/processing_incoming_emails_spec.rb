@@ -328,7 +328,7 @@ describe "processing incoming emails" do
   let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
   let(:expected_sent_email_to)                 { ['raceteam@127.0.0.1'] }
   let(:expected_sent_email_cc)                 { '' }
-  let(:expected_sent_email_subject)            { "[RaceTeam] OMG guys I love covered!" }
+  let(:expected_sent_email_subject)            { "#{expected_conversation.subject_tag} OMG guys I love covered!" }
   let(:expected_sent_email_smtp_envelope_from) { 'raceteam@127.0.0.1' }
   let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@127.0.0.1>' }
   let(:expected_sent_email_list_id)            { expected_conversation.list_id }
@@ -427,7 +427,7 @@ describe "processing incoming emails" do
         let(:expected_conversation)      { expected_organization.conversations.latest }
         let(:expected_creator)           { covered.users.find_by_email_address(sender) }
         let(:expected_sent_email_smtp_envelope_from){ expected_organization.email_address }
-        let(:expected_sent_email_subject){ "[#{expected_organization.subject_tag}] #{subject}" }
+        let(:expected_sent_email_subject){ "#{expected_conversation.subject_tag} #{subject}" }
         let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com"] }
 
         it 'delivers the email' do
@@ -730,7 +730,7 @@ describe "processing incoming emails" do
 
     let(:expected_conversation_subject){ subject[0..254] }
     let(:expected_message_subject)     { subject[0..254] }
-    let(:expected_sent_email_subject)  { "[#{expected_organization.subject_tag}] #{subject[0..254]}" }
+    let(:expected_sent_email_subject)  { "#{expected_conversation.subject_tag} #{subject[0..254]}" }
     let(:expected_parent_message)      { nil }
 
     it 'truncates the subject to 255 characters' do
