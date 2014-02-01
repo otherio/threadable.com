@@ -15,7 +15,32 @@ Covered.Group = RL.Model.extend({
 
   badgeStyle: function() {
     return "background-color: "+this.get('color')+";";
-  }.property('color')
+  }.property('color'),
+
+  _takeAction: function(action) {
+    if (!action) throw new Error('action is required');
+    var group = this, promise;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      promise = $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '/api/groups/'+group.get('slug')+'/'+action,
+        data: { organization_id: group.get('organizationSlug') }
+      });
+      promise.then(function(response) {
+        group.deserialize(response.group);
+        resolve(group);
+      });
+      promise.fail(reject);
+    });
+  },
+
+  join: function() {
+    return this._takeAction('join');
+  },
+  leave: function() {
+    return this._takeAction('leave');
+  },
 
 });
 

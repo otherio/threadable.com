@@ -48,13 +48,10 @@ Covered.SidebarController = Ember.ArrayController.extend(Covered.CurrentUserMixi
       this.close();
     },
     joinGroup: function(group) {
-      this.reopenGroups();
-      group.set('currentUserIsAMember', true);
-
+      group.join().then(this.reopenGroups.bind(this));
     },
     leaveGroup: function(group) {
-      this.reopenGroups();
-      group.set('currentUserIsAMember', false);
+      group.leave().then(this.reopenGroups.bind(this));
     }
   },
 
