@@ -31,7 +31,7 @@
         </div>
         <div class="uk-form-row">
           <label class="uk-form-label input-label">
-            Color (in hex):
+            Color (in hex... <a href="http://flatuicolors.com/" target="_blank">these are good</a>):
           </label>
           <div class="uk-form-controls input-field">
             {{input value=editableGroup.color name="color"}}
@@ -54,6 +54,11 @@
       <h4 class="uk-text-bold">Example email subject:</h4>
       <div>
         <span class="subject">[{{editableGroup.subjectTag}}] Hey! I'm writing you an email!</span>
+      </div>
+
+      <h4 class="uk-text-bold">Conversation list badge:</h4>
+      <div>
+        <span class="badge" {{bind-attr style="editableGroup.badgeStyle"}}>+{{name}}</span>
       </div>
     </div>
   </div>
