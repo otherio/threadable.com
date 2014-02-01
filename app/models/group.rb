@@ -7,7 +7,7 @@ class Group < ActiveRecord::Base
   validates_uniqueness_of :email_address_tag, scope: :organization
   validates_format_of :name, with: /\A[0-9A-Za-z -]+\z/
   validates_format_of :email_address_tag, with: /\A[0-9a-z-]+\z/
-  validates_format_of :subject_tag, with: /\A[\w -+]+\z/
+  validates_format_of :subject_tag, with: /\A([\w \-+]+|)\z/
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
 
   has_many :conversation_groups, dependent: :destroy
