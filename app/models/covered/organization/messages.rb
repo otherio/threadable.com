@@ -12,10 +12,6 @@ class Covered::Organization::Messages < Covered::Messages
     message_for (FindByChildHeader.call(organization.id, header) or return)
   end
 
-  def find_by_body_reference body
-    message_for (FindByBodyReference.call(organization, body) or return)
-  end
-
   def inspect
     %(#<#{self.class} organization_id: #{organization.id.inspect}>)
   end

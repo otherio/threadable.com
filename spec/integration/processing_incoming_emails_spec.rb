@@ -489,38 +489,6 @@ describe "processing incoming emails" do
       end
     end
 
-    context 'a parent message can be found via the body' do
-      let(:in_reply_to){ '' }
-      let(:references) { '' }
-
-      let(:body_html){
-        %(<p>-- don't delete this: [ref: welcome-to-our-covered-organization]</p>\n)+
-        %(<p>-- tip: control covered by putting commands at the top of your reply, just like this:</p>\n\n)+
-        %(&amp;done\nI marked this shit done.)
-      }
-      let(:body_plain){
-        %(-- don't delete this: [ref: welcome-to-our-covered-organization]\n)+
-        %(-- tip: control covered by putting commands at the top of your reply, just like this:\n\n)+
-        %(&done\nI marked this shit done.)
-      }
-      let(:stripped_html){ body_html }
-      let(:stripped_text){ body_plain }
-
-      let(:expected_conversation)          { expected_organization.conversations.find_by_slug('welcome-to-our-covered-organization') }
-      let!(:expected_parent_message)       { expected_conversation.messages.latest }
-      let(:expected_email_recipients)      { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
-      let(:expected_sent_email_body_html)  { "&amp;done\nI marked this shit done." }
-      let(:expected_sent_email_body_plain) { "&done\nI marked this shit done." }
-      let(:expected_message_body_html)     { "<p></p>\n<p></p>\n\n&amp;done\nI marked this shit done." }
-      let(:expected_message_body_plain)    { "\n&done\nI marked this shit done." }
-      let(:expected_message_stripped_html) { "<p></p>\n<p></p>\n\n&amp;done\nI marked this shit done." }
-      let(:expected_message_stripped_text) { "\n&done\nI marked this shit done." }
-
-      it 'delivers the email' do
-        validate! :delivered
-      end
-    end
-
     context 'a parent message can be found via the In-Reply-To header and the References header' do
       let(:in_reply_to){ expected_parent_message.message_id_header }
       let(:references) { expected_organization.conversations.find_by_slug("layup-body-carbon").messages.all.map(&:message_id_header).join(' ') }
