@@ -8,6 +8,25 @@ Covered.OrganizationRoute = Ember.Route.extend({
     });
   },
 
+  afterModel: function(organization) {
+    this._super.apply(this, arguments);
+    if (!this.UserVoice || !this.UserVoice.push) return;
+
+    UserVoice.push(['identify', {
+      email:      Covered.currentUser.get('emailAddress'),
+      name:       Covered.currentUser.get('name'),
+      id:         Covered.currentUser.get('id'),
+      account: {
+        id:       organization.get('id'),
+        name:     organization.get('name'),
+      }
+    }]);
+
+    UserVoice.push(['addTrigger', '#feedback-button', {
+      mode: 'contact'
+    }]);
+  },
+
   redirect: function(model, transition) {
     if (!model) this.transitionTo('/');
   },

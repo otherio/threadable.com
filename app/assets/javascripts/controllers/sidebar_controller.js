@@ -12,7 +12,7 @@ Covered.SidebarController = Ember.ArrayController.extend(Covered.CurrentUserMixi
     this.set('organization.focus', 'conversations');
     this.set('settingsVisible', false);
     this.set('organizationVisible', false);
-    UserVoice.hide();
+    if (UserVoice && UserVoice.hide) UserVoice.hide();
   },
 
   otherOrganizations: function(organization) {

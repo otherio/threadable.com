@@ -47,20 +47,6 @@ Covered.SidebarView = Ember.View.extend({
     element.on('click.sidebar', '.group .disclosure-triangle', function() {
       $(this).closest('.group').toggleClass('open');
     });
-
-    UserVoice.push(['identify', {
-      email:      currentUser.get('emailAddress'),
-      name:       currentUser.get('name'),
-      id:         currentUser.get('id'),
-      account: {
-        id:       organization.get('id'),
-        name:     organization.get('name'),
-      }
-    }]);
-
-    UserVoice.push(['addTrigger', '#feedback-button', {
-      mode: 'contact'
-    }]);
   },
 
   didInsertElement: function() {
