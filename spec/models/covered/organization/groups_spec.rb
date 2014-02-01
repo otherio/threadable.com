@@ -9,7 +9,7 @@ describe Covered::Organization::Groups do
     covered: covered,
     organization_record: organization_record,
     id: organization_record.id,
-    subject_tag: 'foo')
+    subject_tag: 'tag')
   }
   let(:groups){ described_class.new(organization) }
   subject{ groups }
@@ -19,7 +19,7 @@ describe Covered::Organization::Groups do
 
   describe '#create' do
     it 'called Covered::Groups::Create.call' do
-      expect(::Group).to receive(:create).with(name: 'foo', organization: organization_record).and_return(group_record)
+      expect(::Group).to receive(:create).with(name: 'foo', organization: organization_record, subject_tag: 'tag+foo').and_return(group_record)
       group = groups.create(name: 'foo')
       expect(group.group_record).to eq group_record
     end
