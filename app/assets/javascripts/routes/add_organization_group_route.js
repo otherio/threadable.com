@@ -12,8 +12,11 @@ Covered.AddOrganizationGroupRoute = Ember.Route.extend({
   },
 
   actions: {
-    transitionToGroup: function(group) {
-      this.transitionTo('conversations', group.get('slug'));
+    transitionToGroupMembers: function(group) {
+      this.transitionTo('group_members', group.get('slug'));
+    },
+    transitionToGroupCompose: function(group) {
+      this.transitionTo('compose_conversation', group.get('slug'));
     }
   }
 });

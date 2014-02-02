@@ -59,7 +59,11 @@ Covered.AddOrganizationGroupController = Ember.ObjectController.extend(Covered.C
       function groupSaved(response) {
         group.deserialize(response.group);
         this.get('controllers.organization.groups').pushObject(group);
-        this.send('transitionToGroup', group);
+        if (group.get('autoJoin')){
+          this.send('transitionToGroupCompose', group);
+        }else{
+          this.send('transitionToGroupMembers', group);
+        }
       }
 
       function error(response) {
