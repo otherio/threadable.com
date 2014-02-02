@@ -147,18 +147,13 @@ class ConversationMailer < Threadable::Mailer
     master_list.reject{ |addr| remove_list_addresses.include? addr.address }
   end
 
-  def find_threadable_addresses addresses
-    addresses.find_all{ |email_address| IdentifyThreadableEmailAddress.call(email_address) }
-  end
-
   def correct_threadable_email_addresses email_addresses
-    email_address_pairs = formatted_email_addresses.map do |formatted_email_address|
-      [formatted_email_address.address, formatted_email_address]
+    map = formatted_email_addresses.inject({}) do |hash, formatted_email_address|
+      hash.update formatted_email_address.local => formatted_email_address
     end
-    email_address_hash = Hash[email_address_pairs]
-
     email_addresses.map do |email_address|
-      email_address_hash[email_address.address] || email_address
+      next email_address unless IdentifyThreadableEmailAddress.call(email_address)
+      map[email_address.local] || email_address
     end
   end
 

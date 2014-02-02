@@ -1078,4 +1078,21 @@ describe "processing incoming emails" do
     end
   end
 
+  context 'when the recipient is at covered.io' do
+    let(:recipient) { 'raceteam@covered.io' }
+    let(:to)        { 'UCSD Electric Racing <raceteam@covered.io>' }
+    it 'replaes covered.io with threadable.io' do
+      validate! :delivered
+    end
+  end
+
+  context 'when the recipient is at covered.io' do
+    let(:recipient) { 'raceteam@covered.io' }
+    let(:to)        { 'UCSD Electric Racing <raceteam@covered.io>, Mr. Race Team <raceteam@example.com>' }
+    let(:expected_sent_email_to)   { ["raceteam@127.0.0.1", "raceteam@example.com"] }
+    it 'replaes covered.io with threadable.io' do
+      validate! :delivered
+    end
+  end
+
 end

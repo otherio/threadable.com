@@ -139,17 +139,19 @@ class Threadable::Conversation < Threadable::Model
     conversation_record.group_ids_cache
   end
 
+  def grouped?
+    group_ids.present?
+  end
+
   def cache_group_ids!
     update(group_ids_cache: groups.all.map(&:id))
   end
 
   def formatted_email_addresses
-    if groups.count > 0
-      if task?
-        return groups.all.map(&:formatted_task_email_address)
-      end
-
-      return groups.all.map(&:formatted_email_address)
+    if grouped?
+      return task? ?
+        groups.all.map(&:formatted_task_email_address) :
+        groups.all.map(&:formatted_email_address)
     end
 
     [task? ? organization.formatted_task_email_address : organization.formatted_email_address]
