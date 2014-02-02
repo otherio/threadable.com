@@ -8,14 +8,14 @@ module Covered::Conversation::Scopes
     conversations_for conversations_scope_with_includes.
       muted_by(covered.current_user_id).
       limit(PAGE_SIZE).
-      offset(PAGE_SIZE * page)
+      offset(PAGE_SIZE * page).uniq
   end
 
   def not_muted_conversations page
     conversations_for conversations_scope_with_includes.
       not_muted_by(covered.current_user_id).
       limit(PAGE_SIZE).
-      offset(PAGE_SIZE * page)
+      offset(PAGE_SIZE * page).uniq
   end
 
   def done_tasks page
@@ -23,7 +23,7 @@ module Covered::Conversation::Scopes
       done.
       order(done_at: :asc).
       limit(PAGE_SIZE).
-      offset(PAGE_SIZE * page)
+      offset(PAGE_SIZE * page).uniq
   end
 
   def not_done_tasks page
@@ -31,7 +31,7 @@ module Covered::Conversation::Scopes
       not_done.
       order(position: :asc).
       limit(PAGE_SIZE).
-      offset(PAGE_SIZE * page)
+      offset(PAGE_SIZE * page).uniq
   end
 
   def done_doing_tasks page
@@ -40,7 +40,7 @@ module Covered::Conversation::Scopes
       done.
       order(done_at: :asc).
       limit(PAGE_SIZE).
-      offset(PAGE_SIZE * page)
+      offset(PAGE_SIZE * page).uniq
   end
 
   def not_done_doing_tasks page
@@ -49,7 +49,7 @@ module Covered::Conversation::Scopes
       not_done.
       order(position: :asc).
       limit(PAGE_SIZE).
-      offset(PAGE_SIZE * page)
+      offset(PAGE_SIZE * page).uniq
   end
 
   private
