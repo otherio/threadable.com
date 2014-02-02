@@ -4,10 +4,11 @@
 bundle exec rspec --require rspec/instafail --format RSpec::Instafail
 exit_code=$?
 
-if [ ${CIRCLE_ARTIFACTS:+x} ]
-then
-  mkdir $CIRCLE_ARTIFACTS/tmp
-  cp -r tmp/* $CIRCLE_ARTIFACTS/tmp
-fi
+## This will collect the tmp directory as a build artifact, if you want that.
+# if [ ${CIRCLE_ARTIFACTS:+x} ]
+# then
+#   mkdir $CIRCLE_ARTIFACTS/tmp
+#   cp -r tmp/* $CIRCLE_ARTIFACTS/tmp
+# fi
 
 exit $exit_code
