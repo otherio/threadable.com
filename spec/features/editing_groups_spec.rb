@@ -11,6 +11,7 @@ feature "Editing groups spec" do
     within selector_for('the sidebar') do
       within page.first('li.group') do
         page.find('.disclosure-triangle').click
+        sleep 0.2
         expect(page).to have_text "Settings"
         click_on "Settings"
       end
@@ -20,14 +21,11 @@ feature "Editing groups spec" do
 
     visit group_settings_url('raceteam', 'electronics')
 
-    fill_in "name", with: "Super Troops"
-
     fill_in "subjectTag", with: "cops"
     fill_in "color", with: "#aaa333"
 
     click_on "Update group settings"
 
-    expect(page).to have_text '+Super Troops'
     expect(page).to have_text 'cops'
     expect(current_url).to eq conversations_url('raceteam', 'electronics')
   end
