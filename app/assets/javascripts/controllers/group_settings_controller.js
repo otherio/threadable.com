@@ -1,16 +1,15 @@
 Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['organization'],
 
-  editableGroup: null,
+  editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
   actions: {
     updateGroup: function() {
       var group = this.get('content');
       group.setProperties({
-        name: this.get('editableGroup.name'),
         subjectTag: this.get('editableGroup.subjectTag'),
-        color: this.get('editableGroup.color'),
-        autoJoin: this.get('editableGroup.autoJoin')
+        color:      this.get('editableGroup.color'),
+        autoJoin:   this.get('editableGroup.autoJoin')
       });
 
       group.saveRecord().then(
