@@ -111,7 +111,7 @@ FixtureBuilder.build do
 
   # create some groups and put people in them
   as 'amywong.phd@gmail.com' do
-    @social_group = create_group 'Social', '#964bf8'
+    @social_group = create_group name: 'Social', color: '#964bf8', auto_join: false
     add_member_to_group 'social', 'lilith@sfhealth.example.com'
     add_member_to_group 'social', 'anil@sfhealth.example.com'
     add_member_to_group 'social', 'yuriz@sfhealth.example.com'
@@ -119,7 +119,7 @@ FixtureBuilder.build do
     add_member_to_group 'social', 'amywong.phd@gmail.com'
     add_member_to_group 'social', 'bj@sfhealth.example.com'
 
-    @triage_group = create_group 'Triage', '#5a9de1'
+    @triage_group = create_group name: 'Triage', color: '#5a9de1', auto_join: false
     add_member_to_group 'triage', 'amywong.phd@gmail.com'
     add_member_to_group 'triage', 'anil@sfhealth.example.com'
     add_member_to_group 'triage', 'sfmedstudent@gmail.com'
@@ -132,7 +132,7 @@ FixtureBuilder.build do
     add_member_to_group 'triage', 'bj@sfhealth.example.com'
     add_member_to_group 'triage', 'lcuddy@sfhealth.example.com'
 
-    @anesthiology_group = create_group 'Anesthiology', '#f2ad40'
+    @anesthiology_group = create_group name: 'Anesthiology', color: '#f2ad40', auto_join: false
     add_member_to_group 'anesthiology', 'ecto@sfhealth.example.com'
     add_member_to_group 'anesthiology', 'mquinn@sfhealth.example.com'
     add_member_to_group 'anesthiology', 'house@sfhealth.example.com'
@@ -140,7 +140,7 @@ FixtureBuilder.build do
     add_member_to_group 'anesthiology', 'smaturin@sfhealth.example.com'
     add_member_to_group 'anesthiology', 'bj@sfhealth.example.com'
 
-    @cardiology_group = create_group 'Cardiology', '#d94876'
+    @cardiology_group = create_group name: 'Cardiology', color: '#d94876', auto_join: false
     add_member_to_group 'cardiology', 'ecto@sfhealth.example.com'
     add_member_to_group 'cardiology', 'smaturin@sfhealth.example.com'
     add_member_to_group 'cardiology', 'bj@sfhealth.example.com'

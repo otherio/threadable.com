@@ -9,7 +9,8 @@ Covered.GroupSettingsController = Ember.ObjectController.extend(Covered.CurrentU
       group.setProperties({
         name: this.get('editableGroup.name'),
         subjectTag: this.get('editableGroup.subjectTag'),
-        color: this.get('editableGroup.color')
+        color: this.get('editableGroup.color'),
+        autoJoin: this.get('editableGroup.autoJoin')
       });
 
       group.saveRecord().then(

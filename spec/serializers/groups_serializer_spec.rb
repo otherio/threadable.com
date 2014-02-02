@@ -17,6 +17,7 @@ describe GroupsSerializer do
         email_address_tag: "electronics",
         subject_tag:       "RaceTeam+Electronics",
         color:             "#964bf8",
+        auto_join:         false,
 
         email_address:                electronics.email_address,
         task_email_address:           electronics.task_email_address,
@@ -44,6 +45,7 @@ describe GroupsSerializer do
           email_address_tag: "electronics",
           subject_tag:       "RaceTeam+Electronics",
           color:             "#964bf8",
+          auto_join:         false,
 
           email_address:                electronics.email_address,
           task_email_address:           electronics.task_email_address,
@@ -62,6 +64,7 @@ describe GroupsSerializer do
           email_address_tag: "fundraising",
           subject_tag:       "RaceTeam+Fundraising",
           color:             "#5a9de1",
+          auto_join:         false,
 
           email_address:                fundraising.email_address,
           task_email_address:           fundraising.task_email_address,
@@ -90,6 +93,7 @@ describe GroupsSerializer do
             email_address_tag: "electronics",
             subject_tag:       "RaceTeam+Electronics",
             color:             "#964bf8",
+            auto_join:         false,
 
             email_address:                electronics.email_address,
             task_email_address:           electronics.task_email_address,
@@ -108,6 +112,7 @@ describe GroupsSerializer do
             email_address_tag: "fundraising",
             subject_tag:       "RaceTeam+Fundraising",
             color:             "#5a9de1",
+            auto_join:         false,
 
             email_address:                fundraising.email_address,
             task_email_address:           fundraising.task_email_address,

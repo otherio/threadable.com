@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140131233805) do
+ActiveRecord::Schema.define(version: 20140201211449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,10 +113,12 @@ ActiveRecord::Schema.define(version: 20140131233805) do
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color",             default: "", null: false
+    t.string   "color",             default: "",   null: false
     t.string   "subject_tag"
+    t.boolean  "auto_join",         default: true, null: false
   end
 
+  add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
   add_index "groups", ["email_address_tag"], name: "index_groups_on_email_address_tag", using: :btree
   add_index "groups", ["organization_id", "name"], name: "index_groups_on_organization_id_and_name", unique: true, using: :btree
   add_index "groups", ["organization_id"], name: "index_groups_on_organization_id", using: :btree

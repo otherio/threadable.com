@@ -39,6 +39,10 @@ class Covered::Organization::Groups < Covered::Groups
     groups
   end
 
+  def auto_joinable
+    groups_for scope.where(auto_join: true)
+  end
+
   def create attributes={}
     Create.call(self, attributes);
   end

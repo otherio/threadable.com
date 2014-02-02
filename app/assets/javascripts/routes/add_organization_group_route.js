@@ -1,6 +1,9 @@
 Covered.AddOrganizationGroupRoute = Ember.Route.extend({
   model: function(group) {
-    return Covered.Group.create({color: "#9b59b6"});
+    return Covered.Group.create({
+      color: "#9b59b6",
+      autoJoin: true
+    });
   },
 
   renderTemplate: function() {

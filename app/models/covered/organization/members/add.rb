@@ -36,6 +36,7 @@ class Covered::Organization::Members::Add < MethodObject
       user_id: user_id,
       gets_email: @options[:gets_email] != false
     )
+    auto_join_groups!
     track!
     sent_join_notice! if @send_join_notice
   end
@@ -52,6 +53,12 @@ class Covered::Organization::Members::Add < MethodObject
 
   def sent_join_notice!
     @covered.emails.send_email_async(:join_notice, @organization.id, user_id, @options[:personal_message])
+  end
+
+  def auto_join_groups!
+    @organization.groups.auto_joinable.each do |group|
+      group.members.add(Covered::User.new(@covered, member.user))
+    end
   end
 
   def find_or_create_user

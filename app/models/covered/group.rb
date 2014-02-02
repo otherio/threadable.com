@@ -19,6 +19,7 @@ class Covered::Group < Covered::Model
     new_record?
     persisted?
     destroy
+    auto_join
   }, to: :group_record
 
   def group_id

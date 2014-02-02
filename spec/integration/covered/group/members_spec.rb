@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Covered::Group::Members do
 
   let(:organization){ covered.organizations.find_by_slug! 'raceteam' }
-  let(:group){ organization.groups.all.last }
+  let(:group){ organization.groups.find_by_email_address_tag!('electronics') }
   let(:members){ group.members }
   subject{ members }
 

@@ -56,16 +56,15 @@ FixtureBuilder.build do
 
   # create some groups and put people in them
   as 'alice@ucsd.example.com' do
-    @electronics_group = create_group 'Electronics', '#964bf8'
+    @electronics_group = create_group name: 'Electronics', color: '#964bf8', auto_join: false
     add_member_to_group 'electronics', 'tom@ucsd.example.com'
     add_member_to_group 'electronics', 'bethany@ucsd.example.com'
 
-    @fundraising_group = create_group 'Fundraising', '#5a9de1'
+    @fundraising_group = create_group name: 'Fundraising', color: '#5a9de1', auto_join: false
     add_member_to_group 'fundraising', 'alice@ucsd.example.com'
     add_member_to_group 'fundraising', 'bob@ucsd.example.com'
 
-    @graphic_design_group = create_group 'Graphic Design', '#f2ad40'
-    add_member_to_group 'graphic-design', 'jonathan@ucsd.example.com'
+    @graphic_design_group = create_group name: 'Graphic Design', color: '#f2ad40'
   end
 
   # Bethany replies to the welcome email

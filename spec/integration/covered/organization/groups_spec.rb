@@ -53,6 +53,11 @@ describe Covered::Organization::Groups do
     end
   end
 
+  describe "#auto_joinable" do
+    it 'returns the groups where auto_join is true' do
+      expect(groups.auto_joinable.map(&:email_address_tag)).to eq ['graphic-design']
+    end
+  end
 
   describe "conversation groups" do
     it "should be in sync" do
