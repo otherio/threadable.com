@@ -50,17 +50,14 @@ Covered.SidebarView = Ember.View.extend({
   },
 
   didInsertElement: function() {
-    console.debug('didInsertElement');
     this.bindEvents();
   },
 
   willDestroyElement: function() {
-    console.debug('willDestroyElement');
     this.unbindEvents();
   },
 
   willClearRender: function() {
-    console.debug('willClearRender');
     this.unbindEvents();
   }
 
