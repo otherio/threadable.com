@@ -25,6 +25,6 @@ feature "Adding groups spec" do
 
     expect(page).to have_text '[Super-Tr] +Super Troops'
 
-    expect(current_url).to eq conversations_url('raceteam', 'super-troops')
+    expect(current_url).to eq compose_conversation_url('raceteam', 'super-troops')
   end
 end
