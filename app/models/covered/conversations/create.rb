@@ -10,7 +10,7 @@ class Covered::Conversations::Create < MethodObject
     @conversations = conversations
     @covered       = @conversations.covered
     @options       = OPTIONS.parse(options)
-    @organization       = @options.organization
+    @organization  = @options.organization
     create_conversation!
 
     @conversation = object.new(@covered, @conversation_record)

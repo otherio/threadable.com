@@ -8,12 +8,11 @@ class Api::GroupsController < ApiController
   # post /api/groups
   def create
     group_params = params.require(:group).permit(:color, :name, :subject_tag, :email_address_tag, :auto_join)
-    group_params.require :name
     group = organization.groups.create(group_params)
     if group.persisted?
       render json: serialize(:groups, group), status: 201
     else
-      render nothing: true, status: 409
+      render json: {error: group.group_record.errors.full_messages.to_sentence}, status: 409
     end
   end
 

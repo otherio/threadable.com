@@ -44,8 +44,8 @@ class Covered::Organization::Members::Add < MethodObject
   def track!
     @covered.track("Added User", {
       'Invitee'               => user_id,
-      'Organization'               => @organization.id,
-      'Organization Name'          => @organization.name,
+      'Organization'          => @organization.id,
+      'Organization Name'     => @organization.name,
       'Sent Join Notice'      => @send_join_notice ? true : false,
       'Sent Personal Message' => @options[:personal_message].present?
     })
