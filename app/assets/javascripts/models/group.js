@@ -19,6 +19,21 @@ Covered.Group = RL.Model.extend({
     return "background-color: "+this.get('color')+";";
   }.property('color'),
 
+  join: function() {
+    return this._takeAction('join');
+  },
+
+  leave: function() {
+    return this._takeAction('leave');
+  },
+
+  loadMembers: RL.loadAssociationMethod('members', function(group){
+    return Covered.GroupMember.fetch({
+      organization_id: group.get('organizationSlug'),
+      group_id: group.get('slug')
+    });
+  }),
+
   _takeAction: function(action) {
     if (!action) throw new Error('action is required');
     var group = this, promise;
@@ -35,13 +50,6 @@ Covered.Group = RL.Model.extend({
       });
       promise.fail(reject);
     });
-  },
-
-  join: function() {
-    return this._takeAction('join');
-  },
-  leave: function() {
-    return this._takeAction('leave');
   },
 
 });

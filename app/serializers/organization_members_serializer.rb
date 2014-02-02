@@ -1,0 +1,3 @@
+class OrganizationMembersSerializer < UsersSerializer
+
+end

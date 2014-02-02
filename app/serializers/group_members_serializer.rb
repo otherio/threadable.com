@@ -1,0 +1,3 @@
+class GroupMembersSerializer < UsersSerializer
+
+end

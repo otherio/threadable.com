@@ -1,0 +1,7 @@
+.modal
+  .content
+    i.icon.uk-icon-warning.uk-icon-large
+    .question= view.message
+    .controls
+      a.decline-button.uk-button href="" = view.declineText
+      a.approve-button.uk-button.uk-button-danger href="" = view.approveText

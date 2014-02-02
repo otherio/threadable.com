@@ -12,6 +12,16 @@ class Covered::Group::Members < Covered::Collection
     scope.map{|user_record| Covered::User.new(covered, user_record) }
   end
 
+  def find_by_user_id user_id
+    user_record = scope.where(users:{id:user_id}).first or return
+    Covered::User.new(covered, user_record)
+  end
+
+  def find_by_user_id! user_id
+    find_by_user_id(user_id) or
+      raise Covered::RecordNotFound, "unable to find group member with id: #{user_id}"
+  end
+
   def add user
     group.group_record.members << user.user_record
   end

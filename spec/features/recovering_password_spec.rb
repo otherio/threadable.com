@@ -34,6 +34,7 @@ feature "recovering password" do
     expect(page).to have_text "Alice Neilson"
 
     page.find('.sidebar .user-controls .toggle-user-settings').click
+    sleep 0.2
     click_link 'Sign out'
     expect(page).to have_text "No password yet?"
 

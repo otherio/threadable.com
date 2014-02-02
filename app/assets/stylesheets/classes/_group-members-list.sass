@@ -1,0 +1,28 @@
+.group-members-list
+  $padding: $default-font-size
+  .members-list > li
+    > *
+      padding-right: 100px
+    .toggle
+      +absolute(8px, null, $padding, $padding)
+      width: 80px
+      text-align: center
+      font-weight: normal
+      +no-select
+
+      &.remove
+        color: $white-color
+        +text-shadow(none)
+        background-color: $bright-blue-color
+        > .hover
+          display: none
+        &:hover
+          background-color: $bright-red-color
+          > .hover
+            display: block
+          > .normal
+            display: none
+      &.add
+        &:hover
+          background-color: $faint-blue-color
+          +text-shadow(none)

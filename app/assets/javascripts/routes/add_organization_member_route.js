@@ -1,6 +1,6 @@
 Covered.AddOrganizationMemberRoute = Ember.Route.extend({
   model: function() {
-    return Covered.Member.create();
+    return Covered.OrganizationMember.create();
   },
 
   renderTemplate: function() {

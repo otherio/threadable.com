@@ -1,5 +1,3 @@
-// This is a base class. We should never actually endup here
-// but, when displaying a single conversation, we do end up here...
 Covered.ConversationRoute = Ember.Route.extend({
 
   parentRouteName: null,

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe MembersSerializer do
+describe GroupMembersSerializer do
 
   let(:alice) { covered.users.find_by_email_address!('alice@ucsd.example.com') }
   let(:marcus){ covered.users.find_by_email_address!('marcus@sfhealth.example.com') }
 
   context 'when given a single record' do
     let(:payload){ alice }
-    let(:expected_key){ :member }
+    let(:expected_key){ :group_member }
     it do
       should eq(
         id:            alice.id,
@@ -23,7 +23,7 @@ describe MembersSerializer do
 
   context 'when given a collection of records' do
     let(:payload){ [alice,marcus] }
-    let(:expected_key){ :members }
+    let(:expected_key){ :group_members }
     it do
       should eq [
         {

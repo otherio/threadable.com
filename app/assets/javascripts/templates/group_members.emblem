@@ -1,0 +1,17 @@
+.group-members-list.scrollable
+  ul.members-list
+    each member in controller
+      li
+        div
+          .avatar.avatar-small
+            img src=member.avatarUrl
+          .name= member.name
+          .email-address= member.emailAddress
+          if member.isMember
+            a.toggle.uk-button.remove href="" click="removeMember member"
+              span.normal member
+              span.hover remove
+          else
+            a.toggle.uk-button.add href="" click="addMember member"
+              i.uk-icon-plus
+              | &nbsp; add

@@ -1,0 +1,14 @@
+.organization-members.scrollable
+  ul.members-list
+    li.add-button
+      a.not-link href="" click="goToAdd"
+        i.uk-icon-plus.uk-float-left
+        div Add member
+    each member in controller
+      li
+        a.not-link href=""
+          .avatar.avatar-small
+            img src=member.avatarUrl
+          .name= member.name
+          .email-address= member.emailAddress
+          .toggle= member.isMember

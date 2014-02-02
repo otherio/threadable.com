@@ -12,7 +12,7 @@ Covered.Conversation = RL.Model.extend({
   groupIds:          RL.attr('array'),
 
   organizationId:    RL.attr('string'),
-  doers:             RL.hasMany('Covered.Member'),
+  doers:             RL.hasMany('Covered.OrganizationMember'),
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
   position:          RL.attr('number'),

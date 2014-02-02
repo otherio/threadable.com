@@ -5,12 +5,43 @@ Covered.User = RL.Model.extend({
   name:         RL.attr('string'),
   emailAddress: RL.attr('string'),
   slug:         RL.attr('string'),
-  avatarUrl:    RL.attr('string')
-});
+  avatarUrl:    RL.attr('string'),
 
-Covered.Member = Covered.User.extend({
-  organizationSlug: RL.attr('string'),
-  personalMessage:  RL.attr('string')
-});
+  removeFromGroup: function(group) {
+    var user = this, promise;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      promise = $.ajax({
+        type: 'DELETE',
+        url: '/api/group_members/'+user.get('id'),
+        data: {
+          organization_id: group.get('organizationSlug'),
+          group_id: group.get('slug'),
+        }
+      });
+      promise.then(resolve);
+      promise.fail(reject);
+    });
+  },
 
-Covered.Member.reopen(Covered.AddOrganizationIdToRequestsMixin);
+  addToGroup: function(group) {
+    var user = this, promise;
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      promise = $.ajax({
+        type: 'POST',
+        url: '/api/group_members/',
+        data: {
+          organization_id: group.get('organizationSlug'),
+          group_id: group.get('slug'),
+          user_id: user.get('id'),
+        }
+      });
+      promise.then(function(response) {
+        var groupMember = Covered.GroupMember.createRecord();
+        groupMember.deserialize(response.group_member);
+        resolve(groupMember);
+      });
+      promise.fail(reject);
+    });
+  },
+
+});

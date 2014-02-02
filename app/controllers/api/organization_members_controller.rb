@@ -1,12 +1,11 @@
-class Api::MembersController < ApiController
+class Api::OrganizationMembersController < ApiController
 
   def index
-    members = group.present? ? group.members : organization.members
-    render json: serialize(:members, members.all)
+    render json: serialize(:organization_members, organization.members.all)
   end
 
   def create
-    member_params = params.require(:member).permit(:name, :email_address, :personal_message).symbolize_keys
+    member_params = params.require(:organization_member).permit(:name, :email_address, :personal_message).symbolize_keys
 
     user = covered.users.find_by_email_address(member_params[:email_address])
 
@@ -15,7 +14,7 @@ class Api::MembersController < ApiController
     end
 
     member = organization.members.add(member_params)
-    render json: serialize(:members, member), status: 201
+    render json: serialize(:organization_members, member), status: 201
 
   rescue Covered::RecordInvalid
     render json: {error: "unable to create user"}, status: :unprocessable_entity
@@ -27,7 +26,4 @@ class Api::MembersController < ApiController
     @organization ||= current_user.organizations.find_by_slug!(params[:organization_id])
   end
 
-  def group
-    @group ||= organization.groups.find_by_email_address_tag!(params[:group_id]) if params.key?(:group_id)
-  end
 end

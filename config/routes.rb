@@ -22,8 +22,8 @@ Covered::Application.routes.draw do
     resources :tasks
     resources :messages
     resources :events
-
-    resources :members, only: [:index, :create]
+    resources :organization_members, only: [:index, :create]
+    resources :group_members,        only: [:index, :create, :destroy]
     resources :task_doers
   end
 
