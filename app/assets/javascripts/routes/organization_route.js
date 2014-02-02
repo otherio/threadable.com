@@ -3,28 +3,12 @@ Threadable.OrganizationRoute = Ember.Route.extend({
   model: function(params){
     return Threadable.CurrentUser.fetch().then(function(currentUser) {
       var organization = currentUser.get('organizations').findBy('slug', params.organization);
-      if (organization) organization.loadMembers();
+      if (organization){
+        organization.loadMembers();
+        Threadable.setupUserVoice(currentUser, organization);
+      }
       return organization;
     });
-  },
-
-  afterModel: function(organization) {
-    this._super.apply(this, arguments);
-    if (!this.UserVoice || !this.UserVoice.push) return;
-
-    UserVoice.push(['identify', {
-      email:      Threadable.currentUser.get('emailAddress'),
-      name:       Threadable.currentUser.get('name'),
-      id:         Threadable.currentUser.get('id'),
-      account: {
-        id:       organization.get('id'),
-        name:     organization.get('name'),
-      }
-    }]);
-
-    UserVoice.push(['addTrigger', '#feedback-button', {
-      mode: 'contact'
-    }]);
   },
 
   redirect: function(model, transition) {
@@ -47,5 +31,6 @@ Threadable.OrganizationRoute = Ember.Route.extend({
           pos     : 'top-right'
       });
     }
-  }
+  },
+
 });

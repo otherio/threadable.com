@@ -42,8 +42,6 @@ Ember.TextField.reopen({
   attributeBindings: ['autofocus']
 });
 
-UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/MMrElWgvuRBk0LjwGqQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
-
 // This disables all css-transitions while resizing
 $(window).on('resize', function(){
   $('body').addClass('disable-all-transitions');
@@ -53,17 +51,7 @@ $(window).on('resize', function(){
   $(this).data('disableAllTransitionsTimeout', timeout);
 });
 
-
 String.prototype.includes = function(string) {
   return this.indexOf(string) !== -1;
 };
-
-// google analytics
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', ENV.google_analytics_tracking_id, 'threadable.com');
-ga('send', 'pageview');
 

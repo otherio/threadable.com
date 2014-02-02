@@ -10,6 +10,7 @@
 //= require threadable
 //= require debug
 
+ENV = this.ENV || {};
 ENV.FEATURES = {
   'query-params-new': true,
   'ember-routing-drop-deprecated-action-style': true
