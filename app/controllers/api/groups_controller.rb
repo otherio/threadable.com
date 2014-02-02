@@ -12,7 +12,7 @@ class Api::GroupsController < ApiController
     if group.persisted?
       render json: serialize(:groups, group), status: 201
     else
-      render json: {error: group.group_record.errors.full_messages.to_sentence}, status: 409
+      render json: {error: group.group_record.errors.full_messages.to_sentence}, status: 406
     end
   end
 

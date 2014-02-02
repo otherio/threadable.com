@@ -97,7 +97,8 @@ describe Api::GroupsController do
       context 'when given a group name that is already taken' do
         it 'returns a 422 unprocessible entity code' do
           xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { name: 'Electronics', color: '#bebebe' }
-          expect(response.status).to eq 409 #conflict
+          expect(response.status).to eq 406
+          expect(response_json).to eq({"error"=>"Name has already been taken and Email address tag has already been taken"})
         end
       end
 
@@ -105,6 +106,7 @@ describe Api::GroupsController do
         it 'raises an ParameterMissing error' do
           xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { color: '#bebebe' }
           expect(response.status).to eq 406
+          expect(response_json).to eq({"error"=>"Name can't be blank, Name is invalid, and Email address tag is invalid"})
         end
       end
 
