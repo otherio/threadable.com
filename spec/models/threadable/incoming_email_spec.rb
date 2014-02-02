@@ -510,16 +510,16 @@ describe Threadable::IncomingEmail do
   describe '#email_address_tags' do
     subject{ incoming_email.email_address_tags }
     before{ expect(incoming_email).to receive(:recipient).and_return(recipient) }
-    context 'when the email address is foo@threadable.io' do
-      let(:recipient){ 'foo@threadable.io' }
+    context 'when the email address is foo@threadable.com' do
+      let(:recipient){ 'foo@threadable.com' }
       it{ should eq [] }
     end
     context 'when the email address contains many tags' do
-      let(:recipient){ 'foo+bar+baz@threadable.io' }
+      let(:recipient){ 'foo+bar+baz@threadable.com' }
       it{ should eq ['bar', 'baz'] }
     end
     context 'when the email address contains +task' do
-      let(:recipient){ 'foo+bar+task@threadable.io' }
+      let(:recipient){ 'foo+bar+task@threadable.com' }
       it{ should eq ['bar'] }
     end
   end

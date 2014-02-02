@@ -7,10 +7,10 @@ module RSpec::Support::LiveExampleGroup
   included do
     metadata[:type] = :live
     before do
-      default_url_options[:host] = 'www-staging.threadable.io'
+      default_url_options[:host] = 'staging.threadable.com'
       default_url_options[:port] = 80
       WebMock.disable_net_connect!(:allow_localhost => true, :allow => "api.mailgun.net")
-      Capybara.app_host = 'http://www-staging.threadable.io'
+      Capybara.app_host = 'http://staging.threadable.com'
     end
   end
 
@@ -33,7 +33,7 @@ module RSpec::Support::LiveExampleGroup
 
   def send_simple_message to, subject, body
     RestClient.post "https://api:key-0cc-z2i16-2n9x2vr8g7l1i4o3xv-fv6"\
-    "@api.mailgun.net/v2/staging.threadable.io/messages",
+    "@api.mailgun.net/v2/staging.threadable.com/messages",
     :from => "Speccy User <threadable-auto-deploy-sender@mailinator.com>",
     :to => to,
     :subject => subject,

@@ -8,8 +8,8 @@ describe "Mailgun posts", fixtures: false do
         envelope_from: 'bob@bob.com',
         from:          'Bob Smith <bob@bob.com>',
         sender:        'bob@bob.com',
-        recipient:     'flying-car@threadable.io',
-        to:            'Flying car <flying-car@threadable.io>',
+        recipient:     'flying-car@threadable.com',
+        to:            'Flying car <flying-car@threadable.com>',
       )
     }
     it "should render succesfully" do

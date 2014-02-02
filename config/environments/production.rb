@@ -89,16 +89,16 @@ Threadable::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
-    :user_name => 'postmaster@threadable.io',
+    :user_name => 'postmaster@threadable.com',
     :password => Threadable.config('mailgun')['password'],
-    :domain => 'threadable.io',
+    :domain => 'threadable.com',
     :address => 'smtp.mailgun.org',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true
   }
 
-  config.action_controller.default_url_options = { :host => 'beta.threadable.io', :protocol => 'https' }
+  config.action_controller.default_url_options = { :host => 'beta.threadable.com', :protocol => 'https' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday

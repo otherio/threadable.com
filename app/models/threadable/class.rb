@@ -1,8 +1,10 @@
 class Threadable::Class
 
   EMAIL_HOSTS = {
-    'beta.threadable.io'        => 'threadable.io',
-    'www-staging.threadable.io' => 'staging.threadable.io',
+    'threadable.com'         => 'threadable.com',
+    'staging.threadable.com' => 'staging.threadable.com',
+    'beta.covered.io'        => 'covered.io',
+    'www-staging.covered.io' => 'staging.covered.io',
     '127.0.0.1'              => '127.0.0.1', # for dev
   }.freeze
 

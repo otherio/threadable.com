@@ -7,11 +7,11 @@ Threadable::Application.configure do
   config.log_level = :debug
 
   config.action_mailer.smtp_settings.merge!(
-    :user_name => 'postmaster@staging.threadable.io',
-    :domain => 'staging.threadable.io',
+    :user_name => 'postmaster@staging.threadable.com',
+    :domain => 'staging.threadable.com',
   )
 
-  config.action_controller.default_url_options = { :host => 'www-staging.threadable.io' }
+  config.action_controller.default_url_options = { :host => 'staging.threadable.com' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday

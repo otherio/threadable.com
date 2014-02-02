@@ -355,8 +355,8 @@ describe "processing incoming emails" do
 
 
   context "when the recipients do not match a organization" do
-    let(:recipient){ 'poopnozzle@threadable.io' }
-    let(:to)       { 'Poop Nozzle <poopnozzle@threadable.io>' }
+    let(:recipient){ 'poopnozzle@threadable.com' }
+    let(:to)       { 'Poop Nozzle <poopnozzle@threadable.com>' }
 
     let(:expected_organization)  { nil }
     let(:expected_parent_message){ nil }

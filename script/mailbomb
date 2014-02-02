@@ -13,7 +13,7 @@ class Email
   THREADABLE_MAILGUN_KEY = ENV['THREADABLE_MAILGUN_KEY'] or abort "THREADABLE_MAILGUN_KEY is not set"
 
   def initialize
-    @to            = 'testing+task@staging.threadable.io'
+    @to            = 'testing+task@staging.threadable.com'
     @from          = 'Jared Grippe <jared@other.io>'
     @name          = Faker::Name.name
     @email_address = Faker::Internet.email
@@ -29,7 +29,7 @@ class Email
   def command
     <<-SH
       curl -s --user 'api:#{THREADABLE_MAILGUN_KEY}' \
-        https://api.mailgun.net/v2/staging.threadable.io/messages \
+        https://api.mailgun.net/v2/staging.threadable.com/messages \
         -F from='#{@from}' \
         -F to='#{@to}'\
         -F subject='#{@subject}' \

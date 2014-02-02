@@ -5,9 +5,9 @@ describe IdentifyThreadableEmailAddress, fixtures: false do
   examples = {
     'Ian Baker <ian@other.io>' => false,
     'ian@other.io'             => false,
-    'raceteam@threadable.io'      => true,
-    'foo+bar@threadable.io'       => true,
-    'foo@staging.threadable.io'   => true,
+    'raceteam@threadable.com'      => true,
+    'foo+bar@threadable.com'       => true,
+    'foo@staging.threadable.com'   => true,
     'raceteam@127.0.0.1'       => true,
   }
 

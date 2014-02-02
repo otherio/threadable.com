@@ -29,7 +29,7 @@ Threadable::Application.configure do
     config.action_mailer.smtp_settings = {
       :address              => "smtp.gmail.com",
       :port                 => 587,
-      :domain               => 'threadable.io',
+      :domain               => 'threadable.com',
       :user_name            => 'threadablethrowaway1@gmail.com',
       :password             => 'threadablethreadable',
       :authentication       => 'plain',
@@ -37,7 +37,7 @@ Threadable::Application.configure do
     }
   else
     config.action_mailer.smtp_settings = {
-      :domain => 'threadable.io',
+      :domain => 'threadable.com',
       :address => 'localhost',
       :port => 1025
     }

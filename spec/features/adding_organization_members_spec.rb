@@ -19,7 +19,7 @@ feature "Adding organization members" do
     email = sent_emails.join_notices("UCSD Electric Racing").sent_to('frank@zappaworld.net').first
     expect(email.user_setup_url).to be_present
     expect(email.content).to include 'Frank, we need a theme song!'
-    expect(email.content).to_not include "You can view this organization on threadable.io here: #{organization_url('raceteam')}"
+    expect(email.content).to_not include "You can view this organization on threadable.com here: #{organization_url('raceteam')}"
     expect(email.content).to include "Click here to set up a password"
   end
 
@@ -35,7 +35,7 @@ feature "Adding organization members" do
     email = sent_emails.join_notices("UCSD Electric Racing").sent_to('bj@sfhealth.example.com').first
     expect(email.user_setup_url).to_not be_present
     expect(email.content).to include 'hey, we need some medical support'
-    expect(email.content).to include "You can view this organization on threadable.io here: #{organization_url('raceteam')}"
+    expect(email.content).to include "You can view this organization on threadable.com here: #{organization_url('raceteam')}"
     expect(email.content).to_not include "Click here to set up a password"
   end
 
