@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe ConversationsSerializer do
 
-  let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
+  let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
   let(:layup_body_carbon) { raceteam.conversations.find_by_slug!('layup-body-carbon') }
-  let(:welcome) { raceteam.conversations.find_by_slug!('welcome-to-our-covered-organization') }
+  let(:welcome) { raceteam.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
 
   before do
     sign_in_as 'alice@ucsd.example.com'
@@ -45,9 +45,9 @@ describe ConversationsSerializer do
       should eq [
         {
           id:                 welcome.id,
-          slug:               "welcome-to-our-covered-organization",
+          slug:               "welcome-to-our-threadable-organization",
           organization_slug:  "raceteam",
-          subject:            "Welcome to our Covered organization!",
+          subject:            "Welcome to our Threadable organization!",
           task:               false,
           created_at:         welcome.created_at,
           updated_at:         welcome.updated_at,

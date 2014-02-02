@@ -19,9 +19,9 @@ describe Api::MessagesController do
 
   when_signed_in_as 'bob@ucsd.example.com' do
 
-    let(:raceteam){ covered.organizations.find_by_slug! 'raceteam' }
-    let(:sfhealth){ covered.organizations.find_by_slug! 'sfhealth' }
-    let(:conversation){ raceteam.conversations.find_by_slug!('welcome-to-our-covered-organization') }
+    let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
+    let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
+    let(:conversation){ raceteam.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
     let(:messages) { }
 
     # get /api/messages
@@ -62,7 +62,7 @@ describe Api::MessagesController do
         end
 
         it 'sets sent_via_web to true' do
-          expect_any_instance_of(Covered::Conversation::Messages).to \
+          expect_any_instance_of(Threadable::Conversation::Messages).to \
             receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true, creator: current_user}).
             and_return(message)
           expect(controller).to receive(:serialize).with(:messages, message, include: :conversation).and_return(some: 'json')

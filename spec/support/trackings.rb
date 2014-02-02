@@ -1,11 +1,11 @@
 module RSpec::Support::Trackings
 
   def trackings
-    Covered::InMemoryTracker.trackings
+    Threadable::InMemoryTracker.trackings
   end
 
   def tracked_user_changes
-    Covered::InMemoryTracker.user_changes
+    Threadable::InMemoryTracker.user_changes
   end
 
   def assert_tracked user_id, event, params={}

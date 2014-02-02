@@ -1,4 +1,4 @@
-%p The email address #{mail_to @email_address} has been added to #{@email_address.user.name}'s Covered account.
+%p The email address #{mail_to @email_address} has been added to #{@email_address.user.name}'s Threadable account.
 
 %p
   If this is correct:
@@ -9,4 +9,4 @@
   If this is not correct:
   %blockquote
     contact us at
-    = mail_to @covered.support_email_address
+    = mail_to @threadable.support_email_address

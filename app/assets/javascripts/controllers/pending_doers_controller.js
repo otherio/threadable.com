@@ -1,4 +1,4 @@
-Covered.PendingDoersController = Ember.ArrayController.extend({
+Threadable.PendingDoersController = Ember.ArrayController.extend({
   // itemController: 'doer'
 
 });

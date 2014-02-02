@@ -9,7 +9,7 @@ module SerializerConcern
   # serialize :users, User.all
   # serialize :users, User.first
   def serialize type, payload, options={}
-    serializer(type).serialize(covered, payload, options)
+    serializer(type).serialize(threadable, payload, options)
   end
 
 end

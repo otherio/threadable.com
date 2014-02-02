@@ -1,4 +1,4 @@
-Covered.ReplyView = Ember.View.extend({
+Threadable.ReplyView = Ember.View.extend({
   tagName: 'div',
   classNames: 'reply well',
 

@@ -8,7 +8,7 @@ module EmberRouteUrlHelpers
   #
   #  !function(){
   #    var ROUTES = [];
-  #    $.each(Covered.Router.router.recognizer.names, function(name, route) {
+  #    $.each(Threadable.Router.router.recognizer.names, function(name, route) {
   #      if (name === 'index') return;
   #      if (/(^|\.)(error|loading)/.test(name)) return;
   #      name = name.replace('.index', '');

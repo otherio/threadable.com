@@ -1,4 +1,4 @@
-Covered.NotDoneTasksView = Ember.View.extend({
+Threadable.NotDoneTasksView = Ember.View.extend({
   classNames: 'not-done-tasks',
 
   elementBeingDragged: null,

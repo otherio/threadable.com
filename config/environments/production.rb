@@ -1,4 +1,4 @@
-Covered::Application.configure do
+Threadable::Application.configure do
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -89,25 +89,25 @@ Covered::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
-    :user_name => 'postmaster@covered.io',
-    :password => Covered.config('mailgun')['password'],
-    :domain => 'covered.io',
+    :user_name => 'postmaster@threadable.io',
+    :password => Threadable.config('mailgun')['password'],
+    :domain => 'threadable.io',
     :address => 'smtp.mailgun.org',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true
   }
 
-  config.action_controller.default_url_options = { :host => 'beta.covered.io', :protocol => 'https' }
+  config.action_controller.default_url_options = { :host => 'beta.threadable.io', :protocol => 'https' }
   config.action_mailer.default_url_options = config.action_controller.default_url_options
 
   # TODO: should live in a yaml file or ENV or something someday
   config.token_key = 'correct horse staple production key frobozz wtf bagel'
 
   config.storage = {
-    s3_access_key_id:     ENV.fetch('COVERED_S3_ACCESS_KEY_ID'),
-    s3_secret_access_key: ENV.fetch('COVERED_S3_SECRET_ACCESS_KEY'),
-    bucket_name:          ENV.fetch('COVERED_S3_BUCKET_NAME'),
+    s3_access_key_id:     ENV.fetch('THREADABLE_S3_ACCESS_KEY_ID'),
+    s3_secret_access_key: ENV.fetch('THREADABLE_S3_SECRET_ACCESS_KEY'),
+    bucket_name:          ENV.fetch('THREADABLE_S3_BUCKET_NAME'),
   }
 
   config.redis = Heroku.redis_config

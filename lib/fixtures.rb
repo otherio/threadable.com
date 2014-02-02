@@ -30,7 +30,7 @@ module Fixtures
   end
 
   def self.empty_databases!
-    Covered.redis.flushdb
+    Threadable.redis.flushdb
     ActiveRecord::FixtureBuilder.database.truncate_all_tables!
   end
 

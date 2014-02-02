@@ -12,7 +12,7 @@ describe OrganizationMembershipMailer do
 
   describe "join_notice" do
     let(:personal_message){ "yo dude, I added you to the organization. Thanks for the help!" }
-    let(:mail){ OrganizationMembershipMailer.new(covered).generate(:join_notice, organization, recipient, personal_message) }
+    let(:mail){ OrganizationMembershipMailer.new(threadable).generate(:join_notice, organization, recipient, personal_message) }
 
     before do
       expect(mail.subject).to eq "You've been added to #{organization.name}"
@@ -46,13 +46,13 @@ describe OrganizationMembershipMailer do
   end
 
   describe "unsubscribe_notice" do
-    let(:member){ organization.members.find_by_user_id!(covered.current_user.id) }
-    let(:mail){ OrganizationMembershipMailer.new(covered).generate(:unsubscribe_notice, organization, member) }
+    let(:member){ organization.members.find_by_user_id!(threadable.current_user.id) }
+    let(:mail){ OrganizationMembershipMailer.new(threadable).generate(:unsubscribe_notice, organization, member) }
     it "should return the expected message" do
       expect(mail.subject ).to eq "You've been unsubscribed from #{organization.name}"
       expect(mail.to      ).to eq ['bethany@ucsd.example.com']
       expect(mail.from    ).to eq [organization.email_address.to_s]
-      expect(text_part    ).to include %(You've been unsubscribed from the "#{organization.name}" organization on Covered.)
+      expect(text_part    ).to include %(You've been unsubscribed from the "#{organization.name}" organization on Threadable.)
 
       organization_resubscribe_token = extract_organization_resubscribe_token(text_part)
       expect( OrganizationResubscribeToken.decrypt(organization_resubscribe_token) ).to eq [organization.id, current_user.id]

@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe CurrentUserSerializer do
 
-  let(:alice) { covered.users.find_by_email_address!('alice@ucsd.example.com') }
-  let(:marcus){ covered.users.find_by_email_address!('marcus@sfhealth.example.com') }
+  let(:alice) { threadable.users.find_by_email_address!('alice@ucsd.example.com') }
+  let(:marcus){ threadable.users.find_by_email_address!('marcus@sfhealth.example.com') }
 
   let(:expected_key){ :user }
   let(:payload){ current_user }
 
   context 'when not signed in' do
-    before { covered.current_user = nil }
+    before { threadable.current_user = nil }
     it do
       should eq(
         id:            'current',
@@ -24,7 +24,7 @@ describe CurrentUserSerializer do
     end
   end
   context 'when signed in as alice' do
-    before { covered.current_user = alice }
+    before { threadable.current_user = alice }
     it do
       should eq(
         id:            'current',
@@ -40,7 +40,7 @@ describe CurrentUserSerializer do
   end
 
   context 'when signed in as marcus' do
-    before { covered.current_user = marcus }
+    before { threadable.current_user = marcus }
     it do
       should eq(
         id:            'current',

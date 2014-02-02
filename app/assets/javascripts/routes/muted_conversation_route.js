@@ -1,5 +1,5 @@
 //= require ./conversation_route
 
-Covered.MutedConversationRoute = Covered.ConversationRoute.extend({
+Threadable.MutedConversationRoute = Threadable.ConversationRoute.extend({
 
 });

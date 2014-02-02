@@ -1,7 +1,7 @@
-class OrganizationMembershipMailer < Covered::Mailer
+class OrganizationMembershipMailer < Threadable::Mailer
 
   def join_notice organization, recipient, personal_message=nil
-    @adder = covered.current_user
+    @adder = threadable.current_user
     @organization, @recipient, @personal_message = organization, recipient, personal_message
 
     @subject                  = "You've been added to #{@organization.name}"

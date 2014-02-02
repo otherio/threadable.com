@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TasksSerializer do
 
-  let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
+  let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
   let(:layup_body_carbon) { raceteam.tasks.find_by_slug!('layup-body-carbon') }
   let(:trim_body_panels) { raceteam.tasks.find_by_slug!('trim-body-panels') }
 

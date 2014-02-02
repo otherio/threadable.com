@@ -1,5 +1,5 @@
 //= require ../compose_route
 
-Covered.ComposeTaskRoute = Covered.ComposeRoute.extend({
+Threadable.ComposeTaskRoute = Threadable.ComposeRoute.extend({
 
 });

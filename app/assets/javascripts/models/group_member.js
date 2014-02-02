@@ -1,8 +1,8 @@
 //= require ./user
 
-Covered.GroupMember = Covered.User.extend({
+Threadable.GroupMember = Threadable.User.extend({
   organizationSlug: RL.attr('string'),
   personalMessage:  RL.attr('string'),
 });
 
-Covered.GroupMember.reopen(Covered.AddOrganizationIdToRequestsMixin);
+Threadable.GroupMember.reopen(Threadable.AddOrganizationIdToRequestsMixin);

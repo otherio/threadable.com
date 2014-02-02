@@ -13,16 +13,16 @@ class Serializer
     end
     attr_writer :singular_record_name
 
-    def serialize covered, payload, options={}
-      new(covered, payload, options).as_json
+    def serialize threadable, payload, options={}
+      new(threadable, payload, options).as_json
     end
   end
 
-  def initialize covered, payload, options={}
-    @covered, @payload, @options = covered, payload, options
+  def initialize threadable, payload, options={}
+    @threadable, @payload, @options = threadable, payload, options
   end
-  attr_reader :covered, :payload, :options
-  delegate :current_user, to: :covered
+  attr_reader :threadable, :payload, :options
+  delegate :current_user, to: :threadable
   delegate :plural_record_name, :singular_record_name, to: :class
 
   def as_json
@@ -38,7 +38,7 @@ class Serializer
   end
 
   def serialize type=nil, payload
-    serializer(type).serialize(covered, payload).values.first
+    serializer(type).serialize(threadable, payload).values.first
   end
 
   def serialize_record record

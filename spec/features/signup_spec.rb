@@ -19,7 +19,7 @@
 #     fill_in 'Password confirmation', with: 'ilovepizza'
 #     click_button 'Sign up'
 
-#     expect(page).to have_text "You're Covered!"
+#     expect(page).to have_text "You're Threadable!"
 #     expect(page).to have_text "We just sent you an email with a link to confirm your email address and let you set a password for your account."
 
 #     drain_background_jobs!

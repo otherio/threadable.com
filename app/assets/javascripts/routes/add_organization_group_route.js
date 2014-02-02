@@ -1,4 +1,4 @@
-Covered.AddOrganizationGroupRoute = Ember.Route.extend({
+Threadable.AddOrganizationGroupRoute = Ember.Route.extend({
 
   DEFAULT_COLORS: (
     '#D35400 #E74C3C #1ABC9C #34495E #8E44AD #27AE60 #3498DB #E67E22 '+
@@ -15,7 +15,7 @@ Covered.AddOrganizationGroupRoute = Ember.Route.extend({
   },
 
   model: function(group) {
-    return Covered.Group.create({color: this.availableColor(), autoJoin: true});
+    return Threadable.Group.create({color: this.availableColor(), autoJoin: true});
   },
 
   renderTemplate: function() {

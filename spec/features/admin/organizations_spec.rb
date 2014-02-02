@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Admin organizations CRUD" do
 
   # let :jared do
-  #   covered.users.create!(
+  #   threadable.users.create!(
   #     name: 'Jared Grippe',
   #     email_address: 'jared@other.io',
   #     admin: true,
@@ -12,10 +12,10 @@ feature "Admin organizations CRUD" do
   #   )
   # end
 
-  let(:jared) { covered.users.find_by_email_address! 'jared@other.io'  }
-  let(:ian)   { covered.users.find_by_email_address! 'ian@other.io'    }
-  let(:nicole){ covered.users.find_by_email_address! 'nicole@other.io' }
-  let(:aaron) { covered.users.find_by_email_address! 'aaron@other.io'  }
+  let(:jared) { threadable.users.find_by_email_address! 'jared@other.io'  }
+  let(:ian)   { threadable.users.find_by_email_address! 'ian@other.io'    }
+  let(:nicole){ threadable.users.find_by_email_address! 'nicole@other.io' }
+  let(:aaron) { threadable.users.find_by_email_address! 'aaron@other.io'  }
 
   def members_table
     all('.members.table tbody tr').map do |tr|
@@ -38,7 +38,7 @@ feature "Admin organizations CRUD" do
       expect(page).to have_field "Email address username", with: "united-nations"
     end
 
-    organization = covered.organizations.find_by_name!("United Nations")
+    organization = threadable.organizations.find_by_name!("United Nations")
     expect(organization.name                  ).to eq "United Nations"
     expect(organization.subject_tag           ).to eq "United Nations"
     expect(organization.slug                  ).to eq "united-nations"
@@ -51,7 +51,7 @@ feature "Admin organizations CRUD" do
       fill_in "Email address username", with: "united-hations"
       click_on 'Update Organization'
     end
-    organization = covered.organizations.find_by_name!("United Hations")
+    organization = threadable.organizations.find_by_name!("United Hations")
     expect(organization.name                  ).to eq "United Hations"
     expect(organization.subject_tag           ).to eq "United Hations"
     expect(organization.slug                  ).to eq "united-hations"
@@ -84,8 +84,8 @@ feature "Admin organizations CRUD" do
     ]
     expect( organization.members ).to include ian
 
-    assert_background_job_enqueued     SendEmailWorker, args: [covered.env, "join_notice", organization.id, nicole.id, nil]
-    assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, ian.id,    nil]
+    assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "join_notice", organization.id, nicole.id, nil]
+    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, ian.id,    nil]
 
     expect( organization.members.find_by_user_id!(nicole.id).gets_email? ).to be_true
     expect( organization.members.find_by_user_id!(ian.id   ).gets_email? ).to be_false
@@ -103,7 +103,7 @@ feature "Admin organizations CRUD" do
     ]
     you_face = organization.members.find_by_user_slug!('you-face')
     expect( you_face.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, you_face.id, nil]
+    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, you_face.id, nil]
 
     within '.add-new-member-form' do
       fill_in 'Name', with: 'Someone Else'
@@ -121,7 +121,7 @@ feature "Admin organizations CRUD" do
     ]
     someone_else = organization.members.find_by_user_slug!('someone-else')
     expect( someone_else.gets_email? ).to be_false
-    assert_background_job_not_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, someone_else.id, nil]
+    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, someone_else.id, nil]
 
     within first('.members.table tbody tr', text: 'Nicole Aptekar') do
       click_on 'remove'
@@ -158,10 +158,10 @@ feature "Admin organizations CRUD" do
       click_on 'Add Member'
     end
     expect(members_table).to include ['Bob Newbetauser', 'bob.newbetauser@example.com', "yes"]
-    organization = covered.organizations.find_by_slug('sfhealth')
+    organization = threadable.organizations.find_by_slug('sfhealth')
     bob = organization.members.find_by_user_slug!('bob-newbetauser')
     expect( bob.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [covered.env, "join_notice", organization.id, bob.id, nil]
+    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, bob.id, nil]
     drain_background_jobs!
     expect( sent_emails.join_notices('SF Health Center').to(bob.email_address) ).to be
   end

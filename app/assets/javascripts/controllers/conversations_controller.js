@@ -1,4 +1,4 @@
-Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMixin, {
+Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.RoutesMixin, {
   needs: ['organization', 'topbar'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
   itemController: 'conversations_item',
@@ -38,7 +38,7 @@ Covered.ConversationsController = Ember.ArrayController.extend(Covered.RoutesMix
     this.set('loading', true);
     this.set('loadFailed', false);
 
-    promise = Covered.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page);
+    promise = Threadable.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page);
 
     promise.then(function(conversations) {
       if (conversations.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);

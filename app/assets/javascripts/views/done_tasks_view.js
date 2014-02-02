@@ -1,3 +1,3 @@
-Covered.DoneTasksView = Ember.View.extend({
+Threadable.DoneTasksView = Ember.View.extend({
   classNames: 'done-tasks',
 });

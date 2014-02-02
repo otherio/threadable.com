@@ -1,4 +1,4 @@
-Covered.AddOrganizationGroupController = Ember.ObjectController.extend(Covered.CurrentUserMixin, {
+Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['organization'],
 
   editingEmailAddressTag: false,
@@ -24,7 +24,7 @@ Covered.AddOrganizationGroupController = Ember.ObjectController.extend(Covered.C
     var name = this.get('name') || '';
     var whichTag = this.get('editingEmailAddressTag') ? 'emailAddressTag' : 'calculatedEmailAddressTag';
 
-    return this.get('controllers.organization.slug') + '+' + this.get(whichTag) + '@covered.io';
+    return this.get('controllers.organization.slug') + '+' + this.get(whichTag) + '@threadable.io';
   }.property('name', 'emailAddressTag'),
 
   actions: {

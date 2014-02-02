@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SendEmailWorker do
 
   def perform!
-    described_class.new.perform(covered.env, *arguments)
+    described_class.new.perform(threadable.env, *arguments)
   end
 
   describe 'perform!' do
@@ -32,8 +32,8 @@ describe SendEmailWorker do
 
   describe 'conversation_message' do
     let(:arguments){ [:conversation_message, organization_id, message_id, recipient_id] }
-    it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:organizations).and_return(organizations)
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
       expect(organizations).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
       expect(organization ).to receive(:messages        ).and_return(messages)
@@ -45,7 +45,7 @@ describe SendEmailWorker do
       expect(message).to receive(:sent_email).with(recipient).and_return(sent_email)
       expect(sent_email).to receive(:relayed!)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:conversation_message, organization, message, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:conversation_message, organization, message, recipient)
 
       perform!
     end
@@ -54,14 +54,14 @@ describe SendEmailWorker do
   describe 'join_notice' do
     let(:personal_message){ "i need you!" }
     let(:arguments){ [:join_notice, organization_id, recipient_id, personal_message] }
-    it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:organizations).and_return(organizations)
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
       expect(organizations      ).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
       expect(organization       ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:join_notice, organization, recipient, personal_message)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:join_notice, organization, recipient, personal_message)
 
       perform!
     end
@@ -69,14 +69,14 @@ describe SendEmailWorker do
 
   describe 'unsubscribe_notice' do
     let(:arguments){ [:unsubscribe_notice, organization_id, recipient_id] }
-    it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:organizations).and_return(organizations)
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
       expect(organizations      ).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
       expect(organization       ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:unsubscribe_notice, organization, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:unsubscribe_notice, organization, recipient)
 
       perform!
     end
@@ -84,11 +84,11 @@ describe SendEmailWorker do
 
   describe 'sign_up_confirmation' do
     let(:arguments){ [:sign_up_confirmation, recipient_id] }
-    it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:users).and_return(users)
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:users).and_return(users)
       expect(users).to receive(:find_by_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:sign_up_confirmation, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:sign_up_confirmation, recipient)
 
       perform!
     end
@@ -96,11 +96,11 @@ describe SendEmailWorker do
 
   describe 'reset_password' do
     let(:arguments){ [:reset_password, recipient_id] }
-    it "should find all the records and call covered.emails.send_email" do
-      expect_any_instance_of(Covered::Class).to receive(:users).and_return(users)
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:users).and_return(users)
       expect(users).to receive(:find_by_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Covered::Emails).to receive(:send_email).with(:reset_password, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:reset_password, recipient)
 
       perform!
     end

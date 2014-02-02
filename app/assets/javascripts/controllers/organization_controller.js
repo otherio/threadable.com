@@ -1,4 +1,4 @@
-Covered.OrganizationController = Ember.ObjectController.extend(Covered.CurrentUserMixin, {
+Threadable.OrganizationController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['sidebar'],
 
   focus: 'conversations',

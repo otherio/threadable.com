@@ -13,9 +13,9 @@ describe Api::EventsController do
 
   when_signed_in_as 'bob@ucsd.example.com' do
 
-    let(:raceteam){ covered.organizations.find_by_slug! 'raceteam' }
-    let(:sfhealth){ covered.organizations.find_by_slug! 'sfhealth' }
-    let(:conversation){ raceteam.conversations.find_by_slug!('welcome-to-our-covered-organization') }
+    let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
+    let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
+    let(:conversation){ raceteam.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
     let(:messages) { }
 
     # get /api/events

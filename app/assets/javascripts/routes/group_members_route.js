@@ -1,4 +1,4 @@
-Covered.GroupMembersRoute = Ember.Route.extend({
+Threadable.GroupMembersRoute = Ember.Route.extend({
 
   model: function(params){
     var

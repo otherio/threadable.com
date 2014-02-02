@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe EventsSerializer do
 
-  let(:raceteam)      { covered.organizations.find_by_slug!('raceteam') }
-  let(:sfhealth)      { covered.organizations.find_by_slug!('sfhealth') }
+  let(:raceteam)      { threadable.organizations.find_by_slug!('raceteam') }
+  let(:sfhealth)      { threadable.organizations.find_by_slug!('sfhealth') }
   let(:conversation)  { raceteam.conversations.find_by_slug!('layup-body-carbon') }
   let(:message_event) { conversation.events.with_messages.find { |e| e.event_type == :created_message} }
   let(:message)       { message_event.message }

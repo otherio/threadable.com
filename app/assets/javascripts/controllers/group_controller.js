@@ -1,4 +1,4 @@
-Covered.GroupController = Ember.ObjectController.extend({
+Threadable.GroupController = Ember.ObjectController.extend({
   needs: ['organization'],
   organization: Ember.computed.alias('controllers.organization')
 });

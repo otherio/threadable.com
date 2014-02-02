@@ -1,4 +1,4 @@
-Covered.SidebarView = Ember.View.extend({
+Threadable.SidebarView = Ember.View.extend({
 
   tagName: 'nav',
   classNames: ['sidebar'],

@@ -13,8 +13,8 @@ describe "Email actions" do
   #   let(:html_part){ Nokogiri::HTML.fragment email.html_part.body.to_s }
   #   let(:text_part){ email.text_part.body.to_s }
 
-  #   let :covered_buttons do
-  #     html_part.css('a.covered-button').map do |a|
+  #   let :threadable_buttons do
+  #     html_part.css('a.threadable-button').map do |a|
   #       text, href = a.text, a[:href]
   #       text.gsub!(/[^\w'\s]/,'')
   #       [text, href]
@@ -27,7 +27,7 @@ describe "Email actions" do
   #     SendEmailWorker.drain
   #   end
 
-  #   def covered_button name
+  #   def threadable_button name
   #     href = case name
   #     when "I'll do it";       organization_task_ill_do_it_url(organization, conversation)
   #     when "Remove me";        organization_task_remove_me_url(organization, conversation)
@@ -35,7 +35,7 @@ describe "Email actions" do
   #     when "Mark as undone";   organization_task_mark_as_undone_url(organization, conversation)
   #     when "New conversation"; "mailto:#{URI::encode(organization.formatted_email_address)}"
   #     when "New task";         "mailto:#{URI::encode(organization.formatted_task_email_address)}"
-  #     when "View on Covered";  organization_conversation_url(organization, conversation, anchor: "message-#{message.id}")
+  #     when "View on Threadable";  organization_conversation_url(organization, conversation, anchor: "message-#{message.id}")
   #     when "Mute";             organization_conversation_url(organization, conversation, anchor: "message-#{message.id}")
   #     else; raise "unknown name #{name}"
   #     end
@@ -47,10 +47,10 @@ describe "Email actions" do
   #     context "for a conversation" do
   #       let(:conversation){ organization.conversations.find_by_slug! 'how-are-we-going-to-build-the-body' }
   #       it "it should have the expected action buttons" do
-  #         expect(covered_buttons).to include covered_button "New conversation"
-  #         expect(covered_buttons).to include covered_button "New task"
-  #         expect(covered_buttons).to include covered_button "View on Covered"
-  #         # expect(covered_buttons).to include covered_button "Mute"
+  #         expect(threadable_buttons).to include threadable_button "New conversation"
+  #         expect(threadable_buttons).to include threadable_button "New task"
+  #         expect(threadable_buttons).to include threadable_button "View on Threadable"
+  #         # expect(threadable_buttons).to include threadable_button "Mute"
   #       end
   #     end
 
@@ -63,12 +63,12 @@ describe "Email actions" do
   #         let(:task){ organization.conversations.find_by_slug! 'layup-body-carbon' }
   #         before{ expect(task).to be_done }
   #         it "it should have the expected action buttons" do
-  #           expect(covered_buttons).to include covered_button "I'll do it"
-  #           expect(covered_buttons).to include covered_button "Mark as undone"
-  #           expect(covered_buttons).to include covered_button "New conversation"
-  #           expect(covered_buttons).to include covered_button "New task"
-  #           expect(covered_buttons).to include covered_button "View on Covered"
-  #           # expect(covered_buttons).to include covered_button "Mute"
+  #           expect(threadable_buttons).to include threadable_button "I'll do it"
+  #           expect(threadable_buttons).to include threadable_button "Mark as undone"
+  #           expect(threadable_buttons).to include threadable_button "New conversation"
+  #           expect(threadable_buttons).to include threadable_button "New task"
+  #           expect(threadable_buttons).to include threadable_button "View on Threadable"
+  #           # expect(threadable_buttons).to include threadable_button "Mute"
   #         end
   #       end
 
@@ -76,12 +76,12 @@ describe "Email actions" do
   #         let(:task){ organization.conversations.find_by_slug! "trim-body-panels" }
   #         before{ expect(task).to_not be_done }
   #         it "it should have the expected action buttons" do
-  #           expect(covered_buttons).to include covered_button "I'll do it"
-  #           expect(covered_buttons).to include covered_button "Mark as done"
-  #           expect(covered_buttons).to include covered_button "New conversation"
-  #           expect(covered_buttons).to include covered_button "New task"
-  #           expect(covered_buttons).to include covered_button "View on Covered"
-  #           # expect(covered_buttons).to include covered_button "Mute"
+  #           expect(threadable_buttons).to include threadable_button "I'll do it"
+  #           expect(threadable_buttons).to include threadable_button "Mark as done"
+  #           expect(threadable_buttons).to include threadable_button "New conversation"
+  #           expect(threadable_buttons).to include threadable_button "New task"
+  #           expect(threadable_buttons).to include threadable_button "View on Threadable"
+  #           # expect(threadable_buttons).to include threadable_button "Mute"
   #         end
   #       end
 
@@ -89,12 +89,12 @@ describe "Email actions" do
   #         let(:task){ organization.conversations.find_by_slug! "trim-body-panels" }
   #         before{ expect(task.doers).to_not include recipient }
   #         it "it should have the expected action buttons" do
-  #           expect(covered_buttons).to include covered_button "I'll do it"
-  #           expect(covered_buttons).to include covered_button "Mark as done"
-  #           expect(covered_buttons).to include covered_button "New conversation"
-  #           expect(covered_buttons).to include covered_button "New task"
-  #           expect(covered_buttons).to include covered_button "View on Covered"
-  #           # expect(covered_buttons).to include covered_button "Mute"
+  #           expect(threadable_buttons).to include threadable_button "I'll do it"
+  #           expect(threadable_buttons).to include threadable_button "Mark as done"
+  #           expect(threadable_buttons).to include threadable_button "New conversation"
+  #           expect(threadable_buttons).to include threadable_button "New task"
+  #           expect(threadable_buttons).to include threadable_button "View on Threadable"
+  #           # expect(threadable_buttons).to include threadable_button "Mute"
   #         end
   #       end
 
@@ -103,12 +103,12 @@ describe "Email actions" do
   #         let(:task){ organization.conversations.find_by_slug! "trim-body-panels" }
   #         before{ expect(task.doers).to include recipient }
   #         it "it should have the expected action buttons" do
-  #           expect(covered_buttons).to include covered_button "Remove me"
-  #           expect(covered_buttons).to include covered_button "Mark as done"
-  #           expect(covered_buttons).to include covered_button "New conversation"
-  #           expect(covered_buttons).to include covered_button "New task"
-  #           expect(covered_buttons).to include covered_button "View on Covered"
-  #           # expect(covered_buttons).to include covered_button "Mute"
+  #           expect(threadable_buttons).to include threadable_button "Remove me"
+  #           expect(threadable_buttons).to include threadable_button "Mark as done"
+  #           expect(threadable_buttons).to include threadable_button "New conversation"
+  #           expect(threadable_buttons).to include threadable_button "New task"
+  #           expect(threadable_buttons).to include threadable_button "View on Threadable"
+  #           # expect(threadable_buttons).to include threadable_button "Mute"
   #         end
   #       end
 

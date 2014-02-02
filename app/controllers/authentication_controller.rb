@@ -6,7 +6,7 @@ class AuthenticationController < ApplicationController
     if signed_in?
       redirect_to redirect_url!
     else
-      @authentication    = Authentication.new(covered, email_address: params[:email_address])
+      @authentication    = Authentication.new(threadable, email_address: params[:email_address])
       @password_recovery = PasswordRecovery.new(email_address: params[:email_address])
     end
   end
@@ -14,7 +14,7 @@ class AuthenticationController < ApplicationController
   def sign_in
     sign_out! if signed_in?
     authentication_params = params[:authentication].slice(:email_address, :password, :remember_me)
-    @authentication    = Authentication.new(covered, authentication_params)
+    @authentication    = Authentication.new(threadable, authentication_params)
     @password_recovery = PasswordRecovery.new(email_address: authentication_params[:email_address])
 
     respond_to do |format|
@@ -33,15 +33,15 @@ class AuthenticationController < ApplicationController
   def recover_password
     email_address = params[:password_recovery].try(:[], :email_address)
     @password_recovery = PasswordRecovery.new(email_address: email_address)
-    @authentication    = Authentication.new(covered, email_address: email_address)
+    @authentication    = Authentication.new(threadable, email_address: email_address)
 
-    user = covered.users.find_by_email_address(email_address)
+    user = threadable.users.find_by_email_address(email_address)
 
     case
     when user && user.web_enabled?
-      covered.emails.send_email_async(:reset_password, user.id)
+      threadable.emails.send_email_async(:reset_password, user.id)
     when user
-      covered.emails.send_email_async(:reset_password, user.id)
+      threadable.emails.send_email_async(:reset_password, user.id)
     end
 
     @success = "We've emailed you a password reset link."

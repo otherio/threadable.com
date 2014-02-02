@@ -23,11 +23,11 @@
           </label>
           {{#if editingEmailAddressTag}}
             <div class="uk-form-controls input-field">
-              {{controllers.organization.slug}}+{{input value=emailAddressTag name="emailAddressTag"}}@covered.io
+              {{controllers.organization.slug}}+{{input value=emailAddressTag name="emailAddressTag"}}@threadable.io
             </div>
           {{else}}
             <div class="uk-form-controls input-field">
-              {{controllers.organization.slug}}+{{calculatedEmailAddressTag}}@covered.io
+              {{controllers.organization.slug}}+{{calculatedEmailAddressTag}}@threadable.io
               <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"></i></a>
             </div>
           {{/if}}

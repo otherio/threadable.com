@@ -31,8 +31,8 @@ describe Api::GroupsController do
 
   when_signed_in_as 'bob@ucsd.example.com' do
 
-    let(:raceteam){ covered.organizations.find_by_slug! 'raceteam' }
-    let(:sfhealth){ covered.organizations.find_by_slug! 'sfhealth' }
+    let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
+    let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
     let(:groups) { }
 
     # get /api/groups

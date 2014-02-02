@@ -8,7 +8,7 @@ describe 'sending emails' do
     expect(sent_emails).to be_empty
     expect(SendEmailWorker.jobs.length).to eq 1
     job = SendEmailWorker.jobs.first
-    expect(job["args"]).to eq [covered.env, *args]
+    expect(job["args"]).to eq [threadable.env, *args]
   end
 
   def run_jobs!
@@ -45,13 +45,13 @@ describe 'sending emails' do
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:conversation_message, organization, message, recipient)
+          threadable.emails.send_email(:conversation_message, organization, message, recipient)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:conversation_message, organization.id, message.id, recipient.id)
+          threadable.emails.send_email_async(:conversation_message, organization.id, message.id, recipient.id)
           expect(sent_emails).to be_empty
           expect_job_to_be_enqueued! "conversation_message", organization.id, message.id, recipient.id
           run_jobs!
@@ -62,7 +62,7 @@ describe 'sending emails' do
       context "when there are multiple people in the TO and CC headers" do
         let(:conversation){ organization.conversations.find_by_slug! 'who-wants-to-pick-up-lunch' }
         it "should filter out organization members from the TO and CC headers" do
-          covered.emails.send_email(:conversation_message, organization, message, recipient)
+          threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up lunch?").first
 
@@ -81,7 +81,7 @@ describe 'sending emails' do
         let(:conversation){ organization.conversations.find_by_slug! 'who-wants-to-pick-up-dinner' }
 
         it "should include the organization in the CC header" do
-          covered.emails.send_email(:conversation_message, organization, message, recipient)
+          threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up dinner?").first
 
@@ -93,7 +93,7 @@ describe 'sending emails' do
         let(:conversation){ organization.conversations.find_by_slug! 'who-wants-to-pick-up-breakfast' }
 
         it "should not include the organization email address in the TO or CC headers" do
-          covered.emails.send_email(:conversation_message, organization, message, recipient)
+          threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up breakfast?").first
 
@@ -115,13 +115,13 @@ describe 'sending emails' do
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:join_notice, organization, recipient, personal_message)
+          threadable.emails.send_email(:join_notice, organization, recipient, personal_message)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:join_notice, organization.id, recipient.id, personal_message)
+          threadable.emails.send_email_async(:join_notice, organization.id, recipient.id, personal_message)
           expect(sent_emails).to be_empty
           expect_job_to_be_enqueued! "join_notice", organization.id, recipient.id, personal_message
           run_jobs!
@@ -139,13 +139,13 @@ describe 'sending emails' do
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:unsubscribe_notice, organization, recipient)
+          threadable.emails.send_email(:unsubscribe_notice, organization, recipient)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:unsubscribe_notice, organization.id, recipient.id)
+          threadable.emails.send_email_async(:unsubscribe_notice, organization.id, recipient.id)
           expect(sent_emails).to be_empty
           expect_job_to_be_enqueued! "unsubscribe_notice", organization.id, recipient.id
           run_jobs!
@@ -157,19 +157,19 @@ describe 'sending emails' do
     describe 'sign_up_confirmation' do
 
       def expect_email!
-        email = sent_emails.to(recipient.email_address).with_subject("Welcome to Covered!").first
+        email = sent_emails.to(recipient.email_address).with_subject("Welcome to Threadable!").first
         expect(email).to be_present
       end
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:sign_up_confirmation, recipient)
+          threadable.emails.send_email(:sign_up_confirmation, recipient)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:sign_up_confirmation, recipient.id)
+          threadable.emails.send_email_async(:sign_up_confirmation, recipient.id)
           expect(sent_emails).to be_empty
           expect_job_to_be_enqueued! "sign_up_confirmation", recipient.id
           run_jobs!
@@ -187,13 +187,13 @@ describe 'sending emails' do
 
       context "sync" do
         it "should send email" do
-          covered.emails.send_email(:reset_password, recipient)
+          threadable.emails.send_email(:reset_password, recipient)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          covered.emails.send_email_async(:reset_password, recipient.id)
+          threadable.emails.send_email_async(:reset_password, recipient.id)
           expect(sent_emails).to be_empty
           expect_job_to_be_enqueued! "reset_password", recipient.id
           run_jobs!

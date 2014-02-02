@@ -1,4 +1,4 @@
-Covered.ConversationController = Ember.ObjectController.extend({
+Threadable.ConversationController = Ember.ObjectController.extend({
   needs: ['doerSelector'],
 
   showDoerSelector: false,

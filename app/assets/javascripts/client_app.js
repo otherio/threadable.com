@@ -7,7 +7,7 @@
 //= require ember
 //= require ember-restless
 //= require ember-google-analytics
-//= require covered
+//= require threadable
 //= require debug
 
 ENV.FEATURES = {

@@ -11,11 +11,11 @@ class MovingModelsBackToAppModels < ActiveRecord::Migration
         Task::AddedDoerEvent
         Task::RemovedDoerEvent
       }.each{|type|
-        Event.where(type: "Covered::#{type}").update_all(type: "#{type}")
+        Event.where(type: "Threadable::#{type}").update_all(type: "#{type}")
       }
     end
 
-    Conversation.where(type: 'Covered::Task').update_all(type: "Task")
+    Conversation.where(type: 'Threadable::Task').update_all(type: "Task")
   end
 
   def down
@@ -30,10 +30,10 @@ class MovingModelsBackToAppModels < ActiveRecord::Migration
         Task::AddedDoerEvent
         Task::RemovedDoerEvent
       }.each{|type|
-        Event.where(type: "#{type}").update_all(type: "Covered::#{type}")
+        Event.where(type: "#{type}").update_all(type: "Threadable::#{type}")
       }
     end
 
-    Conversation.where(type: 'Task').update_all(type: "Covered::Task")
+    Conversation.where(type: 'Task').update_all(type: "Threadable::Task")
   end
 end

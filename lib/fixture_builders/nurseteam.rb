@@ -32,7 +32,7 @@ FixtureBuilder.build do
     add_member 'Peter Venkman',   'ecto@sfhealth.example.com'
 
     @welcome_message = create_conversation(
-      subject: 'Welcome to our new Covered organization!',
+      subject: 'Welcome to our new Threadable organization!',
       text:    'Hey all! I think we should try this way to organize our conversation and work. Thanks for joining up!',
     )
   end
@@ -162,7 +162,7 @@ FixtureBuilder.build do
       text: (
         %(This is a reminder for all new hires that the orientation meeting is next wednesday at 10am in room ) +
         %(2202. In the meantime, I encourage you to to review the SF Health employee policies online here: ) +
-        %(https://covered.sfhealth.com/hr/employee-policies/ and please feel free to ask me if you have any questions.)
+        %(https://threadable.sfhealth.com/hr/employee-policies/ and please feel free to ask me if you have any questions.)
       ),
       groups:  [@social_group],
     )

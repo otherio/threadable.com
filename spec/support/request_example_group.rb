@@ -4,7 +4,7 @@ module RSpec::Support::RequestExampleGroup
 
   included do
     metadata[:type] = :request
-    let(:covered){ Covered.new(host: default_url_options[:host], port: default_url_options[:port]) }
+    let(:threadable){ Threadable.new(host: default_url_options[:host], port: default_url_options[:port]) }
     before do
       default_url_options[:host] = Capybara.server_host
       default_url_options[:port] = Capybara.server_port
@@ -12,7 +12,7 @@ module RSpec::Support::RequestExampleGroup
     end
   end
 
-  delegate :current_user, to: :covered
+  delegate :current_user, to: :threadable
 
   def sign_in! user, remember_me: false
     post sign_in_path, {
@@ -22,13 +22,13 @@ module RSpec::Support::RequestExampleGroup
       }
     }
     expect(response).to redirect_to root_url
-    covered.current_user_id = user.id
+    threadable.current_user_id = user.id
   end
 
   def sign_out!
     get sign_out_path
     expect(response).to redirect_to root_url
-    covered.current_user_id = nil
+    threadable.current_user_id = nil
   end
 
   def sign_in_as email_address
@@ -50,7 +50,7 @@ module RSpec::Support::RequestExampleGroup
 
     def when_signed_in_as email_address, &block
       context "when signed in as #{email_address}" do
-        before{ sign_in! covered.users.find_by_email_address!(email_address) }
+        before{ sign_in! threadable.users.find_by_email_address!(email_address) }
         class_eval(&block)
       end
     end

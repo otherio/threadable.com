@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe IncomingEmail::Params do
 
-  let(:covered){ Covered.new(host:'example.com') }
+  let(:threadable){ Threadable.new(host:'example.com') }
   let(:params){ create_incoming_email_params }
 
   delegate :dump, :load, to: :described_class

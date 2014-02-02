@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe OrganizationsSerializer do
 
-  let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
-  let(:sfhealth) { covered.organizations.find_by_slug!('sfhealth') }
+  let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
+  let(:sfhealth) { threadable.organizations.find_by_slug!('sfhealth') }
 
   context 'when given a single record' do
     let(:payload){ raceteam }

@@ -1,4 +1,4 @@
-Covered.Group = RL.Model.extend({
+Threadable.Group = RL.Model.extend({
   id:                        RL.attr('number'),
   organizationSlug:          RL.attr('string'),
   slug:                      RL.attr('string'),
@@ -28,7 +28,7 @@ Covered.Group = RL.Model.extend({
   },
 
   loadMembers: RL.loadAssociationMethod('members', function(group){
-    return Covered.GroupMember.fetch({
+    return Threadable.GroupMember.fetch({
       organization_id: group.get('organizationSlug'),
       group_id: group.get('slug')
     });
@@ -54,8 +54,8 @@ Covered.Group = RL.Model.extend({
 
 });
 
-Covered.RESTAdapter.map("Covered.Group", {
+Threadable.RESTAdapter.map("Threadable.Group", {
   primaryKey: "slug"
 });
 
-Covered.Group.reopen(Covered.AddOrganizationIdToRequestsMixin);
+Threadable.Group.reopen(Threadable.AddOrganizationIdToRequestsMixin);

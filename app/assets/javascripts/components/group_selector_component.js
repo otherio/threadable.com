@@ -1,4 +1,4 @@
-Covered.GroupSelectorComponent = Ember.Component.extend({
+Threadable.GroupSelectorComponent = Ember.Component.extend({
   tagName: 'span',
   classNames: ['group-selector'],
   classNameBindings: ['open'],

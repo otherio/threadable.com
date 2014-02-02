@@ -6,17 +6,17 @@ class Admin::OrganizationsController < ApplicationController
 
   # GET /admin/organizations
   def index
-    @organizations = covered.organizations.all
+    @organizations = threadable.organizations.all
   end
 
   # GET /admin/organizations/new
   def new
-    @organization = covered.organizations.new
+    @organization = threadable.organizations.new
   end
 
   # POST /admin/organizations
   def create
-    @organization = covered.organizations.create(organization_params)
+    @organization = threadable.organizations.create(organization_params)
 
     if organization.persisted?
       redirect_to admin_edit_organization_path(organization), notice: 'Organization was successfully created.'
@@ -29,7 +29,7 @@ class Admin::OrganizationsController < ApplicationController
   def edit
     organization
     @members = organization.members.all
-    @all_users = covered.users.all
+    @all_users = threadable.users.all
   end
 
   # PATCH /admin/organizations/1
@@ -50,7 +50,7 @@ class Admin::OrganizationsController < ApplicationController
   private
 
   def organization
-    @organization ||= covered.organizations.find_by_slug! params[:id]
+    @organization ||= threadable.organizations.find_by_slug! params[:id]
   end
 
   def organization_params

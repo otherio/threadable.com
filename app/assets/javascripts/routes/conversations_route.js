@@ -1,4 +1,4 @@
-Covered.ConversationsRoute = Ember.Route.extend({
+Threadable.ConversationsRoute = Ember.Route.extend({
 
   conversationsScope: 'not_muted_conversations',
 

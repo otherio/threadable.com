@@ -61,7 +61,7 @@ describe Organization::HeldMessagesController do
         post :reject, organization_id: 'raceteam', id: incoming_email.id
         expect(response).to redirect_to organization_held_messages_path(organization)
         drain_background_jobs!
-        expect(covered.incoming_emails.find_by_id(incoming_email.id)).to be_nil
+        expect(threadable.incoming_emails.find_by_id(incoming_email.id)).to be_nil
       end
     end
 

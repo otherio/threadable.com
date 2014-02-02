@@ -3,7 +3,7 @@ module AuthenticationConcern
   extend ActiveSupport::Concern
 
   included do
-    helper_method :covered, :current_user, :signup_enabled?
+    helper_method :threadable, :current_user, :signup_enabled?
   end
 
   def current_user_id
@@ -11,23 +11,23 @@ module AuthenticationConcern
   end
 
   def current_user
-    covered.current_user
+    threadable.current_user
   end
 
-  def covered
-    @covered ||= Covered.new(current_user_id: current_user_id, host: request.host, port: request.port, protocol: request_protocol)
+  def threadable
+    @threadable ||= Threadable.new(current_user_id: current_user_id, host: request.host, port: request.port, protocol: request_protocol)
   end
 
   def sign_in! user, remember_me: false
     user_id = case user; when Integer, String; user; else; user.id; end
-    @covered = nil
+    @threadable = nil
     session[:user_id] = user_id
     cookies.permanent[:remember_me] = RememberMeToken.encrypt(user_id) if remember_me
     true
   end
 
   def sign_out!
-    @covered = nil
+    @threadable = nil
     session.delete(:user_id)
     cookies.delete(:remember_me)
   end
@@ -45,15 +45,15 @@ module AuthenticationConcern
   end
 
   def unauthorized! message=nil
-    raise Covered::AuthorizationError, message
+    raise Threadable::AuthorizationError, message
   end
 
   def unauthenticated! message=nil
-    raise Covered::AuthenticationError, message
+    raise Threadable::AuthenticationError, message
   end
 
   def not_found! message=nil
-    raise Covered::RecordNotFound, message
+    raise Threadable::RecordNotFound, message
   end
 
   def require_user_be_signed_in!

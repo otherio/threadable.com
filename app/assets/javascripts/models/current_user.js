@@ -1,7 +1,7 @@
-Covered.currentUserPromise = currentUserPromise;
+Threadable.currentUserPromise = currentUserPromise;
 delete this.currentUserPromise;
 
-Covered.CurrentUser = RL.Model.extend({
+Threadable.CurrentUser = RL.Model.extend({
   id:           RL.attr('string'),
   userId:       RL.attr('number'),
   param:        RL.attr('string'),
@@ -10,24 +10,24 @@ Covered.CurrentUser = RL.Model.extend({
   slug:         RL.attr('string'),
   avatarUrl:    RL.attr('string'),
 
-  organizations: RL.hasMany('Covered.Organization'),
+  organizations: RL.hasMany('Threadable.Organization'),
 });
 
-Covered.CurrentUser.reopenClass({
+Threadable.CurrentUser.reopenClass({
   resourceName: 'user',
   fetch: function() {
-    if (Covered.currentUser) return Ember.RSVP.Promise.cast(Covered.currentUser);
+    if (Threadable.currentUser) return Ember.RSVP.Promise.cast(Threadable.currentUser);
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      Covered.currentUserPromise.then(function(response) {
-        if (!Covered.currentUser) Covered.currentUser = Covered.CurrentUser.create().deserialize(response.user);
-        resolve(Covered.currentUser);
+      Threadable.currentUserPromise.then(function(response) {
+        if (!Threadable.currentUser) Threadable.currentUser = Threadable.CurrentUser.create().deserialize(response.user);
+        resolve(Threadable.currentUser);
       });
     });
   },
   reload: function(){
-    // if (!Covered.currentUser) return this.fetch();
+    // if (!Threadable.currentUser) return this.fetch();
     if (this._reloadPromise) return this._reloadPromise;
-    this._reloadPromise = Covered.currentUser.reloadRecord();
+    this._reloadPromise = Threadable.currentUser.reloadRecord();
     this._reloadPromise.then(function(currentUser) {
       this._reloadPromise = null;
       return currentUser;

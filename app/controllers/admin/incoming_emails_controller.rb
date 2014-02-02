@@ -15,12 +15,12 @@ class Admin::IncomingEmailsController < ApplicationController
     when 'not-processed';      {processed: false}
     when 'processed';          {processed: true}
     end
-    @incoming_emails = covered.incoming_emails.page(@page, conditions)
+    @incoming_emails = threadable.incoming_emails.page(@page, conditions)
   end
 
   # GET /admin/organizations/:id
   def show
-    @incoming_email = covered.incoming_emails.find_by_id!(params[:id])
+    @incoming_email = threadable.incoming_emails.find_by_id!(params[:id])
   end
 
 end

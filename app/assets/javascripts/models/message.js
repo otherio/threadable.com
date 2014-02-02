@@ -1,4 +1,4 @@
-Covered.Message = RL.Model.extend({
+Threadable.Message = RL.Model.extend({
   id:               RL.attr('number'),
   conversationId:   RL.attr('number'),
   organizationId:   RL.attr('string'),
@@ -36,8 +36,8 @@ Covered.Message = RL.Model.extend({
   }.property('body')
 });
 
-Covered.RESTAdapter.map("Covered.Message", {
+Threadable.RESTAdapter.map("Threadable.Message", {
   primaryKey: "slug"
 });
 
-Covered.Message.reopen(Covered.AddOrganizationIdToRequestsMixin);
+Threadable.Message.reopen(Threadable.AddOrganizationIdToRequestsMixin);

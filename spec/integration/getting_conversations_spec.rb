@@ -23,7 +23,7 @@ describe 'getting conversations' do
 
   when_signed_in_as 'bethany@ucsd.example.com' do
 
-    let(:organization){ covered.organizations.find_by_slug! 'raceteam' }
+    let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
 
     it 'works as expected' do
           @muted_conversations = organization.    muted_conversations(0)

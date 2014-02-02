@@ -1,5 +1,5 @@
 //= require ./conversation_route
 
-Covered.DoingTaskRoute = Covered.ConversationRoute.extend({
+Threadable.DoingTaskRoute = Threadable.ConversationRoute.extend({
 
 });

@@ -46,7 +46,7 @@ class Admin::Organization::MembersController < ApplicationController
   private
 
   def organization
-    @organization ||= covered.organizations.find_by_slug! params[:organization_id]
+    @organization ||= threadable.organizations.find_by_slug! params[:organization_id]
   end
 
   def member_params
@@ -61,12 +61,12 @@ class Admin::Organization::MembersController < ApplicationController
   attr_reader :user
   def find_or_create_user!
     @user ||= if member_params.key?(:id)
-      covered.users.find_by_id!(member_params[:id].to_i)
+      threadable.users.find_by_id!(member_params[:id].to_i)
     else
-      covered.users.find_by_email_address(member_params[:email_address]) or
-      covered.users.create!(name: member_params[:name], email_address: member_params[:email_address])
+      threadable.users.find_by_email_address(member_params[:email_address]) or
+      threadable.users.create!(name: member_params[:name], email_address: member_params[:email_address])
     end
-  rescue Covered::RecordNotFound
+  rescue Threadable::RecordNotFound
     redirect_to admin_edit_organization_path(organization), alert: "unable to find user #{member_params[:id]}"
   end
 

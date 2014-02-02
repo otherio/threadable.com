@@ -9,7 +9,7 @@ In <%= "#{'Group'.pluralize(@conversation.groups.count)}" %>:
 <% end %>
 
 <% end %>
-View on Covered:
+View on Threadable:
 <%= @message_url %>
 
 Start a new conversation:
@@ -22,4 +22,4 @@ Unsubscribe:
 <%= @unsubscribe_url %>
 
 Feedback:
-<%= mail_to_href @covered.support_email_address %>
+<%= mail_to_href @threadable.support_email_address %>

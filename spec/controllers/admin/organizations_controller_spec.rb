@@ -53,7 +53,7 @@ describe Admin::OrganizationsController do
     describe 'GET :index' do
       it 'should render the index page' do
         organizations = double(:organizations)
-        expect(covered.organizations).to receive(:all).and_return(organizations)
+        expect(threadable.organizations).to receive(:all).and_return(organizations)
         get :index
         expect(response).to render_template :index
         expect(assigns[:organizations]).to eq organizations
@@ -63,7 +63,7 @@ describe Admin::OrganizationsController do
     describe 'GET :new' do
       it 'should render the new organization page' do
         new_organization = double(:new_organization)
-        expect(covered.organizations).to receive(:new).and_return(new_organization)
+        expect(threadable.organizations).to receive(:new).and_return(new_organization)
         get :new
         expect(response).to render_template :new
         expect(assigns[:organization]).to eq new_organization
@@ -74,7 +74,7 @@ describe Admin::OrganizationsController do
       let(:organization_params){ { name: 'Robot Cow', add_current_user_as_a_member: "1" } }
       let(:organization){ double(:organization, to_param: 'robot-cow', persisted?: persisted) }
       before do
-        expect(covered.organizations).to receive(:create).with(name: 'Robot Cow', add_current_user_as_a_member: true).and_return(organization)
+        expect(threadable.organizations).to receive(:create).with(name: 'Robot Cow', add_current_user_as_a_member: true).and_return(organization)
         post :create, organization: organization_params
       end
       context 'when the organization is successfully created' do
@@ -97,7 +97,7 @@ describe Admin::OrganizationsController do
       let(:organization){ double :organization, members: double(:members) }
       let(:members){ double :members }
       before do
-        expect(covered.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
+        expect(threadable.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
         expect(organization.members).to receive(:all).and_return(members)
       end
       it 'should render the organization edit page' do
@@ -112,7 +112,7 @@ describe Admin::OrganizationsController do
       let(:organization){ double :organization, members: double(:members), to_param: 'lowrider' }
       let(:organization_params){ {slug: 'lowrider'} }
       before do
-        expect(covered.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
+        expect(threadable.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
         expect(organization).to receive(:update).with(organization_params).and_return(update_successful)
         put :update, id: 'low-rider', organization: organization_params
       end
@@ -135,7 +135,7 @@ describe Admin::OrganizationsController do
     describe 'DELETE :destroy' do
       let(:organization){ double :organization, members: double(:members), slug: 'lowrider' }
       before do
-        expect(covered.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
+        expect(threadable.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
         expect(organization).to receive(:destroy!)
         delete :destroy, id: 'low-rider'
       end

@@ -35,14 +35,14 @@ RSpec.configure do |config|
   config.include RSpec::Support::SentEmail
 
   config.before :each do
-    Covered::Transactions.expect_test_transaction = true
+    Threadable::Transactions.expect_test_transaction = true
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
     Timecop.return
-    Covered.redis.flushdb
+    Threadable.redis.flushdb
     WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
-    Covered::InMemoryTracker.clear
+    Threadable::InMemoryTracker.clear
     stub_mixpanel!
   end
 

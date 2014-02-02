@@ -1,4 +1,4 @@
-Covered.AddOrganizationIdToRequestsMixin = Ember.Mixin.create({
+Threadable.AddOrganizationIdToRequestsMixin = Ember.Mixin.create({
   prepareRequest: function(request){
     var wasJSON = false;
     if (typeof request.data === 'string'){

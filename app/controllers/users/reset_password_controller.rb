@@ -8,9 +8,9 @@ class Users::ResetPasswordController < ApplicationController
 
     case
     when user && user.has_password?
-      covered.emails.send_email_async(:reset_password, user.id)
+      threadable.emails.send_email_async(:reset_password, user.id)
     when user
-      covered.emails.send_email_async(:reset_password, user.id)
+      threadable.emails.send_email_async(:reset_password, user.id)
     end
 
     render :request_link

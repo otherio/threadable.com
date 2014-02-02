@@ -1,14 +1,14 @@
 module RSpec::Support::MailgunPostParams
 
   def generate_mailgun_post_params *args
-    covered = defined?(self.covered) ? self.covered : Covered.new(host: 'example.com', port: 80)
-    GenerateMailgunPostParams.call(covered, *args)
+    threadable = defined?(self.threadable) ? self.threadable : Threadable.new(host: 'example.com', port: 80)
+    GenerateMailgunPostParams.call(threadable, *args)
   end
 
   class GenerateMailgunPostParams < MethodObject
 
-    def call covered, params={}
-      @covered, @params = covered, params.symbolize_keys
+    def call threadable, params={}
+      @threadable, @params = threadable, params.symbolize_keys
       {
         "signature"        => signature,
         "recipient"        => recipient,
@@ -58,7 +58,7 @@ module RSpec::Support::MailgunPostParams
 
     default(:token        ){ SecureRandom.uuid }
     default(:signature    ){ MailgunSignature.encode(date, token) }
-    default(:organization      ){ @covered.organizations.find_by_slug!('raceteam') or raise "member organization be blank" }
+    default(:organization      ){ @threadable.organizations.find_by_slug!('raceteam') or raise "member organization be blank" }
     default(:member       ){ organization.members.all.first or raise "member cannot be blank" }
     default(:sender       ){ member.email_address }
     default(:recipient    ){ organization.email_address }
@@ -75,7 +75,7 @@ module RSpec::Support::MailgunPostParams
 <<-HTML
 <p>this. is. <strong>AWESOME!</strong></p>
 <blockquote>
-<h3>Welcome to our new covered list!</h3>
+<h3>Welcome to our new threadable list!</h3>
 </blockquote>
 HTML
     }

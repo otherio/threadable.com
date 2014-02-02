@@ -1,4 +1,4 @@
-Covered.GroupMemberController = Ember.ObjectController.extend(Covered.ConfirmationMixin, {
+Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.ConfirmationMixin, {
   needs: ['group_members'],
   group: Ember.computed.alias('controllers.group_members.group').readOnly(),
 

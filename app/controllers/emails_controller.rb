@@ -6,10 +6,10 @@ class EmailsController < ApplicationController
   # POST /emails
   def create
     mailgun_params = request.params.dup.slice!("controller", "action")
-    covered.incoming_emails.create!(mailgun_params)
+    threadable.incoming_emails.create!(mailgun_params)
     render nothing: true, status: :ok
-  rescue Covered::RecordInvalid => error
-    covered.report_exception!(error)
+  rescue Threadable::RecordInvalid => error
+    threadable.report_exception!(error)
     render nothing: true, status: :bad_request
   end
 

@@ -1,4 +1,4 @@
-Covered.TopbarController = Ember.Controller.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
+Threadable.TopbarController = Ember.Controller.extend(Threadable.CurrentUserMixin, Threadable.RoutesMixin, {
   needs: ['organization', 'sidebar', 'conversations', 'conversation', 'compose'],
 
   focus:           Ember.computed.alias('controllers.organization.focus'),

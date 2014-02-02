@@ -1,1 +1,1 @@
-#Covered::Application.config.session_store :redis_store
+#Threadable::Application.config.session_store :redis_store

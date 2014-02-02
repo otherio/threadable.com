@@ -1,4 +1,4 @@
-Covered.DoerSelectorController = Ember.ArrayController.extend({
+Threadable.DoerSelectorController = Ember.ArrayController.extend({
   needs: ['conversation'],
 
   itemController: 'doer_selector_item',

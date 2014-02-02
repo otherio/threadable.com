@@ -34,7 +34,7 @@ class Api::ConversationsController < ApiController
     conversation_params = params.require(:conversation).permit(:subject, :task)
     conversation_params.require :subject
 
-    Covered.transaction do
+    Threadable.transaction do
       conversation = organization.conversations.create! conversation_params.symbolize_keys
       group_ids = Array(params[:conversation][:group_ids])
       conversation.groups.add organization.groups.find_by_ids(group_ids) if group_ids
@@ -55,7 +55,7 @@ class Api::ConversationsController < ApiController
       params.require(:conversation).permit(:muted)
     end
 
-    Covered.transaction do
+    Threadable.transaction do
 
       if conversation_params.key?(:done)
         conversation_params.delete(:done) ? conversation.done! : conversation.undone!

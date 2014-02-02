@@ -7,7 +7,7 @@ class Api::OrganizationMembersController < ApiController
   def create
     member_params = params.require(:organization_member).permit(:name, :email_address, :personal_message).symbolize_keys
 
-    user = covered.users.find_by_email_address(member_params[:email_address])
+    user = threadable.users.find_by_email_address(member_params[:email_address])
 
     if user && organization.members.include?(user)
       return render json: {error: "user is already a member"}, status: :unprocessable_entity
@@ -16,7 +16,7 @@ class Api::OrganizationMembersController < ApiController
     member = organization.members.add(member_params)
     render json: serialize(:organization_members, member), status: 201
 
-  rescue Covered::RecordInvalid
+  rescue Threadable::RecordInvalid
     render json: {error: "unable to create user"}, status: :unprocessable_entity
   end
 

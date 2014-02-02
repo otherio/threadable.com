@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Held messages" do
 
-  let(:organization)       { covered.organizations.find_by_slug! 'raceteam' }
+  let(:organization)       { threadable.organizations.find_by_slug! 'raceteam' }
 
   let(:from){ 'unknown person <tom.sucksateverything@example.com>' }
   let(:envelope_from){ 'tom.sucksateverything@example.com' }
@@ -10,7 +10,7 @@ feature "Held messages" do
   let(:body){ "guys? I can totally do stuff. Please!" }
 
   before do
-    held_message = covered.incoming_emails.create!(
+    held_message = threadable.incoming_emails.create!(
       create_incoming_email_params(
         from:          from,
         envelope_from: 'tom.sucksateverything@example.com',

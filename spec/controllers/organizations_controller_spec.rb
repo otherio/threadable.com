@@ -37,7 +37,7 @@ describe OrganizationsController do
   describe "GET new" do
     it "assigns a new organization as @organization" do
       get :new, {}
-      expect(assigns(:organization)).to be_a(Covered::Organization)
+      expect(assigns(:organization)).to be_a(Threadable::Organization)
       expect(assigns(:organization)).to_not be_persisted
     end
   end
@@ -60,7 +60,7 @@ describe OrganizationsController do
 
       it "assigns a newly created organization as @organization" do
         post :create, valid_params
-        expect(assigns(:organization)).to be_a(Covered::Organization)
+        expect(assigns(:organization)).to be_a(Threadable::Organization)
         expect(assigns(:organization)).to be_persisted
         expect(assigns(:organization).name       ).to eq valid_params["organization"]["name"]
         expect(assigns(:organization).short_name ).to eq valid_params["organization"]["short_name"]
@@ -76,7 +76,7 @@ describe OrganizationsController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved organization as @organization" do
         post :create, invalid_params
-        expect(assigns(:organization)).to be_a(Covered::Organization)
+        expect(assigns(:organization)).to be_a(Threadable::Organization)
         expect(assigns(:organization)).to_not be_persisted
       end
 

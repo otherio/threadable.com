@@ -1,4 +1,4 @@
-Covered.ReplyController = Ember.ObjectController.extend({
+Threadable.ReplyController = Ember.ObjectController.extend({
   needs: ['conversation', 'organization', 'doerSelector'],
 
   message: Ember.computed.alias('model'),
@@ -85,7 +85,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
         conversation.deserialize(response.message.conversation);
 
         var message = this.get('content');
-        var event = Covered.Event.create({
+        var event = Threadable.Event.create({
           id:        'message-' + message.get('id'),
           eventType: 'created_message',
           createdAt: message.get('sentAt'),
@@ -93,7 +93,7 @@ Covered.ReplyController = Ember.ObjectController.extend({
         });
 
         conversation.get('events').pushObject(event);
-        this.set('content', Covered.Message.create({}));
+        this.set('content', Threadable.Message.create({}));
       }
 
       function onError(response){

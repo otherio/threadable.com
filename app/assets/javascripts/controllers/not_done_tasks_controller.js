@@ -1,4 +1,4 @@
-Covered.NotDoneTasksController = Ember.ArrayController.extend(Covered.RoutesMixin, {
+Threadable.NotDoneTasksController = Ember.ArrayController.extend(Threadable.RoutesMixin, {
   needs: ['organization'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
   itemController: 'not_done_tasks_item',
@@ -40,7 +40,7 @@ Covered.NotDoneTasksController = Ember.ArrayController.extend(Covered.RoutesMixi
     this.set('loading', true);
     this.set('loadFailed', false);
 
-    promise = Covered.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page);
+    promise = Threadable.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page);
 
     promise.then(function(tasks) {
       if (tasks.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);

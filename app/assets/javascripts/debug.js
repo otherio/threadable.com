@@ -5,7 +5,7 @@
 // };
 
 function lookup(name) {
-  return Covered.__container__.lookup(name);
+  return Threadable.__container__.lookup(name);
 }
 function modelFor(route_name) {
   return lookup('route:application').modelFor(route_name);
@@ -21,7 +21,7 @@ function currentUser(){
 }
 
 
-Covered.currentWindowSize = undefined;
+Threadable.currentWindowSize = undefined;
 $(window).on('resize', function(){
   var width = $(window).width();
   var size = (
@@ -30,11 +30,11 @@ $(window).on('resize', function(){
                    'large '
   );
 
-  Covered.currentWindowSize = Covered.currentWindowSize || size;
-  if (Covered.currentWindowSize !== size){
-    console.log('transitioning from '+Covered.currentWindowSize+' to '+size+' at '+width+'px');
+  Threadable.currentWindowSize = Threadable.currentWindowSize || size;
+  if (Threadable.currentWindowSize !== size){
+    console.log('transitioning from '+Threadable.currentWindowSize+' to '+size+' at '+width+'px');
     // TODO we should trigger an event here
-    Covered.currentWindowSize = size;
+    Threadable.currentWindowSize = size;
   }
 
 });

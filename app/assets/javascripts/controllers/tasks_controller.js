@@ -1,4 +1,4 @@
-Covered.TasksController = Ember.ObjectController.extend(Covered.RoutesMixin, {
+Threadable.TasksController = Ember.ObjectController.extend(Threadable.RoutesMixin, {
   needs: ['organization', 'topbar'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 

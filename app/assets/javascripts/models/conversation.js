@@ -1,4 +1,4 @@
-Covered.Conversation = RL.Model.extend({
+Threadable.Conversation = RL.Model.extend({
   id:                RL.attr('number'),
   organizationSlug:  RL.attr('string'),
   slug:              RL.attr('string'),
@@ -12,7 +12,7 @@ Covered.Conversation = RL.Model.extend({
   groupIds:          RL.attr('array'),
 
   organizationId:    RL.attr('string'),
-  doers:             RL.hasMany('Covered.OrganizationMember'),
+  doers:             RL.hasMany('Threadable.OrganizationMember'),
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
   position:          RL.attr('number'),
@@ -26,7 +26,7 @@ Covered.Conversation = RL.Model.extend({
   }.property('numberOfMessages'),
 
   loadEvents: RL.loadAssociationMethod('events', function(conversation){
-    return Covered.Event.fetch({
+    return Threadable.Event.fetch({
       organization_id: conversation.get('organizationSlug'),
       conversation_id: conversation.get('slug')
     });
@@ -49,7 +49,7 @@ Covered.Conversation = RL.Model.extend({
 
   myTask: function() {
     if (!this.get('isTask')) return false;
-    var userId = Covered.currentUser.get('userId');
+    var userId = Threadable.currentUser.get('userId');
     var doers = this.get('doers');
     if (!doers) return false;
     var userIds = doers.mapBy('userId');
@@ -57,14 +57,14 @@ Covered.Conversation = RL.Model.extend({
   }.property('isTask', 'doers')
 });
 
-Covered.RESTAdapter.map("Covered.Conversation", {
+Threadable.RESTAdapter.map("Threadable.Conversation", {
   primaryKey: "slug"
 });
 
 
-Covered.Conversation.reopen(Covered.AddOrganizationIdToRequestsMixin);
+Threadable.Conversation.reopen(Threadable.AddOrganizationIdToRequestsMixin);
 
-Covered.Conversation.reopenClass({
+Threadable.Conversation.reopenClass({
 
   _cacheBySlug: {},
 

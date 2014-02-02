@@ -1,4 +1,4 @@
-Covered::Application.configure do
+Threadable::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -29,15 +29,15 @@ Covered::Application.configure do
     config.action_mailer.smtp_settings = {
       :address              => "smtp.gmail.com",
       :port                 => 587,
-      :domain               => 'covered.io',
-      :user_name            => 'coveredthrowaway1@gmail.com',
-      :password             => 'coveredcovered',
+      :domain               => 'threadable.io',
+      :user_name            => 'threadablethrowaway1@gmail.com',
+      :password             => 'threadablethreadable',
       :authentication       => 'plain',
       :enable_starttls_auto => true
     }
   else
     config.action_mailer.smtp_settings = {
-      :domain => 'covered.io',
+      :domain => 'threadable.io',
       :address => 'localhost',
       :port => 1025
     }

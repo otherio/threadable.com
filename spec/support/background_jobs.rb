@@ -1,7 +1,7 @@
 module RSpec::Support::BackgroundJobs
 
   def background_job_workers
-    Covered::Worker.descendants
+    Threadable::Worker.descendants
   end
 
   def background_jobs

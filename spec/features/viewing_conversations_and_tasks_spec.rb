@@ -49,7 +49,7 @@ feature "Viewing conversations and tasks" do
       within_element('the sidebar'){ click_on 'My Conversations' }
     when :ungrouped_conversations
       within_element('the sidebar'){ click_on 'Ungrouped Conversations' }
-    when Covered::Group
+    when Threadable::Group
       within_element('the sidebar'){ click_on "+#{destination.name}" }
     when :conversations
       within_element('the conversations pane'){ click_on 'Conversations' }

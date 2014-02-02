@@ -4,7 +4,7 @@ feature "Admin incoming emails" do
 
   let :incoming_emails do
     15.times.map do
-      covered.incoming_emails.create!(create_incoming_email_params)
+      threadable.incoming_emails.create!(create_incoming_email_params)
     end
   end
 

@@ -1,4 +1,4 @@
-Covered.ApplicationController = Ember.Controller.extend({
+Threadable.ApplicationController = Ember.Controller.extend({
 
   transitions: [],
 
@@ -16,7 +16,7 @@ Covered.ApplicationController = Ember.Controller.extend({
 
   actions: {
     signOut: function(){
-      Covered.signOut();
+      Threadable.signOut();
     }
   }
 

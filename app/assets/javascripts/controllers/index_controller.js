@@ -1,4 +1,4 @@
-Covered.IndexController = Ember.Controller.extend({
+Threadable.IndexController = Ember.Controller.extend({
   needs: ['application'],
   currentUser: Ember.computed.alias('controllers.application.currentUser')
 });

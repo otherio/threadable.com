@@ -6,7 +6,7 @@ class EmailAddressesController < ApplicationController
     email_address = current_user.email_addresses.add(email_address_params[:address], !!email_address_params[:primary])
     if email_address.persisted?
       flash[:notice] = "We've sent a confirmation email to #{email_address}. Please check your email."
-      covered.emails.send_email_async(:email_address_confirmation, email_address.id)
+      threadable.emails.send_email_async(:email_address_confirmation, email_address.id)
     else
       flash[:error] = email_address.errors.full_messages.to_sentence
     end
@@ -23,13 +23,13 @@ class EmailAddressesController < ApplicationController
 
   def resend_confirmation_email
     flash[:notice] = "We've resent a confirmation email to #{email_address}. Please check your email."
-    covered.emails.send_email_async(:email_address_confirmation, email_address.id)
+    threadable.emails.send_email_async(:email_address_confirmation, email_address.id)
     redirect_to request.referrer || profile_path
   end
 
   def confirm
     email_address_id = EmailAddressConfirmationToken.decrypt(params[:token])
-    email_address = covered.email_addresses.find_by_id!(email_address_id)
+    email_address = threadable.email_addresses.find_by_id!(email_address_id)
     sign_in! email_address.user
     email_address.confirm!
     flash[:notice] = "#{email_address} has been confirmed"

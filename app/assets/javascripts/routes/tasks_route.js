@@ -1,4 +1,4 @@
-Covered.TasksRoute = Ember.Route.extend({
+Threadable.TasksRoute = Ember.Route.extend({
 
   doneTasksScope: 'done_tasks',
   notDoneTasksScope: 'not_done_tasks',

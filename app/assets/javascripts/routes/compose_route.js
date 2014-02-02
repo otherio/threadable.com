@@ -1,4 +1,4 @@
-Covered.ComposeRoute = Ember.Route.extend({
+Threadable.ComposeRoute = Ember.Route.extend({
 
   setupController: function(controller, context, transition) {
     this.controllerFor('organization').set('focus', 'conversation');

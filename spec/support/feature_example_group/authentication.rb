@@ -1,6 +1,6 @@
 module RSpec::Support::FeatureExampleGroup
 
-  def sign_in! user=covered.current_user
+  def sign_in! user=threadable.current_user
     user.present? or raise ArgumentError, "sign_in! requires a user"
     sign_out!
     visit sign_in_path if current_path != sign_in_path
@@ -11,8 +11,8 @@ module RSpec::Support::FeatureExampleGroup
         click_on 'Sign in'
       end
       expect(page).to have_text 'My Conversations'
-      covered.current_user_id = user.id
-      covered.current_user
+      threadable.current_user_id = user.id
+      threadable.current_user
     end
   rescue Timeout::Error
     raise if @timed_out_while_signing_in
@@ -23,7 +23,7 @@ module RSpec::Support::FeatureExampleGroup
   def sign_out!
     visit sign_out_path
     expect(page).to be_at sign_in_url
-    covered.current_user_id = nil
+    threadable.current_user_id = nil
   end
 
   def sign_in_as email_address
@@ -31,7 +31,7 @@ module RSpec::Support::FeatureExampleGroup
   end
 
   def i_am email_address
-    covered.current_user_id = find_user_by_email_address(email_address).id
+    threadable.current_user_id = find_user_by_email_address(email_address).id
   end
 
   def expect_to_be_signed_in!

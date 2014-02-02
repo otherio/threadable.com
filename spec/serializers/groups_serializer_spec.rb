@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe GroupsSerializer do
 
-  let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
+  let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
   let(:electronics) { raceteam.groups.find_by_email_address_tag!('electronics') }
   let(:fundraising) { raceteam.groups.find_by_email_address_tag!('fundraising') }
 

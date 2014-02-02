@@ -1,4 +1,4 @@
-Covered.AddOrganizationMemberController = Ember.ObjectController.extend(Covered.CurrentUserMixin, {
+Threadable.AddOrganizationMemberController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['organization', 'organization_members'],
 
   organization: Ember.computed.alias('controllers.organization'),

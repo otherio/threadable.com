@@ -8,9 +8,9 @@ module RescueFromExceptionsConcern
   private
 
   UNAUTHORIZED_EXCEPTIONS = [
-    Covered::AuthorizationError,
-    Covered::AuthenticationError,
-    Covered::CurrentUserNotFound,
+    Threadable::AuthorizationError,
+    Threadable::AuthenticationError,
+    Threadable::CurrentUserNotFound,
   ].freeze
 
   NOT_ACCEPTABLE_EXCEPTIONS = [
@@ -23,14 +23,14 @@ module RescueFromExceptionsConcern
     ActionController::UnknownController,
     AbstractController::ActionNotFound,
     ActiveRecord::RecordNotFound,
-    Covered::RecordNotFound,
+    Threadable::RecordNotFound,
   ].freeze
 
   def rescue_from_exception exception
     raise exception if debug_enabled?
     logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
 
-    sign_out! if Covered::CurrentUserNotFound === exception
+    sign_out! if Threadable::CurrentUserNotFound === exception
 
     case exception
     when *UNAUTHORIZED_EXCEPTIONS
@@ -40,7 +40,7 @@ module RescueFromExceptionsConcern
     when *NOT_FOUND_EXCEPTIONS
       render_error exception, :not_found,      'Not Found'
     else
-      covered.report_exception! exception
+      threadable.report_exception! exception
       render_error exception, :bad,            'Server Error'
     end
   end

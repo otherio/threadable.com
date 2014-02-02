@@ -1,4 +1,4 @@
-Covered.ConversationRoute = Ember.Route.extend({
+Threadable.ConversationRoute = Ember.Route.extend({
 
   parentRouteName: null,
 
@@ -6,7 +6,7 @@ Covered.ConversationRoute = Ember.Route.extend({
     var organization = this.modelFor('organization');
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var promise = Covered.Conversation.fetchBySlug(organization, params.conversation);
+      var promise = Threadable.Conversation.fetchBySlug(organization, params.conversation);
       promise.catch(reject);
       promise.then(function(conversation) {
         conversation.loadEvents().catch(reject).then(function() {
@@ -28,7 +28,7 @@ Covered.ConversationRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this._super(controller, model);
     this.controllerFor('conversation').set('model', model);
-    this.controllerFor('reply').set('model', Covered.Message.create({}));
+    this.controllerFor('reply').set('model', Threadable.Message.create({}));
     this.controllerFor('doerSelector').set('model', this.controllerFor('organization').get('members'));
     var doers = model && model.get('doers');
     if (doers) this.controllerFor('doerSelector').set('doers', doers.toArray());

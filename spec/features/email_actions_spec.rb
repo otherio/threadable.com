@@ -4,7 +4,7 @@ describe "Email actions" do
 
   let(:url){ email_action_url token: EmailActionToken.encrypt(conversation.id, user.id, action) }
 
-  let(:user){ covered.users.find_by_email_address!('bethany@ucsd.example.com') }
+  let(:user){ threadable.users.find_by_email_address!('bethany@ucsd.example.com') }
   let(:conversation){ user.organizations.find_by_slug!('raceteam').conversations.find_by_slug!('layup-body-carbon') }
 
   i_am_not_signed_in do

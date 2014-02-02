@@ -25,7 +25,7 @@ module Token
   end
 
   def self.key
-    @key ||= Digest::SHA256.hexdigest(Covered::Application.config.token_key)
+    @key ||= Digest::SHA256.hexdigest(Threadable::Application.config.token_key)
   end
 
   def self.random

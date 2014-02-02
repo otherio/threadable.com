@@ -1,4 +1,4 @@
-Covered.OrganizationMembersRoute = Ember.Route.extend({
+Threadable.OrganizationMembersRoute = Ember.Route.extend({
   model: function() {
     return this.modelFor('organization').loadMembers();
   },

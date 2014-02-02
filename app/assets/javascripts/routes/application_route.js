@@ -1,11 +1,11 @@
-Covered.ApplicationRoute = Ember.Route.extend({
+Threadable.ApplicationRoute = Ember.Route.extend({
 
   model: function(params) {
-    return Covered.CurrentUser.fetch();
+    return Threadable.CurrentUser.fetch();
   },
 
   afterModel: function(currentUser, transition) {
-    Covered.notifyPendingNotifications();
+    Threadable.notifyPendingNotifications();
   },
 
   actions: {

@@ -1,12 +1,12 @@
-class IncomingEmailMailer < Covered::Mailer
+class IncomingEmailMailer < Threadable::Mailer
 
   def message_held_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
 
     auto_response_mail(
-      :'from'     => "Covered message held <#{covered.support_email_address('message-held')}>",
-      :'Reply-To' => "Covered message held <#{covered.support_email_address('message-held')}>",
+      :'from'     => "Threadable message held <#{threadable.support_email_address('message-held')}>",
+      :'Reply-To' => "Threadable message held <#{threadable.support_email_address('message-held')}>",
       :'subject'  => "[message held] #{@incoming_email.subject}",
     )
   end
@@ -16,8 +16,8 @@ class IncomingEmailMailer < Covered::Mailer
     @organization = incoming_email.organization
 
     auto_response_mail(
-      :'from'     => "Covered message rejected <#{covered.support_email_address('message-rejected')}>",
-      :'Reply-To' => "Covered message rejected <#{covered.support_email_address('message-rejected')}>",
+      :'from'     => "Threadable message rejected <#{threadable.support_email_address('message-rejected')}>",
+      :'Reply-To' => "Threadable message rejected <#{threadable.support_email_address('message-rejected')}>",
       :'subject'  => "[message rejected] #{@incoming_email.subject}",
     )
   end
@@ -27,8 +27,8 @@ class IncomingEmailMailer < Covered::Mailer
     @organization = incoming_email.organization
 
     auto_response_mail(
-      :'from'     => "Covered message accepted <#{covered.support_email_address('message-accepted')}>",
-      :'Reply-To' => "Covered message accepted <#{covered.support_email_address('message-accepted')}>",
+      :'from'     => "Threadable message accepted <#{threadable.support_email_address('message-accepted')}>",
+      :'Reply-To' => "Threadable message accepted <#{threadable.support_email_address('message-accepted')}>",
       :'subject'  => "[message accepted] #{@incoming_email.subject}",
     )
   end
@@ -48,7 +48,7 @@ class IncomingEmailMailer < Covered::Mailer
       :'List-Post'      => "<mailto:#{@organization.email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
     }.merge(options))
 
-    message.smtp_envelope_from = "no-reply-auto@#{covered.email_host}"
+    message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
     message
   end
 

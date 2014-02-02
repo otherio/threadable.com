@@ -1,6 +1,6 @@
 //= require ./conversations_route
 
-Covered.MutedConversationsRoute = Covered.ConversationsRoute.extend({
+Threadable.MutedConversationsRoute = Threadable.ConversationsRoute.extend({
 
   conversationsScope: 'muted_conversations',
 

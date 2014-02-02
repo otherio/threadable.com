@@ -17,7 +17,7 @@ describe EmailsController, fixtures: false do
 
     context "when the post data has a valid signature" do
       it "should render succesfully" do
-        expect(covered.incoming_emails).to receive(:create!).with(params)
+        expect(threadable.incoming_emails).to receive(:create!).with(params)
         post :create, params
         expect(response).to be_success
         expect(response.body).to be_blank
@@ -27,7 +27,7 @@ describe EmailsController, fixtures: false do
     context "when the post data does not have a valid signature" do
       let(:signature){ 'badsignature' }
       it "should not render succesfully" do
-        expect(covered.incoming_emails).to_not receive(:create!)
+        expect(threadable.incoming_emails).to_not receive(:create!)
         post :create, params
         expect(response).to_not be_success
         expect(response.body).to be_blank
@@ -36,8 +36,8 @@ describe EmailsController, fixtures: false do
 
     context 'when the post fails to create an IncomingEmail' do
       it "renders a 400" do
-        error = Covered::RecordInvalid.new('BAD!')
-        expect(covered.incoming_emails).to receive(:create!).and_raise(error)
+        error = Threadable::RecordInvalid.new('BAD!')
+        expect(threadable.incoming_emails).to receive(:create!).and_raise(error)
         expect(Honeybadger).to receive(:notify).with(error)
         post :create, params
         expect(response.status).to eq 400

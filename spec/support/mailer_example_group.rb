@@ -3,22 +3,22 @@ module RSpec::Support::MailerExampleGroup
   extend ActiveSupport::Concern
 
   included do
-    let(:covered_current_user_record){ nil }
-    let(:covered_current_user_id){ covered_current_user_record.try(:id) }
-    let(:covered_host){ Capybara.server_host }
-    let(:covered_port){ Capybara.server_port }
-    delegate :current_user, to: :covered
+    let(:threadable_current_user_record){ nil }
+    let(:threadable_current_user_id){ threadable_current_user_record.try(:id) }
+    let(:threadable_host){ Capybara.server_host }
+    let(:threadable_port){ Capybara.server_port }
+    delegate :current_user, to: :threadable
 
     before do
-      self.default_url_options = {host: covered.host, port: covered.port}
+      self.default_url_options = {host: threadable.host, port: threadable.port}
     end
   end
 
-  def covered
-    @covered ||= Covered.new(
-      host: covered_host,
-      port: covered_port,
-      current_user_id: covered_current_user_id,
+  def threadable
+    @threadable ||= Threadable.new(
+      host: threadable_host,
+      port: threadable_port,
+      current_user_id: threadable_current_user_id,
     )
   end
 
@@ -48,7 +48,7 @@ module RSpec::Support::MailerExampleGroup
     def signed_in_as email_address=nil, &block
       block_given? || email_address.present? or raise ArgumentErrot
       block ||= ->{ find_user_by_email_address(email_address) } unless block_given?
-      let(:covered_current_user_record, &block)
+      let(:threadable_current_user_record, &block)
     end
 
   end

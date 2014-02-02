@@ -1,3 +1,3 @@
-Covered.OrganizationMembersController = Ember.ArrayController.extend(Covered.CurrentUserMixin, {
+Threadable.OrganizationMembersController = Ember.ArrayController.extend(Threadable.CurrentUserMixin, {
 
 });

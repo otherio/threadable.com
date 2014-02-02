@@ -59,9 +59,9 @@
         {{#each event in events}}
           {{#if event.display}}
             {{#if event.message}}
-              {{view Covered.MessageView contextBinding='event.message'}}
+              {{view Threadable.MessageView contextBinding='event.message'}}
             {{else}}
-              {{view Covered.EventView contextBinding='event'}}
+              {{view Threadable.EventView contextBinding='event'}}
             {{/if}}
           {{/if}}
         {{/each}}

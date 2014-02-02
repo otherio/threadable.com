@@ -1,3 +1,3 @@
-Covered.ConversationsIndexRoute = Ember.Route.extend({
+Threadable.ConversationsIndexRoute = Ember.Route.extend({
 
 });

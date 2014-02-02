@@ -9,9 +9,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = covered.sign_up(user_params)
+    @user = threadable.sign_up(user_params)
     if @user.persisted?
-      covered.emails.send_email_async(:sign_up_confirmation, @user.id)
+      threadable.emails.send_email_async(:sign_up_confirmation, @user.id)
       render :create
     else
       render :new
@@ -20,11 +20,11 @@ class UsersController < ApplicationController
 
   def new
     unauthorized! unless signup_enabled?
-    @user = covered.users.new
+    @user = threadable.users.new
   end
 
   def show
-    @user = covered.users.find_by_slug!(params[:id])
+    @user = threadable.users.find_by_slug!(params[:id])
   end
 
   def edit

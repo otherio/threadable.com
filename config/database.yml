@@ -1,11 +1,11 @@
 development:
   adapter: postgresql
   encoding: utf8
-  database: covered_development
+  database: threadable_development
   pool: 5
 
 test:
   adapter: postgresql
   encoding: utf8
-  database: covered_test
+  database: threadable_test
   pool: 5

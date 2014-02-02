@@ -39,7 +39,7 @@ describe Admin::Organization::MembersController do
     end
     let(:member){ double(:member, formatted_email_address: 'Mary Frank <mary@frank.ly>') }
     before do
-      expect(covered.organizations).to receive(:find_by_slug!).with('fish-eating-contest').and_return(organization)
+      expect(threadable.organizations).to receive(:find_by_slug!).with('fish-eating-contest').and_return(organization)
     end
 
     describe 'POST :add' do
@@ -56,7 +56,7 @@ describe Admin::Organization::MembersController do
         end
 
         context 'when the user doesnt exist' do
-          before{ expect(covered.users).to receive(:find_by_id!).with(898).and_raise(Covered::RecordNotFound) }
+          before{ expect(threadable.users).to receive(:find_by_id!).with(898).and_raise(Threadable::RecordNotFound) }
           it 'should alert that the user is not found' do
             post :add, organization_id: 'fish-eating-contest', user: member_params
             expect(response).to redirect_to admin_edit_organization_url(organization)
@@ -65,7 +65,7 @@ describe Admin::Organization::MembersController do
         end
 
         context 'when the user already exists' do
-          before{ expect(covered.users).to receive(:find_by_id!).with(898).and_return(user) }
+          before{ expect(threadable.users).to receive(:find_by_id!).with(898).and_return(user) }
 
           context 'and the user is already a member of the organization' do
             before{ expect(organization.members).to receive(:include?).with(user).and_return(true) }
@@ -92,8 +92,8 @@ describe Admin::Organization::MembersController do
 
         context 'when the user doesnt exist' do
           before do
-            expect(covered.users).to receive(:find_by_email_address).with(member_params[:email_address]).and_return(nil)
-            expect(covered.users).to receive(:create!).with(name: member_params[:name], email_address: member_params[:email_address]).and_return(user)
+            expect(threadable.users).to receive(:find_by_email_address).with(member_params[:email_address]).and_return(nil)
+            expect(threadable.users).to receive(:create!).with(name: member_params[:name], email_address: member_params[:email_address]).and_return(user)
             expect(organization.members).to receive(:include?).with(user).and_return(false)
             expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false).and_return(member)
           end
@@ -107,8 +107,8 @@ describe Admin::Organization::MembersController do
 
         context 'when the user already exists' do
           before do
-            expect(covered.users).to receive(:find_by_email_address).with(member_params[:email_address]).and_return(user)
-            expect(covered.users).to_not receive(:create!)
+            expect(threadable.users).to receive(:find_by_email_address).with(member_params[:email_address]).and_return(user)
+            expect(threadable.users).to_not receive(:create!)
           end
 
           context 'and the user is already a member of the organization' do

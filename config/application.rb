@@ -10,10 +10,10 @@ Bundler.require(*Rails.groups(:assets => %w(development test)))
 
 $:.unshift Bundler.root.join('lib')
 require 'rails/console_methods'
-require 'covered'
+require 'threadable'
 require 'roadie_no_external_asset_provider'
 
-module Covered
+module Threadable
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -48,9 +48,9 @@ module Covered
     end
 
     # sign in is enabled by default, but can be disabled
-    config.signup_enabled = ENV["COVERED_SIGNUP_ENABLED"] != "false"
+    config.signup_enabled = ENV["THREADABLE_SIGNUP_ENABLED"] != "false"
 
-    config.filepicker_rails.api_key = ENV.fetch('COVERED_FILEPICKER_API_KEY')
+    config.filepicker_rails.api_key = ENV.fetch('THREADABLE_FILEPICKER_API_KEY')
 
     config.roadie.enabled = true
     config.roadie.provider = RoadieNoExternalAssetProvider.new
@@ -66,7 +66,7 @@ require 'pp'
 require 'wtf'
 require 'ruby_template_handler'
 require 'run_commands_from_email_message_body'
-require 'strip_covered_content_from_email_message_body'
+require 'strip_threadable_content_from_email_message_body'
 require 'validate_email_address'
 require 'prepare_email_subject'
 require 'serializer'
@@ -86,4 +86,4 @@ require 'reset_password_token'
 require 'unsubscribe_token'
 require 'user_setup_token'
 require 'email_action_token'
-require 'identify_covered_email_address'
+require 'identify_threadable_email_address'

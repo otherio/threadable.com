@@ -6,13 +6,13 @@ class FixtureBuilder
     new.instance_eval(&block)
   end
 
-  def covered
-    @covered ||= Covered.new(
+  def threadable
+    @threadable ||= Threadable.new(
       host: defined?(Capybara) ? Capybara.server_host : 'example.com',
       port: defined?(Capybara) ? Capybara.server_port : 80,
     )
   end
-  delegate :current_user, to: :covered
+  delegate :current_user, to: :threadable
 
 
   def get_user email_address
@@ -21,22 +21,22 @@ class FixtureBuilder
   end
 
   def as_an_admin
-    covered.current_user_id = get_user('jared@other.io').id
+    threadable.current_user_id = get_user('jared@other.io').id
     yield
   ensure
-    covered.current_user_id = nil
+    threadable.current_user_id = nil
   end
 
   def as email_address
-    covered.current_user_id = get_user(email_address).id
+    threadable.current_user_id = get_user(email_address).id
     yield
   ensure
-    covered.current_user_id = nil
+    threadable.current_user_id = nil
   end
 
   def create_organization attributes
     @organization.nil? or raise "you can only create one organization in a fixture builder"
-    @organization = covered.organizations.create! attributes.merge(add_current_user_as_a_member: false)
+    @organization = threadable.organizations.create! attributes.merge(add_current_user_as_a_member: false)
   end
 
   def organization
@@ -67,7 +67,7 @@ class FixtureBuilder
   end
 
   def web_enable! email_address
-    covered.users.find_by_email_address!(email_address).update!(
+    threadable.users.find_by_email_address!(email_address).update!(
       password: 'password',
       password_confirmation: 'password'
     )
@@ -78,7 +78,7 @@ class FixtureBuilder
   end
 
   def confirm_email_address! email_address
-    covered.users.find_by_email_address!(email_address).email_addresses.find_by_address!(email_address).confirm!
+    threadable.users.find_by_email_address!(email_address).email_addresses.find_by_address!(email_address).confirm!
   end
 
   def create_conversation options
@@ -118,7 +118,7 @@ class FixtureBuilder
 
   def add_doer_to_task task, email_address
     user_record = get_user(email_address)
-    user = Covered::User.new(covered, user_record)
+    user = Threadable::User.new(threadable, user_record)
     task.doers.add user
   end
 

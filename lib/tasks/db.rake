@@ -20,7 +20,7 @@ namespace :db do
   namespace :backup do
     backup = -> environment do
       Bundler.with_clean_env do
-        system("heroku pgbackups:capture --app covered-#{environment}")
+        system("heroku pgbackups:capture --app threadable-#{environment}")
       end
     end
     desc "tells heroku to backup staging database"
@@ -37,7 +37,7 @@ namespace :db do
     download = -> environment do
       Bundler.with_clean_env do
         backup_path = Rails.root.join("tmp/#{environment}.dump")
-        backup_url = `heroku pgbackups:url --app covered-#{environment}`.chomp
+        backup_url = `heroku pgbackups:url --app threadable-#{environment}`.chomp
         puts "downloading #{backup_url.inspect}"
         system("curl -o #{backup_path.to_s.inspect} #{backup_url.inspect}")
       end
@@ -59,7 +59,7 @@ namespace :db do
         Rake::Task["db:download:#{environment}"].invoke unless backup_path.exist?
         abort "#{backup_path} does not exist" unless backup_path.exist?
         puts "importing #{backup_path}"
-        system("pg_restore --verbose --clean --no-acl --no-owner -h localhost -U #{`whoami`.chomp} -d covered_development #{backup_path.to_s.inspect}")
+        system("pg_restore --verbose --clean --no-acl --no-owner -h localhost -U #{`whoami`.chomp} -d threadable_development #{backup_path.to_s.inspect}")
       end
     end
     desc "imports tmp/staging.dump"

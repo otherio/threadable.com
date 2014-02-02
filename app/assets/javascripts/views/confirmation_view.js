@@ -1,4 +1,4 @@
-Covered.ConfirmationView = Ember.View.extend({
+Threadable.ConfirmationView = Ember.View.extend({
   templateName: 'confirmation',
   classNames: 'confirmation',
   message: null,

@@ -37,7 +37,7 @@ describe EmailAddress, fixtures: false do
 
     valid_addresses = [
       %(jared@cover.io),
-      %(jared+covered@cover.io),
+      %(jared+threadable@cover.io),
       %(jared@127.0.0.1),
       %(\xEF\xBB\xBFjared@deadlyicon.com), # FYI this string contains a zero-width no-break space (U+FEFF)
       %(jared+\xE2\x98\x83@deadlyicon.com),

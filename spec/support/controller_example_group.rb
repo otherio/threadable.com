@@ -6,12 +6,12 @@ module RSpec::Support::ControllerExampleGroup
     include SerializerConcern
   end
 
-  def covered
-    controller.covered
+  def threadable
+    controller.threadable
   end
 
   def current_user
-    covered.current_user
+    threadable.current_user
   end
 
   def sign_in! user, remember_me: false
@@ -37,7 +37,7 @@ module RSpec::Support::ControllerExampleGroup
 
     def when_signed_in_as email_address, &block
       context "when signed in as #{email_address}" do
-        before{ sign_in! covered.users.find_by_email_address!(email_address) }
+        before{ sign_in! threadable.users.find_by_email_address!(email_address) }
         class_eval(&block)
       end
     end

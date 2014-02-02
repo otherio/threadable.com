@@ -25,7 +25,7 @@ describe Organization::EmailSubscriptionsController do
 
       it "should disable emails for the organization memebership" do
         expect(member).to be_subscribed
-        expect(covered.emails).to receive(:send_email_async).with(:unsubscribe_notice, organization.id, member.id)
+        expect(threadable.emails).to receive(:send_email_async).with(:unsubscribe_notice, organization.id, member.id)
         post :unsubscribe, organization_id: organization.slug, token: token
         member.reload
         expect(member).to_not be_subscribed
@@ -39,7 +39,7 @@ describe Organization::EmailSubscriptionsController do
 
       it "should do nothing but look like it unsubscribed you" do
         expect(member).to_not be_subscribed
-        expect(covered.emails).to_not receive(:send_email_async)
+        expect(threadable.emails).to_not receive(:send_email_async)
         post :unsubscribe, organization_id: organization.slug, token: token
         expect(response).to render_template(:unsubscribe)
         member.reload

@@ -1,8 +1,8 @@
-Covered.ConfirmationMixin = Ember.Mixin.create({
+Threadable.ConfirmationMixin = Ember.Mixin.create({
   needs: "application",
 
   confirm: function(options) {
-    Covered.ConfirmationView.create({
+    Threadable.ConfirmationView.create({
       container: this.container,
       message:     options. message,
       approveText: options.approveText,

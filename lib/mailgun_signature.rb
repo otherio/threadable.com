@@ -1,7 +1,7 @@
 module MailgunSignature
 
   def self.api_key
-    Covered.config('mailgun')['key']
+    Threadable.config('mailgun')['key']
   end
 
   def self.encode(timestamp, token)

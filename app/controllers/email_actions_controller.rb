@@ -11,7 +11,7 @@ class EmailActionsController < ApplicationController
   def take
     conversation_id, user_id, action = EmailActionToken.decrypt(params[:token])
 
-    @user = signed_in? ? current_user : covered.users.find_by_id(user_id) or begin
+    @user = signed_in? ? current_user : threadable.users.find_by_id(user_id) or begin
       return render :failed
     end
 

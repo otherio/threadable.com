@@ -1,10 +1,10 @@
 // For more information see: http://emberjs.com/guides/routing/
 
-Covered.Router.reopen({
+Threadable.Router.reopen({
   location: 'history'
 });
 
-Covered.Router.map(function() {
+Threadable.Router.map(function() {
 
   this.resource('organization', {path: '/:organization'}, function(){
     this.resource('organization_settings', {path: '/settings'});

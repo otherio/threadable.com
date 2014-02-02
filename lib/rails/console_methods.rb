@@ -6,30 +6,30 @@ module Rails::ConsoleMethods
     super
   end
 
-  def covered options=nil
-    @covered = nil if @covered && @covered.class != Covered::Class
-    return @covered if options.nil? && @covered
-    @covered = nil
+  def threadable options=nil
+    @threadable = nil if @threadable && @threadable.class != Threadable::Class
+    return @threadable if options.nil? && @threadable
+    @threadable = nil
     options ||= {}
     options[:current_user_id] ||= User.with_email_address('alice@ucsd.example.com').first.try(:id)
     options[:host] ||= URI.parse(app.root_url).host
     options[:port] ||= URI.parse(app.root_url).port
-    @covered = Covered.new(options)
+    @threadable = Threadable.new(options)
   end
 
   def alice
-    @alice ||= covered.users.find_by_email_address!('alice@ucsd.example.com')
+    @alice ||= threadable.users.find_by_email_address!('alice@ucsd.example.com')
   end
 
   def amy
-    @amy ||= covered.users.find_by_email_address!('amywong.phd@gmail.com')
+    @amy ||= threadable.users.find_by_email_address!('amywong.phd@gmail.com')
   end
 
   def sign_in_as email_address
-    covered.current_user = covered.users.find_by_email_address(email_address)
+    threadable.current_user = threadable.users.find_by_email_address(email_address)
   end
 
-  delegate :current_user, to: :covered
+  delegate :current_user, to: :threadable
 
   def build_fixtures!
     Fixtures.build!

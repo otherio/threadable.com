@@ -1,4 +1,4 @@
-Covered.GroupSettingsController = Ember.ObjectController.extend(Covered.CurrentUserMixin, {
+Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['organization'],
 
   editableGroup: null,

@@ -1,4 +1,4 @@
-Covered.ConversationsItemController = Ember.ObjectController.extend(Covered.RoutesMixin, {
+Threadable.ConversationsItemController = Ember.ObjectController.extend(Threadable.RoutesMixin, {
   needs: ['group'],
   currentGroupSlug: Ember.computed.alias('controllers.group.model').readOnly(),
 

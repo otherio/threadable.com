@@ -1,11 +1,11 @@
-Covered.RoutesMixin = Ember.Mixin.create({
+Threadable.RoutesMixin = Ember.Mixin.create({
   needs: "application",
 
   currentPath:      Ember.computed.alias('controllers.application.currentPath').readOnly(),
   currentRouteName: Ember.computed.alias('controllers.application.currentRouteName').readOnly(),
 
   router: function() {
-    return Covered.__container__.lookup('router:main');
+    return Threadable.__container__.lookup('router:main');
   },
   routerState: function() {
     return this.router().router.state;
@@ -21,7 +21,7 @@ Covered.RoutesMixin = Ember.Mixin.create({
 
   currentRoute: function() {
     var currentRouteName = this.get('currentRouteName');
-    return Covered.Router.router.recognizer.names[currentRouteName];
+    return Threadable.Router.router.recognizer.names[currentRouteName];
   }.property('currentRouteName'),
 
   // returns: undefined | "conversations" | "muted_conversations" | "tasks" | "doing_tasks"

@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe MessagesSerializer do
 
-  let(:raceteam) { covered.organizations.find_by_slug!('raceteam') }
-  let(:sfhealth) { covered.organizations.find_by_slug!('sfhealth') }
-  let(:conversation){ raceteam.conversations.find_by_slug!('welcome-to-our-covered-organization') }
+  let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
+  let(:sfhealth) { threadable.organizations.find_by_slug!('sfhealth') }
+  let(:conversation){ raceteam.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
   let(:message) { conversation.messages.latest }
   let(:message2) { conversation.messages.all.first }
 
@@ -20,7 +20,7 @@ describe MessagesSerializer do
         id:                message.id,
         unique_id:         message.unique_id,
         from:              "Bethany Pattern <bethany@ucsd.example.com>",
-        subject:           "Welcome to our Covered organization!",
+        subject:           "Welcome to our Threadable organization!",
 
         body:              "Yay! You go Alice. This tool looks radder than an 8-legged panda.",
         body_stripped:     "Yay! You go Alice. This tool looks radder than an 8-legged panda.",
@@ -87,7 +87,7 @@ describe MessagesSerializer do
           id:                message.id,
           unique_id:         message.unique_id,
           from:              "Bethany Pattern <bethany@ucsd.example.com>",
-          subject:           "Welcome to our Covered organization!",
+          subject:           "Welcome to our Threadable organization!",
 
           body:              "Yay! You go Alice. This tool looks radder than an 8-legged panda.",
           body_stripped:     "Yay! You go Alice. This tool looks radder than an 8-legged panda.",
@@ -112,7 +112,7 @@ describe MessagesSerializer do
           id:                message2.id,
           unique_id:         message2.unique_id,
           from:              "Alice Neilson <alice@ucsd.example.com>",
-          subject:           "Welcome to our Covered organization!",
+          subject:           "Welcome to our Threadable organization!",
 
           body:              "Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!",
           body_stripped:     "Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!",

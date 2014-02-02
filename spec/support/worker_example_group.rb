@@ -4,14 +4,14 @@ module RSpec::Support::WorkerExampleGroup
 
   included do
     metadata[:fixtures] = false
-    let(:covered_current_user_record){ nil }
-    let(:covered_current_user_id){ covered_current_user_record.try(:id) }
-    let(:covered_host){ Capybara.server_host }
-    let(:covered_port){ Capybara.server_port }
-    let(:covered){ Covered.new(host: covered_host, port: covered_port, current_user_id: covered_current_user_id) }
+    let(:threadable_current_user_record){ nil }
+    let(:threadable_current_user_id){ threadable_current_user_record.try(:id) }
+    let(:threadable_host){ Capybara.server_host }
+    let(:threadable_port){ Capybara.server_port }
+    let(:threadable){ Threadable.new(host: threadable_host, port: threadable_port, current_user_id: threadable_current_user_id) }
   end
 
-  delegate :current_user, to: :covered
+  delegate :current_user, to: :threadable
 
   RSpec.configuration.include self, :type => :worker, :example_group => {
     :file_path => %r{spec[\\/]workers[\\/]}

@@ -1,4 +1,4 @@
-Covered.ComposeController = Ember.Controller.extend({
+Threadable.ComposeController = Ember.Controller.extend({
   needs: ['organization', 'group', 'topbar'],
 
   organization: Ember.computed.alias('controllers.organization'),
@@ -49,8 +49,8 @@ Covered.ComposeController = Ember.Controller.extend({
       var
         organization     = this.get('organization'),
         organizationSlug = organization.get('slug'),
-        conversation     = Covered.Conversation.create(),
-        message          = Covered.Message.create(),
+        conversation     = Threadable.Conversation.create(),
+        message          = Threadable.Message.create(),
         subject          = this.get('subject'),
         isTask           = this.get('isTask'),
         groups           = this.get('groups').toArray();
@@ -87,7 +87,7 @@ Covered.ComposeController = Ember.Controller.extend({
       function messageSaved(response) {
         conversation.deserialize(response.message.conversation);
         conversation.set('organization', organization);
-        Covered.Conversation.cache(conversation);
+        Threadable.Conversation.cache(conversation);
         this.send('reset');
         this.send('addConversation', conversation);
         this.send('transitionToConversation', conversation);

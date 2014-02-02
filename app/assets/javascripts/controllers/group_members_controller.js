@@ -1,4 +1,4 @@
-Covered.GroupMembersController = Ember.ArrayController.extend({
+Threadable.GroupMembersController = Ember.ArrayController.extend({
   needs: ['organization'],
   itemController: 'group_member',
 

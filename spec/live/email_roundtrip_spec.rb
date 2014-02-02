@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'email roundtrip' do
 
   scenario 'sending an email via the web' do
-    as 'covered-auto-deploy@mailinator.com', 'bonkatron' do
+    as 'threadable-auto-deploy@mailinator.com', 'bonkatron' do
       subject_line = "Test web compose #{Time.now.to_i}"
 
       visit '/auto-deploy-tests/conversations'
@@ -19,7 +19,7 @@ feature 'email roundtrip' do
       page.should have_content subject_line
 
       sleep 10  # we are bad people.
-      visit 'http://mailinator.com/inbox.jsp?to=covered-auto-deploy'
+      visit 'http://mailinator.com/inbox.jsp?to=threadable-auto-deploy'
       Capybara.using_wait_time(20) do
         page.should have_content subject_line
       end
@@ -29,10 +29,10 @@ feature 'email roundtrip' do
   scenario 'receiving an email and sending it to subscribers' do
     subject_line = "Test email compose #{Time.now.to_i}"
 
-    send_simple_message 'covered-auto-deploy@mailinator.com', subject_line, "booyakasha in the hizzouse."
+    send_simple_message 'threadable-auto-deploy@mailinator.com', subject_line, "booyakasha in the hizzouse."
 
     sleep 10  # we'll burn in hell for this
-    visit 'http://mailinator.com/inbox.jsp?to=covered-auto-deploy'
+    visit 'http://mailinator.com/inbox.jsp?to=threadable-auto-deploy'
     Capybara.using_wait_time(20) do
       page.should have_content subject_line
     end
@@ -43,8 +43,8 @@ end
 
 
 # more address!
-# covered-auto-deploy@mailismagic.com
+# threadable-auto-deploy@mailismagic.com
 # m8r-vlfenq@mailinator.com
-# covered-auto-deploy@mailinator.com
-# covered-auto-deploy@spamgoes.in
-# covered-auto-deploy@mailtothis.com
+# threadable-auto-deploy@mailinator.com
+# threadable-auto-deploy@spamgoes.in
+# threadable-auto-deploy@mailtothis.com

@@ -4,21 +4,21 @@ module RSpec::Support::IntegrationExampleGroup
 
   included do
     metadata[:type] = :integration
-    let(:covered){ Covered.new(host: default_url_options[:host], port: default_url_options[:port]) }
+    let(:threadable){ Threadable.new(host: default_url_options[:host], port: default_url_options[:port]) }
     before do
       default_url_options[:host] = Capybara.server_host
       default_url_options[:port] = Capybara.server_port
     end
   end
 
-  delegate :current_user, to: :covered
+  delegate :current_user, to: :threadable
 
   def sign_in_as email_address
-    covered.current_user_id = find_user_by_email_address(email_address).id
+    threadable.current_user_id = find_user_by_email_address(email_address).id
   end
 
   def sign_out!
-    covered.current_user_id = nil
+    threadable.current_user_id = nil
   end
 
   def as email_address

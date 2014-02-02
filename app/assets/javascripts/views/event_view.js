@@ -1,4 +1,4 @@
-Covered.EventView = Ember.View.extend({
+Threadable.EventView = Ember.View.extend({
   templateName: 'event',
   tagName: 'li',
   classNames: 'event',

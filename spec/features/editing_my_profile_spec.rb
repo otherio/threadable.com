@@ -18,14 +18,14 @@ feature "Editing my profile" do
     expect(current_url).to eq profile_url
     expect(page).to have_field('Name', with: '  ')
     expect(page).to have_text "can't be blank"
-    expect(covered.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzu'
+    expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzu'
 
     fill_in 'Name', with: 'Yan Hzurself'
     click_on 'Update'
     expect(page).to have_text %(We've updated your profile)
     expect(current_url).to eq profile_url
     expect(page).to have_field('Name', with: 'Yan Hzurself')
-    expect(covered.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzurself'
+    expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzurself'
   end
 
   scenario %(changing my password) do
@@ -49,7 +49,7 @@ feature "Editing my profile" do
     click_on 'Change password'
     expect(page).to have_text %(We've changed your password)
 
-    expect(covered.users.find_by_email_address!('yan@ucsd.example.com').authenticate('supersecret')).to be_true
+    expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').authenticate('supersecret')).to be_true
   end
 
   scenario %(adding an email address) do

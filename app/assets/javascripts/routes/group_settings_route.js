@@ -1,4 +1,4 @@
-Covered.GroupSettingsRoute = Ember.Route.extend({
+Threadable.GroupSettingsRoute = Ember.Route.extend({
   model: function(group) {
     var emailAddressTag = this.modelFor('group');
     return this.modelFor('organization').get('groups').findBy('emailAddressTag', emailAddressTag);

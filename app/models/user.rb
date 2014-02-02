@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   scope :confirmed, ->{ where('users.confirmed_at IS NOT NULL') }
   scope :not_confirmed, ->{ where(confirmed_at: nil) }
 
-  # this makes user objects look like Covered::User objects
+  # this makes user objects look like Threadable::User objects
   def user_id
     id
   end

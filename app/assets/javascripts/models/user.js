@@ -1,4 +1,4 @@
-Covered.User = RL.Model.extend({
+Threadable.User = RL.Model.extend({
   id:           RL.attr('string'),
   userId:       RL.attr('number'),
   param:        RL.attr('string'),
@@ -36,7 +36,7 @@ Covered.User = RL.Model.extend({
         }
       });
       promise.then(function(response) {
-        var groupMember = Covered.GroupMember.createRecord();
+        var groupMember = Threadable.GroupMember.createRecord();
         groupMember.deserialize(response.group_member);
         resolve(groupMember);
       });

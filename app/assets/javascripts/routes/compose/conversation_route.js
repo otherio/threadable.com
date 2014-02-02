@@ -1,6 +1,6 @@
 //= require ../compose_route
 
-Covered.ComposeConversationRoute = Covered.ComposeRoute.extend({
+Threadable.ComposeConversationRoute = Threadable.ComposeRoute.extend({
 
 });
 

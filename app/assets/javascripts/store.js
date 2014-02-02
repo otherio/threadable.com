@@ -4,7 +4,7 @@ RL.Model.reopen({
   }
 });
 
-Covered.RESTAdapter = RL.RESTAdapter.create({
+Threadable.RESTAdapter = RL.RESTAdapter.create({
   namespace: 'api',
   headers: {
     'Accept': 'application/json',
@@ -12,8 +12,8 @@ Covered.RESTAdapter = RL.RESTAdapter.create({
   }
 });
 
-Covered.Client = RL.Client.create({
-  adapter: Covered.RESTAdapter
+Threadable.Client = RL.Client.create({
+  adapter: Threadable.RESTAdapter
 });
 
 
@@ -32,7 +32,7 @@ RL.Model.reopen({
   }
 });
 
-Covered.RESTAdapter.reopen({
+Threadable.RESTAdapter.reopen({
   /**
     Creates and executes an ajax request wrapped in a promise.
     @method request
@@ -136,7 +136,7 @@ RL.loadAssociationMethod = function(property, fetcher){
 // var get = Ember.get, set = Ember.set;
 // var map = Ember.ArrayPolyfills.map;
 
-// DS.CoveredAdapter = DS.ActiveModelAdapter.extend({
+// DS.ThreadableAdapter = DS.ActiveModelAdapter.extend({
 //   namespace: 'api',
 //   headers: {
 //     'Accept': 'application/json',
@@ -252,12 +252,12 @@ RL.loadAssociationMethod = function(property, fetcher){
 // });
 
 
-// Covered.Store = DS.Store.extend({
-//   adapter: DS.CoveredAdapter
+// Threadable.Store = DS.Store.extend({
+//   adapter: DS.ThreadableAdapter
 // });
 
 
-// Covered.ObjectTransform = DS.Transform.extend({
+// Threadable.ObjectTransform = DS.Transform.extend({
 //   deserialize: function(serialized) {
 //     return serialized;
 //   },

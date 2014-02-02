@@ -1,4 +1,4 @@
-Covered.GroupLoadingRoute = Ember.Route.extend({
+Threadable.GroupLoadingRoute = Ember.Route.extend({
 
   renderTemplate: function() {
     this.controllerFor('organization').set('focus', 'conversations');

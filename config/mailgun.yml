@@ -7,9 +7,9 @@ test:
   password: 'INTENTIONALLY LEFT BLANK'
 
 production:
-  key: <%= ENV['COVERED_MAILGUN_KEY'] %>
-  password: <%= ENV['COVERED_MAILGUN_PASSWORD'] %>
+  key: <%= ENV['THREADABLE_MAILGUN_KEY'] %>
+  password: <%= ENV['THREADABLE_MAILGUN_PASSWORD'] %>
 
 staging:
-  key: <%= ENV['COVERED_MAILGUN_KEY'] %>
-  password: <%= ENV['COVERED_MAILGUN_PASSWORD'] %>
+  key: <%= ENV['THREADABLE_MAILGUN_KEY'] %>
+  password: <%= ENV['THREADABLE_MAILGUN_PASSWORD'] %>

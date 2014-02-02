@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 require 'prepare_email_subject'
 
-class ConversationMailer < Covered::Mailer
+class ConversationMailer < Threadable::Mailer
 
   add_template_helper EmailHelper
 
@@ -39,12 +39,12 @@ class ConversationMailer < Covered::Mailer
     to_addresses = as_address_objects(@message.to_header.to_s)
     cc_addresses = as_address_objects(@message.cc_header.to_s)
 
-    @missing_addresses = missing_covered_addresses([to_addresses, cc_addresses].flatten)
+    @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten)
     @has_groups = @conversation.groups.count > 0
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
 
     to_addresses = transform_stale_group_references(to_addresses)
-    to_addresses = correct_covered_email_addresses(to_addresses)
+    to_addresses = correct_threadable_email_addresses(to_addresses)
     to_addresses = filter_out_recipients(to_addresses)
     to_addresses = filter_organization_email_addresses(to_addresses)
 
@@ -54,7 +54,7 @@ class ConversationMailer < Covered::Mailer
         to_addresses = @missing_addresses
         @missing_addresses_inserted = true
       else
-        # all the covered addresses are in the cc. steal them.
+        # all the threadable addresses are in the cc. steal them.
         to_addresses = formatted_email_addresses
       end
     end
@@ -62,7 +62,7 @@ class ConversationMailer < Covered::Mailer
     cc_addresses = transform_stale_group_references(cc_addresses)
     cc_addresses = filter_out_recipients(cc_addresses)
     cc_addresses = subtract_addresses(cc_addresses, to_addresses)
-    cc_addresses = correct_covered_email_addresses(cc_addresses)
+    cc_addresses = correct_threadable_email_addresses(cc_addresses)
     cc_addresses << Mail::Address.new(@message.from) if !sender_is_a_member && @message.from.present?
     cc_addresses = filter_organization_email_addresses(cc_addresses)
 
@@ -108,7 +108,7 @@ class ConversationMailer < Covered::Mailer
 
   def transform_stale_group_references email_addresses
     email_addresses.map do |email_address|
-      if IdentifyCoveredEmailAddress.call(email_address)
+      if IdentifyThreadableEmailAddress.call(email_address)
         @conversation.all_email_addresses.include?(email_address.address) ? email_address : Mail::Address.new(@organization_email_address)
       else
         email_address
@@ -134,7 +134,7 @@ class ConversationMailer < Covered::Mailer
     end.flatten.compact
   end
 
-  def missing_covered_addresses header_addresses
+  def missing_threadable_addresses header_addresses
     header_addresses = header_addresses.map do |email_address|
       email_address.address
     end
@@ -147,11 +147,11 @@ class ConversationMailer < Covered::Mailer
     master_list.reject{ |addr| remove_list_addresses.include? addr.address }
   end
 
-  def find_covered_addresses addresses
-    addresses.find_all{ |email_address| IdentifyCoveredEmailAddress.call(email_address) }
+  def find_threadable_addresses addresses
+    addresses.find_all{ |email_address| IdentifyThreadableEmailAddress.call(email_address) }
   end
 
-  def correct_covered_email_addresses email_addresses
+  def correct_threadable_email_addresses email_addresses
     email_address_pairs = formatted_email_addresses.map do |formatted_email_address|
       [formatted_email_address.address, formatted_email_address]
     end

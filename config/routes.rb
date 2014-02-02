@@ -1,4 +1,4 @@
-Covered::Application.routes.draw do
+Threadable::Application.routes.draw do
 
   get   '/sign_in'           => 'authentication#show'
   post  '/sign_in'           => 'authentication#sign_in'

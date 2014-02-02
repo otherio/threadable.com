@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe OrganizationMembersSerializer do
 
-  let(:alice) { covered.users.find_by_email_address!('alice@ucsd.example.com') }
-  let(:marcus){ covered.users.find_by_email_address!('marcus@sfhealth.example.com') }
+  let(:alice) { threadable.users.find_by_email_address!('alice@ucsd.example.com') }
+  let(:marcus){ threadable.users.find_by_email_address!('marcus@sfhealth.example.com') }
 
   context 'when given a single record' do
     let(:payload){ alice }

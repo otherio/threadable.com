@@ -22,7 +22,7 @@ describe UsersController do
       end
       let(:user){ double(:user, id: 94, persisted?: persisted) }
       before do
-        expect(covered).to receive(:sign_up).with(user_params).and_return(user)
+        expect(threadable).to receive(:sign_up).with(user_params).and_return(user)
       end
       def post!
         post :create, user: user_params
@@ -32,7 +32,7 @@ describe UsersController do
       context 'when the user is successfully created' do
         let(:persisted){ true }
         it 'should redirect to the user created page' do
-          expect(covered.emails).to receive(:send_email_async).with(:sign_up_confirmation, 94)
+          expect(threadable.emails).to receive(:send_email_async).with(:sign_up_confirmation, 94)
           post!
           expect(response).to render_template :create
         end

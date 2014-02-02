@@ -1,4 +1,4 @@
-Covered.Organization = RL.Model.extend({
+Threadable.Organization = RL.Model.extend({
   id:                        RL.attr('number'),
   slug:                      RL.attr('string'),
   param:                     RL.attr('string'),
@@ -14,15 +14,15 @@ Covered.Organization = RL.Model.extend({
 
   hasHeldMessages:           RL.attr('boolean'),
 
-  groups: RL.hasMany('Covered.Group'),
+  groups: RL.hasMany('Threadable.Group'),
 
   loadMembers: RL.loadAssociationMethod('members', function(organization){
-    return Covered.OrganizationMember.fetch({
+    return Threadable.OrganizationMember.fetch({
       organization_id: organization.get('slug')
     });
   })
 });
 
-Covered.RESTAdapter.map("Covered.Organization", {
+Threadable.RESTAdapter.map("Threadable.Organization", {
   primaryKey: "slug"
 });

@@ -1,7 +1,7 @@
-class ProcessIncomingEmailWorker < Covered::Worker
+class ProcessIncomingEmailWorker < Threadable::Worker
 
   def perform! incoming_email_id
-    covered.incoming_emails.find_by_id!(incoming_email_id).process!
+    threadable.incoming_emails.find_by_id!(incoming_email_id).process!
   end
 
 end

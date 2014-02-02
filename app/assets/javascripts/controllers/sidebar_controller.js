@@ -1,4 +1,4 @@
-Covered.SidebarController = Ember.ArrayController.extend(Covered.CurrentUserMixin, Covered.RoutesMixin, {
+Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUserMixin, Threadable.RoutesMixin, {
   needs: ['organization', 'application', 'conversation'],
   organization: Ember.computed.alias('controllers.organization'),
   currentPath: Ember.computed.alias('controllers.application.currentPath').readOnly(),
