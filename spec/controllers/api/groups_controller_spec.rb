@@ -118,12 +118,11 @@ describe Api::GroupsController do
 
       context 'when given a valid group id' do
         it "updates the group and returns the new one" do
-          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', name: "foopytronics", subject_tag: "superheroes", auto_join: false }
+          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', subject_tag: "superheroes", auto_join: false }
           expect(response).to be_ok
           group = raceteam.groups.find_by_email_address_tag('electronics')
           expect(group.color).to eq '#964bf8'
           expect(group.subject_tag).to eq 'superheroes'
-          expect(group.name).to eq 'foopytronics'
           expect(group.auto_join).to be_false
           expect(response.body).to eq serialize(:groups, group).to_json
         end
@@ -131,17 +130,16 @@ describe Api::GroupsController do
 
       context 'when given a new email address tag' do
         it "ignores the new email address tag" do
-          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', name: "foopytronics", subject_tag: "superheroes", email_address_tag: "hey" }
+          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', subject_tag: "superheroes", email_address_tag: "hey" }
           expect(response).to be_ok
           group = raceteam.groups.find_by_email_address_tag('electronics')
-          expect(group.name).to eq 'foopytronics'
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end
 
       context 'when given an invalid group id' do
         it "returns a 404" do
-          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: 'foobar', group: { color: '#964bf8', name: "foopytronics", subject_tag: "superheroes" }
+          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: 'foobar', group: { color: '#964bf8', subject_tag: "superheroes" }
           expect(response.status).to eq 404
         end
       end
