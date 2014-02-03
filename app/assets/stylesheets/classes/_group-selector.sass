@@ -20,6 +20,9 @@
     > a
       display: block
       text-align: left
+      +opacity(0.8)
+      &:focus
+        +opacity(1)
       & ~ a
         margin-top: 0.5em
       // +text-shadow(none)
