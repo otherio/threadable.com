@@ -75,7 +75,7 @@ end
 
 group :test do
   gem 'capybara', '>= 2.0.2'
-  gem 'selenium-webdriver', '2.40.0.rc1'
+  gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: nil
   gem 'launchy'
   gem 'factory_girl_rails'
