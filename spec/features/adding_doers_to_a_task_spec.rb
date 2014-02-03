@@ -19,7 +19,7 @@ feature "Adding doers to a task" do
     expect(doers).to eq Set[]
 
     click_element 'the change doers button'
-    first('.doer-selector li.member', text: 'Alice Neilson').click
+    first('.doer-selector li.member a', text: 'Alice Neilson').click
     expect(page).to have_text '&add Alice Neilson as a doer'
     click_on 'Update'
 
@@ -31,7 +31,7 @@ feature "Adding doers to a task" do
     expect(doers).to eq Set['Alice Neilson']
 
     click_element 'the change doers button'
-    first('.doer-selector li.member', text: 'Alice Neilson').click
+    first('.doer-selector li.member a', text: 'Alice Neilson').click
     expect(page).to have_text '&remove Alice Neilson as a doer'
     click_on 'Update'
 
