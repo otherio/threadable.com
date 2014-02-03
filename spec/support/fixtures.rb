@@ -26,13 +26,6 @@ module RSpec::Support::Fixtures
     ActiveRecord::FixtureBuilder.config.path
   end
 
-  def stub_mixpanel!
-    stub_request(:any, 'https://api.mixpanel.com/track').to_return({ :body => '{"status": 1, "error": null}' })
-    stub_request(:any, 'https://api.mixpanel.com/people').to_return({ :body => '{"status": 1, "error": null}' })
-    stub_request(:any, 'https://api.mixpanel.com/engage').to_return({ :body => '{"status": 1, "error": null}' })
-    stub_request(:any, 'https://api.mixpanel.com/import').to_return({ :body => '{"status": 1, "error": null}' })
-  end
-
   def empty_databases!
     ActiveRecord::Base.connection_handler.clear_all_connections! unless test_transaction_open?
     ::Fixtures.empty_databases!
@@ -41,7 +34,6 @@ module RSpec::Support::Fixtures
 
   def build_fixtures!
     return false if fixtures_built? # only build fixtures once
-    stub_mixpanel!
     empty_databases!
     ::Fixtures.build!
     fixtures_built!

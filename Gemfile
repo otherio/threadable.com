@@ -81,6 +81,5 @@ group :test do
   gem 'factory_girl_rails'
   gem 'codeclimate-test-reporter', require: nil
   gem 'ffaker'
-  gem 'webmock'
   gem 'rest-client'
 end

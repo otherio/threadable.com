@@ -1,5 +1,3 @@
-SELENIUM = ENV['SELENIUM'] == 'true'
-# SELENIUM_BROWSER=safari
 # SELENIUM_BROWSER=chrome
 # SELENIUM_BROWSER=firefox
 SELENIUM_BROWSER = (ENV['SELENIUM_BROWSER'].presence || :chrome).to_sym
@@ -10,8 +8,8 @@ end
 
 Capybara.exact_options          = true
 Capybara.ignore_hidden_elements = true
-Capybara.default_driver         = SELENIUM ? :selenium : :webkit
-Capybara.javascript_driver      = SELENIUM ? :selenium : :webkit
+Capybara.default_driver         = :selenium
+Capybara.javascript_driver      = :selenium
 Capybara.default_selector       = :css
 Capybara.default_wait_time      = 3
 Capybara.server_host            = '127.0.0.1'

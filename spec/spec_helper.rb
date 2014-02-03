@@ -8,7 +8,6 @@ Rails.application.eager_load!
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'factories'
-require 'webmock/rspec'
 require 'sidekiq/testing'
 require 'shoulda-matchers'
 require 'timecop'
@@ -39,11 +38,9 @@ RSpec.configure do |config|
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
     Timecop.return
     Threadable.redis.flushdb
-    WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Threadable::InMemoryTracker.clear
-    stub_mixpanel!
   end
 
   config.around :each do |example|

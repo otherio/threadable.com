@@ -9,7 +9,6 @@ module RSpec::Support::LiveExampleGroup
     before do
       default_url_options[:host] = 'staging.threadable.com'
       default_url_options[:port] = 80
-      WebMock.disable_net_connect!(:allow_localhost => true, :allow => "api.mailgun.net")
       Capybara.app_host = 'http://staging.threadable.com'
     end
   end
