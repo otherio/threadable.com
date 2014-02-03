@@ -2,7 +2,7 @@
 
 export RAILS_ENV=test
 export RACK_ENV=test
-export SELENIUM=false
+export SELENIUM_BROWSER=firefox
 
 bundle check || bundle install
 bundle exec rake db:schema:load || exit 1
