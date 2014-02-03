@@ -41,7 +41,7 @@ describe ConversationMailer do
 
       text_part.should include message.body_plain
       html_part.gsub(/\n/,'').should include expected_html_part
-      text_part.should include "View on Threadable:\n#{conversation_url(organization, 'my', conversation)}"
+      text_part.should include "Web view:\n#{conversation_url(organization, 'my', conversation)}"
 
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
