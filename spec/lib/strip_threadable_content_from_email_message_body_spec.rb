@@ -60,7 +60,7 @@ describe StripThreadableContentFromEmailMessageBody do
 <td>
 <div>
 
-<a href="http://beta.threadable.com/warehome/conversations/clean-up-the-entryway#message-334" style="color:#3498db;text-decoration:none!important;background-color:#7f8c8d;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px" target="_blank">View on Threadable</a>
+<a href="http://threadable.com/warehome/conversations/clean-up-the-entryway#message-334" style="color:#3498db;text-decoration:none!important;background-color:#7f8c8d;border-radius:3px;color:#ffffff;display:inline-block;font-family:sans-serif;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:11px;line-height:25px;text-align:center;text-decoration:none;width:115px" target="_blank">View on Threadable</a>
 
 </div>
 </td>
@@ -68,12 +68,12 @@ describe StripThreadableContentFromEmailMessageBody do
 <table align="right" border="0" cellpadding="2" cellspacing="0" width="357"><tbody><tr>
 <td style="color:#95a5a6;text-align:right">
 <div style="font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:12px">
-<a href="http://beta.threadable.com/warehome" style="color:#3498db;text-decoration:none!important" target="_blank">Warehome</a>
+<a href="http://threadable.com/warehome" style="color:#3498db;text-decoration:none!important" target="_blank">Warehome</a>
 |
 <a href="mailto:warehome@threadable.com" style="color:#3498db;text-decoration:none!important" target="_blank">warehome@threadable.com</a>
 </div>
 <div style="font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:10px">
-sent to <a href="mailto:nicoletbn@gmail.com" target="_blank">nicoletbn@gmail.com</a> | mute conversation | <a href="http://beta.threadable.com/warehome/unsubscribe/59Vza2e6Xk_6NvDpad-DFtjZzXTvqJ9jDO4-7ujje3rVJ5Zrt6srB91D-2VnXrwXQki1VywguAcuO69QnSzNMWT_" style="color:#3498db;text-decoration:none!important" target="_blank">unsubscribe</a>
+sent to <a href="mailto:nicoletbn@gmail.com" target="_blank">nicoletbn@gmail.com</a> | mute conversation | <a href="http://threadable.com/warehome/unsubscribe/59Vza2e6Xk_6NvDpad-DFtjZzXTvqJ9jDO4-7ujje3rVJ5Zrt6srB91D-2VnXrwXQki1VywguAcuO69QnSzNMWT_" style="color:#3498db;text-decoration:none!important" target="_blank">unsubscribe</a>
 </div>
 </td>
 </tr></tbody></table>
@@ -192,7 +192,7 @@ Consider it fuckin&#39; tried!                                                  
 
 <td valign="middle" style="vertical-align:middle">
 
-<a href="https://beta.threadable.com/secret-art-organization/conversations/hello#message-1254" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#7f8c8d!important" target="_blank">  View on Threadable  </a>
+<a href="https://threadable.com/secret-art-organization/conversations/hello#message-1254" style="width:100%!important;border-radius:3px!important;display:inline-block!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important;text-align:center!important;text-decoration:none!important;border:#cccccc 1px solid!important;background:#fcfcfc!important;font-size:11px!important;line-height:22px!important;color:#7f8c8d!important" target="_blank">  View on Threadable  </a>
 
 </td>
 
