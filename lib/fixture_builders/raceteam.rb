@@ -155,6 +155,10 @@ FixtureBuilder.build do
       text: "I'm so there! Also, I think I can probably pick up some of those supplies from a friend, who was trying to make a kayak.",
     )
     add_doer_to_task @layup_body_carbon_task, 'yan@ucsd.example.com'
+
+    create_message( @get_a_new_soldering_iron,
+      text: "Our soldering iron sucks. It glows red hot sometimes.",
+    )
   end
 
 

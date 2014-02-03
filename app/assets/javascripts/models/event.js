@@ -3,6 +3,7 @@ Threadable.Event = RL.Model.extend({
   eventType:  RL.attr('string'),
   actor:      RL.attr('string'),
   doer:       RL.attr('string'),
+  group:      RL.attr('string'),
   createdAt:  RL.attr('date'),
   message:    RL.belongsTo('Threadable.Message'),
 

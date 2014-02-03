@@ -19,11 +19,15 @@ Threadable.EventView = Ember.View.extend({
         return '<span class="person">' + event.get('actor') + '</span> added <span class="person">' + event.get('doer') + '</span> as a doer';
       case "task_removed_doer":
         return '<span class="person">' + event.get('actor') + '</span> removed <span class="person">' + event.get('doer') + '</span> as a doer';
+      case "conversation_added_group":
+        return '<span class="person">' + event.get('actor') + '</span> added this ' + (this.get('controller.task') ? 'task' : 'conversation') + ' to <span class="group">+' + event.get('group') + '</span>';
+      case "conversation_removed_group":
+        return '<span class="person">' + event.get('actor') + '</span> removed this ' + (this.get('controller.task') ? 'task' : 'conversation') + ' from <span class="group">+' + event.get('group') + '</span>';
       default:
         return 'unrecognized event type';
     }
 
     return event.get('eventType');
-  }.property('eventType', 'actor', 'doer')
+  }.property('eventType', 'actor', 'doer', 'group')
 
 });

@@ -13,6 +13,14 @@ class Threadable::Organization::Groups < Threadable::Groups
     groups_for scope.find(group_ids)
   end
 
+  def find_by_id group_id
+    find_by_ids([group_id]).try(:first)
+  end
+
+  def find_by_id! id
+    find_by_id(id) or raise Threadable::RecordNotFound, "unable to find group with id #{id.inspect}"
+  end
+
   def find_by_email_address_tag email_address_tag
     group_for (scope.where(email_address_tag: email_address_tag.downcase).first or return)
   end

@@ -10,11 +10,22 @@ class Threadable::Conversation::Groups < Threadable::Groups
 
   def add *groups
     Threadable.transaction do
-      group_records = groups.flatten.compact.map(&:group_record) - groups_association.reload.to_a
-      groups_association << group_records
-      group_ids = groups.flatten.compact.map(&:group_record).map(&:id)
+      group_records = groups.flatten.compact.map(&:group_record)
+
+      add_group_records = group_records - groups_association.reload.to_a
+      new_and_changed_group_records = group_records - scope.reload.to_a
+
+      groups_association << add_group_records
+      group_ids = groups.flatten.compact.map(&:id)
       conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: true)
       conversation.cache_group_ids!
+
+      new_and_changed_group_records.each do |group|
+        conversation.events.create!(:conversation_added_group,
+          user_id: threadable.current_user_id,
+          group_id: group.id,
+        )
+      end
     end
     self
   end
@@ -26,6 +37,13 @@ class Threadable::Conversation::Groups < Threadable::Groups
     Threadable.transaction do
       groups_association << groups.map(&:group_record)
       conversation.cache_group_ids!
+
+      groups.each do |group|
+        conversation.events.create!(:conversation_added_group,
+          user_id: threadable.current_user_id,
+          group_id: group.id,
+        )
+      end
     end
     self
   end
@@ -35,6 +53,13 @@ class Threadable::Conversation::Groups < Threadable::Groups
     Threadable.transaction do
       conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: false)
       conversation.cache_group_ids!
+
+      group_ids.each do |group_id|
+        conversation.events.create!(:conversation_removed_group,
+          user_id: threadable.current_user_id,
+          group_id: group_id,
+        )
+      end
     end
     self
   end

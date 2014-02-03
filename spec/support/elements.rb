@@ -20,6 +20,8 @@ module RSpec::Support::Elements
       '.task-controls .uk-icon-check-square'
     when 'the change doers button'
       '.doers a.label'
+    when 'the change groups button'
+      '.conversation-groups a.plus-button'
     else
       raise ArgumentError, "no selector for: #{name.inspect}"
     end

@@ -19,6 +19,7 @@ describe Threadable::Conversation::Groups do
       conversation.groups.add(new_groups)
       expect(conversation.groups.all).to match_array new_groups
       expect(conversation.group_ids).to match_array new_groups.map(&:id)
+      expect(conversation.events.all.length).to eq 6
     end
 
     context 'when a given group was already removed from the conversation' do
@@ -32,6 +33,7 @@ describe Threadable::Conversation::Groups do
         conversation.groups.add(group)
         expect(conversation.groups.all).to eq [group]
         expect(conversation.group_ids).to eq [group.id]
+        expect(conversation.events.all.length).to eq 7
       end
 
     end
@@ -46,6 +48,7 @@ describe Threadable::Conversation::Groups do
       conversation.groups.add_unless_removed(groups)
       expect(conversation.groups.all).to match_array groups
       expect(conversation.group_ids).to match_array groups.map(&:id)
+      expect(conversation.events.all.length).to eq 6
     end
 
     context 'when a given group was already removed from the conversation' do
@@ -59,6 +62,7 @@ describe Threadable::Conversation::Groups do
         conversation.groups.add_unless_removed(group)
         expect(conversation.groups.all).to eq []
         expect(conversation.group_ids).to eq []
+        expect(conversation.events.all.length).to eq 6
       end
 
     end
@@ -77,6 +81,7 @@ describe Threadable::Conversation::Groups do
       conversation.groups.remove(groups.first)
       expect(conversation.groups.all).to eq [groups.last]
       expect(conversation.group_ids).to eq [groups.last.id]
+      expect(conversation.events.all.length).to eq 5
     end
 
   end

@@ -7,6 +7,8 @@ class Event < ActiveRecord::Base
     :task_added_doer,
     :task_undone,
     :task_removed_doer,
+    :conversation_added_group,
+    :conversation_removed_group,
   ].freeze
 
   serialize :content, Hash

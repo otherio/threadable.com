@@ -270,6 +270,16 @@ describe Api::ConversationsController do
           expect(conversation).to be
           expect(response.body).to eq serialize(:conversations, conversation).to_json
         end
+
+        let(:electronics) { raceteam.groups.find_by_email_address_tag('electronics') }
+        it 'adds the conversation to groups' do
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: { subject: 'my conversation', group_ids: [electronics.id] }
+          expect(response.status).to eq 201
+          conversation = raceteam.conversations.find_by_slug('my-conversation')
+          expect(conversation).to be
+          expect(conversation.groups.all.map(&:email_address_tag)).to eq ['electronics']
+          expect(response.body).to eq serialize(:conversations, conversation).to_json
+        end
       end
 
       context 'with an organization that the user is not a member of' do
@@ -356,6 +366,33 @@ describe Api::ConversationsController do
           conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
           expect(conversation.doers.all.length).to eq 0
           expect(conversation.events.all.length).to eq(6)
+        end
+      end
+
+      context 'when given groups' do
+        let(:electronics) { raceteam.groups.find_by_email_address_tag('electronics')}
+        let(:fundraising)   { raceteam.groups.find_by_email_address_tag('fundraising')}
+        let(:graphic_design)   { raceteam.groups.find_by_email_address_tag('graphic-design')}
+        it 'sets the groups' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'get-a-new-soldering-iron', conversation: {
+            group_ids: [electronics.id, fundraising.id, graphic_design.id]
+          }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('get-a-new-soldering-iron')
+          expect(conversation.groups.all.map(&:id)).to match_array [electronics.id, fundraising.id, graphic_design.id]
+          expect(conversation.events.all.length).to eq(5)
+        end
+      end
+
+      context 'when given empty groups' do
+        it 'sets the groups' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'get-a-new-soldering-iron', conversation: {
+            group_ids: nil
+          }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('get-a-new-soldering-iron')
+          expect(conversation.groups.all.length).to eq 0
+          expect(conversation.events.all.length).to eq(4)
         end
       end
 

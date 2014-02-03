@@ -31,7 +31,9 @@ describe Threadable::Class do
       Threadable::Events::ConversationCreated,
       Threadable::Events::TaskCreated,
       Threadable::Events::TaskAddedDoer,
+      Threadable::Events::ConversationAddedGroup,
       Threadable::Events::TaskDone,
+      Threadable::Events::ConversationRemovedGroup,
     ]
     expect( events[Threadable::Events::ConversationCreated].count ).to eq 17
     expect( events[Threadable::Events::TaskCreated        ].count ).to eq 33

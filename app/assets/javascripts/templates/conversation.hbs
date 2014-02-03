@@ -1,9 +1,17 @@
 <div {{bind-attr class=":conversation-show :scrollable showDoerSelector:show-doer-selector"}}>
 
   <div>
-    {{#each group in groups}}
-      <span class="badge" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
-    {{/each}}
+    <div class="conversation-groups">
+      {{#each group in groups}}
+        <span class="badge" {{bind-attr style="group.badgeStyle"}}>
+          +{{group.name}}
+          <a href="" {{action removeGroup group}}><i class="uk-icon-times"></i></a>
+        </span>
+      {{else}}
+        <span class="no-groups">ungrouped</span>
+      {{/each}}
+      {{group-selector groups=unselectedGroups target=controller}}
+    </div>
 
     <h2 class="subject">
       <span class="hidden-on-small-screens">

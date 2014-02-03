@@ -6,6 +6,7 @@ class EventsSerializer < Serializer
       event_type: event.event_type,
       actor:      event.actor.present? ? event.actor.name : nil,
       doer:       event.respond_to?(:doer) ? event.doer.name : nil,
+      group:      event.respond_to?(:group) ? event.group.name : nil,
       created_at: event.created_at,
       message:    event.respond_to?(:message) ? serialize(:messages, event.message) : nil,
     }

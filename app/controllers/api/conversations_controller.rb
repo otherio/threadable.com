@@ -77,6 +77,15 @@ class Api::ConversationsController < ApiController
         conversation.doers.add(doers)
       end
 
+      if params[:conversation].key?(:group_ids)
+        supplied_group_ids = Array(params[:conversation][:group_ids])
+        existing_group_ids = conversation.groups.all.map(&:id)
+        remove_group_ids = existing_group_ids - supplied_group_ids
+        conversation.groups.remove organization.groups.find_by_ids(remove_group_ids) if remove_group_ids.present?
+
+        conversation.groups.add organization.groups.find_by_ids(supplied_group_ids) if supplied_group_ids.present?
+      end
+
       conversation.update!(conversation_params)
 
     end
