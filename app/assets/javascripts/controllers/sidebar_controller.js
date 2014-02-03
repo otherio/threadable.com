@@ -48,16 +48,15 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
       this.close();
     },
     joinGroup: function(group) {
-      group.join().then(this.reopenGroups.bind(this));
+      group.join().then(this.reopenGroups.bind(this, $('.sidebar .group.open')));
     },
     leaveGroup: function(group) {
-      group.leave().then(this.reopenGroups.bind(this));
+      group.leave().then(this.reopenGroups.bind(this, $('.sidebar .group.open')));
     }
   },
 
   // this is a lame hack - Jared
-  reopenGroups: function() {
-    var openGroups = $('.sidebar .group.open');
+  reopenGroups: function(openGroups) {
     Ember.run.later(function() {
       openGroups.map(function() {
         var group = $('.sidebar .group[data-group-id='+$(this).data('groupId')+']');
