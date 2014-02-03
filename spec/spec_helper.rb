@@ -68,4 +68,18 @@ RSpec.configure do |config|
     ensure_no_open_transactions!
   end
 
+  if ENV['CIRCLE_ARTIFACTS'].present?
+    config.around :each do |example|
+      next example.call unless Capybara::DSL === self
+      spec_name = Pathname(example.metadata[:example_group_block].source_location.join(':')).relative_path_from(Rails.root).to_s.gsub('/','::')
+      `screen-capture start "#{File.join(ENV['CIRCLE_ARTIFACTS'], spec_name)}.webm"`
+      begin
+        example.call
+      ensure
+        `screen-capture stop`
+      end
+    end
+  end
+
+
 end
