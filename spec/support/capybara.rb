@@ -1,4 +1,5 @@
-SELENIUM = ENV['SELENIUM'] == 'true'
+# SELENIUM = ENV['SELENIUM'] == 'true'
+SELENIUM = true
 # SELENIUM_BROWSER=safari
 # SELENIUM_BROWSER=chrome
 # SELENIUM_BROWSER=firefox

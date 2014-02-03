@@ -39,7 +39,8 @@ RSpec.configure do |config|
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
     Timecop.return
     Threadable.redis.flushdb
-    WebMock.disable_net_connect!(:allow_localhost => true, :allow => "codeclimate.com")
+    WebMock.enable!
+    WebMock.disable_net_connect!(:allow_localhost => true, :allow => ["codeclimate.com", '127.0.0.1'])
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Threadable::InMemoryTracker.clear
