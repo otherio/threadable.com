@@ -9,9 +9,12 @@ Threadable.SidebarView = Ember.View.extend({
   ],
 
   userSettingsOpen: false,
+  organizationSettingsOpen: false,
+  otherOrganizationsOpen: false,
 
   unbindEvents: function() {
-    this.$().off('click.sidebar');
+    this.$().off('.sidebar');
+    $(document).off('.close-other-organizations');
   },
 
   bindEvents: function() {
@@ -48,6 +51,23 @@ Threadable.SidebarView = Ember.View.extend({
       $(this).closest('.group').toggleClass('open');
     });
   },
+
+  otherOrganizationsChanged: function() {
+    var view = this;
+    if (view.get('otherOrganizationsOpen')){
+      Ember.run.later(function() {
+        $(document).on('click.close-other-organizations', function(event) {
+          if ($(event.target).closest('.other-organizations').length) return;
+          view.set('otherOrganizationsOpen', false);
+        });
+        $(document).on('keydown.close-other-organizations', function(event) {
+          if (event.which === 27) view.set('otherOrganizationsOpen', false);
+        });
+      });
+    }else{
+      $(document).off('.close-other-organizations');
+    }
+  }.observes('otherOrganizationsOpen'),
 
   didInsertElement: function() {
     this.bindEvents();
