@@ -114,7 +114,9 @@
   <ul>
     {{#each organization in currentUser.organizations}}
       <li>
-        {{#link-to 'conversations' organization.slug 'my'}}{{organization.name}}{{/link-to}}
+        {{#link-to 'conversations' organization.slug 'my' class="dont-close-sidebar"}}
+          {{organization.name}}
+        {{/link-to}}
       </li>
     {{/each}}
   </ul>
