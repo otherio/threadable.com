@@ -19,8 +19,8 @@ class Threadable::Users < Threadable::Collection
 
   def find_by_email_addresses email_addresses
     email_addresses = threadable.email_addresses.find_by_addresses(email_addresses)
-    user_ids = email_addresses.map{|e| e.try(:user_id) }
-    user_records = scope.where(id: user_ids.compact).to_a
+    user_ids = email_addresses.map{|e| e.try(:user_id) }.compact
+    user_records = scope.where(id: user_ids).to_a
     email_addresses.map do |email_address|
       next unless email_address
       user_record = user_records.find do |user_record|

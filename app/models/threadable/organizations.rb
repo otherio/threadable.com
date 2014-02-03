@@ -30,7 +30,7 @@ class Threadable::Organizations < Threadable::Collection
 
   def find_by_email_address email_address
     email_address.present? or return
-    email_address_username, host = email_address.strip_non_ascii.split('@')
+    email_address_username, host = email_address.downcase.strip_non_ascii.split('@')
     # grab the stuff before the + here.
     email_address_username =~ /^([^+]+)\+?/
     email_address_username = $1

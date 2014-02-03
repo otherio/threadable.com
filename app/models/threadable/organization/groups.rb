@@ -14,7 +14,7 @@ class Threadable::Organization::Groups < Threadable::Groups
   end
 
   def find_by_email_address_tag email_address_tag
-    group_for (scope.where(email_address_tag: email_address_tag).first or return)
+    group_for (scope.where(email_address_tag: email_address_tag.downcase).first or return)
   end
   alias_method :find_by_slug, :find_by_email_address_tag
 
@@ -27,6 +27,7 @@ class Threadable::Organization::Groups < Threadable::Groups
   end
 
   def find_by_email_address_tags email_address_tags
+    email_address_tags = email_address_tags.map(&:downcase)
     group_records = scope.where('email_address_tag in (?)', email_address_tags).to_a
     email_address_tags.map do |email_address_tag|
       group_for group_records.find{|group| group.email_address_tag == email_address_tag}

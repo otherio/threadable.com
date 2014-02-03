@@ -39,7 +39,7 @@ class Threadable::Organization::Members < Threadable::Collection
   def find_by_email_address email_address
     member_for (
       scope.includes(:email_addresses)
-        .where(email_addresses:{address:email_address.strip_non_ascii})
+        .where(email_addresses:{address:email_address.downcase.strip_non_ascii})
         .references(:email_addresses)
         .first or return
     )

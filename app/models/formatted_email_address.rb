@@ -1,9 +1,9 @@
 class FormattedEmailAddress
 
   def initialize options
-    @address      = options[:address]
+    @address      = options[:address].to_s
     @display_name = options[:display_name].to_s.strip
-    @mail_address = Mail::Address.new(@address.to_s)
+    @mail_address = Mail::Address.new(@address)
     @mail_address.display_name = @display_name if @display_name.present?
   end
 

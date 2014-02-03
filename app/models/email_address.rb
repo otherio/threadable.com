@@ -27,7 +27,7 @@ class EmailAddress < ActiveRecord::Base
   end
 
   def address= address
-    write_attribute(:address, address.to_s.strip_non_ascii)
+    write_attribute(:address, address.to_s.downcase.strip_non_ascii)
   end
 
   def has_taken_error?

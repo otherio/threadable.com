@@ -9,13 +9,16 @@ class Threadable::EmailAddress < Threadable::Model
 
   delegate *%w{
     id
-    address
     user_id
     primary?
     errors
     persisted?
     confirmed?
   }, to: :email_address_record
+
+  def address
+    email_address_record.address.try(:downcase)
+  end
 
   def formatted_email_address
     FormattedEmailAddress.new(display_name: user.try(:name), address: address).to_s

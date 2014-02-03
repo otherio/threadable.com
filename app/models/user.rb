@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   scope :with_email_address, ->(email_address){
     readonly(false). \
     joins(:email_addresses). \
-    where(email_addresses: {address: email_address})
+    where(email_addresses: {address: email_address.downcase})
   }
 
   def self.find_by_email_address email_address
