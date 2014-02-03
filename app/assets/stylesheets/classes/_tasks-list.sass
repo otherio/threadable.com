@@ -14,12 +14,12 @@
     padding: 5px 15px
     background-color: $lighter-grey-color
     font-size: 0
+    color: $dark-grey-color
     a
       padding: 0.35em 0 0.25em 0
       margin: 0 0.75em
       font-size: 14px
       border: 1px solid transparent
-    color: $dark-grey-color
 
     .tasks, .doing-tasks
       border: 1px solid $light-grey-color
@@ -72,6 +72,9 @@
         height: $height - $padding - $padding
         padding: $padding $padding $padding 15px
 
+      > a.active
+        background-color: $faint-blue-color
+
       .arrow, .burger
         position: absolute
         top: 0
@@ -99,8 +102,10 @@
 
   .done-tasks
     display: none
-    > ul > li.task
+    > ul > li.task > a
       background-color: $faint-yellow-color
+      &.active
+        background-color: $yellow-color
 
   &.showing-done
     .done-tasks
