@@ -20,10 +20,10 @@ fi
 git fetch --tags
 
 # push to github
-git push git@heroku.com:covered-$ENV.git $REFSPEC:master || exit 1
+git push git@heroku.com:threadable-$ENV.git $REFSPEC:master || exit 1
 
 # run migrations
-heroku run rake db:migrate --app covered-$ENV
+heroku run rake db:migrate --app threadable-$ENV
 
 # tag this rev as having been released
 git push --delete origin latest-$ENV
