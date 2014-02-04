@@ -322,13 +322,10 @@ BODY
     end
   end
 
-  context "with threadable email button cruft" do
+  context "with a mailgun open tracking bug" do
     let :body do
 <<-BODY
--- don't delete this: [ref: this-is-a-message]
--- tip: control threadable by putting commands at the top of your reply, just like this:
-
-&done
+<img width="1px" height="1px" alt="" src="http://email.staging.threadable.com/o/aT1DQUxPMHRTMVBrbVRkYjclMkJVUWNZT0pOLW5tczM1RzA0b3RBT1VaSiUyQnhyeURpZFJjVTFRJTQwbWFpbC5nbWFpbC5jb20maD1iNjZhMmU5MzlkNTZmMGQ4MzQ1OWNjYzNjZWIyODEyMyZyPWlhbiU0MG90aGVyLmlvJmQ9ODk1NzE">
 
 Yo momma.
 BODY
@@ -337,13 +334,12 @@ BODY
     let :stripped_body do
 <<-BODY
 
-&done
 
 Yo momma.
 BODY
     end
 
-    it "should strip threadable controls" do
+    it "should strip the open tracker" do
       expect(call(body)).to eq stripped_body
     end
   end

@@ -2,14 +2,15 @@ class StripThreadableContentFromEmailMessageBody < MethodObject
 
   around = '##CovMid:\s?[a-zA-Z0-9+\/=-]+\s?##'
   REMOVE_CONTROLS_REGEXP = %r(#{around}.*?#{around})msu
-  REMOVE_EMAIL_BUTTON_TIPS_REGEXP = %r(-- tip: control threadable by putting commands at the top of your reply, just like this:\n?)msu
-  REMOVE_EMAIL_BUTTON_REF_REGEXP = %r(-- don't delete this: \[ref: .*\]\n?)msu
+
+  # http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454
+  REMOVE_OPEN_TRACKER_REGEXP = %r{\<img width="1px" height="1px" alt="" src="http://email\.(staging\.|)threadable.com/[^>]+">}msu
 
   def call body
     @body = body.dup
     remove_unsubscribe_tokens!
     remove_controls!
-    remove_email_button_cruft!
+    remove_open_tracker!
     @body
   end
 
@@ -28,9 +29,8 @@ class StripThreadableContentFromEmailMessageBody < MethodObject
     @body.gsub!(REMOVE_CONTROLS_REGEXP, '')
   end
 
-  def remove_email_button_cruft!
-    @body.gsub!(REMOVE_EMAIL_BUTTON_TIPS_REGEXP, '')
-    @body.gsub!(REMOVE_EMAIL_BUTTON_REF_REGEXP, '')
+  def remove_open_tracker!
+    @body.gsub!(REMOVE_OPEN_TRACKER_REGEXP, '')
   end
 
 end
