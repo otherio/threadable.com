@@ -201,7 +201,7 @@ class ConversationMailer < Threadable::Mailer
     @has_many_groups ||= @conversation.groups.count > 1
   end
 
-  def truncate_with_ellipsis string, length = 23
+  def truncate_with_ellipsis string, length = 21
     output = string[0,length]
     if output != string
       output = output.strip + '...'
