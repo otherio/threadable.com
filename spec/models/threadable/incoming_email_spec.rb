@@ -446,8 +446,6 @@ describe Threadable::IncomingEmail do
 
     context 'with a body that contains commands and threadable tips' do
       let(:body){
-        %(-- don't delete this: [ref: welcome-to-our-threadable-organization]\n)+
-        %(-- tip: control threadable by putting commands at the top of your reply, just like this:\n\n)+
         %(&done\n)
       }
       it { should be_false }
@@ -455,8 +453,6 @@ describe Threadable::IncomingEmail do
 
     context 'with a body that contains commands and real live text' do
       let(:body){
-        %(-- don't delete this: [ref: welcome-to-our-threadable-organization]\n)+
-        %(-- tip: control threadable by putting commands at the top of your reply, just like this:\n\n)+
         %(&done\n\n Hello Seattle, I am a mountaineer, in the hills and highlands. I fall asleep in hospital parking lots.)
       }
       it { should be_true }
