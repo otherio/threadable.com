@@ -14,12 +14,12 @@ class StripThreadableContentFromEmailMessageBody < MethodObject
   end
 
   def remove_unsubscribe_tokens!
-    @body.gsub!(%r{(https?://(?:[\w\-]+\.)?threadable\.io/[\w\-]+/unsubscribe)/(.+?)(?=<|")}mu) do
+    @body.gsub!(%r{(https?://(?:[\w\-]+\.)?(threadable\.com|covered\.io)/[\w\-]+/unsubscribe)/(.+?)(?=<|")}mu) do
       url, token = $1, $2
       token =~ /=\n/ ? "#{url}=\n" : "#{url}"
     end
 
-    @body.gsub!(%r{(https?://(?:[\w\-]+\.)?threadable\.io/[\w\-]+/unsubscribe)/[\w=]+}mu) do
+    @body.gsub!(%r{(https?://(?:[\w\-]+\.)?(threadable\.com|covered\.io)/[\w\-]+/unsubscribe)/[\w=]+}mu) do
       $1
     end
   end
