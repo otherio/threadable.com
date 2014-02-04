@@ -7,7 +7,7 @@ feature "Editing my profile" do
     visit root_url
     expect(page).to have_text 'My Conversations'
     resize_window_to :large
-    find('.sidebar .user-controls .toggle-user-settings').click
+    find('.sidebar .toggle-user-settings').click
     click_on 'Edit profile'
   end
 

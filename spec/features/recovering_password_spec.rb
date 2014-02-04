@@ -33,7 +33,7 @@ feature "recovering password" do
     click_button 'Update'
     expect(page).to have_text "Alice Neilson"
 
-    page.find('.sidebar .user-controls .toggle-user-settings').click
+    page.find('.sidebar .toggle-user-settings').click
     sleep 0.2
     click_link 'Sign out'
     expect(page).to have_text "No password yet?"

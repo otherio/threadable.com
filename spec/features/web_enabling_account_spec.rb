@@ -32,7 +32,7 @@ feature "web enabling account" do
     click_button 'Update'
     expect(page).to have_text "Yan Hzu"
 
-    page.find('.sidebar .user-controls .toggle-user-settings').click
+    page.find('.sidebar .toggle-user-settings').click
     sleep 0.2 # this waits for the css transition - Jared
     click_link 'Sign out'
     expect(page).to have_text "No password yet?"
