@@ -1,5 +1,6 @@
 .threadable-content
-  margin-top: 1em !important
+  margin-top: 0.5em !important
+  width: 100%
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important
 
   .threadable-details a
@@ -24,30 +25,65 @@
     font-family: sans-serif !important
     text-align: center !important
     text-decoration: none !important
-    border: #cccccc 1px solid !important
     background: #fcfcfc !important
     -webkit-text-size-adjust: none !important
     -webkit-font-smoothing: antialiased !important
     font-size: 11px !important
+    font-weight: 300 !important
     line-height: 22px !important
 
+    &:not(.compose-button)
+      border: #cccccc 1px solid !important
+
   td.threadable-button
-    vertical-align: middle
+    padding-top: 3px !important
 
   a.task-button
     color: #1abc9c !important
 
   a.compose-button
-    color: #16a085 !important
+    color: #364041 !important
 
   a.view-button
-    color: #7f8c8d !important
+    color: #364041 !important
 
   a.mute-button
     color: #2980b9 !important
 
   .threadable-button-table
     margin: 0
+
+  .threadable-group-indicator
+    font-size: 11px !important
+    font-weight: bold !important
+    border-radius: 3px !important
+
+    &.grouped
+      color: white !important
+      padding-top: 1px
+
+    &.ungrouped
+      font-weight: normal !important
+      color: #5a6a6c !important
+
+      td.threadable-button
+        padding-right: 2px !important
+
+      .compose-button
+        border: #cccccc 1px solid !important
+
+      .group-name
+        padding-left: 1px
+
+    &.many
+      color: white !important
+      padding-top: 1px
+
+    td.threadable-button
+      padding: 0 !important
+
+  .clear-right
+    clear: both
 
 .plain-text
   white-space: pre-wrap !important

@@ -9,12 +9,7 @@
       %td
         %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
           %tr
-            = email_button "New conversation", @new_conversation_url,  class: 'compose-button'
-            = email_button "New task",         @new_task_url,          class: 'compose-button'
             = email_button "Web view",         @message_url,           class: 'view-button'
-
-        %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
-          %tr
             = email_button "Mute", email_action_link(@conversation, @recipient, "mute"), class: 'mute-button'
             - if @task
               - if @task.doers.include? @recipient
@@ -22,17 +17,27 @@
               - else
                 = email_button "I'll do it!", email_action_link(@conversation, @recipient, "add")
               - if @task.done?
-                = email_button "Mark as undone", email_action_link(@conversation, @recipient, "undone")
+                = email_button "Task undone", email_action_link(@conversation, @recipient, "undone")
               - else
-                = email_button "Mark as done", email_action_link(@conversation, @recipient, "done")
+                = email_button "Task done", email_action_link(@conversation, @recipient, "done")
             - else
               %td
               %td
 
+        %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "4"}
+          %tr
+            %td
+              %table.threadable-group-indicator{border: 0, cellpadding: 0, cellspacing: 3, class: @group_indicator_options[:class], style: "background-color: #{@group_indicator_options[:color]} !important;"}
+                %tr
+                  = email_button "New conversation", @new_conversation_url,  class: 'compose-button'
+                  = email_button "New task",         @new_task_url,          class: 'compose-button'
+                %tr
+                  %td.group-name{colspan: 2}
+                    = @group_indicator_options[:name]
 
-  %div{:style => "display:none; display:none !important;"}
+
+  %div{:style => "display:none; display:none !important; clear: both"}
     = "##CovMid: #{@message.unique_id} ##"
-  %br
 
 - if @message.body.html?
   = @message.body
@@ -64,5 +69,5 @@
         .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
           = "sent to #{mail_to @recipient.email_address, @recipient.email_address} | #{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
 
-  %div{:style => "display:none; display:none !important;"}
+  %div{:style => "display:none; display:none !important"}
     = "##CovMid: footer ##"

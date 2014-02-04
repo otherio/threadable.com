@@ -33,14 +33,39 @@ class ConversationMailer < Threadable::Mailer
     reply_to_address = @conversation.canonical_formatted_email_address
 
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
-    @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
-    @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
+
+    if has_many_groups
+      groups = @conversation.groups.all
+      @new_task_url = "mailto:#{groups.map(&:task_email_address).join(',')}"
+      @new_conversation_url = "mailto:#{groups.map(&:email_address).join(',')}"
+      @group_indicator_options = {
+        name: 'Many Groups',
+        class: 'many',
+        color: '#95a5a6',
+      }
+    elsif has_groups
+      group = @conversation.groups.all.first
+      @new_task_url = "mailto:#{URI::encode(group.formatted_task_email_address)}"
+      @new_conversation_url = "mailto:#{URI::encode(group.formatted_email_address)}"
+      @group_indicator_options = {
+        name: "+#{truncate_with_ellipsis(group.name)}",
+        class: 'grouped',
+        color: group.color,
+      }
+    else
+      @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
+      @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
+      @group_indicator_options = {
+        name: "Ungrouped",
+        class: 'ungrouped',
+        color: "#ecf0f1",
+      }
+    end
 
     to_addresses = as_address_objects(@message.to_header.to_s)
     cc_addresses = as_address_objects(@message.cc_header.to_s)
 
     @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten)
-    @has_groups = @conversation.groups.count > 0
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
 
     to_addresses = transform_stale_group_references(to_addresses)
@@ -118,7 +143,7 @@ class ConversationMailer < Threadable::Mailer
 
   def filter_organization_email_addresses email_addresses
     organization_email_address = Mail::Address.new(@organization_email_address)
-    addresses_to_insert = @has_groups ? @missing_addresses : organization_email_address
+    addresses_to_insert = has_groups ? @missing_addresses : organization_email_address
 
     email_addresses.map do |email_address|
       if email_address.address == organization_email_address.address
@@ -166,5 +191,21 @@ class ConversationMailer < Threadable::Mailer
       email_addresses = email_addresses.join(', ')
     end
     Mail::AddressList.new(email_addresses).addresses
+  end
+
+  def has_groups
+    @has_groups ||= @conversation.groups.count > 0
+  end
+
+  def has_many_groups
+    @has_many_groups ||= @conversation.groups.count > 1
+  end
+
+  def truncate_with_ellipsis string, length = 23
+    output = string[0,length]
+    if output != string
+      output = output.strip + '...'
+    end
+    output
   end
 end
