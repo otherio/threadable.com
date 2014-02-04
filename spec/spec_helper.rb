@@ -51,7 +51,7 @@ RSpec.configure do |config|
 
     load_fixtures! if use_fixtures
 
-    resize_window_to :large if Capybara::DSL === self
+    resize_window_to(:large) if defined?(resize_window_to)
 
     if use_transaction
       test_transaction do
