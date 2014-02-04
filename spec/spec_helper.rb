@@ -51,6 +51,8 @@ RSpec.configure do |config|
 
     load_fixtures! if use_fixtures
 
+    resize_window_to :large if Capybara::DSL === self
+
     if use_transaction
       test_transaction do
         empty_databases! if !use_fixtures
