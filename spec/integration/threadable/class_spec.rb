@@ -27,7 +27,7 @@ describe Threadable::Class do
 
 
     events = threadable.events.all.group_by(&:class)
-    expect( events.keys ).to eq [
+    expect( events.keys.to_set ).to eq Set[
       Threadable::Events::ConversationCreated,
       Threadable::Events::TaskCreated,
       Threadable::Events::TaskAddedDoer,
