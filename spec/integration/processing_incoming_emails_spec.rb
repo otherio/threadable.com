@@ -258,9 +258,6 @@ describe "processing incoming emails" do
       expect( email.header['List-Archive'].to_s     ).to eq expected_sent_email_list_archive
       expect( email.header['List-Unsubscribe'].to_s ).to be_present
       expect( email.header['List-Post'].to_s        ).to eq expected_sent_email_list_post
-
-      expect(email.text_content).to_not include "-- don't delete this:"
-      expect(email.text_content).to_not include "-- tip: control threadable"
     end
   end
 
@@ -581,13 +578,9 @@ describe "processing incoming emails" do
 
         context 'but the body contains only commands and whitespace' do
           let(:body_html){
-            %(<p>-- don't delete this: [ref: welcome-to-our-threadable-organization]</p>\n)+
-            %(<p>-- tip: control threadable by putting commands at the top of your reply, just like this:</p>\n\n)+
             %(&amp;done\n)
           }
           let(:body_plain){
-            %(-- don't delete this: [ref: welcome-to-our-threadable-organization]\n)+
-            %(-- tip: control threadable by putting commands at the top of your reply, just like this:\n\n)+
             %(&done\n)
           }
           let(:stripped_html){ body_html }
