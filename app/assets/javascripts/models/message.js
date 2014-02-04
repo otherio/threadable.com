@@ -30,8 +30,11 @@ Threadable.Message = RL.Model.extend({
   }.property('body', 'bodyStripped'),
 
   bodyAsHtml: function() {
-    if(this.get('body')){
-      return '<p>' + this.get('body').replace(/\n/g, "<br />\n") + '</p>';
+    var body = this.get('body');
+
+    if(body){
+      body = Threadable.htmlEscape(body);
+      return '<p>' + body.replace(/\n/g, "<br />\n") + '</p>';
     }
   }.property('body')
 });
