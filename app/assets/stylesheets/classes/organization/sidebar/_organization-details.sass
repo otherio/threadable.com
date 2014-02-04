@@ -1,8 +1,9 @@
 .organization-details
+  display: block
   position: relative
   padding: 6px $horizontal-padding
   background-color: $grey-color
-  // color: $white-color
+  text-decoration: none
   +bottom-border
 
   > .name
@@ -10,7 +11,7 @@
   > .email-address
     font-size: $small-font-size
 
-  > .toggle-organization-settings
+  > .caret-container
     +absolute(0, null, 0, 0)
     padding: 0 $horizontal-padding
     line-height: 52px

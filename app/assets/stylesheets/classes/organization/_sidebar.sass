@@ -28,6 +28,11 @@
     +bottom-border
     +no-select
 
+  a
+    &.active, &:hover
+      background-color: $grey-color
+      color: $white-color
+
   ul
     +bottom-border
     &, li
@@ -44,9 +49,7 @@
         border-top: 1px solid rgba(0,0,0,0.3)
         box-shadow: inset 0 1px 0 rgba(255,255,255,0.05)
         text-shadow: 0 1px 0 rgba(0,0,0,0.5)
-        &.active, &:hover
-          background-color: $grey-color
-          color: $white-color
+
         > i
           position: relative
           width: 1.5em
@@ -102,13 +105,13 @@
 
   // state changes
   &.user-settings-open
-    .user-controls > .toggle-user-settings > .caret
+    .user-controls .caret
       +rotate(-90deg)
     .user-settings
       height: 83px
 
   &.organization-settings-open
-    .organization-details > .toggle-organization-settings > .caret
+    .organization-details .caret
       +rotate(-90deg)
     .organization-settings
       height: 124px

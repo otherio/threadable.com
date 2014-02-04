@@ -2,6 +2,7 @@
   $padding: $horizontal-padding
   $avatar-size: 48px
 
+  display: block
   position: relative
   height: $padding + $avatar-size + $padding
   background-color: $background-color
@@ -17,7 +18,7 @@
       font-size: $large-font-size
     > .email-address
       font-size: $small-font-size
-  > .toggle-user-settings
+  > .caret-container
     +absolute(0, null, 0, 0)
     padding: 0 $horizontal-padding
     line-height: 78px

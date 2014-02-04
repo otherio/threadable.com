@@ -1,4 +1,4 @@
-<div class="user-controls">
+<a class="user-controls toggle-user-settings" href="">
   <div class="avatar">
     <img {{bind-attr src="currentUser.avatarUrl"}} />
   </div>
@@ -6,10 +6,10 @@
     <div class="name">{{currentUser.name}}</div>
     <div class="email-address">{{currentUser.emailAddress}}</div>
   </div>
-  <a class="toggle-user-settings" href="">
+  <div class="caret-container">
     <i class="caret uk-icon-caret-left"></i>
-  </a>
-</div>
+  </div>
+</a>
 
 <div class="current-organization scrollable">
 
@@ -30,13 +30,13 @@
     </ul>
   </div>
 
-  <div class="organization-details">
+  <a class="organization-details toggle-organization-settings" href="">
     <div class="name">{{organization.name}}</div>
     <div class="email-address">{{organization.emailAddress}}</div>
-    <a class="toggle-organization-settings" href="">
+    <div class="caret-container">
       <i class="caret uk-icon-caret-left"></i>
-    </a>
-  </div>
+    </div>
+  </a>
 
   <div class="organization-settings">
     <ul class="nested">
