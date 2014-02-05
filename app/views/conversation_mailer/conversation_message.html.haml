@@ -67,7 +67,7 @@
           |
           = mail_to @organization.email_address, @organization.email_address
         .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
-          = "sent to #{mail_to @recipient.email_address, @recipient.email_address} | #{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
+          = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
 
   %div{:style => "display:none; display:none !important"}
     = "##CovMid: footer ##"
