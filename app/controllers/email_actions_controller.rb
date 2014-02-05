@@ -9,30 +9,30 @@ class EmailActionsController < ApplicationController
   end
 
   def take
-    conversation_id, user_id, action = EmailActionToken.decrypt(params[:token])
+    record_id, user_id, action = EmailActionToken.decrypt(params[:token])
 
-    @user = signed_in? ? current_user : threadable.users.find_by_id(user_id) or begin
-      return render :failed
-    end
+    @email_action = EmailAction.new(threadable, action, user_id, record_id)
 
-    @conversation = @user.conversations.find_by_id(conversation_id) or begin
+    @email_action.record or begin
       if signed_in?
         redirect_to root_url(danger: 'You are not authorized to take that action')
-      else
-        raise 'unable to take action'
+        return
       end
+      raise 'unable to take action'
+    end
+
+    if @email_action.requires_user_to_be_signed_in? && !signed_in?
+      render :pending
       return
     end
 
-    @email_action = EmailAction.new(action, @user, @conversation)
+    @email_action.execute!
 
     if signed_in?
-      @email_action.execute!
-      redirect_to conversation_url(@conversation.organization, 'my', @conversation, success: @email_action.description)
-      return
+      redirect_to @email_action.redirect_url(self)
+    else
+      render :success
     end
-
-    render :pending
   end
 
 end

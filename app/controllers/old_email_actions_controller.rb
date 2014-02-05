@@ -29,19 +29,11 @@ class OldEmailActionsController < ApplicationController
 
   def execute!
     email_action.execute!
-    redirect_to conversation_url(organization, 'my', conversation, success: email_action.description)
-  end
-
-  def organization
-    @organization ||= current_user.organizations.find_by_slug!(params[:organization_id])
-  end
-
-  def conversation
-    @conversation ||= organization.conversations.find_by_slug!(params[:conversation_id])
+    redirect_to email_action.redirect_url(self)
   end
 
   def email_action
-    @email_action ||= EmailAction.new(@action, current_user, conversation)
+    @email_action ||= EmailAction.new(threadable, @type, current_user.id, params[:conversation_id])
   end
 
 end

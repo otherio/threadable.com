@@ -9,14 +9,46 @@ class EmailAction
     mute
     add
     remove
+    join
+    leave
   }.freeze
 
-  def initialize type, user, conversation
-    @type, @user, @conversation = type.to_s, user, conversation
+  def initialize threadable, type, user_id, record_id
+    @threadable, @type, @user_id, @record_id = threadable, type.to_s, user_id, record_id
     raise InvalidType, "expected one of: #{TYPES.inspect}. Got: #{@type.inspect}" if TYPES.exclude?(@type)
   end
 
-  attr_reader :type, :user, :conversation
+  attr_reader :threadable, :type, :user, :conversation
+
+  def user
+    @user ||= threadable.current_user || threadable.users.find_by_id(@user_id)
+  end
+
+  def record
+    return @record if @record
+    thing = user || threadable
+    @record = case @type
+    when 'done';   thing.tasks.find_by_id(@record_id)
+    when 'undone'; thing.tasks.find_by_id(@record_id)
+    when 'mute';   thing.conversations.find_by_id(@record_id)
+    when 'add';    thing.tasks.find_by_id(@record_id)
+    when 'remove'; thing.tasks.find_by_id(@record_id)
+    when 'join';   thing.groups.find_by_id(@record_id)
+    when 'leave';  thing.groups.find_by_id(@record_id)
+    end
+  end
+
+  def requires_user_to_be_signed_in?
+    case @type
+    when 'done';   true
+    when 'undone'; true
+    when 'mute';   true
+    when 'add';    true
+    when 'remove'; true
+    when 'join';   false
+    when 'leave';  false
+    end
+  end
 
   def executed?
     !!@executed
@@ -25,47 +57,78 @@ class EmailAction
   def execute!
     raise AlreadyExecuted if executed?
     @executed = true
-    case @type
+    case type
     when 'done'
-      @conversation.done! if @conversation.task?
+      record.done!
     when 'undone'
-      @conversation.undone! if @conversation.task?
+      record.undone!
     when 'mute'
-      @conversation.mute_for(@user)
+      record.mute_for(user)
     when 'add'
-      @conversation.doers.add(@user)
+      record.doers.add(user)
     when 'remove'
-      @conversation.doers.remove(@user)
+      record.doers.remove(user)
+    when 'join'
+      record.members.add(user)
+    when 'leave'
+      record.members.remove(user)
     end
   end
 
   def pending_description
-    case @type
+    case type
     when 'done'
-      "mark #{@conversation.subject.inspect} as done"
+      "mark #{record.subject.inspect} as done"
     when 'undone'
-      "mark #{@conversation.subject.inspect} as not done"
+      "mark #{record.subject.inspect} as not done"
     when 'mute'
-      "mute #{@conversation.subject.inspect}"
+      "mute #{record.subject.inspect}"
     when 'add'
-      "add yourself as a doer of #{@conversation.subject.inspect}"
+      "add yourself as a doer of #{record.subject.inspect}"
     when 'remove'
-      "remove yourself as a doer of #{@conversation.subject.inspect}"
+      "remove yourself as a doer of #{record.subject.inspect}"
+    when 'join'
+      "add yourself to the #{record.name.inspect} group"
+    when 'leave'
+      "remove yourself from the #{record.name.inspect} group"
     end
   end
 
-  def description
-    case @type
+  def success_description
+    case type
     when 'done'
-      "You marked #{@conversation.subject.inspect} as done"
+      "You marked #{record.subject.inspect} as done"
     when 'undone'
-      "You marked #{@conversation.subject.inspect} as not done"
+      "You marked #{record.subject.inspect} as not done"
     when 'mute'
-      "You muted #{@conversation.subject.inspect}"
+      "You muted #{record.subject.inspect}"
     when 'add'
-      "You're added as a doer of #{@conversation.subject.inspect}"
+      "You're added as a doer of #{record.subject.inspect}"
     when 'remove'
-      "You're no longer a doer of #{@conversation.subject.inspect}"
+      "You're no longer a doer of #{record.subject.inspect}"
+    when 'join'
+      "You're now a member of the #{record.name.inspect} group"
+    when 'leave'
+      "You're no longer a member of the #{record.name.inspect} group"
+    end
+  end
+
+  def redirect_url routes
+    case type
+    when 'done'
+      routes.task_url(record.organization, 'my', record, success: success_description)
+    when 'undone'
+      routes.task_url(record.organization, 'my', record, success: success_description)
+    when 'mute'
+      routes.conversation_url(record.organization, 'my', record, success: success_description)
+    when 'add'
+      routes.task_url(record.organization, 'my', record, success: success_description)
+    when 'remove'
+      routes.task_url(record.organization, 'my', record, success: success_description)
+    when 'join'
+      routes.conversations_url(record.organization, record, success: success_description)
+    when 'leave'
+      routes.conversations_url(record.organization, record, success: success_description)
     end
   end
 

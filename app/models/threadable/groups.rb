@@ -8,6 +8,15 @@ class Threadable::Groups < Threadable::Collection
     groups_for scope.joins(:group_members).where(group_memberships:{ user_id: threadable.current_user_id })
   end
 
+  def find_by_id id
+    group_for (scope.where(groups:{id:id}).first or return)
+  end
+
+  def find_by_id! id
+    find_by_id(id) or raise Threadable::RecordNotFound, "unable to find group with id #{id.inspect}"
+  end
+
+
   def include? group
     !!scope.where(id: group.group_id).exists?
   end

@@ -28,6 +28,8 @@ class Threadable::User < Threadable::Model
   let(:email_addresses)  { Threadable::User::EmailAddresses  .new(self) }
   let(:organizations)    { Threadable::User::Organizations   .new(self) }
   let(:conversations)    { Threadable::User::Conversations   .new(self) }
+  let(:tasks)            { Threadable::User::Tasks           .new(self) }
+  let(:groups)           { Threadable::User::Groups          .new(self) }
   let(:messages)         { Threadable::User::Messages        .new(self) }
   let(:group_memberships){ Threadable::User::GroupMemberships.new(self) }
 

@@ -5,8 +5,18 @@ class MailPreview < MailView
     generate_conversation_message message
   end
 
+  def conversation_in_group_message
+    message = Message.joins(conversation: :groups).where(:conversations => {type:nil}).last!
+    generate_conversation_message message
+  end
+
   def task_message
     message = Message.joins(:conversation).where(:conversations => {type: 'Task'}).last!
+    generate_conversation_message message
+  end
+
+  def task_in_group_message
+    message = Message.joins(conversation: :groups).where(:conversations => {type: 'Task'}).last!
     generate_conversation_message message
   end
 
@@ -53,7 +63,7 @@ class MailPreview < MailView
 
   def generate_conversation_message message
     threadable.current_user_id = message.creator_id
-    organization      = threadable.current_user.organizations.find_by_id!(message.conversation.organization_id)
+    organization = threadable.current_user.organizations.find_by_id!(message.conversation.organization_id)
     conversation = organization.conversations.find_by_id!(message.conversation.id)
     message      = conversation.messages.latest
     recipient    = organization.members.all.last

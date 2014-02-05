@@ -23,7 +23,7 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def add user
-    group.group_record.members << user.user_record
+    group.group_record.members += [user.user_record]
   end
 
   def remove user
