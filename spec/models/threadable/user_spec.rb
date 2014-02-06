@@ -10,10 +10,9 @@ describe Threadable::User do
   it { should have_constant :EmailAddresses }
   it { should have_constant :EmailAddress }
   it { should have_constant :Organizations }
-  it { should have_constant :Organization }
   it { should have_constant :Messages }
 
-  its(:threadable       ){ should eq threadable                   }
+  its(:threadable    ){ should eq threadable                }
   its(:user_record   ){ should eq user_record               }
   its(:id            ){ should eq user_record.id            }
   its(:user_id       ){ should eq user_record.id            }
