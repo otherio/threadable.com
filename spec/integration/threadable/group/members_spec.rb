@@ -33,12 +33,12 @@ describe Threadable::Group::Members do
 
   describe '#include?' do
     it 'returns true if the given user is in the group' do
-      all_members = members.all
-      organization.members.all.each do |user|
-        if all_members.include?(user)
-          expect( members ).to include user
+      group_member_user_ids = members.all.map(&:user_id)
+      organization.members.all.each do |group_member|
+        if group_member_user_ids.include? group_member.user_id
+          expect( members ).to include group_member
         else
-          expect( members ).to_not include user
+          expect( members ).to_not include group_member
         end
       end
     end
