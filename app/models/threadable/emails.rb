@@ -16,7 +16,14 @@ class Threadable::Emails
     })
     Threadable::Emails::Validate.call(email)
     return if email.smtp_envelope_to =~ /(@|\.)example\.com$/
-    email.deliver
+    failed_once = false
+    begin
+      email.deliver
+    rescue EOFError
+      raise if failed_once
+      failed_once = true
+      retry
+    end
   end
 
   def send_email_async type, *args
