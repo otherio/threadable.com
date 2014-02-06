@@ -34,14 +34,12 @@ class Threadable::Messages::Create < MethodObject
     @options.given?(:body_plain) ? @options.body_plain :
     @options.given?(:text)       ? @options.text :
     @options.given?(:body)       ? strip_html(@options.body) :
-    @options.given?(:html)       ? strip_html(body_html) :
     nil
   end
 
   let :body_html do
     @options.given?(:body_html)  ? @options.body_html :
     @options.given?(:body)       ? @options.body :
-    @options.given?(:html)       ? @options.html :
     nil
   end
 
