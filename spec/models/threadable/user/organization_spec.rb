@@ -14,8 +14,7 @@ describe Threadable::User::Organization do
   its(:user){ should be user }
   its(:threadable){ should be threadable }
   its(:inspect){ should eq %(#<#{described_class} organization_id: 42, name: "prepapre" for_user: #{user.inspect}>) }
-  its(:groups)                 { should be_a Threadable::User::Organization::Groups }
-  its(:ungrouped_conversations){ should be_a Threadable::User::Organization::UngroupedConversations }
+  its(:groups){ should be_a Threadable::User::Organization::Groups }
 
   describe '#membership' do
     let(:member){ double :member }

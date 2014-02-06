@@ -142,8 +142,8 @@ class FixtureBuilder
   end
 
   def set_mail_delivery_option group_slug, settings
-    group = group_slug == :ungrouped ? organizations.ungrouped : organization.groups.find_by_slug!(group)
-
+    group = group_slug == :ungrouped ? organization.ungrouped : organization.groups.find_by_slug!(group)
+    # TBC
   end
 
 end
