@@ -3,6 +3,7 @@ Threadable.ComposeController = Ember.Controller.extend({
 
   organization: Ember.computed.alias('controllers.organization'),
 
+  sending: false,
   conversation: null,
   message: null,
   groups: Ember.ArrayProxy.create({content:[]}),
@@ -25,6 +26,10 @@ Threadable.ComposeController = Ember.Controller.extend({
     if (groups.indexOf(group) === -1) groups.pushObject(group);
   },
 
+  disabled: function(){
+    return this.get('sending') || !this.get('subject');
+  }.property('sending', 'subject'),
+
   actions: {
     reset: function() {
       this.get('groups').clear();
@@ -46,6 +51,8 @@ Threadable.ComposeController = Ember.Controller.extend({
       this.get('groups').addObject(group);
     },
     sendMessage: function() {
+      if (this.get('disabled')) return;
+      this.set('sending', true);
       var
         organization     = this.get('organization'),
         organizationSlug = organization.get('slug'),
@@ -88,6 +95,7 @@ Threadable.ComposeController = Ember.Controller.extend({
 
       function conversationFailed(xhr) {
         error.call(this, xhr);
+        this.set('sending', false);
       }
 
       function messageSaved(response) {
@@ -101,6 +109,7 @@ Threadable.ComposeController = Ember.Controller.extend({
         this.send('reset');
         this.send('addConversation', conversation);
         this.send('transitionToConversation', conversation);
+        this.set('sending', false);
       }
 
       function messageFailed(xhr) {
@@ -109,6 +118,7 @@ Threadable.ComposeController = Ember.Controller.extend({
         conversation.set('id', null);
         conversation.set('slug', null);
         conversation.set('isNew', true);
+        this.set('sending', false);
       }
 
       function error(response) {

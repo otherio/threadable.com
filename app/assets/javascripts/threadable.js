@@ -39,8 +39,10 @@ Threadable = Ember.Application.create({
 // };
 
 Ember.TextField.reopen({
-  attributeBindings: ['autofocus']
+  attributeBindings: ['autofocus', 'required']
 });
+
+
 
 // This disables all css-transitions while resizing
 $(window).on('resize', function(){
