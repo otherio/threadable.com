@@ -74,6 +74,12 @@ Threadable.ComposeController = Ember.Controller.extend({
       function conversationSaved(response) {
         message.set('conversationId',   conversation.get('id'));
         message.set('conversationSlug', conversation.get('slug'));
+        if(conversation.get('isTask') && !message.get('body')) {
+          // don't send messages for blank tasks.
+          saveFinished.bind(this)();
+          return;
+        }
+
         message.saveRecord().then(
           messageSaved.bind(this),
           messageFailed.bind(this)
@@ -86,6 +92,10 @@ Threadable.ComposeController = Ember.Controller.extend({
 
       function messageSaved(response) {
         conversation.deserialize(response.message.conversation);
+        saveFinished.bind(this)();
+      }
+
+      function saveFinished() {
         conversation.set('organization', organization);
         Threadable.Conversation.cache(conversation);
         this.send('reset');
