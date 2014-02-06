@@ -141,4 +141,9 @@ class FixtureBuilder
     membership.unsubscribe!
   end
 
+  def set_mail_delivery_option group_slug, settings
+    group = group_slug == :ungrouped ? organizations.ungrouped : organization.groups.find_by_slug!(group)
+
+  end
+
 end

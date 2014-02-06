@@ -8,9 +8,6 @@ class Threadable::Organization::Tasks < Threadable::Tasks
   end
   attr_reader :organization
 
-  let(:ungrouped){ Threadable::Organization::Tasks::Ungrouped.new(organization) }
-  let(:my)       { Threadable::Organization::Tasks::My       .new(organization) }
-
   def doing
     return [] if threadable.current_user_id.nil?
     conversations_for scope.doing_by(threadable.current_user_id)
@@ -46,6 +43,3 @@ class Threadable::Organization::Tasks < Threadable::Tasks
   end
 
 end
-
-require_dependency 'threadable/organization/tasks/ungrouped'
-require_dependency 'threadable/organization/tasks/my'

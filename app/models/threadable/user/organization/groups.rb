@@ -6,5 +6,4 @@ class Threadable::User::Organization::Groups < Threadable::Organization::Groups
   end
   attr_reader :user
 
-
 end

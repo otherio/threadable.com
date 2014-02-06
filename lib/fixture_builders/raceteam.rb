@@ -30,6 +30,7 @@ FixtureBuilder.build do
   web_enable! 'tom@ucsd.example.com'
   as 'tom@ucsd.example.com' do
     set_avatar! 'tom.jpg'
+    set_mail_delivery_option(:ungrouped, :no_mail)
   end
 
   web_enable! 'yan@ucsd.example.com'
@@ -48,6 +49,7 @@ FixtureBuilder.build do
   as 'bob@ucsd.example.com' do
     set_avatar! 'bob.jpg'
     add_email_address! 'bob.cauchois@example.com'
+    set_mail_delivery_option(:ungrouped, :summary)
   end
 
   as 'jonathan@ucsd.example.com' do
