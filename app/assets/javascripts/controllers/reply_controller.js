@@ -8,8 +8,8 @@ Threadable.ReplyController = Ember.ObjectController.extend({
   error: null,
 
   disabled: function() {
-    return this.get('sending') || (!this.get('hasText') && !this.get('changedDoers'));
-  }.property('hasText', 'changedDoers', 'sending'),
+    return this.get('sending') || (!this.get('hasBody') && !this.get('changedDoers'));
+  }.property('sending', 'hasBody', 'changedDoers'),
 
   buttonText: function() {
     if(!this.get('controllers.conversation.isTask')) {
@@ -17,25 +17,26 @@ Threadable.ReplyController = Ember.ObjectController.extend({
     }
 
     var changedDoers = this.get('changedDoers');
-    var hasText = this.get('hasText');
+    var hasBody = this.get('hasBody');
 
-    if(hasText && changedDoers) {
+    if(hasBody && changedDoers) {
       return 'Send & Update';
-    } else if(hasText) {
+    } else if(hasBody) {
       return 'Send';
     } else if(changedDoers) {
       return 'Update Doers';
     } else {
-      return 'Send/Update Doers';
+      return 'Send';
     }
-  }.property('hasText', 'changedDoers'),
+  }.property('hasBody', 'changedDoers'),
 
   changedDoers: function() {
     return !!this.get('doerSelector').filterBy('isChanged', true).length;
   }.property('doerSelector.@each.isChanged'),
 
-  hasText: function() {
-    return !!this.get('body');
+  hasBody: function() {
+    var body = this.get('body');
+    return body && !body.match(/^(\s|\n)+$/);
   }.property('body'),
 
   actions: {
@@ -79,10 +80,7 @@ Threadable.ReplyController = Ember.ObjectController.extend({
       }
 
       function saveMessage() {
-        var body = message.get('body');
-        if(body && body.match(/\w/)){
-          message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
-        }
+        message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
       }
 
       function onMessageSuccess(response) {

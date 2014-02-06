@@ -26,9 +26,14 @@ Threadable.ComposeController = Ember.Controller.extend({
     if (groups.indexOf(group) === -1) groups.pushObject(group);
   },
 
+  hasSubject: function() {
+    var subject = this.get('subject');
+    return subject && !subject.match(/^(\s|\n)+$/);
+  }.property('subject'),
+
   disabled: function(){
-    return this.get('sending') || !this.get('subject');
-  }.property('sending', 'subject'),
+    return this.get('sending') || !this.get('hasSubject');
+  }.property('sending', 'hasSubject'),
 
   actions: {
     reset: function() {
