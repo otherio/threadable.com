@@ -104,6 +104,9 @@ describe "Email actions" do
         visit url
         expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
         expect(group.members).to include user
+        click_on 'Leave'
+        expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
+        expect(group.members).to_not include user
       end
     end
 
@@ -115,6 +118,9 @@ describe "Email actions" do
         visit url
         expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
         expect(group.members).to_not include user
+        click_on 'Rejoin'
+        expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
+        expect(group.members).to include user
       end
     end
 

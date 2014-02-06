@@ -1,16 +1,26 @@
 .uk-container-center.uk-width-large-1-3.uk-width-medium-1-2
+  .well-when-not-small
+    .uk-clearfix
+      .uk-float-left
+        .avatar{style: "margin-right: 1em"}
+          = image_tag @email_action.user.avatar_url
+      .uk-float-left
+        %h2 Hey #{@email_action.user.name}
+        %div #{@email_action.user.email_address}
 
-  %h3 #{@email_action.success_description}
-
-  %h3 Remember:
   .well-when-not-small
     %p
-      You can #{@email_action.pending_description} via email! Just reply to the conversation and add
-      %br/
+      #{@email_action.success_description}
+    %p
+      If this is in error, you can easily undo!
+    %p
       - case @email_action.type
-      - when 'add', 'remove'
-        %strong "&#{@email_action.type} #{@email_action.user ? @email_action.user.name : 'Your Name'}"
-      - else
-        %strong "&#{@email_action.type}"
-      %br/
-      to the top of your response.
+        - when 'join'
+          - rejoin_url = email_action_url(token: EmailActionToken.encrypt(@email_action.record.id, @email_action.user.id, 'leave'))
+          %a.uk-button.uk-button-primary.uk-button-large.undo-button{href:rejoin_url}
+            Leave #{@email_action.record.name.inspect}
+        - when 'leave'
+          - rejoin_url = email_action_url(token: EmailActionToken.encrypt(@email_action.record.id, @email_action.user.id, 'join'))
+          %a.uk-button.uk-button-primary.uk-button-large.undo-button{href:rejoin_url}
+            Rejoin #{@email_action.record.name.inspect}
+
