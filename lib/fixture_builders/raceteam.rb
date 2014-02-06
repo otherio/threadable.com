@@ -9,6 +9,8 @@ FixtureBuilder.build do
     add_member 'Alice Neilson', 'alice@ucsd.example.com'
   end
 
+  Timecop.travel(Date.yesterday)
+
   web_enable! 'alice@ucsd.example.com'
   as 'alice@ucsd.example.com' do
     set_avatar! 'alice.jpg'
@@ -72,6 +74,8 @@ FixtureBuilder.build do
     reply_to @welcome_message, text: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.'
     mute_conversation @welcome_message.conversation
   end
+
+  Timecop.return
 
   as 'tom@ucsd.example.com' do
     create_conversation(

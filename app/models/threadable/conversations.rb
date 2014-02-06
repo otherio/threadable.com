@@ -12,6 +12,12 @@ class Threadable::Conversations < Threadable::Collection
     conversations_for scope.includes(:participants).includes(:messages)
   end
 
+  def all_with_updated_date date
+    start = date.midnight
+    finish = start + 1.day
+    scope.where('updated_at BETWEEN ? AND ?', start, finish).map {|conversation_record| conversation_for(conversation_record) }
+  end
+
   def find_by_id id
     conversation_for (scope.where(id: id).first or return)
   end

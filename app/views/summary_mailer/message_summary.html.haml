@@ -1,0 +1,11 @@
+
+Summary.
+
+
+.threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+  = link_to @organization.name, organization_url(@organization)
+  |
+  = mail_to @organization.email_address, @organization.email_address
+.threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
+  = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
+
