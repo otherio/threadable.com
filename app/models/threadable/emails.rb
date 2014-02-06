@@ -43,6 +43,7 @@ class Threadable::Emails
   def types
     {
       conversation_message:       ConversationMailer,
+      message_summary:            SummaryMailer,
       join_notice:                OrganizationMembershipMailer,
       unsubscribe_notice:         OrganizationMembershipMailer,
       sign_up_confirmation:       UserMailer,

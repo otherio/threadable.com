@@ -32,4 +32,9 @@ describe MailPreview do
     it { should be_a Mail::Message }
   end
 
+  describe "message_summary" do
+    subject{ MailPreview.new.message_summary }
+    it { should be_a Mail::Message }
+  end
+
 end

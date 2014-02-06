@@ -51,6 +51,25 @@ describe SendEmailWorker do
     end
   end
 
+  describe 'message_summary' do
+    let(:arguments){ [:message_summary, organization_id, recipient_id, date] }
+    let(:date) { Date.today }
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
+      expect(organizations).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
+
+      expect(organization ).to receive(:messages        ).and_return(messages)
+      expect(messages).to receive(:find_by_date!        ).with(date).and_return(messages)
+
+      expect(organization ).to receive(:members         ).and_return(members)
+      expect(members ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
+
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, messages)
+
+      perform!
+    end
+  end
+
   describe 'join_notice' do
     let(:personal_message){ "i need you!" }
     let(:arguments){ [:join_notice, organization_id, recipient_id, personal_message] }

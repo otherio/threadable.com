@@ -55,6 +55,13 @@ class MailPreview < MailView
     threadable.emails.generate(:email_address_confirmation, threadable.users.all.last.email_addresses.all.last)
   end
 
+  def message_summary
+
+    messages = Message.joins(:conversation).where(:conversations => {type:nil})
+
+    threadable.emails.generate(:message_summary, )
+  end
+
   private
 
   def threadable
