@@ -56,10 +56,14 @@ class MailPreview < MailView
   end
 
   def message_summary
+    random_message = Message.last!
+    threadable.current_user_id = random_message.creator_id
 
-    messages = Message.joins(:conversation).where(:conversations => {type:nil})
+    organization  = threadable.current_user.organizations.find_by_id!(random_message.conversation.organization_id)
+    conversations = organization.conversations.all_with_updated_date(Date.today)
+    recipient     = organization.members.all.last
 
-    threadable.emails.generate(:message_summary, )
+    threadable.emails.generate(:message_summary, organization, recipient, conversations, Date.today)
   end
 
   private

@@ -21,9 +21,9 @@ class SendEmailWorker < Threadable::Worker
   def message_summary organization_id, recipient_id, date
     # this should send a summary of all mail from the org on the given date, for now.
     organization   = threadable.organizations.find_by_id! organization_id
-    messages       = organization.messages.find_by_date! date
+    conversations  = organization.conversations.all_with_updated_date date
     recipient      = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:message_summary, organization, recipient, messages)
+    threadable.emails.send_email(:message_summary, organization, recipient, conversations, date)
   end
 
   def join_notice organization_id, recipient_id, personal_message=nil
