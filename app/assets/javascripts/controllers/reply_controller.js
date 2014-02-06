@@ -3,12 +3,13 @@ Threadable.ReplyController = Ember.ObjectController.extend({
 
   message: Ember.computed.alias('model'),
   doerSelector: Ember.computed.alias('controllers.doerSelector'),
+  sending: false,
 
   error: null,
 
-  emptyAction: function() {
-    return !this.get('hasText') && !this.get('changedDoers');
-  }.property('hasText', 'changedDoers'),
+  disabled: function() {
+    return this.get('sending') || (!this.get('hasText') && !this.get('changedDoers'));
+  }.property('hasText', 'changedDoers', 'sending'),
 
   buttonText: function() {
     if(!this.get('controllers.conversation.isTask')) {
@@ -43,6 +44,8 @@ Threadable.ReplyController = Ember.ObjectController.extend({
       this.set('message.body', null);
     },
     sendMessage: function() {
+      if (this.get('disabled')) return;
+      this.set('sending', true);
       this.set('error', null);
       var organizationSlug = this.get('controllers.organization.content.slug');
       var conversation = this.get('controllers.conversation.model');
@@ -72,6 +75,7 @@ Threadable.ReplyController = Ember.ObjectController.extend({
         conversation.get('doers').deserializeMany(response.conversation.doers);
         this.get('controllers.doerSelector').set('doers', conversation.get('doers').toArray());
         conversation.loadEvents(true);
+        this.set('sending', false);
       }
 
       function saveMessage() {
@@ -94,11 +98,13 @@ Threadable.ReplyController = Ember.ObjectController.extend({
 
         conversation.get('events').pushObject(event);
         this.set('content', Threadable.Message.create({}));
+        this.set('sending', false);
       }
 
       function onError(response){
         var error = response && response.error || 'an unknown error occurred';
         this.set('error', error);
+        this.set('sending', false);
       }
     }
   }
