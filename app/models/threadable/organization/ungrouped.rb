@@ -1,9 +1,11 @@
 class Threadable::Organization::Ungrouped
 
+  include Let
+
   def initialize organization
     @organization = organization
   end
-  attr_reader :organization, :threadable
+  attr_reader :organization
   delegate :threadable, :organization_record, to: :organization
 
   include Threadable::Conversation::Scopes
