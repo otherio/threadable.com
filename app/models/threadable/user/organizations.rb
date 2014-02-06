@@ -11,7 +11,7 @@ class Threadable::User::Organizations < Threadable::Organizations
   delegate :threadable, to: :user
 
   def inspect
-    %(#<#{self.class} for_user: #{user.inspect}>)
+    %(#{super[0..-2]} for_user: #{user.inspect}>)
   end
 
   private

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Message do
+describe Message, fixtures: true do
   let(:message){ Message.where(subject: 'layup body carbon').last! }
   subject{ message }
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140203011551) do
+ActiveRecord::Schema.define(version: 20140205220747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,15 +171,15 @@ ActiveRecord::Schema.define(version: 20140203011551) do
   add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
 
   create_table "organization_memberships", force: true do |t|
-    t.integer  "organization_id",                 null: false
-    t.integer  "user_id",                         null: false
-    t.boolean  "can_write",       default: true
-    t.boolean  "gets_email",      default: true
-    t.boolean  "moderator",       default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "organization_id",                        null: false
+    t.integer  "user_id",                                null: false
+    t.boolean  "gets_email",              default: true
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "ungrouped_conversations", default: 1,    null: false
   end
 
+  add_index "organization_memberships", ["organization_id", "ungrouped_conversations"], name: "index_organization_memberships_on_org_id_and_ungrouped_convs", using: :btree
   add_index "organization_memberships", ["organization_id", "user_id"], name: "index_organization_memberships_on_organization_id_and_user_id", unique: true, using: :btree
 
   create_table "organizations", force: true do |t|

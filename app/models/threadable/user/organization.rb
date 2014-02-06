@@ -10,12 +10,19 @@ class Threadable::User::Organization < Threadable::Organization
   end
   attr_reader :organizations, :user
 
-  let(:groups)          { Threadable::User::Organization::Groups.new self }
-  let(:my_conversations){ Threadable::User::Organization::MyConversations.new self }
-  let(:my_tasks)        { Threadable::User::Organization::MyTasks.new self }
+  let(:groups)                 { Threadable::User::Organization::Groups                 .new self }
+  let(:ungrouped_conversations){ Threadable::User::Organization::UngroupedConversations .new self }
+
+  def membership
+    @membership ||= members.me
+  end
 
   def leave!
     members.remove(user: user)
+  end
+
+  def inspect
+    %(#{super[0..-2]} for_user: #{user.inspect}>)
   end
 
 end

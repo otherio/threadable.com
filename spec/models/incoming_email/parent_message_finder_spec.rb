@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe IncomingEmail::ParentMessageFinder do
+describe IncomingEmail::ParentMessageFinder, fixtures: true do
 
   let(:organization){ find_organization_by_slug('raceteam') }
   let(:conversation){ organization.conversations.where(slug: 'layup-body-carbon').first! }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe User do
+describe User, fixtures: true do
 
   subject(:user){ described_class.new }
 
