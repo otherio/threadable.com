@@ -2,17 +2,16 @@ require 'spec_helper'
 
 describe Threadable::Organization::Ungrouped do
 
-  let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
+  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:ungrouped){ described_class.new(organization) }
   subject{ ungrouped }
 
-
   when_signed_in_as 'bethany@ucsd.example.com' do
 
-    describe 'muted_conversations' do
+    describe '#muted_conversations' do
       context 'when given 0' do
         it 'returns the muted_conversations for the current user' do
-          expect(sligs_for ungrouped.muted_conversations(0)).to eq [
+          expect(slugs_for ungrouped.muted_conversations(0)).to eq [
             "get-carbon-and-fiberglass",
             "get-release-agent",
             "get-epoxy",
@@ -23,10 +22,10 @@ describe Threadable::Organization::Ungrouped do
       end
     end
 
-    describe 'not_muted_conversations' do
+    describe '#not_muted_conversations' do
       context 'when given 0' do
         it 'returns the not_muted_conversations for the current user' do
-          expect(sligs_for ungrouped.not_muted_conversations(0)).to eq [
+          expect(slugs_for ungrouped.not_muted_conversations(0)).to eq [
             "who-wants-to-pick-up-breakfast",
             "who-wants-to-pick-up-dinner",
             "who-wants-to-pick-up-lunch",
@@ -39,10 +38,10 @@ describe Threadable::Organization::Ungrouped do
       end
     end
 
-    describe 'done_tasks' do
+    describe '#done_tasks' do
       context 'when given 0' do
         it 'returns the done_tasks for the current user' do
-          expect(sligs_for ungrouped.done_tasks(0)).to eq [
+          expect(slugs_for ungrouped.done_tasks(0)).to eq [
             "get-epoxy",
             "get-release-agent",
             "get-carbon-and-fiberglass",
@@ -52,10 +51,10 @@ describe Threadable::Organization::Ungrouped do
       end
     end
 
-    describe 'not_done_tasks' do
+    describe '#not_done_tasks' do
       context 'when given 0' do
         it 'returns the not_done_tasks for the current user' do
-          expect(sligs_for ungrouped.not_done_tasks(0)).to eq [
+          expect(slugs_for ungrouped.not_done_tasks(0)).to eq [
             "install-mirrors",
             "trim-body-panels",
             "make-wooden-form-for-carbon-layup"
@@ -64,27 +63,45 @@ describe Threadable::Organization::Ungrouped do
       end
     end
 
-    describe 'done_doing_tasks' do
+    describe '#done_doing_tasks' do
       context 'when given 0' do
         it 'returns the done_doing_tasks for the current user' do
-          expect(sligs_for ungrouped.done_doing_tasks(0)).to eq []
+          expect(slugs_for ungrouped.done_doing_tasks(0)).to eq []
         end
       end
     end
 
-    describe 'not_done_doing_tasks' do
+    describe '#not_done_doing_tasks' do
       context 'when given 0' do
         it 'returns the not_done_doing_tasks for the current user' do
-          expect(sligs_for ungrouped.not_done_doing_tasks(0)).to eq []
+          expect(slugs_for ungrouped.not_done_doing_tasks(0)).to eq []
         end
       end
     end
-
 
   end
 
+  describe '#gets_no_mail!' do
+    it 'sets'
+  end
+  describe '#gets_messages!' do
+    it 'sets'
+  end
+  describe '#gets_in_summary!' do
+    it 'sets'
+  end
+  describe '#gets_no_mail?' do
+    it 'sets'
+  end
+  describe '#gets_messages?' do
+    it 'sets'
+  end
+  describe '#gets_in_summary?' do
+    it 'sets'
+  end
 
-  def sligs_for conversations
+
+  def slugs_for conversations
     conversations.map(&:slug)
   end
 

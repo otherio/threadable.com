@@ -10,8 +10,8 @@ class Threadable::User::Organization < Threadable::Organization
   end
   attr_reader :organizations, :user
 
-  let(:groups)                 { Threadable::User::Organization::Groups                 .new self }
-  let(:ungrouped_conversations){ Threadable::User::Organization::UngroupedConversations .new self }
+  let(:groups)   { Threadable::User::Organization::Groups    .new self }
+  let(:ungrouped){ Threadable::User::Organization::Ungrouped .new self }
 
   def membership
     @membership ||= members.me
