@@ -1,5 +1,4 @@
 require_dependency 'threadable/user'
-require_dependency 'threadable/user/organization'
 
 class Threadable::User::Organizations < Threadable::Organizations
 
@@ -19,9 +18,5 @@ class Threadable::User::Organizations < Threadable::Organizations
   def scope
     user.user_record.organizations
   end
-
-  # def organization_for organization_record
-  #   Threadable::User::Organization.new(self, organization_record)
-  # end
 
 end

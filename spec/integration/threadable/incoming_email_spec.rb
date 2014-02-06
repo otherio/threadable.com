@@ -29,7 +29,7 @@ describe Threadable::IncomingEmail do
       expect( incoming_email                 ).to be_processed
       expect( incoming_email                 ).to_not be_bounced
       expect( incoming_email                 ).to_not be_held
-      expect( incoming_email.organization         ).to eq raceteam
+      expect( incoming_email.organization    ).to eq raceteam
       expect( incoming_email.creator         ).to be_the_same_user_as alice
       expect( incoming_email.parent_message  ).to be_nil
       expect( incoming_email.conversation    ).to be_a Threadable::Conversation

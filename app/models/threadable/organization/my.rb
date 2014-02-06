@@ -1,3 +1,5 @@
+require_dependency 'threadable/organization'
+
 class Threadable::Organization::My
 
   def initialize organization

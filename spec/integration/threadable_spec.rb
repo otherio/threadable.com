@@ -160,7 +160,7 @@ describe "threadable", fixtures: false do
       expect( aaron.user_record ).to eq User.last
 
       expect( aaron.email_addresses.class ).to eq Threadable::User::EmailAddresses
-      expect( aaron.organizations.class        ).to eq Threadable::User::Organizations
+      expect( aaron.organizations.class   ).to eq Threadable::User::Organizations
       expect( aaron.messages.class        ).to eq Threadable::User::Messages
 
       htp = aaron.organizations.create! name: 'Hug the police!'

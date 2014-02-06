@@ -6,7 +6,7 @@ class Threadable::Group::Member < Threadable::User
     group.id == group_membership_record.group_id or raise ArgumentError
   end
   attr_reader :group, :group_membership_record
-  delegate :group_id, :user_id, to: :organization_membership_record
+  delegate :group_id, :user_id, to: :group_membership_record
 
   def user_record
     group_membership_record.user
@@ -15,7 +15,6 @@ class Threadable::Group::Member < Threadable::User
   def organization_record
     group_membership_record.organization
   end
-
 
   def gets_no_mail!
     group_membership_record.gets_no_mail!

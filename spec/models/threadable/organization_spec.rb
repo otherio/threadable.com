@@ -79,4 +79,18 @@ describe Threadable::Organization do
     end
   end
 
+  describe '#leave!' do
+    when_not_signed_in do
+      it 'raises a Threadable::AuthorizationError' do
+        expect{ subject.leave! }.to raise_error Threadable::AuthorizationError
+      end
+    end
+    when_signed_in do
+      it 'should return the current users member' do
+        expect(subject.members).to receive(:remove).with(user: current_user)
+        subject.leave!
+      end
+    end
+  end
+
 end

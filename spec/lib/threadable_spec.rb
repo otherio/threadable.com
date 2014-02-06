@@ -220,7 +220,6 @@ describe Threadable, :type => :threadable do
       Threadable::User::EmailAddress
       Threadable::User::EmailAddresses
       Threadable::User::Messages
-      Threadable::User::Organization
       Threadable::User::Organizations
       Threadable::User::Update
       Threadable::Users

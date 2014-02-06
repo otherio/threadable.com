@@ -15,7 +15,7 @@ describe Threadable::Conversation::Recipients do
 
       it "returns all the members of that conversation's groups who get email" do
         expected_recipients = conversation.groups.all.map{|g| g.members.all}.flatten(1).uniq
-        expect( recipients.all ).to match_array expected_recipients
+        expect( recipients.all.map(&:user_id) ).to match_array expected_recipients.map(&:user_id)
       end
     end
 
