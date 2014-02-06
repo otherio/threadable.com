@@ -78,6 +78,13 @@ describe Threadable::Emails do
         expect(subject.generate(:reset_password, 1,2,3)).to eq 'A Mail::Message'
       end
     end
+    context 'when given :message_summary as the type' do
+      it 'calls UserMailer#message_summary' do
+        expect(UserMailer).to receive(:new).with(threadable).and_return(mailer)
+        expect(mailer).to receive(:generate).with(:message_summary, 1,2,3).and_return('A Mail::Message')
+        expect(subject.generate(:message_summary, 1,2,3)).to eq 'A Mail::Message'
+      end
+    end
     context 'when given an invalid type' do
       it 'raises and ArgumentError' do
         expect{ subject.generate(:bad_type) }.to raise_error ArgumentError, 'unknown email type: bad_type'
