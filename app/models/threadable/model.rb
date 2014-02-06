@@ -12,6 +12,7 @@ class Threadable::Model
   end
 
   attr_reader :threadable
+  delegate :current_user, to: :threadable
 
   def inspect
     %(#<#{self.class}>)

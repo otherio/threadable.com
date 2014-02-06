@@ -27,9 +27,9 @@ class Threadable::Group < Threadable::Model
   end
 
   # collections
-  let(:members){ Members.new(self) }
-  let(:conversations){ Conversations.new(self) }
-  let(:tasks){ Tasks.new(self) }
+  let(:members)      { Threadable::Group::Members.new(self) }
+  let(:conversations){ Threadable::Group::Conversations.new(self) }
+  let(:tasks)        { Threadable::Group::Tasks.new(self) }
 
 
   # scopes

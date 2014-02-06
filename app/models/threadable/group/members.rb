@@ -1,4 +1,4 @@
-require_dependency 'threadable/organization'
+require_dependency 'threadable/group/member'
 
 class Threadable::Group::Members < Threadable::Collection
 
@@ -9,17 +9,21 @@ class Threadable::Group::Members < Threadable::Collection
   attr_reader :group
 
   def all
-    scope.map{|user_record| Threadable::User.new(threadable, user_record) }
+    group_members_for scope
   end
 
   def find_by_user_id user_id
-    user_record = scope.where(users:{id:user_id}).first or return
-    Threadable::User.new(threadable, user_record)
+    group_member_for (scope.where(users:{id:user_id}).first or return)
   end
 
   def find_by_user_id! user_id
     find_by_user_id(user_id) or
       raise Threadable::RecordNotFound, "unable to find group member with id: #{user_id}"
+  end
+
+  def me
+    raise Threadable::AuthorizationError unless current_user
+    find_by_user_id! current_user.id
   end
 
   def add user
@@ -31,8 +35,7 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def include? member
-    return false unless member.respond_to?(:user_id)
-    !!group.group_record.group_members.where(user_id: member.user_id).exists?
+    !!group.group_record.group_memberships.where(user_id: member.user_id).exists?
   end
 
   def inspect
@@ -41,8 +44,18 @@ class Threadable::Group::Members < Threadable::Collection
 
   private
 
+  def group_member_for group_membership_records
+    Threadable::Group::Member.new(group, group_membership_records)
+  end
+
+  def group_members_for group_membership_records
+    group_membership_records.map do |group_membership_records|
+      group_member_for group_membership_records
+    end
+  end
+
   def scope
-    group.group_record.members.unload
+    group.group_record.group_memberships.unload
   end
 
 end

@@ -52,11 +52,30 @@ describe Threadable::Organization do
 
   its(:inspect){ should eq %(#<Threadable::Organization organization_id: 5479, name: "C02 Cleaners">) }
 
+  its(:class){ should include Threadable::Conversation::Scopes }
+
   describe 'update' do
     it 'calls Threadable::Organization::Update' do
       attributes = {some:'updates'}
       expect(Threadable::Organization::Update).to receive(:call).with(organization, attributes).and_return(45)
       expect(organization.update(attributes)).to eq 45
+    end
+  end
+
+
+  describe 'current_member' do
+    when_not_signed_in do
+      it 'raises a Threadable::AuthorizationError' do
+        expect{ subject.current_member }.to raise_error Threadable::AuthorizationError
+      end
+    end
+    when_signed_in do
+      it 'returns members.me' do
+        member = double(:member)
+        expect(subject.members).to receive(:me).once.and_return(member)
+        expect(subject.current_member).to be member
+        expect(subject.current_member).to be member
+      end
     end
   end
 

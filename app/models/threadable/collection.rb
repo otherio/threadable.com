@@ -6,6 +6,7 @@ class Threadable::Collection
     @threadable = threadable
   end
   attr_reader :threadable
+  delegate :current_user, to: :threadable
 
   def count
     scope.count

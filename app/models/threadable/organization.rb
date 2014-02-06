@@ -66,8 +66,22 @@ class Threadable::Organization < Threadable::Model
     organization_record.tasks
   end
   public
+
   let(:my)       { Threadable::Organization::My       .new(self) }
   let(:ungrouped){ Threadable::Organization::Ungrouped.new(self) }
+
+
+  let(:current_member){ members.me }
+
+  def leave!
+    raise Threadable::AuthorizationError unless current_user
+    members.remove(user: current_user)
+  end
+
+  def join!
+    raise Threadable::AuthorizationError unless current_user
+    members.add(user: current_user)
+  end
 
 
   # TODO remove me in favor of a rails json view file
