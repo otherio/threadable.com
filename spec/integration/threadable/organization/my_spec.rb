@@ -91,26 +91,6 @@ describe Threadable::Organization::My do
 
   end
 
-  describe '#gets_no_mail!' do
-    it 'sets'
-  end
-  describe '#gets_messages!' do
-    it 'sets'
-  end
-  describe '#gets_in_summary!' do
-    it 'sets'
-  end
-  describe '#gets_no_mail?' do
-    it 'sets'
-  end
-  describe '#gets_messages?' do
-    it 'sets'
-  end
-  describe '#gets_in_summary?' do
-    it 'sets'
-  end
-
-
   def slugs_for conversations
     conversations.map(&:slug)
   end
