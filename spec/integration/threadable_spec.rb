@@ -196,7 +196,7 @@ describe "threadable", fixtures: false do
 
       msg1 = fat_cops.messages.create!(
         creator: current_user,
-        html: "<p>OMG I love their belly fat</p>",
+        body: "<p>OMG I love their belly fat</p>",
         sent_via_web: true
       )
       expect( msg1.class             ).to eq Threadable::Message
