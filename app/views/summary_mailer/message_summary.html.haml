@@ -4,30 +4,41 @@
     %div.message-count-summary
       = @message_count_summary
 
-  %table.conversations{border: 0}
-    - @conversations.each do |conversation|
-      %tr
-        %td{valign: 'top'}
-          []
-        %td
-          %table.messages{border: 0}
-            %tr
-              %td
-                = conversation.subject
-          %table.controls{border: 0}
-            %tr
-              %td
-                - conversation.groups.all.each do |group|
+  %br
 
-                  %span.badge.badge-small{style: "background-color: #{group.color}"}
-                    = "+#{group.name}"
-              %td
-                = link_to 'View', conversation_url(@organization, 'my', conversation)
-              %td
-                = @new_count[conversation.id]
-                new,
-                = conversation.messages_count
-                total
+  .message-list
+    - @conversations.each do |conversation|
+      %table.messages{border: 0}
+        %tr
+          %td{rowspan: conversation.groups.count > 0 ? 3 : 2, valign: 'top'}
+            []
+
+          %td
+            %span.subject
+              = conversation.subject
+            %br
+            %span.summary
+              = "#{conversation.message_summary}"
+        %tr
+          %td
+            %span.new-count
+              = @new_count[conversation.id]
+              new,
+            %span.total-count
+              = conversation.messages_count
+              total
+
+            = link_to 'View', conversation_url(@organization, 'my', conversation)
+
+        - if conversation.groups.count > 0
+          %tr
+            %td
+              - conversation.groups.all.each do |group|
+                %span.badge.badge-small{style: "background-color: #{group.color}"}
+                  = "+#{group.name}"
+
+
+  %br
 
   .threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
     = link_to @organization.name, organization_url(@organization)
