@@ -1,5 +1,12 @@
-Text only summary
+<%= "#{@organization.name} summary for #{@formatted_date}." %>
+<%= @message_count_summary %>
 
+<%- @conversations.each do |conversation| %>
+<%=conversation.subject %>
+  <%=pluralize(@new_count[conversation.id], 'new message')%>, <%=conversation.messages_count%> total
+  View: <%=conversation_url(@organization, 'my', conversation)%>
+
+<%- end %>
 _____
 
 Start a new conversation:

@@ -6,9 +6,9 @@ describe SummaryMailer do
     signed_in_as 'bethany@ucsd.example.com'
 
     let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
-    let(:today) { Date.today }
+    let(:today) { Time.zone.now }
     let(:conversations){ organization.conversations.all_with_updated_date today }
-    let(:recipient){ organization.members.all.last }
+    let(:recipient){ organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
     let(:mail){ SummaryMailer.new(threadable).generate(:message_summary, organization, recipient, conversations, today) }
     let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
@@ -28,7 +28,7 @@ describe SummaryMailer do
       mail.subject.should include "[RaceTeam]"
       mail.subject.should include "Summary for"
       mail.subject.should include today.strftime('%a, %b %-d')
-      mail.subject.should include '16 new messages in 4 conversations'
+      mail.subject.should include '18 new messages in 17 conversations'
       mail.subject.scan('RaceTeam').size.should == 1
 
       mail.to.should                    == [expected_to]
@@ -44,6 +44,28 @@ describe SummaryMailer do
 
       expect(text_part).to include "mailto:#{organization.email_address}"
       expect(text_part).to include "mailto:#{organization.task_email_address}"
+
+      # expect(html_part).to include "mailto:#{organization.email_address}"
+      # expect(html_part).to include "mailto:#{organization.task_email_address}"
+
+      expect(text_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
+      expect(html_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
+
+      expect(text_part).to include '18 new messages in 17 conversations'
+      expect(html_part).to include '18 new messages in 17 conversations'
+
+      conversations.each do |conversation|
+        expect(text_part).to include conversation.subject
+        expect(text_part).to include conversation_url(organization, 'my', conversation)
+
+        expect(html_part).to include conversation.subject
+        expect(html_part).to include conversation_url(organization, 'my', conversation)
+
+        conversation.groups.all.each do |group|
+          expect(html_part).to include group.name
+          expect(html_part).to include conversation_url(organization, group, conversation)
+        end
+      end
 
       expect(mail.header[:'List-ID'].to_s ).to eq organization.list_id
       expect(mail.header[:'Cc'].to_s      ).to eq expected_cc

@@ -8,9 +8,9 @@ class Threadable::Messages < Threadable::Collection
     messages_for scope.includes(:creator, :attachments).to_a
   end
 
-  def count_for_date date
-    date = date.midnight
-    scope.where('messages.created_at BETWEEN ? and ?', date, date + 1.day).count
+  def count_for_date time
+    time = time.midnight
+    scope.where('messages.created_at BETWEEN ? and ?', time, time + 1.day).count
   end
 
   def latest

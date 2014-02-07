@@ -1,11 +1,38 @@
+.message-summary
+  %div.heading
+    = "#{@organization.name} summary for #{@formatted_date}."
+    %div.message-count-summary
+      = @message_count_summary
 
-Summary.
+  %table.conversations{border: 0}
+    - @conversations.each do |conversation|
+      %tr
+        %td{valign: 'top'}
+          []
+        %td
+          %table.messages{border: 0}
+            %tr
+              %td
+                = conversation.subject
+          %table.controls{border: 0}
+            %tr
+              %td
+                - conversation.groups.all.each do |group|
 
+                  %span.badge.badge-small{style: "background-color: #{group.color}"}
+                    = "+#{group.name}"
+              %td
+                = link_to 'View', conversation_url(@organization, 'my', conversation)
+              %td
+                = @new_count[conversation.id]
+                new,
+                = conversation.messages_count
+                total
 
-.threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
-  = link_to @organization.name, organization_url(@organization)
-  |
-  = mail_to @organization.email_address, @organization.email_address
-.threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
-  = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
+  .threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+    = link_to @organization.name, organization_url(@organization)
+    |
+    = mail_to @organization.email_address, @organization.email_address
+  .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
+    = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
 

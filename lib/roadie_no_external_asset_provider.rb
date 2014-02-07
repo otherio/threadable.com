@@ -1,6 +1,6 @@
 class RoadieNoExternalAssetProvider < Roadie::AssetPipelineProvider
   def find(name)
-    if name == 'email'
+    if name == 'email' || name == 'message_summary'
       super
     else
       ''

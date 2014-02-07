@@ -3,23 +3,25 @@ require 'prepare_email_subject'
 
 class SummaryMailer < Threadable::Mailer
 
+  include ActionView::Helpers::TextHelper
+
   add_template_helper EmailHelper
 
-  def message_summary(organization, recipient, conversations, date)
+  def message_summary(organization, recipient, conversations, time)
     @organization = organization
     @recipient = recipient
     @conversations = conversations
-    @formatted_date = date.strftime('%a, %b %-d')
+    @formatted_date = time.strftime('%a, %b %-d')
 
-    new_count = {}
+    @new_count = {}
     conversations.each do |conversation|
-      new_count[conversation.id] = conversation.messages.count_for_date(date)
+      @new_count[conversation.id] = conversation.messages.count_for_date(time)
     end
 
     total_new = 0
-    new_count.values.each { |count| total_new += count }
-
-    subject = "[#{organization.subject_tag}] Summary for #{@formatted_date}: #{pluralize(total_new, 'new message')} in #{pluralize(@conversations.count, 'conversation')}"
+    @new_count.values.each { |count| total_new += count }
+    @message_count_summary = "#{pluralize(total_new, 'new message')} in #{pluralize(@conversations.count, 'conversation')}"
+    subject = "[#{organization.subject_tag}] Summary for #{@formatted_date}: #{@message_count_summary}"
 
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
