@@ -11,7 +11,7 @@ describe Threadable::Organization::Ungrouped do
     describe '#muted_conversations' do
       context 'when given 0' do
         it 'returns the muted_conversations for the current user' do
-          expect(slugs_for ungrouped.muted_conversations(0)).to eq [
+          expect(slugs_for subject.muted_conversations(0)).to eq [
             "get-carbon-and-fiberglass",
             "get-release-agent",
             "get-epoxy",
@@ -25,7 +25,7 @@ describe Threadable::Organization::Ungrouped do
     describe '#not_muted_conversations' do
       context 'when given 0' do
         it 'returns the not_muted_conversations for the current user' do
-          expect(slugs_for ungrouped.not_muted_conversations(0)).to eq [
+          expect(slugs_for subject.not_muted_conversations(0)).to eq [
             "who-wants-to-pick-up-breakfast",
             "who-wants-to-pick-up-dinner",
             "who-wants-to-pick-up-lunch",
@@ -41,7 +41,7 @@ describe Threadable::Organization::Ungrouped do
     describe '#done_tasks' do
       context 'when given 0' do
         it 'returns the done_tasks for the current user' do
-          expect(slugs_for ungrouped.done_tasks(0)).to eq [
+          expect(slugs_for subject.done_tasks(0)).to eq [
             "get-epoxy",
             "get-release-agent",
             "get-carbon-and-fiberglass",
@@ -54,7 +54,7 @@ describe Threadable::Organization::Ungrouped do
     describe '#not_done_tasks' do
       context 'when given 0' do
         it 'returns the not_done_tasks for the current user' do
-          expect(slugs_for ungrouped.not_done_tasks(0)).to eq [
+          expect(slugs_for subject.not_done_tasks(0)).to eq [
             "install-mirrors",
             "trim-body-panels",
             "make-wooden-form-for-carbon-layup"
@@ -66,7 +66,7 @@ describe Threadable::Organization::Ungrouped do
     describe '#done_doing_tasks' do
       context 'when given 0' do
         it 'returns the done_doing_tasks for the current user' do
-          expect(slugs_for ungrouped.done_doing_tasks(0)).to eq []
+          expect(slugs_for subject.done_doing_tasks(0)).to eq []
         end
       end
     end
@@ -74,7 +74,7 @@ describe Threadable::Organization::Ungrouped do
     describe '#not_done_doing_tasks' do
       context 'when given 0' do
         it 'returns the not_done_doing_tasks for the current user' do
-          expect(slugs_for ungrouped.not_done_doing_tasks(0)).to eq []
+          expect(slugs_for subject.not_done_doing_tasks(0)).to eq []
         end
       end
     end
@@ -100,6 +100,29 @@ describe Threadable::Organization::Ungrouped do
     its(:gets_no_mail?)     { should be_false }
     its(:gets_each_message?){ should be_false }
     its(:gets_in_summary?)  { should be_true  }
+
+    describe '#deliver_mehtod=' do
+      it 'immediately updates the organization membership record' do
+        record = organization.current_member.organization_membership_record
+        expect(record).to_not be_changed
+        expect(record.ungrouped_delivery_method).to eq :in_summary
+
+        expect(subject.delivery_method).to eq :in_summary
+
+        expect( subject.gets_no_mail?      ).to be_false
+        expect( subject.gets_each_message? ).to be_false
+        expect( subject.gets_in_summary?   ).to be_true
+
+        subject.delivery_method = :each_message
+        expect(record).to_not be_changed
+        expect(record.ungrouped_delivery_method).to eq :each_message
+        expect(subject.delivery_method).to eq :each_message
+
+        expect( subject.gets_no_mail?      ).to be_false
+        expect( subject.gets_each_message? ).to be_true
+        expect( subject.gets_in_summary?   ).to be_false
+      end
+    end
   end
 
 
