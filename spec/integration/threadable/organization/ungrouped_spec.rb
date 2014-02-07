@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Threadable::Organization::Ungrouped do
 
-  let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
+  let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:ungrouped){ described_class.new(organization) }
   subject{ ungrouped }
 
-  when_signed_in_as 'bethany@ucsd.example.com' do
+   when_signed_in_as 'bethany@ucsd.example.com' do
 
     describe '#muted_conversations' do
       context 'when given 0' do
@@ -81,6 +81,21 @@ describe Threadable::Organization::Ungrouped do
 
   end
 
+  when_not_signed_in do
+    it 'delivery_method should raise error Threadable::AuthorizationError' do
+      expect{ subject.delivery_method }.to raise_error Threadable::AuthorizationError
+    end
+    it 'gets_no_mail? should raise error Threadable::AuthorizationError' do
+      expect{ subject.gets_no_mail? }.to raise_error Threadable::AuthorizationError
+    end
+    it 'gets_each_message? should raise error Threadable::AuthorizationError' do
+      expect{ subject.gets_each_message? }.to raise_error Threadable::AuthorizationError
+    end
+    it 'gets_in_summary? should raise error Threadable::AuthorizationError' do
+      expect{ subject.gets_in_summary? }.to raise_error Threadable::AuthorizationError
+    end
+  end
+
   when_signed_in_as 'alice@ucsd.example.com' do
     its(:delivery_method)   { should eq :each_message }
     its(:gets_no_mail?)     { should be_false }
@@ -100,7 +115,9 @@ describe Threadable::Organization::Ungrouped do
     its(:gets_no_mail?)     { should be_false }
     its(:gets_each_message?){ should be_false }
     its(:gets_in_summary?)  { should be_true  }
+  end
 
+  when_signed_in_as 'bob@ucsd.example.com' do
     describe '#deliver_mehtod=' do
       it 'immediately updates the organization membership record' do
         record = organization.current_member.organization_membership_record

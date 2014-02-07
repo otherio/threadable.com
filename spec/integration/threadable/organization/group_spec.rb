@@ -75,6 +75,27 @@ describe Threadable::Organization::Group do
   end
 
 
+  when_signed_in_as 'alice@ucsd.example.com' do
+    its(:delivery_method)   { should eq :each_message }
+    its(:gets_no_mail?)     { should be_false }
+    its(:gets_each_message?){ should be_true  }
+    its(:gets_in_summary?)  { should be_false }
+  end
+
+  when_signed_in_as 'tom@ucsd.example.com' do
+    its(:delivery_method)   { should eq :no_mail }
+    its(:gets_no_mail?)     { should be_true  }
+    its(:gets_each_message?){ should be_false }
+    its(:gets_in_summary?)  { should be_false }
+  end
+
+  when_signed_in_as 'bob@ucsd.example.com' do
+    its(:delivery_method)   { should eq :in_summary }
+    its(:gets_no_mail?)     { should be_false }
+    its(:gets_each_message?){ should be_false }
+    its(:gets_in_summary?)  { should be_true  }
+  end
+
 
   def slugs_for conversations
     conversations.map(&:slug)
