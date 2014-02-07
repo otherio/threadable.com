@@ -26,6 +26,11 @@ class Threadable::Conversation::Recipients
       user_records = user_records.
       joins("INNER JOIN group_memberships ON group_memberships.group_id in (#{group_ids})").
       where('group_memberships.user_id = users.id')
+    else
+
+      where(organization_memberships:{})
+
+
     end
 
     user_records.map{|user_record| Threadable::User.new(threadable, user_record) }

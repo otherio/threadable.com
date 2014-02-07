@@ -7,5 +7,17 @@ class AddingGroupAndUngroupedMailDeliveryOptionsColumns < ActiveRecord::Migratio
       name: "index_organization_memberships_on_org_id_and_ungrouped_convs" # auto gen name is too long
     add_column :group_memberships, :delivery_method, :integer, default: 1, null: false
     add_index :group_memberships, :delivery_method
+
+
+
+
+    organization_membership
+      ungrouped_delivery_method Intered (0,1,2) {no mail, each message in, summary}
+
+
+    group memebership
+      summary: Boolean
+
+
   end
 end
