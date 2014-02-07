@@ -19,7 +19,6 @@ describe Threadable::IncomingEmail::Process do
       bounceable?: bounceable,
       droppable?: droppable,
       message: nil,
-      deliver!: nil,
     )
   end
 
@@ -60,8 +59,9 @@ describe Threadable::IncomingEmail::Process do
         expect(incoming_email).to receive(:find_conversation!)
       end
       context 'and the incoming_email is deliverable' do
-        let(:deliverable) { true }
         before do
+          expect(incoming_email).to receive(:deliverable?).once.and_return(true)
+          expect(incoming_email).to receive(:deliver!)
           expect(incoming_email).to receive(:processed!)
         end
         context 'and the creator is found' do
@@ -83,34 +83,15 @@ describe Threadable::IncomingEmail::Process do
 
           context 'and the message is a duplicate' do
             let(:current_user) { double(:current_user) }
-            before do
+            before{ expect(incoming_email).to receive(:message).and_return(double(:message)) }
+            it 'runs the commands' do
               expect(incoming_email.threadable).to receive(:current_user_id=).with(94)
-              expect(incoming_email).to receive(:message).and_return(double(:message))
-            end
-
-            it 'does not run the commands' do
               expect(RunCommandsFromEmailMessageBody).to_not receive(:call)
               call!
             end
-
-            context 'and the message is deliverable' do
-              let(:deliverable) { true }
-              it 'does not deliver the mail' do
-                expect(incoming_email).to_not receive(:deliver!)
-                call!
-              end
-            end
-
-            context 'and the message is holdable' do
-              let(:holdable) { true }
-              it 'does not hold the mail' do
-                expect(incoming_email).to_not receive(:hold!)
-                call!
-              end
-            end
           end
-        end
 
+        end
         context 'and the creator is not found' do
           before{ expect(incoming_email).to receive(:creator).and_return(nil) }
           it 'signs out' do
@@ -122,8 +103,8 @@ describe Threadable::IncomingEmail::Process do
       end
 
       context 'and the incoming_email is not deliverable' do
-        let(:deliverable) { false }
         before do
+          expect(incoming_email).to receive(:deliverable?).once.and_return(false)
           expect(incoming_email).to receive(:creator).and_return(double(:creator, id: 94))
           expect(incoming_email.threadable).to receive(:current_user_id=).with(94)
         end
@@ -138,7 +119,7 @@ describe Threadable::IncomingEmail::Process do
         end
 
         context 'and the incoming_email is droppable' do
-          let(:droppable) { true }
+          before{ expect(incoming_email).to receive(:droppable?).once.and_return(true) }
 
           context 'and the creator is found' do
             let(:current_user) {double(:current_user)}
