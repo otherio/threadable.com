@@ -22,11 +22,13 @@ class Threadable::IncomingEmail::Process < MethodObject
 
       duplicate = @incoming_email.message.present?
 
-      deliver! if @incoming_email.deliverable?
-      hold!    if @incoming_email.holdable?
+      unless duplicate
+        deliver! if @incoming_email.deliverable?
+        hold!    if @incoming_email.holdable?
+      end
+
       drop!    if @incoming_email.droppable?
       bounce!  if @incoming_email.bounceable?
-
 
       if !duplicate && @threadable.current_user
         run_commands!
