@@ -12,28 +12,21 @@ class Threadable::Organization::Ungrouped
 
   include Threadable::Conversation::Scopes
 
-  def gets_no_mail!
-    organization_membership_record.gets_no_ungrouped_conversation_mail!
+  def delivery_method
+    organization_membership_record.ungrouped_delivery_method
   end
 
-  def gets_messages!
-    organization_membership_record.gets_ungrouped_conversation_messages!
+  def delivery_method= delivery_method
+    organization_membership_record.update_attribute(:ungrouped_delivery_method, delivery_method)
   end
 
-  def gets_in_summary!
-    organization_membership_record.gets_ungrouped_conversations_in_summary!
-  end
-
-  def gets_no_mail?
-    organization_membership_record.gets_no_ungrouped_conversation_mail?
-  end
-
-  def gets_messages?
-    organization_membership_record.gets_ungrouped_conversation_messages?
-  end
-
-  def gets_in_summary?
-    organization_membership_record.gets_ungrouped_conversations_in_summary?
+  Threadable::DELIVERY_METHODS.each do |delivery_method|
+    define_method "gets_#{delivery_method}?" do
+      self.delivery_method == delivery_method
+    end
+    define_method "gets_#{delivery_method}!" do
+      self.delivery_method = delivery_method
+    end
   end
 
   private

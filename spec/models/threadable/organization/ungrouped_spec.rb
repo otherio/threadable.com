@@ -11,5 +11,4 @@ describe Threadable::Organization::Ungrouped do
   its(:organization)       { should be organization }
   its(:organization_record){ should be organization_record }
 
-
 end

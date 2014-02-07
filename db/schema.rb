@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140205220747) do
+ActiveRecord::Schema.define(version: 20140207002942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,8 +102,10 @@ ActiveRecord::Schema.define(version: 20140205220747) do
   create_table "group_memberships", force: true do |t|
     t.integer "group_id"
     t.integer "user_id"
+    t.integer "delivery_method", default: 1, null: false
   end
 
+  add_index "group_memberships", ["delivery_method"], name: "index_group_memberships_on_delivery_method", using: :btree
   add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
   add_index "group_memberships", ["user_id", "group_id"], name: "index_group_memberships_on_user_id_and_group_id", unique: true, using: :btree
 
@@ -171,15 +173,15 @@ ActiveRecord::Schema.define(version: 20140205220747) do
   add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
 
   create_table "organization_memberships", force: true do |t|
-    t.integer  "organization_id",                        null: false
-    t.integer  "user_id",                                null: false
-    t.boolean  "gets_email",              default: true
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "ungrouped_conversations", default: 1,    null: false
+    t.integer  "organization_id",                          null: false
+    t.integer  "user_id",                                  null: false
+    t.boolean  "gets_email",                default: true
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.integer  "ungrouped_delivery_method", default: 1,    null: false
   end
 
-  add_index "organization_memberships", ["organization_id", "ungrouped_conversations"], name: "index_organization_memberships_on_org_id_and_ungrouped_convs", using: :btree
+  add_index "organization_memberships", ["organization_id", "ungrouped_delivery_method"], name: "index_organization_memberships_on_org_id_and_ungrouped_convs", using: :btree
   add_index "organization_memberships", ["organization_id", "user_id"], name: "index_organization_memberships_on_organization_id_and_user_id", unique: true, using: :btree
 
   create_table "organizations", force: true do |t|

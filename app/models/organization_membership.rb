@@ -1,11 +1,6 @@
 class OrganizationMembership < ActiveRecord::Base
 
-  # Do not change these values! If you need to, add additional integers to the list - Jared
-  UNGROUPED_CONVERSATIONS_VALUES = {
-    no_ungrouped_conversation_mail:     0,
-    ungrouped_conversation_messages:    1,
-    ungrouped_conversations_in_summary: 2,
-  }.freeze
+  DELIVERY_METHODS = Threadable::DELIVERY_METHODS
 
   belongs_to :organization
   belongs_to :user
@@ -13,9 +8,14 @@ class OrganizationMembership < ActiveRecord::Base
 
   scope :who_get_email, ->{ where(gets_email: true) }
 
+  scope :with_ungrouped_delivery_methods, ->(delivery_methods){
+    delivery_methods = delivery_methods.map{|delivery_method| DELIVERY_METHODS.index(delivery_method) }
+    where(ungrouped_delivery_method: delivery_methods)
+  }
+
   validates_presence_of :organization_id, :user_id
   validates_inclusion_of :gets_email, :in => [ true, false ]
-  validates_inclusion_of :ungrouped_conversations, :in => UNGROUPED_CONVERSATIONS_VALUES.values
+  validates_inclusion_of :ungrouped_delivery_method, :in => DELIVERY_METHODS
 
   def subscribed?
     gets_email?
@@ -29,11 +29,14 @@ class OrganizationMembership < ActiveRecord::Base
     update! gets_email: false
   end
 
-  UNGROUPED_CONVERSATIONS_VALUES.each do |state, value|
-    scope "who_get_#{state}", ->{ where(ungrouped_conversations: value) }
-    define_method("gets_#{state}?"){ ungrouped_conversations == value }
-    define_method("gets_#{state}!"){ update! ungrouped_conversations: value }
+  def ungrouped_delivery_method
+    index = read_attribute(:ungrouped_delivery_method)
+    DELIVERY_METHODS[index]
   end
 
+  def ungrouped_delivery_method= delivery_method
+    index = DELIVERY_METHODS.index(delivery_method) or raise ArgumentError, "invalid delivery method: #{delivery_method.inspect}"
+    write_attribute(:ungrouped_delivery_method, index)
+  end
 
 end

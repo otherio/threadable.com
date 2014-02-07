@@ -81,23 +81,25 @@ describe Threadable::Organization::Ungrouped do
 
   end
 
-  describe '#gets_no_mail!' do
-    it 'sets'
+  when_signed_in_as 'alice@ucsd.example.com' do
+    its(:delivery_method)   { should eq :each_message }
+    its(:gets_no_mail?)     { should be_false }
+    its(:gets_each_message?){ should be_true  }
+    its(:gets_in_summary?)  { should be_false }
   end
-  describe '#gets_messages!' do
-    it 'sets'
+
+  when_signed_in_as 'tom@ucsd.example.com' do
+    its(:delivery_method)   { should eq :no_mail }
+    its(:gets_no_mail?)     { should be_true  }
+    its(:gets_each_message?){ should be_false }
+    its(:gets_in_summary?)  { should be_false }
   end
-  describe '#gets_in_summary!' do
-    it 'sets'
-  end
-  describe '#gets_no_mail?' do
-    it 'sets'
-  end
-  describe '#gets_messages?' do
-    it 'sets'
-  end
-  describe '#gets_in_summary?' do
-    it 'sets'
+
+  when_signed_in_as 'bob@ucsd.example.com' do
+    its(:delivery_method)   { should eq :in_summary }
+    its(:gets_no_mail?)     { should be_false }
+    its(:gets_each_message?){ should be_false }
+    its(:gets_in_summary?)  { should be_true  }
   end
 
 
