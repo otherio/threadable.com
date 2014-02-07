@@ -39,10 +39,14 @@
   %div{:style => "display:none; display:none !important; clear: both"}
     = "##CovMid: #{@message.unique_id} ##"
 
+%br
+
 - if @message.body.html?
   = @message.body
 - else
   .plain-text= @message.body
+
+%br
 
 %div.threadable-content
   %div{:style => "display:none; display:none !important;"}
