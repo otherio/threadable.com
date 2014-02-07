@@ -7,6 +7,7 @@ namespace :db do
 
   task :reset do
     Rake::Task['db:fixtures:build'].invoke
+    Rake::Task['db:test:prepare'].invoke
   end
 
   desc "Load the fixtures into the current environment (probably dev)"
