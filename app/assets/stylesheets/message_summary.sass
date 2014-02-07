@@ -1,0 +1,52 @@
+
+.message-summary
+  margin-top: 0.5em !important
+  width: 100%
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important
+
+  .conversations
+    width: 100%
+
+  .messages
+    float: left
+
+  .controls
+    float: right
+
+  .heading
+    font-weight: bold
+    font-size: 14px
+
+    .message-count-summary
+      font-weight: 300
+
+
+  .badge
+    color: #ffffff
+    padding: 3px 5px
+    line-height: 15px
+    background-color: transparent
+    text-align: center
+    border-radius: 5px
+    text-shadow: 0 1px 1px #555
+    font-weight: normal
+    font-size: 14px
+
+    > a
+      color: inherit
+      opacity: 0.5
+      &:hover
+        opacity: 1
+
+    &.badge-small
+      font-size: 12px
+      line-height: 13px
+
+  a.badge
+    cursor: pointer
+    &, &:hover, &:active, &:visited
+      color: #ffffff
+      text-decoration: none
+
+  a .badge
+    cursor: inherit
