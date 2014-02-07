@@ -13,7 +13,7 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def find_by_user_id user_id
-    group_member_for (scope.where(users:{id:user_id}).first or return)
+    group_member_for (scope.where(user_id: user_id).first or return)
   end
 
   def find_by_user_id! user_id

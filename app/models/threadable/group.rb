@@ -31,6 +31,10 @@ class Threadable::Group < Threadable::Model
   let(:conversations){ Threadable::Group::Conversations.new(self) }
   let(:tasks)        { Threadable::Group::Tasks.new(self) }
 
+  def current_member
+    @current_member = nil if @current_member && !@current_member.same_user?(current_user)
+    @current_member ||= members.me
+  end
 
   # scopes
   include Threadable::Conversation::Scopes
