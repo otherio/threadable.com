@@ -215,7 +215,7 @@ class Threadable::IncomingEmail < Threadable::Model
   def email_address_tags
     @email_address_tags ||= begin
       local = recipient.strip_non_ascii.downcase.split('@').first
-      @email_address_tags = local.split('+')[1..-1] - SPECIAL_EMAIL_ADDRESS_TAGS
+      @email_address_tags = local.split(/(?:\+|--)/)[1..-1] - SPECIAL_EMAIL_ADDRESS_TAGS
     end
   end
 

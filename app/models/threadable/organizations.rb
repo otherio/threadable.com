@@ -32,8 +32,9 @@ class Threadable::Organizations < Threadable::Collection
     email_address.present? or return
     email_address_username, host = email_address.downcase.strip_non_ascii.split('@')
     # grab the stuff before the + here.
-    email_address_username =~ /^([^+]+)\+?/
-    email_address_username = $1
+    if email_address_username =~ /^(.+?)(\+|--)/
+      email_address_username = $1
+    end
 
     # return nil if threadable.host != host
     organization_for (scope.where(email_address_username: email_address_username).first or return)

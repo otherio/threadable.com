@@ -28,6 +28,7 @@ class Organization < ActiveRecord::Base
   validates_uniqueness_of :name, :slug
   validates_format_of :subject_tag, with: /\A([\w \&\-+]+|)\z/
   validates_format_of :email_address_username, with: /\A[\.a-z0-9_-]+\z/
+  validate :username_special_characters
 
   acts_as_url :short_name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 
@@ -56,6 +57,12 @@ class Organization < ActiveRecord::Base
 
   def to_param
     slug
+  end
+
+  def username_special_characters
+    if email_address_username.present? && email_address_username =~ /--/
+      errors.add :email_address_username, "is invalid"
+    end
   end
 
 end

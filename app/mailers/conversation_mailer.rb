@@ -178,7 +178,9 @@ class ConversationMailer < Threadable::Mailer
     end
     email_addresses.map do |email_address|
       next email_address unless IdentifyThreadableEmailAddress.call(email_address)
-      map[email_address.local] || email_address
+      local = email_address.local
+      local.gsub!(/--/, '+')
+      map[local] || email_address
     end
   end
 

@@ -9,6 +9,7 @@ class Group < ActiveRecord::Base
   validates_format_of :email_address_tag, with: /\A[0-9a-z-]+\z/
   validates_format_of :subject_tag, with: /\A([\w \&\-+]+|)\z/
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
+  validate :email_address_tag_special_characters
 
   has_many :conversation_groups, dependent: :destroy
   has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
@@ -33,6 +34,12 @@ class Group < ActiveRecord::Base
 
   def slug
     email_address_tag
+  end
+
+  def email_address_tag_special_characters
+    if email_address_tag.present? && email_address_tag =~ /--/
+      errors.add :email_address_tag, "is invalid"
+    end
   end
 
 end
