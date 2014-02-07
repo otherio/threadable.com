@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
   alias_method :to_param, :slug
 
-  default_scope { includes(:email_addresses) }
+  # default_scope { includes(:email_addresses) }
 
   scope :with_email_address, ->(email_address){
     readonly(false). \

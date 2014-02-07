@@ -16,13 +16,13 @@ class Threadable::Organization::Members < Threadable::Collection
     scope.who_get_email.reload.map{|membership| member_for membership }
   end
 
-  def find_by_user_id id
-    member_for (scope.where(users:{id:id}).first or return)
+  def find_by_user_id user_id
+    member_for (scope.where(user_id:user_id).first or return)
   end
 
-  def find_by_user_id! id
-    member = find_by_user_id(id)
-    member or raise Threadable::RecordNotFound, "unable to find organization member with id: #{id}"
+  def find_by_user_id! user_id
+    member = find_by_user_id(user_id)
+    member or raise Threadable::RecordNotFound, "unable to find organization member with user id: #{user_id}"
     member
   end
 
@@ -113,7 +113,7 @@ class Threadable::Organization::Members < Threadable::Collection
   private
 
   def scope
-    organization.organization_record.memberships.unload.includes(:user)
+    organization.organization_record.memberships.unload
   end
 
   def member_for organization_membership_record

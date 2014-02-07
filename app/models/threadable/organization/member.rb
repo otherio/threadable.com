@@ -71,7 +71,7 @@ class Threadable::Organization::Member < Threadable::User
   end
 
   def inspect
-    %(#<#{self.class} organization_id: #{organization_id.inspect}, user_id: #{user_id.inspect}>)
+    %(#<#{self.class} organization_id: #{organization_id.inspect}, user_id: #{user_id.inspect}, email_address: #{email_address.to_s.inspect}, slug: #{slug.inspect}>)
   end
 
 end

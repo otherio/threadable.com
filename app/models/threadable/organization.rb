@@ -71,7 +71,10 @@ class Threadable::Organization < Threadable::Model
   let(:ungrouped){ Threadable::Organization::Ungrouped.new(self) }
 
 
-  let(:current_member){ members.me }
+  def current_member
+    @current_member = nil if @current_member && !@current_member.same_user?(current_user)
+    @current_member ||= members.me
+  end
 
   def leave!
     raise Threadable::AuthorizationError unless current_user
