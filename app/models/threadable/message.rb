@@ -102,11 +102,22 @@ class Threadable::Message < Threadable::Model
   delegate :recipients, to: :conversation
 
   def send_emails! send_to_creator=false
-    recipients.all.each do |recipient|
-      next if !send_to_creator && recipient.same_user?(creator)
-      next if sent_to? recipient
-      threadable.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
-      sent_to! recipient
+    # Scheduling background jobs need to happen outside of a Threadable.transaction so that
+    # we do not stick jobs in redis right away for transactions that later fail.
+    #
+    # We need the below code below to also run outside of a transaction so that `sent_to! recipient`
+    # (which reactes a row in the sent_emails table) throws an ActiveRecord::RecordNotUnique error
+    # preventing us from trying to send the same email twice.
+    Threadable.after_transaction do
+      recipients.all.each do |recipient|
+        next if !send_to_creator && recipient.same_user?(creator)
+        begin
+          sent_to! recipient
+        rescue ActiveRecord::RecordNotUnique
+          next
+        end
+        threadable.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
+      end
     end
   end
 

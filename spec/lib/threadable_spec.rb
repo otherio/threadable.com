@@ -94,6 +94,18 @@ describe Threadable, :type => :threadable do
     end
   end
 
+  it 'can handle nester Threadable.after_transaction block' do
+    callback1_called = false
+    Threadable.transaction do
+      Threadable.after_transaction do
+        Threadable.after_transaction do
+          callback1_called = true
+        end
+      end
+    end
+    expect(callback1_called).to be_true
+  end
+
   def first
     Threadable.transaction do
       Threadable.after_transaction{ @first_after_transaction_called = true }

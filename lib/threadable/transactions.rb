@@ -25,16 +25,16 @@ module Threadable::Transactions
     transactions << []
     begin
       postgres.transaction(&block)
-    rescue Exception => e
-      raise e
+    rescue Exception => exception
+      raise exception
     ensure # we need to do everything in an esure because explicit returns skip code beyone the postgres.transaction(&block) call
-      if e
-        transactions.pop # do not call any callbacks
+      if exception
+        transactions.pop # do not call any callbacks for this failed transaction
       else
+        # run each transaction callback in FIFO order if we're the last open transaction
         transactions.shift.each(&:call) until transactions.empty? unless transaction_open?
       end
     end
-
   end
 
   def after_transaction(&block)

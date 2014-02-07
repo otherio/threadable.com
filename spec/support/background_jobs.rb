@@ -13,15 +13,17 @@ module RSpec::Support::BackgroundJobs
   end
 
   def run_background_jobs!
-    jobs = background_jobs
-    clear_background_jobs!
-    jobs.each{ |job| run_background_job job }
+    background_jobs.each{ |job| run_background_job job }
   end
 
   def run_background_job job
-    worker = job["class"].constantize.new
-    worker.jid = job['jid']
-    worker.perform(*job['args'])
+    Threadable.transaction do
+      worker_class = job["class"].constantize
+      worker = worker_class.new
+      worker.jid = job['jid']
+      worker.perform(*job['args'])
+      worker_class.jobs.delete job
+    end
   end
 
   def drain_background_jobs!

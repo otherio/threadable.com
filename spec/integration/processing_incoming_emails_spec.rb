@@ -678,12 +678,36 @@ describe "processing incoming emails" do
       context 'the message is a duplicate of an already received message, but the recipient is to different groups' do
         let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
         let(:recipient) { 'raceteam+electronics@127.0.0.1' }
-        let(:expected_groups) { ['Electronics', 'Fundraising'] }
+
+        let(:expected_groups)          { ['Electronics', 'Fundraising'] }
         let(:expected_email_recipients){ ["tom@ucsd.example.com", "bethany@ucsd.example.com"] }
 
         before do
           # this simulates the same message being recieved twice with different recipients, as if we were in the TO and the CC headers
-          threadable.incoming_emails.create!(params.merge("recipient" => 'raceteam+fundraising@127.0.0.1'))
+          first_incoming_email = threadable.incoming_emails.create!(params.merge("recipient" => 'raceteam+fundraising@127.0.0.1'))
+          job = find_background_jobs(ProcessIncomingEmailWorker, args: [threadable.env, first_incoming_email.id]).first
+
+          email_recipients = ['bob@ucsd.example.com'].map do |email_address|
+            expected_organization.members.find_by_email_address!(email_address)
+          end
+
+          threadable_env = threadable.env.merge(
+            "current_user_id" => threadable.users.find_by_email_address!('alice@ucsd.example.com').user_id,
+            "worker" => true,
+          )
+
+          Threadable.transaction do
+            run_background_job(job)
+            first_incoming_email.reload!
+            email_recipients.each do |recipient|
+              expect(first_incoming_email.message).to_not be_sent_to(recipient)
+              assert_background_job_not_enqueued(SendEmailWorker, args: [threadable_env, 'conversation_message', expected_organization.id, first_incoming_email.message.id, recipient.id])
+            end
+          end
+          email_recipients.each do |recipient|
+            expect(first_incoming_email.message).to be_sent_to(recipient)
+            assert_background_job_enqueued(SendEmailWorker, args: [threadable_env, 'conversation_message', expected_organization.id, first_incoming_email.message.id, recipient.id])
+          end
           drain_background_jobs!
           sent_emails.clear
         end

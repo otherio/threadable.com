@@ -10,7 +10,9 @@ class Threadable::Worker
 
     @threadable = Threadable.new(threadable_env.symbolize_keys.merge({worker: true}))
     begin
-      perform!(*args)
+      Threadable.transaction do
+        perform!(*args)
+      end
     rescue Exception => exception
       @threadable.report_exception! exception
       raise
