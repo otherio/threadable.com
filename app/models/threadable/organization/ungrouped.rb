@@ -39,7 +39,7 @@ class Threadable::Organization::Ungrouped
   private
 
   def organization_membership_record
-    organization.membership.organization_membership_record
+    organization.current_member.organization_membership_record
   end
 
   def conversations_scope

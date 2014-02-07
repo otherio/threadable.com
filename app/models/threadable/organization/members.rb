@@ -113,7 +113,7 @@ class Threadable::Organization::Members < Threadable::Collection
   private
 
   def scope
-    organization.organization_record.memberships.includes(:user).reload
+    organization.organization_record.memberships.unload.includes(:user)
   end
 
   def member_for organization_membership_record

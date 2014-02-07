@@ -141,9 +141,14 @@ class FixtureBuilder
     membership.unsubscribe!
   end
 
-  def set_mail_delivery_option group_slug, settings
+  def configure_mail_delivery_for_group group_slug, option
     group = group_slug == :ungrouped ? organization.ungrouped : organization.groups.find_by_slug!(group)
-    # TBC
+    case option
+    when :gets_no_mail;    group.gets_no_mail!
+    when :gets_in_summary; group.gets_in_summary!
+    when :gets_messages;   group.gets_messages!
+    else raise ArgumentError, "unknown mail delivery option #{option}"
+    end
   end
 
 end
