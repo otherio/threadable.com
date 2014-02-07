@@ -638,6 +638,15 @@ describe "processing incoming emails" do
         it "delivers the message to only those groups' members" do
           validate! :delivered
         end
+
+        context "and the group is identified using -- instead of +" do
+          let(:recipient) { 'raceteam--electronics@127.0.0.1' }
+          let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam--electronics@127.0.0.1>' }
+
+          it "delivers the message to only those groups' members" do
+            validate! :delivered
+          end
+        end
       end
 
       context 'and the message is a reply to a conversation that is in different group(s)' do
@@ -726,6 +735,15 @@ describe "processing incoming emails" do
 
     it 'creates the conversation as a task' do
       validate! :delivered
+    end
+
+    context 'and the -- backup character was used' do
+      let(:recipient){ expected_organization.task_email_address.gsub('+', '--') }
+      let(:to)       { expected_organization.formatted_task_email_address.gsub('+', '--') }
+
+      it 'creates the conversation as a task' do
+        validate! :delivered
+      end
     end
   end
 

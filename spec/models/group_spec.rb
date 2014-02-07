@@ -77,6 +77,16 @@ describe Group do
       group.save.should be_false
       group.errors[:email_address_tag].should == ['is reserved']
     end
+
+    it "prohibits +  and -- in the email address tag" do
+      group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', email_address_tag: 'foo+bar')
+      group.save.should be_false
+      group.errors[:email_address_tag].should == ['is invalid']
+
+      group.email_address_tag = 'foo--bar'
+      group.save.should be_false
+      group.errors[:email_address_tag].should == ['is invalid']
+    end
   end
 
   describe "#name=" do

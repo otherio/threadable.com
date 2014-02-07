@@ -87,6 +87,8 @@ describe Organization do
     it "validates the format of" do
       expect( email_address_username_errors("hello") ).to be_blank
       expect( email_address_username_errors("hello there") ).to eq ["is invalid"]
+      expect( email_address_username_errors("hello+there") ).to eq ["is invalid"]
+      expect( email_address_username_errors("hello--there") ).to eq ["is invalid"]
       expect( email_address_username_errors("hello_there") ).to be_blank
       expect( email_address_username_errors("hello-there") ).to be_blank
     end
