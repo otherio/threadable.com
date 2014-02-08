@@ -1,6 +1,6 @@
 .padded
   .well-when-not-small
-    h1= name
+    h2 #{organization.name} settings for #{name}
 
     section
       a.input-switch href="" class={ isSubscribed:input-switch-on:input-switch-off saving:disabled} click="toggleIsSubscribed"
