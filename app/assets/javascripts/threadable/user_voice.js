@@ -15,5 +15,5 @@ Threadable.setupUserVoice = function(currentUser, organization) {
     UserVoice.push(['addTrigger', '#feedback-button', {
       mode: 'contact'
     }]);
-  });
+  }, 500);
 };

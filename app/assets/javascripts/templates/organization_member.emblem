@@ -1,0 +1,16 @@
+.padded
+  .well-when-not-small
+    h1= name
+
+    = isSubscribed
+
+    div
+      a.input-switch class={ isSubscribed:input-switch-on:input-switch-off } click="toggleIsSubscribed"
+        .slider
+          .on
+            i.uk-icon-check
+          .off
+            i.uk-icon-times
+          .switch
+
+
