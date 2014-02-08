@@ -298,4 +298,15 @@ FixtureBuilder.build do
     mute_conversation @get_carbon_and_fiberglass_task
     mute_conversation @parts_for_the_drive_train
   end
+
+  as 'alice@ucsd.example.com' do
+    @inventory_led_supplies_task = create_task 'inventory led supplies'
+
+    @initial_inventory_led_supplies_message = create_message( @inventory_led_supplies_task,
+      text: "Cars need lights, so lets get a sense of our led situation!",
+    )
+    add_conversation_to_group       @inventory_led_supplies_task, @electronics_group
+    add_conversation_to_group       @inventory_led_supplies_task, @graphic_design_group
+    add_conversation_to_group       @inventory_led_supplies_task, @fundraising_group
+  end
 end
