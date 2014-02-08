@@ -1,21 +1,32 @@
 .message-summary
   %div.heading
-    = "#{@organization.name} summary for #{@formatted_date}."
     %div.message-count-summary
       = @message_count_summary
+    = "#{@organization.name} summary for #{@formatted_date}."
+
+  %br
+
+  .buttons
+    %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        = email_button "New conversation", mail_to_href(@organization.email_address),      class: 'compose-button'
+        = email_button "New task",         mail_to_href(@organization.task_email_address), class: 'compose-button'
 
   %br
 
   .message-list
     - @conversations.each do |conversation|
-      %table.messages{border: 0}
+      %table.messages{border: 0, cellpadding: 0, cellspacing: 0}
         %tr
-          %td{rowspan: conversation.groups.count > 0 ? 3 : 2, valign: 'top'}
-            []
+          %td{valign: 'top', class: "icon #{conversation.task? ? 'icon-task' : 'icon-conversation'}", rowspan: conversation.groups.count > 0 ? 3 : 2}
+            - if conversation.task?
+              = image_tag 'check.png', width: 20, height: 20
+            - else
+              = image_tag 'bubble.png', width: 20, height: 20
 
           %td
             %span.subject
-              = conversation.subject
+              = link_to conversation.subject, conversation_url(@organization, 'my', conversation)
             %br
             %span.summary
               = "#{conversation.message_summary}"
@@ -28,22 +39,21 @@
               = conversation.messages_count
               total
 
-            = link_to 'View', conversation_url(@organization, 'my', conversation)
-
-        - if conversation.groups.count > 0
+      - if conversation.groups.count > 0
+        %table.groups{border: 0, cellpadding: 0, cellspacing: 0}
           %tr
+            %td.spacer
             %td
               - conversation.groups.all.each do |group|
-                %span.badge.badge-small{style: "background-color: #{group.color}"}
-                  = "+#{group.name}"
-
+                = link_to "+#{group.name}", conversations_url(@organization, group), class: 'badge badge-small', style: "background-color: #{group.color}"
 
   %br
 
-  .threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
-    = link_to @organization.name, organization_url(@organization)
-    |
-    = mail_to @organization.email_address, @organization.email_address
-  .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
-    = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
+  .footer
+    .threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+      = link_to @organization.name, organization_url(@organization)
+      |
+      = mail_to @organization.email_address, @organization.email_address
+    .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
+      = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
 

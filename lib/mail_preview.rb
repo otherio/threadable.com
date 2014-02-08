@@ -56,7 +56,7 @@ class MailPreview < MailView
   end
 
   def message_summary
-    time = Time.zone.now
+    time = Time.now.in_time_zone('US/Pacific')
     random_message = Message.last!
     threadable.current_user_id = random_message.creator_id
 
@@ -70,7 +70,7 @@ class MailPreview < MailView
   private
 
   def threadable
-    @threadable ||= Threadable.new(host: 'example.com', port: 3000, protocol: 'http')
+    @threadable ||= Threadable.new(host: 'localhost', port: 3000, protocol: 'http')
   end
 
   def generate_conversation_message message

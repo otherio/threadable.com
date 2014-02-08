@@ -3,37 +3,69 @@
 @import mixins
 @import constants
 @import classes/badge
+@import threadable-button
 
 .message-summary
   margin-top: 0.5em !important
-  width: 100%
+  width: 100% !important
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important
 
+  .message-list
+    clear: both !important
+
+  a.compose-button
+    color: #364041 !important
+
   .conversations
-    width: 100%
+    width: 100% !important
 
   .messages
-    font-size: 14px
-    font-weight: 300
-    padding-top: 10px
+    font-size: 14px !important
+    font-weight: 300 !important
+    padding-top: 10px !important
 
   .heading
-    font-weight: bold
-    font-size: 14px
+    font-weight: bold !important
+    font-size: 14px !important
 
     .message-count-summary
-      font-weight: 300
+      font-weight: 300 !important
 
   .summary
-    color: $light-grey-color
-    font-size: 13px
+    color: $grey-text-color !important
+    font-size: 13px !important
+    white-space: nowrap !important
+    overflow: hidden !important
 
   .summary, .subject
-    white-space: nowrap
-    overflow: hidden
 
   .new-count
-    font-weight: normal
+    font-weight: normal !important
 
   .total-count
-    color: $light-grey-color
+    color: $grey-text-color
+
+  .badge
+    line-height: 23px !important
+    white-space: nowrap !important
+
+  td.icon, td.spacer
+    background-size: 20px 20px // not !important
+    width: 20px !important
+    height: 20px !important
+    min-width: 20px !important
+    background-repeat: no-repeat !important
+    padding-right: 4px !important
+
+    &.icon-task
+      background-image: asset-url("check@2x.png") !important
+
+    &.icon-conversation
+      background-image: asset-url("bubble@2x.png") !important
+
+    img
+      display: none !important
+
+  .subject a, .footer a
+    text-decoration: none !important
+    color: $email-link-color !important
