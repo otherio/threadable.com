@@ -24,6 +24,7 @@ describe SendEmailWorker do
   let(:messages    ){ double :messages }
   let(:members     ){ double :members  }
   let(:users       ){ double :users    }
+  let(:conversations       ){ double :conversations    }
 
   let(:organization     ){ double :organization }
   let(:message     ){ double :message }
@@ -58,13 +59,13 @@ describe SendEmailWorker do
       expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
       expect(organizations).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
-      expect(organization ).to receive(:messages        ).and_return(messages)
-      expect(messages).to receive(:find_by_date!        ).with(date).and_return(messages)
+      expect(organization ).to receive(:conversations        ).and_return(conversations)
+      expect(conversations).to receive(:all_with_updated_date        ).with(date).and_return(messages)
 
       expect(organization ).to receive(:members         ).and_return(members)
       expect(members ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, messages)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, messages, date)
 
       perform!
     end
