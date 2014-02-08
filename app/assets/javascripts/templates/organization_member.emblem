@@ -2,14 +2,10 @@
   .well-when-not-small
     h1= name
 
-    = isSubscribed
-
-    input
-
-    div
-      label
-        h2 Subscribed:
-        a.input-switch href="" class={ isSubscribed:input-switch-on:input-switch-off saving:disabled} click="toggleIsSubscribed"
+    section
+      a.input-switch href="" class={ isSubscribed:input-switch-on:input-switch-off saving:disabled} click="toggleIsSubscribed"
+        label Subscribed:
+        .input-switch-wrapper
           .slider
             .on
               i.uk-icon-check
