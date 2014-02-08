@@ -4,13 +4,17 @@
 
     = isSubscribed
 
+    input
+
     div
-      a.input-switch class={ isSubscribed:input-switch-on:input-switch-off } click="toggleIsSubscribed"
-        .slider
-          .on
-            i.uk-icon-check
-          .off
-            i.uk-icon-times
-          .switch
+      label
+        h2 Subscribed:
+        a.input-switch href="" class={ isSubscribed:input-switch-on:input-switch-off saving:disabled} click="toggleIsSubscribed"
+          .slider
+            .on
+              i.uk-icon-check
+            .off
+              i.uk-icon-times
+            .switch
 
 
