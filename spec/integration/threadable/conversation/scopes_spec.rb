@@ -54,6 +54,7 @@ describe Threadable::Conversation::Scopes do
           "parts-for-the-motor-controller",
           "how-are-we-going-to-build-the-body",
           "drive-trains-are-expensive",
+          "inventory-led-supplies",
         ]
 
         expect( slugs_for @done_tasks ).to match_array [
@@ -69,6 +70,7 @@ describe Threadable::Conversation::Scopes do
           "make-wooden-form-for-carbon-layup",
           "get-a-new-soldering-iron",
           "get-some-4-gauge-wire",
+          "inventory-led-supplies",
         ]
 
         expect( slugs_for @done_doing_tasks ).to match_array [

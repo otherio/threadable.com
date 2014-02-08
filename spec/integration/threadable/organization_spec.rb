@@ -66,6 +66,7 @@ describe Threadable::Organization do
             "parts-for-the-motor-controller",
             "how-are-we-going-to-build-the-body",
             "drive-trains-are-expensive",
+            "inventory-led-supplies",
           ]
         end
       end
@@ -97,6 +98,7 @@ describe Threadable::Organization do
             "make-wooden-form-for-carbon-layup",
             "get-a-new-soldering-iron",
             "get-some-4-gauge-wire",
+            "inventory-led-supplies",
           ]
         end
       end

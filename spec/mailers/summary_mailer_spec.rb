@@ -28,7 +28,7 @@ describe SummaryMailer do
       mail.subject.should include "[RaceTeam]"
       mail.subject.should include "Summary for"
       mail.subject.should include today.strftime('%a, %b %-d')
-      mail.subject.should include '19 new messages in 17 conversations'
+      mail.subject.should include '19 new messages in 18 conversations'
       mail.subject.scan('RaceTeam').size.should == 1
 
       mail.to.should                    == [expected_to]
@@ -51,8 +51,8 @@ describe SummaryMailer do
       expect(text_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
       expect(html_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
 
-      expect(text_part).to include '18 new messages in 17 conversations'
-      expect(html_part).to include '18 new messages in 17 conversations'
+      expect(text_part).to include '19 new messages in 18 conversations'
+      expect(html_part).to include '19 new messages in 18 conversations'
 
       expect(html_part).to include "mailto:#{organization.email_address}"
       expect(html_part).to include "mailto:#{organization.task_email_address}"

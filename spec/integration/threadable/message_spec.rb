@@ -14,13 +14,13 @@ describe Threadable::Message do
 
   describe '#avatar_url' do
     it 'knows its avatar url' do
-      expect(message.avatar_url).to eq '/fixture_images/tom.jpg'
+      expect(message.avatar_url).to eq '/fixture_images/alice.jpg'
     end
   end
 
   describe '#sender_name' do
     it "gets the name of the user" do
-      expect(message.sender_name).to eq 'Tom Canver'
+      expect(message.sender_name).to eq 'Alice Neilson'
     end
 
     context 'with no message creator' do

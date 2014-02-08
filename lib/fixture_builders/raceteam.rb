@@ -10,6 +10,7 @@ FixtureBuilder.build do
   end
 
   Timecop.travel(Date.yesterday)
+  Timecop.scale(4300)
 
   web_enable! 'alice@ucsd.example.com'
   as 'alice@ucsd.example.com' do
@@ -76,6 +77,8 @@ FixtureBuilder.build do
   end
 
   Timecop.return
+  Timecop.travel(Date.current)
+  Timecop.scale(4300)
 
   as 'tom@ucsd.example.com' do
     create_conversation(
@@ -309,4 +312,6 @@ FixtureBuilder.build do
     add_conversation_to_group       @inventory_led_supplies_task, @graphic_design_group
     add_conversation_to_group       @inventory_led_supplies_task, @fundraising_group
   end
+
+  Timecop.return
 end

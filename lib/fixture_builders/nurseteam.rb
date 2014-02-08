@@ -1,5 +1,5 @@
 FixtureBuilder.build do
-  Timecop.travel(Date.today - 8.hours)
+  Timecop.travel(8.hours.ago)
   Timecop.scale(8600)
 
   as_an_admin do

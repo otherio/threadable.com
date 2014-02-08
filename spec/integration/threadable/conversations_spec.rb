@@ -26,9 +26,9 @@ describe Threadable::Conversations do
 
   describe 'all_with_updated_date' do
     it 'returns all the conversations updated on a particular day' do
-      expect(conversations.all_with_updated_date(Date.today)).to eq ::Conversation.
+      expect(conversations.all_with_updated_date(Date.current)).to eq ::Conversation.
         order('conversations.updated_at DESC').
-        where('updated_at between ? and ?', Date.today.midnight, Date.tomorrow.midnight).
+        where('updated_at between ? and ?', Date.current.midnight, Date.tomorrow.midnight).
         to_a.map{ |conversation_record| Threadable::Conversation.new(threadable, conversation_record) }
     end
   end

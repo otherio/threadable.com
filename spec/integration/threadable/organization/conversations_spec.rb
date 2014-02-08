@@ -54,6 +54,7 @@ describe Threadable::Organization::Conversations do
         "parts-for-the-motor-controller",
         "how-are-we-going-to-build-the-body",
         "drive-trains-are-expensive",
+        "inventory-led-supplies",
       ]
     end
 

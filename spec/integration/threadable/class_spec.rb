@@ -36,7 +36,7 @@ describe Threadable::Class do
       Threadable::Events::ConversationRemovedGroup,
     ]
     expect( events[Threadable::Events::ConversationCreated].count ).to eq 17
-    expect( events[Threadable::Events::TaskCreated        ].count ).to eq 33
+    expect( events[Threadable::Events::TaskCreated        ].count ).to eq 34
     expect( events[Threadable::Events::TaskAddedDoer      ].count ).to eq 11
     expect( events[Threadable::Events::TaskDone           ].count ).to eq 11
 

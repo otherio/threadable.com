@@ -81,8 +81,8 @@ describe Threadable::Emails do
     context 'when given :message_summary as the type' do
       it 'calls UserMailer#message_summary' do
         expect(UserMailer).to receive(:new).with(threadable).and_return(mailer)
-        expect(mailer).to receive(:generate).with(:message_summary, 1,2,3).and_return('A Mail::Message')
-        expect(subject.generate(:message_summary, 1,2,3)).to eq 'A Mail::Message'
+        expect(mailer).to receive(:generate).with(:message_summary, 1,2,3,4).and_return('A Mail::Message')
+        expect(subject.generate(:message_summary, 1,2,3,4)).to eq 'A Mail::Message'
       end
     end
     context 'when given an invalid type' do
