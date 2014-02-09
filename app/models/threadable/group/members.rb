@@ -24,10 +24,18 @@ class Threadable::Group::Members < Threadable::Collection
 
   def add user
     group.group_record.members += [user.user_record]
+
+    unless threadable.current_user.id == user.id
+      threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
+    end
   end
 
   def remove user
     group.group_record.members.delete(user.user_record)
+
+    unless threadable.current_user.id == user.id
+      threadable.emails.send_email_async(:removed_from_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
+    end
   end
 
   def include? member
