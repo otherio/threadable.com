@@ -31,4 +31,24 @@ class MembershipMailer < Threadable::Mailer
     )
   end
 
+  def added_to_group_notice organization, group, sender, recipient
+    @organization, @group, @sender, @recipient = organization, group, sender, recipient
+
+    mail(
+      to:      @recipient.formatted_email_address,
+      from:    @sender.formatted_email_address,
+      subject: "I added you to +#{group.name} on #{organization.name}",
+    )
+  end
+
+  def removed_from_group_notice organization, group, sender, recipient
+    @organization, @group, @sender, @recipient = organization, group, sender, recipient
+
+    mail(
+      to:      @recipient.formatted_email_address,
+      from:    @sender.formatted_email_address,
+      subject: "I removed you from +#{group.name} on #{organization.name}",
+    )
+  end
+
 end

@@ -38,6 +38,22 @@ class SendEmailWorker < Threadable::Worker
     threadable.emails.send_email(:unsubscribe_notice, organization, recipient)
   end
 
+  def added_to_group_notice organization_id, group_id, sender_id, recipient_id
+    organization = threadable.organizations.find_by_id! organization_id
+    group        = organization.groups.find_by_id! group_id
+    sender       = organization.members.find_by_user_id! sender_id
+    recipient    = organization.members.find_by_user_id! recipient_id
+    threadable.emails.send_email(:added_to_group_notice, organization, group, sender, recipient)
+  end
+
+  def removed_from_group_notice organization_id, group_id, sender_id, recipient_id
+    organization = threadable.organizations.find_by_id! organization_id
+    group        = organization.groups.find_by_id! group_id
+    sender       = organization.members.find_by_user_id! sender_id
+    recipient    = organization.members.find_by_user_id! recipient_id
+    threadable.emails.send_email(:removed_from_group_notice, organization, group, sender, recipient)
+  end
+
   def sign_up_confirmation recipient_id
     recipient = threadable.users.find_by_id! recipient_id
     threadable.emails.send_email(:sign_up_confirmation, recipient)

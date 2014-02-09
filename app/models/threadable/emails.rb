@@ -46,6 +46,8 @@ class Threadable::Emails
       message_summary:            SummaryMailer,
       join_notice:                MembershipMailer,
       unsubscribe_notice:         MembershipMailer,
+      added_to_group_notice:      MembershipMailer,
+      removed_from_group_notice:  MembershipMailer,
       sign_up_confirmation:       UserMailer,
       reset_password:             UserMailer,
       email_address_confirmation: UserMailer,

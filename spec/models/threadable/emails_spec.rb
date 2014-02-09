@@ -85,6 +85,20 @@ describe Threadable::Emails do
         expect(subject.generate(:message_summary, 1,2,3)).to eq 'A Mail::Message'
       end
     end
+    context 'when given :added_to_group_notice as the type' do
+      it 'calls UserMailer#added_to_group_notice' do
+        expect(MembershipMailer).to receive(:new).with(threadable).and_return(mailer)
+        expect(mailer).to receive(:generate).with(:added_to_group_notice, 1,2,3).and_return('A Mail::Message')
+        expect(subject.generate(:added_to_group_notice, 1,2,3)).to eq 'A Mail::Message'
+      end
+    end
+    context 'when given :removed_from_group_notice as the type' do
+      it 'calls UserMailer#removed_from_group_notice' do
+        expect(MembershipMailer).to receive(:new).with(threadable).and_return(mailer)
+        expect(mailer).to receive(:generate).with(:removed_from_group_notice, 1,2,3).and_return('A Mail::Message')
+        expect(subject.generate(:removed_from_group_notice, 1,2,3)).to eq 'A Mail::Message'
+      end
+    end
     context 'when given an invalid type' do
       it 'raises and ArgumentError' do
         expect{ subject.generate(:bad_type) }.to raise_error ArgumentError, 'unknown email type: bad_type'

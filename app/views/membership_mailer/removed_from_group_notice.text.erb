@@ -1,0 +1,14 @@
+I removed you from the +<%= @group.name %> group in the
+"<%= @organization.name %>" organization on Threadable.
+
+This means that conversations and tasks created in this group will no
+longer be sent to your email, but you can still access them on Threadable.
+
+If you don't want that, you can change your membership settings here:
+
+<%= group_members_url(@organization, @group) %>
+
+You can see the current conversations and tasks in this group here:
+<%= conversations_url(@organization, @group) %>
+
+(This message was automatically generated)

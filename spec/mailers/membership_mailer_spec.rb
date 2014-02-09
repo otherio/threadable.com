@@ -7,6 +7,8 @@ describe MembershipMailer do
 
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
+  let(:group) { organization.groups.find_by_email_address_tag('electronics') }
+
   let(:message){ conversation.messages.latest }
   let(:text_part){ mail.body.encoded }
 
@@ -59,5 +61,37 @@ describe MembershipMailer do
     end
   end
 
+  describe 'added_to_group_notice' do
+    let(:sender){ organization.members.find_by_user_id!(threadable.current_user.id) }
+    let(:member) { organization.members.find_by_email_address('tom@ucsd.example.com') }
+    let(:mail){ MembershipMailer.new(threadable).generate(:added_to_group_notice, organization, group, sender, member) }
+
+    it "should return the expected message" do
+      expect(mail.subject ).to eq "I added you to +#{group.name} on #{organization.name}"
+      expect(mail.to      ).to eq ['tom@ucsd.example.com']
+      expect(mail.from    ).to eq [sender.email_address.to_s]
+      expect(text_part    ).to include 'This message was automatically generated'
+      expect(text_part    ).to include %(I added you to the +#{group.name} group)
+      expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
+      expect(text_part    ).to include conversations_url(organization, group)
+      expect(text_part    ).to include group_members_url(organization, group)
+    end
+  end
+
+  describe 'removed_from_group_notice' do
+    let(:sender){ organization.members.find_by_user_id!(threadable.current_user.id) }
+    let(:member) { organization.members.find_by_email_address('tom@ucsd.example.com') }
+    let(:mail){ MembershipMailer.new(threadable).generate(:removed_from_group_notice, organization, group, sender, member) }
+
+    it "should return the expected message" do
+      expect(mail.subject ).to eq "I removed you from +#{group.name} on #{organization.name}"
+      expect(mail.to      ).to eq ['tom@ucsd.example.com']
+      expect(mail.from    ).to eq [sender.email_address.to_s]
+      expect(text_part    ).to include 'This message was automatically generated'
+      expect(text_part    ).to include %(I removed you from the +#{group.name} group)
+      expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
+      expect(text_part    ).to include group_members_url(organization, group)
+    end
+  end
 
 end
