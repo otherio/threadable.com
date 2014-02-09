@@ -12,10 +12,10 @@ class Threadable::Conversation::Groups < Threadable::Groups
     Threadable.transaction do
       group_records = groups.flatten.compact.map(&:group_record)
 
-      add_group_records = group_records - groups_association.reload.to_a
+      add_group_records = group_records - groups_with_inactive.reload.to_a
       new_and_changed_group_records = group_records - scope.reload.to_a
 
-      groups_association << add_group_records
+      groups_with_inactive << add_group_records
       group_ids = groups.flatten.compact.map(&:id)
       conversation.conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: true)
       conversation.cache_group_ids!
@@ -35,7 +35,7 @@ class Threadable::Conversation::Groups < Threadable::Groups
     existing_group_ids = conversation.conversation_record.conversation_groups.map(&:group_id)
     groups.reject!{ |group| existing_group_ids.include? group.group_id }
     Threadable.transaction do
-      groups_association << groups.map(&:group_record)
+      groups_with_inactive << groups.map(&:group_record)
       conversation.cache_group_ids!
 
       groups.each do |group|
@@ -67,11 +67,11 @@ class Threadable::Conversation::Groups < Threadable::Groups
   private
 
   def scope
-    groups_association.where(conversation_groups: {active: true})
+    conversation.conversation_record.groups.unload
   end
 
-  def groups_association
-    conversation.conversation_record.groups.unload
+  def groups_with_inactive
+    conversation.conversation_record.groups_with_inactive.unload
   end
 
 end

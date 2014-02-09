@@ -23,17 +23,24 @@ describe Threadable::Conversation::Groups do
     end
 
     context 'when a given group was already removed from the conversation' do
+      let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
+      let(:group) { conversation.groups.all.first }
 
       it 'should add the given groups to the conversation' do
-        group = all_groups.first
-        conversation.groups.add(group)
         expect(conversation.groups.all).to eq [group]
+
         conversation.groups.remove(group)
         expect(conversation.groups.all).to eq []
+
         conversation.groups.add(group)
+
         expect(conversation.groups.all).to eq [group]
         expect(conversation.group_ids).to eq [group.id]
-        expect(conversation.events.all.length).to eq 7
+        expect(conversation.events.all.map(&:event_type)).to eq [
+          :conversation_created,
+          :conversation_removed_group,
+          :conversation_added_group,
+        ]
       end
 
     end
@@ -52,17 +59,23 @@ describe Threadable::Conversation::Groups do
     end
 
     context 'when a given group was already removed from the conversation' do
+      let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
+      let(:group) { conversation.groups.all.first }
 
       it 'should not add that group to the conversation' do
-        group = all_groups.first
-        conversation.groups.add_unless_removed(group)
         expect(conversation.groups.all).to eq [group]
+
         conversation.groups.remove(group)
         expect(conversation.groups.all).to eq []
+
         conversation.groups.add_unless_removed(group)
+
         expect(conversation.groups.all).to eq []
         expect(conversation.group_ids).to eq []
-        expect(conversation.events.all.length).to eq 6
+        expect(conversation.events.all.map(&:event_type)).to eq [
+          :conversation_created,
+          :conversation_removed_group
+        ]
       end
 
     end
@@ -70,18 +83,20 @@ describe Threadable::Conversation::Groups do
   end
 
   describe '#remove' do
-
-    before do
-      conversation.conversation_record.groups << all_groups.first(2).map(&:group_record)
-    end
+    let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
+    let(:group) { conversation.groups.all.first }
 
     it 'should remove the given groups from the conversation' do
-      groups = conversation.groups.all
-      expect(groups.length).to eq 2
-      conversation.groups.remove(groups.first)
-      expect(conversation.groups.all).to eq [groups.last]
-      expect(conversation.group_ids).to eq [groups.last.id]
-      expect(conversation.events.all.length).to eq 5
+      expect(conversation.groups.all).to eq [group]
+
+      conversation.groups.remove(group)
+      expect(conversation.groups.all).to eq []
+      expect(conversation.group_ids).to eq []
+
+      expect(conversation.events.all.map(&:event_type)).to eq [
+        :conversation_created,
+        :conversation_removed_group
+      ]
     end
 
   end
