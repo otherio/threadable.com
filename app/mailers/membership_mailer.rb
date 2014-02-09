@@ -1,4 +1,4 @@
-class OrganizationMembershipMailer < Threadable::Mailer
+class MembershipMailer < Threadable::Mailer
 
   def join_notice organization, recipient, personal_message=nil
     @adder = threadable.current_user

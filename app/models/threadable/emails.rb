@@ -44,8 +44,8 @@ class Threadable::Emails
     {
       conversation_message:       ConversationMailer,
       message_summary:            SummaryMailer,
-      join_notice:                OrganizationMembershipMailer,
-      unsubscribe_notice:         OrganizationMembershipMailer,
+      join_notice:                MembershipMailer,
+      unsubscribe_notice:         MembershipMailer,
       sign_up_confirmation:       UserMailer,
       reset_password:             UserMailer,
       email_address_confirmation: UserMailer,
