@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Threadable::Messages do
 
-  let(:date) { Date.yesterday }
+  let(:date) { Time.new(2014,2,1).in_time_zone('US/Pacific') }
   let(:messages){ described_class.new(threadable) }
   subject{ messages }
 

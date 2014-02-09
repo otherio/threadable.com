@@ -2,6 +2,15 @@
 require "spec_helper"
 
 describe SummaryMailer do
+  before do
+    # midnight, Feb 2, 2014. starting date for this report.
+    Timecop.travel( Time.new(2014,2,2).in_time_zone('US/Pacific') )
+  end
+
+  after do
+    Timecop.return
+  end
+
   describe "message_summary" do
     signed_in_as 'bethany@ucsd.example.com'
 

@@ -9,8 +9,8 @@ FixtureBuilder.build do
     add_member 'Alice Neilson', 'alice@ucsd.example.com'
   end
 
-  Timecop.travel(Date.yesterday)
-  Timecop.scale(4300)
+  Timecop.travel( Time.new(2014,2,1).in_time_zone('US/Pacific') )
+  Timecop.scale(3600)
 
   web_enable! 'alice@ucsd.example.com'
   as 'alice@ucsd.example.com' do
@@ -76,9 +76,8 @@ FixtureBuilder.build do
     mute_conversation @welcome_message.conversation
   end
 
-  Timecop.return
-  Timecop.travel(Date.current)
-  Timecop.scale(4300)
+  Timecop.travel( Time.new(2014,2,2).in_time_zone('US/Pacific') )
+  Timecop.scale(3600)
 
   as 'tom@ucsd.example.com' do
     create_conversation(
