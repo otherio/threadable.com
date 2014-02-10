@@ -33,13 +33,12 @@ class Admin::Organization::MembersController < ApplicationController
 
   # DELETE /admin/organizations/:organization_slug/members/:user_id
   def remove
-    user_id = params.require(:user_id).to_i
-    if member = organization.members.find_by_user_id(user_id)
-      binding.pry
+    user_slug = params.require(:user_id)
+    if member = organization.members.find_by_user_slug!(user_slug)
       organization.members.remove(user: member)
       flash[:notice] = "#{member.formatted_email_address} was successfully removed from #{organization.name}."
     else
-      flash[:alert] = "user #{user_id} is not a member of #{organization.name}."
+      flash[:alert] = "user #{user_slug} is not a member of #{organization.name}."
     end
     redirect_to admin_edit_organization_path(organization)
   end

@@ -20,7 +20,6 @@ class Threadable::Organization::Members::Remove < MethodObject
   end
 
   def delete_organization_membership!
-    binding.pry
     @scope.where(user_id: user_id).delete_all
   end
 

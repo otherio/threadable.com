@@ -130,7 +130,6 @@ feature "Admin organizations CRUD" do
 
     expect(page).to have_text 'Edit organization'
 
-    binding.pry
     expect(members_table).to match_array [
       ["Ian Baker",      "ian@other.io",    "no" ],
       ["You Face",       "you@face.io",     "yes"],
