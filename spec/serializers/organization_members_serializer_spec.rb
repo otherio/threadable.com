@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe OrganizationMembersSerializer do
 
-  let(:alice) { threadable.users.find_by_email_address!('alice@ucsd.example.com') }
-  let(:marcus){ threadable.users.find_by_email_address!('marcus@sfhealth.example.com') }
+  let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
+  let(:alice) { organization.members.find_by_email_address!('alice@ucsd.example.com') }
+  let(:bob){ organization.members.find_by_email_address!('bob@ucsd.example.com') }
 
   context 'when given a single record' do
     let(:payload){ alice }
@@ -17,12 +18,13 @@ describe OrganizationMembersSerializer do
         email_address: "alice@ucsd.example.com",
         slug:          "alice-neilson",
         avatar_url:    "/fixture_images/alice.jpg",
+        is_subscribed: true,
       )
     end
   end
 
   context 'when given a collection of records' do
-    let(:payload){ [alice,marcus] }
+    let(:payload){ [alice,bob] }
     let(:expected_key){ :organization_members }
     it do
       should eq [
@@ -34,14 +36,16 @@ describe OrganizationMembersSerializer do
           email_address: "alice@ucsd.example.com",
           slug:          "alice-neilson",
           avatar_url:    "/fixture_images/alice.jpg",
+          is_subscribed: true,
         },{
-          id:            marcus.id,
-          user_id:       marcus.user_id,
-          param:         "marcus-welby",
-          name:          "Marcus Welby",
-          email_address: "marcus@sfhealth.example.com",
-          slug:          "marcus-welby",
-          avatar_url:    "/fixture_images/marcus.jpg",
+          id:            bob.id,
+          user_id:       bob.user_id,
+          param:         "bob-cauchois",
+          name:          "Bob Cauchois",
+          email_address: "bob@ucsd.example.com",
+          slug:          "bob-cauchois",
+          avatar_url:    "/fixture_images/bob.jpg",
+          is_subscribed: true,
         }
       ]
     end

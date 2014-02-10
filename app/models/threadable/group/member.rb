@@ -17,15 +17,12 @@ class Threadable::Group::Member < Threadable::User
     id
     name
     avatar_url
+    to_param
   }, to: :user_record
 
   # delegate *%w{
 
   # }, to: :group_membership_record
-
-  def to_param
-    id
-  end
 
   def group_membership_id
     group_membership_record.id

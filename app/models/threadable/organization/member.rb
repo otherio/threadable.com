@@ -19,16 +19,13 @@ class Threadable::Organization::Member < Threadable::User
     id
     name
     avatar_url
+    to_param
   }, to: :user_record
 
   delegate *%w{
     gets_email?
     subscribed?
   }, to: :organization_membership_record
-
-  def to_param
-    id
-  end
 
   def organization_membership_id
     organization_membership_record.id
