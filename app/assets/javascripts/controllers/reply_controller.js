@@ -1,4 +1,4 @@
-Threadable.ReplyController = Ember.ObjectController.extend({
+ Threadable.ReplyController = Ember.ObjectController.extend({
   needs: ['conversation', 'organization', 'doerSelector'],
 
   message: Ember.computed.alias('model'),
@@ -80,7 +80,9 @@ Threadable.ReplyController = Ember.ObjectController.extend({
       }
 
       function saveMessage() {
-        message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+        if(message.get('body')) {
+          message.saveRecord().then(onMessageSuccess.bind(this), onError.bind(this));
+        }
       }
 
       function onMessageSuccess(response) {
