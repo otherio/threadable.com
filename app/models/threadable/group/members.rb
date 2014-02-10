@@ -49,7 +49,7 @@ class Threadable::Group::Members < Threadable::Collection
 
   def include? member
     return false unless member.respond_to?(:user_id)
-    !!group.group_record.group_members.where(user_id: member.user_id).exists?
+    !!group.group_record.memberships.where(user_id: member.user_id).exists?
   end
 
   def inspect
