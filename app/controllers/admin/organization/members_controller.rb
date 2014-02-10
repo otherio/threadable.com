@@ -22,7 +22,7 @@ class Admin::Organization::MembersController < ApplicationController
 
   # PATCH /admin/organizations/:organization_slug/members/:user_id
   def update
-    member = organization.members.find_by_user_id! params[:user_id]
+    member = organization.members.find_by_user_slug! params[:user_id]
     if member.update(member_params)
       flash[:notice] = "update of #{member.formatted_email_address} membership to #{organization.name} was successful."
     else
