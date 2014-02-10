@@ -10,4 +10,6 @@ class GroupMembership < ActiveRecord::Base
     joins(:organization).where(groups:{ organization_id: organization_id })
   }
 
+
+
 end

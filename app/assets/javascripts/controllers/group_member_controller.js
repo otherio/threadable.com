@@ -9,14 +9,21 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
 
   actions: {
     addMember: function(organizationMember) {
-      var group = this.get('group');
+      var
+        controller = this,
+        group      = this.get('group');
+
       organizationMember.addToGroup(group).then(function(groupMember) {
+        groupMember.set('group', group);
+        groupMember.set('organization', group.get('organization'));
         group.get('members').addObject(groupMember);
+        controller.transitionToRoute('group_member', groupMember);
       });
     },
 
     removeMember: function(organizationMember) {
       var
+        controller   = this,
         group        = this.get('group'),
         groupMembers = group.get('members'),
         groupMember  = groupMembers.findBy('userId', organizationMember.get('userId'));
@@ -32,24 +39,31 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
         approved: function() {
           organizationMember.removeFromGroup(group).then(function() {
             groupMembers.removeObject(groupMember);
+            controller.transitionToRoute('group_members');
           });
         }
       });
     },
 
-    toggleInSummary: function() {
+    toggleGetsInSummary: function() {
       if (this.get('saving')) return;
-      this.toggleProperty('inSummary');
+      this.toggleProperty('getsInSummary');
       this.save();
     },
   },
 
   save: function() {
-    if (this.get('saving')) return;
-    this.set('saving', true);
-    this.get('model').saveRecord().then(function() {
-      this.set('saving', false);
-    }.bind(this));
+    var controller = this;
+    if (controller.get('saving')) return;
+    controller.set('saving', true);
+    controller.get('model').saveRecord().then(
+      function() {
+        controller.set('saving', false);
+      },
+      function() {
+        controller.set('saving', false);
+      }
+    );
   }
 
 });

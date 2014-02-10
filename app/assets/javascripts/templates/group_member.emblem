@@ -3,7 +3,7 @@
     h2 #{name}'s settings for the "#{group.name}" group
 
     section
-      a.summary.input-switch href="" class={ inSummary:input-switch-on:input-switch-off saving:disabled} click="toggleInSummary"
+      a.summary.input-switch href="" class={ getsInSummary:input-switch-on:input-switch-off saving:disabled} click="toggleGetsInSummary"
         label Summary:
         .input-switch-wrapper
           .slider

@@ -9,13 +9,10 @@ class Threadable::Organization::Member < Threadable::User
   end
   attr_reader :organization, :organization_membership_record
   delegate :organization_id, :user_id, to: :organization_membership_record
+  delegate :organization_record, to: :organization
 
   def user_record
     organization_membership_record.user
-  end
-
-  def organization_record
-    organization_membership_record.organization
   end
 
   delegate *%w{

@@ -13,6 +13,7 @@ Threadable.AddGroupIdToRequestsMixin = Ember.Mixin.create({
       this.get('group.slug')
     );
 
+
     if (wasJSON) request.data = JSON.stringify(request.data);
     return this._super(request);
   }
