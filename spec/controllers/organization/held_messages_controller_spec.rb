@@ -32,7 +32,7 @@ describe Organization::HeldMessagesController do
       @incoming_email = organization.incoming_emails.create!(create_incoming_email_params(
         from: 'Foo Bar <foo@bar.com>',
         envelope_from: '<foo@bar.com>',
-      ))
+      )).first
       drain_background_jobs!
     end
     attr_reader :incoming_email

@@ -4,7 +4,7 @@ describe Threadable::IncomingEmail do
 
   let(:raceteam      ){ threadable.organizations.find_by_slug!('raceteam') }
   let(:alice         ){ raceteam.members.find_by_email_address!('alice@ucsd.example.com') }
-  let(:incoming_email){ threadable.incoming_emails.create!(params) }
+  let(:incoming_email){ threadable.incoming_emails.create!(params).first }
   subject{ incoming_email }
 
   let :attachments do

@@ -20,7 +20,7 @@ feature "Held messages" do
         body_plain:    body,
         body_html:     body,
       )
-    )
+    ).first
     drain_background_jobs!
     held_message.incoming_email_record.reload
     expect(held_message).to be_held
