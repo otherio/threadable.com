@@ -70,6 +70,10 @@ FixtureBuilder.build do
     @graphic_design_group = create_group name: 'Graphic Design', color: '#f2ad40'
   end
 
+  as 'bob@ucsd.example.com' do
+    set_group_to_summary('fundraising')
+  end
+
   # Bethany replies to the welcome email
   as 'bethany@ucsd.example.com' do
     reply_to @welcome_message, text: 'Yay! You go Alice. This tool looks radder than an 8-legged panda.'
