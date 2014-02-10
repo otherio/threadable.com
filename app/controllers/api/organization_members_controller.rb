@@ -21,7 +21,6 @@ class Api::OrganizationMembersController < ApiController
   end
 
   def update
-    organization
     member_params = params.require(:organization_member).permit(:slug, :is_subscribed)
     member = organization.members.find_by_user_slug!(member_params[:slug])
     member_params[:is_subscribed] ? member.subscribe!(true) : member.unsubscribe!(true)

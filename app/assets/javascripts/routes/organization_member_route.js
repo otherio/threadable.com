@@ -1,6 +1,6 @@
 Threadable.OrganizationMemberRoute = Ember.Route.extend({
   model: function(params) {
-    return this.modelFor('organization').get('members').findBy('slug', params.member);
+    return this.modelFor('organization_members').findBy('slug', params.member);
   },
 
   renderTemplate: function() {

@@ -1,4 +1,4 @@
-require_dependency 'threadable/organization'
+require_dependency 'threadable/group/member'
 
 class Threadable::Group::Members < Threadable::Collection
 
@@ -9,12 +9,11 @@ class Threadable::Group::Members < Threadable::Collection
   attr_reader :group
 
   def all
-    scope.map{|user_record| Threadable::User.new(threadable, user_record) }
+    members_for scope
   end
 
   def find_by_user_id user_id
-    user_record = scope.where(users:{id:user_id}).first or return
-    Threadable::User.new(threadable, user_record)
+    member_for (scope.where(user_id:user_id).first or return)
   end
 
   def find_by_user_id! user_id
@@ -22,24 +21,35 @@ class Threadable::Group::Members < Threadable::Collection
       raise Threadable::RecordNotFound, "unable to find group member with id: #{user_id}"
   end
 
+  def me
+    raise Threadable::AuthorizationError if threadable.current_user_id.nil?
+    find_by_user_id! threadable.current_user_id
+  end
+
   def add user
-    group.group_record.members += [user.user_record]
-    if threadable.current_user.present? && threadable.current_user.id != user.id
-      threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
+    group_membership_record = group.group_record.memberships.find_or_initialize_by(user_id: user.user_id)
+    if group_membership_record.new_record?
+      group_membership_record.save!
+      if threadable.current_user.present? && threadable.current_user.id != user.id
+        threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
+      end
     end
+    member_for group_membership_record
   end
 
   def remove user
+    group.group_record.memberships
     group.group_record.members.delete(user.user_record)
 
     if threadable.current_user.present? && threadable.current_user.id != user.id
       threadable.emails.send_email_async(:removed_from_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
     end
+    self
   end
 
   def include? member
     return false unless member.respond_to?(:user_id)
-    !!group.group_record.group_members.where(user_id: member.user_id).exists?
+    !!group.group_record.memberships.where(user_id: member.user_id).exists?
   end
 
   def inspect
@@ -49,7 +59,17 @@ class Threadable::Group::Members < Threadable::Collection
   private
 
   def scope
-    group.group_record.members.unload
+    group.group_record.memberships.unload
+  end
+
+  def member_for group_membership_record
+    Threadable::Group::Member.new(group, group_membership_record)
+  end
+
+  def members_for group_membership_records
+    group_membership_records.map do |group_membership_record|
+      member_for group_membership_record
+    end
   end
 
 end

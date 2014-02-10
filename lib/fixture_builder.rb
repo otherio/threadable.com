@@ -61,9 +61,14 @@ class FixtureBuilder
     conversation.groups.add(group)
   end
 
-  def add_member_to_group email_address_tag, email_address
-    group = organization.groups.find_by_email_address_tag(email_address_tag)
+  def add_member_to_group group_slug, email_address
+    group = organization.groups.find_by_slug!(group_slug)
     group.members.add(organization.members.find_by_email_address(email_address))
+  end
+
+  def set_group_to_summary group_slug
+    group = organization.groups.find_by_slug!(group_slug)
+    group.members.me.gets_in_summary!
   end
 
   def web_enable! email_address

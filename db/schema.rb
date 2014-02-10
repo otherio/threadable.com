@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 20140210230153) do
   create_table "group_memberships", force: true do |t|
     t.integer "group_id"
     t.integer "user_id"
+    t.boolean "summary",  default: false, null: false
   end
 
   add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree

@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe GroupMembersSerializer do
 
-  let(:alice) { threadable.users.find_by_email_address!('alice@ucsd.example.com') }
-  let(:marcus){ threadable.users.find_by_email_address!('marcus@sfhealth.example.com') }
+  let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
+  let(:group)       { organization.groups.find_by_slug! 'fundraising' }
+  let(:alice)       { group.members.find_by_user_id! organization.members.find_by_email_address!('alice@ucsd.example.com').user_id }
+  let(:bob)         { group.members.find_by_user_id! organization.members.find_by_email_address!('bob@ucsd.example.com').user_id }
 
   context 'when given a single record' do
     let(:payload){ alice }
@@ -17,12 +19,13 @@ describe GroupMembersSerializer do
         email_address: "alice@ucsd.example.com",
         slug:          "alice-neilson",
         avatar_url:    "/fixture_images/alice.jpg",
+        gets_in_summary: false,
       )
     end
   end
 
   context 'when given a collection of records' do
-    let(:payload){ [alice,marcus] }
+    let(:payload){ [alice,bob] }
     let(:expected_key){ :group_members }
     it do
       should eq [
@@ -34,14 +37,16 @@ describe GroupMembersSerializer do
           email_address: "alice@ucsd.example.com",
           slug:          "alice-neilson",
           avatar_url:    "/fixture_images/alice.jpg",
+          gets_in_summary: false,
         },{
-          id:            marcus.id,
-          user_id:       marcus.user_id,
-          param:         "marcus-welby",
-          name:          "Marcus Welby",
-          email_address: "marcus@sfhealth.example.com",
-          slug:          "marcus-welby",
-          avatar_url:    "/fixture_images/marcus.jpg",
+          id:            bob.id,
+          user_id:       bob.user_id,
+          param:         "bob-cauchois",
+          name:          "Bob Cauchois",
+          email_address: "bob@ucsd.example.com",
+          slug:          "bob-cauchois",
+          avatar_url:    "/fixture_images/bob.jpg",
+          gets_in_summary: true,
         }
       ]
     end
