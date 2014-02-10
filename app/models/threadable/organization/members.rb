@@ -45,14 +45,14 @@ class Threadable::Organization::Members < Threadable::Collection
     )
   end
 
-  def find_by_name name
-    member_for (scope.includes(:user).where('users.name ILIKE ?', name).references(:users).first or return)
-  end
-
   def find_by_email_address! email_address
     member = find_by_email_address(email_address)
     member or raise Threadable::RecordNotFound, "unable to find organization member with email_address: #{email_address}"
     member
+  end
+
+  def find_by_name name
+    member_for (scope.includes(:user).where('users.name ILIKE ?', name).references(:users).first or return)
   end
 
   def fuzzy_find query
