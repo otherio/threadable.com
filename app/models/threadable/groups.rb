@@ -5,7 +5,7 @@ class Threadable::Groups < Threadable::Collection
   end
 
   def my
-    groups_for scope.joins(:group_members).where(group_memberships:{ user_id: threadable.current_user_id })
+    groups_for scope.joins(:memberships).where(group_memberships:{ user_id: threadable.current_user_id })
   end
 
   def find_by_id id

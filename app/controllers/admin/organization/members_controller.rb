@@ -22,7 +22,7 @@ class Admin::Organization::MembersController < ApplicationController
 
   # PATCH /admin/organizations/:organization_slug/members/:user_id
   def update
-    member = organization.members.find_by_user_id! params[:user_id]
+    member = organization.members.find_by_user_slug! params[:user_id]
     if member.update(member_params)
       flash[:notice] = "update of #{member.formatted_email_address} membership to #{organization.name} was successful."
     else
@@ -33,12 +33,12 @@ class Admin::Organization::MembersController < ApplicationController
 
   # DELETE /admin/organizations/:organization_slug/members/:user_id
   def remove
-    user_id = params.require(:user_id).to_i
-    if member = organization.members.find_by_user_id(user_id)
+    user_slug = params.require(:user_id)
+    if member = organization.members.find_by_user_slug!(user_slug)
       organization.members.remove(user: member)
       flash[:notice] = "#{member.formatted_email_address} was successfully removed from #{organization.name}."
     else
-      flash[:alert] = "user #{user_id} is not a member of #{organization.name}."
+      flash[:alert] = "user #{user_slug} is not a member of #{organization.name}."
     end
     redirect_to admin_edit_organization_path(organization)
   end

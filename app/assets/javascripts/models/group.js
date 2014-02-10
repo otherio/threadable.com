@@ -31,6 +31,10 @@ Threadable.Group = RL.Model.extend({
     return Threadable.GroupMember.fetch({
       organization_id: group.get('organizationSlug'),
       group_id: group.get('slug')
+    }).then(function(groupMembers) {
+      groupMembers.setEach('group', group);
+      groupMembers.setEach('organization', group.get('organization'));
+      return groupMembers;
     });
   }),
 

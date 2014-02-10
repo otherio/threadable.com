@@ -13,14 +13,14 @@ describe Admin::Organization::MembersController do
 
     describe 'PUT :update' do
       it 'should render a 404' do
-        put :update, organization_id: 'fish-eating-contest', user_id: 42
+        put :update, organization_id: 'fish-eating-contest', user_id: 'mary-frank'
         expect(response).to redirect_to sign_in_url
       end
     end
 
     describe 'DELETE :remove' do
       it 'should render a 404' do
-        delete :remove, organization_id: 'fish-eating-contest', user_id: 42
+        delete :remove, organization_id: 'fish-eating-contest', user_id: 'mary-frank'
         expect(response).to redirect_to sign_in_url
       end
     end
@@ -135,9 +135,9 @@ describe Admin::Organization::MembersController do
 
     describe 'PUT :update' do
       before do
-        expect(organization.members).to receive(:find_by_user_id!).with("42").and_return(member)
+        expect(organization.members).to receive(:find_by_user_slug!).with('mary-frank').and_return(member)
         expect(member).to receive(:update).with(member_params).and_return(update_successful)
-        put :update, organization_id: 'fish-eating-contest', user_id: 42, user: member_params
+        put :update, organization_id: 'fish-eating-contest', user_id: 'mary-frank', user: member_params
         expect(response).to redirect_to admin_edit_organization_url(organization)
       end
       context 'when the update is successfull' do
@@ -157,21 +157,21 @@ describe Admin::Organization::MembersController do
 
     describe 'DELETE :remove' do
       context 'when the user is a member of the organization' do
-        before{ expect(organization.members).to receive(:find_by_user_id).with(42).and_return(member) }
+        before{ expect(organization.members).to receive(:find_by_user_slug!).with('mary-frank').and_return(member) }
         it 'should redirect to the admin organizations page' do
           expect(organization.members).to receive(:remove).with(user: member)
-          delete :remove, organization_id: 'fish-eating-contest', user_id: 42
+          delete :remove, organization_id: 'fish-eating-contest', user_id: 'mary-frank'
           expect(response).to redirect_to admin_edit_organization_path('fish-eating-contest')
           expect(flash[:notice]).to eq "Mary Frank <mary@frank.ly> was successfully removed from Fish Eating Contest."
         end
       end
       context 'when the user is not a member of the organization' do
-        before{ expect(organization.members).to receive(:find_by_user_id).with(42).and_return(nil) }
+        before{ expect(organization.members).to receive(:find_by_user_slug!).with('mary-frank').and_return(nil) }
         it 'should redirect to the admin organizations page' do
           expect(organization.members).to_not receive(:remove)
-          delete :remove, organization_id: 'fish-eating-contest', user_id: 42
+          delete :remove, organization_id: 'fish-eating-contest', user_id: 'mary-frank'
           expect(response).to redirect_to admin_edit_organization_path('fish-eating-contest')
-          expect(flash[:alert]).to eq "user 42 is not a member of Fish Eating Contest."
+          expect(flash[:alert]).to eq "user mary-frank is not a member of Fish Eating Contest."
         end
       end
     end

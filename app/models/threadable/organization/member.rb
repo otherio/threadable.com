@@ -9,29 +9,23 @@ class Threadable::Organization::Member < Threadable::User
   end
   attr_reader :organization, :organization_membership_record
   delegate :organization_id, :user_id, to: :organization_membership_record
+  delegate :organization_record, to: :organization
 
   def user_record
     organization_membership_record.user
-  end
-
-  def organization_record
-    organization_membership_record.organization
   end
 
   delegate *%w{
     id
     name
     avatar_url
+    to_param
   }, to: :user_record
 
   delegate *%w{
     gets_email?
     subscribed?
   }, to: :organization_membership_record
-
-  def to_param
-    id
-  end
 
   def organization_membership_id
     organization_membership_record.id

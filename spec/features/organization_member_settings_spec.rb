@@ -16,11 +16,11 @@ feature "organization member settings" do
     expect(member).to be_subscribed
 
     within_element 'the sidebar' do
-      click_on 'UCSD Electric Racing'
+      find('.organization-details').click
       sleep 0.2
-    end
-    within '.organization-settings' do
-      click_on 'Members'
+      within '.organization-settings' do
+        click_on 'Members'
+      end
     end
     within '.organization-members' do
       click_on 'Bethany Pattern'
