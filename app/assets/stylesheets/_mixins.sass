@@ -39,8 +39,9 @@
   @if $right
     right: $right
 
-=animate-property($property)
-  +transform(translate3d(0,0,0))
+=animate-property($property, $transform: true)
+  @if $transform
+    +transform(translate3d(0,0,0))
   +transition-property($property)
   +transition-duration(0.2s)
   +transition-timing-function(ease-in)

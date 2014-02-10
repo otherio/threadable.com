@@ -19,6 +19,9 @@ Threadable.Organization = RL.Model.extend({
   loadMembers: RL.loadAssociationMethod('members', function(organization){
     return Threadable.OrganizationMember.fetch({
       organization_id: organization.get('slug')
+    }).then(function(organizationMember) {
+      organizationMember.setEach('organization', organization);
+      return organizationMember;
     });
   })
 });

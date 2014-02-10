@@ -7,7 +7,11 @@ Threadable.AddOrganizationIdToRequestsMixin = Ember.Mixin.create({
     }
     request.data = request.data || {};
 
-    request.data.organization_id = request.data.organization_id || this.get('organizationSlug');
+    request.data.organization_id = (
+      request.data.organization_id ||
+      this.get('organizationSlug') ||
+      this.get('organization.slug')
+    );
 
     if (wasJSON) request.data = JSON.stringify(request.data);
     return this._super(request);

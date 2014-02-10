@@ -47,22 +47,24 @@ class Threadable::Organization::Member < Threadable::User
   end
 
   def subscribe! track=false
+    return if subscribed?
     if track
       threadable.track('Re-subscribed', {
         'Organization'      => organization.id,
         'Organization Name' => organization.name,
       })
     end
-
     organization_membership_record.subscribe!
   end
 
-  def unsubscribe!
-    threadable.track('Unsubscribed', {
-      'Organization'      => organization.id,
-      'Organization Name' => organization.name,
-    })
-
+  def unsubscribe! track=false
+    return if !subscribed?
+    if track
+      threadable.track('Unsubscribed', {
+        'Organization'      => organization.id,
+        'Organization Name' => organization.name,
+      })
+    end
     organization_membership_record.unsubscribe!
   end
 

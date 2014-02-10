@@ -1,0 +1,95 @@
+a.input-switch
+  $height: 30px
+  $width: 80px
+  $switch-width: $height
+  $slider-width: ($width * 2) - $switch-width
+  $on-off-width: $width - ($switch-width / 2)
+
+  $on-background-color: #34495e
+  $on-text-color: #1abc9c
+  $off-background-color: #bdc3c7
+  $off-text-color: #7f8c9a
+
+  text-decoration: none
+  &, &:hover, &:active, &:visited
+    color: inherit
+
+
+  &:focus
+    outline: none
+    > .input-switch-wrapper
+      +box-shadow(0px 0px 3px 2px #5b9dd9)
+
+  &.disabled > .input-switch-wrapper
+    +opacity(0.5)
+    cursor: default
+
+  > .input-switch-wrapper
+    overflow: hidden
+    position: relative
+    display: inline-block
+    height: $height
+    width: $width
+    vertical-align: middle
+    font-size: $larger-font-size
+    line-height: 28px
+    +border-radius(30px)
+    cursor: pointer
+    +no-select
+    +animate-property(opacity)
+
+
+    > .slider
+      overflow: hidden
+      position: relative
+      height: $height
+      width: $slider-width
+      +animate-property(left, false)
+
+      > *
+        +absolute(0, null, 0, null)
+        height: $height
+        width: $width
+
+      > .on, > .off
+        width: $on-off-width
+        text-align: center
+
+
+      > .on
+        left: 0
+        +border-left-radius(30px)
+        background-color: $on-background-color
+        color: $on-text-color
+
+      > .off
+        left: $on-off-width
+        +border-right-radius(30px)
+        background-color: $off-background-color
+        color: $off-text-color
+
+      > .switch
+        left: $on-off-width - ($switch-width / 2)
+        height: $height - 8px
+        width: $switch-width - 8px
+        border-width: 4px
+        border-style: solid
+        +border-radius(50%)
+        +transition-duration(0.25s)
+        +transition-timing-function(ease-out)
+
+
+
+  &.input-switch-on > .input-switch-wrapper > .slider
+    left: 0
+    > .switch
+      border-color: $on-background-color
+      background-color: $on-text-color
+      +box-shadow(-1px 0 0 $on-background-color)
+
+  &.input-switch-off > .input-switch-wrapper > .slider
+    left: ($slider-width - $width) * -1
+    > .switch
+      border-color: $off-background-color
+      background-color: $off-text-color
+      +box-shadow(-1px 0 0 $off-background-color)

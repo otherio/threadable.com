@@ -1,0 +1,14 @@
+.padded
+  .well-when-not-small
+    h2 #{organization.name} settings for #{name}
+
+    section
+      a.subscribed.input-switch href="" class={ isSubscribed:input-switch-on:input-switch-off saving:disabled} click="toggleIsSubscribed"
+        label Subscribed:
+        .input-switch-wrapper
+          .slider
+            .on
+              i.uk-icon-check
+            .off
+              i.uk-icon-times
+            .switch

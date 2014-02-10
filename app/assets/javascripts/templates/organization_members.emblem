@@ -1,12 +1,12 @@
 .organization-members.scrollable
   ul.members-list
     li.add-button
-      a.not-link href="" click="goToAdd"
+      link-to "add_organization_member" organization class="not-link"
         i.uk-icon-plus.uk-float-left
         div Add member
     each member in controller
       li
-        a.not-link href=""
+        link-to "organization_member" member.slug class="not-link"
           .avatar.avatar-small
             img src=member.avatarUrl
           .name= member.name
