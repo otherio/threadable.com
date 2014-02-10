@@ -35,6 +35,7 @@ class Api::ConversationsController < ApiController
     conversation_params.require :subject
 
     Threadable.transaction do
+      conversation_params[:creator] = current_user
       conversation = organization.conversations.create! conversation_params.symbolize_keys
       group_ids = Array(params[:conversation][:group_ids])
       conversation.groups.add organization.groups.find_by_ids(group_ids) if group_ids

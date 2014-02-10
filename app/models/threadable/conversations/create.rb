@@ -17,8 +17,9 @@ class Threadable::Conversations::Create < MethodObject
     return @conversation unless @conversation_record.persisted?
 
     add_groups!
+    @conversation.cache_participant_names!
     create_created_at_event!
-    return object.new(@threadable, @conversation_record)
+    return object.new(@threadable, @conversation_record.reload)
   end
 
   def scope

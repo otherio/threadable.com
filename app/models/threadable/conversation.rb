@@ -123,7 +123,11 @@ class Threadable::Conversation < Threadable::Model
         ExtractNamesFromEmailAddresses.call([message.from]).first
       end
     end.compact.uniq
-    names ||= creator.present? ? [creator.name.split(/\s+/).first] : []
+
+    if names.empty?
+      names = creator.present? ? [creator.name.split(/\s+/).first] : []
+    end
+
     update(participant_names_cache: names)
     conversation_record.reload
   end
