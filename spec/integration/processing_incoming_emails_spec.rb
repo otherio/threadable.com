@@ -37,11 +37,11 @@ describe "processing incoming emails" do
     incoming_email = threadable.incoming_emails.latest
 
     # before being processed
+    expect( params['recipient'] ).to include incoming_email.params['recipient']
 
     expect( incoming_email.params['timestamp']        ).to eq params['timestamp']
     expect( incoming_email.params['token']            ).to eq params['token']
     expect( incoming_email.params['signature']        ).to eq params['signature']
-    expect( incoming_email.params['recipient']        ).to eq params['recipient']
     expect( incoming_email.params['sender']           ).to eq params['sender']
     expect( incoming_email.params['Sender']           ).to eq params['Sender']
     expect( incoming_email.params['subject']          ).to eq params['subject']
@@ -65,12 +65,14 @@ describe "processing incoming emails" do
     attachments.size.times do |n|
       expect( incoming_email.params["attachment-#{n+1}"] ).to be_present
     end
+
+    expect( recipient ).to include incoming_email.recipient
+
     expect( incoming_email.subject                ).to eq(subject)
     expect( incoming_email.message_id             ).to eq(message_id)
     expect( incoming_email.from                   ).to eq(from)
     expect( incoming_email.envelope_from          ).to eq(envelope_from)
     expect( incoming_email.sender                 ).to eq(sender)
-    expect( incoming_email.recipient              ).to eq(recipient)
     expect( incoming_email.to                     ).to eq(to)
     expect( incoming_email.cc                     ).to eq(cc)
     expect( incoming_email.content_type           ).to eq(content_type)
@@ -184,10 +186,6 @@ describe "processing incoming emails" do
     expect( incoming_email.params['attachment-2']     ).to be_nil
     expect( incoming_email.params['attachment-3']     ).to be_nil
 
-    posted_attachments = attachments.map do |attachment|
-      [attachment.original_filename, attachment.content_type, File.read(attachment.path)]
-    end.to_set
-
     expect( message.organization      ).to eq expected_organization
     expect( message.conversation      ).to eq expected_conversation
     expect( message.message_id_header ).to eq message_id
@@ -221,7 +219,9 @@ describe "processing incoming emails" do
     # only validating delivered messages beyond this point
 
     expect(incoming_email_attachments).to eq posted_attachments
-    expect( message.attachments.all.to_set ).to eq incoming_email.attachments.all.to_set
+    if check_attachments
+      expect( message.attachments.all.to_set ).to eq incoming_email.attachments.all.to_set
+    end
 
     recipients = message.recipients.all.reject do |user|
       message.creator.same_user?(user) if message.creator
@@ -261,6 +261,14 @@ describe "processing incoming emails" do
     end
   end
 
+
+  let(:posted_attachments) do
+    attachments.map do |attachment|
+      [attachment.original_filename, attachment.content_type, File.read(attachment.path)]
+    end.to_set
+  end
+
+  let(:check_attachments) { true }
 
   # default incoming email params
 
@@ -334,6 +342,7 @@ describe "processing incoming emails" do
   let(:expected_sent_email_body_html)          { body_html }
   let(:expected_sent_email_body_plain)         { body_plain }
   let(:expected_groups)                        { [] }
+
 
   it 'delivers the email' do
     validate! :delivered
@@ -625,6 +634,17 @@ describe "processing incoming emails" do
         validate! :delivered
       end
 
+      context "and multiple recipients are specified on a single message" do
+        let(:recipient)    { 'raceteam+electronics@127.0.0.1, raceteam+fundraising@127.0.0.1' }
+        let(:posted_attachments) { Set.new() }
+        let(:check_attachments) { false }
+
+        it "creates two incoming emails and delivers the message to only those groups' members" do
+          # we are asserting on the contents of the second email, but there is only one message.
+          validate! :delivered
+        end
+      end
+
       context "and the conversation is to a single group" do
         let(:recipient) { 'raceteam+electronics@127.0.0.1' }
         let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>' }
@@ -684,7 +704,7 @@ describe "processing incoming emails" do
 
         before do
           # this simulates the same message being recieved twice with different recipients, as if we were in the TO and the CC headers
-          first_incoming_email = threadable.incoming_emails.create!(params.merge("recipient" => 'raceteam+fundraising@127.0.0.1'))
+          first_incoming_email = threadable.incoming_emails.create!(params.merge("recipient" => 'raceteam+fundraising@127.0.0.1')).first
           job = find_background_jobs(ProcessIncomingEmailWorker, args: [threadable.env, first_incoming_email.id]).first
 
           email_recipients = ['bob@ucsd.example.com'].map do |email_address|
