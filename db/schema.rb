@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20140210024409) do
     t.string   "message_summary_cache"
     t.string   "participant_names_cache"
     t.string   "muter_ids_cache"
-    t.datetime "last_message_at",         default: '2014-02-10 03:26:08'
+    t.datetime "last_message_at",         default: '2014-02-10 22:56:35'
   end
 
   add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(version: 20140210024409) do
   create_table "messages", force: true do |t|
     t.integer  "conversation_id",                   null: false
     t.integer  "user_id"
-    t.text     "body_plain"
+    t.text     "body_plain",        default: ""
     t.boolean  "reply"
     t.string   "from"
     t.string   "subject"
