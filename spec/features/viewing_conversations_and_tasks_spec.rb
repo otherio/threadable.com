@@ -67,7 +67,8 @@ feature "Viewing conversations and tasks" do
   def expect_listed_conversations_to_eq conversations, current_group=nil
     serialized_conversations = serialize_conversations(conversations, current_group)
     wait_until_expectation do
-      expect(listed_conversations).to eq serialized_conversations
+      # don't check order, since these get reordered in the ember app sometimes.
+      expect(listed_conversations).to match_array serialized_conversations
     end
   end
 
