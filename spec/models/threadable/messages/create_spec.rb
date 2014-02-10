@@ -36,9 +36,6 @@ describe Threadable::Messages::Create do
       subject: 'I like your face',
       task?: false,
       id: 1234,
-      cache_participant_names!: true,
-      cache_message_summary!: true,
-      cache_muter_ids!: true,
     )
   end
 
@@ -56,7 +53,7 @@ describe Threadable::Messages::Create do
   let(:expected_to_header)          { nil }
   let(:expected_cc_header)          { nil }
 
-  let(:message_record) { double :message_record }
+  let(:message_record) { double :message_record, created_at: Time.now }
   let(:message)        { double :message, persisted?: true, recipients: double(:recipients, all: []) }
   let(:latest_message) { nil }
 
@@ -93,6 +90,10 @@ describe Threadable::Messages::Create do
         cc_header:         expected_cc_header,
         date_header:       expected_date_header,
       ).and_return(message_record)
+
+      expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
+      expect(conversation).to receive(:cache_participant_names!)
+      expect(conversation).to receive(:cache_message_summary!)
 
       expect(threadable).to receive(:track).with('Composed Message', {
         'Organization' => organization.id,
@@ -144,6 +145,10 @@ describe Threadable::Messages::Create do
         cc_header:         expected_cc_header,
         date_header:       expected_date_header,
       ).and_return(message_record)
+
+      expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
+      expect(conversation).to receive(:cache_participant_names!)
+      expect(conversation).to receive(:cache_message_summary!)
 
       expect(threadable).to receive(:track).with('Composed Message', {
         'Organization' => organization.id,

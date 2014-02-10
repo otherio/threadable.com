@@ -35,6 +35,7 @@ class Threadable::Conversation < Threadable::Model
     persisted?
     new_record?
     errors
+    last_message_at
   }, to: :conversation_record
 
   let(:organization){ threadable.organizations.find_by_id(organization_id) }

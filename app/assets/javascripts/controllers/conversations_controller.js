@@ -3,7 +3,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
   organization: Ember.computed.alias('controllers.organization').readOnly(),
   itemController: 'conversations_item',
   showingConversationsListControls: Ember.computed.alias('controllers.topbar.showingConversationsListControls'),
-  sortProperties: ['updatedAt'],
+  sortProperties: ['lastMessageAt'],
   sortAscending: false,
 
   groupSlug: null,

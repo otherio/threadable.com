@@ -9,6 +9,7 @@ class ConversationsSerializer < Serializer
       task:               conversation.task?,
       created_at:         conversation.created_at,
       updated_at:         conversation.updated_at,
+      last_message_at:    conversation.last_message_at,
       participant_names:  conversation.participant_names,
       number_of_messages: conversation.messages.count,
       message_summary:    conversation.message_summary,

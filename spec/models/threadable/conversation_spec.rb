@@ -14,19 +14,20 @@ describe Threadable::Conversation do
   it { should have_constant :Participant  }
 
 
-  it { should delegate(:id             ).to(:conversation_record) }
-  it { should delegate(:to_param       ).to(:conversation_record) }
-  it { should delegate(:slug           ).to(:conversation_record) }
-  it { should delegate(:subject        ).to(:conversation_record) }
-  it { should delegate(:task?          ).to(:conversation_record) }
-  it { should delegate(:messages_count ).to(:conversation_record) }
-  it { should delegate(:organization_id).to(:conversation_record) }
-  it { should delegate(:creator_id     ).to(:conversation_record) }
-  it { should delegate(:created_at     ).to(:conversation_record) }
-  it { should delegate(:updated_at     ).to(:conversation_record) }
-  it { should delegate(:persisted?     ).to(:conversation_record) }
-  it { should delegate(:new_record?    ).to(:conversation_record) }
-  it { should delegate(:errors         ).to(:conversation_record) }
+  it { should delegate(:id              ).to(:conversation_record) }
+  it { should delegate(:to_param        ).to(:conversation_record) }
+  it { should delegate(:slug            ).to(:conversation_record) }
+  it { should delegate(:subject         ).to(:conversation_record) }
+  it { should delegate(:task?           ).to(:conversation_record) }
+  it { should delegate(:messages_count  ).to(:conversation_record) }
+  it { should delegate(:organization_id ).to(:conversation_record) }
+  it { should delegate(:creator_id      ).to(:conversation_record) }
+  it { should delegate(:created_at      ).to(:conversation_record) }
+  it { should delegate(:updated_at      ).to(:conversation_record) }
+  it { should delegate(:persisted?      ).to(:conversation_record) }
+  it { should delegate(:new_record?     ).to(:conversation_record) }
+  it { should delegate(:errors          ).to(:conversation_record) }
+  it { should delegate(:last_message_at ).to(:conversation_record) }
 
   its(:creator     ){ should be_a Threadable::Conversation::Creator      }
   its(:events      ){ should be_a Threadable::Conversation::Events       }

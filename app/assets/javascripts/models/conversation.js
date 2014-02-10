@@ -6,6 +6,7 @@ Threadable.Conversation = RL.Model.extend({
   task:              RL.attr('boolean'),
   createdAt:         RL.attr('date'),
   updatedAt:         RL.attr('date'),
+  lastMessageAt:     RL.attr('date'),
   participantNames:  RL.attr('array'),
   numberOfMessages:  RL.attr('number'),
   messageSummary:    RL.attr('string'),

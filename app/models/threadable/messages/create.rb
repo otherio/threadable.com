@@ -107,6 +107,7 @@ class Threadable::Messages::Create < MethodObject
       cc_header:         cc_header,
       date_header:       date_header,
     )
+    @conversation.update(last_message_at: @message_record.created_at)
     @conversation.cache_participant_names!
     @conversation.cache_message_summary!
     @message = Threadable::Message.new(@threadable, @message_record)
