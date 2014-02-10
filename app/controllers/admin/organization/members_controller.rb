@@ -35,6 +35,7 @@ class Admin::Organization::MembersController < ApplicationController
   def remove
     user_id = params.require(:user_id).to_i
     if member = organization.members.find_by_user_id(user_id)
+      binding.pry
       organization.members.remove(user: member)
       flash[:notice] = "#{member.formatted_email_address} was successfully removed from #{organization.name}."
     else

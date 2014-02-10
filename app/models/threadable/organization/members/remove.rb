@@ -3,11 +3,11 @@ require_dependency 'threadable/organization/members'
 class Threadable::Organization::Members::Remove < MethodObject
 
   def call members, options
-    @members = members
-    @threadable = members.threadable
+    @members      = members
+    @threadable   = members.threadable
     @organization = members.organization
-    @scope   = @members.send(:scope)
-    @options = options
+    @scope        = @members.send(:scope)
+    @options      = options
 
     delete_organization_membership!
     track!
@@ -20,6 +20,7 @@ class Threadable::Organization::Members::Remove < MethodObject
   end
 
   def delete_organization_membership!
+    binding.pry
     @scope.where(user_id: user_id).delete_all
   end
 
