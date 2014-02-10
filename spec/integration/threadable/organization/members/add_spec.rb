@@ -11,8 +11,8 @@ describe Threadable::Organization::Members::Add do
     it 'adds the member to auto-joinable groups, but not non-auto-joinable groups' do
       organization.members.add(email_address: 'amywong.phd@gmail.com')
 
-      expect(auto_join_group.members.all     .map(&:user_id)   ).to     include member_to_add.user_id
-      expect(non_auto_join_group.members.all .map(&:user_id)   ).to_not include member_to_add.user_id
+      expect( auto_join_group.members.all     .map(&:user_id) ).to     include member_to_add.user_id
+      expect( non_auto_join_group.members.all .map(&:user_id) ).to_not include member_to_add.user_id
     end
   end
 
