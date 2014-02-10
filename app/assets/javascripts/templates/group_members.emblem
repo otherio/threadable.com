@@ -2,16 +2,15 @@
   ul.members-list
     each member in controller
       li
-        div
-          .avatar.avatar-small
-            img src=member.avatarUrl
-          .name= member.name
-          .email-address= member.emailAddress
-          if member.isMember
-            a.toggle.uk-button.remove href="" click="removeMember member"
-              span.normal member
-              span.hover remove
-          else
-            a.toggle.uk-button.add href="" click="addMember member"
-              i.uk-icon-plus
-              | &nbsp; add
+        if member.isMember
+          link-to "group_member" member.slug class="not-link group-member-settings-link"
+            partial "group_members/details"
+          a.toggle.uk-button.remove href="" click="removeMember member"
+            span.normal member
+            span.hover remove
+        else
+          div
+            partial "group_members/details"
+          a.toggle.uk-button.add href="" click="addMember member"
+            i.uk-icon-plus
+            | &nbsp; add

@@ -1,0 +1,14 @@
+.padded
+  .well-when-not-small
+    h2 #{name}'s settings for the "#{group.name}" group
+
+    section
+      a.summary.input-switch href="" class={ inSummary:input-switch-on:input-switch-off saving:disabled} click="toggleInSummary"
+        label Summary:
+        .input-switch-wrapper
+          .slider
+            .on
+              i.uk-icon-check
+            .off
+              i.uk-icon-times
+            .switch

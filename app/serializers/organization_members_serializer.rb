@@ -6,5 +6,4 @@ class OrganizationMembersSerializer < UsersSerializer
     )
   end
 
-
 end

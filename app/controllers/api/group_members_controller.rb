@@ -12,6 +12,13 @@ class Api::GroupMembersController < ApiController
     render json: serialize(:group_members, member), status: 201
   end
 
+  def update
+    member_params = params.require(:group_member).permit(:user_id, :in_summary)
+    member = group.members.find_by_user_id!(member_params[:user_id])
+    # member_params[:in_summary] ? member.subscribe!(true) : member.unsubscribe!(true)
+    render json: serialize(:group_members, member)
+  end
+
   # delete /api/groups/:group_id/members
   def destroy
     member = group.members.find_by_user_id!(params.require(:id))

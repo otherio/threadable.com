@@ -17,9 +17,9 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
 
     removeMember: function(organizationMember) {
       var
-        group = this.get('group'),
+        group        = this.get('group'),
         groupMembers = group.get('members'),
-        groupMember = groupMembers.findBy('userId', organizationMember.get('userId'));
+        groupMember  = groupMembers.findBy('userId', organizationMember.get('userId'));
 
       this.confirm({
         message: (
@@ -36,5 +36,20 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
         }
       });
     },
+
+    toggleInSummary: function() {
+      if (this.get('saving')) return;
+      this.toggleProperty('inSummary');
+      this.save();
+    },
+  },
+
+  save: function() {
+    if (this.get('saving')) return;
+    this.set('saving', true);
+    this.get('model').saveRecord().then(function() {
+      this.set('saving', false);
+    }.bind(this));
   }
+
 });
