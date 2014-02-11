@@ -667,6 +667,14 @@ describe "processing incoming emails" do
             validate! :delivered
           end
         end
+
+        context 'and the to header contains a malformed but mostly correct To address' do
+          let(:to)        { 'UCSD Electric Racing: Electronics <raceteam+electronics@127.0.0.1>' }
+
+          it "delivers the message anyway, dammit" do
+            validate! :delivered
+          end
+        end
       end
 
       context 'and the message is a reply to a conversation that is in different group(s)' do

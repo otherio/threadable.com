@@ -62,8 +62,14 @@ class ConversationMailer < Threadable::Mailer
       }
     end
 
-    to_addresses = as_address_objects(@message.to_header.to_s)
-    cc_addresses = as_address_objects(@message.cc_header.to_s)
+    begin
+      to_addresses = as_address_objects(@message.to_header.to_s)
+      cc_addresses = as_address_objects(@message.cc_header.to_s)
+    rescue Mail::Field::ParseError
+      # sometimes people remove the quotes and leave the colon.
+      to_addresses = as_address_objects(@message.to_header.to_s.gsub(/:/, ''))
+      cc_addresses = as_address_objects(@message.cc_header.to_s.gsub(/:/, ''))
+    end
 
     @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten)
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
