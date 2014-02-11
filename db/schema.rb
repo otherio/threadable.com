@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20140210230153) do
     t.boolean  "writeable"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "content_id"
   end
 
   create_table "attachments_incoming_emails", id: false, force: true do |t|
