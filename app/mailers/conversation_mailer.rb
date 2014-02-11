@@ -73,8 +73,8 @@ class ConversationMailer < Threadable::Mailer
       cc_addresses = as_address_objects(@message.cc_header.to_s)
     rescue Mail::Field::ParseError
       # sometimes people remove the quotes and leave the colon.
-      to_addresses = as_address_objects(@message.to_header.to_s.gsub(/:/, ''))
-      cc_addresses = as_address_objects(@message.cc_header.to_s.gsub(/:/, ''))
+      to_addresses = as_address_objects(@message.to_header.to_ascii.gsub(/:/, ''))
+      cc_addresses = as_address_objects(@message.cc_header.to_ascii.gsub(/:/, ''))
     end
 
     @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten)

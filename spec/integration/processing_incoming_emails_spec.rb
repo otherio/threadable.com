@@ -673,10 +673,32 @@ describe "processing incoming emails" do
         end
 
         context 'and the to header contains a malformed but mostly correct To address' do
-          let(:to)        { 'UCSD Electric Racing: Electronics <raceteam+electronics@127.0.0.1>' }
+          context 'contains unquoted colons' do
+            let(:to)        { 'UCSD Electric Racing: Electronics <raceteam+electronics@127.0.0.1>' }
 
-          it "delivers the message anyway, dammit" do
-            validate! :delivered
+            it "delivers the message anyway, dammit" do
+              validate! :delivered
+            end
+          end
+
+          context 'contains unquoted unicode' do
+            let(:to)        { 'Ravi S. Rāmphal <ravi@apportable.com>, "UCSD Electric Racing: Electronics" <raceteam--electronics@127.0.0.1>' }
+            let(:expected_sent_email_to)                 { ['ravi@apportable.com', "raceteam+electronics@127.0.0.1"] }
+
+
+            it "delivers the message anyway, dammit" do
+              validate! :delivered
+            end
+          end
+        end
+
+        context 'and the header contains a malformed but mostly correct From address' do
+          context 'contains unquoted unicode' do
+            let(:from)        { 'Ravi S. Rāmphal <ravi@apportable.com>' }
+
+            it "delivers the message anyway, dammit" do
+              validate! :delivered
+            end
           end
         end
       end
