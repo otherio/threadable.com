@@ -7,20 +7,22 @@ describe Threadable::Messages::Create do
   let(:conversation_record){ double :conversation_record, messages: double(:messages)}
   let :attachment1 do
     {
-      url:       'https://www.filepicker.io/api/file/fSCGhASDSADSAlyJLfmPU2tg',
-      filename:  'whoa now.jpg',
-      mimetype:  'image/jpeg',
-      size:      '733',
-      writeable: 'true',
+      url:        'https://www.filepicker.io/api/file/fSCGhASDSADSAlyJLfmPU2tg',
+      filename:   'whoa now.jpg',
+      mimetype:   'image/jpeg',
+      size:       '733',
+      writeable:  'true',
+      content_id: 'contentid',
     }
   end
   let :attachment2 do
     {
-      url:       'https://www.filepicker.io/api/file/fSCGhYEITlyJLfmPU2tg',
-      filename:  'working at the office_face0.jpg',
-      mimetype:  'image/jpeg',
-      size:      '7611',
-      writeable: 'true',
+      url:        'https://www.filepicker.io/api/file/fSCGhYEITlyJLfmPU2tg',
+      filename:   'working at the office_face0.jpg',
+      mimetype:   'image/jpeg',
+      size:       '7611',
+      writeable:  'true',
+      content_id: 'contentid',
     }
   end
   let(:attachment_record1){ double :attachment_record1 }
