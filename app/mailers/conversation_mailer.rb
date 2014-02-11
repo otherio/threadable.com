@@ -27,6 +27,7 @@ class ConversationMailer < Threadable::Mailer
       attachments[attachment.filename] = {
         :mime_type => attachment.mimetype,
         :content   => attachment.content,
+        :content_id => attachment.content_id,
       }
 
       if attachment.content_id

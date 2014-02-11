@@ -42,9 +42,9 @@ describe Threadable::IncomingEmail::Deliver do
 
     params['attachment-count'].to_i.times do |i|
       expect(incoming_email.attachments).to receive(:create!).with(
-        filename: params["attachment-#{i+1}"].filename,
-        mimetype: params["attachment-#{i+1}"].mimetype,
-        content:  params["attachment-#{i+1}"].read,
+        filename:   params["attachment-#{i+1}"].filename,
+        mimetype:   params["attachment-#{i+1}"].mimetype,
+        content:    params["attachment-#{i+1}"].read,
         content_id: params["attachment-#{i+1}"].content_id,
       )
     end
