@@ -42,7 +42,7 @@ RSpec.configure do |config|
     Threadable::InMemoryTracker.clear
   end
 
-  config.after :all do
+  config.before :suite do
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
   end
 
