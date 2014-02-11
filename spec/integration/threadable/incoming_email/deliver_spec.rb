@@ -45,6 +45,7 @@ describe Threadable::IncomingEmail::Deliver do
         filename: params["attachment-#{i+1}"].filename,
         mimetype: params["attachment-#{i+1}"].mimetype,
         content:  params["attachment-#{i+1}"].read,
+        content_id: params["attachment-#{i+1}"].content_id,
       )
     end
 

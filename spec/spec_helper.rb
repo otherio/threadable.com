@@ -35,12 +35,15 @@ RSpec.configure do |config|
 
   config.before :each do
     Threadable::Transactions.expect_test_transaction = true
-    Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
     Timecop.return
     Threadable.redis.flushdb
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Threadable::InMemoryTracker.clear
+  end
+
+  config.after :all do
+    Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
   end
 
   config.around :each do |example|

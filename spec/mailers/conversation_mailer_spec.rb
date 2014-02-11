@@ -126,5 +126,18 @@ describe ConversationMailer do
       end
     end
 
+    context 'with attachments' do
+      let(:conversation) { organization.conversations.find_by_slug! 'how-are-we-paying-for-the-motor-controller' }
+
+      it 're-attaches the attachments with correct metadata' do
+        expect(mail.attachments.length).to eq 3
+        attachment = mail.attachments.find { |attachment| attachment.filename == 'some.jpg' }
+
+        expect(attachment.mime_type).to eq 'image/jpeg'
+        expect(attachment.content_id).to eq '<somejpgcontentid>'
+        expect(attachment.header['X-Attachment-Id']).to eq 'somejpgcontentid'
+      end
+    end
+
   end
 end
