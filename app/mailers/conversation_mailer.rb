@@ -28,6 +28,11 @@ class ConversationMailer < Threadable::Mailer
         :mime_type => attachment.mimetype,
         :content   => attachment.content,
       }
+
+      if attachment.content_id
+        attachments[attachment.filename][:content_id] = attachment.content_id
+        attachments[attachment.filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
+      end
     end
 
     reply_to_address = @conversation.canonical_formatted_email_address

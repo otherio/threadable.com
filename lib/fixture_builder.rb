@@ -105,6 +105,7 @@ class FixtureBuilder
       filename: file.basename.to_s,
       mimetype: content_type,
       size:     file.size,
+      content_id: "<#{path.gsub(/\W/, '')}contentid>",
     }
   end
 

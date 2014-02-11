@@ -135,7 +135,7 @@ describe ConversationMailer do
 
         expect(attachment.mime_type).to eq 'image/jpeg'
         expect(attachment.content_id).to eq '<somejpgcontentid>'
-        expect(attachment.header['X-Attachment-Id']).to eq 'somejpgcontentid'
+        expect(attachment.header['X-Attachment-Id'].value).to eq 'somejpgcontentid'
       end
     end
 

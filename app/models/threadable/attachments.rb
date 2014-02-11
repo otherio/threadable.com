@@ -4,7 +4,7 @@ class Threadable::Attachments < Threadable::Collection
     attachments_for scope
   end
 
-  # create(filename: 'cat.jpg', mimetype: 'image/jpg', content: "CONTENT")
+  # create(filename: 'cat.jpg', mimetype: 'image/jpg', content: "CONTENT", content_id: '<somecontentid>')
   def create attributes
     Create.call(self, attributes)
   end
