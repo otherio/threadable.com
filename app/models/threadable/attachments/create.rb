@@ -14,6 +14,7 @@ class Threadable::Attachments::Create < MethodObject
       @content = @attributes.fetch(:content)
       store_file!
     end
+    @content_id = attributes[:content_id]
     create_attachment_record!
     Threadable::Attachment.new(@threadable, @attachment_record)
   end
@@ -28,11 +29,12 @@ class Threadable::Attachments::Create < MethodObject
 
   def create_attachment_record!
     @attachment_record = ::Attachment.create(
-      url:      @url,
-      filename: @filename,
-      mimetype: @mimetype,
-      size:     @size,
-      writeable: "true",
+      url:        @url,
+      filename:   @filename,
+      mimetype:   @mimetype,
+      size:       @size,
+      writeable:  "true",
+      content_id: @content_id,
     )
   end
 

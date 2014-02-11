@@ -17,6 +17,7 @@ class Threadable::Attachment < Threadable::Model
     updated_at
     errors
     persisted?
+    content_id
   }, to: :attachment_record
 
   def inspect
