@@ -258,6 +258,10 @@ describe "processing incoming emails" do
       expect( email.header['List-Archive'].to_s     ).to eq expected_sent_email_list_archive
       expect( email.header['List-Unsubscribe'].to_s ).to be_present
       expect( email.header['List-Post'].to_s        ).to eq expected_sent_email_list_post
+
+      email.mail_message.attachments.each do |sent_attachment|
+        expect( params["content-id-map"] ).to have_key sent_attachment.content_id
+      end
     end
   end
 
