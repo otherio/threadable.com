@@ -36,7 +36,30 @@ Threadable.Message = RL.Model.extend({
       body = Threadable.htmlEscape(body);
       return '<p>' + body.replace(/\n/g, "<br />\n") + '</p>';
     }
-  }.property('body')
+  }.property('body'),
+
+  bodyWithAttachmentsInline: function() {
+    return this.inlineAttachments(this.get('body'));
+  }.property('body'),
+
+  bodyStrippedWithAttachmentsInline: function() {
+    return this.inlineAttachments(this.get('bodyStripped'));
+  }.property('bodyStripped'),
+
+  inlineAttachments: function(body) {
+    var attachments = this.get('attachments');
+    if(attachments.length > 0) {
+      $.each(attachments, function(offset, attachment) {
+        var cid = attachment.content_id;
+        if(!cid)
+          return;
+
+        cid = cid.replace(/[<>]/, '');
+        body = body.replace('cid:' + cid, attachment.url);
+      });
+    }
+    return body;
+  }
 });
 
 Threadable.RESTAdapter.map("Threadable.Message", {

@@ -28,10 +28,11 @@ class MessagesSerializer < Serializer
 
       attachments:       message.attachments.all.map do |attachment|
         {
-          url:      attachment.url,
-          filename: attachment.filename,
-          mimetype: attachment.mimetype,
-          size:     attachment.size,
+          url:        attachment.url,
+          filename:   attachment.filename,
+          mimetype:   attachment.mimetype,
+          size:       attachment.size,
+          content_id: attachment.content_id,
         }
       end,
     }
