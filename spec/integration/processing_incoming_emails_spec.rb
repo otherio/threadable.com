@@ -706,20 +706,26 @@ describe "processing incoming emails" do
       context 'and the message is a reply to a conversation that is in different group(s)' do
         let(:in_reply_to){ expected_parent_message.message_id_header }
 
-        let(:expected_conversation)  { expected_organization.conversations.find_by_slug('parts-for-the-motor-controller') }
-        let(:expected_parent_message){ expected_conversation.messages.latest }
-        let(:expected_groups)        { ['Electronics', 'Fundraising'] }
-        it 'adds the new groups to the conversation' do
-          validate! :delivered
+        let(:expected_parent_message)  { expected_conversation.messages.latest }
+
+        context do
+          let(:expected_conversation)        { expected_organization.conversations.find_by_slug('parts-for-the-motor-controller') }
+          let(:expected_groups)              { ['Electronics', 'Fundraising'] }
+          let(:expected_sent_email_subject)  { "[RaceTeam] OMG guys I love threadable!" }
+          let(:expected_sent_email_list_id)  { "UCSD Electric Racing <raceteam.127.0.0.1>" }
+          let(:expected_sent_email_list_post){ "<mailto:#{expected_conversation.list_post_email_address.sub('+electronics','')}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
+          it 'adds the new groups to the conversation' do
+            validate! :delivered
+          end
         end
 
         context 'and the conversation was previously removed from one of those groups' do
           let(:to) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@127.0.0.1>, "UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>' }
           let(:expected_sent_email_to) { ['raceteam+fundraising@127.0.0.1'] }
 
-          let(:expected_conversation){ expected_organization.conversations.find_by_slug('how-are-we-paying-for-the-motor-controller') }
-          let(:expected_groups) { ['Fundraising'] }
-          let(:expected_email_recipients){ ['bob@ucsd.example.com'] }
+          let(:expected_conversation)                  { expected_organization.conversations.find_by_slug('how-are-we-paying-for-the-motor-controller') }
+          let(:expected_groups)                        { ['Fundraising'] }
+          let(:expected_email_recipients)              { ['bob@ucsd.example.com'] }
           let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>' }
           let(:expected_sent_email_smtp_envelope_from) { 'raceteam+fundraising@127.0.0.1' }
 

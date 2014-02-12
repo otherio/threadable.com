@@ -4,7 +4,7 @@ describe Threadable::Conversation::Groups do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:conversation){ organization.conversations.find_by_slug('layup-body-carbon') }
-  let(:all_groups) { organization.groups.all.map {|g| Threadable::Group.new(threadable, g.group_record)} }
+  let(:all_groups) { organization.groups.all }
   let(:groups){ conversation.groups }
 
   subject{ groups }
@@ -14,12 +14,29 @@ describe Threadable::Conversation::Groups do
   describe '#add' do
 
     it 'should add the given groups to the conversation' do
-      new_groups = all_groups.first(2)
+      group1, group2 = all_groups.first(2)
+
       expect(conversation.groups.all).to eq []
-      conversation.groups.add(new_groups)
-      expect(conversation.groups.all).to match_array new_groups
-      expect(conversation.group_ids).to match_array new_groups.map(&:id)
-      expect(conversation.events.all.length).to eq 6
+      expect(conversation.groups.count).to eq 0
+      expect(conversation.group_ids).to eq []
+
+      conversation.groups.add(group1)
+
+      expect(conversation.groups.all).to match_array [group1]
+      expect(conversation.groups.count).to eq 1
+      expect(conversation.group_ids).to match_array [group1.id]
+
+      conversation.groups.add(group2)
+
+      expect(conversation.groups.all).to match_array [group1, group2]
+      expect(conversation.groups.count).to eq 2
+      expect(conversation.group_ids).to match_array [group1.id, group2.id]
+
+      events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
+      expect(events).to eq [
+        [:conversation_added_group, group1.id],
+        [:conversation_added_group, group2.id],
+      ]
     end
 
     context 'when a given group was already removed from the conversation' do
@@ -30,16 +47,21 @@ describe Threadable::Conversation::Groups do
         expect(conversation.groups.all).to eq [group]
 
         conversation.groups.remove(group)
+
         expect(conversation.groups.all).to eq []
+        expect(conversation.groups.count).to eq 0
+        expect(conversation.group_ids).to eq []
 
         conversation.groups.add(group)
 
         expect(conversation.groups.all).to eq [group]
+        expect(conversation.groups.count).to eq 1
         expect(conversation.group_ids).to eq [group.id]
-        expect(conversation.events.all.map(&:event_type)).to eq [
-          :conversation_created,
-          :conversation_removed_group,
-          :conversation_added_group,
+
+        events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
+        expect(events).to eq [
+          [:conversation_removed_group, group.id],
+          [:conversation_added_group,   group.id],
         ]
       end
 
@@ -52,10 +74,20 @@ describe Threadable::Conversation::Groups do
     it 'should add the given groups to the conversation' do
       groups = all_groups.first(2)
       expect(conversation.groups.all).to eq []
+      expect(conversation.groups.count).to eq 0
+      expect(conversation.group_ids).to eq []
+
       conversation.groups.add_unless_removed(groups)
+
       expect(conversation.groups.all).to match_array groups
+      expect(conversation.groups.count).to eq 2
       expect(conversation.group_ids).to match_array groups.map(&:id)
-      expect(conversation.events.all.length).to eq 6
+
+      events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
+      expect(events).to eq [
+        [:conversation_added_group, groups.first.id],
+        [:conversation_added_group, groups.last.id],
+      ]
     end
 
     context 'when a given group was already removed from the conversation' do
@@ -66,16 +98,20 @@ describe Threadable::Conversation::Groups do
         expect(conversation.groups.all).to eq [group]
 
         conversation.groups.remove(group)
+
+        starting_events_count = conversation.events.count
+
         expect(conversation.groups.all).to eq []
+        expect(conversation.groups.count).to eq 0
+        expect(conversation.group_ids).to eq []
 
         conversation.groups.add_unless_removed(group)
 
         expect(conversation.groups.all).to eq []
+        expect(conversation.groups.count).to eq 0
         expect(conversation.group_ids).to eq []
-        expect(conversation.events.all.map(&:event_type)).to eq [
-          :conversation_created,
-          :conversation_removed_group
-        ]
+
+        expect(conversation.events.count).to eq starting_events_count
       end
 
     end
@@ -91,12 +127,11 @@ describe Threadable::Conversation::Groups do
 
       conversation.groups.remove(group)
       expect(conversation.groups.all).to eq []
+      expect(conversation.groups.count).to eq 0
       expect(conversation.group_ids).to eq []
 
-      expect(conversation.events.all.map(&:event_type)).to eq [
-        :conversation_created,
-        :conversation_removed_group
-      ]
+      events = conversation.events.all.last(1).map{|e| [e.event_type, e.group_id]}
+      expect(events).to eq [[:conversation_removed_group, group.id]]
     end
 
   end

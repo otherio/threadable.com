@@ -5,11 +5,27 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
   saving: false,
 
   actions: {
-    toggleIsSubscribed: function() {
+    toggleSubscribed: function() {
       if (this.get('saving')) return;
-      this.toggleProperty('isSubscribed');
+      this.toggleProperty('subscribed');
       this.save();
-    }
+    },
+
+    setGetsNoUngroupedMail: function() {
+      if (this.get('saving')) return;
+      this.set('ungroupedMailDelivery', 'no_mail');
+      this.save();
+    },
+    setGetsEachUngroupedMessage: function() {
+      if (this.get('saving')) return;
+      this.set('ungroupedMailDelivery', 'each_message');
+      this.save();
+    },
+    setGetsUngroupedInSummary: function() {
+      if (this.get('saving')) return;
+      this.set('ungroupedMailDelivery', 'in_summary');
+      this.save();
+    },
   },
 
   save: function() {

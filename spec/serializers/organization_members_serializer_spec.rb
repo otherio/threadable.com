@@ -18,7 +18,8 @@ describe OrganizationMembersSerializer do
         email_address: "alice@ucsd.example.com",
         slug:          "alice-neilson",
         avatar_url:    "/fixture_images/alice.jpg",
-        is_subscribed: true,
+        subscribed:    true,
+        ungrouped_mail_delivery: :each_message,
       )
     end
   end
@@ -36,7 +37,8 @@ describe OrganizationMembersSerializer do
           email_address: "alice@ucsd.example.com",
           slug:          "alice-neilson",
           avatar_url:    "/fixture_images/alice.jpg",
-          is_subscribed: true,
+          subscribed:    true,
+          ungrouped_mail_delivery: :each_message,
         },{
           id:            bob.id,
           user_id:       bob.user_id,
@@ -45,7 +47,8 @@ describe OrganizationMembersSerializer do
           email_address: "bob@ucsd.example.com",
           slug:          "bob-cauchois",
           avatar_url:    "/fixture_images/bob.jpg",
-          is_subscribed: true,
+          subscribed:    true,
+          ungrouped_mail_delivery: :each_message,
         }
       ]
     end

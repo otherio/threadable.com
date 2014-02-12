@@ -14,8 +14,8 @@ class SendEmailWorker < Threadable::Worker
     recipient = organization.members.find_by_user_id! recipient_id
     threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
-    # there is a tiny chance an email could get sent a second time here. email is nonatomic. deal with it.
-    message.sent_email(recipient).relayed!
+    # this marks the sent email record, if there is one, as delivered to mailgun
+    message.sent_email(recipient).try(:relayed!)
   end
 
   def message_summary organization_id, recipient_id, time

@@ -17,12 +17,14 @@ describe Threadable::Organization::Members do
         bob@ucsd.example.com
         bob.cauchois@example.com
         jonathan@ucsd.example.com
-      }.to_set
+        ricky.bobby@ucsd.example.com
+        cal.naughton@ucsd.example.com
+      }
     end
 
     it 'returns all the email addresses for each member of the organization' do
       email_addresses = members.email_addresses
-      expect(email_addresses.map(&:address).to_set).to eq expected_email_addresses
+      expect(email_addresses.map(&:address)).to match_array expected_email_addresses
     end
 
   end

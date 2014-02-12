@@ -7,8 +7,9 @@ class Conversation < ActiveRecord::Base
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
   has_many :conversation_groups, dependent: :destroy
-  has_many :groups, ->{ where(conversation_groups: {active: true}) }, through: :conversation_groups
+  has_many :groups, ->{ where(conversation_groups: {active: true}) }, through: :conversation_groups, counter_cache: false
   has_many :groups_with_inactive, through: :conversation_groups, source: :group
+
 
   serialize :participant_names_cache, Array
   serialize :group_ids_cache, Array
@@ -35,6 +36,14 @@ class Conversation < ActiveRecord::Base
     joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
     joins('LEFT JOIN group_memberships ON conversation_groups.group_id = group_memberships.group_id').
     where('(group_memberships.user_id = ? and conversation_groups.active = \'t\') or conversation_groups.group_id is null', user_id)
+  }
+
+  scope :ungrouped, -> {
+    where('conversations.groups_count < 1')
+  }
+
+  scope :grouped, -> {
+    where('conversations.groups_count > 0')
   }
 
 

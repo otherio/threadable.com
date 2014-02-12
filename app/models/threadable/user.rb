@@ -103,7 +103,7 @@ class Threadable::User < Threadable::Model
   alias_method :the_same_user_as?, :same_user?
 
   def == other
-    self.class === other && self.user_id == other.user_id
+    (self.class === other || other.class === self) && self.user_id == other.user_id
   end
 
   def inspect

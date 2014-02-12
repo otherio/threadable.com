@@ -17,11 +17,16 @@ FixtureBuilder.build do
     set_avatar! 'alice.jpg'
 
     # Alice invites her organization mates
-    add_member 'Tom Canver',      'tom@ucsd.example.com'
-    add_member 'Yan Hzu',         'yan@ucsd.example.com'
-    add_member 'Bethany Pattern', 'bethany@ucsd.example.com'
-    add_member 'Bob Cauchois',    'bob@ucsd.example.com'
-    add_member 'Jonathan Spray',  'jonathan@ucsd.example.com'
+    add_member 'Tom Canver',       'tom@ucsd.example.com'
+    add_member 'Yan Hzu',          'yan@ucsd.example.com'
+    add_member 'Bethany Pattern',  'bethany@ucsd.example.com'
+    add_member 'Bob Cauchois',     'bob@ucsd.example.com'
+    add_member 'Jonathan Spray',   'jonathan@ucsd.example.com'
+    add_member 'Ricky Bobby',      'ricky.bobby@ucsd.example.com'
+    add_member 'Cal Naughton Jr.', 'cal.naughton@ucsd.example.com'
+
+    set_avatar! 'ricky.bobby.jpg', for: 'ricky.bobby@ucsd.example.com'
+    set_ungrouped_mail_delivery :in_summary, for: 'ricky.bobby@ucsd.example.com'
 
     # Alice sends a welcome email
     @welcome_message = create_conversation(
@@ -55,6 +60,12 @@ FixtureBuilder.build do
 
   as 'jonathan@ucsd.example.com' do
     unsubscribe_from_organization_email!
+  end
+
+  web_enable! 'cal.naughton@ucsd.example.com'
+  as 'cal.naughton@ucsd.example.com' do
+    set_avatar! 'cal.naughton.jpg'
+    set_ungrouped_mail_delivery :no_mail
   end
 
   # create some groups and put people in them

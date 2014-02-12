@@ -25,10 +25,23 @@ class Threadable::Organization::Member < Threadable::User
   delegate *%w{
     gets_email?
     subscribed?
+    ungrouped_mail_delivery
   }, to: :organization_membership_record
 
   def organization_membership_id
     organization_membership_record.id
+  end
+
+  def gets_no_ungrouped_mail?
+    ungrouped_mail_delivery == :no_mail
+  end
+
+  def gets_each_ungrouped_message?
+    ungrouped_mail_delivery == :each_message
+  end
+
+  def gets_ungrouped_in_summary?
+    ungrouped_mail_delivery == :in_summary
   end
 
   def user
@@ -40,26 +53,23 @@ class Threadable::Organization::Member < Threadable::User
     self
   end
 
-  def subscribe! track=false
-    return if subscribed?
-    if track
-      threadable.track('Re-subscribed', {
-        'Organization'      => organization.id,
-        'Organization Name' => organization.name,
-      })
+  def update organization_membership_attributes
+    user_attributes = organization_membership_attributes.slice!(:subscribed, :ungrouped_mail_delivery)
+    if organization_membership_attributes.present?
+      Threadable::Organization::Member::Update.call(self, organization_membership_attributes)
     end
-    organization_membership_record.subscribe!
+    if user_attributes.present?
+      super(user_attributes)
+    end
+    return self
   end
 
-  def unsubscribe! track=false
-    return if !subscribed?
-    if track
-      threadable.track('Unsubscribed', {
-        'Organization'      => organization.id,
-        'Organization Name' => organization.name,
-      })
-    end
-    organization_membership_record.unsubscribe!
+  def subscribe!
+    update subscribed: true
+  end
+
+  def unsubscribe!
+    update subscribed: false
   end
 
   def == other
@@ -71,3 +81,5 @@ class Threadable::Organization::Member < Threadable::User
   end
 
 end
+
+require_dependency 'threadable/organization/member/update'

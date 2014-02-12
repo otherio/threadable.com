@@ -21,9 +21,10 @@ class Threadable::Group::Members < Threadable::Collection
       raise Threadable::RecordNotFound, "unable to find group member with id: #{user_id}"
   end
 
-  def me
+  def current_member
+    @current_member = nil if @current_member && @current_member.user_id != threadable.current_user_id
     raise Threadable::AuthorizationError if threadable.current_user_id.nil?
-    find_by_user_id! threadable.current_user_id
+    @current_member ||= find_by_user_id! threadable.current_user_id
   end
 
   def add user

@@ -9,30 +9,45 @@ class Threadable::Conversation::Recipients
   delegate :threadable, to: :conversation
 
   def all
-    user_records = User.
-      joins(:organization_memberships).
-      where(organization_memberships:{gets_email:true, organization_id: conversation.organization_id})
+    organization_members_for scope
+  end
 
-    if conversation.id.present?
-      user_records = user_records.
-        joins("LEFT JOIN conversations_muters m ON m.user_id = users.id AND m.conversation_id = #{conversation.id}").
-        where('m.user_id IS NULL')
-    end
-
-    groups = conversation.groups.all
-
-    if groups.present?
-      group_ids = groups.map(&:id).join(',')
-      user_records = user_records.
-      joins("INNER JOIN group_memberships ON group_memberships.group_id in (#{group_ids})").
-      where('group_memberships.user_id = users.id')
-    end
-
-    user_records.map{|user_record| Threadable::User.new(threadable, user_record) }
+  def include? user
+    !!scope.where(user_id: user.user_id).exists?
   end
 
   def inspect
     %(#<#{self.class} conversation_id: #{conversation.id.inspect}>)
+  end
+
+  private
+
+  def organization_member_for organization_membership_record
+    Threadable::Organization::Member.new(conversation.organization, organization_membership_record)
+  end
+
+  def organization_members_for organization_membership_records
+    organization_membership_records.map do |organization_membership_record|
+      organization_member_for organization_membership_record
+    end
+  end
+
+  def scope
+    recipients = OrganizationMembership.
+      includes(:user).
+      who_get_email.
+      for_organization(conversation.organization_id).
+      who_have_not_muted(conversation.id)
+
+    groups = conversation.groups.all
+
+    if groups.present?
+      recipients = recipients.in_groups(groups.map(&:id))
+    else
+      recipients = recipients.who_get_ungrouped
+    end
+
+    recipients
   end
 
 end

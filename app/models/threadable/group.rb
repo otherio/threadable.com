@@ -78,6 +78,10 @@ class Threadable::Group < Threadable::Model
     !!group_record.update_attributes(attributes)
   end
 
+  def == other
+    (self.class === other || other.class === self) && self.group_id == other.group_id
+  end
+
   def inspect
     %(#<#{self.class} group_id: #{id.inspect}, name: #{name.inspect}>)
   end

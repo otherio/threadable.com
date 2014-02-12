@@ -17,7 +17,7 @@ class Threadable::Conversations::Create < MethodObject
     return @conversation unless @conversation_record.persisted?
 
     add_groups!
-    @conversation.cache_participant_names!
+    @conversation.update_participant_names_cache!
     create_created_at_event!
     return object.new(@threadable, @conversation_record.reload)
   end
@@ -40,7 +40,7 @@ class Threadable::Conversations::Create < MethodObject
   def add_groups!
     return unless @options.groups.present?
     @conversation_record.groups = @options.groups.map(&:group_record)
-    @conversation.cache_group_ids!
+    @conversation.update_group_caches!
   end
 
   def create_created_at_event!

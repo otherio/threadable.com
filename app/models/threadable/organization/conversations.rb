@@ -55,4 +55,10 @@ class Threadable::Organization::Conversations < Threadable::Conversations
     scope.not_muted_by(threadable.current_user_id)
   end
 
+  def conversation_for conversation_record
+    conversation = super
+    conversation.organization = organization
+    conversation
+  end
+
 end

@@ -91,28 +91,5 @@ describe Threadable::Conversation do
   #   end
   # end
 
-  describe 'as_json' do
-    before do
-      subject.stub(
-        id:         'STUBBED ID',
-        to_param:   'STUBBED TO_PARAM',
-        slug:       'STUBBED SLUG',
-        task?:      'STUBBED TASK?',
-        created_at: 'STUBBED CREATED_AT',
-        updated_at: 'STUBBED UPDATED_AT',
-      )
-    end
-    its :as_json do
-      should eq(
-        id:         subject.id,
-        param:      subject.to_param,
-        slug:       subject.slug,
-        task:       subject.task?,
-        created_at: subject.created_at,
-        updated_at: subject.updated_at,
-      )
-    end
-  end
-
   its(:inspect){ should eq "#<Threadable::Conversation conversation_id: 2323>" }
 end

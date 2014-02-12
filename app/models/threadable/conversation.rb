@@ -38,13 +38,14 @@ class Threadable::Conversation < Threadable::Model
     last_message_at
   }, to: :conversation_record
 
-  let(:organization){ threadable.organizations.find_by_id(organization_id) }
+  attr_writer :organization
+  let(:organization){ Threadable::Organization.new(threadable, conversation_record.organization) }
   let(:creator     ){ Creator.new(self) if creator_id }
   let(:events      ){ Events.new(self)       }
   let(:messages    ){ Messages.new(self)     }
   let(:recipients  ){ Recipients.new(self)   }
   let(:participants){ Participants.new(self) }
-  let(:groups      ){ Groups.new(self) }
+  let(:groups      ){ Groups.new(self)       }
 
   def muter_ids
     conversation_record.muter_ids_cache
@@ -54,7 +55,7 @@ class Threadable::Conversation < Threadable::Model
     if conversation_record.muters.exclude? user.user_record
       Threadable.transaction do
         conversation_record.muters << user.user_record
-        cache_muter_ids!
+        update_muter_ids_cache!
       end
     end
     self
@@ -64,14 +65,10 @@ class Threadable::Conversation < Threadable::Model
     if conversation_record.muters.include? user.user_record
       Threadable.transaction do
         conversation_record.muters.delete user.user_record
-        cache_muter_ids!
+        update_muter_ids_cache!
       end
     end
     self
-  end
-
-  def cache_muter_ids!
-    update(muter_ids_cache: conversation_record.muters.map(&:id))
   end
 
   def mute!
@@ -113,31 +110,8 @@ class Threadable::Conversation < Threadable::Model
     conversation_record.participant_names_cache
   end
 
-  def cache_participant_names!
-    messages = self.messages.all
-    names = messages.map do |message|
-      case
-      when message.creator.present?
-        message.creator.name.split(/\s+/).first
-      else
-        ExtractNamesFromEmailAddresses.call([message.from]).first
-      end
-    end.compact.uniq
-
-    if names.empty?
-      names = creator.present? ? [creator.name.split(/\s+/).first] : []
-    end
-
-    update(participant_names_cache: names)
-    conversation_record.reload
-  end
-
   def message_summary
     conversation_record.message_summary_cache
-  end
-
-  def cache_message_summary!
-    update(message_summary_cache: messages.latest.try(:body_plain).try(:[], 0..50))
   end
 
   def group_ids
@@ -146,10 +120,6 @@ class Threadable::Conversation < Threadable::Model
 
   def grouped?
     group_ids.present?
-  end
-
-  def cache_group_ids!
-    update(group_ids_cache: groups.all.map(&:id))
   end
 
   def formatted_email_addresses
@@ -201,17 +171,41 @@ class Threadable::Conversation < Threadable::Model
     task? ? "[✔\uFE0E]#{subject_tag}" : subject_tag
   end
 
-  def as_json options=nil
-    {
-      id:         id,
-      param:      to_param,
-      slug:       slug,
-      task:       task?,
-      created_at: created_at,
-      updated_at: updated_at,
-    }
+
+  # cache methods
+
+  def update_muter_ids_cache!
+    update(muter_ids_cache: conversation_record.muters.map(&:id))
   end
 
+  def update_group_caches! group_ids=nil
+    group_ids ||= groups.all.map(&:id)
+    update(group_ids_cache: group_ids)
+    update(groups_count: group_ids.size)
+  end
+
+  def update_message_summary_cache!
+    update(message_summary_cache: messages.latest.try(:body_plain).try(:[], 0..50))
+  end
+
+  def update_participant_names_cache!
+    messages = self.messages.all
+    names = messages.map do |message|
+      case
+      when message.creator.present?
+        message.creator.name.split(/\s+/).first
+      else
+        ExtractNamesFromEmailAddresses.call([message.from]).first
+      end
+    end.compact.uniq
+
+    if names.empty?
+      names = creator.present? ? [creator.name.split(/\s+/).first] : []
+    end
+
+    update(participant_names_cache: names)
+    conversation_record.reload
+  end
 
   def == other
     self.class === other && other.id == id

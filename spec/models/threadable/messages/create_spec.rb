@@ -94,8 +94,8 @@ describe Threadable::Messages::Create do
       ).and_return(message_record)
 
       expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
-      expect(conversation).to receive(:cache_participant_names!)
-      expect(conversation).to receive(:cache_message_summary!)
+      expect(conversation).to receive(:update_participant_names_cache!)
+      expect(conversation).to receive(:update_message_summary_cache!)
 
       expect(threadable).to receive(:track).with('Composed Message', {
         'Organization' => organization.id,
@@ -149,8 +149,8 @@ describe Threadable::Messages::Create do
       ).and_return(message_record)
 
       expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
-      expect(conversation).to receive(:cache_participant_names!)
-      expect(conversation).to receive(:cache_message_summary!)
+      expect(conversation).to receive(:update_participant_names_cache!)
+      expect(conversation).to receive(:update_message_summary_cache!)
 
       expect(threadable).to receive(:track).with('Composed Message', {
         'Organization' => organization.id,

@@ -7,7 +7,7 @@ describe Threadable::Organization::Groups::Create do
     context 'with the auto_join flag set to true' do
       it 'adds all the current members to the group' do
         group = organization.groups.create(name: 'foo', auto_join: true)
-        expect(group.members.count).to eq 6
+        expect(group.members.count).to eq organization.members.count
       end
     end
 
@@ -21,7 +21,7 @@ describe Threadable::Organization::Groups::Create do
     context 'with the auto_join flag unset' do
       it 'adds all the current members to the group' do
         group = organization.groups.create(name: 'foo')
-        expect(group.members.count).to eq 6
+        expect(group.members.count).to eq organization.members.count
       end
     end
   end

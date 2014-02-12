@@ -66,9 +66,10 @@ class Threadable::Organization::Members < Threadable::Collection
     member
   end
 
-  def me
+  def current_member
+    @current_member = nil if @current_member && @current_member.user_id != threadable.current_user_id
     raise Threadable::AuthorizationError if threadable.current_user_id.nil?
-    find_by_user_id! threadable.current_user_id
+    @current_member ||= find_by_user_id! threadable.current_user_id
   end
 
   def email_addresses

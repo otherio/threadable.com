@@ -10,9 +10,9 @@ describe Threadable::Conversation do
     context 'when signed in' do
       before{ threadable.current_user_id = conversation.organization.members.who_get_email.first.id }
       it 'adds the current user to the conversation muters' do
-        expect(conversation.recipients.all).to include threadable.current_user
+        expect(conversation.recipients).to include threadable.current_user
         expect(conversation.mute!).to eq conversation
-        expect(conversation.recipients.all).to_not include threadable.current_user
+        expect(conversation.recipients).to_not include threadable.current_user
       end
     end
     context 'when not signed in' do
@@ -28,13 +28,13 @@ describe Threadable::Conversation do
       before{ threadable.current_user_id = conversation.organization.members.who_get_email.first.id }
       it 'removes the current user from the muters' do
         conversation.mute!
-        expect(conversation.recipients.all).to_not include threadable.current_user
+        expect(conversation.recipients).to_not include threadable.current_user
         expect(conversation.unmute!).to eq conversation
-        expect(conversation.recipients.all).to include threadable.current_user
+        expect(conversation.recipients).to include threadable.current_user
       end
       it 'still works when the conversation was not muted' do
         expect(conversation.unmute!).to eq conversation
-        expect(conversation.recipients.all).to include threadable.current_user
+        expect(conversation.recipients).to include threadable.current_user
       end
     end
     context 'when not signed in' do
