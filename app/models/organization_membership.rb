@@ -1,6 +1,12 @@
 class OrganizationMembership < ActiveRecord::Base
 
   # WARNING! you can only append to this list. The indices are meaningful! - Jared
+  ROLES = [
+    :member,
+    :owner,
+  ].freeze
+
+  # WARNING! you can only append to this list. The indices are meaningful! - Jared
   UNGROUPED_MAIL_DELIVERY_VALUES = [
     :no_mail,
     :each_message,
@@ -37,7 +43,12 @@ class OrganizationMembership < ActiveRecord::Base
     where(ungrouped_mail_delivery: UNGROUPED_MAIL_DELIVERY_VALUES.index(:in_summary))
   }
 
+  ROLES.each do |role|
+    scope role.to_s.pluralize.to_sym, -> { where(role: role) }
+  end
+
   validates_inclusion_of :gets_email, :in => [ true, false ]
+  validates_inclusion_of :role, :in => ROLES
   validates_inclusion_of :ungrouped_mail_delivery, :in => UNGROUPED_MAIL_DELIVERY_VALUES
 
   def subscribed?
@@ -50,6 +61,17 @@ class OrganizationMembership < ActiveRecord::Base
 
   def subscribed_changed?
     self.gets_email_changed?
+  end
+
+  def role
+    ROLES[super]
+  end
+
+  def role= value
+    value = value.to_sym
+    index = ROLES.index(value)
+    index or raise ArgumentError, "expected #{value.inspect} to be one of #{ROLES.inspect}"
+    super(index)
   end
 
   def ungrouped_mail_delivery

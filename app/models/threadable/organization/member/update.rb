@@ -15,16 +15,24 @@ class Threadable::Organization::Member::Update < MethodObject
     record = member.organization_membership_record
     original_values = {
       subscribed:              record.subscribed?,
+      role:                    record.role,
       ungrouped_mail_delivery: record.ungrouped_mail_delivery,
     }
 
-    record.attributes = attributes.slice(:subscribed, :ungrouped_mail_delivery)
+    record.attributes = attributes.slice(:subscribed, :role, :ungrouped_mail_delivery)
     return unless record.changed?
 
     record.save!
 
     if record.subscribed? != original_values[:subscribed]
       track(member.subscribed? ? 'Re-subscribed' : 'Unsubscribed')
+    end
+
+    if record.role != original_values[:role]
+      track('Organization membership role changed', {
+        'from' => original_values[:role],
+        'to'   => record.role,
+      });
     end
 
     if record.ungrouped_mail_delivery != original_values[:ungrouped_mail_delivery]

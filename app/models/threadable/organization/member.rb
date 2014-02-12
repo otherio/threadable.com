@@ -25,6 +25,7 @@ class Threadable::Organization::Member < Threadable::User
   delegate *%w{
     gets_email?
     subscribed?
+    role
     ungrouped_mail_delivery
   }, to: :organization_membership_record
 
@@ -54,7 +55,7 @@ class Threadable::Organization::Member < Threadable::User
   end
 
   def update organization_membership_attributes
-    user_attributes = organization_membership_attributes.slice!(:subscribed, :ungrouped_mail_delivery)
+    user_attributes = organization_membership_attributes.slice!(:subscribed, :role, :ungrouped_mail_delivery)
     if organization_membership_attributes.present?
       Threadable::Organization::Member::Update.call(self, organization_membership_attributes)
     end
