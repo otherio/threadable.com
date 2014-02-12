@@ -30,6 +30,13 @@ Threadable = Ember.Application.create({
 // Ember.run.backburner.DEBUG = true;
 
 
+Threadable.deferReadiness();
+
+$(window).load(function() {
+  $('.page-loading').remove();
+  Threadable.advanceReadiness();
+});
+
 // Ember.onerror = function(error){
 //   var notice = $('<div>');
 //   notice.text('ERROR: '+error.message);
