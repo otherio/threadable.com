@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
     #"http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=#{CGI.escape(default_avatar_url)}"
     return unless email_address.present?
     gravatar_id = Digest::MD5.hexdigest(email_address.downcase)
-    "//gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
+    "//gravatar.com/avatar/#{gravatar_id}.png?s=70&d=retro"
   end
 
 end

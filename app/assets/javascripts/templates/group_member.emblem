@@ -1,6 +1,12 @@
 .padded
   .well-when-not-small
-    h2 #{name}'s settings for the "#{group.name}" group
+
+    h2.uk-clearfix
+      .uk-float-left
+        .avatar.avatar-large
+          img src=avatarUrl
+      | #{name}'s settings for the "#{group.name}" group
+
 
     section
       a.summary.input-switch href="" class={ getsInSummary:input-switch-on:input-switch-off saving:disabled} click="toggleGetsInSummary"

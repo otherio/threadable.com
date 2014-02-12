@@ -1,6 +1,10 @@
 .padded
   .well-when-not-small
-    h2 #{organization.name} settings for #{name}
+    h2.uk-clearfix
+      .uk-float-left
+        .avatar.avatar-large
+          img src=avatarUrl
+      | #{organization.name} settings for #{name}
 
     section
       a.subscribed.input-switch href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled} click="toggleSubscribed"
