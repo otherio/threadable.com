@@ -89,7 +89,7 @@ describe Api::GroupsController do
           expect(group).to be
           expect(group.name).to eq 'Fluffy'
           expect(group.subject_tag).to eq 'FL'
-          expect(group.auto_join).to eq false
+          expect(group.auto_join?).to eq false
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end
@@ -123,7 +123,7 @@ describe Api::GroupsController do
           group = raceteam.groups.find_by_email_address_tag('electronics')
           expect(group.color).to eq '#964bf8'
           expect(group.subject_tag).to eq 'superheroes'
-          expect(group.auto_join).to be_false
+          expect(group.auto_join?).to be_false
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end

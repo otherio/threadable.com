@@ -8,7 +8,8 @@ class GroupsSerializer < Serializer
       email_address_tag:            group.email_address_tag,
       subject_tag:                  group.subject_tag,
       color:                        group.color,
-      auto_join:                    group.auto_join,
+      auto_join:                    group.auto_join?,
+      hold_messages:                group.hold_messages?,
 
       email_address:                group.email_address,
       task_email_address:           group.task_email_address,

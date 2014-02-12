@@ -105,7 +105,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def holdable?
-    !bounceable? && (parent_message.nil? && !creator_is_a_organization_member?)
+    groups.all?(&:hold_messages?) && !bounceable? && (parent_message.nil? && !creator_is_a_organization_member?)
   end
 
   def deliverable?

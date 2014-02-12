@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140211044736) do
+ActiveRecord::Schema.define(version: 20140212212429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20140211044736) do
     t.string   "color",             default: "",   null: false
     t.string   "subject_tag"
     t.boolean  "auto_join",         default: true, null: false
+    t.boolean  "hold_messages",     default: true
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree

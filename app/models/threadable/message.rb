@@ -95,7 +95,7 @@ class Threadable::Message < Threadable::Model
   let(:attachments){ Attachments.new(self) }
 
   def update attributes
-    message_record.update_attributes(attributes)
+    message_record.update_attributes!(attributes)
   end
 
 

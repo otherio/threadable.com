@@ -23,7 +23,7 @@ class Api::GroupsController < ApiController
 
   # patch /api/groups/:id
   def update
-    group_params = params.require(:group).permit(:color, :subject_tag, :auto_join)
+    group_params = params.require(:group).permit(:color, :subject_tag, :auto_join, :hold_messages)
     group = organization.groups.find_by_email_address_tag!(params[:id])
     group.update(group_params)
     render json: serialize(:groups, group), status: 200

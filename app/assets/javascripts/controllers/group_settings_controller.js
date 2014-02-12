@@ -7,9 +7,10 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
     updateGroup: function() {
       var group = this.get('content');
       group.setProperties({
-        subjectTag: this.get('editableGroup.subjectTag'),
-        color:      this.get('editableGroup.color'),
-        autoJoin:   this.get('editableGroup.autoJoin')
+        subjectTag:   this.get('editableGroup.subjectTag'),
+        color:        this.get('editableGroup.color'),
+        autoJoin:     this.get('editableGroup.autoJoin'),
+        holdMessages: this.get('editableGroup.holdMessages'),
       });
 
       group.saveRecord().then(

@@ -457,6 +457,24 @@ describe "processing incoming emails" do
         it 'holds the incoming email' do
           validate! :held
         end
+
+        context 'but the message is to a group that accepts all messages' do
+          let(:recipient) { 'raceteam+electronics+fundraising@127.0.0.1' }
+          let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics+fundraising@127.0.0.1>' }
+
+          before do
+            expected_organization.groups.find_by_slug!('electronics').update(hold_messages: false)
+          end
+
+          let(:expected_sent_email_cc) { from }
+          let(:expected_conversation)  { expected_organization.conversations.latest }
+          let(:expected_creator)       { threadable.users.find_by_email_address(sender) }
+          let(:expected_groups)        { ['Electronics', 'Fundraising'] }
+          let(:expected_sent_email_to) { ["raceteam+electronics@127.0.0.1", "raceteam+fundraising@127.0.0.1"] }
+          it 'delivers the email' do
+            validate! :delivered
+          end
+        end
       end
 
       context "and the sender is a user but not a organization member" do

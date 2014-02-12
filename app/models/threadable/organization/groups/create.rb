@@ -8,7 +8,7 @@ class Threadable::Organization::Groups::Create < MethodObject
     Threadable.transaction do
       group_record = ::Group.create(attributes)
       group = Threadable::Group.new(groups.threadable, group_record)
-      if group.auto_join
+      if group.auto_join?
         organization.members.all.each do |member|
           group.members.add member
         end

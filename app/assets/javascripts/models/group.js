@@ -7,6 +7,7 @@ Threadable.Group = RL.Model.extend({
   subjectTag:                RL.attr('string'),
   color:                     RL.attr('string'),
   autoJoin:                  RL.attr('boolean'),
+  holdMessages:              RL.attr('boolean'),
   emailAddress:              RL.attr('string'),
   taskEmailAddress:          RL.attr('string'),
   formattedEmailAddress:     RL.attr('string'),

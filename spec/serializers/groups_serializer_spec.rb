@@ -18,6 +18,7 @@ describe GroupsSerializer do
         subject_tag:       "RaceTeam+Electronics",
         color:             "#964bf8",
         auto_join:         false,
+        hold_messages:     true,
 
         email_address:                electronics.email_address,
         task_email_address:           electronics.task_email_address,
@@ -46,6 +47,7 @@ describe GroupsSerializer do
           subject_tag:       "RaceTeam+Electronics",
           color:             "#964bf8",
           auto_join:         false,
+          hold_messages:     true,
 
           email_address:                electronics.email_address,
           task_email_address:           electronics.task_email_address,
@@ -65,6 +67,7 @@ describe GroupsSerializer do
           subject_tag:       "RaceTeam+Fundraising",
           color:             "#5a9de1",
           auto_join:         false,
+          hold_messages:     true,
 
           email_address:                fundraising.email_address,
           task_email_address:           fundraising.task_email_address,
@@ -94,6 +97,7 @@ describe GroupsSerializer do
             subject_tag:       "RaceTeam+Electronics",
             color:             "#964bf8",
             auto_join:         false,
+            hold_messages:     true,
 
             email_address:                electronics.email_address,
             task_email_address:           electronics.task_email_address,
@@ -113,6 +117,7 @@ describe GroupsSerializer do
             subject_tag:       "RaceTeam+Fundraising",
             color:             "#5a9de1",
             auto_join:         false,
+            hold_messages:     true,
 
             email_address:                fundraising.email_address,
             task_email_address:           fundraising.task_email_address,

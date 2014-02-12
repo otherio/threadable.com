@@ -19,7 +19,8 @@ class Threadable::Group < Threadable::Model
     new_record?
     persisted?
     destroy
-    auto_join
+    auto_join?
+    hold_messages?
   }, to: :group_record
 
   def group_id
@@ -75,7 +76,8 @@ class Threadable::Group < Threadable::Model
   end
 
   def update attributes
-    !!group_record.update_attributes(attributes)
+    group_record.update_attributes!(attributes)
+    group_record.update_attributes!(attributes)
   end
 
   def == other
