@@ -77,7 +77,7 @@ describe User do
     end
 
     it "should use the gravatar as the default avatar when none is supplied" do
-      expect(user.avatar_url).to eq '//gravatar.com/avatar/b48def645758b95537d4424c84d1a9ff.png?s=48&d=retro'
+      expect(user.avatar_url).to eq '//gravatar.com/avatar/b48def645758b95537d4424c84d1a9ff.png?s=70&d=retro'
     end
 
     it "should not have a password" do
