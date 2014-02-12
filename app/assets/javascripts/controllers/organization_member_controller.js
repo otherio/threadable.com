@@ -3,6 +3,7 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 
   saving: false,
+  roles: ['owner', 'member'],
 
   actions: {
     toggleSubscribed: function() {
