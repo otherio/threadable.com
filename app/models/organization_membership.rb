@@ -33,6 +33,10 @@ class OrganizationMembership < ActiveRecord::Base
     where(ungrouped_mail_delivery: UNGROUPED_MAIL_DELIVERY_VALUES.index(:each_message))
   }
 
+  scope :who_get_ungrouped_summaries, -> {
+    where(ungrouped_mail_delivery: UNGROUPED_MAIL_DELIVERY_VALUES.index(:in_summary))
+  }
+
   validates_inclusion_of :gets_email, :in => [ true, false ]
   validates_inclusion_of :ungrouped_mail_delivery, :in => UNGROUPED_MAIL_DELIVERY_VALUES
 

@@ -58,7 +58,7 @@ describe SendEmailWorker do
   end
 
   describe 'message_summary' do
-    let(:arguments){ [:message_summary, organization_id, recipient_id, date] }
+    let(:arguments){ [:message_summary, organization_id, recipient_id, date.to_s] }
     let(:date) { Time.new(1982,1,1) }  # this time is irrelevant.
     it "should find all the records and call threadable.emails.send_email" do
       expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)

@@ -10,4 +10,8 @@ class GroupMembership < ActiveRecord::Base
     joins(:organization).where(groups:{ organization_id: organization_id })
   }
 
+  scope :who_get_summaries, -> {
+    where(summary: true)
+  }
+
 end

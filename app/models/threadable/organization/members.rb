@@ -16,6 +16,13 @@ class Threadable::Organization::Members < Threadable::Collection
     scope.who_get_email.reload.map{|membership| member_for membership }
   end
 
+  def who_get_summaries
+    membership_records = scope.who_get_email.who_get_ungrouped_summaries
+    grouped_userids = groups_scope.who_get_summaries.map(&:user_id)
+    membership_records += scope.who_get_email.where(user_id: grouped_userids)
+    membership_records.compact.uniq.map{|membership| member_for membership }
+  end
+
   def find_by_user_id id
     member_for (scope.where(users:{id:id}).first or return)
   end
@@ -112,6 +119,10 @@ class Threadable::Organization::Members < Threadable::Collection
   end
 
   private
+
+  def groups_scope
+    GroupMembership.for_organization(organization.id).includes(:user).reload
+  end
 
   def scope
     organization.organization_record.memberships.includes(:user).reload
