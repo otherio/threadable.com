@@ -89,14 +89,15 @@ class IncomingEmailParamsFactory < MethodObject
     }
 
     if @options[:attachments].present?
-      @params["content-id-map"] = {}
+      content_id_map = {}
       @params['attachment-count'] = @options[:attachments].count.to_s
       @options[:attachments].each_with_index do |attachment, index|
         name = "attachment-#{index+1}"
         contentid = "<#{attachment.original_filename.gsub(/\W/, '')}contentid>"
-        @params["content-id-map"][contentid] = name
+        content_id_map[contentid] = name
         @params[name] = attachment
       end
+      @params["content-id-map"] = content_id_map.to_json
     end
   end
 
