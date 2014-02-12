@@ -16,6 +16,7 @@ module RescueFromExceptionsConcern
   NOT_ACCEPTABLE_EXCEPTIONS = [
     ActionController::UnknownFormat,
     ActionController::ParameterMissing,
+    ActionView::MissingTemplate
   ].freeze
 
   NOT_FOUND_EXCEPTIONS = [
@@ -49,7 +50,14 @@ module RescueFromExceptionsConcern
     message = exception && exception.message != exception.class.name && exception.message.presence || message
 
     respond_to do |format|
-      format.json { render json: {error: message}, status: status }
+      format.json {
+        case status
+        when :not_found
+          render json: {error: message}, status: status
+        else
+          render json: {error: status}, status: status
+        end
+      }
       format.html {
         case
         when request.xhr?
@@ -62,7 +70,9 @@ module RescueFromExceptionsConcern
           render 'errors/internal_server_error', status: status
         end
       }
-      format.all { render text: message, layout: false, status: status }
+      format.all {
+        render nothing: true, layout: false, status: :not_acceptable
+      }
     end
   end
 
