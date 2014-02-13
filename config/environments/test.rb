@@ -54,4 +54,9 @@ Threadable::Application.configure do
   if ENV['CIRCLE_ARTIFACTS']
     Rails.logger = Logger.new File.open("#{ENV['CIRCLE_ARTIFACTS']}/test.log", 'a')
   end
+
+  # for scheduled jobs, which have no web request
+  config.default_host = '127.0.0.1'
+  config.default_protocol = 'http'
+  config.default_port = defined?(Capybara) ? Capybara.server_port : 80
 end

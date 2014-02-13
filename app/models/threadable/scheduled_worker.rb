@@ -1,0 +1,28 @@
+require 'sidekiq/worker'
+
+class Threadable::ScheduledWorker < Threadable::Worker
+
+  def perform last_run, this_run
+    @threadable = Threadable.new(threadable_env)
+
+    super threadable_env, float_to_time(last_run), float_to_time(this_run)
+  end
+
+  private
+
+  def threadable_env
+    {
+      host:     Rails.application.config.default_host,
+      port:     Rails.application.config.default_port,
+      protocol: Rails.application.config.default_protocol,
+      worker:   true,
+    }
+  end
+
+  def float_to_time ftime
+    return nil if ftime <= 0
+    # http://stackoverflow.com/questions/18707335/ruby-time-object-converted-from-float-doesnt-equal-to-orignial-time-object
+    Time.at(ftime.to_r)
+  end
+
+end

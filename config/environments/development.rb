@@ -59,4 +59,10 @@ Threadable::Application.configure do
   config.redis = { url: 'redis://127.0.0.1:6379/11' }
 
   config.track_in_memory = true
+
+  # for scheduled jobs, which have no web request
+  config.default_host = 'localhost'
+  config.default_protocol = 'http'
+  config.default_port = 80
+
 end

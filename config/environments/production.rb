@@ -109,4 +109,9 @@ Threadable::Application.configure do
 
   config.redis = Heroku.redis_config
 
+  # for scheduled jobs, which have no web request
+  config.default_host = 'threadable.com'
+  config.default_protocol = 'https'
+  config.default_port = 443
+
 end
