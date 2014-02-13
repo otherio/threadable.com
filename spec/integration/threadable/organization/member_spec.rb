@@ -5,10 +5,6 @@ describe Threadable::Organization::Member do
   let(:member){ organization.members.find_by_email_address('bethany@ucsd.example.com') }
   subject{ member }
 
-
-
-
-
   context 'when signed in as an organization owner' do
     before{ sign_in_as 'alice@ucsd.example.com' }
 
@@ -25,6 +21,8 @@ describe Threadable::Organization::Member do
         expect(member.role).to eq :member
         expect(member.ungrouped_mail_delivery).to eq :no_mail
         expect(member.name).to eq 'Bethany the great'
+
+        binding.pry
       end
 
       context 'when updating your own role' do
