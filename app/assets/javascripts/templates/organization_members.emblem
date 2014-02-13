@@ -11,4 +11,3 @@
             img src=member.avatarUrl
           .name= member.name
           .email-address= member.emailAddress
-          .toggle= member.isMember

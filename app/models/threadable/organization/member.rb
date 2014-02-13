@@ -55,7 +55,7 @@ class Threadable::Organization::Member < Threadable::User
   end
 
   def update organization_membership_attributes
-    user_attributes = organization_membership_attributes.slice!(:subscribed, :role, :ungrouped_mail_delivery)
+    user_attributes = organization_membership_attributes.slice!(*Threadable::Organization::Member::Update::ATTRIBUTES)
     if organization_membership_attributes.present?
       Threadable::Organization::Member::Update.call(self, organization_membership_attributes)
     end

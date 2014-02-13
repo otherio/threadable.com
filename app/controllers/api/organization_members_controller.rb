@@ -21,7 +21,7 @@ class Api::OrganizationMembersController < ApiController
   end
 
   def update
-    member_params = params.require(:organization_member).permit(:slug, :subscribed, :ungrouped_mail_delivery)
+    member_params = params.require(:organization_member).permit(:slug, :subscribed, :role, :ungrouped_mail_delivery)
     member = organization.members.find_by_user_slug!(member_params.delete(:slug))
     member.update(member_params)
     render json: serialize(:organization_members, member)
