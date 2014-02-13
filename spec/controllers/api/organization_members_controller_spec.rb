@@ -7,7 +7,7 @@ describe Api::OrganizationMembersController do
       it 'renders unauthorized' do
         xhr :get, :index, format: :json, organization_id: 1, task_id: 1
         expect(response.status).to eq 401
-        expect(response.body).to eq '{"error":"unauthorized"}'
+        expect(response.body).to eq '{"error":"Unauthorized"}'
       end
     end
   end

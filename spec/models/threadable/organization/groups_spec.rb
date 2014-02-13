@@ -14,7 +14,7 @@ describe Threadable::Organization::Groups do
   let(:groups){ described_class.new(organization) }
   subject{ groups }
 
-  let(:group_record){ double(:group_record, auto_join: false) }
+  let(:group_record){ double(:group_record, auto_join?: false) }
   let(:group){ double(:group) }
 
   describe '#create' do

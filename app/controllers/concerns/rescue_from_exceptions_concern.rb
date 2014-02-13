@@ -51,12 +51,7 @@ module RescueFromExceptionsConcern
 
     respond_to do |format|
       format.json {
-        case status
-        when :not_found
-          render json: {error: message}, status: status
-        else
-          render json: {error: status}, status: status
-        end
+        render json: {error: message}, status: status
       }
       format.html {
         case

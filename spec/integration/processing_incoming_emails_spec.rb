@@ -245,7 +245,11 @@ describe "processing incoming emails" do
       expect( email.message_id                      ).to eq message_id[1..-2]
       expect( email.header[:References].to_s        ).to eq references
       expect( email.date.in_time_zone.rfc2822       ).to eq date.rfc2822
-      expect( email.to                              ).to eq expected_sent_email_to
+      if expected_sent_email_to.is_a? Set
+        expect( email.to.to_set                     ).to eq expected_sent_email_to
+      else
+        expect( email.to                            ).to eq expected_sent_email_to
+      end
       expect( email.header[:Cc].to_s                ).to eq expected_sent_email_cc
       expect( email.smtp_envelope_to.length         ).to eq 1
       expect( recipient_email_addresses             ).to include email.smtp_envelope_to.first
@@ -470,7 +474,7 @@ describe "processing incoming emails" do
           let(:expected_conversation)  { expected_organization.conversations.latest }
           let(:expected_creator)       { threadable.users.find_by_email_address(sender) }
           let(:expected_groups)        { ['Electronics', 'Fundraising'] }
-          let(:expected_sent_email_to) { ["raceteam+electronics@127.0.0.1", "raceteam+fundraising@127.0.0.1"] }
+          let(:expected_sent_email_to) { Set["raceteam+electronics@127.0.0.1", "raceteam+fundraising@127.0.0.1"] }
           it 'delivers the email' do
             validate! :delivered
           end
