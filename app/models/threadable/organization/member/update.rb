@@ -17,7 +17,7 @@ class Threadable::Organization::Member::Update < MethodObject
   def update_organization_membership_record!
     record = member.organization_membership_record
 
-    if attributes.key?(:role) && attributes[:role] != record.role
+    if attributes[:role].present? && attributes[:role].to_sym != record.role
       if !current_member.can?(:make_owners_for, @member.organization)
         raise Threadable::AuthorizationError, 'You are not authorized to change organization membership roles'
       end
