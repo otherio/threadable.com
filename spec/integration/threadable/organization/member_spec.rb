@@ -6,10 +6,26 @@ describe Threadable::Organization::Member do
   subject{ member }
 
 
+
+
+
   context 'when signed in as an organization owner' do
     before{ sign_in_as 'alice@ucsd.example.com' }
 
     describe '#update' do
+
+      it 'updates both the user record and the organization membership record' do
+        member.update(
+          subscribed: false,
+          role: :member,
+          ungrouped_mail_delivery: :no_mail,
+          name: 'Bethany the great',
+        )
+        expect(member.subscribed?).to be_false
+        expect(member.role).to eq :member
+        expect(member.ungrouped_mail_delivery).to eq :no_mail
+        expect(member.name).to eq 'Bethany the great'
+      end
 
       context 'when updating your own role' do
         let(:member){ organization.members.find_by_email_address('alice@ucsd.example.com') }
