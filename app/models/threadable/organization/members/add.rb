@@ -34,11 +34,12 @@ class Threadable::Organization::Members::Add < MethodObject
   def create_membership!
     @member = @organization.organization_record.memberships.create!(
       user_id: user_id,
-      gets_email: @options[:gets_email] != false
+      gets_email: @options[:gets_email] != false,
+      role: @members.count.zero? ? :owner : :member,
     )
     auto_join_groups!
     track!
-    sent_join_notice! if @send_join_notice
+    send_join_notice! if @send_join_notice
   end
 
   def track!
@@ -51,7 +52,7 @@ class Threadable::Organization::Members::Add < MethodObject
     })
   end
 
-  def sent_join_notice!
+  def send_join_notice!
     @threadable.emails.send_email_async(:join_notice, @organization.id, user_id, @options[:personal_message])
   end
 

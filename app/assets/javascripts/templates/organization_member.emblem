@@ -6,19 +6,34 @@
           img src=avatarUrl
       | #{organization.name} settings for #{name}
 
-    section
-      a.subscribed.input-switch href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled} click="toggleSubscribed"
-        label Subscribed:
-        .input-switch-wrapper
-          .slider
-            .on
-              i.uk-icon-check
-            .off
-              i.uk-icon-times
-            .switch
-    section
-      label Ungrouped mail delivery:
-      div class="uk-button-group"
-        button class={:uk-button getsNoUngroupedMail:uk-active      } click="setGetsNoUngroupedMail" no mail
-        button class={:uk-button getsEachUngroupedMessage:uk-active } click="setGetsEachUngroupedMessage" each message
-        button class={:uk-button getsUngroupedInSummary:uk-active   } click="setGetsUngroupedInSummary" in summary
+    .member-settings
+      .setting
+        h4.label
+          | Role:
+        .control
+          if canChangeRole
+            view Ember.Select contentBinding="roles" valueBinding=role disabled=saving class="role"
+          else
+            = role
+
+      .setting
+        h4.label
+          | Subscribed:
+        .control
+          a.subscribed.input-switch href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled} click="toggleSubscribed"
+            .input-switch-wrapper
+              .slider
+                .on
+                  i.uk-icon-check
+                .off
+                  i.uk-icon-times
+                .switch
+
+      .setting
+        h4.label
+          | Ungrouped mail delivery:
+        .control
+          div class="uk-button-group"
+            button class={:uk-button getsNoUngroupedMail:uk-active      } click="setGetsNoUngroupedMail" no mail
+            button class={:uk-button getsEachUngroupedMessage:uk-active } click="setGetsEachUngroupedMessage" each message
+            button class={:uk-button getsUngroupedInSummary:uk-active   } click="setGetsUngroupedInSummary" in summary

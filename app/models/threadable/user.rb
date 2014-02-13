@@ -23,6 +23,8 @@ class Threadable::User < Threadable::Model
     created_at
   }, to: :user_record
 
+  delegate :can?, to: :ability
+
   alias_method :user_id, :id
 
   let(:email_addresses)  { Threadable::User::EmailAddresses  .new(self) }
@@ -108,6 +110,12 @@ class Threadable::User < Threadable::Model
 
   def inspect
     %(#<#{self.class} id: #{id}, email_address: #{email_address.to_s.inspect}, slug: #{slug.inspect}>)
+  end
+
+  private
+
+  def ability
+    @ability ||= ::Ability.new(self)
   end
 
 end

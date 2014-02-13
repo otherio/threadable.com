@@ -19,6 +19,7 @@ describe OrganizationMembersSerializer do
         slug:          "alice-neilson",
         avatar_url:    "/fixture_images/alice.jpg",
         subscribed:    true,
+        role:          :owner,
         ungrouped_mail_delivery: :each_message,
       )
     end
@@ -38,6 +39,7 @@ describe OrganizationMembersSerializer do
           slug:          "alice-neilson",
           avatar_url:    "/fixture_images/alice.jpg",
           subscribed:    true,
+          role:          :owner,
           ungrouped_mail_delivery: :each_message,
         },{
           id:            bob.id,
@@ -48,6 +50,7 @@ describe OrganizationMembersSerializer do
           slug:          "bob-cauchois",
           avatar_url:    "/fixture_images/bob.jpg",
           subscribed:    true,
+          role:          :member,
           ungrouped_mail_delivery: :each_message,
         }
       ]

@@ -4,6 +4,16 @@ Threadable.OrganizationMember = Threadable.User.extend({
   organizationSlug:      RL.attr('string'),
   personalMessage:       RL.attr('string'),
   subscribed:            RL.attr('boolean'),
+  role:                  RL.attr('string'),
+
+  isOwner: function() {
+    return this.get('role') === 'owner';
+  }.property('role'),
+
+  isMember: function() {
+    return this.get('role') === 'member';
+  }.property('role'),
+
   ungroupedMailDelivery: RL.attr('string'),
 
   getsNoUngroupedMail: function() {
