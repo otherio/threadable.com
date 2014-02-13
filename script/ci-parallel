@@ -17,4 +17,6 @@ end
 
 MY_SPECS = GROUPED_SPECS[CIRCLE_NODE_INDEX].map(&:first).map(&:inspect).join(' ')
 
-exec %(bundle exec rspec --require rspec/instafail --format RSpec::Instafail #{MY_SPECS})
+COMMAND = %(bundle exec rspec --require rspec/instafail --format RSpec::Instafail #{MY_SPECS})
+puts COMMAND
+exec COMMAND
