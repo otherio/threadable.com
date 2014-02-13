@@ -6,6 +6,10 @@ class Threadable::User::Groups < Threadable::Groups
     @user = user
   end
 
+  def with_summary
+    groups_for scope.joins(:memberships).where(group_memberships: {summary: true, user_id: user.user_id})
+  end
+
   attr_reader :user
   delegate :threadable, to: :user
 

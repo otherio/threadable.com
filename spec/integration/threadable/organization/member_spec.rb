@@ -73,4 +73,34 @@ describe Threadable::Organization::Member do
 
   end
 
+  describe '#summarized_conversations' do
+    let(:time) { Time.new(2014, 2, 2).in_time_zone('US/Pacific') }
+
+    context 'when ungrouped should be summarized' do
+      let(:member) { organization.members.find_by_email_address('ricky.bobby@ucsd.example.com')}
+      it 'fetches the conversations to be summarized for a given date' do
+        conversations = member.summarized_conversations(time)
+        expect(conversations.map(&:slug)).to match_array [
+          "how-are-we-going-to-build-the-body",
+          "layup-body-carbon",
+          "who-wants-to-pick-up-breakfast",
+          "who-wants-to-pick-up-dinner",
+          "who-wants-to-pick-up-lunch",
+        ]
+      end
+    end
+
+    context 'with groups that should be summarized' do
+      let(:member) { organization.members.find_by_email_address('bob@ucsd.example.com')}
+      it 'fetches the conversations to be summarized for a given date' do
+        conversations = member.summarized_conversations(time)
+        expect(conversations.map(&:slug)).to match_array [
+          "drive-trains-are-expensive",
+          "how-are-we-paying-for-the-motor-controller",
+          "inventory-led-supplies",
+        ]
+      end
+    end
+  end
+
 end

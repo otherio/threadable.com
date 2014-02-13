@@ -64,13 +64,12 @@ describe SendEmailWorker do
       expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
       expect(organizations).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
 
-      expect(organization ).to receive(:conversations        ).and_return(conversations)
-      expect(conversations).to receive(:all_with_updated_date        ).with(date).and_return(messages)
-
       expect(organization ).to receive(:members         ).and_return(members)
       expect(members ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, messages, date)
+      expect(recipient).to receive(:summarized_conversations).with(date).and_return(conversations)
+
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, conversations, date)
 
       perform!
     end

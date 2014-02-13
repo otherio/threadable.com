@@ -165,6 +165,7 @@ GEM
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
     i18n (0.6.9)
+    ice_cube (0.11.3)
     incoming (0.1.6)
       mail (~> 2.4)
       rack
@@ -295,6 +296,10 @@ GEM
       redis-namespace (>= 1.3.1)
     sidekiq-failures (0.2.2)
       sidekiq (>= 2.9.0)
+    sidetiq (0.4.3)
+      celluloid (>= 0.14.1)
+      ice_cube (~> 0.11.0)
+      sidekiq (~> 2.15.0)
     simple_form (1.4.1)
     simplecov (0.8.2)
       docile (~> 1.1.0)
@@ -394,6 +399,7 @@ DEPENDENCIES
   shoulda-matchers
   sidekiq
   sidekiq-failures
+  sidetiq
   simple_form
   sinatra
   stringex

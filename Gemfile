@@ -8,6 +8,7 @@ gem 'unicorn'
 gem 'sinatra'
 gem 'sidekiq'
 gem 'sidekiq-failures'
+gem 'sidetiq'
 
 gem 'redis'
 gem 'pg', '0.17.0'

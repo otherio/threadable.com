@@ -14,7 +14,7 @@ class SummaryMailer < Threadable::Mailer
     @formatted_date = time.strftime('%a, %b %-d')
 
     @new_count = {}
-    conversations.each do |conversation|
+    conversations.sort{|a,b| b.last_message_at <=> a.last_message_at}.each do |conversation|
       @new_count[conversation.id] = conversation.messages.count_for_date(time)
     end
 

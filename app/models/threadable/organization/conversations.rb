@@ -28,6 +28,18 @@ class Threadable::Organization::Conversations < Threadable::Conversations
     conversations_for not_muted_scope.includes(:participants)
   end
 
+  def ungrouped
+    conversations_for ungrouped_scope
+  end
+
+  def ungrouped_with_last_message_at time
+    conversations_for ungrouped_scope.with_last_message_at(time)
+  end
+
+  def with_last_message_at time
+    conversations_for scope.with_last_message_at(time)
+  end
+
   def build attributes={}
     conversation_for scope.build(attributes)
   end
@@ -53,6 +65,12 @@ class Threadable::Organization::Conversations < Threadable::Conversations
 
   def not_muted_scope
     scope.not_muted_by(threadable.current_user_id)
+  end
+
+  def ungrouped_scope
+    scope.
+      joins("LEFT JOIN conversation_groups ON conversation_groups.conversation_id = conversations.id and conversation_groups.active = 't'").
+      where(conversation_groups:{conversation_id:nil})
   end
 
   def conversation_for conversation_record

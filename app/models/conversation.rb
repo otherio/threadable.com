@@ -46,6 +46,11 @@ class Conversation < ActiveRecord::Base
     where('conversations.groups_count > 0')
   }
 
+  scope :with_last_message_at, ->(time) {
+    start = time.midnight
+    stop = start + 1.day
+    where('last_message_at BETWEEN ? AND ?', start, stop)
+  }
 
   acts_as_url :subject, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
 

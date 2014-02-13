@@ -50,6 +50,7 @@ Threadable::Application.routes.draw do
     post   'incoming_emails/:id/retry' => 'incoming_emails#retry',  as: 'retry_incoming_email'
 
     require 'sidekiq/web'
+    require 'sidetiq/web'
     mount Sidekiq::Web => '/background_jobs'
     mount MailPreview => '/mail_preview' if defined?(MailView)
   end

@@ -45,6 +45,19 @@ class Threadable::Organization::Member < Threadable::User
     ungrouped_mail_delivery == :in_summary
   end
 
+  def summarized_conversations time
+    conversations = []
+    if ungrouped_mail_delivery == :in_summary
+      conversations += organization.conversations.ungrouped_with_last_message_at time
+    end
+
+    groups.with_summary.each do |group|
+      conversations += group.conversations.with_last_message_at time
+    end
+
+    conversations
+  end
+
   def user
     @user ||= Threadable::User.new(threadable, user_record)
   end

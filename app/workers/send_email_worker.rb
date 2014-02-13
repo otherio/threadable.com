@@ -22,11 +22,9 @@ class SendEmailWorker < Threadable::Worker
     time = Time.parse(time)
 
     organization   = threadable.organizations.find_by_id! organization_id
-
-    # get the specific conversations for the user here.
-    conversations  = organization.conversations.all_with_updated_date time
-
     recipient      = organization.members.find_by_user_id! recipient_id
+    conversations  = recipient.summarized_conversations time
+
     threadable.emails.send_email(:message_summary, organization, recipient, conversations, time)
   end
 
