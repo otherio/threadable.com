@@ -655,7 +655,7 @@ describe "processing incoming emails" do
       let(:expected_creator)         { threadable.users.find_by_email_address!(sender) }
       let(:expected_email_recipients){ ["tom@ucsd.example.com", "bethany@ucsd.example.com", 'bob@ucsd.example.com'] }
       let(:expected_groups)          { ['Electronics', 'Fundraising'] }
-      let(:expected_sent_email_to)   { ["raceteam+electronics@127.0.0.1", "raceteam+fundraising@127.0.0.1"] }
+      let(:expected_sent_email_to)   { ["raceteam+electronics@127.0.0.1", "raceteam+fundraising@127.0.0.1"].to_set }
 
       it "delivers the message to only those groups' members" do
         validate! :delivered
