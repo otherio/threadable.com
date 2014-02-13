@@ -16,7 +16,6 @@ module RescueFromExceptionsConcern
   NOT_ACCEPTABLE_EXCEPTIONS = [
     ActionController::UnknownFormat,
     ActionController::ParameterMissing,
-    ActionView::MissingTemplate
   ].freeze
 
   NOT_FOUND_EXCEPTIONS = [
