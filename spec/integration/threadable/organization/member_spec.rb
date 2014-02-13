@@ -66,7 +66,7 @@ describe Threadable::Organization::Member do
 
       context "when updating another member's role" do
         it 'raises a Threadable::AuthorizationError' do
-          expect{ member.update(role: :member) }.to raise_error Threadable::AuthorizationError, 'You are not authorized to change organization membership roles'
+          expect{ member.update(role: :owner) }.to raise_error Threadable::AuthorizationError, 'You are not authorized to change organization membership roles'
         end
       end
     end

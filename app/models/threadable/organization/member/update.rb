@@ -16,13 +16,8 @@ class Threadable::Organization::Member::Update < MethodObject
 
   def update_organization_membership_record!
     record = member.organization_membership_record
-    original_values = {
-      subscribed:              record.subscribed?,
-      role:                    record.role,
-      ungrouped_mail_delivery: record.ungrouped_mail_delivery,
-    }
 
-    if record.role != original_values[:role]
+    if attributes.key?(:role) && attributes[:role] != record.role
       if !current_member.can?(:make_owners_for, @member.organization)
         raise Threadable::AuthorizationError, 'You are not authorized to change organization membership roles'
       end
@@ -30,6 +25,12 @@ class Threadable::Organization::Member::Update < MethodObject
         raise Threadable::AuthorizationError, 'You cannot change your own organization membership role'
       end
     end
+
+    original_values = {
+      subscribed:              record.subscribed?,
+      role:                    record.role,
+      ungrouped_mail_delivery: record.ungrouped_mail_delivery,
+    }
 
     record.attributes = attributes
     return unless record.changed?
