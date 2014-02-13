@@ -6,7 +6,7 @@ machine:
 
 test:
   override:
-    - script/ci-build: {timeout: 200}
+    - script/ci-parallel: {timeout: 200}
 
 deployment:
   staging:

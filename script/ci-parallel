@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'pathname'
+
+CIRCLE_NODE_TOTAL = ENV['CIRCLE_NODE_TOTAL'].to_i
+CIRCLE_NODE_INDEX = ENV['CIRCLE_NODE_INDEX'].to_i
+
+RAILS_ROOT = Pathname File.expand_path('../../', __FILE__)
+
+ALL_SPECS = Dir[RAILS_ROOT.join('spec/**/*_spec.rb')].map do |path|
+  Pathname(path).relative_path_from(RAILS_ROOT).to_s
+end.uniq.sort
+
+GROUPED_SPECS = ALL_SPECS.each_with_index.group_by do |spec, index|
+  index % CIRCLE_NODE_TOTAL
+end
+
+MY_SPECS = GROUPED_SPECS[CIRCLE_NODE_INDEX].map(&:first).map(&:inspect).join(' ')
+
+exec %(bundle exec rspec --require rspec/instafail --format RSpec::Instafail #{MY_SPECS})
