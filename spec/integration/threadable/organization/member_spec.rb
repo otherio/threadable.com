@@ -22,7 +22,18 @@ describe Threadable::Organization::Member do
         expect(member.ungrouped_mail_delivery).to eq :no_mail
         expect(member.name).to eq 'Bethany the great'
 
-        binding.pry
+        assert_tracked(current_user.id, "Unsubscribed",
+          "Member user id"    => member.user_id,
+          "Organization"      => organization.id,
+          "Organization Name" => organization.name,
+        )
+        assert_tracked(current_user.id, "Ungrouped mail delivery changed",
+          "Member user id"    => member.user_id,
+          "Organization"      => organization.id,
+          "Organization Name" => organization.name,
+          "from"              => :each_message,
+          "to"                => :no_mail,
+        )
       end
 
       context 'when updating your own role' do
