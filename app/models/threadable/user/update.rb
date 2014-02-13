@@ -4,7 +4,7 @@ class Threadable::User::Update < MethodObject
 
   def call user, attributes
 
-    attributes.symbolize_keys!
+    attributes = attributes.to_hash.symbolize_keys
     attributes.delete(:admin)
 
     if attributes[:password].blank?
