@@ -503,6 +503,7 @@ describe "processing incoming emails" do
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+      let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       it 'delivers the email' do
         validate! :delivered
@@ -516,6 +517,7 @@ describe "processing incoming emails" do
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+      let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       it 'delivers the email' do
         validate! :delivered
@@ -529,6 +531,7 @@ describe "processing incoming emails" do
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
       let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
+      let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       it 'prefers the In-Reply-To message id over the References message ids' do
         validate! :delivered
@@ -541,6 +544,7 @@ describe "processing incoming emails" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
+      let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       context 'but the creator exists but is not a organization member' do
         let(:from)         { 'Anil Kapoor <anil@sfhealth.example.com>' }
@@ -582,6 +586,16 @@ describe "processing incoming emails" do
           validate! :delivered
         end
 
+        context 'and the subject does not contain Re:' do
+          let(:subject) { 'I am a coconut' }
+          let(:expected_message_subject) { 'I am a coconut' }
+          let(:expected_sent_email_subject) { 'Re: [RaceTeam] I am a coconut'}
+
+          it 'it delivers the message and adds Re: to the subject because Apple Mail sucks' do
+            validate! :delivered
+          end
+        end
+
         context 'and the body contains commands' do
           let(:body_html){
             %(<p>&amp;undone</p>\n\n\n)+
@@ -602,7 +616,7 @@ describe "processing incoming emails" do
           let(:expect_conversation_to_be_a_task) { true }
           let(:expect_task_to_be_done)           { false }
           let(:expected_sent_email_to)           { ['raceteam+task@127.0.0.1'] }
-          let(:expected_sent_email_subject)      { "[✔︎][RaceTeam] OMG guys I love threadable!" }
+          let(:expected_sent_email_subject)      { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
           let(:expected_email_recipients)        { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
           let(:expected_conversation)            { expected_organization.conversations.find_by_slug('layup-body-carbon') }
           let!(:expected_parent_message)         { expected_conversation.messages.latest }
@@ -729,14 +743,14 @@ describe "processing incoming emails" do
       context 'and the message is a reply to a conversation that is in different group(s)' do
         let(:in_reply_to){ expected_parent_message.message_id_header }
 
-        let(:expected_parent_message)  { expected_conversation.messages.latest }
+        let(:expected_parent_message)     { expected_conversation.messages.latest }
 
         context do
           let(:expected_conversation)        { expected_organization.conversations.find_by_slug('parts-for-the-motor-controller') }
           let(:expected_groups)              { ['Electronics', 'Fundraising'] }
-          let(:expected_sent_email_subject)  { "[RaceTeam] OMG guys I love threadable!" }
           let(:expected_sent_email_list_id)  { "UCSD Electric Racing <raceteam.127.0.0.1>" }
           let(:expected_sent_email_list_post){ "<mailto:#{expected_conversation.list_post_email_address.sub('+electronics','')}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
+          let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
           it 'adds the new groups to the conversation' do
             validate! :delivered
           end
@@ -751,6 +765,7 @@ describe "processing incoming emails" do
           let(:expected_email_recipients)              { ['bob@ucsd.example.com'] }
           let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>' }
           let(:expected_sent_email_smtp_envelope_from) { 'raceteam+fundraising@127.0.0.1' }
+          let(:expected_sent_email_subject) { "Re: [RaceTeam+Fundraising] OMG guys I love threadable!" }
 
           it 'does not add the previously-used groups to the conversation' do
             validate! :delivered
@@ -1166,6 +1181,7 @@ describe "processing incoming emails" do
     let(:in_reply_to){ expected_parent_message.message_id_header }
     let(:references) { '' }
 
+    let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
     let(:expected_parent_message){ expected_conversation.messages.latest }
@@ -1182,6 +1198,7 @@ describe "processing incoming emails" do
     let(:in_reply_to){ expected_parent_message.message_id_header }
     let(:references) { '' }
 
+    let(:expected_sent_email_subject) { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
     let(:expected_sent_email_to){ ['raceteam+task@127.0.0.1'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('layup-body-carbon') }
     let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com"] }
@@ -1191,6 +1208,7 @@ describe "processing incoming emails" do
     let(:expect_task_to_be_done) { true }
     let(:expected_sent_email_subject){ "[✔︎][RaceTeam] #{subject}" }
     let(:expected_sent_email_reply_to){ expected_organization.formatted_task_email_address }
+    let(:expected_sent_email_subject) { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
     it 'replace that email with the task version' do
       validate! :delivered
     end

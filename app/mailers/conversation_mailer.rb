@@ -18,6 +18,7 @@ class ConversationMailer < Threadable::Mailer
 
     @subject = PrepareEmailSubject.call(@organization, @message)
     @subject.sub!(/^\s*(re:\s?)*/i, "\\1#{@conversation.subject_tag} ")
+    @subject = "Re: #{@subject}" if @subject !~ /re:/i && @message.parent_message.present?
 
     from = @message.from || @message.creator.try(:formatted_email_address ) || @organization.formatted_email_address
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
