@@ -22,7 +22,7 @@ class Threadable::Organization::Member::Update < MethodObject
       ungrouped_mail_delivery: record.ungrouped_mail_delivery,
     }
 
-    if attributes.key?(:role)
+    if record.role != original_values[:role]
       if !current_member.can?(:make_owners_for, @member.organization)
         raise Threadable::AuthorizationError, 'You are not authorized to change organization membership roles'
       end

@@ -12,7 +12,7 @@
           | Role:
         .control
           if canChangeRole
-            view Ember.Select contentBinding="roles" valueBinding=role disabled=saving
+            view Ember.Select contentBinding="roles" valueBinding=role disabled=saving class="role"
           else
             = role
 
