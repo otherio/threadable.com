@@ -2,6 +2,7 @@ machine:
   environment:
     RACK_ENV: test
     HONEYBADGER_API_KEY: FAKE_HONEYBADGER_API_KEY
+    SELENIUM_BROWSER: firefox
 
 test:
   override:
