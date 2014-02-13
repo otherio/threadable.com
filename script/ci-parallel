@@ -15,8 +15,12 @@ GROUPED_SPECS = ALL_SPECS.each_with_index.group_by do |spec, index|
   index % CIRCLE_NODE_TOTAL
 end
 
-MY_SPECS = GROUPED_SPECS[CIRCLE_NODE_INDEX].map(&:first).map(&:inspect).join(' ')
+MY_SPECS = GROUPED_SPECS[CIRCLE_NODE_INDEX].map(&:first)
 
-COMMAND = %(bundle exec rspec --require rspec/instafail --format RSpec::Instafail #{MY_SPECS})
+puts "Running specs:"
+puts MY_SPECS.map{|x| "  #{x}"}
+puts
+COMMAND = %(bundle exec rspec #{MY_SPECS.map(&:inspect).join(' ')})
+puts
 puts COMMAND
 exec COMMAND

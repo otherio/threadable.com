@@ -1,1 +1,4 @@
---color --format Fuubar
+--colour
+--backtrace
+--require ./spec/support/documentation_instafail_formatter.rb
+--format DocumentationInstafail
