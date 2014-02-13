@@ -297,22 +297,33 @@ describe Threadable::IncomingEmail do
   describe 'holdable?' do
     subject{ incoming_email.holdable? }
 
-    context 'when bounceable? is true' do
-      before{ expect(incoming_email).to receive(:bounceable?).and_return(true) }
+    context 'when is at least one group that does not hold messages' do
+      let(:group){ double :group, :hold_messages? => false }
+      before{ expect(incoming_email).to receive(:groups).and_return([group]) }
       it { should be_false }
     end
-    context 'when bounceable? is false' do
-      before{ expect(incoming_email).to receive(:bounceable?).and_return(false) }
 
-      context 'when parent_message is present' do
-        before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+
+    context 'when there are no groups that do not hold messages' do
+      before{ expect(incoming_email).to receive(:groups).and_return([]) }
+
+      context 'when bounceable? is true' do
+        before{ expect(incoming_email).to receive(:bounceable?).and_return(true) }
         it { should be_false }
       end
-      context 'when parent_message is nil' do
-        before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
-        context 'when creator is not a member of the organization' do
-          before{ expect(incoming_email).to receive(:creator_is_a_organization_member?).and_return(false) }
-          it { should be_true }
+      context 'when bounceable? is false' do
+        before{ expect(incoming_email).to receive(:bounceable?).and_return(false) }
+
+        context 'when parent_message is present' do
+          before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+          it { should be_false }
+        end
+        context 'when parent_message is nil' do
+          before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+          context 'when creator is not a member of the organization' do
+            before{ expect(incoming_email).to receive(:creator_is_a_organization_member?).and_return(false) }
+            it { should be_true }
+          end
         end
       end
     end
