@@ -17,7 +17,7 @@ describe 'sending emails' do
 
   when_signed_in_as 'alice@ucsd.example.com' do
 
-    let(:organization     ){ current_user.organizations.find_by_slug! 'raceteam' }
+    let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
     let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
     let(:message     ){ conversation.messages.latest }
     let(:recipient   ){ organization.members.find_by_user_id! find_user_by_email_address('yan@ucsd.example.com').id }
@@ -25,7 +25,7 @@ describe 'sending emails' do
     describe 'conversation_message' do
 
       def expect_email!
-        email = sent_emails.to(recipient.email_address).with_subject("[✔\uFE0E][RaceTeam] layup body carbon").first
+        email = sent_emails.to(recipient.email_address).with_subject("Re: [✔\uFE0E][RaceTeam] layup body carbon").first
         expect(email).to be_present
         expect( email.header['From'].to_s        ).to eq 'Tom Canver <tom@ucsd.example.com>'
         expect( email.header['Reply-To'].to_s    ).to eq 'UCSD Electric Racing Tasks <raceteam+task@127.0.0.1>'
@@ -34,7 +34,7 @@ describe 'sending emails' do
         expect( email.header['Message-ID'].to_s  ).to eq message.message_id_header
         expect( email.header['In-Reply-To'].to_s ).to eq message.parent_message.message_id_header
         expect( email.header['References'].to_s  ).to eq message.references_header
-        expect( email.header['Subject'].to_s     ).to eq "[✔\uFE0E][RaceTeam] layup body carbon"
+        expect( email.header['Subject'].to_s     ).to eq "Re: [✔\uFE0E][RaceTeam] layup body carbon"
 
         expect( email.header['List-ID'].to_s      ).to eq 'UCSD Electric Racing <raceteam.127.0.0.1>'
         expect( email.header['List-Archive'].to_s ).to eq "<#{conversations_url(organization,'my')}>"

@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe SendSummaryEmailWorker do
-  let(:last_time) { Time.new(2014, 2, 2).in_time_zone('US/Pacific') - 1.day }
-  let(:time) { Time.new(2014, 2, 2).in_time_zone('US/Pacific') }
-  let(:time) { Time.new(2014, 2, 2).in_time_zone('US/Pacific') }
+  let(:last_time) { Time.new(2014, 2, 3).in_time_zone('US/Pacific') - 1.day }
+  let(:time) { Time.new(2014, 2, 3).in_time_zone('US/Pacific') }
   subject{ described_class.new }
 
   before do
