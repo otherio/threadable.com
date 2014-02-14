@@ -4,6 +4,7 @@ require 'pathname'
 
 CIRCLE_NODE_TOTAL = ENV['CIRCLE_NODE_TOTAL'].to_i
 CIRCLE_NODE_INDEX = ENV['CIRCLE_NODE_INDEX'].to_i
+CIRCLE_ARTIFACTS  = ENV['CIRCLE_ARTIFACTS']
 
 RAILS_ROOT = Pathname File.expand_path('../../', __FILE__)
 
@@ -20,7 +21,17 @@ MY_SPECS = GROUPED_SPECS[CIRCLE_NODE_INDEX].map(&:first)
 puts "Running specs:"
 puts MY_SPECS.map{|x| "  #{x}"}
 puts
-COMMAND = %(bundle exec rspec #{MY_SPECS.map(&:inspect).join(' ')})
+COMMAND = %(
+  bundle exec rspec
+  --colour
+  --backtrace
+  --require ./spec/support/list_failures_formatter.rb
+  --format ListFailuresFormatter
+  --out #{File.join(CIRCLE_ARTIFACTS, 'rspec-failures.txt').inspect}
+  --require ./spec/support/documentation_instafail_formatter.rb
+  --format DocumentationInstafail
+  #{MY_SPECS.map(&:inspect).join(' ')}
+).gsub(/\s*\n\s*/, ' ')
 puts
 puts COMMAND
 exec COMMAND
