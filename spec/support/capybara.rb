@@ -1,6 +1,6 @@
 # SELENIUM_BROWSER=chrome
 # SELENIUM_BROWSER=firefox
-SELENIUM_BROWSER = (ENV['SELENIUM_BROWSER'].presence || :chrome).to_sym
+SELENIUM_BROWSER = (ENV['SELENIUM_BROWSER'].presence || :firefox).to_sym
 
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: SELENIUM_BROWSER)
