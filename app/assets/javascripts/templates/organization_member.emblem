@@ -42,4 +42,4 @@
             button class={:uk-button getsUngroupedInSummary:uk-active   } click="setGetsUngroupedInSummary" daily summary
         br
         p.subtitle
-          | How should #{name} receive email that is not in any groups?
+          | How should #{name} receive messages that are not in any groups?

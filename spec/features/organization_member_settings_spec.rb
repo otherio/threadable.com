@@ -99,8 +99,8 @@ feature "organization member settings" do
       expect(bethany.ungrouped_mail_delivery).to eq :no_mail
     end
 
-    click_on 'in summary'
-    expect(page).to have_selector '.uk-active', text: 'in summary'
+    click_on 'daily summary'
+    expect(page).to have_selector '.uk-active', text: 'daily summary'
 
     wait_until_expectation do
       expect(bethany.ungrouped_mail_delivery).to eq :in_summary
