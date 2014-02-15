@@ -1,5 +1,5 @@
  Threadable.ReplyController = Ember.ObjectController.extend({
-  needs: ['conversation', 'organization', 'doerSelector'],
+  needs: ['conversation', 'organization', 'doerSelector', 'conversations'],
 
   message: Ember.computed.alias('model'),
   doerSelector: Ember.computed.alias('controllers.doerSelector'),
@@ -49,7 +49,10 @@
       this.set('sending', true);
       this.set('error', null);
       var organizationSlug = this.get('controllers.organization.content.slug');
+
+      // TODO: figure out how to not need to work with both of these.
       var conversation = this.get('controllers.conversation.model');
+      var conversationInList = this.get('controllers.conversations.content').findBy('id', conversation.get('id'));
 
       var message = this.get('message');
 
@@ -87,6 +90,7 @@
 
       function onMessageSuccess(response) {
         conversation.deserialize(response.message.conversation);
+        conversationInList.deserialize(response.message.conversation);
 
         var message = this.get('content');
         var event = Threadable.Event.create({
