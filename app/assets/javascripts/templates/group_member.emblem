@@ -8,13 +8,21 @@
       | #{name}'s settings for the "#{group.name}" group
 
 
-    section
-      a.summary.input-switch href="" class={ getsInSummary:input-switch-on:input-switch-off saving:disabled} click="toggleGetsInSummary"
-        label Summary:
-        .input-switch-wrapper
-          .slider
-            .on
-              i.uk-icon-check
-            .off
-              i.uk-icon-times
-            .switch
+    .member-settings
+      .setting
+        h4.label
+          | Daily Summary:
+        .control
+          a.summary.input-switch href="" class={ getsInSummary:input-switch-on:input-switch-off saving:disabled} click="toggleGetsInSummary"
+            .input-switch-wrapper
+              .slider
+                .on
+                  i.uk-icon-check
+                .off
+                  i.uk-icon-times
+                .switch
+        br
+        p.subtitle
+          | When enabled, #{name} will receive a single email each day with a summary of this group's messages.
+          br
+          | When disabled, #{name} will receive each message immediately.

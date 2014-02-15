@@ -28,6 +28,9 @@
                 .off
                   i.uk-icon-times
                 .switch
+        br
+        p.subtitle
+          | Turn off to completely disable email delivery for #{name} on #{organization.name}.
 
       .setting
         h4.label
@@ -36,4 +39,7 @@
           div class="uk-button-group"
             button class={:uk-button getsNoUngroupedMail:uk-active      } click="setGetsNoUngroupedMail" no mail
             button class={:uk-button getsEachUngroupedMessage:uk-active } click="setGetsEachUngroupedMessage" each message
-            button class={:uk-button getsUngroupedInSummary:uk-active   } click="setGetsUngroupedInSummary" in summary
+            button class={:uk-button getsUngroupedInSummary:uk-active   } click="setGetsUngroupedInSummary" daily summary
+        br
+        p.subtitle
+          | How should #{name} receive email that is not in any groups?

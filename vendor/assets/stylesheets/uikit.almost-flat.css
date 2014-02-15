@@ -3072,7 +3072,7 @@ a.uk-button {
 /* Active */
 .uk-button:active,
 .uk-button.uk-active {
-  background-color: #eeeeee;
+  background-color: #cccccc;
   color: #444444;
 }
 /* Color modifiers
@@ -3387,7 +3387,7 @@ a.uk-button {
 }
 /* Active */
 .uk-icon-button:active {
-  background-color: #eeeeee;
+  background-color: #cccccc;
   color: #444444;
 }
 /* Icon mapping
