@@ -23,6 +23,7 @@ FixtureBuilder.build do
     add_member 'Bethany Pattern',  'bethany@ucsd.example.com'
     add_member 'Bob Cauchois',     'bob@ucsd.example.com'
     add_member 'Jonathan Spray',   'jonathan@ucsd.example.com'
+    add_member 'Nadya Leviticon',  'nadya@ucsd.example.com'
     add_member 'Ricky Bobby',      'ricky.bobby@ucsd.example.com'
     add_member 'Cal Naughton Jr.', 'cal.naughton@ucsd.example.com'
 
@@ -78,6 +79,7 @@ FixtureBuilder.build do
     @fundraising_group = create_group name: 'Fundraising', color: '#5a9de1', auto_join: false
     add_member_to_group 'fundraising', 'alice@ucsd.example.com'
     add_member_to_group 'fundraising', 'bob@ucsd.example.com'
+    add_member_to_group 'fundraising', 'nadya@ucsd.example.com'
 
     @graphic_design_group = create_group name: 'Graphic Design', color: '#f2ad40'
   end
