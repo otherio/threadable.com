@@ -18,8 +18,8 @@ class SendEmailWorker < Threadable::Worker
     message.sent_email(recipient).try(:relayed!)
   end
 
-  def message_summary organization_id, recipient_id, time
-    time = Time.parse(time)
+  def message_summary organization_id, recipient_id, time, zone = 'US/Pacific'
+    time = Time.parse(time).in_time_zone(zone)
 
     organization   = threadable.organizations.find_by_id! organization_id
     recipient      = organization.members.find_by_user_id! recipient_id
