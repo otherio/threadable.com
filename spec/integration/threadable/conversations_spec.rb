@@ -25,7 +25,11 @@ describe Threadable::Conversations do
   end
 
   describe 'all_with_last_message_at' do
-    let(:date) { Time.new(2014,2,2).in_time_zone('US/Pacific') }
+    let(:date) { Time.zone.local(2014,2,2).utc }
+    before do
+      Time.zone = 'US/Pacific'
+    end
+
     it 'returns all the conversations updated on a particular day' do
       expect(conversations.all_with_last_message_at(date)).to match_array ::Conversation.
         where('last_message_at between ? and ?', date, date + 1.day).

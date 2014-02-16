@@ -1,6 +1,4 @@
 class SendSummaryEmailWorker < Threadable::ScheduledWorker
-  include Sidetiq::Schedulable
-
   recurrence backfill: true do
     daily.hour_of_day(10)  # 2am PST
   end

@@ -1,6 +1,7 @@
 require 'sidekiq/worker'
 
 class Threadable::ScheduledWorker < Threadable::Worker
+  include Sidetiq::Schedulable
 
   def perform last_run = -1, this_run = nil
     # if the job is manually triggered, it won't get any times

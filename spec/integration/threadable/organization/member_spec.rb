@@ -74,7 +74,11 @@ describe Threadable::Organization::Member do
   end
 
   describe '#summarized_conversations' do
-    let(:time) { Time.new(2014, 2, 2).in_time_zone('US/Pacific') }
+    let(:time) { Time.zone.local(2014, 2, 2).utc }
+
+    before do
+      Time.zone = 'US/Pacific'
+    end
 
     context 'when ungrouped should be summarized' do
       let(:member) { organization.members.find_by_email_address('ricky.bobby@ucsd.example.com')}

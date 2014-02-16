@@ -4,7 +4,8 @@ require "spec_helper"
 describe SummaryMailer do
   before do
     # midnight, Feb 2, 2014. starting date for this report.
-    Timecop.travel( Time.new(2014,2,2).in_time_zone('US/Pacific') )
+    Time.zone = 'US/Pacific'
+    Timecop.travel( Time.zone.local(2014,2,2).utc )
   end
 
   after do

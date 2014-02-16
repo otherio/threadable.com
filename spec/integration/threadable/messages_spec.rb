@@ -2,9 +2,13 @@ require 'spec_helper'
 
 describe Threadable::Messages do
 
-  let(:date) { Time.new(2014,2,1).in_time_zone('US/Pacific') }
+  let(:date) { Time.zone.local(2014,2,1).utc }
   let(:messages){ described_class.new(threadable) }
   subject{ messages }
+
+  before do
+    Time.zone = 'US/Pacific'
+  end
 
   describe 'count_for_date' do
     let(:raceteam) { threadable.organizations.find_by_slug('raceteam') }

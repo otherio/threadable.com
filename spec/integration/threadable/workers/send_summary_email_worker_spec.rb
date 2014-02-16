@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe SendSummaryEmailWorker do
-  let(:last_time) { Time.new(2014, 2, 3).in_time_zone('US/Pacific') - 1.day }
-  let(:time) { Time.new(2014, 2, 3).in_time_zone('US/Pacific') }
+  let(:last_time) { Time.zone.local(2014, 2, 3) - 1.day }
+  let(:time) { Time.zone.local(2014, 2, 3) }
   subject{ described_class.new }
 
   before do
+    Time.zone = 'US/Pacific'
     subject.instance_variable_set(:@threadable, threadable)
   end
 
