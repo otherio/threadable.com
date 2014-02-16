@@ -13,6 +13,7 @@ describe Threadable::Organization::Members do
         tom@ucsd.example.com
         yan@yansterdam.io
         yan@ucsd.example.com
+        nadya@ucsd.example.com
         bethany@ucsd.example.com
         bob@ucsd.example.com
         bob.cauchois@example.com
