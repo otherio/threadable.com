@@ -20,9 +20,9 @@
         %tr
           %td{valign: 'top', class: "icon #{conversation.task? ? 'icon-task' : 'icon-conversation'}", rowspan: conversation.groups.count > 0 ? 3 : 2}
             - if conversation.task?
-              = image_tag 'check.png', width: 20, height: 20
+              = image_tag @check_url, width: '100%'
             - else
-              = image_tag 'bubble.png', width: 20, height: 20
+              = image_tag @bubble_url, width: '100%'
 
           %td
             %span.subject

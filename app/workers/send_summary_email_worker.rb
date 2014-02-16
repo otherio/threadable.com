@@ -6,7 +6,6 @@ class SendSummaryEmailWorker < Threadable::ScheduledWorker
   end
 
   def perform! last_time, time
-    # get all the users who have summaries enabled for anything
     threadable.organizations.all.each do |organization|
       members = organization.members.who_get_summaries
 

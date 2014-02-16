@@ -18,6 +18,9 @@ class SummaryMailer < Threadable::Mailer
       @new_count[conversation.id] = conversation.messages.count_for_date(time)
     end
 
+    @check_url = "https://s3.amazonaws.com/multify-production/check%402x.png"
+    @bubble_url = "https://s3.amazonaws.com/multify-production/bubble%402x.png"
+
     total_new = 0
     @new_count.values.each { |count| total_new += count }
     @message_count_summary = "#{pluralize(total_new, 'new message')} in #{pluralize(@conversations.count, 'conversation')}"

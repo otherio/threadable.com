@@ -2,10 +2,13 @@ require 'sidekiq/worker'
 
 class Threadable::ScheduledWorker < Threadable::Worker
 
-  def perform last_run, this_run
+  def perform last_run = -1, this_run = nil
+    # if the job is manually triggered, it won't get any times
+    this_run = this_run.present? ? float_to_time(this_run) : Time.now.utc
+
     @threadable = Threadable.new(threadable_env)
 
-    super threadable_env, float_to_time(last_run), float_to_time(this_run)
+    super threadable_env, float_to_time(last_run), this_run
   end
 
   private

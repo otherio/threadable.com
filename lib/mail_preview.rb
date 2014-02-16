@@ -56,7 +56,7 @@ class MailPreview < MailView
   end
 
   def message_summary
-    time = Time.now.in_time_zone('US/Pacific')
+    time = Time.now.in_time_zone('US/Pacific') - 1.day
     random_message = Message.last!
     threadable.current_user_id = random_message.creator_id
 

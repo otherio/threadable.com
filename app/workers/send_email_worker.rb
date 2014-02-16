@@ -25,7 +25,7 @@ class SendEmailWorker < Threadable::Worker
     recipient      = organization.members.find_by_user_id! recipient_id
     conversations  = recipient.summarized_conversations time
 
-    threadable.emails.send_email(:message_summary, organization, recipient, conversations, time)
+    threadable.emails.send_email(:message_summary, organization, recipient, conversations, time) if conversations.length > 0
   end
 
   def join_notice organization_id, recipient_id, personal_message=nil

@@ -30,8 +30,8 @@ Threadable::Application.configure do
       :address              => "smtp.gmail.com",
       :port                 => 587,
       :domain               => 'threadable.com',
-      :user_name            => 'threadablethrowaway1@gmail.com',
-      :password             => 'threadablethreadable',
+      :user_name            => 'coveredthrowaway1@gmail.com',
+      :password             => 'coveredcovered',
       :authentication       => 'plain',
       :enable_starttls_auto => true
     }
