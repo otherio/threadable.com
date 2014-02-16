@@ -10,6 +10,9 @@ class ConversationMailer < Threadable::Mailer
     @conversation = @message.conversation
     @task = @conversation if @conversation.task?
 
+    @header_separator_url = "https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-headerable.png"
+    @footer_separator_url = "https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-footerable.png"
+
     @organization_email_address = @task ? @organization.formatted_task_email_address : @organization.formatted_email_address
 
     buffer_length = 100 - @message.body_plain.to_s.length

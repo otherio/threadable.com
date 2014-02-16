@@ -343,4 +343,136 @@ BODY
       expect(call(body)).to eq stripped_body
     end
   end
+
+  context 'with content isolated using img tags instead of hidden divs' do
+    let :body do
+<<-BODY
+<body>
+<div class="threadable-content" style="margin-top:0.5em !important;font-family:Helvetica Neue, Helvetica, Arial, sans-serif !important">
+<img alt="" height="1px" src="https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-headerable.png" width="1px"><div style="display:none; display:none !important;">
+    Foop de doop                                                                                        ________________________________________________________________________________________
+    ##CovMid: PDUzMDE0YTVmOWU2YWVfZTJjODRkNGY1MjQ1MDNkNEAxMjcuMC4wLjE- ##
+  </div>
+  <table border="0" cellpadding="0" class="threadable-controls" color="dark grey" width="100%" style="font-weight:300 !important;max-width:480px !important"><tbody><tr>
+<td>
+        <table align="left" border="0" cellpadding="0" cellspacing="0" class="threadable-button-table" style="margin:0 !important"><tbody><tr>
+<td class="threadable-button" valign="bottom" style="padding-top:3px !important;padding-right:5px !important;padding-bottom:3px !important">
+              <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://127.0.0.1:3000/adminteam/my/conversations/holy-fuck#message-53" style="height:20px;v-text-anchor:middle;" arcsize="10%" strokecolor="#cccccc" fillcolor="#fcfcfc">
+                <w:anchorlock/>
+                <center>
+              <![endif]-->
+              <a target="_blank" class="threadable-button view-button" href="http://127.0.0.1:3000/adminteam/my/conversations/holy-fuck#message-53" style="color:#364041 !important;background:#fcfcfc !important;-o-border-radius:3px !important;border-radius:3px !important;display:inline-block !important;font-family:sans-serif !important;text-align:center !important;text-decoration:none !important;-ms-border-radius:3px !important;-webkit-text-size-adjust:none !important;-webkit-font-smoothing:antialiased !important;font-size:11px !important;font-weight:300 !important;line-height:22px !important;border:#cccccc 1px solid !important;-moz-border-radius:3px !important;-webkit-border-radius:3px !important;width:100% !important">&nbsp;Web view&nbsp;</a>
+              <!--[if mso]>
+                </center>
+                </v:roundrect>
+              <![endif]-->
+            </td>
+            <td class="threadable-button" valign="bottom" style="padding-top:3px !important;padding-right:5px !important;padding-bottom:3px !important">
+              <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://127.0.0.1:3000/ea/kaM2Np22iayxpfKUJmeS5POYEsF-3aZuLl-FNWsBT6Mr4YxiJLRRkhvDKJNeYf1p7Q==" style="height:20px;v-text-anchor:middle;" arcsize="10%" strokecolor="#cccccc" fillcolor="#fcfcfc">
+                <w:anchorlock/>
+                <center>
+              <![endif]-->
+              <a target="_blank" class="mute-button threadable-button" href="http://127.0.0.1:3000/ea/kaM2Np22iayxpfKUJmeS5POYEsF-3aZuLl-FNWsBT6Mr4YxiJLRRkhvDKJNeYf1p7Q==" style="color:#2980b9 !important;background:#fcfcfc !important;-o-border-radius:3px !important;border-radius:3px !important;display:inline-block !important;font-family:sans-serif !important;text-align:center !important;text-decoration:none !important;-ms-border-radius:3px !important;-webkit-text-size-adjust:none !important;-webkit-font-smoothing:antialiased !important;font-size:11px !important;font-weight:300 !important;line-height:22px !important;border:#cccccc 1px solid !important;-moz-border-radius:3px !important;-webkit-border-radius:3px !important;width:100% !important">&nbsp;Mute&nbsp;</a>
+              <!--[if mso]>
+                </center>
+                </v:roundrect>
+              <![endif]-->
+            </td>
+            <td></td>
+            <td></td>
+          </tr></tbody></table>
+<table align="left" border="0" cellpadding="0" cellspacing="0" class="threadable-button-table" style="margin:0 !important"><tbody><tr>
+<td>
+              <table border="0" cellpadding="0" cellspacing="3" class="threadable-group-indicator ungrouped" style="font-size:11px !important;-webkit-border-radius:3px !important;-moz-border-radius:3px !important;border-radius:3px !important;-o-border-radius:3px !important;-ms-border-radius:3px !important;font-weight:normal !important;color:#5a6a6c !important;background-color: #ecf0f1 !important;">
+<tbody><tr>
+<td class="threadable-button" valign="bottom" style="padding-top:3px !important;padding:0 !important;padding-bottom:0 !important;padding-right:2px !important">
+                    <!--[if mso]>
+                      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="mailto:Other%20Admins%20%3Cadminteam@127.0.0.1%3E" style="height:20px;v-text-anchor:middle;" arcsize="10%" strokecolor="#cccccc" fillcolor="#fcfcfc">
+                      <w:anchorlock/>
+                      <center>
+                    <![endif]-->
+                    <a target="_blank" class="compose-button threadable-button" href="mailto:Other%20Admins%20%3Cadminteam@127.0.0.1%3E" style="color:#364041 !important;text-decoration:none !important;-ms-border-radius:3px !important;-o-border-radius:3px !important;border-radius:3px !important;display:inline-block !important;font-family:sans-serif !important;text-align:center !important;-moz-border-radius:3px !important;-webkit-border-radius:3px !important;-webkit-text-size-adjust:none !important;-webkit-font-smoothing:antialiased !important;font-size:11px !important;font-weight:300 !important;line-height:22px !important;width:100% !important;background:#fcfcfc !important;border:#cccccc 1px solid !important">&nbsp;New conversation&nbsp;</a>
+                    <!--[if mso]>
+                      </center>
+                      </v:roundrect>
+                    <![endif]-->
+                  </td>
+                  <td class="threadable-button" valign="bottom" style="padding-top:3px !important;padding:0 !important;padding-bottom:0 !important;padding-right:2px !important">
+                    <!--[if mso]>
+                      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="mailto:Other%20Admins%20Tasks%20%3Cadminteam+task@127.0.0.1%3E" style="height:20px;v-text-anchor:middle;" arcsize="10%" strokecolor="#cccccc" fillcolor="#fcfcfc">
+                      <w:anchorlock/>
+                      <center>
+                    <![endif]-->
+                    <a target="_blank" class="compose-button threadable-button" href="mailto:Other%20Admins%20Tasks%20%3Cadminteam+task@127.0.0.1%3E" style="color:#364041 !important;text-decoration:none !important;-ms-border-radius:3px !important;-o-border-radius:3px !important;border-radius:3px !important;display:inline-block !important;font-family:sans-serif !important;text-align:center !important;-moz-border-radius:3px !important;-webkit-border-radius:3px !important;-webkit-text-size-adjust:none !important;-webkit-font-smoothing:antialiased !important;font-size:11px !important;font-weight:300 !important;line-height:22px !important;width:100% !important;background:#fcfcfc !important;border:#cccccc 1px solid !important">&nbsp;New task&nbsp;</a>
+                    <!--[if mso]>
+                      </center>
+                      </v:roundrect>
+                    <![endif]-->
+                  </td>
+                </tr>
+<tr>
+<td class="group-name" colspan="2" style="padding-left:1px !important">
+                    Ungrouped
+                  </td>
+                </tr>
+</tbody></table>
+</td>
+          </tr></tbody></table>
+</td>
+    </tr></tbody></table>
+<div style="display:none; display:none !important; clear: both">
+    ##CovMid: PDUzMDE0YTVmOWU2YWVfZTJjODRkNGY1MjQ1MDNkNEAxMjcuMC4wLjE- ##
+  </div>
+<img alt="" height="1px" src="https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-headerable.png" width="1px">
+</div>
+<br><p>Foop de doop</p>
+<br><div class="threadable-content" style="margin-top:0.5em !important;font-family:Helvetica Neue, Helvetica, Arial, sans-serif !important">
+<img alt="" height="1px" src="https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-footerable.png" width="1px"><div style="display:none; display:none !important;">
+    ##CovMid: footer ##
+  </div>
+  <table align="left" border="0" cellpadding="0" cellspacing="0" class="threadable-details" width="100%"><tbody><tr>
+<td class="threadable-details-inner" style="color: #95A5A6; text-align: left;">
+        <div class="threadable-organization" style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px">
+          <a target="_blank" href="http://127.0.0.1:3000/adminteam" style="text-decoration:none !important;color:#3498db !important">Other Admins</a>
+          |
+          <a target="_blank" href="mailto:adminteam@127.0.0.1" style="text-decoration:none !important;color:#3498db !important">adminteam@127.0.0.1</a>
+        </div>
+        <div class="threadable-unsubscribe" style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px">
+          <a target="_blank" href="http://127.0.0.1:3000/adminteam/unsubscribe/kaM2Np22r72xpcaeOWGa5tuBB9x43JxUK0meUSJkeIwSjLELJtl2tiioGKFgYK9v0D4=" style="text-decoration:none !important;color:#3498db !important">unsubscribe</a> | <a target="_blank" href="mailto:support@127.0.0.1" style="text-decoration:none !important;color:#3498db !important">feedback</a>
+        </div>
+      </td>
+    </tr></tbody></table>
+<div style="display:none; display:none !important">
+    ##CovMid: footer ##
+  </div>
+<img alt="" height="1px" src="https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-footerable.png" width="1px">
+</div>
+
+
+</body>
+BODY
+    end
+
+    let :stripped_body do
+<<-BODY
+<body>
+<div class="threadable-content" style="margin-top:0.5em !important;font-family:Helvetica Neue, Helvetica, Arial, sans-serif !important">
+
+</div>
+<br><p>Foop de doop</p>
+<br><div class="threadable-content" style="margin-top:0.5em !important;font-family:Helvetica Neue, Helvetica, Arial, sans-serif !important">
+
+</div>
+
+
+</body>
+BODY
+    end
+
+    it "should strip the threadable content" do
+      expect(call(body)).to eq stripped_body
+    end
+  end
 end
