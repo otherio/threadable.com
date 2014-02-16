@@ -1,4 +1,4 @@
-Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
+Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, Threadable.ConfirmationMixin, {
   needs: ['organization', 'organization_members'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
   currentMember: Ember.computed.alias('controllers.organization_members.currentMember').readOnly(),
@@ -18,7 +18,25 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
   actions: {
     toggleSubscribed: function() {
       if (this.get('saving')) return;
-      this.toggleProperty('subscribed');
+
+      if (!this.get('subscribed')){
+        this.set('subscribed', true);
+        return
+      }
+
+      this.confirm({
+        message: (
+          "Are you sure you want to unsubscribe " + this.get('name') +
+          ' from the ' + this.get('organization.name') + ' organization?'
+        ),
+        approveText: 'Unsubscribe',
+        declineText: 'cancel',
+        approved: function() {
+          this.set('subscribed', false);
+        }.bind(this)
+      });
+
+
     },
     setGetsNoUngroupedMail: function() {
       if (this.get('saving')) return;

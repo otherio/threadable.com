@@ -26,6 +26,17 @@ feature "organization member settings" do
     expect(page).to have_selector '.subscribed.input-switch-on'
     find('.subscribed.input-switch').click
 
+    click_on 'cancel'
+
+    wait_until_expectation do
+      expect(bethany).to be_subscribed
+    end
+
+    expect(page).to have_selector '.subscribed.input-switch-on'
+    find('.subscribed.input-switch').click
+
+    click_on 'Unsubscribe'
+
     wait_until_expectation do
       expect(bethany).to_not be_subscribed
     end
