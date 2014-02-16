@@ -1,6 +1,7 @@
 Threadable.GroupMembersController = Ember.ArrayController.extend({
   needs: ['organization'],
   itemController: 'group_member',
+  sortProperties: ['name'],
 
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 
