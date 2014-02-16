@@ -78,11 +78,11 @@ class ConversationMailer < Threadable::Mailer
       to_header = @message.to_header
       cc_header = @message.cc_header
 
-      to_addresses = to_header.present? ? as_address_objects(@message.to_header.to_ascii.gsub(/:/, '')) : nil
-      cc_addresses = cc_header.present? ? as_address_objects(@message.cc_header.to_ascii.gsub(/:/, '')) : nil
+      to_addresses = to_header.present? ? as_address_objects(@message.to_header.to_ascii.gsub(/:/, '')) : []
+      cc_addresses = cc_header.present? ? as_address_objects(@message.cc_header.to_ascii.gsub(/:/, '')) : []
     end
 
-    @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten)
+    @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten.compact)
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
 
     to_addresses = transform_stale_group_references(to_addresses)
@@ -149,6 +149,7 @@ class ConversationMailer < Threadable::Mailer
   end
 
   def transform_stale_group_references email_addresses
+    return if email_addresses.nil?
     email_addresses.map do |email_address|
       if IdentifyThreadableEmailAddress.call(email_address)
         @conversation.all_email_addresses.include?(email_address.address) ? email_address : Mail::Address.new(@organization_email_address)
