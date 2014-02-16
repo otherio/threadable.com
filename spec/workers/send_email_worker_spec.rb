@@ -26,7 +26,7 @@ describe SendEmailWorker do
   let(:messages      ){ double :messages }
   let(:members       ){ double :members  }
   let(:users         ){ double :users    }
-  let(:conversations ){ double :conversations    }
+  let(:conversations ){ double :conversations, length: 5 }
   let(:groups        ){ double :groups    }
 
   let(:organization ){ double :organization }
