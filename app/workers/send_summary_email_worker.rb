@@ -1,7 +1,9 @@
 class SendSummaryEmailWorker < Threadable::ScheduledWorker
   include Sidetiq::Schedulable
 
-  recurrence { daily.hour_of_day(10) }  # 2am PST
+  recurrence backfill: true do
+    daily.hour_of_day(10)  # 2am PST
+  end
 
   def perform! last_time, time
     # get all the users who have summaries enabled for anything
