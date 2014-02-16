@@ -29,10 +29,10 @@ class OrganizationMembership < ActiveRecord::Base
     where('m.user_id IS NULL')
   }
 
-  scope :in_groups, ->(group_ids){
+  scope :in_groups_without_summary, ->(group_ids){
     group_ids = Array(group_ids).map(&:to_i).join(',')
     joins("INNER JOIN group_memberships ON group_memberships.group_id in (#{group_ids})").
-    where('group_memberships.user_id = organization_memberships.user_id')
+    where("group_memberships.user_id = organization_memberships.user_id AND group_memberships.summary = 'f'")
   }
 
   scope :who_get_ungrouped, -> {
