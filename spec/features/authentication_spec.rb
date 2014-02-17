@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 feature "Authentication" do
+  before do
+    visit sign_out_url
+    expect(page).to have_text 'Threadable is coming really soon'
+  end
 
   context "with no redirect" do
     before { visit sign_in_url }
