@@ -27,22 +27,22 @@ class Threadable::Group::Members < Threadable::Collection
     @current_member ||= find_by_user_id! threadable.current_user_id
   end
 
-  def add user
+  def add user, options={}
     group_membership_record = group.group_record.memberships.find_or_initialize_by(user_id: user.user_id)
     if group_membership_record.new_record?
       group_membership_record.save!
-      if threadable.current_user.present? && threadable.current_user.id != user.id
+      if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
         threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
       end
     end
     member_for group_membership_record
   end
 
-  def remove user
+  def remove user, options={}
     group.group_record.memberships
     group.group_record.members.delete(user.user_record)
 
-    if threadable.current_user.present? && threadable.current_user.id != user.id
+    if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
       threadable.emails.send_email_async(:removed_from_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
     end
     self

@@ -98,7 +98,7 @@ class Threadable::Organization::Members < Threadable::Collection
   # add(user: user, personal_message: "welcome!")
   # add(name: 'Steve Waz', email_address: "steve@waz.io", personal_message: "welcome!")
   def add options
-    member_for Add.call(self, options)
+    Add.call(self, options)
   end
 
   # remove(user: member)
