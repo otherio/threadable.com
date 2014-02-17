@@ -11,6 +11,7 @@ Threadable.GroupMemberRoute = Ember.Route.extend({
 
   renderTemplate: function() {
     this.render('group_member', {into: 'organization', outlet: 'pane2'});
+    this.controllerFor('organization').set('focus', 'conversation');
   },
 
 });
