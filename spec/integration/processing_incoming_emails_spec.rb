@@ -750,7 +750,7 @@ describe "processing incoming emails" do
           let(:expected_conversation)        { expected_organization.conversations.find_by_slug('parts-for-the-motor-controller') }
           let(:expected_groups)              { ['Electronics', 'Fundraising'] }
           let(:expected_sent_email_list_id)  { "UCSD Electric Racing <raceteam.127.0.0.1>" }
-          let(:expected_sent_email_list_post){ "<mailto:#{expected_conversation.list_post_email_address.sub('+electronics','')}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
+          let(:expected_sent_email_list_post){ "<mailto:#{expected_conversation.list_post_email_address.sub(/\+(electronics|fundraising)/,'')}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
           let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
           it 'adds the new groups to the conversation' do
             validate! :delivered
