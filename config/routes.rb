@@ -52,7 +52,7 @@ Threadable::Application.routes.draw do
 
     require 'sidekiq/web'
     require 'sidetiq/web'
-    mount Sidekiq::Web => '/background_jobs'
+    mount Sidekiq::Web => '/background_jobs', :constraints => AdminConstraint.new
     mount MailPreview => '/mail_preview' if defined?(MailView)
   end
 
