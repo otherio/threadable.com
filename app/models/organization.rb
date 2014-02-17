@@ -26,7 +26,7 @@ class Organization < ActiveRecord::Base
 
   validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :name, :slug
-  validates_format_of :subject_tag, with: /\A([\w \&\.\-+]+|)\z/
+  validates_format_of :subject_tag, with: /\A([\w \&\.\'\-+]+|)\z/
   validates_format_of :email_address_username, with: /\A[\.a-z0-9_-]+\z/
   validate :username_special_characters
 
