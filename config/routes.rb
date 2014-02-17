@@ -35,9 +35,10 @@ Threadable::Application.routes.draw do
     get    'debug/enable'  => 'debug#enable'
     get    'debug/disable' => 'debug#disable'
 
-    post   'organizations/:organization_id/members'          => 'organization/members#add',    as: 'add_organization_member'
-    patch  'organizations/:organization_id/members/:user_id' => 'organization/members#update', as: 'update_organization_member'
-    delete 'organizations/:organization_id/members/:user_id' => 'organization/members#remove', as: 'remove_organization_member'
+    post   'organizations/:organization_id/members'               => 'organization/members#add',    as: 'add_organization_member'
+    get    'organizations/:organization_id/members/:user_id/edit' => 'organization/members#edit',   as: 'edit_organization_member'
+    patch  'organizations/:organization_id/members/:user_id'      => 'organization/members#update', as: 'update_organization_member'
+    delete 'organizations/:organization_id/members/:user_id'      => 'organization/members#remove', as: 'remove_organization_member'
     get    'organizations'          => 'organizations#index',   as: 'organizations'
     post   'organizations'          => 'organizations#create'
     get    'organizations/new'      => 'organizations#new',     as: 'new_organization'

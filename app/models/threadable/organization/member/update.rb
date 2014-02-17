@@ -2,14 +2,15 @@ require_dependency 'threadable/organization/member'
 
 class Threadable::Organization::Member::Update < MethodObject
 
-  ATTRIBUTES = [:subscribed, :role, :ungrouped_mail_delivery].freeze
+  ATTRIBUTES = [:gets_email, :subscribed, :role, :ungrouped_mail_delivery].freeze
 
   attr_reader :threadable, :current_member, :member, :attributes
 
   def call member, attributes
     @current_member = member.organization.members.current_member
     @member = member
-    @attributes = attributes.slice(:subscribed, :role, :ungrouped_mail_delivery)
+    @attributes = attributes.slice(*ATTRIBUTES)
+    @attributes[:subscribed] = @attributes.delete(:gets_email) if @attributes.key?(:gets_email)
     @threadable = member.threadable
     update_organization_membership_record!
   end

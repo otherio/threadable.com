@@ -29,6 +29,10 @@ class Threadable::Organization::Member < Threadable::User
     ungrouped_mail_delivery
   }, to: :organization_membership_record
 
+  OrganizationMembership::ROLES.each do |role|
+    define_method("#{role}?"){ this.role == role }
+  end
+
   def organization_membership_id
     organization_membership_record.id
   end
@@ -73,7 +77,7 @@ class Threadable::Organization::Member < Threadable::User
       Threadable::Organization::Member::Update.call(self, organization_membership_attributes)
     end
     if user_attributes.present?
-      super(user_attributes)
+      user.update!(user_attributes)
     end
     return self
   end

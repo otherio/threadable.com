@@ -134,6 +134,12 @@ describe Admin::Organization::MembersController do
     end
 
     describe 'PUT :update' do
+      let :member_params do
+        {
+          role: 'owner',
+          ungrouped_mail_delivery: 'in_summary',
+        }
+      end
       before do
         expect(organization.members).to receive(:find_by_user_slug!).with('mary-frank').and_return(member)
         expect(member).to receive(:update).with(member_params).and_return(update_successful)
