@@ -1,4 +1,4 @@
 Threadable.PendingDoersController = Ember.ArrayController.extend({
-  // itemController: 'doer'
-
+  needs: ['doer_selector'],
+  content: Ember.computed.alias('controllers.doer_selector'),
 });

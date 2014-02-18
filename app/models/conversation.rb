@@ -63,6 +63,15 @@ class Conversation < ActiveRecord::Base
     type == 'Task'
   end
 
+  def convert_to_task!
+    update_attribute(:type, 'Task')
+    ::Task.find(id)
+  end
+
+  def convert_to_conversation!
+    self
+  end
+
   private
 
   # this is crazy pants... sorry - Jared

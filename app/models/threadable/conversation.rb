@@ -106,6 +106,10 @@ class Threadable::Conversation < Threadable::Model
     self
   end
 
+  def convert_to_task!
+    Threadable::Task.new threadable, conversation_record.convert_to_task!
+  end
+
   def participant_names
     conversation_record.participant_names_cache
   end

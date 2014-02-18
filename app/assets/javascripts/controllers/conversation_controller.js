@@ -18,6 +18,34 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
   },
 
   actions: {
+    convertToTask: function(){
+      var controller = this;
+      if (controller.get('isTask')) return;
+      controller.confirm({
+        message: "Are you sure you want to convert this conversation to a task?",
+        approveText: 'Convert to task',
+        declineText: 'cancel',
+        approved: function() {
+          controller.set('task', true);
+          controller.get('content').saveRecord();
+        }
+      });
+    },
+    convertToConversation: function(){
+      var controller = this;
+      if (!controller.get('isTask')) return;
+      controller.confirm({
+        message: "Are you sure you want to convert this task to a conversation?",
+        approveText: 'Convert to conversation',
+        declineText: 'cancel',
+        approved: function() {
+          controller.set('task', false);
+          controller.get('content').saveRecord().then(function() {
+            // TODO clear out any pending doers - Jared
+          });
+        }
+      });
+    },
     toggleDoerSelector: function() {
       this.toggleProperty('showDoerSelector');
     },

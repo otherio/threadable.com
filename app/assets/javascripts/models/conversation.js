@@ -55,7 +55,8 @@ Threadable.Conversation = RL.Model.extend({
     if (!doers) return false;
     var userIds = doers.mapBy('userId');
     return userIds.indexOf(userId) !== -1;
-  }.property('isTask', 'doers')
+  }.property('isTask', 'doers'),
+
 });
 
 Threadable.RESTAdapter.map("Threadable.Conversation", {
@@ -115,23 +116,27 @@ Threadable.Conversation.reopenClass({
   },
 
   fetchPageByGroupAndScope: function(organization, groupSlug, scope, page) {
-    var
-      promise,
-      setOrganizationAndStoreInCache = this._setOrganizationAndStoreInCache.bind(this);
-
-    promise = this.fetch({
-      organization: organization.get('slug'),
-      group: groupSlug,
-      scope: scope,
-      page: page,
+    var setOrganizationAndStoreInCache = this._setOrganizationAndStoreInCache.bind(this);
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      Threadable.Conversation.fetch({
+        organization: organization.get('slug'),
+        group: groupSlug,
+        scope: scope,
+        page: page,
+      }).then(
+        function(conversations) {
+          conversations = conversations.constructor.create({
+            content: conversations.map(function(conversation) {
+              return setOrganizationAndStoreInCache(organization, conversation);
+            })
+          });
+          resolve(conversations);
+        },
+        function(reason) {
+          reject(reason);
+        }
+      );
     });
-
-    promise.then(function(conversations) {
-      return conversations.map(function(conversation) {
-        return setOrganizationAndStoreInCache(organization, conversation);
-      });
-    });
-
-    return promise;
   }
+
 });
