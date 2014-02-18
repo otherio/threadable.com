@@ -125,7 +125,7 @@ class Threadable::Organization::Members < Threadable::Collection
   end
 
   def scope
-    organization.organization_record.memberships.includes(:user).reload
+    organization.organization_record.memberships.active.includes(:user).reload
   end
 
   def member_for organization_membership_record

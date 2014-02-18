@@ -107,4 +107,24 @@ describe Threadable::Organization::Member do
     end
   end
 
+  describe '#remove' do
+    let(:joined_group) { organization.groups.find_by_email_address_tag('electronics') }
+    let(:doing_task) { organization.tasks.find_by_slug('get-a-new-soldering-iron') }
+
+    before{ sign_in_as 'alice@ucsd.example.com' }
+
+    it 'sets the member to inactive, removes them from groups, and makes them no longer a doer of any tasks' do
+      member.remove
+      expect(member.organization_membership_record.active).to be_false
+      expect(organization.members.find_by_email_address('bethany@ucsd.example.com')).to be_nil
+
+      expect(joined_group.members.all.map(&:id)).to_not include member.id
+      expect(joined_group.members.count).to eq 1
+
+      expect(doing_task.doers.all.map(&:id)).to_not include member.id
+      expect(doing_task.doers.count).to eq 0
+    end
+  end
+
+
 end

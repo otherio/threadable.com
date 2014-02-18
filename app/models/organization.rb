@@ -7,7 +7,11 @@ class Organization < ActiveRecord::Base
   has_many :memberships, class_name: 'OrganizationMembership'
   has_many :members, :through => :organization_memberships, :source => 'user' do
     def who_get_email
-      where organization_memberships: {gets_email:true}
+      where organization_memberships: {active: true, gets_email: true}
+    end
+
+    def active
+      where organization_memberships: {active: true}
     end
   end
   has_many :members_who_get_email, -> { where organization_memberships: {gets_email:true} }, :through => :organization_memberships, :source => 'user'

@@ -59,6 +59,13 @@ describe Threadable::Organization::Groups do
     end
   end
 
+  describe "#all_for_user" do
+    let(:user) { organization.members.find_by_email_address('bethany@ucsd.example.com') }
+    it 'returns the groups that a particular user is in' do
+      expect(groups.all_for_user(user).map(&:email_address_tag)).to eq ['electronics', 'graphic-design']
+    end
+  end
+
   describe "conversation groups" do
     it "should be in sync" do
       all_conversations = organization.conversations.all.map do |conversation|
