@@ -84,7 +84,7 @@ class MailPreview < MailView
 
   def find_organization_and_recipient
     organization_record   = Organization.last!
-    recipient_record = organization_record.members.last!
+    recipient_record = organization_record.members.active.last!
 
     threadable.current_user_id = organization_record.members.first!
     organization   = threadable.current_user.organizations.find_by_id!(organization_record.id)
