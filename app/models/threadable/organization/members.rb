@@ -80,7 +80,7 @@ class Threadable::Organization::Members < Threadable::Collection
   end
 
   def email_addresses
-    EmailAddress.joins(:user => :organizations).where(organizations: {id: organization.id}).each do |email_address_record|
+    EmailAddress.joins(:user => :organizations).where(organizations: {id: organization.id}, organization_memberships: {active: true}).each do |email_address_record|
       Threadable::EmailAddress.new(threadable, email_address_record)
     end
   end
