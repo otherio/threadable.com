@@ -46,6 +46,11 @@ class FixtureBuilder
     @members[email_address] = member
   end
 
+  def remove_member email_address
+    member = organization.members.find_by_email_address(email_address)
+    member.remove
+  end
+
   def current_member
     organization.members.current_member
   end

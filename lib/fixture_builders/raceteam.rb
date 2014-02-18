@@ -27,6 +27,9 @@ FixtureBuilder.build do
     add_member 'Ricky Bobby',      'ricky.bobby@ucsd.example.com'
     add_member 'Cal Naughton Jr.', 'cal.naughton@ucsd.example.com'
 
+    add_member 'Lord Vader',       'darth@ucsd.example.com'
+    remove_member 'darth@ucsd.example.com' # he's hard to work with.
+
     set_avatar! 'ricky.bobby.jpg', for: 'ricky.bobby@ucsd.example.com'
     set_ungrouped_mail_delivery :in_summary, for: 'ricky.bobby@ucsd.example.com'
 

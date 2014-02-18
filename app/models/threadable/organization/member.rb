@@ -82,6 +82,20 @@ class Threadable::Organization::Member < Threadable::User
     return self
   end
 
+  def remove
+    Threadable.transaction do
+      organization.groups.all_for_user(user).each do |group|
+        group.members.remove user, send_notice: false
+      end
+
+      organization.tasks.all_for_user(user).each do |task|
+        task.doers.remove [user]
+      end
+
+      organization_membership_record.update_attribute(:active, false)
+    end
+  end
+
   def subscribe!
     update subscribed: true
   end

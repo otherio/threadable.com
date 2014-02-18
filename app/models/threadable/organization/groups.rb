@@ -48,6 +48,10 @@ class Threadable::Organization::Groups < Threadable::Groups
     groups
   end
 
+  def all_for_user user
+    groups_for scope.joins(:members).where(group_memberships: {user_id: user.id})
+  end
+
   def auto_joinable
     groups_for scope.where(auto_join: true)
   end

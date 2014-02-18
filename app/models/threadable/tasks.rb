@@ -19,7 +19,7 @@ class Threadable::Tasks < Threadable::Conversations
   end
 
   def all_for_user user
-    scope.task.joins(:doers).where('task_doers.id = ?', user.id)
+    conversations_for scope.task.joins(:doers).where('task_doers.user_id = ?', user.id)
   end
 
   private
