@@ -67,3 +67,15 @@
       = option_inputs
     .actions
       = f.button :submit, value: 'Add Member', class: 'btn btn-primary'
+
+%section
+  %h3 Add new members via CSV
+  = form_tag admin_add_organization_member_path(@organization) do
+    %label
+      = text_area_tag :members, '', style: 'height: 10em; width: 50em'
+    %label
+      %input{type: 'hidden', name:'send_join_notice', value: "false"}
+      %input{type: 'checkbox', name:'send_join_notice', checked: true, value: "true"}
+      Send join notice?
+    %label
+      %input{type: 'submit', value: 'Add Members', class: 'btn btn-primary'}

@@ -3,21 +3,14 @@ class Admin::Organization::MembersController < ApplicationController
   layout 'old'
 
   before_action :require_user_be_admin!
-  before_action :find_or_create_user!, only: :add
 
   # POST /admin/organizations/:organization_slug/members
   def add
-    if organization.members.include? user
-      flash[:alert] = "#{user.formatted_email_address} is already a meber of #{organization.name}."
+    if params.key?(:members)
+      add_multiple_members!
     else
-      member = organization.members.add(
-        user: user,
-        gets_email: member_params[:gets_email],
-        send_join_notice: member_params[:send_join_notice],
-      )
-      flash[:notice] = "#{member.formatted_email_address} was successfully added to #{organization.name}."
+      add_single_member!
     end
-    redirect_to admin_edit_organization_path(organization)
   end
 
   def edit
@@ -54,6 +47,46 @@ class Admin::Organization::MembersController < ApplicationController
     @organization ||= threadable.organizations.find_by_slug! params[:organization_id]
   end
 
+  def add_multiple_members!
+    require 'csv'
+    formatted_email_addresses = CSV.parse(params[:members]).flatten(1).compact
+
+    formatted_email_addresses.each do |formatted_email_address|
+      begin
+        mail_address = Mail::Address.new(formatted_email_address)
+      rescue Mail::AddressListsParser, Mail::Field::ParseError
+        raise "failed to parse: #{formatted_email_address.inspect}"
+      end
+      email_address = mail_address.address
+      name = mail_address.display_name || email_address.split('@').first.gsub('.',' ')
+
+      user = find_or_create_user_by_email_address!(name, email_address)
+      organization.members.add(user: user, send_join_notice: params[:send_join_notice])
+    end
+
+    flash[:notice] = "#{formatted_email_addresses.size} new members were successfully added to #{organization.name}."
+
+    redirect_to admin_edit_organization_path(organization)
+  end
+
+
+  def add_single_member!
+    user = find_or_create_user!
+    if organization.members.include? user
+      flash[:alert] = "#{user.formatted_email_address} is already a meber of #{organization.name}."
+    else
+      member = organization.members.add(
+        user: user,
+        gets_email: member_params[:gets_email],
+        send_join_notice: member_params[:send_join_notice],
+      )
+      flash[:notice] = "#{member.formatted_email_address} was successfully added to #{organization.name}."
+    end
+    redirect_to admin_edit_organization_path(organization)
+  rescue Threadable::RecordNotFound
+    redirect_to admin_edit_organization_path(organization), alert: "unable to find user #{member_params[:id]}"
+  end
+
   def member_params
     @member_params or begin
       @member_params = params.require(:user).permit(:id, :name, :email_address, :gets_email, :send_join_notice).symbolize_keys
@@ -63,16 +96,18 @@ class Admin::Organization::MembersController < ApplicationController
     @member_params
   end
 
-  attr_reader :user
   def find_or_create_user!
-    @user ||= if member_params.key?(:id)
+    if member_params.key?(:id)
       threadable.users.find_by_id!(member_params[:id].to_i)
     else
-      threadable.users.find_by_email_address(member_params[:email_address]) or
-      threadable.users.create!(name: member_params[:name], email_address: member_params[:email_address])
+      find_or_create_user_by_email_address! member_params[:name], member_params[:email_address]
     end
-  rescue Threadable::RecordNotFound
-    redirect_to admin_edit_organization_path(organization), alert: "unable to find user #{member_params[:id]}"
+  end
+
+
+  def find_or_create_user_by_email_address! name, email_address
+    threadable.users.find_by_email_address(email_address) or
+    threadable.users.create!(name: name, email_address: email_address)
   end
 
 end
