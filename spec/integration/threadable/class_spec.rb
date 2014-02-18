@@ -41,11 +41,11 @@ describe Threadable::Class do
     expect( events[Threadable::Events::TaskDone           ].count ).to eq 11
 
     expect( threadable.organizations.all.map{|p| [p.name, p.members.count] } ).to eq [
-      ["Other Admins", 4], ["SF Health Center", 15], ["UCSD Electric Racing", 10]
+      ["Other Admins", 4], ["SF Health Center", 15], ["UCSD Electric Racing", 9]
     ]
 
     threadable.organizations.all.each do |organization|
-      expect( organization.members       .count ).to eq ::OrganizationMembership .where(organization_id: organization.id).count
+      expect( organization.members       .count ).to eq ::OrganizationMembership .where(organization_id: organization.id, active: true).count
       expect( organization.conversations .count ).to eq ::Conversation           .where(organization_id: organization.id).count
       expect( organization.tasks         .count ).to eq ::Task                   .where(organization_id: organization.id).count
       expect( organization.messages      .count ).to eq ::Organization.find(organization.id).messages.count
