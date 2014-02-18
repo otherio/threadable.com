@@ -37,6 +37,15 @@ class Task < Conversation
     done_at.present?
   end
 
+  def convert_to_task!
+    self
+  end
+
+  def convert_to_conversation!
+    update_attribute(:type, '')
+    ::Conversation.find(id)
+  end
+
   private
 
   def set_position

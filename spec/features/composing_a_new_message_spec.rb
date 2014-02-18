@@ -61,6 +61,19 @@ feature "Composing a new message" do
     send_reply!
     expect(page).to be_at conversation_url('raceteam','my','hey-party-people')
     expect_reply_to_be_created!
+
+    # and changing it to a task
+    expect( threadable.conversations.find_by_slug!('hey-party-people') ).to_not be_task
+    find('.convert-to-task').click
+    click_on 'Convert to task'
+    wait_until_expectation do
+      expect( threadable.conversations.find_by_slug!('hey-party-people') ).to be_task
+    end
+    find('.convert-to-conversation').click
+    click_on 'Convert to conversation'
+    wait_until_expectation do
+      expect( threadable.conversations.find_by_slug!('hey-party-people') ).to_not be_task
+    end
   end
 
   scenario %(In the "Ungrouped Conversations" section) do

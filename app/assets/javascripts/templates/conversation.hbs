@@ -1,6 +1,6 @@
 <div {{bind-attr class=":conversation-show :scrollable showDoerSelector:show-doer-selector"}}>
-
   <div class="padded">
+
     <div class="conversation-groups">
       {{#each group in groups}}
         <span class="badge" {{bind-attr style="group.badgeStyle"}}>
@@ -11,6 +11,17 @@
         <span class="no-groups">ungrouped</span>
       {{/each}}
       {{group-selector groups=unselectedGroups target=controller}}
+    </div>
+
+    <div class="convert-type-control uk-float-right">
+      <div class="uk-button-group">
+        <a href="" {{action convertToTask}} {{bind-attr class=":convert-to-task :uk-button isTask:uk-active"}}>
+          <i class="uk-icon-check"></i>
+        </a>
+        <a href="" {{action convertToConversation}} {{bind-attr class=":convert-to-conversation :uk-button isTask::uk-active"}}>
+          <i class="uk-icon-comment-o"></i>
+        </a>
+      </div>
     </div>
 
     <h2 class="subject">

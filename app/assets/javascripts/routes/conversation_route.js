@@ -27,12 +27,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
 
   setupController: function(controller, model) {
     this._super(controller, model);
-    this.controllerFor('conversation').set('model', model);
     this.controllerFor('reply').set('model', Threadable.Message.create({}));
-    this.controllerFor('doerSelector').set('model', this.controllerFor('organization').get('members'));
-    var doers = model && model.get('doers');
-    if (doers) this.controllerFor('doerSelector').set('doers', doers.toArray());
-    this.controllerFor('pendingDoers').set('model', this.controllerFor('doerSelector'));
   },
 
   renderTemplate: function() {

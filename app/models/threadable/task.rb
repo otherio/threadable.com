@@ -32,6 +32,12 @@ class Threadable::Task < Threadable::Conversation
     true
   end
 
+  undef_method :convert_to_task!
+
+  def convert_to_conversation!
+    Threadable::Task.new threadable, conversation_record.convert_to_conversation!
+  end
+
   def scope
     ::Task.order('conversations.position DESC')
   end

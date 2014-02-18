@@ -20,16 +20,10 @@ Threadable.DoerSelectorItemController = Ember.ObjectController.extend({
     }
 
     var doerHere = this.get('isDoer');
-    var doerSaved = persistedDoerIds.indexOf(this.get('id')) > -1;
+    var doerSaved = persistedDoerIds.indexOf(this.get('id')) !== -1;
 
-    if(doerHere == doerSaved) {
-      return null;
-    }
-
-    if(doerSaved) {
-      return 'removed';
-    }
-
+    if (doerHere == doerSaved) return null;
+    if (doerSaved) return 'removed';
     return 'added';
   }.property('doers.@each', 'controllers.conversation.doers.@each'),
 

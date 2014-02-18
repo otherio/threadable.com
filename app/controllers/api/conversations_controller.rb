@@ -51,31 +51,24 @@ class Api::ConversationsController < ApiController
   # patch /api/conversations/:id
   def update
     conversation_params = if conversation.task?
-      params.require(:conversation).permit(:muted, :position, :done, doers:[:id])
+      params.require(:conversation).permit(:task, :muted, :position, :done, doers:[:id])
     else
-      params.require(:conversation).permit(:muted)
+      params.require(:conversation).permit(:task, :muted)
     end
 
+    # this is way to much code for an action. We should move this into conversation update at some point - Jared
     Threadable.transaction do
 
-      if conversation_params.key?(:done)
-        conversation_params.delete(:done) ? conversation.done! : conversation.undone!
+      if conversation_params.key?(:task)
+        task = conversation_params.delete(:task)
+        @conversation = case
+        when conversation.task? && !task; conversation.convert_to_conversation!
+        when !conversation.task? && task; conversation.convert_to_task!
+        end
       end
 
       if conversation_params.key?(:muted)
         conversation_params.delete(:muted) ? conversation.mute! : conversation.unmute!
-      end
-
-      if params[:conversation].key?(:doers) && conversation.task?
-        supplied_doer_ids = Array(conversation_params.delete(:doers)).map{ |doer| doer[:id].to_i }
-        existing_doer_ids = conversation.doers.all.map(&:id)
-        remove_doer_ids = existing_doer_ids - supplied_doer_ids
-        conversation.doers.remove(remove_doer_ids)
-
-        doers = supplied_doer_ids.map do |doer_id|
-          organization.members.find_by_user_id!(doer_id)
-        end
-        conversation.doers.add(doers)
       end
 
       if params[:conversation].key?(:group_ids)
@@ -86,6 +79,27 @@ class Api::ConversationsController < ApiController
 
         conversation.groups.add organization.groups.find_by_ids(supplied_group_ids) if supplied_group_ids.present?
       end
+
+      if conversation.task?
+
+        if conversation_params.key?(:done)
+          conversation_params.delete(:done) ? conversation.done! : conversation.undone!
+        end
+
+        if params[:conversation].key?(:doers) && conversation.task?
+          supplied_doer_ids = Array(conversation_params.delete(:doers)).map{ |doer| doer[:id].to_i }
+          existing_doer_ids = conversation.doers.all.map(&:id)
+          remove_doer_ids = existing_doer_ids - supplied_doer_ids
+          conversation.doers.remove(remove_doer_ids)
+
+          doers = supplied_doer_ids.map do |doer_id|
+            organization.members.find_by_user_id!(doer_id)
+          end
+          conversation.doers.add(doers)
+        end
+      end
+
+      conversation_params.delete(:done)
 
       conversation.update!(conversation_params)
 

@@ -326,6 +326,21 @@ describe Api::ConversationsController do
 
     # patch /api/:organization_id/:id
     describe 'update' do
+
+      context 'when given task' do
+        it 'changes the conversation to / from a conversation / task' do
+          expect( raceteam.conversations.find_by_slug('layup-body-carbon') ).to be_task
+
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: { task: false }
+          expect(response.status).to eq 200
+          expect( raceteam.conversations.find_by_slug('layup-body-carbon') ).to_not be_task
+
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: { task: true }
+          expect(response.status).to eq 200
+          expect( raceteam.conversations.find_by_slug('layup-body-carbon') ).to be_task
+        end
+      end
+
       context 'when given done/not done conversation data' do
         it 'marks the conversation as done/not done' do
           xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: { done: false }
