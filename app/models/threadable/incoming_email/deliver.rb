@@ -75,9 +75,9 @@ class Threadable::IncomingEmail::Deliver < MethodObject
       parent_message:    @incoming_email.parent_message,
       from:              @incoming_email.from,
       body_plain:        strip_threadable_content(@incoming_email.body_plain),
-      body_html:         strip_threadable_content(@incoming_email.body_html),
+      body_html:         clean_up_html(@incoming_email.body_html),
       stripped_plain:    strip_threadable_content(@incoming_email.stripped_plain),
-      stripped_html:     strip_threadable_content(@incoming_email.stripped_html),
+      stripped_html:     clean_up_html(@incoming_email.stripped_html),
       attachments:       @incoming_email.attachments.all,
     )
   end
@@ -91,6 +91,11 @@ class Threadable::IncomingEmail::Deliver < MethodObject
   end
 
   def strip_threadable_content body
+    StripThreadableContentFromEmailMessageBody.call(body) unless body.nil?
+  end
+
+  def clean_up_html body
+    body = CorrectHtml.call(body) unless body.nil?
     StripThreadableContentFromEmailMessageBody.call(body) unless body.nil?
   end
 
