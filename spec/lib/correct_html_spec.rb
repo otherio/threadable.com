@@ -15,12 +15,12 @@ BODY
   let :stripped_body do
 <<-BODY
 <div>
-I am a thing.
+  I am a thing.
 </div>
 BODY
   end
 
   it "should remove the extra tag" do
-    expect(call(body)).to eq stripped_body
+    expect(call(body).strip).to eq stripped_body.strip
   end
 end

@@ -23,13 +23,17 @@ describe Threadable::IncomingEmail do
     )
   end
 
+  def clean_html body
+    CorrectHtml.call(body)
+  end
+
   describe 'process!' do
     it 'finds all associations and sends out the new message' do
       incoming_email.process!
       expect( incoming_email                 ).to be_processed
       expect( incoming_email                 ).to_not be_bounced
       expect( incoming_email                 ).to_not be_held
-      expect( incoming_email.organization         ).to eq raceteam
+      expect( incoming_email.organization    ).to eq raceteam
       expect( incoming_email.creator         ).to be_the_same_user_as alice
       expect( incoming_email.parent_message  ).to be_nil
       expect( incoming_email.conversation    ).to be_a Threadable::Conversation
@@ -44,9 +48,9 @@ describe Threadable::IncomingEmail do
       expect( incoming_email.message.parent_message    ).to be_nil
       expect( incoming_email.message.from              ).to eq alice.formatted_email_address
       expect( incoming_email.message.body_plain        ).to eq params['body-plain']
-      expect( incoming_email.message.body_html         ).to eq params['body-html']
+      expect( incoming_email.message.body_html         ).to eq clean_html(params['body-html'])
       expect( incoming_email.message.stripped_plain    ).to eq params['stripped-text']
-      expect( incoming_email.message.stripped_html     ).to eq params['stripped-html']
+      expect( incoming_email.message.stripped_html     ).to eq clean_html(params['stripped-html'])
       expect( incoming_email.message.attachments       ).to be_a Threadable::Message::Attachments
       expect( incoming_email.message.attachments.count ).to eq 2
 
