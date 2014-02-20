@@ -20,6 +20,17 @@ class Api::OrganizationMembersController < ApiController
     render json: {error: "unable to create user"}, status: :unprocessable_entity
   end
 
+  def destroy
+    user = organization.members.find_by_user_id(params[:id])
+
+    if !user || !organization.members.include?(user)
+      return render json: {error: "user is not a member"}, status: :unprocessable_entity
+    end
+
+    user.remove
+    render status: 200, nothing: true
+  end
+
   def update
     member_params = params.require(:organization_member).permit(:slug, :subscribed, :role, :ungrouped_mail_delivery)
     member = organization.members.find_by_user_slug!(member_params.delete(:slug))
