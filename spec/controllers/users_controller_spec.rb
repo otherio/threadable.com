@@ -11,41 +11,6 @@ describe UsersController do
       end
     end
 
-    describe 'POST :create' do
-      let :user_params do
-        {
-          name: "Christopher Hitchens",
-          email_address: "christopher@hitchslap.net",
-          password: "godisnotgreat",
-          password_confirmation: "godisnotgreat",
-        }
-      end
-      let(:user){ double(:user, id: 94, persisted?: persisted) }
-      before do
-        expect(threadable).to receive(:sign_up).with(user_params).and_return(user)
-      end
-      def post!
-        post :create, user: user_params
-        expect(response).to be_ok
-        expect(assigns[:user]).to eq user
-      end
-      context 'when the user is successfully created' do
-        let(:persisted){ true }
-        it 'should redirect to the user created page' do
-          expect(threadable.emails).to receive(:send_email_async).with(:sign_up_confirmation, 94)
-          post!
-          expect(response).to render_template :create
-        end
-      end
-      context 'when the user is not successfully created' do
-        let(:persisted){ false }
-        it 'should render to the user new page' do
-          post!
-          expect(response).to render_template :new
-        end
-      end
-    end
-
     describe 'GET :show' do
       it 'redirects to the sign in url with the the current request url as the r param' do
         get :show, id: 'some-user-slug'
@@ -75,13 +40,6 @@ describe UsersController do
       it 'renders not found' do
         get :index
         expect(response.status).to eq 404
-      end
-    end
-
-    describe 'POST :create' do
-      it 'renders unauthorized' do
-        post :create, user: {}
-        expect(response.status).to eq 401
       end
     end
 

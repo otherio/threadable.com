@@ -1,16 +1,20 @@
 !function(){
 
-  $.fn.animation = function(name, time, motion){
+  $.fn.animation = function(name, time, motion, callback){
     var elements = this;
     animation(elements, false, false, false);
-    setTimeout(function() { animation(elements, name, time, motion) });
+    setTimeout(function() {
+      animation(elements, name, time, motion);
+      if (callback) setTimeout(callback.bind(elements), Number(time));
+    });
+
     return this;
   };
 
   function animation(elements, name, time, motion){
     elements.css(x = $.extend(
       experimental('animation-name', name),
-      experimental('animation-duration', time || 0),
+      experimental('animation-duration', (time === false ? false : (time || 0)+'ms')),
       experimental('animation-timing-function', motion || "ease")
     ));
   }

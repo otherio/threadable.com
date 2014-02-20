@@ -24,11 +24,11 @@ class Threadable::Organization < Threadable::Model
   }, to: :organization_record
 
   def email_address
-    "#{organization_record.email_address_username}@#{threadable.email_host}"
+    "#{email_address_username}@#{threadable.email_host}" if email_address_username.present?
   end
 
   def task_email_address
-    "#{organization_record.email_address_username}+task@#{threadable.email_host}"
+    "#{email_address_username}+task@#{threadable.email_host}" if email_address_username.present?
   end
 
   def email_addresses

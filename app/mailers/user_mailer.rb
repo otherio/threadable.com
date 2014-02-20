@@ -1,12 +1,12 @@
 class UserMailer < Threadable::Mailer
 
-  def sign_up_confirmation(recipient)
-    @recipient = recipient
+  def sign_up_confirmation(email_address)
+    email_address = email_address.to_s
 
-    @confirm_email_address_url = confirm_email_address_url(EmailAddressConfirmationToken.encrypt(@recipient.email_address.id))
+    @confirm_sign_up_url = new_organization_url(token: SignUpConfirmationToken.encrypt(email_address))
 
     mail(
-      to:      @recipient.formatted_email_address,
+      to:      email_address,
       from:    "Threadable welcome <#{threadable.support_email_address('welcome')}>",
       subject: "Welcome to Threadable!",
     )

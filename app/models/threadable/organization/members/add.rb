@@ -10,6 +10,9 @@ class Threadable::Organization::Members::Add < MethodObject
     @organization     = members.organization
     @options          = options
     @send_join_notice = @options.fetch(:send_join_notice){ true }
+
+    @threadable.current_user.present? or raise Threadable::AuthenticationError, "you must be signed in to add a member to an organization"
+
     Threadable.transaction do
       return existing_member if existing_user && existing_member
       create_user! unless existing_user

@@ -1,92 +1,50 @@
 class OrganizationsController < ApplicationController
 
-  before_filter :require_user_be_signed_in!
+  skip_before_action :require_user_be_signed_in!
+  before_action :require_user_be_signed_in_or_have_a_sign_up_confirmation_token!
 
-  # GET /organizations/new
-  # GET /organizations/new.json
+  # GET /create
   def new
-    @organization = current_user.organizations.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @organization }
-    end
+    @new_organization = NewOrganization.new(threadable)
+    @new_organization.your_email_address = email_address_from_token unless signed_in?
   end
 
-  # GET /organizations/edit
-  def edit
-    @organization = current_user.organizations.find_by_slug! params[:id]
-  end
-
-  # POST /organizations
-  # POST /organizations.json
+  # POST /create
   def create
-    @organization = current_user.organizations.create(organization_params)
-
-    respond_to do |format|
-      if @organization.persisted?
-        format.html { redirect_to organization_url(@organization), notice: "#{@organization.name} was successfully created." }
-        format.json { render json: @organization, status: :created, location: @organization }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
-      end
+    new_organization_params = params.require(:new_organization).permit(
+      :organization_name,
+      :email_address_username,
+      :your_name,
+      :password,
+      :password_confirmation,
+      :members,
+    )
+    # rails is stupid
+    new_organization_params[:members] = params[:new_organization][:members] if params[:new_organization][:members].present?
+    @new_organization = NewOrganization.new(threadable, new_organization_params)
+    @new_organization.your_email_address = email_address_from_token if sign_up_confirmation_token
+    if @new_organization.create
+      sign_in! @new_organization.creator unless signed_in?
+      redirect_to conversations_url(@new_organization.organization, 'my')
+    else
+      render :new
     end
   end
-
-  # PUT /organizations/make-a-tank
-  # PUT /organizations/make-a-tank.json
-  def update
-    respond_to do |format|
-      if organization.update(organization_params)
-        format.html { redirect_to root_path, notice: "#{@organization.name} was successfully updated." }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # # GET /organizations/make-like-a-tree-and/join
-  # # GET /organizations/make-like-a-tree-and/join.json
-  # def join
-  #   flash[:notice] = "Welcome aboard! You're now a memeber of the #{organization.name} organization."
-  # end
-
-  # PUT /organizations/make-like-a-tree-and/leave
-  # PUT /organizations/make-like-a-tree-and/leave.json
-  def leave
-    respond_to do |format|
-      if organization.leave!
-        format.html { redirect_to root_path, notice: "You have successfully left #{@organization.name}." }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # # DELETE /organizations/make-a-tank
-  # # DELETE /organizations/make-a-tank.json
-  # def destroy
-  #   organization.destroy
-
-  #   respond_to do |format|
-  #     format.html { redirect_to organizations_url }
-  #     format.json { head :no_content }
-  #   end
-  # end
 
   private
 
-  def organization_params
-    params.require(:organization).permit(:name, :short_name, :description)
+  def require_user_be_signed_in_or_have_a_sign_up_confirmation_token!
+    return if signed_in? || sign_up_confirmation_token.present?
+    redirect_to sign_in_path(r: new_organization_path)
   end
 
-  def organization
-    @organization ||= current_user.organizations.find_by_slug! params[:id]
+  def sign_up_confirmation_token
+    params[:token].presence
+  end
+  helper_method :sign_up_confirmation_token
+
+  def email_address_from_token
+    @email_address_from_token ||= SignUpConfirmationToken.decrypt(sign_up_confirmation_token) if sign_up_confirmation_token
   end
 
 end

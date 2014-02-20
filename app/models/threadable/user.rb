@@ -19,7 +19,6 @@ class Threadable::User < Threadable::Model
     new_record?
     persisted?
     avatar_url
-    authenticate
     created_at
   }, to: :user_record
 
@@ -53,6 +52,10 @@ class Threadable::User < Threadable::Model
 
   def formatted_email_address
     FormattedEmailAddress.new(display_name: name, address: email_address).to_s
+  end
+
+  def authenticate(password)
+    !!user_record.authenticate(password)
   end
 
   def reload

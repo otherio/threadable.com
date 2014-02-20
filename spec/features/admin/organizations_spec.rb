@@ -38,7 +38,7 @@ feature "Admin organizations CRUD" do
       expect(page).to have_field "Email address username", with: "united-nations"
     end
 
-    organization = threadable.organizations.find_by_name!("United Nations")
+    organization = threadable.organizations.find_by_slug!("united-nations")
     expect(organization.name                  ).to eq "United Nations"
     expect(organization.subject_tag           ).to eq "United Nations"
     expect(organization.slug                  ).to eq "united-nations"
@@ -51,7 +51,7 @@ feature "Admin organizations CRUD" do
       fill_in "Email address username", with: "united-hations"
       click_on 'Update Organization'
     end
-    organization = threadable.organizations.find_by_name!("United Hations")
+    organization = threadable.organizations.find_by_slug!("united-hations")
     expect(organization.name                  ).to eq "United Hations"
     expect(organization.subject_tag           ).to eq "United Hations"
     expect(organization.slug                  ).to eq "united-hations"

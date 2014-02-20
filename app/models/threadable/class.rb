@@ -36,6 +36,16 @@ class Threadable::Class
     @current_user ||= Threadable::CurrentUser.new(self, @current_user_id)
   end
 
+  def acting_as user
+    original_current_user_id = @current_user_id
+    original_current_user    = @current_user
+
+    self.current_user = user
+    yield
+  ensure
+    @current_user_id = original_current_user_id
+    @current_user    = original_current_user
+  end
 
   let :tracker do
     Rails.application.config.track_in_memory ?
