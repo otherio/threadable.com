@@ -1,3 +1,5 @@
+raise "refusing to load file #{__FILE__} in #{Rails.env}" if Rails.env.production?
+
 module Fixtures
 
   def self.create_admins!
