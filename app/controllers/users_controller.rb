@@ -8,21 +8,6 @@ class UsersController < ApplicationController
     not_found!
   end
 
-  def create
-    @user = threadable.sign_up(user_params)
-    if @user.persisted?
-      threadable.emails.send_email_async(:sign_up_confirmation, @user.id)
-      render :create
-    else
-      render :new
-    end
-  end
-
-  def new
-    unauthorized! unless signup_enabled?
-    @user = threadable.users.new
-  end
-
   def show
     @user = threadable.users.find_by_slug!(params[:id])
   end

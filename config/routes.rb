@@ -5,6 +5,12 @@ Threadable::Application.routes.draw do
   post  '/recover-password'  => 'authentication#recover_password', as: 'recover_password'
   match '/sign_out'          => 'authentication#sign_out', via: [:get, :delete], as: 'sign_out'
 
+  get  '/sign_up' => 'sign_up#show'
+  post '/sign_up' => 'sign_up#sign_up'
+
+  get  '/create' => 'organizations#new',    as: 'new_organization'
+  post '/create' => 'organizations#create'
+
   get  '/ea/:token' => 'email_actions#show', as: 'email_action'
   post '/ea/:token' => 'email_actions#take'
 
@@ -88,12 +94,6 @@ Threadable::Application.routes.draw do
   end
 
   resources :emails, :only => :create
-
-  resources :organizations, except: [:index, :show] do
-    member do
-      put :leave
-    end
-  end
 
   get '/:organization_id/conversations/:conversation_id', to: redirect('/%{organization_id}/my/conversations/%{conversation_id}')
   get '/:organization_id/tasks/:conversation_id',         to: redirect('/%{organization_id}/my/tasks/%{conversation_id}')

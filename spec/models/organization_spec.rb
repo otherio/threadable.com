@@ -12,15 +12,6 @@ describe Organization do
     organization.errors.should be_blank
   end
 
-  it "should require a uniq name" do
-    organization = Organization.new(name: 'build a fire proof house')
-    organization.save.should be_true
-
-    organization = Organization.new(name: 'build a fire proof house')
-    organization.save.should be_false
-    organization.errors[:name].should == ["has already been taken"]
-  end
-
   context "when not given a slug" do
     it "should be created from the name if blank" do
       organization = Organization.create(name: 'Fall down a hole')

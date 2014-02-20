@@ -32,6 +32,8 @@ module RescueFromExceptionsConcern
 
     sign_out! if Threadable::CurrentUserNotFound === exception
 
+    raise exception if Rails.env.test? && exception.class.name =~ /RSpec/
+
     case exception
     when *UNAUTHORIZED_EXCEPTIONS
       report_exception! exception

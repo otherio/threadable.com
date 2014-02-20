@@ -2,7 +2,7 @@
 SimpleForm.setup do |config|
   # Components used by the form builder to generate a complete input. You can remove
   # any of them, change the order, or even add your own components to the stack.
-  # config.components = [ :placeholder, :label_input, :hint, :error ]
+  config.components = [ :error, :placeholder, :label_input, :hint ]
 
   # Default tag used on hints.
   # config.hint_tag = :span
@@ -90,4 +90,11 @@ SimpleForm.setup do |config|
 
   # When false, do not use translations for labels, hints or placeholders.
   # config.translate = true
+end
+
+
+module SimpleForm::Components::Errors
+  def errors_on_attribute
+    object.errors.full_messages_for(attribute_name)
+  end
 end

@@ -156,22 +156,24 @@ describe 'sending emails' do
 
     describe 'sign_up_confirmation' do
 
+      let(:email_address){ 'max.born@gmail.com' }
+
       def expect_email!
-        email = sent_emails.to(recipient.email_address).with_subject("Welcome to Threadable!").first
+        email = sent_emails.to(email_address).with_subject("Welcome to Threadable!").first
         expect(email).to be_present
       end
 
       context "sync" do
         it "should send email" do
-          threadable.emails.send_email(:sign_up_confirmation, recipient)
+          threadable.emails.send_email(:sign_up_confirmation, email_address)
           expect_email!
         end
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          threadable.emails.send_email_async(:sign_up_confirmation, recipient.id)
+          threadable.emails.send_email_async(:sign_up_confirmation, email_address)
           expect(sent_emails).to be_empty
-          expect_job_to_be_enqueued! "sign_up_confirmation", recipient.id
+          expect_job_to_be_enqueued! "sign_up_confirmation", email_address
           run_jobs!
           expect_email!
         end

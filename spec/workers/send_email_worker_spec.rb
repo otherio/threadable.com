@@ -107,13 +107,10 @@ describe SendEmailWorker do
   end
 
   describe 'sign_up_confirmation' do
-    let(:arguments){ [:sign_up_confirmation, recipient_id] }
+    let(:email_address){ 'stephen.pinker@gmail.com' }
+    let(:arguments){ [:sign_up_confirmation, email_address] }
     it "should find all the records and call threadable.emails.send_email" do
-      expect_any_instance_of(Threadable::Class).to receive(:users).and_return(users)
-      expect(users).to receive(:find_by_id!).with(recipient_id).and_return(recipient)
-
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:sign_up_confirmation, recipient)
-
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:sign_up_confirmation, email_address)
       perform!
     end
   end

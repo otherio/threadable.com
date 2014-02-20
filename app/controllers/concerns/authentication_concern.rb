@@ -3,7 +3,7 @@ module AuthenticationConcern
   extend ActiveSupport::Concern
 
   included do
-    helper_method :threadable, :current_user, :signup_enabled?
+    helper_method :threadable, :current_user, :signup_enabled?, :signed_in?
   end
 
   def current_user_id

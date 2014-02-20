@@ -4,14 +4,6 @@ class Threadable::Organizations < Threadable::Collection
     scope.reload.map{ |organization| organization_for organization }
   end
 
-  def find_by_name name
-    organization_for (scope.where(name: name).first or return)
-  end
-
-  def find_by_name! name
-    find_by_name(name) or raise Threadable::RecordNotFound, "unable to find organization with name #{slug.inspect}"
-  end
-
   def find_by_slug slug
     organization_for (scope.where(slug: slug).first or return)
   end
