@@ -17,28 +17,30 @@ module Rails::ConsoleMethods
     @threadable = Threadable.new(options)
   end
 
-  def alice
-    @alice ||= threadable.users.find_by_email_address!('alice@ucsd.example.com')
-  end
-
-  def amy
-    @amy ||= threadable.users.find_by_email_address!('amywong.phd@gmail.com')
-  end
+  delegate :current_user, to: :threadable
 
   def sign_in_as email_address
     threadable.current_user = threadable.users.find_by_email_address(email_address)
   end
 
-  delegate :current_user, to: :threadable
+  unless Rails.env.production?
+    def build_fixtures!
+      Fixtures.build!
+    ensure
+      Timecop.return
+    end
 
-  def build_fixtures!
-    Fixtures.build!
-  ensure
-    Timecop.return
-  end
+    def alice
+      @alice ||= threadable.users.find_by_email_address!('alice@ucsd.example.com')
+    end
 
-  def log_sql!
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    def amy
+      @amy ||= threadable.users.find_by_email_address!('amywong.phd@gmail.com')
+    end
+
+    def log_sql!
+      ActiveRecord::Base.logger = Logger.new(STDOUT)
+    end
   end
 
 end
