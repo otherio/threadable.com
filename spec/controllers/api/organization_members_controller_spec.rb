@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Api::OrganizationMembersController do
+  let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
+  let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
 
   when_not_signed_in do
     describe 'index' do
@@ -13,10 +15,6 @@ describe Api::OrganizationMembersController do
   end
 
   when_signed_in_as 'bob@ucsd.example.com' do
-
-    let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
-    let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
-
     # get /api/:organization/tasks/:task/members
     describe 'index' do
       context 'when given an organization id' do
@@ -79,6 +77,57 @@ describe Api::OrganizationMembersController do
         end
       end
     end
+  end
+
+  describe '#destroy' do
+    let(:user) { raceteam.members.find_by_email_address('bethany@ucsd.example.com') }
+
+    when_signed_in_as 'alice@ucsd.example.com' do
+      context "when given a valid organization id" do
+        it "removes the member from the organization" do
+          member_count = raceteam.members.all.length
+          xhr :delete, :destroy, format: :json, organization_id: raceteam.slug, id: user.id
+          expect(response.status).to eq 200
+          member = raceteam.members.all.find{|m| m.email_address == 'bethany@ucsd.example.com'}
+          expect(member).to_not be_present
+          expect(response.body).to be_blank
+          expect(raceteam.members.all.length).to eq member_count - 1
+        end
+      end
+
+      context "when given an organization id of an organization that does not exist" do
+        it 'renders not found' do
+          xhr :delete, :destroy, format: :json, organization_id: 'foobar', id: user.id
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"foobar\""}'
+        end
+      end
+      context 'when given an organization id of an organization that the current user is not in' do
+        it 'renders not found' do
+          xhr :delete, :destroy, format: :json, organization_id: sfhealth.slug, id: user.id
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"sfhealth\""}'
+        end
+      end
+      context 'when given no organization id' do
+        it 'renders not acceptable' do
+          xhr :delete, :destroy, format: :json, id: user.id
+          expect(response.status).to eq 406
+          expect(response.body).to eq '{"error":"param not found: organization_id"}'
+        end
+      end
+    end
+
+    when_signed_in_as 'bob@ucsd.example.com' do
+      context "when the current user is not an owner" do
+        it 'renders not authorized' do
+          xhr :delete, :destroy, format: :json, organization_id: 'foobar', id: user.id
+          expect(response.status).to eq 304
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"foobar\""}'
+        end
+      end
+    end
+
   end
 
 

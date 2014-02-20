@@ -22,7 +22,7 @@ Threadable::Application.routes.draw do
     resources :tasks
     resources :messages
     resources :events
-    resources :organization_members, only: [:index, :create, :update]
+    resources :organization_members, only: [:index, :create, :update, :destroy]
     resources :group_members,        only: [:index, :create, :update, :destroy]
     resources :task_doers
   end
