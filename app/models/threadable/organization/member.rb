@@ -83,6 +83,12 @@ class Threadable::Organization::Member < Threadable::User
   end
 
   def remove
+    current_member = organization.members.current_member
+
+    if !current_member.can?(:remove_member_from, @organization)
+      raise Threadable::AuthorizationError, 'You cannot remove members from this organization'
+    end
+
     Threadable.transaction do
       organization.groups.all_for_user(user).each do |group|
         group.members.remove user, send_notice: false
