@@ -34,16 +34,25 @@ module RescueFromExceptionsConcern
 
     case exception
     when *UNAUTHORIZED_EXCEPTIONS
-      threadable.report_exception! exception
+      report_exception! exception
       render_error exception, :unauthorized,   'Unauthorized'
     when *NOT_ACCEPTABLE_EXCEPTIONS
       render_error exception, :not_acceptable, 'Not Acceptable'
     when *NOT_FOUND_EXCEPTIONS
       render_error exception, :not_found,      'Not Found'
     else
-      threadable.report_exception! exception
+      report_exception! exception, rendering: 500
       render_error exception, :bad,            'Server Error'
     end
+  end
+
+  def report_exception! exception, context={}
+    threadable.report_exception! exception, context.merge(
+      request_url:    request.url,
+      request_params: request.params,
+      request_method: request.request_method,
+      request_xhr:    request.xhr?,
+    )
   end
 
   def render_error exception, status, message

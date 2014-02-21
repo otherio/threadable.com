@@ -36,9 +36,9 @@ describe EmailsController, fixtures: false do
 
     context 'when the post fails to create an IncomingEmail' do
       it "renders a 400" do
-        error = Threadable::RecordInvalid.new('BAD!')
-        expect(threadable.incoming_emails).to receive(:create!).and_raise(error)
-        expect(Honeybadger).to receive(:notify).with(error)
+        exception = Threadable::RecordInvalid.new('BAD!')
+        expect(threadable.incoming_emails).to receive(:create!).and_raise(exception)
+        expect(Honeybadger).to receive(:notify).with(exception, context: {})
         post :create, params
         expect(response.status).to eq 400
         expect(response.body).to be_blank
