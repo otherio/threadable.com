@@ -1,5 +1,6 @@
 Threadable.ConversationController = Ember.ObjectController.extend(Threadable.ConfirmationMixin, {
-  needs: ['doerSelector', 'group'],
+  needs: ['organization', 'doerSelector', 'group'],
+  organization: Ember.computed.alias('controllers.organization'),
 
   showDoerSelector: false,
 

@@ -27,6 +27,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
 
   setupController: function(controller, model) {
     this._super(controller, model);
+    this.controllerFor('conversation').set('model', model)
     this.controllerFor('reply').set('model', Threadable.Message.create({}));
   },
 
