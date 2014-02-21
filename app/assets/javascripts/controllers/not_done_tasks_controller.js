@@ -1,6 +1,7 @@
 Threadable.NotDoneTasksController = Ember.ArrayController.extend(Threadable.RoutesMixin, {
-  needs: ['organization'],
+  needs: ['organization', 'tasks'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
+  prioritizing: Ember.computed.alias('controllers.tasks.prioritizing'),
   itemController: 'not_done_tasks_item',
 
   content: [],

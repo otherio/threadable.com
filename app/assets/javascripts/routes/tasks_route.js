@@ -21,11 +21,11 @@ Threadable.TasksRoute = Ember.Route.extend({
       // this.controller.get('model').unshiftObject(conversation);
     },
     refresh: function(callback) {
-      var notDoneTasks = this.controllerFor('notDoneTasks');
+      // var notDoneTasks = this.controllerFor('notDoneTasks');
 
-      this.notDoneTasks().then(function(newTasks) {
-        notDoneTasks.set('model', newTasks);
-      });
+      // this.notDoneTasks().then(function(newTasks) {
+      //   notDoneTasks.set('model', newTasks);
+      // });
     }
   }
 

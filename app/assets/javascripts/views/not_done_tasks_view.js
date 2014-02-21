@@ -5,6 +5,8 @@ Threadable.NotDoneTasksView = Ember.View.extend({
   relativeTo: null,
   side: null,
 
+  prioritizing: Ember.computed.alias('context.prioritizing'),
+
   image: (function(){
     var img = document.createElement("img");
     img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
@@ -24,6 +26,7 @@ Threadable.NotDoneTasksView = Ember.View.extend({
   },
 
   dragStart: function(event) {
+    if (!this.get('prioritizing')) return false;
     $(event.target).addClass('being-dragged');
     this.set('elementBeingDragged', event.target);
     event.dataTransfer.setDragImage(this.image, 0, 0);
@@ -77,11 +80,7 @@ Threadable.NotDoneTasksView = Ember.View.extend({
     taskBeingMoved.set('position', newPosition + 0.1);
 
     this.$('[draggable]').attr('draggable', 'false');
-    taskBeingMoved.saveRecord().then(function() {
-      Ember.run(function() {
-        controller.send('refresh');
-      });
-    });
+    taskBeingMoved.saveRecord();
 
     return false;
   },
