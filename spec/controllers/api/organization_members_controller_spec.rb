@@ -121,9 +121,9 @@ describe Api::OrganizationMembersController do
     when_signed_in_as 'bob@ucsd.example.com' do
       context "when the current user is not an owner" do
         it 'renders not authorized' do
-          xhr :delete, :destroy, format: :json, organization_id: 'foobar', id: user.id
-          expect(response.status).to eq 304
-          expect(response.body).to eq '{"error":"unable to find organization with slug \"foobar\""}'
+          xhr :delete, :destroy, format: :json, organization_id: raceteam.slug, id: user.id
+          expect(response.status).to eq 401
+          expect(response.body).to eq '{"error":"You cannot remove members from this organization"}'
         end
       end
     end
