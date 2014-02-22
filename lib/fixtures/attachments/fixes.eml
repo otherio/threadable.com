@@ -1,0 +1,153 @@
+Delivered-To: zac@apportable.com
+Received: by 10.76.12.104 with SMTP id x8csp124883oab;
+        Fri, 21 Feb 2014 12:53:04 -0800 (PST)
+X-Received: by 10.60.58.72 with SMTP id o8mr9418568oeq.23.1393015983872;
+        Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+Return-Path: <devs+bncBCCL55NAZYMRBL7ZT2MAKGQEULBUZTQ@apportable.com>
+Received: from mail-ob0-f199.google.com (mail-ob0-f199.google.com [209.85.214.199])
+        by mx.google.com with ESMTPS id bi1si7900998oec.56.2014.02.21.12.53.03
+        for <zac@apportable.com>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+Received-SPF: softfail (google.com: domain of transitioning devs+bncBCCL55NAZYMRBL7ZT2MAKGQEULBUZTQ@apportable.com does not designate 209.85.223.200 as permitted sender) client-ip=209.85.223.200;
+Authentication-Results: mx.google.com;
+       spf=softfail (google.com: domain of transitioning devs+bncBCCL55NAZYMRBL7ZT2MAKGQEULBUZTQ@apportable.com does not designate 209.85.223.200 as permitted sender) smtp.mail=devs+bncBCCL55NAZYMRBL7ZT2MAKGQEULBUZTQ@apportable.com
+Received: by mail-ob0-f199.google.com with SMTP id uz6sf17885695obc.2
+        for <zac@apportable.com>; Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:reply-to:message-id:date:subject
+         :from:to:cc:x-original-sender:x-original-authentication-results
+         :precedence:mailing-list:list-id:list-post:list-help:list-archive
+         :list-unsubscribe:content-type;
+        bh=hUR+LJcOSbwVB9xP4rgyIs5TeEDOgcdnshVM8v3X/GI=;
+        b=bzTeAoy3lh/tc1S/kb/BKCeBE+Sb9qaRvIQlgZ02ukVsRd2TnKXKvbHRXrz9pJ6LJM
+         ldY5TCojc2vDqYMQIhi2lWX8isi86Y8peJtQ1g8i/aXypQYXF1p7Esq2WlSIR02moBv9
+         A2LU+pgBFYngO2C5rciz9ZrX3bfYmnEf9XoyaL/lap00g51fGbJiznfOK6rHPDgnXwZw
+         5dLvruKKNs0WmIi0mBMFt+f6uVUgnvXeM7Sb7ICeRpL3vqgiKFdO47iK51HUEfp0hvb/
+         +qRE74p0GsDUTfIZfvvmfMA6vUqsmWfcOqa9YSyuVC2u0ejS9czjGtfvTLAX/+V/Ue6n
+         GkXA==
+X-Gm-Message-State: ALoCoQla37TRnfeA5I0RZno68MtJsdv60xOLX0cEAg98GgAFs01FDznPID3dLwTVzaNWN/Yxm+Ih
+X-Received: by 10.182.230.168 with SMTP id sz8mr3100519obc.9.1393015983681;
+        Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+X-BeenThere: devs@apportable.com
+Received: by 10.140.89.70 with SMTP id u64ls324586qgd.86.gmail; Fri, 21 Feb
+ 2014 12:53:03 -0800 (PST)
+X-Received: by 10.236.175.66 with SMTP id y42mr4159730yhl.38.1393015983489;
+        Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+X-BeenThere: cr@apportable.com
+Received: by 10.50.138.66 with SMTP id qo2ls704558igb.43.canary; Fri, 21 Feb
+ 2014 12:53:03 -0800 (PST)
+X-Received: by 10.43.145.137 with SMTP id ju9mr4326258icc.36.1393015983286;
+        Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+Received: from mail-ie0-f200.google.com (mail-ie0-f200.google.com [209.85.223.200])
+        by mx.google.com with ESMTPS id bs7si9426396icc.40.2014.02.21.12.53.03
+        for <cr@apportable.com>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+Received-SPF: pass (google.com: domain of 3rrwHUwUOAuMUFZQGFUUTWYFGQJ.HTRHWFUUTWYFGQJ.HTR@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com designates 209.85.223.200 as permitted sender) client-ip=209.85.223.200;
+Received: by mail-ie0-f200.google.com with SMTP id to1so9549658ieb.7
+        for <cr@apportable.com>; Fri, 21 Feb 2014 12:53:03 -0800 (PST)
+MIME-Version: 1.0
+X-Received: by 10.182.153.68 with SMTP id ve4mr2951210obb.39.1393015982922;
+ Fri, 21 Feb 2014 12:53:02 -0800 (PST)
+Reply-To: paulb@apportable.com, cr@apportable.com
+X-Google-Appengine-App-Id: lbs1
+Message-ID: <089e0139fd1cd4408d04f2f0ce45@google.com>
+Date: Fri, 21 Feb 2014 20:53:02 +0000
+Subject: [XcodeApportable origin/master] "build fixes" (issue 5741107111526400)
+From: paulb@apportable.com
+To: paulb@apportable.com
+Cc: cr@apportable.com
+X-Original-Sender: paulb@apportable.com
+X-Original-Authentication-Results: mx.google.com;       spf=pass (google.com:
+ domain of 3rrwHUwUOAuMUFZQGFUUTWYFGQJ.HTRHWFUUTWYFGQJ.HTR@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com
+ designates 209.85.223.200 as permitted sender) smtp.mail=3rrwHUwUOAuMUFZQGFUUTWYFGQJ.HTRHWFUUTWYFGQJ.HTR@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com
+Precedence: list
+Mailing-list: list devs@apportable.com; contact devs+owners@apportable.com
+List-ID: <devs.apportable.com>
+X-Google-Group-Id: 211538576081
+List-Post: <http://groups.google.com/a/apportable.com/group/devs/post>, <mailto:devs@apportable.com>
+List-Help: <http://support.google.com/a/apportable.com/bin/topic.py?topic=25838>,
+ <mailto:devs+help@apportable.com>
+List-Archive: <http://groups.google.com/a/apportable.com/group/devs/>
+List-Unsubscribe: <http://groups.google.com/a/apportable.com/group/devs/subscribe>,
+ <mailto:googlegroups-manage+211538576081+unsubscribe@googlegroups.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed; delsp=yes
+
+Reviewers: ,
+
+
+
+Please review this at http://cr.apportable.com/5741107111526400/
+
+Affected files:
+   M IDEAndroidSupportCore/IDEAndroidSupportCore/Scripts/link.py
+   M XCPluginKit/Headers/DVTFoundation/DVTExtension.h
+   M XCPluginKit/Headers/DevToolsCore/XCPlatformSpecification.h
+
+
+Index: IDEAndroidSupportCore/IDEAndroidSupportCore/Scripts/link.py
+diff --git a/IDEAndroidSupportCore/IDEAndroidSupportCore/Scripts/link.py  
+b/IDEAndroidSupportCore/IDEAndroidSupportCore/Scripts/link.py
+index  
+31f7b3e721f9397304f4713967423de0f38e4971..b02e25627dad339722495531d263dd24bdc52f26  
+100755
+--- a/IDEAndroidSupportCore/IDEAndroidSupportCore/Scripts/link.py
++++ b/IDEAndroidSupportCore/IDEAndroidSupportCore/Scripts/link.py
+@@ -51,7 +51,7 @@ if __name__ == '__main__':
+          sdk = os.environ['HOME'] + '/.apportable/SDK'
+
+      if args.apportableStaticLink:
+-        cmd = sdk  
++ "/toolchain/macosx/android-ndk/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-ar"
++        cmd = sdk  
++ "/toolchain/macosx/android-ndk/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64/arm-linux-androideabi/bin/ar"
+          sys.exit(subprocess.call([cmd, "rc", args.out_file, '@' +  
+args.filelist]))
+
+      tempdir = tempfile.mkdtemp()
+Index: XCPluginKit/Headers/DVTFoundation/DVTExtension.h
+diff --git a/XCPluginKit/Headers/DVTFoundation/DVTExtension.h  
+b/XCPluginKit/Headers/DVTFoundation/DVTExtension.h
+index  
+426ab7099f53dda2d409a1940673024f5ebcc61b..3ecb37b41cdf1055f41d3773780805b0bfbbef91  
+100644
+--- a/XCPluginKit/Headers/DVTFoundation/DVTExtension.h
++++ b/XCPluginKit/Headers/DVTFoundation/DVTExtension.h
+@@ -19,10 +19,10 @@
+      NSXMLElement *_extensionElement;
+      DVTDispatchLock *_faultFiringLock;
+      struct {
+-        unsigned int reserved:60;
+-        unsigned int _adjustedExtensionData:1;
+-        unsigned int _checkedExtensionXML:1;
+-        unsigned int _faultingState:2;
++        unsigned long long reserved:60;
++        unsigned long long _adjustedExtensionData:1;
++        unsigned long long _checkedExtensionXML:1;
++        unsigned long long _faultingState:2;
+      } _flags;
+  }
+
+Index: XCPluginKit/Headers/DevToolsCore/XCPlatformSpecification.h
+diff --git a/XCPluginKit/Headers/DevToolsCore/XCPlatformSpecification.h  
+b/XCPluginKit/Headers/DevToolsCore/XCPlatformSpecification.h
+index  
+b7fc981b09b5251cf3ba34d6c9bb1a55f34506a6..3ecc77ccb1d5231c93513b3c21c6af4f05cd8b37  
+100644
+--- a/XCPluginKit/Headers/DevToolsCore/XCPlatformSpecification.h
++++ b/XCPluginKit/Headers/DevToolsCore/XCPlatformSpecification.h
+@@ -45,7 +45,6 @@
+  + (void)initialize;
+  @property(readonly) XCCommandLineToolSpecificationRegistry  
+*commandLineToolSpecificationRegistry; // @synthesize  
+commandLineToolSpecificationRegistry=_commandLineToolSpecificationRegistry;
+  @property(readonly) DVTPlatform *underlyingPlatform; // @synthesize  
+underlyingPlatform=_underlyingPlatform;
+-- (void).cxx_destruct;
+  - (id)dataformattersBundleStyle;
+  - (id)dataformattersLocationPath;
+  - (BOOL)providesAttachList;
+
+

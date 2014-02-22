@@ -29,10 +29,13 @@ class ConversationMailer < Threadable::Mailer
 
     @message.attachments.all.each do |attachment|
       attachments[attachment.filename] = {
-        :mime_type => attachment.mimetype,
-        :content   => attachment.content,
+        :content    => attachment.content,
         :content_id => attachment.content_id,
       }
+
+      # this has to be here (not in the declaration above) to work around some
+      # weird bug where attachments of type message/rfc822 don't work otherwise
+      attachments[attachment.filename][:mime_type] = attachment.mimetype
 
       if attachment.content_id
         attachments[attachment.filename][:content_id] = attachment.content_id
