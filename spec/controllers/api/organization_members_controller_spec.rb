@@ -90,7 +90,7 @@ describe Api::OrganizationMembersController do
           expect(response.status).to eq 200
           member = raceteam.members.all.find{|m| m.email_address == 'bethany@ucsd.example.com'}
           expect(member).to_not be_present
-          expect(response.body).to be_blank
+          expect(response.body).to eq '{}'
           expect(raceteam.members.all.length).to eq member_count - 1
         end
       end
