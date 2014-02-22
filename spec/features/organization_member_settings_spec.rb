@@ -126,6 +126,29 @@ feature "organization member settings" do
 
   end
 
+  scenario %(removing a member) do
+    sign_in_as 'alice@ucsd.example.com'
+
+    visit_organization_settings
+
+    within '.organization-members' do
+      click_on 'Yan Hzu'
+    end
+
+    expect(page).to have_text 'Remove this member'
+
+    # for some reason, finding this by its text doesn't work
+    within('.danger-zone') { page.find('a').click }
+
+    click_on 'remove'
+
+    wait_until_expectation do
+      expect(organization.members.find_by_user_slug('yan-hzu')).to be_nil
+    end
+
+    expect(page).to be_at organization_members_url('raceteam')
+    expect(page).to_not have_text 'Yan Hzu'
+  end
 
   def visit_organization_settings
     within_element 'the sidebar' do
