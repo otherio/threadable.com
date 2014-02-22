@@ -356,7 +356,7 @@ describe "actual broken incoming emails" do
 
     let :attachments do
       [
-        RSpec::Support::Attachments.uploaded_file('fixes.eml', "message/rfc822", false),
+        RSpec::Support::Attachments.uploaded_file('fixes]""().eml', "message/rfc822", false),
         RSpec::Support::Attachments.uploaded_file('smime.p7s', "application/octet-stream", true),
       ]
     end

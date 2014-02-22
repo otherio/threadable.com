@@ -8,7 +8,7 @@ class Attachment < ActiveRecord::Base
 
   def content
     @content ||=  if url[0] == '/'
-      Rails.root.join('public', url[1..-1]).read
+      Rails.root.join('public', URI.unescape(url[1..-1])).read
     else
       HTTParty.get(url)
     end

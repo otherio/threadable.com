@@ -28,18 +28,19 @@ class ConversationMailer < Threadable::Mailer
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
 
     @message.attachments.all.each do |attachment|
-      attachments[attachment.filename] = {
+      filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
+      attachments[filename] = {
         :content    => attachment.content,
         :content_id => attachment.content_id,
       }
 
       # this has to be here (not in the declaration above) to work around some
       # weird bug where attachments of type message/rfc822 don't work otherwise
-      attachments[attachment.filename][:mime_type] = attachment.mimetype
+      attachments[filename][:mime_type] = attachment.mimetype
 
       if attachment.content_id
-        attachments[attachment.filename][:content_id] = attachment.content_id
-        attachments[attachment.filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
+        attachments[filename][:content_id] = attachment.content_id
+        attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
       end
     end
 
