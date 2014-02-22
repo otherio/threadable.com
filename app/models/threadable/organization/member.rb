@@ -100,6 +100,12 @@ class Threadable::Organization::Member < Threadable::User
 
       organization_membership_record.update_attribute(:active, false)
     end
+
+    @threadable.track("Removed User", {
+      'User'                  => id,
+      'Organization'          => @organization.id,
+      'Organization Name'     => @organization.name,
+    })
   end
 
   def subscribe!

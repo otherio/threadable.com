@@ -11,8 +11,8 @@
         h4.label
           | Role:
         .control
-          if canChangeRole
-            view Ember.Select contentBinding="roles" valueBinding=role disabled=saving class="role"
+          if canEdit
+            view Ember.Select contentBinding="roles" valueBinding="role" disabled=saving class="role"
           else
             = role
 
@@ -43,3 +43,13 @@
         br
         p.subtitle
           | How should #{name} receive messages that are not in any groups?
+
+      if canEdit
+        .danger-zone
+          h4.danger
+            | Danger Zone
+          p.subtitle
+            | These actions cannot be undone
+          a.uk-button.uk-button-danger click="removeMember" Remove this member
+
+

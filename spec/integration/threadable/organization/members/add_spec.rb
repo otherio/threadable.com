@@ -58,6 +58,16 @@ describe Threadable::Organization::Members::Add do
         end
       end
 
+      context "when given a user who was previously an organization member, but was deleted" do
+        let(:user) { threadable.users.find_by_email_address('darth@ucsd.example.com') }
+        it 'adds that user to the organization and all auto-joina groups but does not email our group add notices' do
+          expect{
+            organization.members.add(user: user)
+          }.to_not change{ User.count }
+          expect_organization_member! "darth@ucsd.example.com"
+        end
+      end
+
     end
   end
 
