@@ -28,7 +28,7 @@ class Api::OrganizationMembersController < ApiController
     end
 
     user.remove
-    render status: 200, nothing: true
+    render json: {}, status: 200
   end
 
   def update

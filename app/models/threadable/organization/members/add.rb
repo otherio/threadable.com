@@ -13,7 +13,7 @@ class Threadable::Organization::Members::Add < MethodObject
     Threadable.transaction do
       return existing_member if existing_user && existing_member
       create_user! unless existing_user
-      create_membership_record!
+      create_or_update_membership_record!
       return @new_member
     end
   end
@@ -30,7 +30,12 @@ class Threadable::Organization::Members::Add < MethodObject
   end
 
   let :existing_member do
-    membership_record = @organization.organization_record.memberships.where(user_id: @user.id).first
+    membership_record = @organization.organization_record.memberships.where(user_id: @user.id, active: true).first
+    membership_record ? Threadable::Organization::Member.new(@organization, membership_record) : nil
+  end
+
+  let :former_member do
+    membership_record = @organization.organization_record.memberships.where(user_id: @user.id, active: false).first
     membership_record ? Threadable::Organization::Member.new(@organization, membership_record) : nil
   end
 
@@ -43,13 +48,19 @@ class Threadable::Organization::Members::Add < MethodObject
     )
   end
 
-  def create_membership_record!
-    membership_record = @organization.organization_record.memberships.create!(
-      user_id:    @user.id,
-      gets_email: @options[:gets_email] != false,
-      role:       @members.count.zero? ? :owner : :member,
-    )
-    @new_member = Threadable::Organization::Member.new(@organization, membership_record)
+  def create_or_update_membership_record!
+    @new_member = former_member
+
+    if @new_member
+      @new_member.organization_membership_record.update_attribute(:active, true)
+    else
+      membership_record = @organization.organization_record.memberships.create!(
+        user_id:    @user.id,
+        gets_email: @options[:gets_email] != false,
+        role:       @members.count.zero? ? :owner : :member,
+      )
+      @new_member = Threadable::Organization::Member.new(@organization, membership_record)
+    end
     auto_join_groups!
     track!
     send_join_notice! if @send_join_notice

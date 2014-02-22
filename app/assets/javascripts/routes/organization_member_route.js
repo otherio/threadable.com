@@ -6,5 +6,12 @@ Threadable.OrganizationMemberRoute = Ember.Route.extend({
   renderTemplate: function() {
     this.render('organization_member', {into: 'organization', outlet: 'pane2'});
     this.controllerFor('organization').set('focus', 'conversation');
+  },
+
+  actions: {
+    transitionToOrganizationMembers: function(organization) {
+      this.transitionTo("organization_members", organization.get('slug'));
+      this.controllerFor('organization').set('focus', 'conversations');
+    }
   }
 });

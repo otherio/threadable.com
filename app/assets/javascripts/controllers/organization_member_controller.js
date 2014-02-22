@@ -6,7 +6,7 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
   saving: false,
   roles: ['owner', 'member'],
 
-  canChangeRole: function() {
+  canEdit: function() {
     return this.get('currentMember.isOwner') && this.get('currentMember.userId') !== this.get('userId');
   }.property('userId', 'currentMember.userId', 'currentMember.isOwner'),
 
@@ -21,7 +21,7 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
 
       if (!this.get('subscribed')){
         this.set('subscribed', true);
-        return
+        return;
       }
 
       this.confirm({
@@ -49,6 +49,23 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
     setGetsUngroupedInSummary: function() {
       if (this.get('saving')) return;
       this.set('ungroupedMailDelivery', 'in_summary');
+    },
+    removeMember: function() {
+      this.confirm({
+        message: (
+          "Are you sure you want to remove " + this.get('name') +
+          ' from ' + this.get('organization.name') + '?'
+        ),
+        approveText: 'remove',
+        declineText: 'cancel',
+        approved: function() {
+          var user = this.get('model');
+          user.deleteRecord().then(function() {
+            this.get('controllers.organization_members').removeObject(user);
+            this.send('transitionToOrganizationMembers', this.get('organization'));
+          }.bind(this));
+        }.bind(this)
+      });
     },
   },
 
