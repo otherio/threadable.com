@@ -21,18 +21,22 @@ class RunCommandsFromEmailMessageBody < MethodObject
   def execute! command
     case command
     when /^&done/i
+      return unless @conversation.task?
       @conversation.done! if @conversation.task?
     when /^&undone/i
+      return unless @conversation.task?
       @conversation.undone! if @conversation.task?
     when /^&mute/i
       @conversation.mute!
     when /^&unmute/i
       @conversation.unmute!
     when /^&add(.*)/i
+      return unless @conversation.task?
       doer = @conversation.organization.members.fuzzy_find($1)
       return unless doer.present?
       @conversation.doers.add(doer)
     when /^&remove(.*)/i
+      return unless @conversation.task?
       doer = @conversation.organization.members.fuzzy_find($1)
       return unless doer.present?
       @conversation.doers.remove(doer)
