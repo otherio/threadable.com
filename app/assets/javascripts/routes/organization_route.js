@@ -6,6 +6,7 @@ Threadable.OrganizationRoute = Ember.Route.extend({
       if (organization){
         organization.loadMembers();
         Threadable.setupUserVoice(currentUser, organization);
+        currentUser.set('currentOrganizationId', organization.get('id'));
       }
       return organization;
     })

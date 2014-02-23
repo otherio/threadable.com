@@ -19,6 +19,7 @@ class Threadable::User < Threadable::Model
     new_record?
     persisted?
     avatar_url
+    current_organization_id
     created_at
   }, to: :user_record
 

@@ -2,15 +2,46 @@ Threadable.currentUserPromise = currentUserPromise;
 delete this.currentUserPromise;
 
 Threadable.CurrentUser = RL.Model.extend({
-  id:           RL.attr('string'),
-  userId:       RL.attr('number'),
-  param:        RL.attr('string'),
-  name:         RL.attr('string'),
-  emailAddress: RL.attr('string'),
-  slug:         RL.attr('string'),
-  avatarUrl:    RL.attr('string'),
+  id:                    RL.attr('string'),
+  userId:                RL.attr('number'),
+  param:                 RL.attr('string'),
+  name:                  RL.attr('string'),
+  emailAddress:          RL.attr('string'),
+  slug:                  RL.attr('string'),
+  avatarUrl:             RL.attr('string'),
+  currentOrganizationId: RL.attr('number'),
 
   organizations: RL.hasMany('Threadable.Organization'),
+
+  currentOrganization: function() {
+    var
+      currentOrganizationId = this.get('currentOrganizationId'),
+      organizations         = this.get('organizations'),
+      organization;
+
+    if (currentOrganizationId){
+      organization = organizations.findBy('id', currentOrganizationId)
+    }
+    if (organization) return organization;
+    organization = organizations.objectAt(0);
+    if (organization){
+      this.set('currentOrganizationId', organization.get('id'));
+      return organization;
+    }
+  }.property('currentOrganizationId'),
+
+  currentOrganizationIdChanged: function() {
+    $.ajax({
+      type: 'PUT',
+      url: '/api/users/current',
+      data: {
+        current_user:{
+          current_organization_id: this.get('currentOrganizationId')
+        }
+      }
+    });
+  }.observes('currentOrganizationId'),
+
 });
 
 Threadable.CurrentUser.reopenClass({
@@ -33,5 +64,5 @@ Threadable.CurrentUser.reopenClass({
       return currentUser;
     }.bind(this));
     return this._reloadPromise;
-  }
+  },
 });
