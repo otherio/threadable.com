@@ -32,8 +32,8 @@ feature "signing up" do
 
     fill_in 'address', with: 'zero-point'
     fill_in 'Your name', with: 'John Hutchison'
-    fill_in 'password', with: 'imacharlton', :match => :prefer_exact
-    fill_in 'password confirmation', with: 'imacharlton', :match => :prefer_exact
+    fill_in 'password', with: 'imacharlatan', :match => :prefer_exact
+    fill_in 'password confirmation', with: 'imacharlatan', :match => :prefer_exact
     add_members members
     click_on 'Create'
 
@@ -42,7 +42,7 @@ feature "signing up" do
     expect(page).to have_text 'John Hutchison'
     expect(page).to have_text 'john@the-hutchison-effect.org'
     assert_members! members
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org') ).to be_blank
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 2 # demo content gets sent, currently
   end
 
   scenario %(with an existing user's email address) do

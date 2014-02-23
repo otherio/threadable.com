@@ -12,16 +12,16 @@ describe Threadable::Organization::Groups::Create do
     end
 
     context 'with the auto_join flag set to false' do
-      it 'adds all the current members to the group' do
+      it 'does not add any members to the group' do
         group = organization.groups.create(name: 'foo', auto_join: false)
         expect(group.members.count).to eq 0
       end
     end
 
     context 'with the auto_join flag unset' do
-      it 'adds all the current members to the group' do
+      it 'does not add any members to the group' do
         group = organization.groups.create(name: 'foo')
-        expect(group.members.count).to eq organization.members.count
+        expect(group.members.count).to eq 0
       end
     end
   end
