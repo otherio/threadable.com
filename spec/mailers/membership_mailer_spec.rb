@@ -74,7 +74,6 @@ describe MembershipMailer do
       expect(text_part    ).to include %(I added you to the +#{group.name} group)
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include conversations_url(organization, group)
-      expect(text_part    ).to include group_members_url(organization, group)
     end
   end
 
