@@ -15,7 +15,7 @@ Threadable.AddOrganizationGroupRoute = Ember.Route.extend({
   },
 
   model: function(group) {
-    return Threadable.Group.create({color: this.availableColor(), autoJoin: true});
+    return Threadable.Group.create({color: this.availableColor(), autoJoin: false});
   },
 
   renderTemplate: function() {
