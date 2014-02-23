@@ -1,5 +1,6 @@
 Threadable.OrganizationIndexRoute = Ember.Route.extend({
-  redirect: function(organization){
+  redirect: function(){
+    var organization = this.modelFor('organization');
     this.transitionTo('conversations', organization, 'my');
   }
 });

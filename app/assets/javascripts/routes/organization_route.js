@@ -8,28 +8,25 @@ Threadable.OrganizationRoute = Ember.Route.extend({
         Threadable.setupUserVoice(currentUser, organization);
       }
       return organization;
-    });
+    })
   },
 
-  redirect: function(model, transition) {
-    if (!model) this.transitionTo('/');
+  setupController: function(controller, organization) {
+    this._super(controller, organization);
+    this.controllerFor('topbar').set('organization', organization);
   },
 
-  setupController: function(controller, model) {
-    this._super(controller, model);
-    this.controllerFor('topbar').set('organization', model);
-  },
-
-  renderTemplate: function() {
-    this.render('organization', {into: 'application'});
-    var organization = this.controllerFor('organization');
-    if(organization.get('hasHeldMessages')){
-      $.UIkit.notify({
-          message : '<i class="uk-icon-envelope-o"></i> You\'ve got <a href="/' + organization.get('slug') + '/held_messages">held messages</a>',
-          status  : 'warning',
-          timeout : 3000,
-          pos     : 'top-right'
-      });
+  renderTemplate: function(controller, organization) {
+    if (organization){
+      this.render('organization', {into: 'application'});
+      var organization = this.controllerFor('organization');
+      if (organization.get('hasHeldMessages')) Threadable.notify('warning',
+        '<i class="uk-icon-envelope-o"></i> You\'ve got <a href="/' +
+        organization.get('slug') +
+        '/held_messages">held messages</a>'
+      )
+    }else{
+      this.render('not_found', {into: 'application'});
     }
   },
 
