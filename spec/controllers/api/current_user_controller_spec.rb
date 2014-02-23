@@ -7,8 +7,8 @@ describe Api::CurrentUserController do
     describe 'show' do
       it 'renders a blank current user as json' do
         xhr :get, :show, format: :json
-        expect(response.status).to eq 200
-        expect(response.body).to eq serialize(:current_user, current_user).to_json
+        expect(response.status).to eq 401
+        expect(response.body).to eq '{"error":"Unauthorized"}'
       end
     end
 
