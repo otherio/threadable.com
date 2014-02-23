@@ -5,9 +5,9 @@ feature "Creating an organization" do
   context "when not signed in" do
     scenario %(visiting /create prompts me to sign in) do
       visit new_organization_url
-      expect(page).to be_at sign_in_url(r: new_organization_path)
+      expect(page).to be_at_url sign_in_url(r: new_organization_path)
       sign_in_as_bethany!
-      expect(page).to be_at new_organization_url
+      expect(page).to be_at_url new_organization_url
     end
   end
 
@@ -34,7 +34,7 @@ feature "Creating an organization" do
       expect(page).to have_text 'bethany@ucsd.example.com'
       add_members members
       click_on 'Create'
-      expect(page).to be_at conversations_url('zero-point-energy-machine','my')
+      expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
       expect(page).to have_text 'Bethany Pattern'
       expect(page).to have_text 'bethany@ucsd.example.com'
       assert_members! members
@@ -44,9 +44,9 @@ feature "Creating an organization" do
     scenario %(clicking the "This is not me" link) do
       visit new_organization_url
       click_on 'This is not me'
-      expect(page).to be_at sign_in_url(r: new_organization_path)
+      expect(page).to be_at_url sign_in_url(r: new_organization_path)
       sign_in_as_bethany!
-      expect(page).to be_at new_organization_url
+      expect(page).to be_at_url new_organization_url
     end
   end
 

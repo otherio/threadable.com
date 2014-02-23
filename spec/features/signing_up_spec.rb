@@ -38,7 +38,7 @@ feature "signing up" do
     click_on 'Create'
 
     drain_background_jobs!
-    expect(page).to be_at conversations_url('zero-point-energy-machine','my')
+    expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
     expect(page).to have_text 'John Hutchison'
     expect(page).to have_text 'john@the-hutchison-effect.org'
     assert_members! members
@@ -49,13 +49,13 @@ feature "signing up" do
     visit sign_up_url
     fill_in 'Email address', with: 'bethany@ucsd.example.com'
     click_on 'Sign up'
-    expect(page).to be_at sign_in_url(email_address: 'bethany@ucsd.example.com')
+    expect(page).to be_at_url sign_in_url(email_address: 'bethany@ucsd.example.com')
     expect(page).to have_field('Email Address', with: 'bethany@ucsd.example.com')
     within_element 'the sign in form' do
       fill_in 'Password', :with => 'password'
       click_on 'Sign in'
     end
-    expect(page).to be_at conversations_url('raceteam', 'my')
+    expect(page).to be_at_url conversations_url('raceteam', 'my')
   end
 
   def add_members members

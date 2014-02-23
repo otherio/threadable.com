@@ -146,7 +146,7 @@ feature "organization member settings" do
       expect(organization.members.find_by_user_slug('yan-hzu')).to be_nil
     end
 
-    expect(page).to be_at organization_members_url('raceteam')
+    expect(page).to be_at_url organization_members_url('raceteam')
     expect(page).to_not have_text 'Yan Hzu'
   end
 

@@ -19,16 +19,3 @@ Capybara.server_port            = begin
 ensure
   server.close if server
 end
-
-class Capybara::Session
-
-  def at? url
-    current_scope.synchronize do
-      raise Capybara::ExpectationNotMet unless current_url == url.to_s
-    end
-    return true
-  rescue Capybara::ExpectationNotMet
-    return false
-  end
-
-end
