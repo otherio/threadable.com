@@ -107,10 +107,26 @@
     </ul>
   </div>
 
+  <div>
+    <ul>
+      <li>
+        <a href="" class="open-other-organizations dont-close-sidebar">
+          <i class="uk-icon-sign-out"></i>
+          Switch organizations
+        </a>
+      </li>
+    </ul>
+  </div>
+
 </div>
 
 <div class="other-organizations scrollable">
-  <div class="header">Organizations</div>
+  <div class="header">
+    Your Organizations
+    <div class="uk-float-right">
+      <a href=""><i class="uk-icon-times"></i></a>
+    </div>
+  </div>
   <ul>
     {{#each organization in currentUser.organizations}}
       <li>
