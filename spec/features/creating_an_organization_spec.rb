@@ -39,7 +39,7 @@ feature "Creating an organization" do
       expect(page).to have_text 'Bethany Pattern'
       expect(page).to have_text 'bethany@ucsd.example.com'
       assert_members! members
-      expect( sent_emails.sent_to('bethany@ucsd.example.com') ).to be_blank
+      expect( sent_emails.sent_to('bethany@ucsd.example.com').length ).to eq 2 # starter content gets sent, currently
     end
 
     scenario %(clicking the "This is not me" link) do
