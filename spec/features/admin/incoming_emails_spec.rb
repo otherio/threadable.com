@@ -50,7 +50,7 @@ feature "Admin incoming emails" do
     click_on 'Incoming emails'
 
     expect(page).to have_text 'Incoming emails page 0'
-    expect(page).to be_at admin_incoming_emails_url
+    expect(page).to be_at_url admin_incoming_emails_url
 
     expect(incoming_emails_table).to eq table_values_for(incoming_emails.reverse[0..9])
     click_on 'next page'
@@ -61,6 +61,6 @@ feature "Admin incoming emails" do
     incoming_email = incoming_emails.reverse[10]
 
     expect(page).to have_text incoming_email.id
-    expect(page).to be_at admin_incoming_email_url(incoming_email.id)
+    expect(page).to be_at_url admin_incoming_email_url(incoming_email.id)
   end
 end

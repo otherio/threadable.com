@@ -66,7 +66,7 @@ feature "Authentication" do
       fill_in "Password", with: "password"
       click_button "Sign in"
       expect_to_be_signed_in_as! "Alice Neilson"
-      expect(page).to be_at compose_conversation_url('raceteam', 'my')
+      expect(page).to be_at_url compose_conversation_url('raceteam', 'my')
     end
   end
 
@@ -80,7 +80,7 @@ feature "Authentication" do
       fill_in "Password", with: "password"
       click_button "Sign in"
       expect_to_be_signed_in_as! "Alice Neilson"
-      expect(page).to be_at compose_conversation_url('raceteam', 'my')
+      expect(page).to be_at_url compose_conversation_url('raceteam', 'my')
     end
   end
 end

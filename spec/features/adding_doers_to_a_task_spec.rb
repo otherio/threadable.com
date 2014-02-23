@@ -14,7 +14,7 @@ feature "Adding doers to a task" do
       click_on 'make wooden form for carbon layup'
     end
 
-    expect(page).to be_at conversation_url('raceteam', 'my', 'make-wooden-form-for-carbon-layup')
+    expect(page).to be_at_url conversation_url('raceteam', 'my', 'make-wooden-form-for-carbon-layup')
 
     expect(doers).to eq Set[]
 

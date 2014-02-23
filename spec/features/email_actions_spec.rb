@@ -19,7 +19,7 @@ describe "Email actions" do
         expect(page).to have_text "Please sign in to mark #{task.subject.inspect} as done"
         fill_in 'Password', with: 'password'
         click_on 'Sign in &done'
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         task.reload
         expect(task).to be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as done"
@@ -37,7 +37,7 @@ describe "Email actions" do
         expect(page).to have_text "Please sign in to mark #{task.subject.inspect} as not done"
         fill_in 'Password', with: 'password'
         click_on 'Sign in &undone'
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         task.reload
         expect(task).to_not be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as not done"
@@ -54,7 +54,7 @@ describe "Email actions" do
         expect(page).to have_text "Please sign in to mute #{conversation.subject.inspect}"
         fill_in 'Password', with: 'password'
         click_on 'Sign in &mute'
-        expect(page).to be_at conversation_url(organization, 'my', conversation)
+        expect(page).to be_at_url conversation_url(organization, 'my', conversation)
         conversation.reload
         expect(conversation).to be_muted_by user
         expect(page).to have_text "You muted #{conversation.subject.inspect}"
@@ -72,7 +72,7 @@ describe "Email actions" do
         expect(page).to have_text "Please sign in to add yourself as a doer of #{task.subject.inspect}"
         fill_in 'Password', with: 'password'
         click_on 'Sign in &add'
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         expect(task.doers).to include user
         expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
@@ -89,7 +89,7 @@ describe "Email actions" do
         expect(page).to have_text "Please sign in to remove yourself as a doer of #{task.subject.inspect}"
         fill_in 'Password', with: 'password'
         click_on 'Sign in &remove'
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         expect(task.doers).to_not include user
         expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
@@ -149,7 +149,7 @@ describe "Email actions" do
       let(:token){ EmailActionToken.encrypt(task.id, user.id, 'done') }
       it "should work immediately" do
         visit url
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         task.reload
         expect(task).to be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as done"
@@ -162,7 +162,7 @@ describe "Email actions" do
       let(:token){ EmailActionToken.encrypt(task.id, user.id, 'undone') }
       it "should work immediately" do
         visit url
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         task.reload
         expect(task).to_not be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as not done"
@@ -175,7 +175,7 @@ describe "Email actions" do
       let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'mute') }
       it "should work immediately" do
         visit url
-        expect(page).to be_at conversation_url(organization, 'my', conversation)
+        expect(page).to be_at_url conversation_url(organization, 'my', conversation)
         conversation.reload
         expect(conversation).to be_muted_by user
         expect(page).to have_text "You muted #{conversation.subject.inspect}"
@@ -188,7 +188,7 @@ describe "Email actions" do
       let(:token){ EmailActionToken.encrypt(task.id, user.id, 'add') }
       it "should work immediately" do
         visit url
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         task.reload
         expect(task.doers).to include user
         expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
@@ -201,7 +201,7 @@ describe "Email actions" do
       let(:token){ EmailActionToken.encrypt(task.id, user.id, 'remove') }
       it "should work immediately" do
         visit url
-        expect(page).to be_at task_url(organization, 'my', task)
+        expect(page).to be_at_url task_url(organization, 'my', task)
         task.reload
         expect(task.doers).to_not include user
         expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
@@ -216,7 +216,7 @@ describe "Email actions" do
         expect(group.members).to_not include user
         visit url
         expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
-        expect(page).to be_at conversations_url(organization, 'fundraising')
+        expect(page).to be_at_url conversations_url(organization, 'fundraising')
         expect(group.members).to include user
       end
     end
@@ -228,7 +228,7 @@ describe "Email actions" do
         expect(group.members).to include user
         visit url
         expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
-        expect(page).to be_at conversations_url(organization, 'electronics')
+        expect(page).to be_at_url conversations_url(organization, 'electronics')
         expect(group.members).to_not include user
       end
     end

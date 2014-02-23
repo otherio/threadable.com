@@ -22,7 +22,7 @@ module RSpec::Support::FeatureExampleGroup
 
   def sign_out!
     visit sign_out_path
-    expect(page).to be_at sign_in_url
+    expect(page).to be_at_url sign_in_url
     threadable.current_user_id = nil
   end
 

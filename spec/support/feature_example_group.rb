@@ -43,6 +43,17 @@ module RSpec::Support::FeatureExampleGroup
     end
   end
 
+  def wait_until
+    begin
+      page.current_scope.synchronize do
+        yield or raise Capybara::ExpectationNotMet
+      end
+      return true
+    rescue Capybara::ExpectationNotMet
+      return false
+    end
+  end
+
   RSpec.configuration.include self, :type => :feature
 
 end
