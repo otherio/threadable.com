@@ -13,11 +13,4 @@ Threadable.ApplicationController = Ember.Controller.extend({
     return this.container.lookup('router:main');
   }.property(),
 
-
-  actions: {
-    signOut: function(){
-      Threadable.signOut();
-    }
-  }
-
 });

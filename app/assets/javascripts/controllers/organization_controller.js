@@ -2,11 +2,10 @@ Threadable.OrganizationController = Ember.ObjectController.extend(Threadable.Cur
   needs: ['sidebar'],
 
   focus: 'conversations',
-  organization_slug: null,
 
   heldMessagesUrl: function(){
     return '/' + this.get('slug') + '/held_messages';
-  }.property('hasHeldMessages'),
+  }.property('model'),
 
   actions: {
     closeSidebar: function() {

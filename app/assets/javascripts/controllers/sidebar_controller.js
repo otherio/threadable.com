@@ -31,10 +31,6 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
   }.property('organization.groups.@each.currentUserIsAMember'),
 
   actions: {
-    signOut: function() {
-      this.signOut();
-      this.transitionToRoute('index');
-    },
     toggleSettings: function(){
       this.toggleProperty('settingsVisible');
     },
