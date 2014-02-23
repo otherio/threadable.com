@@ -3,7 +3,7 @@ module AuthenticationConcern
   extend ActiveSupport::Concern
 
   included do
-    helper_method :threadable, :current_user, :signup_enabled?, :signed_in?
+    helper_method :threadable, :current_user, :signed_in?
   end
 
   def current_user_id
@@ -38,10 +38,6 @@ module AuthenticationConcern
 
   def admin?
     signed_in? && current_user.admin?
-  end
-
-  def signup_enabled?
-    Rails.configuration.signup_enabled
   end
 
   def unauthorized! message=nil

@@ -3,6 +3,7 @@ machine:
     RACK_ENV: test
     HONEYBADGER_API_KEY: FAKE_HONEYBADGER_API_KEY
     SELENIUM_BROWSER: firefox
+    THREADABLE_SIGNUP_ENABLED: true
 
 test:
   override:

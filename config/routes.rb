@@ -5,11 +5,13 @@ Threadable::Application.routes.draw do
   post  '/recover-password'  => 'authentication#recover_password', as: 'recover_password'
   match '/sign_out'          => 'authentication#sign_out', via: [:get, :delete], as: 'sign_out'
 
-  get  '/sign_up' => 'sign_up#show'
-  post '/sign_up' => 'sign_up#sign_up'
+  if ENV['THREADABLE_SIGNUP_ENABLED'] == 'true'
+    get  '/sign_up' => 'sign_up#show'
+    post '/sign_up' => 'sign_up#sign_up'
 
-  get  '/create' => 'organizations#new',    as: 'new_organization'
-  post '/create' => 'organizations#create'
+    get  '/create' => 'organizations#new',    as: 'new_organization'
+    post '/create' => 'organizations#create'
+  end
 
   get  '/ea/:token' => 'email_actions#show', as: 'email_action'
   post '/ea/:token' => 'email_actions#take'
