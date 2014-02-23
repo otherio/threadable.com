@@ -55,6 +55,13 @@ class MailPreview < MailView
     threadable.emails.generate(:email_address_confirmation, threadable.users.all.last.email_addresses.all.last)
   end
 
+  def added_to_group_notice
+    organization, recipient = find_organization_and_recipient
+    group = organization.groups.all.first
+    sender = organization.members.all.sample
+    threadable.emails.generate(:added_to_group_notice, organization, group, sender, recipient)
+  end
+
   def message_summary
     time = Time.now.in_time_zone('US/Pacific') - 1.day
     random_message = Message.last!

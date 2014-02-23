@@ -14,4 +14,8 @@ module EmailHelper
     "mailto:#{email_address}#{extras}".html_safe
   end
 
+  def email_action_link record, recipient, action
+    email_action_url token: EmailActionToken.encrypt(record.id, recipient.id, action)
+  end
+
 end

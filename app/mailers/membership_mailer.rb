@@ -1,5 +1,7 @@
 class MembershipMailer < Threadable::Mailer
 
+  add_template_helper EmailHelper
+
   def join_notice organization, recipient, personal_message=nil
     @adder = threadable.current_user
     @organization, @recipient, @personal_message = organization, recipient, personal_message

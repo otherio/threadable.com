@@ -1,13 +1,19 @@
 I added you to the +<%= @group.name %> group in the
 "<%= @organization.name %>" organization on Threadable.
 
-This means that conversations and tasks created in this group will be sent
-to your email. If you don't want that, you can change your membership
-settings here:
+This means that messages sent to:
 
-<%= group_members_url(@organization, @group) %>
+  <%= @group.email_address %>
 
-You can see the current conversations and tasks in this group here:
-<%= conversations_url(@organization, @group) %>
+will now be sent to your inbox.
+
+
+If you don't want to be in the +<%= @group.name %> group, you leave by going to the following url:
+
+  <%= email_action_link(@group, @recipient, "leave") %>
+
+To view this group in the web, click here:
+
+  <%= conversations_url(@organization, @group) %>
 
 (This message was automatically generated)
