@@ -33,7 +33,7 @@ class FixtureBuilder
 
   def create_organization attributes
     @organization.nil? or raise "you can only create one organization in a fixture builder"
-    @organization = threadable.organizations.create! attributes.merge(add_current_user_as_a_member: false)
+    @organization = threadable.organizations.create! attributes.merge(add_current_user_as_a_member: false, populate_starter_data: false)
   end
 
   def organization

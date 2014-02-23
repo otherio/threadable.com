@@ -111,7 +111,7 @@ FixtureBuilder.build do
 
   # create some groups and put people in them
   as 'amywong.phd@gmail.com' do
-    @social_group = create_group name: 'Social', color: '#964bf8', auto_join: false
+    @social_group = create_group name: 'Social', color: '#3498db', auto_join: true
     add_member_to_group 'social', 'lilith@sfhealth.example.com'
     add_member_to_group 'social', 'anil@sfhealth.example.com'
     add_member_to_group 'social', 'yuriz@sfhealth.example.com'
