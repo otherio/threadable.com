@@ -47,9 +47,6 @@ module Threadable
       c.performance_tool :rspec
     end
 
-    # sign in is enabled by default, but can be disabled
-    config.signup_enabled = ENV["THREADABLE_SIGNUP_ENABLED"] != "false"
-
     config.filepicker_rails.api_key = ENV.fetch('THREADABLE_FILEPICKER_API_KEY')
 
     config.roadie.enabled = true
