@@ -4,6 +4,7 @@ feature "Creating an organization" do
 
   context "when not signed in" do
     scenario %(visiting /create prompts me to sign in) do
+      sign_out!
       visit new_organization_url
       expect(page).to be_at_url sign_in_url(r: new_organization_path)
       sign_in_as_bethany!
