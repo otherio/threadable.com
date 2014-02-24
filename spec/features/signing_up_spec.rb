@@ -12,6 +12,7 @@ feature "signing up" do
 
   scenario %(with a new email address), fixtures: false do
     visit sign_up_url
+    fill_in 'Organization name', with: 'Zero point energy machine'
     fill_in 'Email address', with: 'john@the-hutchison-effect.org'
     click_on 'Sign up'
     expect(page).to have_text 'Thank you'
@@ -26,8 +27,9 @@ feature "signing up" do
     sent_emails.clear
     visit email.link('Click here to confirm your account')[:href]
 
-    fill_in 'Organization name', with: 'Zero point energy machine'
+    expect(page).to have_field('Organization name', with: 'Zero point energy machine')
     expect(page).to have_field('address', with: 'zero-point-energy-machine')
+    expect(page).to have_field('Your email address', with: 'john@the-hutchison-effect.org', disabled: true)
     fill_in 'address', with: 'zero-point'
 
     fill_in 'address', with: 'zero-point'
@@ -47,15 +49,20 @@ feature "signing up" do
 
   scenario %(with an existing user's email address) do
     visit sign_up_url
+    fill_in 'Organization name', with: 'Zero point energy machine'
     fill_in 'Email address', with: 'bethany@ucsd.example.com'
     click_on 'Sign up'
-    expect(page).to be_at_url sign_in_url(email_address: 'bethany@ucsd.example.com')
+    expect(page).to be_at_url sign_in_url(email_address: 'bethany@ucsd.example.com', r: new_organization_path(organization_name: 'Zero point energy machine'))
     expect(page).to have_field('Email Address', with: 'bethany@ucsd.example.com')
     within_element 'the sign in form' do
       fill_in 'Password', :with => 'password'
       click_on 'Sign in'
     end
-    expect(page).to be_at_url conversations_url('raceteam', 'my')
+    expect(page).to be_at_url new_organization_url(organization_name: 'Zero point energy machine')
+    expect(page).to have_field('Organization name', with: 'Zero point energy machine')
+    expect(page).to have_field('address', with: 'zero-point-energy-machine')
+    expect(page).to have_text 'Bethany Pattern'
+    expect(page).to have_text 'bethany@ucsd.example.com'
   end
 
   def add_members members

@@ -1,10 +1,26 @@
 $(function(){
 
-  var emailAddressUsernameChanged = $('#new_organization_email_address_username').val() !== organizationNameToEmailAddressUsername($('#new_organization_organization_name').val());
+  var emailAddressUsernameChanged;
+
+  (function(){
+    var
+      emailAddressUsername          = $('#new_organization_email_address_username').val(),
+      generatedEmailAddressUsername = organizationNameToEmailAddressUsername();
+
+    if (emailAddressUsername == ""){
+      emailAddressUsername = generatedEmailAddressUsername;
+      $('#new_organization_email_address_username').val(generatedEmailAddressUsername);
+    }
+    emailAddressUsernameChanged = emailAddressUsername !== generatedEmailAddressUsername;
+  })();
+
 
   $('form.new_organization #new_organization_email_address_username')
     .on('change', function(event){ emailAddressUsernameChanged = true; })
-    .on('blur', function(event){ if ($(this).val() === '') emailAddressUsernameChanged = false; })
+    .on('blur', function(event){
+      var value = $(this).val();
+      if (value === '' || value === organizationNameToEmailAddressUsername()) emailAddressUsernameChanged = false;
+    })
   ;
 
   $('#new_organization_organization_name').on('keyup', function(event){
@@ -47,7 +63,12 @@ $(function(){
 
 
   function organizationNameToEmailAddressUsername(organizationName) {
+    if (!organizationName) organizationName = $('#new_organization_organization_name').val();
     return organizationName.toLowerCase().replace(/[\W_\.]+/g, '-');
   };
+
+
+  // focus first empty input
+  $('form.new_organization input').filter(function(){ return $(this).val() == ""; }).first().focus();
 
 });

@@ -44,7 +44,7 @@
         %h3 Your organization
         %fieldset
           .uk-form-row
-            = f.input :organization_name,                   placeholder: 'Organization name', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, autofocus: true, required: true
+            = f.input :organization_name,                   placeholder: 'Organization name', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
           .uk-form-row.email-address-username
             = f.input :email_address_username, as: :string, placeholder: 'address',           input_html: {class: 'uk-width-1-1 uk-form-large', maxlength: 30}, label: false, required: true
             %span @threadable.com
@@ -63,7 +63,7 @@
             .uk-form-row
               = f.input :your_name,                            placeholder: 'Your name',             input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
             .uk-form-row
-              = @new_organization.your_email_address
+              = f.input :your_email_address,    as: :email,    placeholder: 'Your email address',    input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, disabled: true
             .uk-form-row
               = f.input :password,              as: :password, placeholder: 'password',              input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
             .uk-form-row

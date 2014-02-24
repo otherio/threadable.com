@@ -56,8 +56,8 @@ class SendEmailWorker < Threadable::Worker
     threadable.emails.send_email(:removed_from_group_notice, organization, group, sender, recipient)
   end
 
-  def sign_up_confirmation email_address
-    threadable.emails.send_email(:sign_up_confirmation, email_address)
+  def sign_up_confirmation organization_name, email_address
+    threadable.emails.send_email(:sign_up_confirmation, organization_name, email_address)
   end
 
   def reset_password recipient_id

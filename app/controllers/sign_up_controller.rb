@@ -8,14 +8,16 @@ class SignUpController < ApplicationController
   end
 
   def sign_up
-    email_address = params.require(:sign_up)[:email_address]
+    sign_up_params = params.require(:sign_up).permit(:organization_name, :email_address)
+    organization_name = sign_up_params.require(:organization_name)
+    email_address = sign_up_params.require(:email_address)
 
     email_address_record = EmailAddress.find_or_initialize_by(address: email_address)
     if email_address_record.persisted? && email_address_record.user.present?
-      redirect_to sign_in_path(email_address: email_address)
+      redirect_to sign_in_path(email_address: email_address, r: new_organization_path(organization_name: organization_name))
     else
       email_address_record.save!
-      threadable.emails.send_email_async(:sign_up_confirmation, email_address)
+      threadable.emails.send_email_async(:sign_up_confirmation, organization_name, email_address)
       render :thank_you
     end
   end
