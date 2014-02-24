@@ -35,6 +35,27 @@ describe Threadable::MixpanelTracker do
     end
   end
 
+  describe 'track_for_user' do
+    let(:user_id) { 98 }
+    context 'when running outside a worker' do
+      it 'calls Mixpanel::Tracker#track' do
+        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'web', things: 'are good'})
+        threadable_mixpanel_tracker.track_for_user(user_id, "An event", {things: 'are good'})
+      end
+    end
+
+    context 'when running in a worker' do
+      before do
+        threadable.stub(:worker).and_return(true)
+      end
+
+      it 'calls Mixpanel::Tracker#track' do
+        expect(mixpanel_tracker).to receive(:track).with(98, "An event", {via: 'email', things: 'are good'})
+        threadable_mixpanel_tracker.track_for_user(user_id, "An event", {things: 'are good'})
+      end
+    end
+  end
+
 
   describe 'track_user_change' do
     let(:created_at){ double(:created_at, iso8601: "2013-12-03T16:24:37-08:00") }

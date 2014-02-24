@@ -79,24 +79,31 @@ describe Threadable::Emails do
       end
     end
     context 'when given :message_summary as the type' do
-      it 'calls UserMailer#message_summary' do
+      it 'calls SummaryMailer#message_summary' do
         expect(SummaryMailer).to receive(:new).with(threadable).and_return(mailer)
         expect(mailer).to receive(:generate).with(:message_summary, 1,2,3).and_return('A Mail::Message')
         expect(subject.generate(:message_summary, 1,2,3)).to eq 'A Mail::Message'
       end
     end
     context 'when given :added_to_group_notice as the type' do
-      it 'calls UserMailer#added_to_group_notice' do
+      it 'calls MembershipMailer#added_to_group_notice' do
         expect(MembershipMailer).to receive(:new).with(threadable).and_return(mailer)
         expect(mailer).to receive(:generate).with(:added_to_group_notice, 1,2,3).and_return('A Mail::Message')
         expect(subject.generate(:added_to_group_notice, 1,2,3)).to eq 'A Mail::Message'
       end
     end
     context 'when given :removed_from_group_notice as the type' do
-      it 'calls UserMailer#removed_from_group_notice' do
+      it 'calls MembershipMailer#removed_from_group_notice' do
         expect(MembershipMailer).to receive(:new).with(threadable).and_return(mailer)
         expect(mailer).to receive(:generate).with(:removed_from_group_notice, 1,2,3).and_return('A Mail::Message')
         expect(subject.generate(:removed_from_group_notice, 1,2,3)).to eq 'A Mail::Message'
+      end
+    end
+    context 'when given :spam_complaint as the type' do
+      it 'calls ErrorMailer#spam_complaint' do
+        expect(ErrorMailer).to receive(:new).with(threadable).and_return(mailer)
+        expect(mailer).to receive(:generate).with(:spam_complaint, 1,2,3).and_return('A Mail::Message')
+        expect(subject.generate(:spam_complaint, 1,2,3)).to eq 'A Mail::Message'
       end
     end
     context 'when given an invalid type' do

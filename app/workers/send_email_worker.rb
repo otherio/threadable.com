@@ -70,4 +70,8 @@ class SendEmailWorker < Threadable::Worker
     threadable.emails.send_email(:email_address_confirmation, email_address)
   end
 
+  def spam_complaint params
+    threadable.emails.send_email(:spam_complaint, params)
+  end
+
 end

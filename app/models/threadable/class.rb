@@ -53,6 +53,7 @@ class Threadable::Class
       Threadable::MixpanelTracker.new(self)
   end
   delegate :track, to: :tracker
+  delegate :track_for_user, to: :tracker
 
   let(:emails         ){ Threadable::Emails         .new(self) }
   let(:email_addresses){ Threadable::EmailAddresses .new(self) }

@@ -250,18 +250,25 @@ describe "processing incoming emails" do
       else
         expect( email.to                            ).to eq expected_sent_email_to
       end
-      expect( email.header[:Cc].to_s                ).to eq expected_sent_email_cc
-      expect( email.smtp_envelope_to.length         ).to eq 1
-      expect( recipient_email_addresses             ).to include email.smtp_envelope_to.first
-      expect( email.smtp_envelope_from              ).to eq expected_sent_email_smtp_envelope_from
-      expect( email.subject                         ).to eq expected_sent_email_subject
-      expect( email.html_content                    ).to include expected_sent_email_body_html
-      expect( email.text_content                    ).to include expected_sent_email_body_plain
-      expect( email.header['Reply-To'].to_s         ).to eq expected_sent_email_reply_to
-      expect( email.header['List-ID'].to_s          ).to eq expected_sent_email_list_id
-      expect( email.header['List-Archive'].to_s     ).to eq expected_sent_email_list_archive
-      expect( email.header['List-Unsubscribe'].to_s ).to be_present
-      expect( email.header['List-Post'].to_s        ).to eq expected_sent_email_list_post
+      expect( email.header[:Cc].to_s                   ).to eq expected_sent_email_cc
+      expect( email.smtp_envelope_to.length            ).to eq 1
+      expect( recipient_email_addresses                ).to include email.smtp_envelope_to.first
+      expect( email.smtp_envelope_from                 ).to eq expected_sent_email_smtp_envelope_from
+      expect( email.subject                            ).to eq expected_sent_email_subject
+      expect( email.html_content                       ).to include expected_sent_email_body_html
+      expect( email.text_content                       ).to include expected_sent_email_body_plain
+      expect( email.header['Reply-To'].to_s            ).to eq expected_sent_email_reply_to
+      expect( email.header['List-ID'].to_s             ).to eq expected_sent_email_list_id
+      expect( email.header['List-Archive'].to_s        ).to eq expected_sent_email_list_archive
+      expect( email.header['List-Unsubscribe'].to_s    ).to be_present
+      expect( email.header['List-Post'].to_s           ).to eq expected_sent_email_list_post
+
+      expected_mailgun_variables = {
+        'organization' => expected_organization.slug,
+        'recipient-id' => expected_organization.members.find_by_email_address(email.smtp_envelope_to.first).id,
+      }.to_json
+
+      expect( email.header['X-Mailgun-Variables'].to_s ).to eq expected_mailgun_variables
 
       content_ids = JSON.parse(params["content-id-map"])
       email.mail_message.attachments.each do |sent_attachment|

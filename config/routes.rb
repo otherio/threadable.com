@@ -96,6 +96,7 @@ Threadable::Application.routes.draw do
   end
 
   resources :emails, :only => :create
+  resources :mailgun_events, :only => :create
 
   get '/:organization_id/conversations/:conversation_id', to: redirect('/%{organization_id}/my/conversations/%{conversation_id}')
   get '/:organization_id/tasks/:conversation_id',         to: redirect('/%{organization_id}/my/tasks/%{conversation_id}')

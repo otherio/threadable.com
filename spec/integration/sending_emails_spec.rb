@@ -180,6 +180,32 @@ describe 'sending emails' do
       end
     end
 
+    describe 'spam_complaint' do
+
+      let(:params) { {"foo" => 'bar', "baz" => 'quux'} }
+
+      def expect_email!
+        email = sent_emails.to('threadable+abuse@threadable.com').with_subject("Spam complaint").first
+        expect(email).to be_present
+      end
+
+      context "sync" do
+        it "should send email" do
+          threadable.emails.send_email(:spam_complaint, params)
+          expect_email!
+        end
+      end
+      context "async" do
+        it "should schedule a job that sends the email" do
+          threadable.emails.send_email_async(:spam_complaint, params)
+          expect(sent_emails).to be_empty
+          expect_job_to_be_enqueued! "spam_complaint", params
+          run_jobs!
+          expect_email!
+        end
+      end
+    end
+
     describe 'reset_password' do
 
       def expect_email!

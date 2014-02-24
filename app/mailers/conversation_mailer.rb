@@ -121,20 +121,21 @@ class ConversationMailer < Threadable::Mailer
     to ||= reply_to_address
 
     email = mail(
-      :css                 => 'email',
-      :'from'              => from,
-      :'to'                => to,
-      :'cc'                => cc,
-      :'subject'           => @subject,
-      :'Reply-To'          => reply_to_address,
-      :'Message-ID'        => @message.message_id_header,
-      :'References'        => @message.references_header,
-      :'Date'              => @message.date_header,
-      :'In-Reply-To'       => @message.parent_message.try(:message_id_header),
-      :'List-ID'           => @conversation.list_id,
-      :'List-Archive'      => "<#{conversations_url(@organization, 'my')}>",
-      :'List-Unsubscribe'  => "<#{@unsubscribe_url}>",
-      :'List-Post'         => "<mailto:#{@conversation.list_post_email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
+      :css                   => 'email',
+      :'from'                => from,
+      :'to'                  => to,
+      :'cc'                  => cc,
+      :'subject'             => @subject,
+      :'Reply-To'            => reply_to_address,
+      :'Message-ID'          => @message.message_id_header,
+      :'References'          => @message.references_header,
+      :'Date'                => @message.date_header,
+      :'In-Reply-To'         => @message.parent_message.try(:message_id_header),
+      :'List-ID'             => @conversation.list_id,
+      :'List-Archive'        => "<#{conversations_url(@organization, 'my')}>",
+      :'List-Unsubscribe'    => "<#{@unsubscribe_url}>",
+      :'List-Post'           => "<mailto:#{@conversation.list_post_email_address}>, <#{compose_conversation_url(@organization, 'my')}>",
+      :'X-Mailgun-Variables' => {'organization' => organization.slug, 'recipient-id' => @recipient.id}.to_json,
     )
 
     email.smtp_envelope_from = @conversation.canonical_email_address
