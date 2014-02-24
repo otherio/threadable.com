@@ -49,7 +49,7 @@ describe ConversationMailer do
       expect(email.link('feedback')).to be_present
       expect(email.link('feedback')[:href]).to eq "mailto:support@127.0.0.1"
 
-      expect(text_part).to include "mailto:#{organization.task_email_address}"
+      expect(text_part).to include organization.task_email_address
 
       expect(mail.header[:'Reply-To'].to_s).to eq organization.formatted_task_email_address
       expect(mail.header[:'List-ID'].to_s ).to eq conversation.list_id
