@@ -17,7 +17,7 @@ describe MailgunEventsController, fixtures: false do
 
     context "when the post data has a valid signature" do
       it "should render succesfully" do
-        expect(Threadable::MailgunEvent).to receive(:call).with(params)
+        expect(Threadable::MailgunEvent).to receive(:call).with(threadable, params)
         post :create, params
         expect(response).to be_success
         expect(response.body).to be_blank

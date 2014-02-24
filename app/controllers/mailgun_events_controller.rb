@@ -6,7 +6,7 @@ class MailgunEventsController < ApplicationController
   # POST /emails
   def create
     mailgun_params = request.params.dup.slice!("controller", "action")
-    Threadable::MailgunEvent.call(mailgun_params)
+    Threadable::MailgunEvent.call(threadable, mailgun_params)
     render nothing: true, status: :ok
   rescue Threadable::RecordInvalid => error
     threadable.report_exception!(error)
