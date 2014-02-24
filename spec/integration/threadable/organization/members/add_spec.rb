@@ -12,7 +12,7 @@ describe Threadable::Organization::Members::Add do
 
       context "when given an existing user's email address" do
         let(:user) { threadable.users.find_by_email_address('amywong.phd@gmail.com') }
-        it 'adds that user to the organization and all auto-joina groups but does not email our group add notices' do
+        it 'adds that user to the organization and all auto-joins groups but does not email our group add notices' do
           expect{
             organization.members.add(email_address: 'amywong.phd@gmail.com', name: 'Amy Wong')
           }.to_not change{ User.count }
@@ -40,7 +40,7 @@ describe Threadable::Organization::Members::Add do
 
       context "when given a known user id" do
         let(:user) { threadable.users.find_by_email_address('amywong.phd@gmail.com') }
-        it 'adds that user to the organization and all auto-joina groups but does not email our group add notices' do
+        it 'adds that user to the organization and all auto-joins groups but does not email our group add notices' do
           expect{
             organization.members.add(user_id: user.user_id)
           }.to_not change{ User.count }
