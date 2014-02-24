@@ -105,6 +105,46 @@ describe Threadable::Organization::Member do
         ]
       end
     end
+
+    context 'with groups that should be summarized, and the member is part of multiple organizations' do
+      let(:nurseteam) { threadable.organizations.find_by_slug('sfhealth') }
+      let(:triage) { nurseteam.groups.find_by_slug('triage') }
+      let(:member) { organization.members.find_by_email_address('bob@ucsd.example.com')}
+
+      before do
+        # create a message for this user in another organization.
+        sign_in_as 'amywong.phd@gmail.com'
+        nurseteam.members.add(user_id: member.id)
+        triage.members.add(member).gets_in_summary!
+
+        Timecop.travel(time)
+
+        conversation = nurseteam.conversations.create(
+          subject: "I'm a message",
+          task: false,
+          groups: [triage]
+        )
+
+        conversation.messages.create(
+          subject: "I'm a message",
+          from: 'Amy <amywong.phd@gmail.com>',
+          body_plain: 'message body',
+          body_html: 'message body html',
+          to_header: 'sfhealth@127.0.0.1',
+        )
+
+        Timecop.return
+      end
+
+      it 'fetches the conversations to be summarized for a given date' do
+        conversations = member.summarized_conversations(time)
+        expect(conversations.map(&:slug)).to match_array [
+          "drive-trains-are-expensive",
+          "how-are-we-paying-for-the-motor-controller",
+          "inventory-led-supplies",
+        ]
+      end
+    end
   end
 
   describe '#remove' do

@@ -33,6 +33,8 @@ class Threadable::Organization::Member < Threadable::User
     define_method("#{role}?"){ this.role == role }
   end
 
+  let(:groups) { Threadable::Organization::Member::Groups.new(self) }
+
   def organization_membership_id
     organization_membership_record.id
   end
