@@ -13,13 +13,13 @@ Web view:
 <%= @message_url %>
 
 Start a new conversation:
-<%= mail_to_href @organization.email_address %>
+<%= @organization.email_address %>
 
 Start a new task:
-<%= mail_to_href @organization.task_email_address %>
+<%= @organization.task_email_address %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>
 
 Feedback:
-<%= mail_to_href @threadable.support_email_address %>
+<%= @threadable.support_email_address %>
