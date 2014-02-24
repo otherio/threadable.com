@@ -52,11 +52,11 @@ describe SummaryMailer do
       expect(email.link('feedback')).to be_present
       expect(email.link('feedback')[:href]).to eq "mailto:support@127.0.0.1"
 
-      expect(text_part).to include "mailto:#{organization.email_address}"
-      expect(text_part).to include "mailto:#{organization.task_email_address}"
+      expect(text_part).to include organization.email_address
+      expect(text_part).to include organization.task_email_address
 
-      # expect(html_part).to include "mailto:#{organization.email_address}"
-      # expect(html_part).to include "mailto:#{organization.task_email_address}"
+      expect(html_part).to include "mailto:#{organization.email_address}"
+      expect(html_part).to include "mailto:#{organization.task_email_address}"
 
       expect(text_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
       expect(html_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
