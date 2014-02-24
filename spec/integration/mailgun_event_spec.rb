@@ -88,7 +88,7 @@ describe Threadable::MailgunEvent do
   context 'with the "complained" event' do
     let(:event) { 'complained' }
 
-    let(:type_specific_params) {}
+    let(:type_specific_params) { {} }
 
     it 'tracks the complaint in mixpanel and sends an email to let us know' do
       call(threadable, params)
@@ -102,7 +102,6 @@ describe Threadable::MailgunEvent do
       drain_background_jobs!
 
       expect(sent_emails.with_subject('Spam complaint').first).to be
-      binding.pry
     end
 
   end
