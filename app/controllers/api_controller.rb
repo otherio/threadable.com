@@ -2,7 +2,7 @@ class ApiController < ApplicationController
 
   include SerializerConcern
 
-  before_action :ensure_request_accepts_json!
+  prepend_before_action :ensure_request_accepts_json!
 
   private
 
