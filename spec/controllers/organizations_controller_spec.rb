@@ -20,7 +20,6 @@ describe OrganizationsController do
         it "renders the new organization form" do
           expect(NewOrganization).to receive(:new).with(threadable).and_return(new_organization)
 
-          expect(new_organization).to receive(:organization_name=).with(nil)
           expect(new_organization).to receive(:organization_name=).with('my new org')
           expect(new_organization).to receive(:your_email_address=).with('michael.faraday@gmail.com')
 
@@ -81,8 +80,10 @@ describe OrganizationsController do
   when_signed_in_as 'bethany@ucsd.example.com' do
     describe "GET new" do
       it "assigns a NewOrganization instance to @new_organization" do
+        expect(NewOrganization).to receive(:new).with(threadable).and_return(new_organization)
+        expect(new_organization).to receive(:organization_name=).with(nil)
         get :new, {}
-        expect(assigns(:new_organization)).to be_a(NewOrganization)
+        expect(assigns(:new_organization)).to be new_organization
         expect(response).to render_template :new
       end
     end

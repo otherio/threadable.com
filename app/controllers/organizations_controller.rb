@@ -7,11 +7,8 @@ class OrganizationsController < ApplicationController
   # GET /create
   def new
     @new_organization = NewOrganization.new(threadable)
-    @new_organization.organization_name = params[:organization_name]
-    unless signed_in?
-      @new_organization.organization_name  = @organization_name
-      @new_organization.your_email_address = @email_address
-    end
+    @new_organization.organization_name = params[:organization_name] || @organization_name
+    @new_organization.your_email_address = @email_address unless signed_in?
   end
 
   # POST /create
