@@ -98,9 +98,9 @@ class Threadable::Messages::Create < MethodObject
       from:              from,
       creator_id:        creator_id,
       body_plain:        body_plain || "",
-      body_html:         body_html  || "",
+      body_html:         clean_up_html(body_html) || "",
       stripped_plain:    stripped_plain,
-      stripped_html:     stripped_html,
+      stripped_html:     clean_up_html(stripped_html),
       message_id_header: message_id_header,
       references_header: references_header.try(:strip),
       to_header:         to_header,
@@ -140,5 +140,10 @@ class Threadable::Messages::Create < MethodObject
   def strip_html(html)
     StripHtml.call(html)
   end
+
+  def clean_up_html body
+    CorrectHtml.call(body) unless body.nil?
+  end
+
 
 end

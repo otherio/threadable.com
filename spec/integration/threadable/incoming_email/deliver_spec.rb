@@ -53,16 +53,10 @@ describe Threadable::IncomingEmail::Deliver do
       with(incoming_email.body_plain).and_return('stripped incoming_email.body_plain')
     expect(StripThreadableContentFromEmailMessageBody).to receive(:call).
       with(incoming_email.stripped_plain).and_return('stripped incoming_email.stripped_plain')
-
-    expect(CorrectHtml).to receive(:call).
-      with(incoming_email.body_html).and_return('corrected incoming_email.body_html')
-    expect(CorrectHtml).to receive(:call).
-      with(incoming_email.stripped_html).and_return('corrected incoming_email.stripped_html')
-
     expect(StripThreadableContentFromEmailMessageBody).to receive(:call).
-      with('corrected incoming_email.body_html').and_return('stripped incoming_email.body_html')
+      with(incoming_email.body_html).and_return('stripped incoming_email.body_html')
     expect(StripThreadableContentFromEmailMessageBody).to receive(:call).
-      with('corrected incoming_email.stripped_html').and_return('stripped incoming_email.stripped_html')
+      with(incoming_email.stripped_html).and_return('stripped incoming_email.stripped_html')
 
     expect(conversation.messages).to receive(:create!).with(
       creator_id:        54,
