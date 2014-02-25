@@ -1,4 +1,6 @@
 Threadable.notify = function(status, message, options){
+  // prevents scripts from being injected into notifications.
+  message = $('<div>').text(message).html();
   options = $.extend({
     message : message,
     status  : status,
