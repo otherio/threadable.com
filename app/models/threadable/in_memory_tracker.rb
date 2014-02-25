@@ -16,12 +16,12 @@ class Threadable::InMemoryTracker < Threadable::Tracker
 
   delegate :trackings, :user_changes, :clear, to: :class
 
-  def track event, params={}
-    track_for_user threadable.current_user_id, event, params
+  def track event_name, event_attributes={}
+    track_for_user threadable.current_user_id, event_name, event_attributes
   end
 
-  def track_for_user user_id, event, params={}
-    trackings << [user_id, event.to_s, params.stringify_keys]
+  def track_for_user user_id, event_name, event_attributes={}
+    trackings << [user_id, event_name.to_s, event_attributes.stringify_keys]
     Rails.logger.info "TRACKING: #{trackings.last.inspect}"
     nil
   end
