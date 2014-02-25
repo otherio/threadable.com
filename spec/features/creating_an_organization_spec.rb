@@ -25,6 +25,13 @@ feature "Creating an organization" do
 
     scenario %(I should be able to create an organization) do
       visit new_organization_url
+
+      assert_tracked(threadable.current_user.user_id, :new_organization_page_visited,
+        sign_up_confirmation_token: false,
+        organization_name: nil,
+        email_address: nil,
+      )
+
       fill_in 'Organization name', with: 'Zero point energy machine'
       expect(page).to have_field('address', with: 'zero-point-energy-machine')
       fill_in 'address', with: 'zero-point'
@@ -35,6 +42,14 @@ feature "Creating an organization" do
       expect(page).to have_text 'bethany@ucsd.example.com'
       add_members members
       click_on 'Create'
+
+      assert_tracked(threadable.current_user.user_id, :organization_created,
+        sign_up_confirmation_token: false,
+        organization_name: 'Zero point energy machine',
+        email_address: nil,
+        organization_id: Organization.last.id,
+      )
+
       expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
       expect(page).to have_text 'Bethany Pattern'
       expect(page).to have_text 'bethany@ucsd.example.com'

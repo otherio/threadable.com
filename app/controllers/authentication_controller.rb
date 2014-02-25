@@ -3,6 +3,7 @@ class AuthenticationController < ApplicationController
   skip_before_action :require_user_be_signed_in!
 
   def show
+    @notice = params[:notice]
     if signed_in?
       redirect_to redirect_url!
     else

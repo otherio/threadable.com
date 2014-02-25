@@ -9,6 +9,12 @@ class OrganizationsController < ApplicationController
     @new_organization = NewOrganization.new(threadable)
     @new_organization.organization_name = params[:organization_name] || @organization_name
     @new_organization.your_email_address = @email_address unless signed_in?
+
+    threadable.track(:new_organization_page_visited,
+      sign_up_confirmation_token: sign_up_confirmation_token.present?,
+      organization_name: @new_organization.organization_name,
+      email_address:     @new_organization.your_email_address,
+    )
   end
 
   # POST /create
@@ -19,18 +25,20 @@ class OrganizationsController < ApplicationController
       :your_name,
       :password,
       :password_confirmation,
-      :members,
+      :members => [:name, :email_address],
     )
-    # rails is stupid
-    new_organization_params[:members] = params[:new_organization][:members] if params[:new_organization][:members].present?
     @new_organization = NewOrganization.new(threadable, new_organization_params)
     @new_organization.your_email_address = @email_address unless signed_in?
-    if @new_organization.create
-      sign_in! @new_organization.creator unless signed_in?
-      redirect_to conversations_url(@new_organization.organization, 'my')
-    else
-      render :new
-    end
+    @new_organization.create or return render :new
+    sign_in! @new_organization.creator unless signed_in?
+    redirect_to conversations_url(@new_organization.organization, 'my')
+
+    threadable.track(:organization_created,
+      sign_up_confirmation_token: sign_up_confirmation_token.present?,
+      organization_name: @new_organization.organization_name,
+      email_address:     @new_organization.your_email_address,
+      organization_id:   @new_organization.organization.id,
+    )
   end
 
   private

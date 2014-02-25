@@ -12,11 +12,18 @@ feature "signing up" do
 
   scenario %(with a new email address), fixtures: false do
     visit sign_up_url
+    assert_tracked(nil, :sign_up_page_visited)
+
     fill_in 'Organization name', with: 'Zero point energy machine'
     fill_in 'Email address', with: 'john@the-hutchison-effect.org'
     click_on 'Sign up'
     expect(page).to have_text 'Thank you'
     expect(page).to have_text 'Please click the link in your email'
+    assert_tracked(nil, :sign_up,
+      organization_name: 'Zero point energy machine',
+      email_address: 'john@the-hutchison-effect.org',
+      result: 'rendered thank you and sent email',
+    )
 
     drain_background_jobs!
     emails = sent_emails.to('john@the-hutchison-effect.org')
@@ -30,7 +37,12 @@ feature "signing up" do
     expect(page).to have_field('Organization name', with: 'Zero point energy machine')
     expect(page).to have_field('address', with: 'zero-point-energy-machine')
     expect(page).to have_field('Your email address', with: 'john@the-hutchison-effect.org', disabled: true)
-    fill_in 'address', with: 'zero-point'
+
+    assert_tracked(nil, :new_organization_page_visited,
+      sign_up_confirmation_token: true,
+      organization_name: 'Zero point energy machine',
+      email_address: 'john@the-hutchison-effect.org',
+    )
 
     fill_in 'address', with: 'zero-point'
     fill_in 'Your name', with: 'John Hutchison'
@@ -38,6 +50,13 @@ feature "signing up" do
     fill_in 'password confirmation', with: 'imacharlatan', :match => :prefer_exact
     add_members members
     click_on 'Create'
+
+    assert_tracked(user_id_for('john@the-hutchison-effect.org'), :organization_created,
+      sign_up_confirmation_token: true,
+      organization_name: 'Zero point energy machine',
+      email_address: 'john@the-hutchison-effect.org',
+      organization_id: Organization.last.id,
+    )
 
     drain_background_jobs!
     expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
@@ -49,16 +68,29 @@ feature "signing up" do
 
   scenario %(with an existing user's email address) do
     visit sign_up_url
+    assert_tracked(nil, :sign_up_page_visited)
+
     fill_in 'Organization name', with: 'Zero point energy machine'
     fill_in 'Email address', with: 'bethany@ucsd.example.com'
     click_on 'Sign up'
-    expect(page).to be_at_url sign_in_url(email_address: 'bethany@ucsd.example.com', r: new_organization_path(organization_name: 'Zero point energy machine'))
+
+    expect(page).to be_at_url sign_in_url(
+      email_address: 'bethany@ucsd.example.com',
+      r: new_organization_path(organization_name: 'Zero point energy machine'),
+      notice: "You already have an account. Please sign in.",
+    )
     expect(page).to have_field('Email Address', with: 'bethany@ucsd.example.com')
     within_element 'the sign in form' do
       fill_in 'Password', :with => 'password'
       click_on 'Sign in'
     end
+
     expect(page).to be_at_url new_organization_url(organization_name: 'Zero point energy machine')
+    assert_tracked(user_id_for('bethany@ucsd.example.com'), :new_organization_page_visited,
+      sign_up_confirmation_token: false,
+      organization_name: 'Zero point energy machine',
+      email_address: nil,
+    )
     expect(page).to have_field('Organization name', with: 'Zero point energy machine')
     expect(page).to have_field('address', with: 'zero-point-energy-machine')
     expect(page).to have_text 'Bethany Pattern'
@@ -84,6 +116,10 @@ feature "signing up" do
       expect(page).to have_text email_address
       expect( sent_emails.with_subject("You've been added to Zero point energy machine").sent_to(email_address) ).to be_present
     end
+  end
+
+  def user_id_for email_address
+    threadable.users.find_by_email_address!(email_address).user_id
   end
 
 end
