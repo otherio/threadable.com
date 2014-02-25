@@ -36,7 +36,7 @@ module RescueFromExceptionsConcern
 
     case exception
     when *UNAUTHORIZED_EXCEPTIONS
-      report_exception! exception
+      report_exception! exception if signed_in?
       render_error exception, :unauthorized,   'Unauthorized'
     when *NOT_ACCEPTABLE_EXCEPTIONS
       render_error exception, :not_acceptable, 'Not Acceptable'
