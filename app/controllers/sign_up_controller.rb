@@ -5,7 +5,7 @@ class SignUpController < ApplicationController
   def show
     return redirect_to root_path if signed_in?
     # TEMP this form will later be on the home page
-    threadable.track(:sign_up_page_visited)
+    threadable.track('Sign up page visited')
   end
 
   def sign_up
@@ -21,7 +21,7 @@ class SignUpController < ApplicationController
         r: new_organization_path(organization_name: organization_name),
         notice: "You already have an account. Please sign in.",
       )
-      threadable.track(:sign_up,
+      threadable.track('Signed up',
         organization_name: organization_name,
         email_address: email_address,
         result: 'redirected to sign in page',
@@ -30,7 +30,7 @@ class SignUpController < ApplicationController
       email_address_record.save!
       threadable.emails.send_email_async(:sign_up_confirmation, organization_name, email_address)
       render :thank_you
-      threadable.track(:sign_up,
+      threadable.track('Signed up',
         organization_name: organization_name,
         email_address: email_address,
         result: 'rendered thank you and sent email',

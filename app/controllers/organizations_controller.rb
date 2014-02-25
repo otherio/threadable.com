@@ -10,7 +10,7 @@ class OrganizationsController < ApplicationController
     @new_organization.organization_name = params[:organization_name] || @organization_name
     @new_organization.your_email_address = @email_address unless signed_in?
 
-    threadable.track(:new_organization_page_visited,
+    threadable.track('New Organization Page Visited',
       sign_up_confirmation_token: sign_up_confirmation_token.present?,
       organization_name: @new_organization.organization_name,
       email_address:     @new_organization.your_email_address,
@@ -33,7 +33,7 @@ class OrganizationsController < ApplicationController
     sign_in! @new_organization.creator unless signed_in?
     redirect_to conversations_url(@new_organization.organization, 'my')
 
-    threadable.track(:organization_created,
+    threadable.track('Organization Created',
       sign_up_confirmation_token: sign_up_confirmation_token.present?,
       organization_name: @new_organization.organization_name,
       email_address:     @new_organization.your_email_address,

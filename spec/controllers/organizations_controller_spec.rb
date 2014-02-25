@@ -28,7 +28,7 @@ describe OrganizationsController do
 
           get :new, {token: token}
           expect(response).to render_template :new
-          assert_tracked(nil, :new_organization_page_visited,
+          assert_tracked(nil, 'New Organization Page Visited',
             sign_up_confirmation_token: true,
             organization_name: organization_name,
             email_address: email_address,
@@ -85,7 +85,7 @@ describe OrganizationsController do
             expect(assigns(:new_organization)).to be new_organization
             expect(response).to redirect_to controller.conversations_url('my-new-org', 'my')
 
-            assert_tracked(nil, :organization_created,
+            assert_tracked(nil, 'Organization Created',
               sign_up_confirmation_token: true,
               organization_name: organization_name,
               email_address: email_address,
@@ -108,7 +108,7 @@ describe OrganizationsController do
         get :new, {}
         expect(assigns(:new_organization)).to be new_organization
         expect(response).to render_template :new
-        assert_tracked(threadable.current_user.user_id, :new_organization_page_visited,
+        assert_tracked(threadable.current_user.user_id, 'New Organization Page Visited',
           sign_up_confirmation_token: false,
           organization_name: nil,
           email_address: nil,
@@ -147,7 +147,7 @@ describe OrganizationsController do
           }
           expect(assigns(:new_organization)).to be new_organization
           expect(response).to redirect_to controller.conversations_url('my-new-org', 'my')
-          assert_tracked(threadable.current_user.user_id, :organization_created,
+          assert_tracked(threadable.current_user.user_id, 'Organization Created',
             sign_up_confirmation_token: false,
             organization_name: 'my new org',
             email_address: nil,

@@ -26,7 +26,7 @@ feature "Creating an organization" do
     scenario %(I should be able to create an organization) do
       visit new_organization_url
 
-      assert_tracked(threadable.current_user.user_id, :new_organization_page_visited,
+      assert_tracked(threadable.current_user.user_id, 'New Organization Page Visited',
         sign_up_confirmation_token: false,
         organization_name: nil,
         email_address: nil,
@@ -43,7 +43,7 @@ feature "Creating an organization" do
       add_members members
       click_on 'Create'
 
-      assert_tracked(threadable.current_user.user_id, :organization_created,
+      assert_tracked(threadable.current_user.user_id, 'Organization Created',
         sign_up_confirmation_token: false,
         organization_name: 'Zero point energy machine',
         email_address: nil,

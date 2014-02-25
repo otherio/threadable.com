@@ -8,7 +8,7 @@ describe SignUpController do
       it 'should render the sign up form' do
         get :show
         expect(response).to render_template :show
-        assert_tracked(nil, :sign_up_page_visited)
+        assert_tracked(nil, 'Sign up page visited')
       end
     end
 
@@ -23,7 +23,7 @@ describe SignUpController do
           expect(EmailAddress.last.address).to eq email_address
           expect(response).to render_template :thank_you
           assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "sign_up_confirmation", organization_name, email_address]
-          assert_tracked nil, :sign_up, organization_name: organization_name, email_address: email_address, result: 'rendered thank you and sent email'
+          assert_tracked nil, 'Signed up', organization_name: organization_name, email_address: email_address, result: 'rendered thank you and sent email'
         end
       end
       context 'with an existing email address' do
@@ -38,7 +38,7 @@ describe SignUpController do
             r: new_organization_path(organization_name: organization_name),
             notice: "You already have an account. Please sign in.",
           )
-          assert_tracked nil, :sign_up, organization_name: organization_name, email_address: email_address, result: 'redirected to sign in page'
+          assert_tracked nil, 'Signed up', organization_name: organization_name, email_address: email_address, result: 'redirected to sign in page'
         end
       end
     end
