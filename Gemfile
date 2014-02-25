@@ -60,10 +60,10 @@ end
 
 group :development, :test, :staging do
   gem 'pry-rails'
-  gem 'pry-debugger'
 end
 
 group :development, :test do
+  gem 'pry-debugger'
   gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'activerecord-fixture_builder'
