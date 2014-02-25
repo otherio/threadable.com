@@ -61,9 +61,13 @@ class Admin::OrganizationsController < ApplicationController
         :slug,
         :email_address_username,
         :add_current_user_as_a_member,
+        :trusted,
       ).symbolize_keys
       if @organization_params.key? :add_current_user_as_a_member
         @organization_params[:add_current_user_as_a_member] = @organization_params[:add_current_user_as_a_member] == "1"
+      end
+      if @organization_params.key? :trusted
+        @organization_params[:trusted] = @organization_params[:trusted] == "1"
       end
     end
     @organization_params

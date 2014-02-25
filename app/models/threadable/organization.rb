@@ -21,6 +21,7 @@ class Threadable::Organization < Threadable::Model
     errors
     new_record?
     persisted?
+    trusted?
   }, to: :organization_record
 
   def email_address

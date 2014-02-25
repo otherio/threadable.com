@@ -71,10 +71,10 @@ describe Admin::OrganizationsController do
     end
 
     describe 'POST :create' do
-      let(:organization_params){ { name: 'Robot Cow', add_current_user_as_a_member: "1" } }
+      let(:organization_params){ { name: 'Robot Cow', add_current_user_as_a_member: "1", trusted: "1" } }
       let(:organization){ double(:organization, to_param: 'robot-cow', persisted?: persisted) }
       before do
-        expect(threadable.organizations).to receive(:create).with(name: 'Robot Cow', add_current_user_as_a_member: true).and_return(organization)
+        expect(threadable.organizations).to receive(:create).with(name: 'Robot Cow', add_current_user_as_a_member: true, trusted: true).and_return(organization)
         post :create, organization: organization_params
       end
       context 'when the organization is successfully created' do
