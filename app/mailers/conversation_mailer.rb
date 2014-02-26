@@ -59,16 +59,16 @@ class ConversationMailer < Threadable::Mailer
       }
     elsif has_groups
       group = @conversation.groups.all.first
-      @new_task_url = "mailto:#{URI::encode(group.formatted_task_email_address)}"
-      @new_conversation_url = "mailto:#{URI::encode(group.formatted_email_address)}"
+      @new_task_url = "mailto:#{URI::encode(group.task_email_address)}"
+      @new_conversation_url = "mailto:#{URI::encode(group.email_address)}"
       @group_indicator_options = {
         name: "+#{truncate_with_ellipsis(group.name)}",
         class: 'grouped',
         color: group.color,
       }
     else
-      @new_task_url = "mailto:#{URI::encode(@organization.formatted_task_email_address)}"
-      @new_conversation_url = "mailto:#{URI::encode(@organization.formatted_email_address)}"
+      @new_task_url = "mailto:#{URI::encode(@organization.task_email_address)}"
+      @new_conversation_url = "mailto:#{URI::encode(@organization.email_address)}"
       @group_indicator_options = {
         name: "Ungrouped",
         class: 'ungrouped',
