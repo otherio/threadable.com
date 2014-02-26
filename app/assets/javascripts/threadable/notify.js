@@ -1,6 +1,6 @@
+//= require strip_xss_attacks
+
 Threadable.notify = function(status, message, options){
-  // prevents scripts from being injected into notifications.
-  message = $('<div>').text(message).html();
   options = $.extend({
     message : message,
     status  : status,
@@ -18,7 +18,7 @@ Threadable.notifyPendingNotifications = function() {
   if (notifications.warning) Threadable.notify('warning', fix(notifications.warning), {timeout: 6000});
   if (notifications.danger)  Threadable.notify('danger',  fix(notifications.danger),  {timeout: 6000});
   delete Threadable.pendingNotifications;
-  function fix(string) { return string.replace(/\+/g,' '); }
+  function fix(message) { return stripXSSAttacks(message.replace(/\+/g,' ')); }
 };
 
 
