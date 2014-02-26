@@ -26,8 +26,9 @@ Threadable.ConversationRoute = Ember.Route.extend({
   },
 
   setupController: function(controller, model) {
+    var conversation = this.controllerFor('conversation');
     this._super(controller, model);
-    this.controllerFor('conversation').set('model', model)
+    conversation.set('model', model);
     this.controllerFor('reply').set('model', Threadable.Message.create({}));
   },
 
@@ -41,6 +42,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
 
   actions: {
     willTransition: function(transition) {
+      this.controllerFor('doerSelector').set('doers', []);
       this.controllerFor('organization').set('focus', 'conversations');
       $("#inputWithFocus").blur();
     }

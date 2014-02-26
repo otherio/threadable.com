@@ -1,5 +1,5 @@
  Threadable.ReplyController = Ember.ObjectController.extend({
-  needs: ['conversation', 'organization', 'doerSelector', 'conversations'],
+  needs: ['conversation', 'organization', 'doerSelector', 'conversations', 'tasks'],
 
   message: Ember.computed.alias('model'),
   doerSelector: Ember.computed.alias('controllers.doerSelector'),
@@ -90,7 +90,10 @@
 
       function onMessageSuccess(response) {
         conversation.deserialize(response.message.conversation);
-        conversationInList.deserialize(response.message.conversation);
+        if(conversationInList) {
+          // if the task page was loaded directly, this isn't present.
+          conversationInList.deserialize(response.message.conversation);
+        }
 
         var message = this.get('content');
         var event = Threadable.Event.create({
