@@ -5,7 +5,7 @@ feature "recovering password" do
   scenario "Users who lose their password should be able recover their account" do
     i_am 'alice@ucsd.example.com'
 
-    visit '/'
+    visit sign_in_url
     resize_window_to :large
     expect(page).to have_text "Forgot Password"
     click_link 'Forgot Password'
@@ -36,8 +36,10 @@ feature "recovering password" do
     page.find('.sidebar .toggle-user-settings').click
     sleep 0.2
     click_link 'Sign out'
-    expect(page).to have_text "No password yet?"
+    expect(page).to be_at_url root_url
 
+
+    visit sign_in_url
     fill_in 'Email Address', with: current_user.email_address
     fill_in 'Password', with: 'p@$$w0rd'
     click_button 'Sign in'

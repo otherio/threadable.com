@@ -11,3 +11,5 @@
           = f.input :email_address,      type: 'email', label: false, placeholder: 'Email address',     input_html: {class: 'uk-width-1-1 uk-form-large'}, required: true
         .uk-form-row
           = submit_tag 'Request account', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+          .uk-float-right
+            = link_to 'Sign in', sign_in_path
