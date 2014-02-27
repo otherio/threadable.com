@@ -7,7 +7,10 @@ feature "Authentication" do
   end
 
   context "with no redirect" do
-    before { visit sign_in_url }
+    before do
+      visit root_url
+      click_on 'Sign in'
+    end
 
     scenario %(A user with an account and a password can sign in) do
       fill_in "Email Address", with: "alice@ucsd.example.com"
