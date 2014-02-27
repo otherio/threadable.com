@@ -41,6 +41,15 @@
 
         <div class="uk-form-row">
           <label class="uk-form-label input-label">
+            Aliased Email Address:
+          </label>
+          <div class="uk-form-controls input-field">
+            {{input value=editableGroup.aliasAddress name="aliasAddress"}}
+          </div>
+        </div>
+
+        <div class="uk-form-row">
+          <label class="uk-form-label input-label">
             {{input checked=editableGroup.autoJoin type="checkbox" name="autoJoin"}}
             Automatically add new organization members to this group
           </label>
