@@ -117,7 +117,7 @@ class Threadable::Group < Threadable::Model
     else
       "#{organization.name}: #{name}"
     end
-    display_name += " Tasks" if task
+    display_name += " Tasks" if task && display_name
     display_name
   end
 

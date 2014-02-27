@@ -34,7 +34,7 @@ describe Threadable::Organization do
 
       'raceteam+fundraising@127.0.0.1' => true,
       'raceteam@127.0.0.1'             => true,
-      'electronics@ucsd.example.com'   => true,
+      'press@ucsd.example.com'         => true,
     }
 
     examples.each do |email_address, expected_result|
@@ -56,7 +56,7 @@ describe Threadable::Organization do
       'raceteam@covered.io'               => true,
       'raceteam@threadable.com'           => true,
       'raceteam+something@threadable.com' => true,
-      'electronics@ucsd.example.com'      => true,
+      'press@ucsd.example.com'            => true,
     }
 
     examples.each do |email_address, expected_result|
