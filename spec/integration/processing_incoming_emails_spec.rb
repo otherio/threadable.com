@@ -1246,6 +1246,7 @@ describe "processing incoming emails" do
     let(:expected_groups)                        { ['Press'] }
     let(:expected_sent_email_smtp_envelope_from) { 'raceteam+press@127.0.0.1' }
     let(:expected_sent_email_reply_to)           { 'Press Enquiries <press@ucsd.example.com>' }
+    let(:expected_sent_email_list_id)            { '"Press Enquiries" <press.ucsd.example.com>' }
 
     context 'when the message is to the non-aliased address' do
       let(:to)        { 'UCSD Electric Racing <raceteam+press@covered.io>' }

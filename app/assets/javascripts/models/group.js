@@ -12,6 +12,7 @@ Threadable.Group = RL.Model.extend({
   taskEmailAddress:          RL.attr('string'),
   formattedEmailAddress:     RL.attr('string'),
   formattedTaskEmailAddress: RL.attr('string'),
+  aliasAddress:              RL.attr('string'),
   conversationsCount:        RL.attr('number'),
   membersCount:              RL.attr('count'),
   currentUserIsAMember:      RL.attr('boolean'),

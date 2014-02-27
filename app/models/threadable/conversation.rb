@@ -151,7 +151,9 @@ class Threadable::Conversation < Threadable::Model
   def list_id
     if groups.count == 1
       group = groups.all.first
-      return "\"#{organization.name}: #{group.name}\" <#{organization.email_address_username}+#{group.email_address_tag}.#{threadable.email_host}>"
+      email_address = Mail::Address.new(group.formatted_email_address)
+      name = email_address.display_name || "#{organization.name}: #{group.name}"
+      return "\"#{name}\" <#{email_address.address.gsub(/\@/, '.')}>"
     end
     organization.list_id
   end

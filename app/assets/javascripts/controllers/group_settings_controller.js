@@ -11,6 +11,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
         color:        this.get('editableGroup.color'),
         autoJoin:     this.get('editableGroup.autoJoin'),
         holdMessages: this.get('editableGroup.holdMessages'),
+        aliasAddress: this.get('editableGroup.aliasAddress'),
       });
 
       group.saveRecord().then(
