@@ -31,10 +31,41 @@
     %p
       You can #{@email_action.pending_description} via email! Just reply to the conversation and add
       %br/
-      - case @email_action.type
-      - when 'add', 'remove'
-        %strong "&#{@email_action.type} #{@email_action.user ? @email_action.user.name : 'Your Name'}"
-      - else
-        %strong "&#{@email_action.type}"
+      %input.example-command{type: 'text', value: @email_action.example_command}
       %br/
       to the top of your response.
+
+
+:javascript
+
+  $(function(){
+
+    var
+      exampleCommandInput = $('.example-command'),
+      value = exampleCommandInput.val(),
+      timeout;
+
+    function selectAll(){
+      exampleCommandInput.val(value);
+      exampleCommandInput[0].select();
+    }
+
+    exampleCommandInput.on('click focus', function(event){
+      if (timeout) return;
+      selectAll();
+      timeout = setInterval(selectAll, 200);
+
+    });
+
+    exampleCommandInput.on('blur', function(event){
+      clearTimeout(timeout);
+      timeout = null;
+    });
+
+    exampleCommandInput.on('keydown keydown change', function(event){
+      event.preventDefault();
+      return false;
+    });
+
+
+  });

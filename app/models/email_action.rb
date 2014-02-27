@@ -132,4 +132,13 @@ class EmailAction
     end
   end
 
+  def example_command
+    case type
+    when 'add', 'remove'
+      %(&#{type} #{user ? user.name : 'Your Name'})
+    else
+      %(&#{type})
+    end
+  end
+
 end
