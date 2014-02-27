@@ -25,6 +25,48 @@ describe Threadable::Organization do
     end
   end
 
+  describe '#has_email_address?' do
+    examples = {
+      'Ian Baker <ian@other.io>'       => false,
+      'ian@other.io'                   => false,
+      'foo+bar@threadable.com'         => false,
+      'foo@staging.threadable.com'     => false,
+
+      'raceteam+fundraising@127.0.0.1' => true,
+      'raceteam@127.0.0.1'             => true,
+      'electronics@ucsd.example.com'   => true,
+    }
+
+    examples.each do |email_address, expected_result|
+      context "when given #{email_address.inspect}" do
+        subject{ organization.has_email_address?(Mail::Address.new(email_address)) }
+        it { should == expected_result }
+      end
+    end
+  end
+
+  describe '#matches_email_address?' do
+    examples = {
+      'Ian Baker <ian@other.io>'       => false,
+      'ian@other.io'                   => false,
+      'foo+bar@threadable.com'         => false,
+      'foo@staging.threadable.com'     => false,
+
+      'raceteam+fundraising@127.0.0.1'    => true,
+      'raceteam@covered.io'               => true,
+      'raceteam@threadable.com'           => true,
+      'raceteam+something@threadable.com' => true,
+      'electronics@ucsd.example.com'      => true,
+    }
+
+    examples.each do |email_address, expected_result|
+      context "when given #{email_address.inspect}" do
+        subject{ organization.matches_email_address?(Mail::Address.new(email_address)) }
+        it { should == expected_result }
+      end
+    end
+  end
+
   describe 'scopes' do
     when_signed_in_as 'bethany@ucsd.example.com' do
 

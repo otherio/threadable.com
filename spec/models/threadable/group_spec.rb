@@ -16,10 +16,12 @@ describe Threadable::Group do
       organization_id: 5,
       name: 'thing factory',
       email_address_tag: 'thing-factory',
-      organization: organization_record
+      organization: organization_record,
+      alias_address: alias_address,
     )
   end
   let(:group){ described_class.new(threadable, group_record) }
+  let(:alias_address) { nil }
   subject{ group }
 
   it { should have_constant :Members }
@@ -37,6 +39,7 @@ describe Threadable::Group do
   it { should delegate(:destroy           ).to(:group_record) }
   it { should delegate(:auto_join?        ).to(:group_record) }
   it { should delegate(:hold_messages?    ).to(:group_record) }
+  it { should delegate(:alias_address     ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }
@@ -54,4 +57,15 @@ describe Threadable::Group do
   its(:tasks        ){ should be_a Threadable::Group::Tasks }
 
   its(:inspect){ should eq %(#<Threadable::Group group_id: 1234, name: "thing factory">) }
+
+  context 'with an alias address defined' do
+    let(:alias_address) { %("My Elsewhere" <elsewhere@foo.com>) }
+
+    its(:email_address                ){ should eq "elsewhere@foo.com" }
+    its(:task_email_address           ){ should eq "elsewhere-task@foo.com" }
+    its(:internal_email_address       ){ should eq "my-project+thing-factory@127.0.0.1" }
+    its(:internal_task_email_address  ){ should eq "my-project+thing-factory+task@127.0.0.1" }
+    its(:formatted_email_address      ){ should eq %(My Elsewhere <elsewhere@foo.com>) }
+    its(:formatted_task_email_address ){ should eq %(My Elsewhere Tasks <elsewhere-task@foo.com>) }
+  end
 end

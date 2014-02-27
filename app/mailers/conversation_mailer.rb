@@ -138,7 +138,7 @@ class ConversationMailer < Threadable::Mailer
       :'X-Mailgun-Variables' => {'organization' => organization.slug, 'recipient-id' => @recipient.id}.to_json,
     )
 
-    email.smtp_envelope_from = @conversation.canonical_email_address
+    email.smtp_envelope_from = @conversation.internal_email_address
     email.smtp_envelope_to = @recipient.email_address.to_s
 
     email
@@ -159,7 +159,7 @@ class ConversationMailer < Threadable::Mailer
   def transform_stale_group_references email_addresses
     return if email_addresses.nil?
     email_addresses.map do |email_address|
-      if IdentifyThreadableEmailAddress.call(email_address)
+      if @organization.matches_email_address?(email_address)
         @conversation.all_email_addresses.include?(email_address.address) ? email_address : Mail::Address.new(@organization_email_address)
       else
         email_address
@@ -203,7 +203,7 @@ class ConversationMailer < Threadable::Mailer
       hash.update formatted_email_address.local => formatted_email_address
     end
     email_addresses.map do |email_address|
-      next email_address unless IdentifyThreadableEmailAddress.call(email_address)
+      next email_address unless @organization.matches_email_address?(email_address)
       local = email_address.local
       local.gsub!(/--/, '+')
       map[local] || email_address
