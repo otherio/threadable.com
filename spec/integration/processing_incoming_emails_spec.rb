@@ -1225,7 +1225,7 @@ describe "processing incoming emails" do
   context 'when the recipient is at covered.io' do
     let(:recipient) { 'raceteam@covered.io' }
     let(:to)        { 'UCSD Electric Racing <raceteam@covered.io>' }
-    it 'replaes covered.io with threadable.io' do
+    it 'replaces covered.io with threadable.com' do
       validate! :delivered
     end
   end
@@ -1234,8 +1234,31 @@ describe "processing incoming emails" do
     let(:recipient) { 'raceteam@covered.io' }
     let(:to)        { 'UCSD Electric Racing <raceteam@covered.io>, Mr. Race Team <raceteam@example.com>' }
     let(:expected_sent_email_to)   { ["raceteam@127.0.0.1", "raceteam@example.com"] }
-    it 'replaces covered.io with threadable.io' do
+    it 'replaces covered.io with threadable.com' do
       validate! :delivered
+    end
+  end
+
+  context 'when the recipient group has an alias' do
+    let(:recipient)                              { 'raceteam+press@covered.io' }
+    let(:expected_sent_email_to)                 { ["press@ucsd.example.com"] }
+    let(:expected_email_recipients)              { ["tom@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_groups)                        { ['Press'] }
+    let(:expected_sent_email_smtp_envelope_from) { 'raceteam+press@127.0.0.1' }
+    let(:expected_sent_email_reply_to)           { 'Press Enquiries <press@ucsd.example.com>' }
+
+    context 'when the message is to the non-aliased address' do
+      let(:to)        { 'UCSD Electric Racing <raceteam+press@covered.io>' }
+      it 'translates the header addresses to the alias' do
+        validate! :delivered
+      end
+    end
+
+    context 'when the message is to the aliased address' do
+      let(:to)        { 'UCSD Electric Racing <raceteam+press@covered.io>' }
+      it 'preserves the alias address in the headers' do
+        validate! :delivered
+      end
     end
   end
 

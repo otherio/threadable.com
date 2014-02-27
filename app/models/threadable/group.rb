@@ -16,6 +16,7 @@ class Threadable::Group < Threadable::Model
     subject_tag
     color
     errors
+    alias_address
     new_record?
     persisted?
     destroy
@@ -54,23 +55,39 @@ class Threadable::Group < Threadable::Model
   end
 
   def email_address
+    if alias_address
+      alias_address_object.address
+    else
+      internal_email_address
+    end
+  end
+
+  def internal_email_address
     "#{organization.email_address_username}+#{email_address_tag}@#{threadable.email_host}"
   end
 
-  def task_email_address
+  def internal_task_email_address
     "#{organization.email_address_username}+#{email_address_tag}+task@#{threadable.email_host}"
+  end
+
+  def task_email_address
+    if alias_address
+      "#{alias_address_object.local}-task@#{alias_address_object.domain}"
+    else
+      internal_task_email_address
+    end
   end
 
   def formatted_email_address
     FormattedEmailAddress.new(
-      display_name: "#{organization.name}: #{name}",
+      display_name: email_address_display_name,
       address: email_address,
     ).to_s
   end
 
   def formatted_task_email_address
     FormattedEmailAddress.new(
-      display_name: "#{organization.name}: #{name} Tasks",
+      display_name: email_address_display_name(true),
       address: task_email_address,
     ).to_s
   end
@@ -86,6 +103,22 @@ class Threadable::Group < Threadable::Model
 
   def inspect
     %(#<#{self.class} group_id: #{id.inspect}, name: #{name.inspect}>)
+  end
+
+  private
+
+  def alias_address_object
+    @alias_address_object ||= Mail::Address.new(alias_address)
+  end
+
+  def email_address_display_name task=false
+    display_name = if alias_address
+      alias_address_object.display_name
+    else
+      "#{organization.name}: #{name}"
+    end
+    display_name += " Tasks" if task
+    display_name
   end
 
 end

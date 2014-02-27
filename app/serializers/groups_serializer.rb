@@ -10,6 +10,7 @@ class GroupsSerializer < Serializer
       color:                        group.color,
       auto_join:                    group.auto_join?,
       hold_messages:                group.hold_messages?,
+      alias_address:                group.alias_address,
 
       email_address:                group.email_address,
       task_email_address:           group.task_email_address,

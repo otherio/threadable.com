@@ -170,6 +170,14 @@ class Threadable::Conversation < Threadable::Model
     organization.email_address
   end
 
+  def internal_email_address
+    if groups.count == 1
+      group = groups.all.first
+      return task? ? group.internal_task_email_address : group.internal_email_address
+    end
+    task? ? organization.internal_task_email_address : organization.internal_email_address
+  end
+
   def subject_tag
     subject_tag = "[#{groups.count == 1 ? groups.all.first.subject_tag : organization.subject_tag}]"
     task? ? "[✔\uFE0E]#{subject_tag}" : subject_tag
