@@ -4,6 +4,7 @@ class HomepageController < ApplicationController
   before_action :redirect_to_client_app_if_signed_in!
 
   def show
+    threadable.track('Homepage visited')
   end
 
   private
