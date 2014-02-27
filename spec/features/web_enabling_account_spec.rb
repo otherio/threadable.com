@@ -5,7 +5,7 @@ feature "web enabling account" do
   let(:user){ threadable.users.find_by_email_address! 'yan@ucsd.example.com' }
 
   scenario "Users who are not web enabled should be able web enable their account" do
-    visit '/'
+    visit sign_in_url
     resize_window_to :large
     click_link 'Forgot Password'
     fill_in 'Email Address', with: user.email_address
@@ -35,8 +35,9 @@ feature "web enabling account" do
     page.find('.sidebar .toggle-user-settings').click
     sleep 0.2 # this waits for the css transition - Jared
     click_link 'Sign out'
-    expect(page).to have_text "No password yet?"
+    expect(page).to be_at_url root_url
 
+    visit sign_in_url
     fill_in 'Email Address', with: user.email_address
     fill_in 'Password', with: 'p@$$w0rd'
     click_button 'Sign in'

@@ -5,6 +5,9 @@ Threadable::Application.routes.draw do
   post  '/recover-password'  => 'authentication#recover_password', as: 'recover_password'
   match '/sign_out'          => 'authentication#sign_out', via: [:get, :delete], as: 'sign_out'
 
+  post  '/account_request'                => 'account_requests#create'
+  match '/account_request/confirm/:token' => 'account_requests#confirm', via: [:get, :post], as: 'confirm_account_request'
+
   if ENV['THREADABLE_SIGNUP_ENABLED'] == 'true'
     get  '/sign_up' => 'sign_up#show'
     post '/sign_up' => 'sign_up#sign_up'
