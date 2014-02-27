@@ -74,4 +74,9 @@ class SendEmailWorker < Threadable::Worker
     threadable.emails.send_email(:spam_complaint, params)
   end
 
+  def account_request_confirmation account_request_id
+    account_request = AccountRequest.find(account_request_id)
+    threadable.emails.send_email(:account_request_confirmation, account_request)
+  end
+
 end
