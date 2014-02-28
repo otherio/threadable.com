@@ -55,10 +55,18 @@ class Threadable::Group < Threadable::Model
   end
 
   def email_address
-    if alias_address
+    if alias_address.present?
       alias_address_object.address
     else
       internal_email_address
+    end
+  end
+
+  def task_email_address
+    if alias_address.present?
+      "#{alias_address_object.local}-task@#{alias_address_object.domain}"
+    else
+      internal_task_email_address
     end
   end
 
@@ -68,14 +76,6 @@ class Threadable::Group < Threadable::Model
 
   def internal_task_email_address
     "#{organization.email_address_username}+#{email_address_tag}+task@#{threadable.email_host}"
-  end
-
-  def task_email_address
-    if alias_address
-      "#{alias_address_object.local}-task@#{alias_address_object.domain}"
-    else
-      internal_task_email_address
-    end
   end
 
   def formatted_email_address
@@ -94,7 +94,6 @@ class Threadable::Group < Threadable::Model
 
   def update attributes
     group_record.update_attributes!(attributes)
-    group_record.update_attributes!(attributes)
   end
 
   def == other
@@ -112,7 +111,7 @@ class Threadable::Group < Threadable::Model
   end
 
   def email_address_display_name task=false
-    display_name = if alias_address
+    display_name = if alias_address.present?
       alias_address_object.display_name
     else
       "#{organization.name}: #{name}"

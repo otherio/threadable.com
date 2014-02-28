@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20140227005557) do
     t.string   "subject_tag"
     t.boolean  "auto_join",         default: false, null: false
     t.boolean  "hold_messages",     default: true
-    t.string   "alias_address"
+    t.string   "alias_address",     default: "",    null: false
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree

@@ -16,6 +16,8 @@ class GroupsSerializer < Serializer
       task_email_address:           group.task_email_address,
       formatted_email_address:      group.formatted_email_address,
       formatted_task_email_address: group.formatted_task_email_address,
+      internal_email_address:       group.internal_email_address,
+      internal_task_email_address:  group.internal_task_email_address,
 
       conversations_count:          group.conversations.count,
       members_count:                group.members.count,

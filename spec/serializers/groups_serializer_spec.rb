@@ -25,6 +25,8 @@ describe GroupsSerializer do
         task_email_address:           electronics.task_email_address,
         formatted_email_address:      electronics.formatted_email_address,
         formatted_task_email_address: electronics.formatted_task_email_address,
+        internal_email_address:       electronics.internal_email_address,
+        internal_task_email_address:  electronics.internal_task_email_address,
 
         conversations_count:          electronics.conversations.count,
         members_count:                electronics.members.count,
@@ -55,6 +57,8 @@ describe GroupsSerializer do
           task_email_address:           electronics.task_email_address,
           formatted_email_address:      electronics.formatted_email_address,
           formatted_task_email_address: electronics.formatted_task_email_address,
+          internal_email_address:       electronics.internal_email_address,
+          internal_task_email_address:  electronics.internal_task_email_address,
 
           conversations_count:          electronics.conversations.count,
           members_count:                electronics.members.count,
@@ -76,6 +80,8 @@ describe GroupsSerializer do
           task_email_address:           fundraising.task_email_address,
           formatted_email_address:      fundraising.formatted_email_address,
           formatted_task_email_address: fundraising.formatted_task_email_address,
+          internal_email_address:       fundraising.internal_email_address,
+          internal_task_email_address:  fundraising.internal_task_email_address,
 
           conversations_count:          fundraising.conversations.count,
           members_count:                fundraising.members.count,
@@ -107,6 +113,8 @@ describe GroupsSerializer do
             task_email_address:           electronics.task_email_address,
             formatted_email_address:      electronics.formatted_email_address,
             formatted_task_email_address: electronics.formatted_task_email_address,
+            internal_email_address:       electronics.internal_email_address,
+            internal_task_email_address:  electronics.internal_task_email_address,
 
             conversations_count:          electronics.conversations.count,
             members_count:                electronics.members.count,
@@ -128,6 +136,8 @@ describe GroupsSerializer do
             task_email_address:           fundraising.task_email_address,
             formatted_email_address:      fundraising.formatted_email_address,
             formatted_task_email_address: fundraising.formatted_task_email_address,
+            internal_email_address:       fundraising.internal_email_address,
+            internal_task_email_address:  fundraising.internal_task_email_address,
 
             conversations_count:          fundraising.conversations.count,
             members_count:                fundraising.members.count,
