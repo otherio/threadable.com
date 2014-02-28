@@ -62,7 +62,7 @@
                 Alias Email Address:
               </label>
               <div class="uk-form-controls input-field">
-                {{input value=editableGroup.aliasAddress class="uk-width-1-1" name="aliasAddress"}}
+                {{input value=editableGroup.aliasEmailAddress class="uk-width-1-1" name="aliasEmailAddress"}}
               </div>
             </div>
 
@@ -106,8 +106,8 @@
     <div class="example-email well">
       <h4 class="uk-text-bold">Your group's email address:</h4>
       <div>
-        {{#if editableGroup.aliasAddress}}
-          <span class="email">{{editableGroup.aliasAddress}}</span>
+        {{#if editableGroup.aliasEmailAddress}}
+          <span class="email">{{editableGroup.aliasEmailAddress}}</span>
         {{else}}
           <span class="email">"{{controllers.organization.name}}: {{editableGroup.name}}" &lt;{{editableGroup.emailAddress}}&gt;</span>
         {{/if}}

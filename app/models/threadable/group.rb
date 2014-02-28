@@ -16,7 +16,7 @@ class Threadable::Group < Threadable::Model
     subject_tag
     color
     errors
-    alias_address
+    alias_email_address
     new_record?
     persisted?
     destroy
@@ -55,16 +55,16 @@ class Threadable::Group < Threadable::Model
   end
 
   def email_address
-    if alias_address.present?
-      alias_address_object.address
+    if alias_email_address.present?
+      alias_email_address_object.address
     else
       internal_email_address
     end
   end
 
   def task_email_address
-    if alias_address.present?
-      "#{alias_address_object.local}-task@#{alias_address_object.domain}"
+    if alias_email_address.present?
+      "#{alias_email_address_object.local}-task@#{alias_email_address_object.domain}"
     else
       internal_task_email_address
     end
@@ -106,13 +106,13 @@ class Threadable::Group < Threadable::Model
 
   private
 
-  def alias_address_object
-    @alias_address_object ||= Mail::Address.new(alias_address)
+  def alias_email_address_object
+    @alias_email_address_object ||= Mail::Address.new(alias_email_address)
   end
 
   def email_address_display_name task=false
-    display_name = if alias_address.present?
-      alias_address_object.display_name
+    display_name = if alias_email_address.present?
+      alias_email_address_object.display_name
     else
       "#{organization.name}: #{name}"
     end

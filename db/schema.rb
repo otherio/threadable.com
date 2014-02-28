@@ -125,11 +125,11 @@ ActiveRecord::Schema.define(version: 20140227203353) do
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color",             default: "",    null: false
+    t.string   "color",               default: "",    null: false
     t.string   "subject_tag"
-    t.boolean  "auto_join",         default: false, null: false
-    t.boolean  "hold_messages",     default: true
-    t.string   "alias_address",     default: "",    null: false
+    t.boolean  "auto_join",           default: false, null: false
+    t.boolean  "hold_messages",       default: true
+    t.string   "alias_email_address", default: "",    null: false
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree

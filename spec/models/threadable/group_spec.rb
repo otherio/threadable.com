@@ -17,11 +17,11 @@ describe Threadable::Group do
       name: 'thing factory',
       email_address_tag: 'thing-factory',
       organization: organization_record,
-      alias_address: alias_address,
+      alias_email_address: alias_email_address,
     )
   end
   let(:group){ described_class.new(threadable, group_record) }
-  let(:alias_address) { nil }
+  let(:alias_email_address) { nil }
   subject{ group }
 
   it { should have_constant :Members }
@@ -39,7 +39,7 @@ describe Threadable::Group do
   it { should delegate(:destroy           ).to(:group_record) }
   it { should delegate(:auto_join?        ).to(:group_record) }
   it { should delegate(:hold_messages?    ).to(:group_record) }
-  it { should delegate(:alias_address     ).to(:group_record) }
+  it { should delegate(:alias_email_address     ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }
@@ -59,7 +59,7 @@ describe Threadable::Group do
   its(:inspect){ should eq %(#<Threadable::Group group_id: 1234, name: "thing factory">) }
 
   context 'with an alias address defined' do
-    let(:alias_address) { %("My Elsewhere" <elsewhere@foo.com>) }
+    let(:alias_email_address) { %("My Elsewhere" <elsewhere@foo.com>) }
 
     its(:email_address                ){ should eq "elsewhere@foo.com" }
     its(:task_email_address           ){ should eq "elsewhere-task@foo.com" }

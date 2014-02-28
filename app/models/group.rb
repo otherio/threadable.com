@@ -10,7 +10,7 @@ class Group < ActiveRecord::Base
   validates_format_of :subject_tag, with: /\A([\w \&\.\'\-+]+|)\z/
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
   validate :email_address_tag_special_characters
-  validate :alias_address_is_an_email_address
+  validate :alias_email_address_is_an_email_address
 
   has_many :conversation_groups, dependent: :destroy
   has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
@@ -43,15 +43,15 @@ class Group < ActiveRecord::Base
     end
   end
 
-  def alias_address_is_an_email_address
-    if alias_address =~ /./
+  def alias_email_address_is_an_email_address
+    if alias_email_address =~ /./
       begin
-        address = Mail::Address.new(alias_address)
+        address = Mail::Address.new(alias_email_address)
       rescue
-        errors.add :alias_address, "is invalid"
+        errors.add :alias_email_address, "is invalid"
         return
       end
-      errors.add(:alias_address, "is invalid") unless address.local.present? && address.domain.present?
+      errors.add(:alias_email_address, "is invalid") unless address.local.present? && address.domain.present?
     end
   end
 
