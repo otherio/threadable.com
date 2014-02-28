@@ -13,3 +13,6 @@
           = submit_tag 'Request account', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
           .uk-float-right
             = link_to 'Sign in', sign_in_path
+
+:javascript
+  mixpanel.track('Homepage visited');
