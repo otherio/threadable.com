@@ -11,6 +11,7 @@ class Group < ActiveRecord::Base
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
   validate :email_address_tag_special_characters
   validate :alias_email_address_is_an_email_address
+  validate :webhook_url_is_a_url
 
   has_many :conversation_groups, dependent: :destroy
   has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
@@ -52,6 +53,12 @@ class Group < ActiveRecord::Base
         return
       end
       errors.add(:alias_email_address, "is invalid") unless address.local.present? && address.domain.present?
+    end
+  end
+
+  def webhook_url_is_a_url
+    if webhook_url =~ /./
+      errors.add(:webhook_url, "is invalid") unless webhook_url =~ %r{http(s)://.*\.\w+}
     end
   end
 

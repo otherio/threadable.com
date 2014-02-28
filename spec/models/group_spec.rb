@@ -88,6 +88,26 @@ describe Group do
       group.errors[:email_address_tag].should == ['is invalid']
     end
 
+    it "only allows valid webhook urls" do
+      group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', webhook_url: 'your mom')
+      group.save.should be_false
+      group.errors[:webhook_url].should == ['is invalid']
+
+      group.webhook_url = 'ftp://foo.com'
+      group.save.should be_false
+      group.errors[:webhook_url].should == ['is invalid']
+    end
+
+    it "allows a blank webhook url" do
+      group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', webhook_url: '')
+      group.save.should be_true
+    end
+
+    it "allows a valid webhook url" do
+      group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', webhook_url: 'https://foo.com')
+      group.save.should be_true
+    end
+
     describe 'alias_email_address' do
       it 'allows a plain email address' do
         group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: 'foo@example.com')
