@@ -86,7 +86,7 @@ FixtureBuilder.build do
 
     @graphic_design_group = create_group name: 'Graphic Design', color: '#f2ad40', auto_join: true
 
-    @press_group = create_group name: 'Press', color: '#e67e22', auto_join: false, alias_address: 'Press Enquiries <press@ucsd.example.com>'
+    @press_group = create_group name: 'Press', color: '#e67e22', auto_join: false, alias_email_address: 'Press Enquiries <press@ucsd.example.com>'
     add_member_to_group 'press', 'tom@ucsd.example.com'
     add_member_to_group 'press', 'nadya@ucsd.example.com'
   end

@@ -4,15 +4,15 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
   aliasPlainAddress: function() {
-    var aliasAddress = this.get('editableGroup.aliasAddress');
-    if(aliasAddress.match(/\<(.*)\>/)) {
+    var aliasEmailAddress = this.get('editableGroup.aliasEmailAddress');
+    if(aliasEmailAddress.match(/\<(.*)\>/)) {
       return RegExp.$1;
     }
-    if(aliasAddress.match(/@/)) {
-      return aliasAddress;
+    if(aliasEmailAddress.match(/@/)) {
+      return aliasEmailAddress;
     }
     return '';
-  }.property('editableGroup.aliasAddress'),
+  }.property('editableGroup.aliasEmailAddress'),
 
   aliasTaskAddress: function() {
     return this.get('aliasPlainAddress').replace(/@/, '-task@');
@@ -26,7 +26,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
         color:        this.get('editableGroup.color'),
         autoJoin:     this.get('editableGroup.autoJoin'),
         holdMessages: this.get('editableGroup.holdMessages'),
-        aliasAddress: this.get('editableGroup.aliasAddress'),
+        aliasEmailAddress: this.get('editableGroup.aliasEmailAddress'),
       });
 
       group.saveRecord().then(

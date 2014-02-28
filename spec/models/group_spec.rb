@@ -88,38 +88,38 @@ describe Group do
       group.errors[:email_address_tag].should == ['is invalid']
     end
 
-    describe 'alias_address' do
+    describe 'alias_email_address' do
       it 'allows a plain email address' do
-        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_address: 'foo@example.com')
+        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: 'foo@example.com')
         group.save.should be_true
       end
 
       it 'allows a formatted email address' do
-        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_address: '"Foo" <foo@example.com>')
+        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: '"Foo" <foo@example.com>')
         group.save.should be_true
       end
 
       it 'allows a blank email address' do
-        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_address: '')
+        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: '')
         group.save.should be_true
       end
 
       it 'rejects an address with special characters and no quotes' do
-        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_address: 'Foo: bar <foo@bar.com>')
+        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: 'Foo: bar <foo@bar.com>')
         group.save.should be_false
-        group.errors[:alias_address].should == ['is invalid']
+        group.errors[:alias_email_address].should == ['is invalid']
       end
 
       it 'rejects an address that is malformed' do
-        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_address: 'your mom')
+        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: 'your mom')
         group.save.should be_false
-        group.errors[:alias_address].should == ['is invalid']
+        group.errors[:alias_email_address].should == ['is invalid']
       end
 
       it 'rejects an address that is all whitespace' do
-        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_address: ' ')
+        group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', alias_email_address: ' ')
         group.save.should be_false
-        group.errors[:alias_address].should == ['is invalid']
+        group.errors[:alias_email_address].should == ['is invalid']
       end
     end
   end
