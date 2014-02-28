@@ -17,6 +17,7 @@ class Threadable::Group < Threadable::Model
     color
     errors
     alias_email_address
+    webhook_url
     new_record?
     persisted?
     destroy

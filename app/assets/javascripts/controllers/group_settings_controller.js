@@ -22,11 +22,12 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
     updateGroup: function() {
       var group = this.get('content');
       group.setProperties({
-        subjectTag:   this.get('editableGroup.subjectTag'),
-        color:        this.get('editableGroup.color'),
-        autoJoin:     this.get('editableGroup.autoJoin'),
-        holdMessages: this.get('editableGroup.holdMessages'),
+        subjectTag:        this.get('editableGroup.subjectTag'),
+        color:             this.get('editableGroup.color'),
+        autoJoin:          this.get('editableGroup.autoJoin'),
+        holdMessages:      this.get('editableGroup.holdMessages'),
         aliasEmailAddress: this.get('editableGroup.aliasEmailAddress'),
+        webhookUrl:        this.get('editableGroup.webhookUrl'),
       });
 
       group.saveRecord().then(

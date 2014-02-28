@@ -56,7 +56,10 @@
         {{#if editAdvanced}}
           <div class="advanced well">
             <h4 class="uk-text-bold">Aliased email address:</h4>
-            To use an email alias for this group, enter it here and we'll make sure that messages from Threadable have the correct headers:
+            <p>
+              To use an email alias for this group, enter it here and we'll make sure that messages
+              from Threadable have the correct headers:
+            </p>
             <div class="uk-form-row">
               <label class="uk-form-label input-label">
                 Alias Email Address:
@@ -72,23 +75,38 @@
               <span class="example-address">"My Group" &lt;mygroup@example.com&gt;</span>.
             </p>
 
+            {{#if editableGroup.aliasEmailAddress}}
+              <p>
+                Make sure to create the following aliases in your mail system:
+              </p>
+
+              <ol class="address-list">
+                <li>
+                  {{aliasPlainAddress}} <i class="uk-icon-arrow-right"></i>
+                  <br/>
+                  <span class="destination-address">{{internalEmailAddress}}</span>
+                </li>
+                <li>
+                  {{aliasTaskAddress}} <i class="uk-icon-arrow-right"></i>
+                  <br/>
+                  <span class="destination-address">{{internalTaskEmailAddress}}</span>
+                </li>
+              </ol>
+            {{/if}}
+
+            <h4 class="uk-text-bold">Email preprocess webhook:</h4>
             <p>
-              You should create the following aliases in your mail system:
+              To process messages using your own code before they go to Threadable, enter the url of your
+              preprocessor application here. Documentation forthcoming. :)
             </p>
-
-            <ol class="address-list">
-              <li>
-                {{aliasPlainAddress}} <i class="uk-icon-arrow-right"></i>
-                <br/>
-                <span class="destination-address">{{internalEmailAddress}}</span>
-              </li>
-              <li>
-                {{aliasTaskAddress}} <i class="uk-icon-arrow-right"></i>
-                <br/>
-                <span class="destination-address">{{internalTaskEmailAddress}}</span>
-              </li>
-            </ol>
-
+            <div class="uk-form-row">
+              <label class="uk-form-label input-label">
+                Webhook URL:
+              </label>
+              <div class="uk-form-controls input-field">
+                {{input value=editableGroup.webhookUrl class="uk-width-1-1" name="webhookUrl"}}
+              </div>
+            </div>
 
             <a href="" class="toggle-advanced" {{action toggleAdvanced}}><i class="uk-icon-flask"></i> Hide experimental options</a>
           </div>

@@ -7,7 +7,7 @@ Threadable.GroupSettingsRoute = Ember.Route.extend({
   renderTemplate: function(controller, model) {
     this.render('group_settings', {into: 'organization', outlet: 'pane1'});
     this.controllerFor('organization').set('focus', 'conversations');
-    controller.set('editAdvanced', !! model.get('aliasEmailAddress'));
+    controller.set('editAdvanced', !!model.get('aliasEmailAddress') || !!model.get('webhookUrl'));
   },
 
   actions: {
