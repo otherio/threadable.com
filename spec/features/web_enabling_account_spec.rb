@@ -9,7 +9,7 @@ feature "web enabling account" do
     resize_window_to :large
     click_link 'Forgot Password'
     fill_in 'Email Address', with: user.email_address
-    click_button 'Recover'
+    click_button 'Get password'
     expect(page).to have_text "We've emailed you a password reset link."
 
     drain_background_jobs!

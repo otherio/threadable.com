@@ -10,7 +10,7 @@ feature "recovering password" do
     expect(page).to have_text "Forgot Password"
     click_link 'Forgot Password'
     fill_in 'Email Address', with: current_user.email_address
-    click_button 'Recover'
+    click_button 'Get password'
     expect(page).to have_text "We've emailed you a password reset link."
 
     drain_background_jobs!
