@@ -3,6 +3,21 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
 
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
+  aliasPlainAddress: function() {
+    var aliasAddress = this.get('editableGroup.aliasAddress');
+    if(aliasAddress.match(/\<(.*)\>/)) {
+      return RegExp.$1;
+    }
+    if(aliasAddress.match(/@/)) {
+      return aliasAddress;
+    }
+    return '';
+  }.property('editableGroup.aliasAddress'),
+
+  aliasTaskAddress: function() {
+    return this.get('aliasPlainAddress').replace(/@/, '-task@');
+  }.property('aliasPlainAddress'),
+
   actions: {
     updateGroup: function() {
       var group = this.get('content');
@@ -28,6 +43,10 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
         var error = response && response.error || 'an unknown error occurred';
         this.set('error', error);
       }
+    },
+
+    toggleAdvanced: function() {
+      this.set('editAdvanced', ! this.get('editAdvanced'));
     }
   }
 

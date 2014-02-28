@@ -4,9 +4,10 @@ Threadable.GroupSettingsRoute = Ember.Route.extend({
     return this.modelFor('organization').get('groups').findBy('slug', groupSlug);
   },
 
-  renderTemplate: function() {
+  renderTemplate: function(controller, model) {
     this.render('group_settings', {into: 'organization', outlet: 'pane1'});
     this.controllerFor('organization').set('focus', 'conversations');
+    controller.set('editAdvanced', !! model.get('aliasAddress'));
   },
 
   actions: {
