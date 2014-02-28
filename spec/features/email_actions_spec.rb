@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe "Email actions" do
 
+  let(:tracked_event_name){ 'Email action taken' }
+
   let(:url){ email_action_url token: token }
 
   let(:user){ threadable.users.find_by_email_address!('bethany@ucsd.example.com') }
@@ -24,6 +26,7 @@ describe "Email actions" do
         expect(task).to be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(user.id, tracked_event_name, type: "done", user_id: user.id, record_id: task.id)
       end
     end
 
@@ -42,6 +45,7 @@ describe "Email actions" do
         expect(task).to_not be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as not done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(user.id, tracked_event_name, type: "undone", user_id: user.id, record_id: task.id)
       end
     end
 
@@ -59,6 +63,7 @@ describe "Email actions" do
         expect(conversation).to be_muted_by user
         expect(page).to have_text "You muted #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(user.id, tracked_event_name, type: "mute", user_id: user.id, record_id: conversation.id)
       end
     end
 
@@ -76,6 +81,7 @@ describe "Email actions" do
         expect(task.doers).to include user
         expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(user.id, tracked_event_name, type: "add", user_id: user.id, record_id: task.id)
       end
     end
 
@@ -93,6 +99,7 @@ describe "Email actions" do
         expect(task.doers).to_not include user
         expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(user.id, tracked_event_name, type: "remove", user_id: user.id, record_id: task.id)
       end
     end
 
@@ -107,6 +114,7 @@ describe "Email actions" do
         click_on 'Leave'
         expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
         expect(group.members).to_not include user
+        assert_tracked(nil, tracked_event_name, type: "join", user_id: user.id, record_id: group.id)
       end
     end
 
@@ -121,6 +129,7 @@ describe "Email actions" do
         click_on 'Rejoin'
         expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
         expect(group.members).to include user
+        assert_tracked(nil, tracked_event_name, type: "leave", user_id: user.id, record_id: group.id)
       end
     end
 
@@ -129,6 +138,8 @@ describe "Email actions" do
       it "renders a server error" do
         visit url
         expect(page).to have_text 'Something went wrong'
+
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -137,6 +148,7 @@ describe "Email actions" do
       it "renders a server error" do
         visit url
         expect(page).to have_text 'Something went wrong'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -154,6 +166,7 @@ describe "Email actions" do
         expect(task).to be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "done", user_id: threadable.current_user.id, record_id: task.id)
       end
     end
 
@@ -167,6 +180,7 @@ describe "Email actions" do
         expect(task).to_not be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as not done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "undone", user_id: threadable.current_user.id, record_id: task.id)
       end
     end
 
@@ -180,6 +194,7 @@ describe "Email actions" do
         expect(conversation).to be_muted_by user
         expect(page).to have_text "You muted #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "mute", user_id: threadable.current_user.id, record_id: conversation.id)
       end
     end
 
@@ -193,6 +208,7 @@ describe "Email actions" do
         expect(task.doers).to include user
         expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "add", user_id: threadable.current_user.id, record_id: task.id)
       end
     end
 
@@ -206,6 +222,7 @@ describe "Email actions" do
         expect(task.doers).to_not include user
         expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "remove", user_id: threadable.current_user.id, record_id: task.id)
       end
     end
 
@@ -218,6 +235,7 @@ describe "Email actions" do
         expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
         expect(page).to be_at_url conversations_url(organization, 'fundraising')
         expect(group.members).to include user
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "join", user_id: threadable.current_user.id, record_id: group.id)
       end
     end
 
@@ -230,6 +248,7 @@ describe "Email actions" do
         expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
         expect(page).to be_at_url conversations_url(organization, 'electronics')
         expect(group.members).to_not include user
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "leave", user_id: threadable.current_user.id, record_id: group.id)
       end
     end
 
@@ -238,6 +257,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -246,6 +266,7 @@ describe "Email actions" do
       it "renders a server error" do
         visit url
         expect(page).to have_text 'Something went wrong'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -259,6 +280,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -268,6 +290,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -277,6 +300,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -286,6 +310,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -295,6 +320,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -304,6 +330,7 @@ describe "Email actions" do
       it "should immediately add me as a member to the group" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -313,6 +340,7 @@ describe "Email actions" do
       it "should immediately add me as a member to the group" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -321,6 +349,7 @@ describe "Email actions" do
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
       end
     end
 
@@ -329,10 +358,15 @@ describe "Email actions" do
       it "renders a server error" do
         visit url
         expect(page).to have_text 'Something went wrong'
+        expect_no_email_action_taken_tracking!
       end
     end
 
   end
 
+  def expect_no_email_action_taken_tracking!
+    return unless trackings.select{|t| t[1] == tracked_event_name }.present?
+    raise RSpec::Expectations::ExpectationNotMetError, "expected no #{tracked_event_name.inspect} trackings in:\n#{trackings.pretty_inspect}"
+  end
 
 end
