@@ -15,7 +15,6 @@ feature "requesting an account" do
     sent_emails.clear
 
     visit root_url
-    assert_tracked(nil, 'Homepage visited')
 
     fill_in 'Organization name', with: organization_name
     fill_in 'Email address', with: email_address
