@@ -8,15 +8,15 @@ In <%= "#{'Group'.pluralize(@conversation.groups.count)}" %>:
   +<%= group.name %>: <%= group.email_address %>
 <% end %>
 
+New conversation: <%= @organization.email_address %>
+New task: <%= @organization.task_email_address %>
+
 <% end %>
 Web view:
 <%= @message_url %>
 
-Start a new conversation:
-<%= @organization.email_address %>
-
-Start a new task:
-<%= @organization.task_email_address %>
+Mute:
+<%= email_action_link(@conversation, @recipient, "mute") %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>
