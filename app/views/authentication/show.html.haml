@@ -25,6 +25,8 @@
               %a.forgot-password-link{href:""} Forgot Password?
 
           = f.submit 'Sign in', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+          %a.uk-button.uk-button-large{href: '/'}
+            Sign up
 
     = simple_form_for @password_recovery, url: recover_password_path, html: {class: 'recorver-password-form uk-form uk-form-stacked', style:'display: none;'} do |f|
       %fieldset
@@ -38,14 +40,6 @@
               %a.sign-in-link{href:""} Sign In
 
           = f.submit 'Recover Password', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
-
-  %p.promotext
-    Threadable is coming really soon.
-    %br/
-    %br/
-    We'd love for you to join us. Learn more, and sign up for our early beta at
-    %a{:href => "http://signup.other.io"} http://signup.other.io
-
 
 :javascript
   #{ render 'show.js' }
