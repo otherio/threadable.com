@@ -91,11 +91,15 @@ describe Group do
     it "only allows valid webhook urls" do
       group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', webhook_url: 'your mom')
       group.save.should be_false
-      group.errors[:webhook_url].should == ['is invalid']
+      group.errors[:webhook_url].should == ["is not a invalid url"]
 
       group.webhook_url = 'ftp://foo.com'
       group.save.should be_false
-      group.errors[:webhook_url].should == ['is invalid']
+      group.errors[:webhook_url].should == ['must start with either http or https']
+
+      group.webhook_url = 'http://foo'
+      group.save.should be_false
+      group.errors[:webhook_url].should == ['does not have a valid host']
     end
 
     it "allows a blank webhook url" do

@@ -46,7 +46,7 @@ class Group < ActiveRecord::Base
   end
 
   def alias_email_address_is_an_email_address
-    return if alias_email_address.blank?
+    return if alias_email_address.nil? || alias_email_address.empty?
     begin
       address = Mail::Address.new(alias_email_address)
       return if address.local.present? && address.domain.present?
@@ -56,7 +56,7 @@ class Group < ActiveRecord::Base
   end
 
   def webhook_url_is_a_url
-    return unless webhook_url.present?
+    return if webhook_url.nil? || webhook_url.empty?
     begin
       uri = URI.parse(webhook_url)
       errors.add(:webhook_url, "cannot be a relative url")             if uri.relative?
