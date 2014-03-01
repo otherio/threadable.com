@@ -1,6 +1,8 @@
 Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['organization'],
 
+  error: null,
+
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
   aliasPlainAddress: function() {
@@ -20,6 +22,8 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
 
   actions: {
     updateGroup: function() {
+      this.set('error', null);
+
       var group = this.get('content');
       group.setProperties({
         subjectTag:        this.get('editableGroup.subjectTag'),
@@ -30,10 +34,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
         webhookUrl:        this.get('editableGroup.webhookUrl'),
       });
 
-      group.saveRecord().then(
-        groupSaved.bind(this),
-        error.bind(this)
-      );
+      group.saveRecord().then(groupSaved.bind(this), error.bind(this));
 
       function groupSaved(response) {
         group.deserialize(response.group);

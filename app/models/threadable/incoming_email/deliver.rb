@@ -63,6 +63,11 @@ class Threadable::IncomingEmail::Deliver < MethodObject
     @incoming_email.conversation.groups.add_unless_removed(*@incoming_email.groups)
   end
 
+  def call_webhook!
+    url = @incoming_email.groups.find(&:has_webhook?).try(:webhook_url) or return
+    Threadable::IncomingEmail::ProcessWebhook.call(url, @incoming_email)
+  end
+
   def create_message!
     @incoming_email.message = @incoming_email.conversation.messages.create!(
       creator_id:        @incoming_email.creator.try(:id),

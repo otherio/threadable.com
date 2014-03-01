@@ -23,6 +23,7 @@ class Threadable::Group < Threadable::Model
     destroy
     auto_join?
     hold_messages?
+    webhook_url
   }, to: :group_record
 
   def group_id
@@ -93,8 +94,13 @@ class Threadable::Group < Threadable::Model
     ).to_s
   end
 
+  def has_webhook?
+    webhook_url.present?
+  end
+
   def update attributes
     group_record.update_attributes!(attributes)
+    self
   end
 
   def == other
