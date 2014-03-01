@@ -38,27 +38,32 @@ class Group < ActiveRecord::Base
     email_address_tag
   end
 
+  private
+
   def email_address_tag_special_characters
-    if email_address_tag.present? && email_address_tag =~ /--/
-      errors.add :email_address_tag, "is invalid"
-    end
+    return unless email_address_tag.present? && email_address_tag =~ /--/
+    errors.add :email_address_tag, "is invalid"
   end
 
   def alias_email_address_is_an_email_address
-    if alias_email_address =~ /./
-      begin
-        address = Mail::Address.new(alias_email_address)
-      rescue
-        errors.add :alias_email_address, "is invalid"
-        return
-      end
-      errors.add(:alias_email_address, "is invalid") unless address.local.present? && address.domain.present?
+    return if alias_email_address.nil? || alias_email_address.empty?
+    begin
+      address = Mail::Address.new(alias_email_address)
+      return if address.local.present? && address.domain.present?
+    rescue Mail::Field::FieldError
     end
+    errors.add :alias_email_address, "is invalid"
   end
 
   def webhook_url_is_a_url
-    if webhook_url =~ /./
-      errors.add(:webhook_url, "is invalid") unless webhook_url =~ %r{http(s)://.*\.\w+}
+    return if webhook_url.nil? || webhook_url.empty?
+    begin
+      uri = URI.parse(webhook_url)
+      errors.add(:webhook_url, "cannot be a relative url")             if uri.relative?
+      errors.add(:webhook_url, "must start with either http or https") if uri.scheme !~ %r{^https?$}
+      errors.add(:webhook_url, "does not have a valid host")           if uri.host !~ /\w+\.\w+/
+    rescue URI::InvalidURIError
+      errors.add(:webhook_url, "is not a invalid url")
     end
   end
 

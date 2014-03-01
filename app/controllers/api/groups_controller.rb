@@ -23,8 +23,9 @@ class Api::GroupsController < ApiController
 
   # patch /api/groups/:id
   def update
-    group_params = params.require(:group).permit(:color, :subject_tag, :auto_join, :hold_messages, :alias_email_address)
     group = organization.groups.find_by_email_address_tag!(params[:id])
+    group_params = params.require(:group).permit(:color, :subject_tag, :auto_join, :hold_messages, :alias_email_address, :webhook_url)
+    group_params[:webhook_url].try(&:strip)
     group.update(group_params)
     render json: serialize(:groups, group), status: 200
   end

@@ -8,11 +8,12 @@ class Threadable::IncomingEmail::Deliver < MethodObject
     @incoming_email = incoming_email
     Threadable.transaction do
       create_or_update_conversation!
-      if incoming_email.message.present?
+      if @incoming_email.message.present?
         delete_attachments!
         @incoming_email.message.send_emails!
       else
         save_off_attachments!
+        call_webhook!
         create_message!
       end
       save!
@@ -61,6 +62,11 @@ class Threadable::IncomingEmail::Deliver < MethodObject
 
   def update_conversation!
     @incoming_email.conversation.groups.add_unless_removed(*@incoming_email.groups)
+  end
+
+  def call_webhook!
+    url = @incoming_email.groups.find(&:has_webhook?).try(:webhook_url) or return
+    Threadable::IncomingEmail::ProcessWebhook.call(@incoming_email, url)
   end
 
   def create_message!

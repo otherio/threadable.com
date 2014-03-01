@@ -2,14 +2,28 @@ require 'spec_helper'
 
 describe Threadable::IncomingEmail::Deliver do
 
-  let(:params){ ::IncomingEmail.create(params: create_incoming_email_params).params }
-  let(:conversation){ double(:conversation, messages: double(:messages)) }
-  let(:subject){ 'I love this community!' }
-  let(:stripped_plain){ 'i am a message body' }
-  let(:recipient){ 'raceteam@127.0.0.1' }
+  let(:params)             { ::IncomingEmail.create(params: create_incoming_email_params).params }
+  let(:conversation)       { double(:conversation, messages: double(:messages)) }
+  let(:subject)            { 'I love this community!' }
+  let(:stripped_plain)     { 'i am a message body' }
+  let(:recipient)          { 'raceteam@127.0.0.1' }
   let(:preexisting_message){ nil }
+  let(:group1)             { double(:group1, subject_tag: 'group1') }
+  let(:group2)             { double(:group2, subject_tag: 'group2') }
+  let(:groups)             { [group1, group2] }
+
+  let :organization do
+    double(:organization,
+      subject_tag:  'RaceTeam',
+      conversations: double(:conversations),
+      tasks:         double(:tasks),
+      groups:        double(:groups, all: groups)
+    )
+  end
+
   let :incoming_email do
     double(:incoming_email,
+      threadable:     threadable,
       id: 879,
       incoming_email_record: double(:incoming_email_record),
       params:         params,
@@ -18,7 +32,7 @@ describe Threadable::IncomingEmail::Deliver do
       message:        preexisting_message,
       creator:        double(:creator, id: 54),
       attachments:    double(:attachments, all: double(:all_attachments)),
-      organization:   double(:organization, subject_tag: 'RaceTeam', conversations: double(:conversations), tasks: double(:tasks), groups: double(:groups, all: [])),
+      organization:   organization,
       message_id:     double(:incoming_email_message_id),
       references:     double(:incoming_email_references),
       date:           double(:incoming_email_date, rfc2822: 'rfc2822 version of date'),
@@ -30,12 +44,26 @@ describe Threadable::IncomingEmail::Deliver do
       body_html:      double(:incoming_email_body_html),
       stripped_plain: stripped_plain,
       stripped_html:  double(:incoming_email_stripped_html),
-      groups:         [double(:group1),double(:group2)],
+      groups:         groups,
     )
   end
+
   let(:message){ double :message }
 
   let(:expected_subject) { subject[0..254] }
+
+  def expect_webhook_to_be_called!
+    expect(group1).to receive(:has_webhook?).and_return(false)
+    expect(group2).to receive(:has_webhook?).and_return(true)
+    expect(group2).to receive(:webhook_url).and_return('http://webhook.url')
+    expect(Threadable::IncomingEmail::ProcessWebhook).to receive(:call).with(incoming_email, 'http://webhook.url')
+  end
+
+  def expect_webhook_to_not_be_called!
+    expect(group1).not_to receive(:has_webhook?)
+    expect(group2).not_to receive(:has_webhook?)
+    expect(Threadable::IncomingEmail::ProcessWebhook).to_not receive(:call)
+  end
 
   before do
     expect(Threadable).to receive(:transaction).and_yield
@@ -92,11 +120,20 @@ describe Threadable::IncomingEmail::Deliver do
       expect(conversation).to receive(:groups).and_return(conversation_groups)
       expect(conversation_groups).to receive(:add_unless_removed).with(*incoming_email.groups)
     end
-    it 'saves off the attachments, and creates a conversation message' do
-      call!
+
+    context 'when the incoming email is not a duplicate of an existing message' do
+      before do
+        expect_webhook_to_be_called!
+      end
+      it 'saves off the attachments, and creates a conversation message' do
+        call!
+      end
     end
 
     context 'when the incoming email is a duplicate of an existing message' do
+      before do
+        expect_webhook_to_not_be_called!
+      end
       it 'needs tests'
     end
   end
@@ -106,6 +143,7 @@ describe Threadable::IncomingEmail::Deliver do
       expect(incoming_email).to receive(:conversation).once.and_return(nil)
       expect(incoming_email).to receive(:conversation=).with(conversation)
       expect(incoming_email).to receive(:conversation).once.and_return(conversation)
+      expect_webhook_to_be_called!
     end
 
     context 'and recipient is not a +task email address, and the subject does not contain [task] or [✔]' do
