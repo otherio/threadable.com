@@ -2,6 +2,8 @@ require_dependency 'threadable/incoming_email'
 
 class Threadable::IncomingEmail::ProcessWebhook < MethodObject
 
+  InvalidResponse = Class.new(StandardError)
+
   MUTABLE_PARAMS = %w{
     body-html
     body-plain
@@ -9,18 +11,21 @@ class Threadable::IncomingEmail::ProcessWebhook < MethodObject
     stripped-text
   }.freeze
 
-  def call url, params
-    response = HTTParty.post(url, body: params)
-    return unless response.code < 300 && response.respond_to?(:[])
+  def call threadable, url, params
+    begin
+      response = HTTParty.post(url, body: params)
+      response.code < 300 && response.respond_to?(:[]) or raise InvalidResponse,
+        "invalid response from #{url}. code: #{response.code}, body: #{response.inspect}"
 
-    MUTABLE_PARAMS.each do |param|
-      # next if response[param] == params[param]
-      params["BEFORE_WEBHOOK_#{param}"] ||= params[param]
-      params[param] = response[param]
+      MUTABLE_PARAMS.each do |param|
+        params["BEFORE_WEBHOOK_#{param}"] ||= params[param]
+        params[param] = response[param]
+      end
+    rescue Exception => exception
+      threadable.report_exception!(exception,{
+        incoming_email_webhook_failed: true
+      })
     end
-  # rescue Exception => exception
-    # incoming_email.threadable.report_exception!(exception)
-  ensure
     return params
   end
 
