@@ -11,7 +11,10 @@ class Threadable::IncomingEmail::ProcessWebhook < MethodObject
     stripped-text
   }.freeze
 
-  def call threadable, url, params
+  def call incoming_email, url
+    threadable = incoming_email.threadable
+    params     = incoming_email.params
+
     begin
       response = HTTParty.post(url, body: params)
       response.code < 300 && response.respond_to?(:[]) or raise InvalidResponse,
@@ -25,7 +28,11 @@ class Threadable::IncomingEmail::ProcessWebhook < MethodObject
       threadable.report_exception!(exception,{
         incoming_email_webhook_failed: true
       })
+      threadable.track('web hook called', url: url, successful: false)
+      return params
     end
+
+    threadable.track('web hook called', url: url, successful: true)
     return params
   end
 
