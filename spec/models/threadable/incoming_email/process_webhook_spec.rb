@@ -5,7 +5,7 @@ describe Threadable::IncomingEmail::ProcessWebhook do
   subject{ described_class }
 
   def call!
-    described_class.call(threadable, webhook_url, params)
+    described_class.call(incoming_email, webhook_url)
   end
 
   let :original_params do
@@ -21,8 +21,8 @@ describe Threadable::IncomingEmail::ProcessWebhook do
     original_params.dup
   end
 
-  let :webhook_server_session do
-    Capybara::Session.new(Capybara.javascript_driver, webhook_server)
+  let :incoming_email do
+    double(:incoming_email, threadable: threadable, params: params)
   end
 
   let :webhook_url do
