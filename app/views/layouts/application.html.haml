@@ -2,6 +2,7 @@
 %html.rails-app
   %head
     = render 'layouts/headers'
+    = stylesheet_link_tag 'application', :media => "all"
     = javascript_include_tag 'rails_app'
   %body
     .content= yield

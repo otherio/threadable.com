@@ -1,0 +1,282 @@
+.homepage
+
+  > .paneled-section
+    position: relative
+    $smaller-panel-width: 500px
+    border-top: 1px solid white
+
+    > .large-panel
+      color: $white-color
+      .content > .h2
+        margin-bottom: $default-font-size
+      &.right-panel
+        text-align: right
+
+
+    +large-screens
+      &, > .large-panel, > .small-panel
+        height: 380px
+
+      > .large-panel, > .small-panel
+        position: absolute
+        top: 0
+        bottom: 0
+
+      > .left-panel
+        left: 0
+      > .right-panel
+        right: 0
+
+      > .small-panel
+        width: $smaller-panel-width
+        +no-select
+        .flexbox &
+          +display-box
+          +box-orient(horizontal)
+          +box-pack(center)
+          +box-align(center)
+        .no-flexbox & img
+          margin: 0 auto
+        img
+          display: block
+
+      > .large-panel
+        .flexbox &
+          +display-box
+          +box-orient(horizontal)
+          +box-pack(center)
+          +box-align(center)
+        .no-flexbox &
+          > .content
+            margin-top: 5em
+
+        > .content
+          margin: 0 60px
+        &.left-panel
+          right: $smaller-panel-width
+        &.right-panel
+          left: $smaller-panel-width
+
+    +small-to-medium-screens
+      > .small-panel
+        display: none
+      > .large-panel
+        display: block
+        overflow: hidden
+        .content > .h2
+          margin-top: 1em
+
+    +medium-screens
+      > .large-panel > .content
+        margin: 40px
+
+    +small-screens
+      > .large-panel > .content
+        margin: 20px
+
+
+
+  .sign-up-form
+    .fields
+      margin: 50px 0
+      > .field
+        .errors
+          text-align: left
+          color: red
+          font-weight: bold
+          min-height: 23px
+          padding-bottom: 0.25em
+
+        +small-to-medium-screens
+          margin: 0 auto
+          .errors
+            text-align: center
+
+        +large-screens
+          display: inline-block
+
+    .success
+      display: none
+      +small-screens
+        padding: 97px 20px
+      +medium-screens
+        padding: 97px 20px
+      +large-screens
+        padding: 65px 20px
+
+    &.success
+      form
+        display: none
+      .success
+        display: block
+
+
+
+  > .section-one
+    position: relative
+    padding: 74px 20px 70px
+    color: $white-color
+    text-align: center
+    background-color: $teal-color
+    +medium-to-large-screens
+      background-image: image-url("homepage/hexagon.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 680px
+
+  > .section-two
+    padding: 60px 20px
+    text-align: center
+    background-color: $white-color
+
+    > *
+      +small-screens
+        display: block
+        margin: 0 auto
+        width: auto
+        padding: 30px
+      +medium-screens
+        display: inline-block
+        width: 200px
+        padding: 20px
+        vertical-align: top
+      +large-screens
+        display: inline-block
+        width: 267px
+        padding: 30px
+        vertical-align: top
+
+    .icon
+      display: block
+      margin: 0 auto 20px auto
+      height: 150px
+      width: 150px
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 140px
+
+    .get-organized .icon
+      background-image: image-url("homepage/get-organized.svg"), none
+    .get-involved .icon
+      background-image: image-url("homepage/get-involved.svg"), none
+    .get-things-done .icon
+      background-image: image-url("homepage/get-things-done.svg"), none
+
+
+  > .section-three
+    .left-side
+      background-color: lighten(black, 15%)
+
+    .right-side
+      > *
+        overflow: hidden
+        text-align: center
+        > .fa
+          margin: 15px auto 0
+          color: #888D90
+
+
+
+      > .section-one
+        background-color: $light-blue-color
+      > .section-two
+        background-color: $lighter-blue-color
+      > .section-three
+        background-color: $lightest-blue-color
+    +small-to-medium-screens
+      .left-side
+        display: none
+      .right-side
+        float: none
+        width: auto
+        > *
+          > .large-text, > p
+            margin: 20px
+    +large-screens
+      overflow: hidden
+      > *
+        float: left
+        height: 825px
+        width: 50%
+      .right-side
+        > *
+          height: 33.3%
+          > .large-text
+            margin: 15px 90px
+          > p
+            margin: 0 70px 20px
+
+
+
+  > .section-four
+    padding: 60px 20px
+    text-align: center
+    background-color: $black-color
+    p
+      // this is a one-off and it should not be
+      color: $white-color
+      font-weight: 100
+      font-size: 30px
+      letter-spacing: 3px
+
+      margin: 0 auto 1em auto
+      line-height: 44px
+    +small-to-medium-screens
+    +large-screens
+      p
+        width: 600px
+
+
+  > .section-five
+    color: $white-color
+    .left-panel
+      background-color: #137B96
+    .right-panel
+      background-color: #2B5279
+      .no-flexbox & img
+        margin-top: 85px
+
+
+  > .section-six
+    .left-panel
+      background-color: $black-color
+      .flexbox &
+        +box-align(end)
+      .no-flexbox & img
+        margin-top: 45px
+      img
+        border: 1px solid white
+        border-bottom: none
+    .right-panel
+      background-color: #1B2127
+
+
+  > .section-seven
+    .left-panel
+      background-color: #52AFC6
+    .right-panel
+      background-color: #137B96
+      img
+        border: 1px solid white
+      .no-flexbox & img
+        margin-top: 26px
+
+
+  > .section-eight
+    .left-panel
+      background-color: #1B2127
+      background-image: image-url("homepage/commands.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 350px
+
+    .right-panel
+      background-color: $black-color
+
+
+  > .section-nine
+    padding: 60px 20px
+    background-color: $grey-color
+    text-align: center
+    .threadable-logo
+      font-size: 40px

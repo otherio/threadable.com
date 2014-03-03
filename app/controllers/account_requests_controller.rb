@@ -6,13 +6,18 @@ class AccountRequestsController < ApplicationController
     account_request_params = params.require(:account_request).permit(
       :organization_name, :email_address
     )
-    account_request = AccountRequest.create!(account_request_params)
-    threadable.emails.send_email_async :account_request_confirmation, account_request.id
-    threadable.track('Account requested',{
-      account_request_id: account_request.id,
-      organization_name:  account_request.organization_name,
-      email_address:      account_request.email_address,
-    })
+    account_request = AccountRequest.create(account_request_params)
+    if account_request.persisted?
+      threadable.emails.send_email_async :account_request_confirmation, account_request.id
+      threadable.track('Account requested',{
+        account_request_id: account_request.id,
+        organization_name:  account_request.organization_name,
+        email_address:      account_request.email_address,
+      })
+      render json: {}, status: :created
+    else
+      render json: {errors: account_request.errors.as_json}, status: :not_acceptable
+    end
   end
 
   def confirm

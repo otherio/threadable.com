@@ -16,9 +16,11 @@ feature "requesting an account" do
 
     visit root_url
 
-    fill_in 'Organization name', with: organization_name
-    fill_in 'Email address', with: email_address
-    expect{ click_on 'Request account' }.to change{ AccountRequest.count }.by(1)
+    within first('.sign-up-form') do
+      fill_in 'Organization name', with: organization_name
+      fill_in 'Email address', with: email_address
+      click_on 'SIGN UP'
+    end
 
     expect(page).to have_text 'click the link in your email'
 

@@ -1,3 +1,4 @@
+//= require modernizr
 //= require ga
 //= require mixpanel
 //= require user_voice

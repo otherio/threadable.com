@@ -1,18 +1,112 @@
-.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2.authentication-form
-  %h2 Welcome to Threadable
-  .well-when-not-small
-    %p.promotext Threadable is coming really soon.
-    %p.promotext We'd love for you to join us. Learn more, and sign up for our early beta:
-    = simple_form_for AccountRequest.new, url: account_request_path, html: {class: 'uk-form uk-form-stacked'} do |f|
-      %fieldset
-        .uk-form-row
-          = f.input :organization_name, type: 'string', label: false, placeholder: 'Organization name', input_html: {class: 'uk-width-1-1 uk-form-large'}, required: true
-        .uk-form-row
-          = f.input :email_address,      type: 'email', label: false, placeholder: 'Email address',     input_html: {class: 'uk-width-1-1 uk-form-large'}, required: true
-        .uk-form-row
-          = submit_tag 'Request account', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
-          .uk-float-right
-            = link_to 'Sign in', sign_in_path
-
 :javascript
   mixpanel.track('Homepage visited');
+
+
+.homepage.page-column
+
+  %section.section-one
+    %h1.header-huge Execute over email.
+    %p.header-sub Track and manage projects without leaving your inbox.
+    = render 'sign_up_form', button_color_class: 'black-button'
+
+
+  %section.section-two
+
+    .get-organized
+      .icon
+      .big-text GET ORGANIZED
+      %p Create flexible teams on the fly for any project.
+
+    .get-involved
+      .icon
+      .big-text GET INVOLVED
+      %p Manage work from your inbox without teaching everyone new tools.
+
+    .get-things-done
+      .icon
+      .big-text GET RESULTS
+      %p Make and track tasks together directly from your mobile or desktop email.
+
+
+  %section.section-three
+    .left-side
+      = image_tag 'homepage/homepage-app-example.jpg'
+    .right-side
+      .section-one
+        .fa.fa-envelope-o.fa-2x
+        .text-link.large-text Quit learning new tools.
+        %p
+          How many times have you tried to get a team on board a new project management tool, only to have it languish half-used and barely-updated?
+
+          Use Threadable to meet your team where they are: their inboxes. Keep everyone engaged and on the same page whether they're on desktops or mobile devices.
+      .section-two
+        .fa.fa-leaf.fa-2x
+        .text-link.large-text Organize organically.
+        %p
+          One conversation can be about multiple things. How do you keep focus on what you need to?
+
+          Threadable lets you slice and dice a conversation across an organization, creating impromptu groups on the fly for specific topics without interrupting discussions after they start.
+      .section-three
+        .fa.fa-circle-o.fa-2x
+        .text-link.large-text Make management simple.
+        %p
+          Sometimes you need to take a step back and see where everyone is in a conversation: what needs resolving, and who's doing what?
+
+          With Threadable, you can create, assign, and track tasks from your inbox, but you don't have to. Use the web view to get an overview, make changes, and give updates to projects and discussions in flight.
+
+
+  %section.section-four
+
+    %p MAKE REAL PLANS AND ORGANIZE FROM YOUR EXISTING INBOX.
+
+    %a.button.blue-button.large-button.get-started-button{href:""} GET STARTED NOW
+
+  %section.section-five.paneled-section
+    .left-panel.large-panel
+      .content
+        .h2 More signal, less noise
+        %div
+          In Threadable, anyone can move any conversation into a group of users -- an existing one, or one they can create on the fly (Social, West Coast, Rails devs, People with dogs) -- even after the discussion's already started. Groups make instant, collaborative email filtering possible, letting you and everyone else focus on what you need to hear about.
+    .right-panel.small-panel
+      = image_tag 'homepage/subgroups.png'
+
+
+  %section.section-six.paneled-section
+    .left-panel.small-panel
+      = image_tag 'homepage/tasks-in-your-inbox.jpg'
+
+    .right-panel.large-panel
+      .content
+        .h2 Tasks in your inbox
+        %div
+          With Threadable, you can create, assign, and track tasks from your inbox without any extensions to download or software to install. Anyone on your team can go from "Hey, I'll do that" to actually creating and claiming a task using nothing but their existing email, whether they're at their desk or on a mobile device.
+
+
+  %section.section-seven.paneled-section
+    .left-panel.large-panel
+      .content
+        .h2 Convenient, simple integrations
+        %div
+          If you're already using Trello or Pivotal Tracker, Threadable lets you make and receive comments and updates to cards from your email. Increase everyone's engagement with already-established tools instantly, and make your Trello comments searchable from within your own inbox.
+
+    .right-panel.small-panel
+      = image_tag 'homepage/integrations.jpg'
+
+
+  %section.section-eight.paneled-section
+    .left-panel.small-panel
+
+    .right-panel.large-panel
+      .content
+        .h2 Simple email commands
+        %div
+          Tell Threadable what to do with simple commands in the body of your email. Mark a task as &done, add someone as a &doer on a task, or &mute a conversation you're not interested in. Threadable makes it quick and easy to make what you want happen.
+
+  %section.section-nine
+    = render 'shared/threadable_logo'
+    %p.header-sub Track and manage projects without leaving your inbox.
+
+    = render 'sign_up_form', button_color_class: 'blue-button'
+
+:javascript
+  #{render 'show.js'}

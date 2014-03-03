@@ -1,0 +1,31 @@
+.page-footer
+  > .content
+    padding: 20px
+    background-color: $grey-color
+    +small-to-medium-screens
+
+    +medium-to-large-screens
+      height: 50px
+      line-height: 50px
+
+  +small-screens
+    .inline-list
+      float: none
+      text-align: center
+      > *
+        margin-bottom: 1em
+        float: none
+        display: block
+
+  .fa-twitter, .fa-facebook
+    +border-radius(50%)
+    display: inline-block
+    height: 25px
+    width:  25px
+    text-align: center
+  .fa-twitter
+    background: #249adb
+    border: 10px solid #249adb
+  .fa-facebook
+    background: #2d4386
+    border: 10px solid #2d4386

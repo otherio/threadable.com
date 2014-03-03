@@ -1,0 +1,23 @@
+.text-input
+  display: inline-block
+  padding: 1em
+  font-weight: 300
+  border: none
+  +border-radius(2px)
+  outline: none
+  color: $black-color
+  +small-screens
+    width: 150px
+  +medium-to-large-screens
+    width: 200px
+
+  &:focus
+    +box-shadow($black-color 0 1px 10px)
+
+  &.wide-text-input
+    +small-screens
+      width: 250px
+    +medium-to-large-screens
+      width: 300px
+
+

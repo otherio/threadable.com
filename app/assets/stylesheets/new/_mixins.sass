@@ -1,0 +1,90 @@
+=small-screens
+  @media (max-width: $small-screen-max-width)
+    @content
+
+=medium-screens
+  @media (min-width: $medium-screen-min-width) and (max-width: $medium-screen-max-width)
+    @content
+
+=large-screens
+  @media (min-width: $large-screen-min-width)
+    @content
+
+=small-to-medium-screens
+  @media (max-width: $medium-screen-max-width)
+    @content
+
+=medium-to-large-screens
+  @media (min-width: $medium-screen-min-width)
+    @content
+
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+=absolute($top:null, $left:null, $bottom:null, $right:null)
+  position: absolute
+  @if $top
+    top: $top
+  @if $left
+    left: $left
+  @if $bottom
+    bottom: $bottom
+  @if $right
+    right: $right
+
+=animate-property($property, $transform: true)
+  @if $transform
+    +transform(translate3d(0,0,0))
+  +transition-property($property)
+  +transition-duration(0.2s)
+  +transition-timing-function(ease-in)
+
+=no-select
+  +user-select(none)
+  &:not(a[href]):not(button)
+    cursor: default
+
+
+=button-text
+  font-size: 11px
+  font-weight: 300
+  letter-spacing: 3px
+
+=scale-on-hover-or-active
+  +transition-property(transform)
+  +transition-duration(0.1s)
+  +transition-timing-function(ease-in-out)
+  &:hover, &:focus
+    +transform(scale(1.15,1.15))
+
+=clearfix
+  /**
+   * Taken from http://nicolasgallagher.com/micro-clearfix-hack/
+   *
+   * For modern browsers
+   * 1. The space content is one way to avoid an Opera bug when the
+   *    contenteditable attribute is included anywhere else in the document.
+   *    Otherwise it causes space to appear at the top and bottom of elements
+   *    that are clearfixed.
+   * 2. The use of `table` rather than `block` is only necessary if using
+   *    `:before` to contain the top-margins of child elements.
+   */
+  &:before, &:after
+    content: " " /* 1 */
+    display: table /* 2 */
+  &:after
+    clear: both
+  /**
+   * For IE 6/7 only
+   * Include this rule to trigger hasLayout and contain floats.
+   */
+  &
+    *zoom: 1
+

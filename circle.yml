@@ -14,3 +14,8 @@ deployment:
     branch: master
     commands:
       - script/deploy staging
+
+
+general:
+  branches:
+    ignore:

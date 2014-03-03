@@ -1,0 +1,28 @@
+.button
+  display: inline-block
+  padding: 1em
+  white-space: nowrap
+  color: inherit
+  background-color: transparent
+  border: 0
+
+  +border-radius(3px)
+  +button-text
+  +transition-property(transform)
+  +transition-duration(0.1s)
+  +transition-timing-function(ease-in-out)
+  &:hover, &:focus
+    +transform(scale(1.15,1.15))
+    outline: none
+
+  &.large-button
+    font-size: 14px
+    padding: 1.25em 4em
+
+
+  &.blue-button
+    color: $white-color
+    background-color: $teal-color
+  &.black-button
+    color: $white-color
+    background-color: $black-color
