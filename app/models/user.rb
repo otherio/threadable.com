@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :messages
   has_many :organization_messages, through: :organizations, source: :messages
   has_many :conversations, ->{ uniq }, through: :organizations
+  has_many :external_authorizations
 
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 

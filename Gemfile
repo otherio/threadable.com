@@ -50,6 +50,9 @@ gem 'honeybadger'
 
 gem 'thread_safe', :git => 'git://github.com/headius/thread_safe.git', :ref => '177381261d4'
 
+gem 'omniauth'
+gem 'omniauth-trello'
+
 group :production, :staging do
   gem 'rails_12factor'
 end

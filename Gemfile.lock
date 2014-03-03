@@ -153,6 +153,7 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     handlebars-source (1.1.2)
+    hashie (2.0.5)
     hike (1.2.3)
     honeybadger (1.9.5)
       faraday (~> 0.7)
@@ -205,6 +206,18 @@ GEM
     newrelic_rpm (3.6.5.130)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
+    oauth (0.4.7)
+    omniauth (1.2.1)
+      hashie (>= 1.2, < 3)
+      rack (~> 1.0)
+    omniauth-oauth (1.0.1)
+      oauth
+      omniauth (~> 1.0)
+    omniauth-trello (0.0.4)
+      multi_json (~> 1.5)
+      oauth (~> 0.4)
+      omniauth (~> 1.0)
+      omniauth-oauth (~> 1.0)
     options_hash (0.0.1)
     options_hash-method_object (0.1.0)
       options_hash
@@ -382,6 +395,8 @@ DEPENDENCIES
   method_object
   mixpanel-ruby
   newrelic_rpm
+  omniauth
+  omniauth-trello
   options_hash-method_object
   pg (= 0.17.0)
   pry-debugger

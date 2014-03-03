@@ -38,6 +38,8 @@ Threadable::Application.routes.draw do
     resources :task_doers
   end
 
+  get '/auth/:provider/callback', to: 'external_auth#create'
+
   # OLD ROUTES START
 
   get '/admin' => 'admin#show'

@@ -27,13 +27,14 @@ class Threadable::User < Threadable::Model
 
   alias_method :user_id, :id
 
-  let(:email_addresses)  { Threadable::User::EmailAddresses  .new(self) }
-  let(:organizations)    { Threadable::User::Organizations   .new(self) }
-  let(:conversations)    { Threadable::User::Conversations   .new(self) }
-  let(:tasks)            { Threadable::User::Tasks           .new(self) }
-  let(:groups)           { Threadable::User::Groups          .new(self) }
-  let(:messages)         { Threadable::User::Messages        .new(self) }
-  let(:group_memberships){ Threadable::User::GroupMemberships.new(self) }
+  let(:email_addresses)         { Threadable::User::EmailAddresses        .new(self) }
+  let(:external_authorizations) { Threadable::User::ExternalAuthorizations.new(self) }
+  let(:organizations)           { Threadable::User::Organizations         .new(self) }
+  let(:conversations)           { Threadable::User::Conversations         .new(self) }
+  let(:tasks)                   { Threadable::User::Tasks                 .new(self) }
+  let(:groups)                  { Threadable::User::Groups                .new(self) }
+  let(:messages)                { Threadable::User::Messages              .new(self) }
+  let(:group_memberships)       { Threadable::User::GroupMemberships      .new(self) }
 
   def group_ids
     group_memberships.all.map(&:group_id)
