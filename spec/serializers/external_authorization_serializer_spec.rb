@@ -27,6 +27,8 @@ describe ExternalAuthorizationsSerializer do
         email_address: 'alice@foo.com',
         nickname: 'alice',
         url: 'http://foo.com/',
+        token: 'foo',
+        application_key: ENV['THREADABLE_TRELLO_API_KEY'],
       )
     end
   end

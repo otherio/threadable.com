@@ -5,11 +5,13 @@ class ExternalAuthorizationsSerializer < Serializer
 
   def serialize_record external_authorization
     {
-      provider:      external_authorization.provider,
-      name:          external_authorization.name,
-      email_address: external_authorization.email_address,
-      nickname:      external_authorization.nickname,
-      url:           external_authorization.url,
+      provider:        external_authorization.provider,
+      name:            external_authorization.name,
+      email_address:   external_authorization.email_address,
+      nickname:        external_authorization.nickname,
+      url:             external_authorization.url,
+      token:           external_authorization.token,
+      application_key: external_authorization.application_key,
     }
   end
 

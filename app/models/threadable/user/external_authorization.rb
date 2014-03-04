@@ -19,6 +19,10 @@ class Threadable::User::ExternalAuthorization < Threadable::Model
     url
   }, to: :external_authorization_record
 
+  def application_key
+    ENV['THREADABLE_TRELLO_API_KEY'] if provider == 'trello'
+  end
+
   def to_s
     "#{user_id}:#{provider}"
   end
