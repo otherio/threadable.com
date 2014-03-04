@@ -16,6 +16,9 @@ elif [ $ENV == 'staging' ]
     exit 1
 fi
 
+#circleci now requires this incantation to deploy properly
+[[ ! -s "$(git rev-parse --git-dir)/shallow" ]] || git fetch --unshallow
+
 # update local tags
 git fetch --tags
 
