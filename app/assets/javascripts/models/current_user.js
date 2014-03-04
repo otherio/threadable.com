@@ -2,14 +2,15 @@ Threadable.currentUserPromise = currentUserPromise;
 delete this.currentUserPromise;
 
 Threadable.CurrentUser = RL.Model.extend({
-  id:                    RL.attr('string'),
-  userId:                RL.attr('number'),
-  param:                 RL.attr('string'),
-  name:                  RL.attr('string'),
-  emailAddress:          RL.attr('string'),
-  slug:                  RL.attr('string'),
-  avatarUrl:             RL.attr('string'),
-  currentOrganizationId: RL.attr('number'),
+  id:                     RL.attr('string'),
+  userId:                 RL.attr('number'),
+  param:                  RL.attr('string'),
+  name:                   RL.attr('string'),
+  emailAddress:           RL.attr('string'),
+  slug:                   RL.attr('string'),
+  avatarUrl:              RL.attr('string'),
+  currentOrganizationId:  RL.attr('number'),
+  externalAuthorizations: RL.attr('object'),
 
   organizations: RL.hasMany('Threadable.Organization'),
 
@@ -20,7 +21,7 @@ Threadable.CurrentUser = RL.Model.extend({
       organization;
 
     if (currentOrganizationId){
-      organization = organizations.findBy('id', currentOrganizationId)
+      organization = organizations.findBy('id', currentOrganizationId);
     }
     if (organization) return organization;
     organization = organizations.objectAt(0);
@@ -41,6 +42,10 @@ Threadable.CurrentUser = RL.Model.extend({
       }
     });
   }.observes('currentOrganizationId'),
+
+  authorizationFor: function(provider) {
+    return this.get('externalAuthorizations').filter(function(auth) { return auth.provider == provider; })[0];
+  }.property('externalAuthorizations')
 
 });
 

@@ -13,6 +13,10 @@ class Threadable::User::ExternalAuthorization < Threadable::Model
     provider
     token
     secret
+    name
+    email_address
+    nickname
+    url
   }, to: :external_authorization_record
 
   def to_s

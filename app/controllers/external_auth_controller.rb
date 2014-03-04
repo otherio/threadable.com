@@ -6,11 +6,19 @@ class ExternalAuthController < ApplicationController
     raise Threadable::RecordNotFound if provider != 'trello'
     return render nothing: true, status: :bad_request unless auth_hash && auth_hash.has_key?('credentials')
 
-    token = auth_hash['credentials']['token']
-    secret = auth_hash['credentials']['secret']
+    # trello only for now
+    params = {
+      provider: provider,
+      token: auth_hash['credentials']['token'],
+      secret: auth_hash['credentials']['secret'],
+      name: auth_hash['info']['name'],
+      email_address: auth_hash['info']['email'],
+      nickname: auth_hash['info']['nickname'],
+      url: auth_hash['info']['urls']['profile'],
+    }
 
-    current_user.external_authorizations.add_or_update!(provider: provider, token: token, secret: secret)
-    render nothing: true, status: :ok
+    current_user.external_authorizations.add_or_update!(params)
+    redirect_to('/')
   end
 
   private

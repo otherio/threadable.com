@@ -10,6 +10,11 @@ describe ExternalAuthController do
           'token' => 'TOKEN',
           'secret' => 'SECRET',
         },
+        "info"=> {
+          "name"=>"NAME",
+          "email"=>"email@foo.com",
+          "nickname"=>"NICKNAME",
+          "urls"=>{"profile"=>"https://trello.com/foop"}},
       }
     end
 
@@ -21,9 +26,16 @@ describe ExternalAuthController do
       context "with a valid oauth callback" do
         it "should render succesfully" do
           post :create, provider: 'trello'
-          expect(response).to be_success
-          expect(response.body).to be_blank
+          expect(response).to redirect_to('/')
           expect(current_user.external_authorizations.all.length).to eq 1
+
+          auth = current_user.external_authorizations.all.first
+          expect(auth.token).to eq 'TOKEN'
+          expect(auth.secret).to eq 'SECRET'
+          expect(auth.name).to eq 'NAME'
+          expect(auth.email_address).to eq 'email@foo.com'
+          expect(auth.nickname).to eq 'NICKNAME'
+          expect(auth.url).to eq 'https://trello.com/foop'
         end
       end
 

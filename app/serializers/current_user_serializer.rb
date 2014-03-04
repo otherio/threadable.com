@@ -12,6 +12,7 @@ class CurrentUserSerializer < Serializer
       email_address:           current_user.email_address.to_s,
       slug:                    current_user.slug,
       avatar_url:              current_user.avatar_url,
+      external_authorizations: serialize(:external_authorizations, current_user.external_authorizations.all),
       current_organization_id: current_user.current_organization_id,
       organizations:           serialize(:organizations, current_user.organizations.all),
     }

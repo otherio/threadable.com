@@ -54,6 +54,30 @@
     * If you need to delete an email address from your account please email us at
     = mail_to threadable.support_email_address
 
+.well
+  %h2 Connected Accounts
+
+  %small Other services that you've authorized to share data with Threadable
+
+  - if current_user.external_authorizations.all.length > 0
+    %table.authorizations.table
+      %thead
+        %tr
+          %th Service
+          %th Account
+      %tbody
+        - current_user.external_authorizations.all.each do |auth|
+          %tr
+            %td= auth.provider
+            %td= "#{auth.name} (#{auth.nickname}) &lt;#{auth.email_address}&gt;".html_safe
+  - else
+    .no-accounts
+      <b>You have no connected accounts.</b>
+
+  .connect
+    Add or update a connected account:
+    %a{href: '/auth/trello'}
+      Trello
 
 :sass
   table.email-addresses

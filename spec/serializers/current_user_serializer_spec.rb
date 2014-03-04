@@ -9,7 +9,10 @@ describe CurrentUserSerializer do
   let(:payload){ current_user }
 
   context 'when signed in as alice' do
-    before { threadable.current_user = alice }
+    before do
+      threadable.current_user = alice
+      alice.external_authorizations.add_or_update!(provider: 'trello', token: 'foo', secret: 'bar', name: 'Alice', email_address: 'foo@bar.com')
+    end
     it do
       should eq(
         id:                      'current',
@@ -19,6 +22,7 @@ describe CurrentUserSerializer do
         email_address:           alice.email_address.to_s,
         slug:                    alice.slug,
         avatar_url:              alice.avatar_url,
+        external_authorizations: serialize(:external_authorizations, alice.external_authorizations.all).values.first,
         current_organization_id: alice.current_organization_id,
         organizations:           serialize(:organizations, alice.organizations.all).values.first,
       )
@@ -36,11 +40,10 @@ describe CurrentUserSerializer do
         email_address:           marcus.email_address.to_s,
         slug:                    marcus.slug,
         avatar_url:              marcus.avatar_url,
+        external_authorizations: [],
         current_organization_id: marcus.current_organization_id,
         organizations:           serialize(:organizations, marcus.organizations.all).values.first,
       )
     end
   end
-
-
 end

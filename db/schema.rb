@@ -114,6 +114,10 @@ ActiveRecord::Schema.define(version: 20140303010816) do
     t.string   "provider"
     t.string   "token"
     t.string   "secret"
+    t.string   "name"
+    t.string   "email_address"
+    t.string   "nickname"
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
