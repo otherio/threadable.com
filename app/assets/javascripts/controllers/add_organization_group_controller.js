@@ -1,6 +1,13 @@
 Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
   needs: ['organization'],
 
+  integrations: [
+    {name: "Standard (conversation/task)", id: ''},
+    {name: "Trello",                       id: 'trello'}
+  ],
+
+  integration: '',
+
   editingEmailAddressTag: false,
   editingSubjectTag: false,
 
