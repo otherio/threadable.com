@@ -29,25 +29,27 @@ class Threadable::Organizations::Create < MethodObject
     end
 
     starter_data[:conversations].each do |conversation_params|
-      container = organization
-      if conversation_params[:group]
-        groups = [organization.groups.find_by_slug!(conversation_params[:group])]
-      end
+      # enqueue worker jobs here. delay them for the amount of time specified.
 
-      conversation = container.conversations.create(
-        subject: conversation_params[:subject],
-        task: conversation_params[:task],
-        groups: groups
-      )
+    #   container = organization
+    #   if conversation_params[:group]
+    #     groups = [organization.groups.find_by_slug!(conversation_params[:group])]
+    #   end
 
-      conversation.messages.create(
-        subject: conversation_params[:subject],
-        from: conversation_params[:from],
-        body_plain: conversation_params[:body_plain],
-        body_html: conversation_params[:body_html],
-        to_header: conversation_params[:to_header],
-      )
-    end
+    #   conversation = container.conversations.create(
+    #     subject: conversation_params[:subject],
+    #     task: conversation_params[:task],
+    #     groups: groups
+    #   )
+
+    #   conversation.messages.create(
+    #     subject: conversation_params[:subject],
+    #     from: conversation_params[:from],
+    #     body_plain: conversation_params[:body_plain],
+    #     body_html: conversation_params[:body_html],
+    #     to_header: conversation_params[:to_header],
+    #   )
+    # end
   end
 
 end
