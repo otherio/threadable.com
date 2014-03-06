@@ -50,7 +50,7 @@
             %span @threadable.com
 
       %section.creator
-        - if signed_in?
+        - if signed_in? && current_user.name.present?
           = link_to 'This is not me', sign_out_path(r: new_organization_path), class: 'auth-link', tabindex: -1
           .current-user
             .avatar{style: "margin-right: 1em"}
@@ -65,9 +65,9 @@
             .uk-form-row
               = f.input :your_email_address,    as: :email,    placeholder: 'Your email address',    input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, disabled: true
             .uk-form-row
-              = f.input :password,              as: :password, placeholder: 'password',              input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+              = f.input :password,              as: :password, placeholder: 'Password',              input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
             .uk-form-row
-              = f.input :password_confirmation, as: :password, placeholder: 'password confirmation', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+              = f.input :password_confirmation, as: :password, placeholder: 'Password confirmation', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
 
       %section.members
         %h3 Other members

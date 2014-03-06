@@ -21,6 +21,7 @@ class AccountRequestsController < ApplicationController
   end
 
   def confirm
+    sign_out!
     account_request_id = AccountRequestConfirmationToken.decrypt(params.require(:token))
     account_request = AccountRequest.find(account_request_id)
     account_request.confirm!
@@ -29,6 +30,13 @@ class AccountRequestsController < ApplicationController
       organization_name:  account_request.organization_name,
       email_address:      account_request.email_address,
     })
+
+    user = threadable.users.find_by_email_address(account_request.email_address)
+    user ||= threadable.users.create!(email_address: account_request.email_address)
+    if user
+      sign_in! user
+      redirect_to new_organization_path(organization_name: account_request.organization_name)
+    end
   end
 
 end

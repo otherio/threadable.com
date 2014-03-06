@@ -9,7 +9,9 @@
       Mailing lists,
       %br
       meet the future.
-    %p.header-sub The next generation of email discussion groups, because we all live in our inbox.
+    %p.header-sub
+      -# The next generation of email discussion groups, because we all live in our inbox.
+      Or, how I learned to stop worrying and love the inbox.
     = render 'sign_up_form', button_color_class: 'black-button'
 
 
@@ -30,17 +32,22 @@
       .big-text GET ENGAGED
       %p Webhooks and APIs let your dreams of email run wild.
 
-  %section.section-five.paneled-section
+  %section.section-three.paneled-section
     .left-panel.large-panel
       .content
         .h2 More signal, less noise
         %div
-          Groups let your team categorize conversations on-the-fly, as things develop. No more broken reply-all chains, worrying about who'll need to get which messages, or starting a new list and breaking the flow of conversation for a week. Anyone in your organization can make a new group. You can join or leave groups any time, controlling the flow of information that's relevant to you. Even better, you can move a conversation into a group after it's started. So, that thread about the ski trip being sent to the whole company is no longer a problem.
+          Groups let your team categorize conversations on-the-fly, as things develop. No more broken reply-all chains,
+          worrying about who'll need to get which messages, or starting a new list and breaking the flow of conversation
+          for a week. Anyone in your organization can make a new group. You can join or leave groups any time,
+          controlling the flow of information that's relevant to you. Even better, you can move a conversation into a
+          group after it's started. So, that thread about the ski trip being sent to the whole company is no longer a
+          problem.
     .right-panel.small-panel
       = image_tag 'homepage/subgroups.png'
 
 
-  %section.section-six.paneled-section
+  %section.section-four.paneled-section
     .left-panel.small-panel
       = image_tag 'homepage/tasks-in-your-inbox.jpg'
 
@@ -48,18 +55,48 @@
       .content
         .h2 API
         %div
-          For social productivity to work, communication is key. Keep whole teams engaged effortlessly by using the inbox the way people expect. In less time than building simple email notifications, you can be using email as a full-featured platform for delivering real value to your users. Focus on your app's special sauce, and let Threadable make your email sing.
+          For social productivity to work, communication is key. Keep whole teams engaged effortlessly by using the
+          inbox the way people expect. In less time than building simple email notifications, you can be using email as
+          a full-featured platform for delivering real value to your users. Focus on your app's special sauce, and let
+          Threadable make your email sing.
+
+
+  %section.section-five.paneled-section
+    .left-panel.large-panel
+      .content
+        .h2 Convenient, simple integrations
+        %div
+          Keep all your communications in one place, without changing your toolset. Pull comment streams from the tools
+          you already use and give them new life as threaded email discussions. Search, filter, reply, and subscribe
+          using one easy interface. Get your whole team engaged with your existing tools.
+
+    .right-panel.small-panel
+      = image_tag 'homepage/integrations.png'
+
+
+  %section.section-six.paneled-section
+    .left-panel.small-panel
+
+    .right-panel.large-panel
+      .content
+        .h2 Enjoy the silence
+        %div
+          One click mute from any email thread stops delivery in its tracks. Not just in one client, but in all of them.
+          Want to check back in? The website has a rich, fully searchable archive of every conversation, in every
+          group, so it's easy to get caught up and reply. You can even use Groups as collaborative mail filters,
+          relying on the knowledge of the team to put all mail in it's right place.
 
 
   %section.section-seven.paneled-section
     .left-panel.large-panel
       .content
-        .h2 Convenient, simple integrations
+        .h2 Enjoy the silence
         %div
-          Keep all your communications in one place, without changing your toolset. Pull comment streams from the tools you already use and give them new life as threaded email discussions. Search, filter, reply, and subscribe using one easy interface. Get your whole team engaged with your existing tools.
-
+          One click mute from any email thread stops delivery in its tracks. Not just in one client, but in all of them.
+          Want to check back in? The website has a rich, fully searchable archive of every conversation, in every
+          group, so it's easy to get caught up and reply. You can even use Groups as collaborative mail filters,
+          relying on the knowledge of the team to put all mail in it's right place.
     .right-panel.small-panel
-      = image_tag 'homepage/integrations.png'
 
 
   %section.section-eight.paneled-section
@@ -69,7 +106,11 @@
       .content
         .h2 Enjoy the silence
         %div
-          One click mute from any email thread stops delivery in its tracks. Not just in one client, but in all of them. Want to check back in? The website has a rich, fully searchable archive of every conversation, in every group, so it's easy to get caught up and reply. You can even use Groups as collaborative mail filters, relying on the knowledge of the team to put all mail in it's right place.
+          One click mute from any email thread stops delivery in its tracks. Not just in one client, but in all of them.
+          Want to check back in? The website has a rich, fully searchable archive of every conversation, in every
+          group, so it's easy to get caught up and reply. You can even use Groups as collaborative mail filters,
+          relying on the knowledge of the team to put all mail in it's right place.
+
 
   %section.section-nine
     = render 'shared/threadable_logo'

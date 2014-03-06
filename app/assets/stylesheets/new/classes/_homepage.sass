@@ -162,71 +162,8 @@
       background-image: image-url("homepage/get-things-done.svg"), none
 
 
+
   > .section-three
-    .left-side
-      background-color: lighten(black, 15%)
-
-    .right-side
-      > *
-        overflow: hidden
-        text-align: center
-        > .fa
-          margin: 15px auto 0
-          color: #888D90
-
-
-
-      > .section-one
-        background-color: $light-blue-color
-      > .section-two
-        background-color: $lighter-blue-color
-      > .section-three
-        background-color: $lightest-blue-color
-    +small-to-medium-screens
-      .left-side
-        display: none
-      .right-side
-        float: none
-        width: auto
-        > *
-          > .large-text, > p
-            margin: 20px
-    +large-screens
-      overflow: hidden
-      > *
-        float: left
-        height: 825px
-        width: 50%
-      .right-side
-        > *
-          height: 33.3%
-          > .large-text
-            margin: 15px 90px
-          > p
-            margin: 0 70px 20px
-
-
-
-  > .section-four
-    padding: 60px 20px
-    text-align: center
-    background-color: $black-color
-    p
-      // this is a one-off and it should not be
-      color: $white-color
-      font-weight: 100
-      font-size: 30px
-      letter-spacing: 3px
-
-      margin: 0 auto 1em auto
-      line-height: 44px
-    +small-to-medium-screens
-    +large-screens
-      p
-        width: 600px
-
-
-  > .section-five
     color: $white-color
     .left-panel
       background-color: #137B96
@@ -236,7 +173,7 @@
         margin-top: 85px
 
 
-  > .section-six
+  > .section-four
     .left-panel
       background-color: $black-color
       .flexbox &
@@ -250,14 +187,39 @@
       background-color: #1B2127
 
 
-  > .section-seven
+  > .section-five
     .left-panel
       background-color: #52AFC6
     .right-panel
       background-color: #137B96
-      img
+      .flexbox &
+        +box-align(end)
       .no-flexbox & img
-        margin-top: 26px
+        margin-top: 10px
+
+
+  > .section-six
+    .left-panel
+      background-color: #1B2127
+      background-image: image-url("homepage/commands.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 350px
+
+    .right-panel
+      background-color: $black-color
+
+
+  > .section-seven
+    .left-panel
+      background-color: $black-color
+
+    .right-panel
+      background-color: #1B2127
+      background-image: image-url("homepage/commands.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 350px
 
 
   > .section-eight
@@ -270,6 +232,12 @@
 
     .right-panel
       background-color: $black-color
+
+
+
+
+
+
 
 
   > .section-nine

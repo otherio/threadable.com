@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :email_addresses
 
-  validates :name, presence: true
+  # validates :name, presence: true
   validates :email_address, presence: true
   validates_associated :email_addresses
 

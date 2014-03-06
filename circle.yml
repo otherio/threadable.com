@@ -19,3 +19,4 @@ deployment:
 general:
   branches:
     ignore:
+      - homepage

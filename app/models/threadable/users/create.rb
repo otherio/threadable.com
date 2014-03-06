@@ -8,16 +8,15 @@ class Threadable::Users::Create < MethodObject
 
     email_address_record = threadable.email_addresses.find_by_address(email_address).try(:email_address_record)
 
-    if !email_address_record || email_address_record.user_id.present?
-      email_address_record = threadable.email_addresses.build(
-        address: email_address,
-        primary: true,
-        confirmed_at: confirm_email_address ? Time.now : nil,
-      ).email_address_record
-    else
-      email_address_record.primary = true
-      email_address_record.confirmed_at = Time.now if confirm_email_address
+    if email_address_record && email_address_record.user_id.present?
+      raise "email address already in use"
     end
+
+    email_address_record = threadable.email_addresses.build(
+      address: email_address,
+      primary: true,
+      confirmed_at: confirm_email_address ? Time.now : nil,
+    ).email_address_record
 
     attributes[:email_addresses] = [email_address_record]
 

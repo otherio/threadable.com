@@ -4,3 +4,9 @@
 
 require File.expand_path('../config/application', __FILE__)
 Threadable::Application.load_tasks
+
+
+task :reset do
+  Threadable.redis.flushdb
+  Rake::Task['db:reset'].invoke
+end
