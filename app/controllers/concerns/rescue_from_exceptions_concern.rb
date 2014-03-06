@@ -27,7 +27,6 @@ module RescueFromExceptionsConcern
   ].freeze
 
   def rescue_from_exception exception
-    raise exception
     raise exception if debug_enabled?
     logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
 
