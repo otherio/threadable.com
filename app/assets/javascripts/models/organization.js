@@ -13,6 +13,7 @@ Threadable.Organization = RL.Model.extend({
   formattedTaskEmailAddress: RL.attr('string'),
 
   hasHeldMessages:           RL.attr('boolean'),
+  trusted:                   RL.attr('boolean'),
 
   groups: RL.hasMany('Threadable.Group'),
 

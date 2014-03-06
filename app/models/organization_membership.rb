@@ -17,7 +17,7 @@ class OrganizationMembership < ActiveRecord::Base
   belongs_to :user
   has_many :email_addresses, through: :user
 
-  scope :who_get_email, ->{ where(active: true, gets_email: true) }
+  scope :who_get_email, ->{ where(active: true, gets_email: true, confirmed: true) }
 
   scope :active, ->{ where(active: true) }
 

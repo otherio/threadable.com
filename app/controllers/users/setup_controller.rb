@@ -4,7 +4,16 @@ class Users::SetupController < ApplicationController
   before_action :require_valid_token!
 
   def edit
-    @user = User.find(@user_id)
+    @was_confirmed = false
+    unless user.confirmed?
+      user.confirm!
+      @was_confirmed = true
+    end
+    if user.web_enabled?
+      redirect_to @destination_path
+    else
+      render :edit
+    end
   end
 
   def update
@@ -36,7 +45,11 @@ class Users::SetupController < ApplicationController
   end
 
   def user
-    @user ||= User.find(@user_id)
+    @user ||= organization.members.find_by_user_id(@user_id)
+  end
+
+  def organization
+    @organization ||= threadable.organizations.find_by_slug(Rails.application.routes.recognize_path(@destination_path)[:path])
   end
 
 end

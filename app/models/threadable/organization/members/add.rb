@@ -61,6 +61,7 @@ class Threadable::Organization::Members::Add < MethodObject
         user_id:    @user.id,
         gets_email: @options[:gets_email] != false,
         role:       @members.count.zero? ? :owner : :member,
+        confirmed:  @organization.trusted?,
       )
       @new_member = Threadable::Organization::Member.new(@organization, membership_record)
     end
@@ -80,7 +81,11 @@ class Threadable::Organization::Members::Add < MethodObject
   end
 
   def send_join_notice!
-    @threadable.emails.send_email_async(:join_notice, @organization.id, @user.id, @options[:personal_message])
+    if @organization.trusted?
+      @threadable.emails.send_email_async(:join_notice, @organization.id, @user.id, @options[:personal_message])
+    else
+      @threadable.emails.send_email_async(:invitation, @organization.id, @user.id)
+    end
   end
 
   def auto_join_groups!

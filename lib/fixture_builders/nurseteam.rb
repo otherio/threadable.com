@@ -31,6 +31,9 @@ FixtureBuilder.build do
     add_member 'Hans Zarkov',     'zarkov@sfhealth.example.com'
     add_member 'Peter Venkman',   'ecto@sfhealth.example.com'
 
+    # this user is not web-enabled yet
+    add_member 'Leonard McCoy',   'bones@sfhealth.example.com'
+
     @welcome_message = create_conversation(
       subject: 'Welcome to our new Threadable organization!',
       text:    'Hey all! I think we should try this way to organize our conversation and work. Thanks for joining up!',

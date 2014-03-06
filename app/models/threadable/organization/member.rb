@@ -27,6 +27,7 @@ class Threadable::Organization::Member < Threadable::User
     subscribed?
     role
     ungrouped_mail_delivery
+    confirmed?
   }, to: :organization_membership_record
 
   OrganizationMembership::ROLES.each do |role|
@@ -116,6 +117,14 @@ class Threadable::Organization::Member < Threadable::User
 
   def unsubscribe!
     update subscribed: false
+  end
+
+  def confirm!
+    organization_membership_record.update_attribute(:confirmed, true)
+  end
+
+  def unconfirm!
+    organization_membership_record.update_attribute(:confirmed, false)
   end
 
   def == other

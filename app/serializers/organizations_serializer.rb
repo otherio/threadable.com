@@ -10,6 +10,7 @@ class OrganizationsSerializer < Serializer
       subject_tag:       organization.subject_tag,
       description:       organization.description,
       has_held_messages: organization.held_messages.count > 0,
+      trusted:           organization.trusted?,
 
       email_address:                organization.email_address,
       task_email_address:           organization.task_email_address,

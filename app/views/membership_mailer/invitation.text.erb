@@ -1,0 +1,15 @@
+I'm inviting you to the <%= @organization.name.html_safe %> organization on Threadable!
+
+Threadable is a communications platform that helps us and our friends get more done.
+It works just like any mailing list you've ever used, but has awesome features
+to help you organize!
+
+In order to officially join this organization and start communicating, click here:
+
+<%= @recipient_setup_url.html_safe %>
+
+
+If you aren't into this, don't worry! We won't email you until you confirm. Let us know
+if this reached you in error, though:
+
+Just click <%= @organization_unsubscribe_url.html_safe %>

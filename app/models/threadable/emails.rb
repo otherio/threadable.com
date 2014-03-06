@@ -45,6 +45,7 @@ class Threadable::Emails
       conversation_message:         ConversationMailer,
       message_summary:              SummaryMailer,
       join_notice:                  MembershipMailer,
+      invitation:                   MembershipMailer,
       unsubscribe_notice:           MembershipMailer,
       added_to_group_notice:        MembershipMailer,
       removed_from_group_notice:    MembershipMailer,

@@ -20,18 +20,44 @@
             {{input type="email" value=emailAddress class="uk-form-blank" name="emailAddress"}}
           </label>
         </div>
-        {{textarea value=personalMessage class="uk-form-blank body" name="personalMessage" placeholder="Message..."}}
+        {{#if organization.trusted}}
+          {{textarea value=personalMessage class="uk-form-blank body" name="personalMessage" placeholder="Message..."}}
 
-        <div>
-          <p>
-            You've been added to the {{organization.name}} organization on Threadable!
-          </p><p>
-            Threadable is a communications platform that helps you and your friends get more done.
-            It works just like any mailing list you've ever used, but has awesome features
-            to help you organize!
-          </p>
-        </div>
-
+          <div>
+            <p>
+              You've been added to the {{organization.name}} organization on Threadable!
+            </p><p>
+              Threadable is a communications platform that helps you and your friends get more done.
+              It works just like any mailing list you've ever used, but has awesome features
+              to help you organize!
+            </p>
+          </div>
+        {{else}}
+          <br/>
+          <div>
+            <h3>Your new member will receive this welcome message:</h3>
+            <div class="well-when-not-small">
+              <p>
+                I've invited you to the {{organization.name}} organization on Threadable!
+              </p><p>
+                Threadable is a communications platform that helps us and our friends get more done.
+                It works just like any mailing list you've ever used, but has awesome features
+                to help you organize!
+              </p>
+              <p>
+                In order to officially join this organization and start communicating, click here:
+              </p>
+              <p>
+                [link]
+              </p>
+              <p>
+                If you aren't into this, don't worry! We won't email you until you confirm. Let us know
+                if this reached you in error, though: [link]
+              </p>
+            </div>
+          </div>
+          <br/>
+        {{/if}}
         <span class="uk-float-right">
           <input type="submit" class="uk-button uk-button-primary" value="Add member & send welcome message"></input>
         </span>

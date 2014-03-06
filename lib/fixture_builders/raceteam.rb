@@ -5,6 +5,7 @@ FixtureBuilder.build do
       name: 'UCSD Electric Racing',
       short_name: 'RaceTeam',
       description: 'Senior engineering electric race team!',
+      trusted: true,
     )
     add_member 'Alice Neilson', 'alice@ucsd.example.com'
   end

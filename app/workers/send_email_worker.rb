@@ -34,6 +34,12 @@ class SendEmailWorker < Threadable::Worker
     threadable.emails.send_email(:join_notice, organization, recipient, personal_message)
   end
 
+  def invitation organization_id, recipient_id
+    organization   = threadable.organizations.find_by_id! organization_id
+    recipient = organization.members.find_by_user_id! recipient_id
+    threadable.emails.send_email(:invitation, organization, recipient)
+  end
+
   def unsubscribe_notice organization_id, recipient_id
     organization   = threadable.organizations.find_by_id! organization_id
     recipient = organization.members.find_by_user_id! recipient_id

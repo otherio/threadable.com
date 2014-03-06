@@ -18,6 +18,7 @@ describe OrganizationsSerializer do
         subject_tag:       "RaceTeam",
         description:       "Senior engineering electric race team!",
         has_held_messages: false,
+        trusted:           true,
 
         email_address:                raceteam.email_address,
         task_email_address:           raceteam.task_email_address,
@@ -43,6 +44,7 @@ describe OrganizationsSerializer do
           subject_tag:       "RaceTeam",
           description:       "Senior engineering electric race team!",
           has_held_messages: false,
+          trusted:           true,
 
           email_address:                raceteam.email_address,
           task_email_address:           raceteam.task_email_address,
@@ -59,6 +61,7 @@ describe OrganizationsSerializer do
           subject_tag:       "SFHealth",
           description:       "San Francisco Health Center",
           has_held_messages: false,
+          trusted:           false,
 
           email_address:                sfhealth.email_address,
           task_email_address:           sfhealth.task_email_address,
