@@ -4,32 +4,48 @@ groups:
     subject_tag: Social
     color: "#3498db"
     email_address_tag: social
-  -
-    name: Random
-    subject_tag: Random
-    color: "#8e44ad"
-    email_address_tag: random
 
 conversations:
-  -
-    group:
-    subject: I am your welcome message. In ungrouped.
-    body_plain: I am the message plaintext
-    body_html: <b>I am the message content</b>
-    from: Threadable Support <support@threadable.com>
-    to_header: Threadable Support <support@threadable.com>
-  -
-    group: social
-    subject: I am your welcome message for the social group.
-    body_plain: "I explain how groups work, probably"
-    body_html: "<b>I explain how groups work, as html</b>"
-    from: Threadable Support <support@threadable.com>
-    to_header: Threadable Support <support@threadable.com>
-  -
-    group:
-    subject: I am a demo task.
-    body_plain: I am the message plaintext
-    body_html: <b>I am the message content</b>
+  add_people:
+    subject: 'Add your friends!'
     task: true
-    from: Threadable Support <support@threadable.com>
-    to_header: Threadable Support <support@threadable.com>
+    delay_hours: 0
+    from: "Aaron Muszalski <aaron@threadable.com>"
+  tips_mute:
+    subject: 'Threadable Tips'
+    task: false
+    delay_hours: 24
+  tips_groups:
+    subject: 'Threadable Tips'
+    task: false
+    delay_hours: 48
+    parent_slug: 'threadable-tips'
+
+
+
+
+
+
+
+  # -
+  #   group:
+  #   subject: I am your welcome message. In ungrouped.
+  #   body_plain: I am the message plaintext
+  #   body_html: <b>I am the message content</b>
+  #   from: Threadable Support <support@threadable.com>
+  #   to_header: Threadable Support <support@threadable.com>
+  # -
+  #   group: social
+  #   subject: I am your welcome message for the social group.
+  #   body_plain: "I explain how groups work, probably"
+  #   body_html: "<b>I explain how groups work, as html</b>"
+  #   from: Threadable Support <support@threadable.com>
+  #   to_header: Threadable Support <support@threadable.com>
+  # -
+  #   group:
+  #   subject: I am a demo task.
+  #   body_plain: I am the message plaintext
+  #   body_html: <b>I am the message content</b>
+  #   task: true
+  #   from: Threadable Support <support@threadable.com>
+  #   to_header: Threadable Support <support@threadable.com>
