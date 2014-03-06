@@ -3,13 +3,13 @@ require 'spec_helper'
 feature "Authentication" do
   before do
     visit sign_out_url
-    expect(page).to have_text 'Threadable is coming really soon'
+    expect(page).to have_text 'Quit learning new tools'
   end
 
   context "with no redirect" do
     before do
       visit root_url
-      click_on 'Sign in'
+      click_on 'SIGN IN'
     end
 
     scenario %(A user with an account and a password can sign in) do
