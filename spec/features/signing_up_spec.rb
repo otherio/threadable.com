@@ -63,7 +63,7 @@ feature "signing up" do
     expect(page).to have_text 'John Hutchison'
     expect(page).to have_text 'john@the-hutchison-effect.org'
     assert_members! members
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 2 # demo content gets sent, currently
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 0 # user is unconfirmed
   end
 
   scenario %(with an existing user's email address) do
@@ -114,7 +114,7 @@ feature "signing up" do
     members.each do |(name, email_address)|
       expect(page).to have_text name
       expect(page).to have_text email_address
-      expect( sent_emails.with_subject("You've been added to Zero point energy machine").sent_to(email_address) ).to be_present
+      expect( sent_emails.with_subject("You've been invited to Zero point energy machine").sent_to(email_address) ).to be_present
     end
   end
 

@@ -54,7 +54,7 @@ feature "Creating an organization" do
       expect(page).to have_text 'Bethany Pattern'
       expect(page).to have_text 'bethany@ucsd.example.com'
       assert_members! members
-      expect( sent_emails.sent_to('bethany@ucsd.example.com').length ).to eq 2 # starter content gets sent, currently
+      expect( sent_emails.sent_to('bethany@ucsd.example.com').length ).to eq 0 # user is not confirmed
     end
 
     scenario %(clicking the "This is not me" link) do
@@ -93,7 +93,7 @@ feature "Creating an organization" do
     members.each do |(name, email_address)|
       expect(page).to have_text name
       expect(page).to have_text email_address
-      expect( sent_emails.with_subject("You've been added to Zero point energy machine").sent_to(email_address) ).to be_present
+      expect( sent_emails.with_subject("You've been invited to Zero point energy machine").sent_to(email_address) ).to be_present
     end
   end
 

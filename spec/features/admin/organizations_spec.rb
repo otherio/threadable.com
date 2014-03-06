@@ -27,6 +27,7 @@ feature "Admin organizations CRUD" do
     sign_in_as 'jared@other.io'
     visit admin_new_organization_path
     fill_in 'Name', with: 'United Nations'
+    check 'Trusted organization'
     click_on 'Create Organization'
     expect(page).to have_text 'Edit organization'
     expect(current_url).to eq admin_edit_organization_url('united-nations')
@@ -161,7 +162,7 @@ feature "Admin organizations CRUD" do
     organization = threadable.organizations.find_by_slug('sfhealth')
     bob = organization.members.find_by_user_slug!('bob-newbetauser')
     expect( bob.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, bob.id, nil]
+    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "invitation", organization.id, bob.id]
     drain_background_jobs!
     expect( sent_emails.join_notices('SF Health Center').to(bob.email_address) ).to be
   end

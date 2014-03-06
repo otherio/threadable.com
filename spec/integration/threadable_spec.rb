@@ -92,7 +92,7 @@ describe "threadable", fixtures: false do
       jared = sign_up! name: 'Jared Grippe', email_address: 'jared@other.io'
       expect(threadable.current_user).to be_the_same_user_as jared
 
-      other = jared.organizations.create! name: 'other.io', populate_starter_data: false
+      other = jared.organizations.create! name: 'other.io', populate_starter_data: false, trusted: true
 
       assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", other.id, jared.id, nil]
 
@@ -163,7 +163,7 @@ describe "threadable", fixtures: false do
       expect( aaron.organizations.class        ).to eq Threadable::User::Organizations
       expect( aaron.messages.class        ).to eq Threadable::User::Messages
 
-      htp = aaron.organizations.create! name: 'Hug the police!', populate_starter_data: false
+      htp = aaron.organizations.create! name: 'Hug the police!', populate_starter_data: false, trusted: true
       expect( htp.class ).to eq Threadable::Organization
       expect( htp.organization_record ).to eq Organization.last
 
