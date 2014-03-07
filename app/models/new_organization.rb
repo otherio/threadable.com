@@ -31,7 +31,8 @@ class NewOrganization
   validates_presence_of :password_confirmation,  unless: :signed_in?
 
   validates_format_of :email_address_username, with: /\A[a-z0-9][\.a-z0-9_-]*[a-z0-9]\z/i, message: 'is invalid'
-  validate :validate_validates_uniqueness_of_email_address_username!
+  validate :validate_uniqueness_of_your_email_address!
+  validate :validate_uniqueness_of_email_address_username!
   validate :validate_members!
   validate :validate_passwords_match!
 
@@ -83,7 +84,11 @@ class NewOrganization
     threadable.current_user.present?
   end
 
-  def validate_validates_uniqueness_of_email_address_username!
+  def validate_uniqueness_of_your_email_address!
+    errors.add(:your_email_address, 'is taken') if threadable.email_addresses.taken?(your_email_address)
+  end
+
+  def validate_uniqueness_of_email_address_username!
     threadable.organizations.find_by_email_address("#{email_address_username}@#{threadable.email_host}") or return
     errors.add(:email_address_username, 'is taken')
   end

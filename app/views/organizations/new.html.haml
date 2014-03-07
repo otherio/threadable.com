@@ -50,15 +50,15 @@
             %span @threadable.com
 
       %section.creator
-        - if signed_in? && current_user.name.present?
-          = link_to 'This is not me', sign_out_path(r: new_organization_path), class: 'auth-link', tabindex: -1
+        - if signed_in?
+          = link_to 'This is not me', sign_out_path(r: new_organization_path(organization_name: @new_organization.organization_name)), class: 'auth-link', tabindex: -1
           .current-user
             .avatar{style: "margin-right: 1em"}
               = image_tag current_user.avatar_url
             %h3= %("#{current_user.name}" <#{current_user.email_address}>)
 
         - else
-          = link_to 'I already have an account', sign_in_path(r: new_organization_path), class: 'auth-link', tabindex: -1
+          = link_to 'I already have an account', sign_in_path(r: new_organization_path(organization_name: @new_organization.organization_name)), class: 'auth-link', tabindex: -1
           %fieldset
             .uk-form-row
               = f.input :your_name,                            placeholder: 'Your name',             input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true

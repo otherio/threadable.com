@@ -32,7 +32,7 @@ class MailPreview < MailView
 
 
   def sign_up_confirmation
-    threadable.emails.generate(:sign_up_confirmation, 'fooobar', find_recipient)
+    threadable.emails.generate(:sign_up_confirmation, 'Zero point energy machine', 'john@the-hutchison-effect.org')
   end
 
   def reset_password

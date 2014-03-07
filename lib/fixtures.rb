@@ -42,6 +42,7 @@ module Fixtures
     create_admins!
     ActiveRecord::FixtureBuilder.builders.each(&:build!)
     ActiveRecord::FixtureBuilder.write_fixtures!
+
   end
 
   def self.load!

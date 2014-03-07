@@ -5,7 +5,8 @@ $(function(){
     signUpForm.find('.field .errors').text('');
   });
 
-  signUpForm.bind('ajax:success', function(event){
+  signUpForm.bind('ajax:success', function(event, response){
+    if (response.redirect_to) return document.location = response.redirect_to
     signUpForm.addClass('success');
     signUpForm.find('.fields').remove();
     var

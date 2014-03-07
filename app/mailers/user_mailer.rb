@@ -4,11 +4,11 @@ class UserMailer < Threadable::Mailer
     @organization_name = organization_name.to_s
     @email_address = email_address.to_s
 
-    @confirm_sign_up_url = new_organization_url(token: SignUpConfirmationToken.encrypt(@organization_name, @email_address))
+    @confirm_sign_up_url = sign_up_confirmation_url(token: SignUpConfirmationToken.encrypt(@organization_name, @email_address))
 
     mail(
       to:      @email_address,
-      from:    "Threadable welcome <#{threadable.support_email_address('welcome')}>",
+      from:    "Threadable <#{threadable.support_email_address('welcome')}>",
       subject: "Welcome to Threadable!",
     )
   end
@@ -20,7 +20,7 @@ class UserMailer < Threadable::Mailer
 
     mail(
       to:      @recipient.formatted_email_address,
-      from:    "Threadable password reset <#{threadable.support_email_address('password-reset')}>",
+      from:    "Threadable <#{threadable.support_email_address('password-reset')}>",
       subject: "Reset your password!",
     )
   end

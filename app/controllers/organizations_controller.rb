@@ -7,14 +7,8 @@ class OrganizationsController < ApplicationController
   # GET /create
   def new
     @new_organization = NewOrganization.new(threadable)
-    @new_organization.organization_name = params[:organization_name] || @organization_name
-    if signed_in?
-      @new_organization.your_name          = current_user.name
-      @new_organization.your_email_address = current_user.email_address
-    else
-      @new_organization.your_email_address = @email_address
-    end
-
+    @new_organization.organization_name  = params[:organization_name] || @organization_name
+    @new_organization.your_email_address = signed_in? ? current_user.email_address.to_s : @email_address
     threadable.track('New Organization Page Visited',
       sign_up_confirmation_token: sign_up_confirmation_token.present?,
       organization_name: @new_organization.organization_name,
@@ -53,6 +47,8 @@ class OrganizationsController < ApplicationController
       organization_id:   @new_organization.organization.id,
     )
   end
+
+  private
 
   private
 

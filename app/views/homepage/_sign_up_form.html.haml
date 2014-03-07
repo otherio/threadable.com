@@ -1,5 +1,5 @@
 .sign-up-form
-  = form_for AccountRequest.new, url: account_request_path, html: {class: 'uk-form uk-form-stacked'}, remote: true do |f|
+  = form_for @sign_up, url: sign_up_path, html: {class: 'uk-form uk-form-stacked'}, remote: true do |f|
     .fields
       .field.email_address
         .errors

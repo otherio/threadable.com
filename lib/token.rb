@@ -1,7 +1,8 @@
 module Token
 
-  Invalid = Class.new(ArgumentError)
-  TypeMismatch = Class.new(Invalid)
+  Error        = Class.new(ArgumentError)
+  Invalid      = Class.new(Token::Error)
+  TypeMismatch = Class.new(Token::Invalid)
 
   def self.encrypt(type, payload)
     cleartext_token = Marshal.dump([random, type, payload])
