@@ -1,10 +1,13 @@
-class SendStarterContentWorker < Threadable::ScheduledWorker
+class SendStarterContentWorker < Threadable::Worker
+
   def perform! email, organization_id
     @email = email
     @organization = threadable.organizations.find_by_id(organization_id)
 
     starter_data = HashWithIndifferentAccess.new(YAML.load(Rails.root.join("config/starter_data.yml").read))
     @params = starter_data[:conversations][email]
+
+    return unless @params
 
     @conversation = find_or_create_conversation!
     create_message!
@@ -18,8 +21,8 @@ class SendStarterContentWorker < Threadable::ScheduledWorker
     conversation.messages.create(
       subject:    params[:subject],
       from:       params[:from],
-      body_plain: text(binding),
-      body_html:  html(binding),
+      body_plain: text,
+      body_html:  html,
       to_header:  organization.formatted_email_address,
     )
   end
@@ -40,14 +43,14 @@ class SendStarterContentWorker < Threadable::ScheduledWorker
     end
   end
 
-  def html(source_binding)
+  def html
     template = Rails.root.join("#{basename}.html.haml").read
-    Haml::Engine.new(template).render(source_binding)
+    Haml::Engine.new(template).render(binding)
   end
 
-  def text(source_binding)
+  def text
     template = Rails.root.join("#{basename}.text.erb").read
-    ERB.new(template).result(source_binding)
+    ERB.new(template).result(binding)
   end
 
   def basename

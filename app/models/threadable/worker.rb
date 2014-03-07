@@ -1,8 +1,8 @@
 require 'sidekiq/worker'
 
 class Threadable::Worker
-
   include Sidekiq::Worker
+  include Rails.application.routes.url_helpers
 
   sidekiq_options :queue => :default, :retry => true, :backtrace => true
 
@@ -29,4 +29,7 @@ class Threadable::Worker
     self.class.perform_at(time, *@original_args)
   end
 
+  def default_url_options
+    { host: threadable.host, port: threadable.port }
+  end
 end

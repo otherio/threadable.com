@@ -10,15 +10,17 @@ conversations:
     subject: 'Add your friends!'
     task: true
     delay_hours: 0
-    from: "Aaron Muszalski <aaron@threadable.com>"
+    from: "Aaron at Threadable <aaron@threadable.com>"
   tips_mute:
     subject: 'Threadable Tips'
     task: false
     delay_hours: 24
+    from: "Aaron at Threadable <aaron@threadable.com>"
   tips_groups:
     subject: 'Threadable Tips'
     task: false
     delay_hours: 48
+    from: "Aaron at Threadable <aaron@threadable.com>"
     parent_slug: 'threadable-tips'
 
 
