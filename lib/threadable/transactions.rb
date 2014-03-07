@@ -24,10 +24,10 @@ module Threadable::Transactions
     raise "another outside transaction is already open" if transaction_open? && transactions.empty?
     transactions << []
     begin
-      postgres.transaction(&block)
+      postgres.within_new_transaction(&block)
     rescue Exception => exception
       raise exception
-    ensure # we need to do everything in an esure because explicit returns skip code beyone the postgres.transaction(&block) call
+    ensure # we need to do everything in an esure because explicit returns skip code beyond the postgres.transaction(&block) call
       if exception
         transactions.pop # do not call any callbacks for this failed transaction
       else
