@@ -61,7 +61,11 @@ class Admin::Organization::MembersController < ApplicationController
       name = mail_address.display_name || email_address.split('@').first.gsub('.',' ')
 
       user = find_or_create_user_by_email_address!(name, email_address)
-      organization.members.add(user: user, send_join_notice: params[:send_join_notice])
+      organization.members.add(
+        user:             user,
+        send_join_notice: params[:send_join_notice],
+        personal_message: params[:personal_message],
+      )
     end
 
     flash[:notice] = "#{formatted_email_addresses.size} new members were successfully added to #{organization.name}."
@@ -73,12 +77,13 @@ class Admin::Organization::MembersController < ApplicationController
   def add_single_member!
     user = find_or_create_user!
     if organization.members.include? user
-      flash[:alert] = "#{user.formatted_email_address} is already a meber of #{organization.name}."
+      flash[:alert] = "#{user.formatted_email_address} is already a member of #{organization.name}."
     else
       member = organization.members.add(
-        user: user,
-        gets_email: member_params[:gets_email],
+        user:             user,
+        gets_email:       member_params[:gets_email],
         send_join_notice: member_params[:send_join_notice],
+        personal_message: member_params[:personal_message],
       )
       flash[:notice] = "#{member.formatted_email_address} was successfully added to #{organization.name}."
     end
@@ -92,6 +97,7 @@ class Admin::Organization::MembersController < ApplicationController
       @member_params = params.require(:user).permit(:id, :name, :email_address, :gets_email, :send_join_notice).symbolize_keys
       @member_params[:gets_email]       = @member_params[:gets_email] == 'true'
       @member_params[:send_join_notice] = @member_params[:send_join_notice] == 'true'
+      @member_params[:personal_message] = params[:personal_message]
     end
     @member_params
   end

@@ -47,11 +47,16 @@
   %h3 Add existing member
   = form_tag admin_add_organization_member_path(@organization) do
     .inputs
-      %select{name: 'user[id]'}
-        %option{selected: true}
-        - @all_users.sort_by(&:name).each do |user|
-          - next if @members.map(&:id).include? user.id
-          %option{value: user.id}= user.formatted_email_address
+      %label
+        Personal Message (trusted orgs only):
+      %label
+        = text_area_tag :personal_message, '', style: 'height: 5em; width: 20em'
+      %label
+        %select{name: 'user[id]'}
+          %option{selected: true}
+          - @all_users.sort_by(&:name).each do |user|
+            - next if @members.map(&:id).include? user.id
+            %option{value: user.id}= user.formatted_email_address
       = option_inputs
     .actions
       %input{type: 'submit', value: 'Add Member', class: 'btn btn-primary'}
@@ -62,6 +67,11 @@
   = simple_form_for [:admin, @organization.members.new], url: admin_add_organization_member_path(@organization) do |f|
     = f.error_notification
     .inputs
+      %label
+        Personal Message (trusted orgs only):
+      %label
+        = text_area_tag :personal_message, '', style: 'height: 5em; width: 20em'
+
       = f.input :name, required: true
       = f.input :email_address, as: :string, required: true
       = option_inputs
@@ -72,7 +82,14 @@
   %h3 Add new members via CSV
   = form_tag admin_add_organization_member_path(@organization) do
     %label
-      = text_area_tag :members, '', style: 'height: 10em; width: 50em'
+      %label
+        Personal Message (trusted orgs only):
+      %label
+        = text_area_tag :personal_message, '', style: 'height: 5em; width: 20em'
+      %label
+        comma-separated addresses:
+      %label
+        = text_area_tag :members, '', style: 'height: 10em; width: 50em'
     %label
       %input{type: 'hidden', name:'send_join_notice', value: "false"}
       %input{type: 'checkbox', name:'send_join_notice', checked: true, value: "true"}

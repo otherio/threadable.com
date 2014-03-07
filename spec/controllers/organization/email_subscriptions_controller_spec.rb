@@ -23,7 +23,7 @@ describe Organization::EmailSubscriptionsController do
       # bob gets emails for the raceteam organization
       before{ sign_in! find_user_by_email_address('bob@ucsd.example.com') }
 
-      it "should disable emails for the organization memebership" do
+      it "should disable emails for the organization membership" do
         expect(member).to be_subscribed
         expect(threadable.emails).to receive(:send_email_async).with(:unsubscribe_notice, organization.id, member.id)
         post :unsubscribe, organization_id: organization.slug, token: token
@@ -67,7 +67,7 @@ describe Organization::EmailSubscriptionsController do
     context "when the member doesnt get email for the organization" do
       # jonathan doesnt get emails for the raceteam organization
       before{ sign_in! find_user_by_email_address('jonathan@ucsd.example.com') }
-      it "should disable emails for the organization memebership" do
+      it "should disable emails for the organization membership" do
         expect(member).to_not be_subscribed
         post :resubscribe, organization_id: organization.slug, token: token
         member.reload
