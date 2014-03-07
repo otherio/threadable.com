@@ -1,3 +1,4 @@
+# Encoding: UTF-8
 require 'spec_helper'
 
 describe SendStarterContentWorker do
@@ -13,23 +14,24 @@ describe SendStarterContentWorker do
 
   describe 'process!' do
     it 'creates the specified message in the specified organization' do
-      perform! :day_one, organization.id
+      perform! :add_people, organization.id
       drain_background_jobs!
-      expect(sent_emails.length).to eq 8 #or whatever this is
-      expect(sent_emails.map(&:subject)).to match_array [
-        "Day one subject line"
-      ]
+      expect(sent_emails.length).to eq 6
+      expect(sent_emails.first.subject).to eq '[✔︎][RaceTeam] Add your friends!'
+      expect(sent_emails.first.html_part.to_s).to include organization_members_add_url(organization)
     end
 
     it 'creates a child message when a parent slug is specified' do
+      perform! :tips_mute, organization.id
+      drain_background_jobs!
+      sent_emails.clear
+
       total_conversations = organization.conversations.all.length
-      perform! :day_two, organization.id
+      perform! :tips_groups, organization.id
       drain_background_jobs!
       expect(organization.conversations.all.length).to eq total_conversations
-      expect(sent_emails.length).to eq 8 #or whatever this is
-      expect(sent_emails.map(&:subject)).to match_array [
-        "day two subject line"
-      ]
+      expect(sent_emails.length).to eq 6
+      expect(sent_emails.first.subject).to eq 'Re: [RaceTeam] Threadable Tips'
     end
   end
 

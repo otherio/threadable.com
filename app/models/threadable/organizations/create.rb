@@ -1,5 +1,5 @@
 class Threadable::Organizations::Create < MethodObject
-  attr_reader :organization
+  attr_reader :organization, :threadable
 
   def call organizations, attributes
     add_current_user_as_a_member = attributes.key?(:add_current_user_as_a_member) ?
@@ -10,9 +10,10 @@ class Threadable::Organizations::Create < MethodObject
 
     organization_record = ::Organization.create(attributes)
     @organization = Threadable::Organization.new(organizations.threadable, organization_record)
+    @threadable =  @organization.threadable
     return @organization unless organization_record.persisted?
 
-    if organizations.threadable.current_user && add_current_user_as_a_member
+    if threadable.current_user && add_current_user_as_a_member
       @organization.members.add(user: organizations.threadable.current_user, send_join_notice: false)
     end
 
@@ -28,28 +29,16 @@ class Threadable::Organizations::Create < MethodObject
       organization.groups.create(group_params)
     end
 
-    starter_data[:conversations].each do |conversation_params|
+    starter_data[:conversations].keys.each do |email|
       # enqueue worker jobs here. delay them for the amount of time specified.
+      params = starter_data[:conversations][email]
 
-    #   container = organization
-    #   if conversation_params[:group]
-    #     groups = [organization.groups.find_by_slug!(conversation_params[:group])]
-    #   end
-
-    #   conversation = container.conversations.create(
-    #     subject: conversation_params[:subject],
-    #     task: conversation_params[:task],
-    #     groups: groups
-    #   )
-
-    #   conversation.messages.create(
-    #     subject: conversation_params[:subject],
-    #     from: conversation_params[:from],
-    #     body_plain: conversation_params[:body_plain],
-    #     body_html: conversation_params[:body_html],
-    #     to_header: conversation_params[:to_header],
-    #   )
-    # end
+      if params[:delay_hours].present? && params[:delay_hours] > 0
+        SendStarterContentWorker.perform_in(params[:delay_hours].hours, threadable.env, email, @organization.id)
+      else
+        SendStarterContentWorker.perform_async(threadable.env, email, @organization.id)
+      end
+    end
   end
 
 end
