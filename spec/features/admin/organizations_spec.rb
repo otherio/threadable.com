@@ -23,7 +23,7 @@ feature "Admin organizations CRUD" do
     end
   end
 
-  scenario %(creating a organization) do
+  scenario %(creating an organization) do
     sign_in_as 'jared@other.io'
     visit admin_new_organization_path
     fill_in 'Name', with: 'United Nations'
@@ -85,8 +85,8 @@ feature "Admin organizations CRUD" do
     ]
     expect( organization.members ).to include ian
 
-    assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "join_notice", organization.id, nicole.id, nil]
-    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, ian.id,    nil]
+    assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "join_notice", organization.id, nicole.id, '']
+    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, ian.id,    '']
 
     expect( organization.members.find_by_user_id!(nicole.id).gets_email? ).to be_true
     expect( organization.members.find_by_user_id!(ian.id   ).gets_email? ).to be_false
@@ -104,7 +104,7 @@ feature "Admin organizations CRUD" do
     ]
     you_face = organization.members.find_by_user_slug!('you-face')
     expect( you_face.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, you_face.id, nil]
+    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, you_face.id, '']
 
     within '.add-new-member-form' do
       fill_in 'Name', with: 'Someone Else'
@@ -122,7 +122,7 @@ feature "Admin organizations CRUD" do
     ]
     someone_else = organization.members.find_by_user_slug!('someone-else')
     expect( someone_else.gets_email? ).to be_false
-    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, someone_else.id, nil]
+    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, someone_else.id, '']
 
     within first('.members.table tbody tr', text: 'Nicole Aptekar') do
       click_on 'remove'
