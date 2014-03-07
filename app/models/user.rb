@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :email_addresses
 
-  # validates :name, presence: true
+  validates :name, presence: true
   validates :email_address, presence: true
   validates_associated :email_addresses
 
@@ -47,13 +47,18 @@ class User < ActiveRecord::Base
     id
   end
 
-  def email_address= email_address
-    email_addresses.build(
-      user: self,
-      address: email_address,
-      primary: new_record?,
-      confirmed_at: nil,
-    )
+  def email_address= address
+    if email_address = EmailAddress.where(address: address, user_id: nil).first
+      email_address.primary = true
+      email_addresses << email_address
+    else
+      email_addresses.build(
+        user: self,
+        address: address,
+        primary: new_record?,
+        confirmed_at: nil,
+      )
+    end
   end
 
   def primary_email_address

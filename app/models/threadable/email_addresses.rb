@@ -40,6 +40,11 @@ class Threadable::EmailAddresses < Threadable::Collection
     email_addresses_for email_address_records
   end
 
+  def taken? address
+    email_address = find_by_address(address) or return false
+    return email_address.user_id.present?
+  end
+
   def new attributes={}
     Threadable::EmailAddress.new(threadable, ::EmailAddress.new(attributes))
   end
@@ -53,6 +58,10 @@ class Threadable::EmailAddresses < Threadable::Collection
     email_address = create(attributes)
     email_address.persisted? or raise Threadable::RecordInvalid, "EmailAddress invalid: #{email_address.errors.full_messages.to_sentence}"
     email_address
+  end
+
+  def find_or_create_by_address! address
+    find_by_address(address) || create!(address: address)
   end
 
   private

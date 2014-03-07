@@ -104,6 +104,7 @@ describe OrganizationsController do
         expect(NewOrganization).to receive(:new).with(threadable).and_return(new_organization)
         expect(new_organization).to receive(:organization_name=).with(nil)
         expect(new_organization).to receive(:organization_name ).and_return(nil)
+        expect(new_organization).to receive(:your_email_address=).with('bethany@ucsd.example.com')
         expect(new_organization).to receive(:your_email_address).and_return(nil)
         get :new, {}
         expect(assigns(:new_organization)).to be new_organization
