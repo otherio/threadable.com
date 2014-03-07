@@ -36,6 +36,7 @@ module RSpec::Support::Fixtures
     return false if fixtures_built? # only build fixtures once
     empty_databases!
     ::Fixtures.build!
+    drain_background_jobs!
     fixtures_built!
     fixtures_loaded! unless test_transaction_open?
     true
