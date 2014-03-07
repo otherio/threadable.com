@@ -34,6 +34,10 @@ module Threadable
       fontawesome-webfont.svg
       fontawesome-webfont.ttf
       fontawesome-webfont.woff
+      gibson-bold-webfont.eot
+      gibson-bold-webfont.svg
+      gibson-bold-webfont.ttf
+      gibson-bold-webfont.woff
       old.js
       old.css
     }
