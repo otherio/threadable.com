@@ -23,6 +23,8 @@ class Threadable::Group < Threadable::Model
     auto_join?
     hold_messages?
     webhook_url
+    integration_type
+    integration_params
   }, to: :group_record
 
   def group_id
@@ -53,6 +55,11 @@ class Threadable::Group < Threadable::Model
 
   def organization
     @organization ||= Threadable::Organization.new(threadable, organization_record)
+  end
+
+  def integration_params
+    return unless group_record.integration_params.present?
+    JSON.parse(group_record.integration_params)
   end
 
   def email_address

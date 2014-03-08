@@ -1,0 +1,36 @@
+
+{{#if view.authorization}}
+  <div class="uk-form-row">
+    <label class="uk-text-bold uk-form-label input-label">
+      Linked trello account:
+    </label>
+    <div class="uk-form-controls form-description">
+      {{view.authorization.name}} ({{view.authorization.nickname}}) &lt;{{view.authorization.email_address}}&gt;
+      <br/>
+      <a href="/profile">change account</a>
+    </div>
+  </div>
+
+  <div class="uk-form-row">
+    <label class="uk-text-bold uk-form-label input-label">
+      Trello board to link this this group with:
+    </label>
+    {{#if view.trelloBoards}}
+      <div class="uk-form-controls input-field">
+        {{view Ember.Select
+           content=view.trelloBoards
+           optionValuePath="content.boardSpec"
+           optionLabelPath="content.name"
+           value=integrationParamsJson}}
+      </div>
+    {{else}}
+      <div class="uk-form-controls form-description">
+        Loading boards...
+      </div>
+    {{/if}}
+  </div>
+{{else}}
+  You need to connect a Trello account.
+  <br/>
+  <a href="/auth/trello">connect account</a>
+{{/if}}

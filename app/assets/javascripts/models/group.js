@@ -20,6 +20,9 @@ Threadable.Group = RL.Model.extend({
   membersCount:              RL.attr('count'),
   currentUserIsAMember:      RL.attr('boolean'),
 
+  integrationType:           RL.attr('string'),
+  integrationParams:         RL.attr('object'),
+
   badgeStyle: function() {
     return "background-color: "+this.get('color')+";";
   }.property('color'),

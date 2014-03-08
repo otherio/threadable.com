@@ -147,6 +147,8 @@ ActiveRecord::Schema.define(version: 20140415204230) do
     t.boolean  "hold_messages",       default: true
     t.string   "alias_email_address", default: "",    null: false
     t.string   "webhook_url",         default: "",    null: false
+    t.string   "integration_type"
+    t.string   "integration_params"
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree

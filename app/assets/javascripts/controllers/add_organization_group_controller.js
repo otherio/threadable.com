@@ -1,5 +1,5 @@
 Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
-  needs: ['organization'],
+  needs: ['organization', 'application'],
 
   integrations: [
     {name: "Standard (conversation/task)", id: ''},
@@ -7,9 +7,12 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
   ],
 
   integration: '',
+  integrationParamsJson: null,
 
   editingEmailAddressTag: false,
   editingSubjectTag: false,
+
+  currentUser: Ember.computed.alias('controllers.application.currentUser'),
 
   calculatedEmailAddressTag: function() {
     var name = this.get('name') || '';
@@ -57,6 +60,12 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
       }
 
       group.set('organizationSlug', this.get('controllers.organization.content.slug'));
+
+      var integration = this.get('integration');
+      if(integration) {
+        group.set('integrationType', integration);
+        group.set('integrationParams', JSON.parse(this.get('integrationParamsJson')));
+      }
 
       group.saveRecord().then(
         groupSaved.bind(this),

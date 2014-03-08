@@ -18,6 +18,7 @@ describe Threadable::Group do
       email_address_tag: 'thing-factory',
       organization: organization_record,
       alias_email_address: alias_email_address,
+      integration_params: '{"id": 3}',
     )
   end
   let(:group){ described_class.new(threadable, group_record) }
@@ -50,6 +51,8 @@ describe Threadable::Group do
   its(:task_email_address           ){ should eq "my-project+thing-factory+task@127.0.0.1" }
   its(:formatted_email_address      ){ should eq %("My Project: thing factory" <my-project+thing-factory@127.0.0.1>) }
   its(:formatted_task_email_address ){ should eq %("My Project: thing factory Tasks" <my-project+thing-factory+task@127.0.0.1>) }
+
+  its(:integration_params){ should eq({'id' => 3}) }
 
   its(:members      ){ should be_a Threadable::Group::Members }
   its(:conversations){ should be_a Threadable::Group::Conversations }

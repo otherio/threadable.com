@@ -50,8 +50,7 @@ Threadable.CurrentUser = RL.Model.extend({
 
   dismissWelcomeModal: function() {
     this.update({dismissed_welcome_modal: true});
-  },
-
+  }
 });
 
 Threadable.CurrentUser.reopenClass({
