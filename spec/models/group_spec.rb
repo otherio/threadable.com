@@ -91,7 +91,7 @@ describe Group do
     it "only allows valid webhook urls" do
       group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', webhook_url: 'your mom')
       group.save.should be_false
-      group.errors[:webhook_url].should == ["is not a invalid url"]
+      group.errors[:webhook_url].should == ["is not a valid url"]
 
       group.webhook_url = 'ftp://foo.com'
       group.save.should be_false
@@ -111,6 +111,16 @@ describe Group do
       group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', webhook_url: 'https://foo.com')
       group.save.should be_true
     end
+
+    it "only allows valid json for the integration params" do
+      group = Group.new(name: 'Foo', organization_id: 1, subject_tag: '', integration_type: 'trello', integration_params: 'your mom')
+      group.save.should be_false
+      group.errors[:integration_params].should == ["is not valid json"]
+
+      group.integration_params = '{"id": 3}'
+      group.save.should be_true
+    end
+
 
     describe 'alias_email_address' do
       it 'allows a plain email address' do

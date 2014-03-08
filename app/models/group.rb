@@ -9,9 +9,11 @@ class Group < ActiveRecord::Base
   validates_format_of :email_address_tag, with: /\A[0-9a-z-]+\z/
   validates_format_of :subject_tag, with: /\A([\w \&\.\'\-+]+|)\z/
   validates_exclusion_of :email_address_tag, in: ['task', 'everyone']
+  validates_inclusion_of :integration_type, in: [nil, 'trello']
   validate :email_address_tag_special_characters
   validate :alias_email_address_is_an_email_address
   validate :webhook_url_is_a_url
+  validate :integration_params_is_json
 
   has_many :conversation_groups, dependent: :destroy
   has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
@@ -63,8 +65,20 @@ class Group < ActiveRecord::Base
       errors.add(:webhook_url, "must start with either http or https") if uri.scheme !~ %r{^https?$}
       errors.add(:webhook_url, "does not have a valid host")           if uri.host !~ /\w+\.\w+/
     rescue URI::InvalidURIError
-      errors.add(:webhook_url, "is not a invalid url")
+      errors.add(:webhook_url, "is not a valid url")
     end
+  end
+
+  def integration_params_is_json
+    return if integration_params.nil? || integration_params.empty?
+
+    valid = begin
+      !!JSON.parse(integration_params)
+    rescue
+      false
+    end
+
+    errors.add(:integration_params, 'is not valid json') unless valid
   end
 
 end

@@ -83,7 +83,18 @@ describe Api::GroupsController do
     describe 'create' do
       context 'when given a unique group name' do
         it 'creates and returns the new group' do
-          xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { name: 'Fluffy', color: '#bebebe', email_address_tag: 'floofy', subject_tag: 'FL', auto_join: false, alias_email_address: 'foo@bar.com' }
+          group_params = {
+            name:                'Fluffy',
+            color:               '#bebebe',
+            email_address_tag:   'floofy',
+            subject_tag:         'FL',
+            auto_join:           false,
+            alias_email_address: 'foo@bar.com',
+            integration_type:    'trello',
+            integration_params:  {'name' => 'foo', 'id' => 'some_id'},
+          }
+
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, group: group_params
           expect(response.status).to eq 201
           group = raceteam.groups.find_by_email_address_tag('floofy')
           expect(group).to be
@@ -91,6 +102,8 @@ describe Api::GroupsController do
           expect(group.subject_tag).to eq 'FL'
           expect(group.auto_join?).to eq false
           expect(group.alias_email_address).to eq 'foo@bar.com'
+          expect(group.integration_type).to eq 'trello'
+          expect(group.integration_params).to eq({'name' => 'foo', 'id' => 'some_id'})
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end

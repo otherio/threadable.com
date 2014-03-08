@@ -12,6 +12,8 @@ class GroupsSerializer < Serializer
       hold_messages:                group.hold_messages?,
       alias_email_address:          group.alias_email_address,
       webhook_url:                  group.webhook_url,
+      integration_type:             group.integration_type,
+      integration_params:           group.integration_params.present? ? group.integration_params.to_json : nil,
 
       email_address:                group.email_address,
       task_email_address:           group.task_email_address,

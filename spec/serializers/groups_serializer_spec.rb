@@ -7,6 +7,10 @@ describe GroupsSerializer do
   let(:fundraising) { raceteam.groups.find_by_email_address_tag!('fundraising') }
 
   context 'when given a single record' do
+    before do
+      electronics.update(integration_params: {'id' => 3}.to_json)
+    end
+
     let(:payload){ electronics }
     let(:expected_key){ :group }
     it do
@@ -21,6 +25,8 @@ describe GroupsSerializer do
         color:               "#964bf8",
         auto_join:           false,
         hold_messages:       true,
+        integration_type:    nil,
+        integration_params:  '{"id":3}',
 
         email_address:                electronics.email_address,
         task_email_address:           electronics.task_email_address,
@@ -54,6 +60,8 @@ describe GroupsSerializer do
           color:               "#964bf8",
           auto_join:           false,
           hold_messages:       true,
+          integration_type:    nil,
+          integration_params:  nil,
 
           email_address:                electronics.email_address,
           task_email_address:           electronics.task_email_address,
@@ -78,6 +86,8 @@ describe GroupsSerializer do
           color:               "#5a9de1",
           auto_join:           false,
           hold_messages:       true,
+          integration_type:    nil,
+          integration_params:  nil,
 
           email_address:                fundraising.email_address,
           task_email_address:           fundraising.task_email_address,
@@ -112,6 +122,8 @@ describe GroupsSerializer do
             color:               "#964bf8",
             auto_join:           false,
             hold_messages:       true,
+            integration_type:    nil,
+            integration_params:  nil,
 
             email_address:                electronics.email_address,
             task_email_address:           electronics.task_email_address,
@@ -136,6 +148,8 @@ describe GroupsSerializer do
             color:               "#5a9de1",
             auto_join:           false,
             hold_messages:       true,
+            integration_type:    nil,
+            integration_params:  nil,
 
             email_address:                fundraising.email_address,
             task_email_address:           fundraising.task_email_address,
