@@ -41,7 +41,7 @@ feature "signing up" do
     expect(email).to be_present
     sent_emails.clear
 
-    confirmation_url = email.link("Click here to confirm your account")[:href]
+    confirmation_url = email.link("Click here to confirm your email and create your organization")[:href]
     token = Rails.application.routes.recognize_path(confirmation_url)[:token]
     visit confirmation_url
     expect(page).to be_at_url new_organization_url(token: token)
