@@ -161,23 +161,65 @@
     .get-things-done .icon
       background-image: image-url("homepage/get-things-done.svg"), none
 
-
-
   > .section-three
-    color: $white-color
     .left-panel
-      background-color: #137B96
-    .right-panel
-      background-color: #2B5279
-      .no-flexbox & img
-        margin-top: 85px
+      background-color: #31363C
+      background-image: image-url("homepage/no-new-tools.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 350px
 
+    .right-panel
+      background-color: #31363C
 
   > .section-four
+    color: $white-color
     .left-panel
-      background-color: #1B2127
+      background-color: #52AFC6
     .right-panel
-      background-color: $black-color
+      background-color: #52AFC6
+      background-image: image-url("homepage/subgroups.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 410px
+
+  > .section-five
+    .left-panel
+      background-color: #31363C
+      background-image: image-url("homepage/silence.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 240px
+
+    .right-panel
+      background-color: #31363C
+
+  > .section-six
+    .left-panel
+      background-color: #52AFC6
+    .right-panel
+      background-color: #52AFC6
+      .flexbox &
+        +box-align(end)
+      .no-flexbox & img
+        margin-top: 10px
+
+  > .section-seven
+    .left-panel
+      background-color: #31363C
+      background-image: image-url("homepage/webhooks.svg"), none
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 520px
+
+    .right-panel
+      background-color: #31363C
+
+  > .section-eight
+    .left-panel
+      background-color: #52AFC6
+    .right-panel
+      background-color: #52AFC6
       .flexbox &
         +box-align(end)
       .no-flexbox & img
@@ -185,60 +227,6 @@
       img
         border: 1px solid white
         border-bottom: none
-
-
-  > .section-five
-    .left-panel
-      background-color: #52AFC6
-    .right-panel
-      background-color: #137B96
-      .flexbox &
-        +box-align(end)
-      .no-flexbox & img
-        margin-top: 10px
-
-
-  > .section-six
-    .left-panel
-      background-color: #1B2127
-      background-image: image-url("homepage/commands.svg"), none
-      background-repeat: no-repeat
-      background-position: center center
-      background-size: 350px
-
-    .right-panel
-      background-color: $black-color
-
-
-  > .section-seven
-    .left-panel
-      background-color: #1B2127
-      background-image: image-url("homepage/commands.svg"), none
-      background-repeat: no-repeat
-      background-position: center center
-      background-size: 350px
-
-    .right-panel
-      background-color: $black-color
-
-
-  > .section-eight
-    .left-panel
-      background-color: #1B2127
-      background-image: image-url("homepage/commands.svg"), none
-      background-repeat: no-repeat
-      background-position: center center
-      background-size: 350px
-
-    .right-panel
-      background-color: $black-color
-
-
-
-
-
-
-
 
   > .section-nine
     padding: 60px 20px
