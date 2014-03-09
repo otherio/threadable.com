@@ -1,0 +1,33 @@
+See that checkbox in the subject? That means this is a task thread.
+
+Tasks in Threadable are just like conversations, only with some additional
+information like who's doing them and whether or not they're done yet.
+Because tasks show up right in your inbox it’s easy for everyone to stay
+up to date about what needs to get done.
+
+Of course, before people in <%= organization.name %> can receive mail
+from Threadable, you’ll need to <% if organization.trusted? %>add<% else %>invite<% end %> them. Here's how:
+
+  1. Go to the Threadable website.
+  2. Click on the triangle to the right of your organization's name.
+  3. Click on "Members" to see a list of your organization's current
+     members.
+  4. Click on "Add member", located at the top of the member list.
+  5. A welcome message will appear. Enter the new member's name and email
+     address, then click "Add member & send welcome message".
+
+Each member you add will receive an email from you, explaining that you've
+added them to the <%=organization.name%> organization on
+Threadable.
+
+<% if organization.trusted? %>
+(You can also include a personal comment explaining what's up, which is
+generally the friendly thing to do, especially if the recipient doesn't
+already know about Threadable.)
+
+Note that once added, new members will immediately be able to send and
+receive messages on Threadable.
+<% else %>
+Note that before they can send and receive messages on Threadable, new
+members will need to click on the link in their invitation email.
+<% end %>

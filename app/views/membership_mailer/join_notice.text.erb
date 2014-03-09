@@ -3,20 +3,23 @@
 
 --------
 <% end %>
-You've been added to the <%= @organization.name.html_safe %> organization on Threadable!
+I've added you to the <%= @organization.name.html_safe %> organization on Threadable!
 
-Threadable is a communications platform that helps you and your friends get more done.
-It works just like any mailing list you've ever used, but has awesome features
-to help you organize!
+Threadable is a communications platform that helps you and your friends get
+more done. It works like any mailing list you've used before, but has nifty
+features for organizing your conversations and making sure you get the
+information you need!
 
 <% if @recipient.web_enabled? %>
-You can view this organization on threadable.com here: <%= @organization_url.html_safe %>
+You can view this organization on threadable.com here:
+<%= @organization_url.html_safe %>
 <% else %>
 Threadable also has a web view, which lets you see the entire message archive, view the
 member roster, and organize conversations! Click here to set up a password for
-Threadable.com: <%= @recipient_setup_url.html_safe %>
+Threadable.com:
+<%= @recipient_setup_url.html_safe %>
 <% end %>
 
-
-If you aren't into this, don't worry! We'll stop sending you mail the moment you ask.
-Just click <%= @organization_unsubscribe_url.html_safe %>
+If you aren't into this, don't worry! Threadable will stop sending you
+mail the moment you ask. Just click:
+<%= @organization_unsubscribe_url.html_safe %>

@@ -14,15 +14,15 @@ describe SendStarterContentWorker do
 
   describe 'process!' do
     it 'creates the specified message in the specified organization' do
-      perform! :add_people, organization.id
+      perform! :welcome, organization.id
       drain_background_jobs!
       expect(sent_emails.length).to eq 6
-      expect(sent_emails.first.subject).to eq '[✔︎][RaceTeam] Add your friends!'
-      expect(sent_emails.first.html_part.to_s).to include organization_members_add_url(organization)
+      expect(sent_emails.first.subject).to eq '[RaceTeam] Welcome to Threadable!'
+      expect(sent_emails.first.html_part.to_s).to include organization.name
     end
 
     it 'creates a child message when a parent slug is specified' do
-      perform! :tips_mute, organization.id
+      perform! :tips_buttons, organization.id
       drain_background_jobs!
       sent_emails.clear
 

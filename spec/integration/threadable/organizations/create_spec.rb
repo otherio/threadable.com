@@ -26,7 +26,7 @@ describe Threadable::Organizations::Create do
     it 'populates the org with starter groups and enqueues the messages to be sent' do
       expect(organization.groups.all.map(&:slug)).to match_array ['social']
       drain_background_jobs!  # drains all scheduled jobs
-      expect(organization.messages.all.length).to eq 3
+      expect(organization.messages.all.length).to eq 4
     end
   end
 end
