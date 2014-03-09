@@ -109,6 +109,12 @@ describe NewOrganization, fixtures: false do
     it { expect(errors).to include "Password confirmation does not match password" }
   end
 
+  context 'when the password is too short' do
+    let(:password)               { 'h' }
+    let(:password_confirmation)  { 'h' }
+    it { expect(errors).to include "Password is too short (minimum is 6 characters)" }
+  end
+
   describe '#create' do
 
     let(:members) do
@@ -152,6 +158,7 @@ describe NewOrganization, fixtures: false do
         }.to_not change{ threadable.organizations.count }
       end
     end
+
   end
 
 end

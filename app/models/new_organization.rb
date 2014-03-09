@@ -35,6 +35,9 @@ class NewOrganization
   validate :validate_uniqueness_of_email_address_username!
   validate :validate_members!
   validate :validate_passwords_match!
+  validates :password, presence: true, length: { minimum: 6, maximum: 128 }, confirmation: true, unless: :signed_in?
+
+
 
   def new_member
     NewOrganization::Member.new({})
@@ -48,11 +51,13 @@ class NewOrganization
     return false unless valid?
 
     @creator = threadable.current_user if signed_in?
-    @creator ||= threadable.users.create!(
+    @creator ||= threadable.users.create(
       name:                  your_name,
       email_address:         your_email_address,
       confirm_email_address: true,
     )
+
+    return false unless @creator.persisted?
 
     threadable.acting_as @creator do
 
