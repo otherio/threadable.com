@@ -68,8 +68,12 @@ module RescueFromExceptionsConcern
         case
         when request.xhr?
           render nothing: true, status: status
-        when status == :unauthorized && !signed_in?
-          redirect_to(request.get? ? sign_in_path(r: request.original_url) : sign_in_path)
+        when status == :unauthorized
+          if signed_in?
+            redirect_to root_url
+          else
+            redirect_to(request.get? ? sign_in_path(r: request.original_url) : sign_in_path)
+          end
         when status == :not_found
           render 'errors/not_found', status: status
         else
