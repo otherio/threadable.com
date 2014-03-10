@@ -32,6 +32,7 @@ class ConversationMailer < Threadable::Mailer
       attachments[filename] = {
         :content    => attachment.content,
         :content_id => attachment.content_id,
+        :encoding   => 'binary',
       }
 
       # this has to be here (not in the declaration above) to work around some
