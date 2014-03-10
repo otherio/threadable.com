@@ -46,8 +46,6 @@ feature "signing up" do
     visit confirmation_url
     expect(page).to be_at_url new_organization_url(token: token)
 
-    expect(threadable.email_addresses.find_by_address('john@the-hutchison-effect.org')).to be_confirmed
-
     assert_tracked(nil, 'New Organization Page Visited',
       sign_up_confirmation_token: true,
       organization_name: 'Zero point energy machine',
@@ -68,6 +66,20 @@ feature "signing up" do
     add_members members
     click_on 'Create'
 
+    organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
+    expect(organization.members.count).to eq 4
+    expect(organization.members.find_by_email_address('john@the-hutchison-effect.org')).to be_confirmed
+
+    my_membership = organization.members.find_by_email_address!('john@the-hutchison-effect.org')
+    expect(my_membership).to be_confirmed
+    expect(my_membership.role).to eq :owner
+
+    members.each do |name, email_address|
+      member = organization.members.find_by_email_address!(email_address)
+      expect( member ).to_not be_confirmed
+      expect( member.role ).to eq :member
+    end
+
     expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
 
     user = threadable.users.find_by_email_address('john@the-hutchison-effect.org')
@@ -84,8 +96,12 @@ feature "signing up" do
 
     expect(page).to have_text 'John Hutchison'
     expect(page).to have_text 'john@the-hutchison-effect.org'
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 4
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[Zero point energy machine] Welcome to Threadable!')   ).to be
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[✔︎][Zero point energy machine] Add some more members') ).to be
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[Zero point energy machine] Threadable Tips')          ).to be
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('Re: [Zero point energy machine] Threadable Tips')      ).to be
     assert_members! members
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 0 # user is unconfirmed
   end
 
   scenario %(with an existing user's email address) do
@@ -132,7 +148,8 @@ feature "signing up" do
     members.each do |(name, email_address)|
       expect(page).to have_text name
       expect(page).to have_text email_address
-      expect( sent_emails.with_subject("You've been invited to Zero point energy machine").sent_to(email_address) ).to be_present
+      expect( sent_emails.sent_to(email_address).length ).to eq 1
+      expect( sent_emails.sent_to(email_address).with_subject("You've been invited to Zero point energy machine") ).to be_present
     end
   end
 

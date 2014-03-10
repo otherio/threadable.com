@@ -14,7 +14,11 @@ class Threadable::Organizations::Create < MethodObject
     return @organization unless organization_record.persisted?
 
     if threadable.current_user && add_current_user_as_a_member
-      @organization.members.add(user: organizations.threadable.current_user, send_join_notice: false)
+      @organization.members.add(
+        user: organizations.threadable.current_user,
+        send_join_notice: false,
+        confirmed: true,
+      )
     end
 
     populate_starter_data! if populate_starter_data
