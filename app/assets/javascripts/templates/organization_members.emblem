@@ -10,4 +10,8 @@
           .avatar.avatar-small
             img src=member.avatarUrl
           .name= member.name
-          .email-address= member.emailAddress
+          .email-address
+            = member.emailAddress
+            if member.isUnconfirmed
+              span.unconfirmed
+                | not yet confirmed

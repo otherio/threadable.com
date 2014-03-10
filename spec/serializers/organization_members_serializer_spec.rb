@@ -21,6 +21,7 @@ describe OrganizationMembersSerializer do
         subscribed:    true,
         role:          :owner,
         ungrouped_mail_delivery: :each_message,
+        confirmed:     true,
       )
     end
   end
@@ -41,6 +42,7 @@ describe OrganizationMembersSerializer do
           subscribed:    true,
           role:          :owner,
           ungrouped_mail_delivery: :each_message,
+          confirmed:     true,
         },{
           id:            bob.id,
           user_id:       bob.user_id,
@@ -52,6 +54,7 @@ describe OrganizationMembersSerializer do
           subscribed:    true,
           role:          :member,
           ungrouped_mail_delivery: :each_message,
+          confirmed:     true,
         }
       ]
     end

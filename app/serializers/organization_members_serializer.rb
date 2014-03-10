@@ -5,6 +5,7 @@ class OrganizationMembersSerializer < UsersSerializer
       subscribed:              member.subscribed?,
       role:                    member.role,
       ungrouped_mail_delivery: member.ungrouped_mail_delivery,
+      confirmed:               member.confirmed?,
     )
   end
 
