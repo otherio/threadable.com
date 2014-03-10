@@ -68,7 +68,7 @@ feature "signing up" do
     add_members members
     click_on 'Create'
 
-    expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
+    expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
 
     user = threadable.users.find_by_email_address('john@the-hutchison-effect.org')
     expect(user).to be

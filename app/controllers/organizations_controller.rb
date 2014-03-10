@@ -30,7 +30,7 @@ class OrganizationsController < ApplicationController
     @new_organization.your_email_address = @email_address unless signed_in?
     @new_organization.create or return render :new
     sign_in! @new_organization.creator unless signed_in?
-    redirect_to conversations_url(@new_organization.organization, 'my')
+    redirect_to compose_conversation_url(@new_organization.organization, 'my')
 
     threadable.track('Organization Created',
       sign_up_confirmation_token: sign_up_confirmation_token.present?,
