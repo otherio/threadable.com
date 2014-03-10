@@ -20,6 +20,7 @@ describe ConversationMailer do
     let(:expected_envelope_to  ){ recipient.email_address }
     let(:expected_envelope_from){ organization.task_email_address }
     let(:expected_html_part    ){ message.body_html.gsub(/\n/,'') }
+    let(:expected_reply_to     ){ organization.formatted_task_email_address }
 
     let(:mail_as_string){ mail.to_s }
     let(:text_part){ mail.text_part.body.to_s }
@@ -51,7 +52,7 @@ describe ConversationMailer do
 
       expect(text_part).to include organization.task_email_address
 
-      expect(mail.header[:'Reply-To'].to_s).to eq organization.formatted_task_email_address
+      expect(mail.header[:'Reply-To'].to_s).to eq expected_reply_to
       expect(mail.header[:'List-ID'].to_s ).to eq conversation.list_id
       expect(mail.header[:'Cc'].to_s      ).to eq expected_cc
       expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
@@ -87,6 +88,16 @@ describe ConversationMailer do
 
     context "when we send a message to the message creator" do
       let(:recipient){ message.creator }
+      it "should set the from address as the organization instead of the sender" do
+        validate_mail!
+      end
+    end
+
+    context "when reply-to munging is disabled" do
+      before do
+        recipient.update(munge_reply_to: false)
+      end
+      let(:expected_reply_to) { '' }
       it "should set the from address as the organization instead of the sender" do
         validate_mail!
       end

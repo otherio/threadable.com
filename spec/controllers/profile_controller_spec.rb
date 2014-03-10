@@ -39,6 +39,14 @@ describe ProfileController do
         end
       end
 
+      context 'when updating your reply-to munging' do
+        it 'should update your name' do
+          patch :update, user: { munge_reply_to?: false }
+          expect(response).to redirect_to profile_path
+          expect(flash[:notice]).to eq "We've updated your profile"
+        end
+      end
+
       context 'when updating your password' do
         it 'should update your password' do
           patch :update, user: {

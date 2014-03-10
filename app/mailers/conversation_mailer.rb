@@ -44,7 +44,7 @@ class ConversationMailer < Threadable::Mailer
       end
     end
 
-    reply_to_address = @conversation.canonical_formatted_email_address
+    reply_to_address = @conversation.canonical_formatted_email_address if @recipient.munge_reply_to?
 
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
 
@@ -112,15 +112,19 @@ class ConversationMailer < Threadable::Mailer
     cc_addresses = filter_out_recipients(cc_addresses)
     cc_addresses = subtract_addresses(cc_addresses, to_addresses)
     cc_addresses = correct_threadable_email_addresses(cc_addresses)
-    cc_addresses << Mail::Address.new(@message.from) if !sender_is_a_member && @message.from.present?
+
+    if !sender_is_a_member && @message.from.present? && @recipient.munge_reply_to?
+      cc_addresses << Mail::Address.new(@message.from)
+    end
+
     cc_addresses = filter_organization_email_addresses(cc_addresses)
 
     to = to_addresses.map(&:to_s).join(', ').presence || nil
     cc = cc_addresses.map(&:to_s).join(', ').presence || nil
 
-    to ||= reply_to_address
+    to ||= @conversation.canonical_formatted_email_address
 
-    email = mail(
+    email_params = {
       :css                   => 'email',
       :'from'                => from,
       :'to'                  => to,
@@ -136,7 +140,9 @@ class ConversationMailer < Threadable::Mailer
       :'List-Unsubscribe'    => "<#{@unsubscribe_url}>",
       :'List-Post'           => "<mailto:#{@conversation.list_post_email_address}>, <#{compose_conversation_url(@organization, 'my')}>",
       :'X-Mailgun-Variables' => {'organization' => organization.slug, 'recipient-id' => @recipient.id}.to_json,
-    )
+    }.delete_if { |k, v| !v.present? }
+
+    email = mail(email_params)
 
     email.smtp_envelope_from = @conversation.internal_email_address
     email.smtp_envelope_to = @recipient.email_address.to_s

@@ -21,6 +21,7 @@ class Threadable::User < Threadable::Model
     avatar_url
     current_organization_id
     created_at
+    munge_reply_to?
   }, to: :user_record
 
   delegate :can?, to: :ability
