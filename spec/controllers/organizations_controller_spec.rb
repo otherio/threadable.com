@@ -83,7 +83,7 @@ describe OrganizationsController do
               new_organization: {organization_name: organization_name}
             }
             expect(assigns(:new_organization)).to be new_organization
-            expect(response).to redirect_to controller.conversations_url('my-new-org', 'my')
+            expect(response).to redirect_to controller.compose_conversation_url('my-new-org', 'my')
 
             assert_tracked(nil, 'Organization Created',
               sign_up_confirmation_token: true,
@@ -147,7 +147,7 @@ describe OrganizationsController do
             new_organization: {organization_name: 'my new org'}
           }
           expect(assigns(:new_organization)).to be new_organization
-          expect(response).to redirect_to controller.conversations_url('my-new-org', 'my')
+          expect(response).to redirect_to controller.compose_conversation_url('my-new-org', 'my')
           assert_tracked(threadable.current_user.user_id, 'Organization Created',
             sign_up_confirmation_token: false,
             organization_name: 'my new org',
