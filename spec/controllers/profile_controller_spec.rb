@@ -40,9 +40,10 @@ describe ProfileController do
       end
 
       context 'when updating your reply-to munging' do
-        it 'should update your name' do
-          patch :update, user: { munge_reply_to?: false }
+        it 'should update the reply-to munging setting' do
+          patch :update, user: { name: 'Yan!', munge_reply_to: false }
           expect(response).to redirect_to profile_path
+          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').munge_reply_to?).to be_false
           expect(flash[:notice]).to eq "We've updated your profile"
         end
       end
