@@ -6,7 +6,6 @@ class HomepageController < ApplicationController
   def show
     @sign_up = SignUp.new(params)
     render 'homepage/show', layout: 'new'
-    threadable.track('Homepage visited')
   end
 
   private

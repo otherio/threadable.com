@@ -12,7 +12,7 @@ feature "signing up" do
 
   def sign_up! organization_name, email_address
     visit root_url
-    assert_tracked(nil, 'Homepage visited')
+    # assert_tracked(nil, 'Homepage visited') # this is client side tracked now to avoid uptime requests padding our demoninator
 
     within first('.sign-up-form') do
       fill_in 'Organization name', with: organization_name
