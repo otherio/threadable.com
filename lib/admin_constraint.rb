@@ -1,7 +1,7 @@
 class AdminConstraint
   def matches?(request)
-    return false unless request.session[:user_id]
-    user = User.find request.session[:user_id]
-    user && user.admin?
+    request.session[:user_id] or return false
+    user = User.where(id: request.session[:user_id]).first or return false
+    user.admin?
   end
 end

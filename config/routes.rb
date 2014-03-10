@@ -58,10 +58,12 @@ Threadable::Application.routes.draw do
     get    'incoming_emails/:id'       => 'incoming_emails#show',   as: 'incoming_email'
     post   'incoming_emails/:id/retry' => 'incoming_emails#retry',  as: 'retry_incoming_email'
 
-    require 'sidekiq/web'
-    require 'sidetiq/web'
-    mount Sidekiq::Web => '/background_jobs', :constraints => AdminConstraint.new
-    mount MailPreview => '/mail_preview' if defined?(MailView)
+    constraints AdminConstraint.new do
+      require 'sidekiq/web'
+      mount Sidekiq::Web => '/background_jobs'
+      mount MailPreview => '/mail_preview' if defined?(MailView)
+    end
+    get '/*anything', to: redirect('/admin')
   end
 
   # OLD ROUTES START
