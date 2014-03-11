@@ -104,6 +104,16 @@ class Threadable::Group < Threadable::Model
     webhook_url.present?
   end
 
+  def has_integration?
+    integration_type.present?
+  end
+
+  def setup_integration!
+    if integration_type == 'trello'
+      Threadable::Integrations::TrelloSetup.call(self)
+    end
+  end
+
   def update attributes
     group_record.update_attributes!(attributes)
     self

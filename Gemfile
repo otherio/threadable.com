@@ -53,6 +53,7 @@ gem 'thread_safe', :git => 'git://github.com/headius/thread_safe.git', :ref => '
 
 gem 'omniauth'
 gem 'omniauth-trello'
+gem 'ruby-trello', :git => 'git@github.com:otherio/ruby-trello.git', :require => 'trello'
 
 gem 'algoliasearch-rails'
 gem 'dnsruby'
