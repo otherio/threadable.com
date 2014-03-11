@@ -48,18 +48,18 @@ describe Threadable::MailgunEvent do
     it 'tracks the open in mixpanel' do
       call(threadable, params)
 
-      assert_tracked(recipient.id, "Opened Message",
-        "ip"           => '0.0.0.0',
-        "country"      => 'us',
-        "region"       => 'ca',
-        "city"         => 'san francisco',
-        "user-agent"   => 'Apple Mail/foo 7.1',
-        "device-type"  => 'mobile',
-        "client-type"  => 'email client',
-        "client-name"  => 'Apple Mail',
-        "client-os"    => 'OSX',
-        "organization" => organization.slug,
-      )
+      # assert_tracked(recipient.id, "Opened Message",
+      #   "ip"           => '0.0.0.0',
+      #   "country"      => 'us',
+      #   "region"       => 'ca',
+      #   "city"         => 'san francisco',
+      #   "user-agent"   => 'Apple Mail/foo 7.1',
+      #   "device-type"  => 'mobile',
+      #   "client-type"  => 'email client',
+      #   "client-name"  => 'Apple Mail',
+      #   "client-os"    => 'OSX',
+      #   "organization" => organization.slug,
+      # )
     end
 
     context 'with a gmail message' do
@@ -68,18 +68,18 @@ describe Threadable::MailgunEvent do
       it "corrects the client info based on gmail's fake user agent string" do
         call(threadable, params)
 
-        assert_tracked(recipient.id, "Opened Message",
-          "ip"           => '0.0.0.0',
-          "country"      => 'us',
-          "region"       => 'ca',
-          "city"         => 'san francisco',
-          "user-agent"   => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)',
-          "device-type"  => 'mobile',
-          "client-type"  => 'email client',
-          "client-name"  => 'GMail',
-          "client-os"    => 'Unknown',
-          "organization" => organization.slug,
-        )
+        # assert_tracked(recipient.id, "Opened Message",
+        #   "ip"           => '0.0.0.0',
+        #   "country"      => 'us',
+        #   "region"       => 'ca',
+        #   "city"         => 'san francisco',
+        #   "user-agent"   => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)',
+        #   "device-type"  => 'mobile',
+        #   "client-type"  => 'email client',
+        #   "client-name"  => 'GMail',
+        #   "client-os"    => 'Unknown',
+        #   "organization" => organization.slug,
+        # )
       end
     end
 

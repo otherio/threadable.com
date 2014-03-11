@@ -47,6 +47,7 @@ class Threadable::MailgunEvent < MethodObject
   end
 
   def open!
+    return # we don't want this in mixpanel right now because it's a lot of events we are not using - Jared
     # this doesn't make any database queries, because it has to be very fast.
     return unless params['recipient-id']
     threadable.track_for_user(params['recipient-id'], "Opened Message", {
