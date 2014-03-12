@@ -8,6 +8,23 @@ class DocumentationInstafail < RSpec::Core::Formatters::DocumentationFormatter
   end
 
   def instafail
-    @instafail ||= RSpec::Instafail.new(output)
+    @instafail ||= ModifiedInstafail.new(output)
   end
+
+  class ModifiedInstafail < RSpec::Instafail
+
+    def dump_backtrace(example)
+      exception = example.execution_result[:exception]
+      format_backtrace(exception.backtrace, example).each do |backtrace_info|
+        path = File.expand_path backtrace_info[%r{(\A.+?):\d}, 1] rescue binding.pry
+        if path.start_with?(Rails.root.to_s)
+          output.puts detail_color("#{long_padding}# #{backtrace_info}")
+        else
+          output.puts default_color("#{long_padding}# #{backtrace_info}")
+        end
+      end
+    end
+
+  end
+
 end
