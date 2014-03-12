@@ -153,6 +153,7 @@ describe Admin::Organization::MembersController do
         {
           role: 'owner',
           ungrouped_mail_delivery: 'in_summary',
+          gets_email: false,
         }
       end
       before do
