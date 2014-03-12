@@ -39,29 +39,22 @@ Threadable.Message = RL.Model.extend({
   }.property('body'),
 
   bodyWithAttachmentsInline: function() {
-    return this.inlineAttachments(this.get('body'));
-  }.property('body'),
+    return Threadable.replaceAttachmentContentIdsWithAttachmentUrls(this.get('body'), this.get('attachments'));
+  }.property('attachments', 'body'),
 
   bodyStrippedWithAttachmentsInline: function() {
-    return this.inlineAttachments(this.get('bodyStripped'));
-  }.property('bodyStripped'),
+    return Threadable.replaceAttachmentContentIdsWithAttachmentUrls(this.get('bodyStripped'), this.get('attachments'));
+  }.property('attachments', 'bodyStripped'),
 
-  inlineAttachments: function(body) {
-    var attachments = this.get('attachments');
-    if(attachments.length > 0) {
-      $.each(attachments, function(offset, attachment) {
-        var cid = attachment.content_id;
-        if(!cid)
-          return;
-
-        cid = cid.replace(/[<]/, '');
-        cid = cid.replace(/[>]/, '');
-        body = body.replace('cid:' + cid, attachment.url);
-      });
-    }
-    return body;
-  }
 });
+
+Threadable.replaceAttachmentContentIdsWithAttachmentUrls = function(body, attachments) {
+  attachments.forEach(function(attachment){
+    var content_id = attachment.content_id.slice(1,-1)
+    if (content_id) body = body.replace('cid:'+content_id, attachment.url);
+  });
+  return body;
+},
 
 Threadable.RESTAdapter.map("Threadable.Message", {
   primaryKey: "slug"
