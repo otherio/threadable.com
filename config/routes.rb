@@ -111,6 +111,7 @@ Threadable::Application.routes.draw do
 
   # OLD ROUTES END
 
+  get '/frontpage' => 'homepage#show'
   get '/*path' => 'client_app#show'
   root to: 'homepage#show'
 
