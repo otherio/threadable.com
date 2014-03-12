@@ -23,4 +23,9 @@ class ApplicationController < ActionController::Base
 
   before_action :require_user_be_signed_in!
 
+
+  def inspect
+    %(<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
+  end
+
 end
