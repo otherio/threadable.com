@@ -54,7 +54,8 @@ Threadable.Message = RL.Model.extend({
         if(!cid)
           return;
 
-        cid = cid.replace(/[<>]/, '');
+        cid = cid.replace(/[<]/, '');
+        cid = cid.replace(/[>]/, '');
         body = body.replace('cid:' + cid, attachment.url);
       });
     }
