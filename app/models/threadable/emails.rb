@@ -56,7 +56,6 @@ class Threadable::Emails
       message_rejected_notice:      IncomingEmailMailer,
       message_accepted_notice:      IncomingEmailMailer,
       spam_complaint:               ErrorMailer,
-      account_request_confirmation: AccountRequestsMailer,
     }
   end
 
