@@ -13,7 +13,13 @@ describe Threadable::Organization::Groups::Create do
         group = organization.groups.create(name: 'foo', auto_join: true)
         expect(group.members.count).to eq organization.members.count
         drain_background_jobs!
-        expect(sent_emails.length).to eq 8
+        organization.members.all.each do |member|
+          if !member.same_user?(current_user) && group.members.include?(member) && member.gets_email?
+            expect(sent_emails.to(member.email_address)).to be_present
+          else
+            expect(sent_emails.to(member.email_address)).to_not be_present
+          end
+        end
       end
     end
 

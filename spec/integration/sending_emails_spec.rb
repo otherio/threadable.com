@@ -221,7 +221,7 @@ describe 'sending emails' do
       end
       context "async" do
         it "should schedule a job that sends the email" do
-          threadable.emails.send_email_async(recipient.id, :reset_password)
+          threadable.emails.send_email_async(:reset_password, recipient.id)
           expect(sent_emails).to be_empty
           expect_job_to_be_enqueued! "reset_password", recipient.id
           run_jobs!
