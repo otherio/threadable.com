@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
 
   def inspect
-    %(<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
+    %(#<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
   end
 
 end
