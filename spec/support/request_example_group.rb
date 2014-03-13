@@ -21,7 +21,7 @@ module RSpec::Support::RequestExampleGroup
         "password"      => "password",
       }
     }
-    expect(response).to redirect_to root_url
+    expect(response.body).to include %(document.location = "#{root_url}")
     threadable.current_user_id = user.id
   end
 

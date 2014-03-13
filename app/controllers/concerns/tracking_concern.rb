@@ -14,7 +14,7 @@ module TrackingConcern
     if signed_in?
       mixpanel_cookie.distinct_id = current_user_id
     else
-      mixpanel_cookie.reset! if mixpanel_cookie.distinct_id.length > 20
+      mixpanel_cookie.reset! if mixpanel_cookie.distinct_id.length < 20
     end
   end
 
