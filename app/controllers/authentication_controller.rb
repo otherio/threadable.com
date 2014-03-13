@@ -61,7 +61,7 @@ class AuthenticationController < ApplicationController
   private
 
   def redirect_url!
-    params[:r] || root_url
+    params[:r].presence || root_url
   end
 
 end
