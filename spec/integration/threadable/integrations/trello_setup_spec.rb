@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'trello'
 
 describe Threadable::Integrations::TrelloSetup do
   describe '#call' do
@@ -27,8 +28,22 @@ describe Threadable::Integrations::TrelloSetup do
         expect(threadable_client).to receive(:create).with(
           :webhook,
           description: 'Threadable',
-          callbackUrl: integration_hook_url(provider: 'trello', group: 'fundraising'),
-          idModel: 'board_id'
+          callback_url: integration_hook_url(provider: 'trello', organization_id: 'raceteam', group_id: 'fundraising'),
+          id_model: 'board_id'
+        )
+
+        call(group)
+      end
+
+      it 'still works when the threadable member was already invited' do
+        expect(user_client).to receive(:find).and_return(board)
+        expect(board).to receive(:add_member).with(email: 'support@threadable.com', name: 'Threadable').and_raise(Trello::Error, "Member already invited\n")
+
+        expect(threadable_client).to receive(:create).with(
+          :webhook,
+          description: 'Threadable',
+          callback_url: integration_hook_url(provider: 'trello', organization_id: 'raceteam', group_id: 'fundraising'),
+          id_model: 'board_id'
         )
 
         call(group)

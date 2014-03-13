@@ -1,4 +1,3 @@
-
 class Threadable::Integrations::TrelloSetup < MethodObject
   include Rails.application.routes.url_helpers
 
@@ -11,12 +10,11 @@ class Threadable::Integrations::TrelloSetup < MethodObject
     board = user_client.find(:boards, board_id)
     return unless board.present?
 
-    board.add_member(email: 'support@threadable.com', name: 'Threadable')
-    threadable_client.create(
+    user_client.create(
       :webhook,
-      description: 'Threadable',
-      callbackUrl: integration_hook_url(provider: 'trello', group: group.slug),
-      idModel: board_id,
+      'description' => 'Threadable',
+      'callbackURL' => integration_hook_url(provider: 'trello', organization_id: group.organization.slug, group_id: group.slug),
+      'idModel'     => board_id,
     )
 
   end

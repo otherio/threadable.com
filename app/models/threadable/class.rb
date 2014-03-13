@@ -6,6 +6,7 @@ class Threadable::Class
     'beta.covered.io'        => 'covered.io',
     'www-staging.covered.io' => 'staging.covered.io',
     '127.0.0.1'              => '127.0.0.1', # for dev
+    ENV['THREADABLE_DEV_PROXY'] => '127.0.0.1'
   }.freeze
 
   include Let

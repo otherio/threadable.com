@@ -65,4 +65,7 @@ Threadable::Application.configure do
   config.default_protocol = 'http'
   config.default_port = 80
 
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger.const_get('DEBUG')
+
 end

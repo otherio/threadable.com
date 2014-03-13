@@ -19,12 +19,12 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_from_unknown_host!
-    return unless request.get?
+    return unless request.get? && !request.head?
     request_url = URI.parse(request.url)
     legal_hosts = case
     when Rails.env.production?;  ['threadable.com']
     when Rails.env.staging?;     ['staging.threadable.com']
-    when Rails.env.development?; ['127.0.0.1']
+    when Rails.env.development?; [ENV['THREADABLE_DEV_PROXY'] || '127.0.0.1']
     when Rails.env.test?;        ['test.host', '127.0.0.1']
     else return
     end

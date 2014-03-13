@@ -112,7 +112,8 @@ Threadable::Application.routes.draw do
   resources :emails, :only => :create
   resources :mailgun_events, :only => :create
 
-  post '/integration_hook/:provider/:group' => 'integration_hooks#create', as: 'integration_hook'
+  get '/integration_hook/:provider/:organization_id/:group_id' => 'integration_hooks#show'
+  post '/integration_hook/:provider/:organization_id/:group_id' => 'integration_hooks#create', as: 'integration_hook'
 
   get '/:organization_id/conversations/:conversation_id', to: redirect('/%{organization_id}/my/conversations/%{conversation_id}')
   get '/:organization_id/tasks/:conversation_id',         to: redirect('/%{organization_id}/my/tasks/%{conversation_id}')

@@ -19,11 +19,17 @@ class Api::GroupsController < ApiController
     if params[:group][:integration_params].present?
       group_params[:integration_params] = params[:group][:integration_params].to_json
     end
-    group = organization.groups.create(group_params)
-    if group.persisted?
-      render json: serialize(:groups, group), status: 201
+
+    new_group = nil
+    Threadable.transaction do
+      new_group = organization.groups.create(group_params)
+      new_group.setup_integration! if new_group.persisted? && new_group.has_integration?
+    end
+
+    if new_group.persisted?
+      render json: serialize(:groups, new_group), status: 201
     else
-      render json: {error: group.group_record.errors.full_messages.to_sentence}, status: 406
+      render json: {error: new_group.group_record.errors.full_messages.to_sentence}, status: 406
     end
   end
 
