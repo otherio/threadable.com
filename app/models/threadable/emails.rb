@@ -59,6 +59,17 @@ class Threadable::Emails
     }
   end
 
+  def organization_types
+    [
+      :conversation_message,
+      :message_summary,
+      :join_notice,
+      :invitation,
+      :added_to_group_notice,
+      :removed_from_group_notice,
+    ]
+  end
+
   def type? type
     types.key?(type.to_sym) or raise ArgumentError, "unknown email type: #{type}"
   end
