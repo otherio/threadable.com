@@ -14,14 +14,14 @@ class AuthenticationController < ApplicationController
 
   def sign_in
     sign_out! if signed_in?
-    authentication_params = params[:authentication].slice(:email_address, :password, :remember_me)
+    authentication_params = params.require(:authentication).slice(:email_address, :password, :remember_me)
     @authentication    = Authentication.new(threadable, authentication_params)
     @password_recovery = PasswordRecovery.new(email_address: authentication_params[:email_address])
 
     respond_to do |format|
       if @authentication.valid?
         sign_in! @authentication.user, remember_me: @authentication.remember_me
-        format.html { redirect_via_javascript_to redirect_url }
+        format.html { redirect_to redirect_url }
         format.json { render json: nil }
       else
         @warning = 'Bad email address or password'
@@ -53,7 +53,7 @@ class AuthenticationController < ApplicationController
   def sign_out
     sign_out!
     respond_to do |format|
-      format.html { redirect_via_javascript_to redirect_url }
+      format.html { redirect_to redirect_url }
       format.json { render nothing: true }
     end
   end

@@ -10,8 +10,7 @@ module RSpec::Support::FeatureExampleGroup
         fill_in 'Password', :with => 'password'
         click_on 'Sign in'
       end
-      expect(page).to be_at_url root_url
-      # expect(page).to have_text 'My Conversations'
+      expect(page).to have_text 'My Conversations'
       threadable.current_user_id = user.id
       threadable.current_user
     end

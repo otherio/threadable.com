@@ -23,11 +23,11 @@ describe "Authentication" do
           "password"      => "password",
         }
       }
-      expect(response.body).to include %(document.location = "#{root_url}")
+      expect(response).to redirect_to root_url
       expect(controller.current_user).to be_the_same_user_as alice
 
       get sign_out_path
-      expect(response.body).to include %(document.location = "#{root_url}")
+      expect(response).to redirect_to root_url
       expect(controller.current_user).to be_nil
 
       post recover_password_path, {
