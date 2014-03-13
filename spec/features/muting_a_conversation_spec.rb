@@ -40,7 +40,7 @@
 
 #     expect(conversation.recipients.all).to include current_user
 
-#     threadable.emails.send_email(:conversation_message, organization, message, current_user)
+#     threadable.emails.send_email(:conversation_message, current_user, organization, message)
 
 #     mute_url = sent_emails.first.urls.map(&:to_s).find{|url| url.include? 'mute'}
 #     visit mute_url

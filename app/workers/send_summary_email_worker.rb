@@ -8,7 +8,7 @@ class SendSummaryEmailWorker < Threadable::ScheduledWorker
       members = organization.members.who_get_summaries
 
       members.each do |member|
-        threadable.emails.send_email_async(:message_summary, organization.id, member.user_id, time.in_time_zone('US/Pacific') - 1.day)
+        threadable.emails.send_email_async(:message_summary, member.user_id, organization.id, time.in_time_zone('US/Pacific') - 1.day)
       end
     end
   end

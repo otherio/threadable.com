@@ -116,7 +116,7 @@ class Threadable::Message < Threadable::Model
         rescue ActiveRecord::RecordNotUnique
           next
         end
-        threadable.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
+        threadable.emails.send_email_async(:conversation_message, recipient.id, conversation.organization.id, id)
       end
     end
   end

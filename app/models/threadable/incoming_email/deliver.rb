@@ -103,7 +103,7 @@ class Threadable::IncomingEmail::Deliver < MethodObject
   def send_emails!
     @message.recipients.all.each do |recipient|
       next if recipient.same_user?(creator)
-      @threadable.emails.send_email_async(:conversation_message, @conversation.organization.id, @message.id, recipient.id)
+      @threadable.emails.send_email_async(:conversation_message, recipient.id, @conversation.organization.id, @message.id)
     end
   end
 

@@ -11,7 +11,7 @@ describe ConversationMailer do
     let(:message){ conversation.messages.latest }
     let(:recipient){ organization.members.all.last }
 
-    let(:mail){ ConversationMailer.new(threadable).generate(:conversation_message, organization, message, recipient) }
+    let(:mail){ ConversationMailer.new(threadable).generate(:conversation_message, recipient, organization, message) }
     let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
 
     let(:expected_to           ){ organization.task_email_address }

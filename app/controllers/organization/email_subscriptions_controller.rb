@@ -11,7 +11,7 @@ class Organization::EmailSubscriptionsController < ApplicationController
     @resubscribe_token = OrganizationResubscribeToken.encrypt(@organization.id, @member.id)
     if @member.subscribed?
       @member.unsubscribe!
-      threadable.emails.send_email_async(:unsubscribe_notice, @organization.id, @member.id)
+      threadable.emails.send_email_async(:unsubscribe_notice, @member.id, @organization.id)
     end
   end
 

@@ -82,9 +82,9 @@ class Threadable::Organization::Members::Add < MethodObject
 
   def send_join_notice!
     if @organization.trusted?
-      @threadable.emails.send_email_async(:join_notice, @organization.id, @user.id, @options[:personal_message])
+      @threadable.emails.send_email_async(:join_notice, @user.id, @organization.id, @options[:personal_message])
     else
-      @threadable.emails.send_email_async(:invitation, @organization.id, @user.id)
+      @threadable.emails.send_email_async(:invitation, @user.id, @organization.id)
     end
   end
 

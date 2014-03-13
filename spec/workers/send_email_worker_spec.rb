@@ -51,7 +51,7 @@ describe SendEmailWorker do
       expect(message).to receive(:sent_email).with(recipient).and_return(sent_email)
       expect(sent_email).to receive(:relayed!)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:conversation_message, organization, message, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:conversation_message, recipient, organization, message)
 
       perform!
     end
@@ -69,7 +69,7 @@ describe SendEmailWorker do
 
       expect(recipient).to receive(:summarized_conversations).with(date).and_return(conversations)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, conversations, date)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, recipient, organization, conversations, date)
 
       perform!
     end
@@ -85,7 +85,7 @@ describe SendEmailWorker do
       expect(organization       ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:join_notice, organization, recipient, personal_message)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:join_notice, recipient, organization, personal_message)
 
       perform!
     end
@@ -100,7 +100,7 @@ describe SendEmailWorker do
       expect(organization  ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:unsubscribe_notice, organization, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:unsubscribe_notice, recipient, organization)
 
       perform!
     end
@@ -141,7 +141,7 @@ describe SendEmailWorker do
       expect(organization  ).to receive(:groups         ).and_return(groups)
       expect(groups        ).to receive(:find_by_id!    ).with(group_id).and_return(group)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:added_to_group_notice, organization, group, sender, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:added_to_group_notice, recipient, organization, group, sender)
 
       perform!
     end
@@ -160,7 +160,7 @@ describe SendEmailWorker do
       expect(organization  ).to receive(:groups         ).and_return(groups)
       expect(groups        ).to receive(:find_by_id!    ).with(group_id).and_return(group)
 
-      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:removed_from_group_notice, organization, group, sender, recipient)
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:removed_from_group_notice, recipient, organization, group, sender)
 
       perform!
     end

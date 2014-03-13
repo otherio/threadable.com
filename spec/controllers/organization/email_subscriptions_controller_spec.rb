@@ -25,7 +25,7 @@ describe Organization::EmailSubscriptionsController do
 
       it "should disable emails for the organization membership" do
         expect(member).to be_subscribed
-        expect(threadable.emails).to receive(:send_email_async).with(:unsubscribe_notice, organization.id, member.id)
+        expect(threadable.emails).to receive(:send_email_async).with(:unsubscribe_notice, member.id, organization.id)
         post :unsubscribe, organization_id: organization.slug, token: token
         member.reload
         expect(member).to_not be_subscribed

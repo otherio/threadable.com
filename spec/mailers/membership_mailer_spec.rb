@@ -14,7 +14,7 @@ describe MembershipMailer do
 
   describe "join_notice" do
     let(:personal_message){ "yo dude, I added you to the organization. Thanks for the help!" }
-    let(:mail){ MembershipMailer.new(threadable).generate(:join_notice, organization, recipient, personal_message) }
+    let(:mail){ MembershipMailer.new(threadable).generate(:join_notice, recipient, organization, personal_message) }
 
     before do
       expect(mail.subject).to eq "You've been added to #{organization.name}"
@@ -49,7 +49,7 @@ describe MembershipMailer do
 
   describe "unsubscribe_notice" do
     let(:member){ organization.members.find_by_user_id!(threadable.current_user.id) }
-    let(:mail){ MembershipMailer.new(threadable).generate(:unsubscribe_notice, organization, member) }
+    let(:mail){ MembershipMailer.new(threadable).generate(:unsubscribe_notice, member, organization) }
     it "should return the expected message" do
       expect(mail.subject ).to eq "You've been unsubscribed from #{organization.name}"
       expect(mail.to      ).to eq ['bethany@ucsd.example.com']
@@ -64,7 +64,7 @@ describe MembershipMailer do
   describe 'added_to_group_notice' do
     let(:sender){ organization.members.find_by_user_id!(threadable.current_user.id) }
     let(:member) { organization.members.find_by_email_address('tom@ucsd.example.com') }
-    let(:mail){ MembershipMailer.new(threadable).generate(:added_to_group_notice, organization, group, sender, member) }
+    let(:mail){ MembershipMailer.new(threadable).generate(:added_to_group_notice, member, organization, group, sender) }
 
     it "should return the expected message" do
       expect(mail.subject ).to eq "I added you to +#{group.name} on #{organization.name}"
@@ -80,7 +80,7 @@ describe MembershipMailer do
   describe 'removed_from_group_notice' do
     let(:sender){ organization.members.find_by_user_id!(threadable.current_user.id) }
     let(:member) { organization.members.find_by_email_address('tom@ucsd.example.com') }
-    let(:mail){ MembershipMailer.new(threadable).generate(:removed_from_group_notice, organization, group, sender, member) }
+    let(:mail){ MembershipMailer.new(threadable).generate(:removed_from_group_notice, member, organization, group, sender) }
 
     it "should return the expected message" do
       expect(mail.subject ).to eq "I removed you from +#{group.name} on #{organization.name}"

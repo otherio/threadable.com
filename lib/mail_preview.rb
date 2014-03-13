@@ -22,12 +22,12 @@ class MailPreview < MailView
 
   def join_notice
     organization, recipient = find_organization_and_recipient
-    threadable.emails.generate(:join_notice, organization, recipient, "Yo Dawg!")
+    threadable.emails.generate(:join_notice, recipient, organization, "Yo Dawg!")
   end
 
   def unsubscribe_notice
     organization, recipient = find_organization_and_recipient
-    threadable.emails.generate(:unsubscribe_notice, organization, recipient)
+    threadable.emails.generate(:unsubscribe_notice, recipient, organization)
   end
 
 
@@ -59,7 +59,7 @@ class MailPreview < MailView
     organization, recipient = find_organization_and_recipient
     group = organization.groups.all.first
     sender = organization.members.all.sample
-    threadable.emails.generate(:added_to_group_notice, organization, group, sender, recipient)
+    threadable.emails.generate(:added_to_group_notice, recipient, organization, group, sender)
   end
 
   def message_summary
@@ -71,7 +71,7 @@ class MailPreview < MailView
     conversations = organization.conversations.all_with_last_message_at(time)
     recipient     = organization.members.all.last
 
-    threadable.emails.generate(:message_summary, organization, recipient, conversations, time)
+    threadable.emails.generate(:message_summary, recipient, organization, conversations, time)
   end
 
   private
@@ -86,7 +86,7 @@ class MailPreview < MailView
     conversation = organization.conversations.find_by_id!(message.conversation.id)
     message      = conversation.messages.latest
     recipient    = organization.members.all.last
-    threadable.emails.generate(:conversation_message, organization, message, recipient)
+    threadable.emails.generate(:conversation_message, recipient, organization, message)
   end
 
   def find_organization_and_recipient

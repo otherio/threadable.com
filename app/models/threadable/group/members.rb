@@ -32,7 +32,7 @@ class Threadable::Group::Members < Threadable::Collection
     if group_membership_record.new_record?
       group_membership_record.save!
       if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
-        threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
+        threadable.emails.send_email_async(:added_to_group_notice, user.id, group.organization.id, group.id, threadable.current_user.id)
       end
     end
     member_for group_membership_record
@@ -43,7 +43,7 @@ class Threadable::Group::Members < Threadable::Collection
     group.group_record.members.delete(user.user_record)
 
     if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
-      threadable.emails.send_email_async(:removed_from_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
+      threadable.emails.send_email_async(:removed_from_group_notice, user.id, group.organization.id, group.id, threadable.current_user.id)
     end
     self
   end

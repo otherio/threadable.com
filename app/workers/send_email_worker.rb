@@ -1,6 +1,6 @@
 #
 # Example usage:
-#   threadable.emails.schedule_send(:conversation_message, organization_id, message_id, recipient_id)
+#   threadable.emails.send_async(:conversation_message, recipient_id, organization_id, message_id)
 #
 class SendEmailWorker < Threadable::Worker
 
@@ -8,58 +8,58 @@ class SendEmailWorker < Threadable::Worker
     send type, *args
   end
 
-  def conversation_message organization_id, message_id, recipient_id
+  def conversation_message recipient_id, organization_id, message_id
     organization   = threadable.organizations.find_by_id! organization_id
     message   = organization.messages.find_by_id! message_id
     recipient = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:conversation_message, organization, message, recipient)
+    threadable.emails.send_email(:conversation_message, recipient, organization, message)
 
     # this marks the sent email record, if there is one, as delivered to mailgun
     message.sent_email(recipient).try(:relayed!)
   end
 
-  def message_summary organization_id, recipient_id, time, zone = 'US/Pacific'
+  def message_summary recipient_id, organization_id, time, zone = 'US/Pacific'
     time = Time.parse(time).in_time_zone(zone)
 
     organization   = threadable.organizations.find_by_id! organization_id
     recipient      = organization.members.find_by_user_id! recipient_id
     conversations  = recipient.summarized_conversations time
 
-    threadable.emails.send_email(:message_summary, organization, recipient, conversations, time) if conversations.length > 0
+    threadable.emails.send_email(:message_summary, recipient, organization, conversations, time) if conversations.length > 0
   end
 
-  def join_notice organization_id, recipient_id, personal_message=nil
+  def join_notice recipient_id, organization_id, personal_message=nil
     organization   = threadable.organizations.find_by_id! organization_id
     recipient = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:join_notice, organization, recipient, personal_message)
+    threadable.emails.send_email(:join_notice, recipient, organization, personal_message)
   end
 
-  def invitation organization_id, recipient_id
+  def invitation recipient_id, organization_id
     organization   = threadable.organizations.find_by_id! organization_id
     recipient = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:invitation, organization, recipient)
+    threadable.emails.send_email(:invitation, recipient, organization)
   end
 
-  def unsubscribe_notice organization_id, recipient_id
+  def unsubscribe_notice recipient_id, organization_id
     organization   = threadable.organizations.find_by_id! organization_id
     recipient = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:unsubscribe_notice, organization, recipient)
+    threadable.emails.send_email(:unsubscribe_notice, recipient, organization)
   end
 
-  def added_to_group_notice organization_id, group_id, sender_id, recipient_id
+  def added_to_group_notice recipient_id, organization_id, group_id, sender_id
     organization = threadable.organizations.find_by_id! organization_id
     group        = organization.groups.find_by_id! group_id
     sender       = organization.members.find_by_user_id! sender_id
     recipient    = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:added_to_group_notice, organization, group, sender, recipient)
+    threadable.emails.send_email(:added_to_group_notice, recipient, organization, group, sender)
   end
 
-  def removed_from_group_notice organization_id, group_id, sender_id, recipient_id
+  def removed_from_group_notice recipient_id, organization_id, group_id, sender_id
     organization = threadable.organizations.find_by_id! organization_id
     group        = organization.groups.find_by_id! group_id
     sender       = organization.members.find_by_user_id! sender_id
     recipient    = organization.members.find_by_user_id! recipient_id
-    threadable.emails.send_email(:removed_from_group_notice, organization, group, sender, recipient)
+    threadable.emails.send_email(:removed_from_group_notice, recipient, organization, group, sender)
   end
 
   def sign_up_confirmation organization_name, email_address

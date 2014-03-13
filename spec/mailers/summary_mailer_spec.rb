@@ -20,7 +20,7 @@ describe SummaryMailer do
     let(:conversations){ organization.conversations.all_with_last_message_at today }
     let(:recipient){ organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
-    let(:mail){ SummaryMailer.new(threadable).generate(:message_summary, organization, recipient, conversations, today) }
+    let(:mail){ SummaryMailer.new(threadable).generate(:message_summary, recipient, organization, conversations, today) }
     let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
 
     let(:expected_to           ){ recipient.email_address }
