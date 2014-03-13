@@ -21,7 +21,7 @@ module RSpec::Support::RequestExampleGroup
         "password"      => "password",
       }
     }
-    expect(response).to redirect_to root_url
+    expect(response.status).to be < 400
     threadable.current_user_id = user.id
   end
 
