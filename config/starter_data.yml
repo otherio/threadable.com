@@ -26,10 +26,8 @@ conversations:
     task: false
     delay_hours: 72
     from: "Aaron at Threadable <aaron@threadable.com>"
-    parent_slug: 'threadable-tips'
   # tips_commands:
   #   subject: 'Threadable Tips'
   #   task: false
   #   delay_hours: 120
   #   from: "Aaron at Threadable <aaron@threadable.com>"
-  #   parent_slug: 'threadable-tips'

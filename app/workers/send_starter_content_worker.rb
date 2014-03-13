@@ -28,19 +28,18 @@ class SendStarterContentWorker < Threadable::Worker
   end
 
   def find_or_create_conversation!
-    if params[:parent_slug].present?
-      organization.conversations.find_by_slug!(params[:parent_slug])
-    else
-      if params[:group]
-        groups = [organization.groups.find_by_slug!(params[:group])]
-      end
+    conversation = organization.conversations.find_by_subject(params[:subject])
+    return conversation if conversation.present?
 
-      organization.conversations.create(
-        subject: params[:subject],
-        task: params[:task],
-        groups: groups
-      )
+    if params[:group]
+      groups = [organization.groups.find_by_slug!(params[:group])]
     end
+
+    organization.conversations.create(
+      subject: params[:subject],
+      task: params[:task],
+      groups: groups
+    )
   end
 
   def html

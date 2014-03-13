@@ -32,6 +32,14 @@ class Threadable::Conversations < Threadable::Collection
     find_by_slug(slug) or raise Threadable::RecordNotFound, "unable to find Conversation with slug #{slug.inspect}"
   end
 
+  def find_by_subject subject
+    conversation_for (scope.order('conversations.created_at').where(subject: subject).first or return)
+  end
+
+  def find_by_subject! subject
+    find_by_subject(subject) or raise Threadable::RecordNotFound, "unable to find Conversation with subject #{subject.inspect}"
+  end
+
   def latest
     conversation_for (scope.first or return)
   end
