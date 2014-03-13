@@ -3,5 +3,7 @@ typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var
 b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 
 mixpanel.init(<%= ENV['MIXPANEL_TOKEN'].to_json %>, {
+  cross_subdomain_cookie: false,
   debug: <%= !Rails.env.production? %>,
+  verbose: <%= !Rails.env.production? %>,
 });
