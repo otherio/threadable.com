@@ -12,6 +12,14 @@ describe NewOrganization, fixtures: false do
   let(:password_confirmation)  { 'hardoncollider' }
   let(:members)                { [] }
 
+  let :controller do
+    double(:controller,
+      threadable: threadable,
+      signed_in?: threadable.current_user_id.present?,
+      current_user: threadable.current_user,
+    )
+  end
+
   def attributes
     {
       organization_name:      organization_name,
@@ -24,7 +32,7 @@ describe NewOrganization, fixtures: false do
     }
   end
 
-  let(:new_organization){ described_class.new(threadable, attributes) }
+  let(:new_organization){ described_class.new(controller, attributes) }
   subject{ new_organization }
 
   let :errors do
@@ -125,7 +133,13 @@ describe NewOrganization, fixtures: false do
     end
 
     context 'when not signed in' do
+      let(:new_user){ double :new_user }
       it 'creates the user, then the org, then adds the members' do
+
+        expect(controller).to receive(:sign_in!).
+          with{ threadable.users.find_by_email_address!(your_email_address) }.
+          and_return{|user| threadable.current_user = user; true }
+
         expect{
           expect{
             expect(subject.create).to be_true

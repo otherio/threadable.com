@@ -58,20 +58,6 @@ describe Threadable::Class do
     expect(threadable.users.new.threadable   ).to eq threadable
   end
 
-  describe '#acting_as' do
-    let(:other_user_record){ Factories.create(:user) }
-    it 'should replace the current user for the length of the given block' do
-      expect( threadable.current_user_id ).to eq user_record.id
-      expect( threadable.current_user    ).to be_the_same_user_as user_record
-      threadable.acting_as other_user_record do
-        expect( threadable.current_user_id ).to eq other_user_record.id
-        expect( threadable.current_user    ).to be_the_same_user_as other_user_record
-      end
-      expect( threadable.current_user_id ).to eq user_record.id
-      expect( threadable.current_user    ).to be_the_same_user_as user_record
-    end
-  end
-
   describe 'email_host' do
     before do
       stub_const('Threadable::Class::EMAIL_HOSTS', {'example.com' => 'mail.example.com'})

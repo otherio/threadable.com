@@ -8,12 +8,19 @@ class NewOrganization
   define_model_callbacks :validation
   def persisted?; false; end
 
-  def initialize threadable, attributes={}
-    @threadable = threadable
+  def initialize controller, attributes={}
+    @controller = controller
     remove_empty_members(attributes)
     super(attributes)
+    if signed_in?
+      self.your_name          = current_user.name
+      self.your_email_address = current_user.email_address.to_s
+    end
   end
-  attr_reader :threadable, :creator, :organization
+
+  attr_reader :controller, :creator, :organization
+
+  delegate :threadable, :current_user, :signed_in?, :sign_in!, to: :controller
 
   attribute :organization_name,       String
   attribute :email_address_username,  String
@@ -31,13 +38,11 @@ class NewOrganization
   validates_presence_of :password_confirmation,  unless: :signed_in?
 
   validates_format_of :email_address_username, with: /\A[a-z0-9][\.a-z0-9_-]*[a-z0-9]\z/i, message: 'is invalid'
-  validate :validate_uniqueness_of_your_email_address!
+  validate :validate_uniqueness_of_your_email_address!,  unless: :signed_in?
   validate :validate_uniqueness_of_email_address_username!
   validate :validate_members!
   validate :validate_passwords_match!
   validates :password, presence: true, length: { minimum: 6, maximum: 128 }, confirmation: true, unless: :signed_in?
-
-
 
   def new_member
     NewOrganization::Member.new({})
@@ -48,45 +53,44 @@ class NewOrganization
   end
 
   def create
+    return true if @organization
     return false unless valid?
 
-    @creator = threadable.current_user if signed_in?
-    @creator ||= threadable.users.create(
-      name:                  your_name,
-      email_address:         your_email_address,
-      confirm_email_address: true,
+    if !signed_in?
+      new_user = sign_up
+      return false unless new_user.persisted?
+      sign_in! new_user
+    end
+
+    @organization = threadable.organizations.create!(
+      name: organization_name,
+      email_address_username: email_address_username,
     )
 
-    return false unless @creator.persisted?
-
-    threadable.acting_as @creator do
-
-      @organization = threadable.organizations.create!(
-        name: organization_name,
-        email_address_username: email_address_username,
+    members.each do |member|
+      @organization.members.add(
+        name: member.name,
+        email_address: member.email_address,
       )
-
-      members.each do |member|
-        @organization.members.add(
-          name: member.name,
-          email_address: member.email_address,
-        )
-      end
-
     end
+
     true
   end
 
   private
 
+  def sign_up
+    threadable.sign_up(
+      name:                  your_name,
+      email_address:         your_email_address,
+      confirm_email_address: true,
+    )
+  end
+
   def remove_empty_members attributes
     Array(attributes[:members]).select! do |member|
       member[:name].present? || member[:email_address].present?
     end
-  end
-
-  def signed_in?
-    threadable.current_user.present?
   end
 
   def validate_uniqueness_of_your_email_address!

@@ -6,9 +6,10 @@ class OrganizationsController < ApplicationController
 
   # GET /create
   def new
-    @new_organization = NewOrganization.new(threadable)
-    @new_organization.organization_name  = params[:organization_name] || @organization_name
-    @new_organization.your_email_address = signed_in? ? current_user.email_address.to_s : @email_address
+    @new_organization = NewOrganization.new(self,
+      organization_name: params[:organization_name] || @organization_name,
+      your_email_address: @email_address,
+    )
     threadable.track('New Organization Page Visited',
       sign_up_confirmation_token: sign_up_confirmation_token.present?,
       organization_name: @new_organization.organization_name,
@@ -26,21 +27,20 @@ class OrganizationsController < ApplicationController
       :password_confirmation,
       :members => [:name, :email_address],
     )
-    @new_organization = NewOrganization.new(threadable, new_organization_params)
-    @new_organization.your_email_address = @email_address unless signed_in?
-    @new_organization.create or return render :new
-    sign_in! @new_organization.creator unless signed_in?
-    redirect_to compose_conversation_url(@new_organization.organization, 'my')
-
-    threadable.track('Organization Created',
-      sign_up_confirmation_token: sign_up_confirmation_token.present?,
-      organization_name: @new_organization.organization_name,
-      email_address:     @new_organization.your_email_address,
-      organization_id:   @new_organization.organization.id,
-    )
+    new_organization_params[:your_email_address] = @email_address
+    @new_organization = NewOrganization.new(self, new_organization_params)
+    if @new_organization.create
+      threadable.track('Organization Created',
+        sign_up_confirmation_token: sign_up_confirmation_token.present?,
+        organization_name: @new_organization.organization_name,
+        email_address:     @new_organization.your_email_address,
+        organization_id:   @new_organization.organization.id,
+      )
+      redirect_to compose_conversation_url(@new_organization.organization, 'my')
+    else
+      render :new
+    end
   end
-
-  private
 
   private
 
