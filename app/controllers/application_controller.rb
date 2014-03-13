@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  include RedirectViaJavascriptConcern
   include AuthenticationConcern
   include TrackingConcern
   include RescueFromExceptionsConcern
@@ -22,12 +23,12 @@ class ApplicationController < ActionController::Base
     redirect_to request_url.to_s
   end
 
-  before_action :ensure_mixpanel_distinct_id_is_user_id_when_signed_in!
+  before_action :ensure_mixpanel_distinct_id_is_correct!
   before_action :require_user_be_signed_in!
 
 
   def inspect
-    %(<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
+    %(#<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
   end
 
 end

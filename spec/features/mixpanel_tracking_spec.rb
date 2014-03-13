@@ -84,6 +84,9 @@ feature "mixpanel tracking" do
     user = threadable.users.find_by_email_address!('alice@ucsd.example.com')
     expect(threadable.tracker.aliases[user.id]).to be_nil
     expect(mixpanel_distinct_id).to eq user.id
+    visit sign_out_url
+    expect(mixpanel_distinct_id.length).to_not eq user.id
+    expect(mixpanel_distinct_id.length).to be > 10
   end
 
 end
