@@ -85,8 +85,8 @@ feature "Admin organizations CRUD" do
     ]
     expect( organization.members ).to include ian
 
-    assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "join_notice", organization.id, nicole.id, '']
-    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, ian.id,    '']
+    assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "join_notice", nicole.id, organization.id,  '']
+    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", ian.id,    organization.id,  '']
 
     expect( organization.members.find_by_user_id!(nicole.id).gets_email? ).to be_true
     expect( organization.members.find_by_user_id!(ian.id   ).gets_email? ).to be_false
@@ -104,7 +104,7 @@ feature "Admin organizations CRUD" do
     ]
     you_face = organization.members.find_by_user_slug!('you-face')
     expect( you_face.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, you_face.id, '']
+    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", you_face.id, organization.id, '']
 
     within '.add-new-member-form' do
       fill_in 'Name', with: 'Someone Else'
@@ -122,7 +122,7 @@ feature "Admin organizations CRUD" do
     ]
     someone_else = organization.members.find_by_user_slug!('someone-else')
     expect( someone_else.gets_email? ).to be_false
-    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", organization.id, someone_else.id, '']
+    assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "join_notice", someone_else.id, organization.id, '']
 
     within first('.members.table tbody tr', text: 'Nicole Aptekar') do
       click_on 'remove'
@@ -162,7 +162,7 @@ feature "Admin organizations CRUD" do
     organization = threadable.organizations.find_by_slug('sfhealth')
     bob = organization.members.find_by_user_slug!('bob-newbetauser')
     expect( bob.gets_email? ).to be_true
-    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "invitation", organization.id, bob.id]
+    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "invitation", bob.id, organization.id]
     drain_background_jobs!
     expect( sent_emails.join_notices('SF Health Center').to(bob.email_address) ).to be
   end
