@@ -106,9 +106,9 @@ describe "threadable", fixtures: false do
       expect(aaron ).to be_a Threadable::Organization::Member
       expect(ian   ).to be_a Threadable::Organization::Member
 
-      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", other.id, nicole.id, nil]
-      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", other.id, aaron.id, nil]
-      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", other.id, ian.id, nil]
+      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", nicole.id, other.id, nil]
+      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", aaron.id,  other.id, nil]
+      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "join_notice", ian.id,    other.id, nil]
 
       drain_background_jobs!
 
@@ -128,10 +128,10 @@ describe "threadable", fixtures: false do
         body: 'Hey guys. Threadable is amazing.',
       )
 
-      assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", other.id, msg.id, jared.id]
-      assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "conversation_message", other.id, msg.id, nicole.id]
-      assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "conversation_message", other.id, msg.id, aaron.id]
-      assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "conversation_message", other.id, msg.id, ian.id]
+      assert_background_job_not_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", jared.id,  other.id, msg.id]
+      assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "conversation_message", nicole.id, other.id, msg.id]
+      assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "conversation_message", aaron.id,  other.id, msg.id]
+      assert_background_job_enqueued     SendEmailWorker, args: [threadable.env, "conversation_message", ian.id,    other.id, msg.id]
 
       drain_background_jobs!
 
@@ -207,7 +207,7 @@ describe "threadable", fixtures: false do
       expect( msg1.knowledge?        ).to be_false
       expect( msg1.message_id_header ).to match /\<(.*?)@/
 
-      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", htp.id, msg1.id, aaron.id]
+      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", aaron.id, htp.id, msg1.id]
       drain_background_jobs!
 
       expect(sent_emails.size).to eq 1
@@ -239,7 +239,7 @@ describe "threadable", fixtures: false do
         attachments:       [],
       )
 
-      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", htp.id, msg2.id, aaron.id]
+      assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", aaron.id, htp.id, msg2.id]
 
       expect( msg2.unique_id         ).to eq 'PENBQlFiWmM5b2o9LV8wV3dCMmVaS3E2eEx3YU0yLWJfWDJyZGp1QzVxdC1ORmkxZ0RId0BtYWlsLmdtYWlsLmNvbT4='
       expect( msg2.to_param          ).to eq "#{msg2.id}"

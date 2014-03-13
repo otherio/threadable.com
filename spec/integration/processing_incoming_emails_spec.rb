@@ -807,12 +807,12 @@ describe "processing incoming emails" do
             first_incoming_email.reload!
             email_recipients.each do |recipient|
               expect(first_incoming_email.message).to_not be_sent_to(recipient)
-              assert_background_job_not_enqueued(SendEmailWorker, args: [threadable_env, 'conversation_message', expected_organization.id, first_incoming_email.message.id, recipient.id])
+              assert_background_job_not_enqueued(SendEmailWorker, args: [threadable_env, 'conversation_message', recipient.id, expected_organization.id, first_incoming_email.message.id])
             end
           end
           email_recipients.each do |recipient|
             expect(first_incoming_email.message).to be_sent_to(recipient)
-            assert_background_job_enqueued(SendEmailWorker, args: [threadable_env, 'conversation_message', expected_organization.id, first_incoming_email.message.id, recipient.id])
+            assert_background_job_enqueued(SendEmailWorker, args: [threadable_env, 'conversation_message', recipient.id, expected_organization.id, first_incoming_email.message.id])
           end
           drain_background_jobs!
           sent_emails.clear
