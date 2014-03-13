@@ -14,16 +14,17 @@ describe Threadable::Class do
     expect( threadable.incoming_emails .count ).to eq ::IncomingEmail .count
     expect( threadable.events          .count ).to eq ::Event         .count
 
-    expect( threadable.organizations   .all.map(&:id) ).to eq ::Organization  .all.map(&:id)
-    expect( threadable.email_addresses .all.map(&:id) ).to eq ::EmailAddress  .all.map(&:id)
-    expect( threadable.users           .all.map(&:id) ).to eq ::User          .all.map(&:id)
-    expect( threadable.organizations   .all.map(&:id) ).to eq ::Organization  .all.map(&:id)
-    expect( threadable.conversations   .all.map(&:id) ).to eq ::Conversation  .all.map(&:id)
-    expect( threadable.tasks           .all.map(&:id) ).to eq ::Task          .all.map(&:id)
-    expect( threadable.messages        .all.map(&:id) ).to eq ::Message       .all.map(&:id)
-    expect( threadable.attachments     .all.map(&:id) ).to eq ::Attachment    .all.map(&:id)
-    expect( threadable.incoming_emails .all.map(&:id) ).to eq ::IncomingEmail .all.map(&:id)
-    expect( threadable.events          .all.map(&:id) ).to eq ::Event         .all.map(&:id)
+    expect( threadable.organizations             .all.map(&:id) ).to eq ::Organization            .all.map(&:id)
+    expect( threadable.email_addresses           .all.map(&:id) ).to eq ::EmailAddress            .all.map(&:id)
+    expect( threadable.users                     .all.map(&:id) ).to eq ::User                    .all.map(&:id)
+    expect( threadable.organizations             .all.map(&:id) ).to eq ::Organization            .all.map(&:id)
+    expect( threadable.conversations             .all.map(&:id) ).to eq ::Conversation            .all.map(&:id)
+    expect( threadable.tasks                     .all.map(&:id) ).to eq ::Task                    .all.map(&:id)
+    expect( threadable.messages                  .all.map(&:id) ).to eq ::Message                 .all.map(&:id)
+    expect( threadable.attachments               .all.map(&:id) ).to eq ::Attachment              .all.map(&:id)
+    expect( threadable.incoming_emails           .all.map(&:id) ).to eq ::IncomingEmail           .all.map(&:id)
+    expect( threadable.incoming_integration_hooks.all.map(&:id) ).to eq ::IncomingIntegrationHook .all.map(&:id)
+    expect( threadable.events                    .all.map(&:id) ).to eq ::Event                   .all.map(&:id)
 
 
     events = threadable.events.all.group_by(&:class)

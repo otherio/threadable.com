@@ -20,23 +20,20 @@ class IntegrationHooksController < ApplicationController
   end
 
   def create
-    provider = params.require(:provider)
+    integration_params = params.except(:group_id, :organization_id, :controller, :action)
 
-    if provider == 'trello'
-      begin
-        process_params = params.
-          except(:provider, :group_id, :organization_id, :controller, :action).
-          merge({group: group, organization: organization, request: request}).
-          symbolize_keys
-      rescue Threadable::RecordNotFound
-        return render nothing: true, status: :gone
-      end
-
-      Threadable::Integrations::TrelloProcessor.call(process_params)
-      render nothing: true, status: :ok
-    else
-      render nothing: true, status: :bad_request
+    begin
+      threadable.incoming_integration_hooks.create!(organization, group, request, integration_params)
+    rescue Threadable::RecordNotFound
+      return render nothing: true, status: :gone
     end
+
+    # enqueue the job.
+
+    render nothing: true, status: :ok
+  rescue Threadable::RecordInvalid => error
+    threadable.report_exception!(error)
+    render nothing: true, status: :bad_request
   end
 
   def organization

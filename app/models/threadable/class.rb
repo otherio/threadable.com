@@ -51,17 +51,18 @@ class Threadable::Class
   end
   delegate :track, :track_for_user, to: :tracker
 
-  let(:emails         ){ Threadable::Emails         .new(self) }
-  let(:email_addresses){ Threadable::EmailAddresses .new(self) }
-  let(:users          ){ Threadable::Users          .new(self) }
-  let(:organizations  ){ Threadable::Organizations  .new(self) }
-  let(:conversations  ){ Threadable::Conversations  .new(self) }
-  let(:tasks          ){ Threadable::Tasks          .new(self) }
-  let(:messages       ){ Threadable::Messages       .new(self) }
-  let(:attachments    ){ Threadable::Attachments    .new(self) }
-  let(:incoming_emails){ Threadable::IncomingEmails .new(self) }
-  let(:events         ){ Threadable::Events         .new(self) }
-  let(:groups         ){ Threadable::Groups         .new(self) }
+  let(:emails                    ){ Threadable::Emails                   .new(self) }
+  let(:email_addresses           ){ Threadable::EmailAddresses           .new(self) }
+  let(:users                     ){ Threadable::Users                    .new(self) }
+  let(:organizations             ){ Threadable::Organizations            .new(self) }
+  let(:conversations             ){ Threadable::Conversations            .new(self) }
+  let(:tasks                     ){ Threadable::Tasks                    .new(self) }
+  let(:messages                  ){ Threadable::Messages                 .new(self) }
+  let(:attachments               ){ Threadable::Attachments              .new(self) }
+  let(:incoming_emails           ){ Threadable::IncomingEmails           .new(self) }
+  let(:incoming_integration_hooks){ Threadable::IncomingIntegrationHooks .new(self) }
+  let(:events                    ){ Threadable::Events                   .new(self) }
+  let(:groups                    ){ Threadable::Groups                   .new(self) }
 
   def sign_up attributes
     Threadable::SignUp.call(self, attributes)

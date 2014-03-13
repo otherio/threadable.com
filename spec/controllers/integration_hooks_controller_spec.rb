@@ -33,11 +33,14 @@ describe IntegrationHooksController do
 
     describe '#create' do
       context 'when the request is valid' do
-        it 'processes the params with the trello processor' do
-          expect(Threadable::Integrations::TrelloProcessor).to receive(:call).with(request: request, organization: organization, group: group)
-          post :create, provider: 'trello', organization_id: 'raceteam', group_id: 'fundraising'
+        it 'creates a new record' do
+          # expect(Threadable::Integrations::TrelloProcessor).to receive(:call).with(request: request, organization: organization, group: group)
+          post :create, provider: 'trello', organization_id: 'raceteam', group_id: 'fundraising', foo: 'bar'
           expect(response).to be_success
           expect(response.body).to be_blank
+
+          incoming_integration_hook = organization.incoming_integration_hooks.all.first
+          expect(incoming_integration_hook.params).to eq {foo: 'bar'}
         end
       end
 
@@ -62,8 +65,14 @@ describe IntegrationHooksController do
 
   context 'for an unknown provider' do
     context 'when the request has a valid signature' do
-      it 'fails with bad request' do
+      it 'fails a POST with bad request' do
         post :create, provider: 'wrong', organization_id: 'raceteam', group_id: 'fundraising'
+        expect(response).to_not be_success
+        expect(response.body).to be_blank
+      end
+
+      it 'fails a HEAD with bad request' do
+        head :show, provider: 'wrong', organization_id: 'raceteam', group_id: 'fundraising'
         expect(response).to_not be_success
         expect(response.body).to be_blank
       end
