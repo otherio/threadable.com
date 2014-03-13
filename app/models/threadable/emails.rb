@@ -8,22 +8,21 @@ class Threadable::Emails
   attr_reader :threadable
 
   def send_email type, *args
+    return false unless can_send_email?(type, *args)
+
     email = generate(type, *args)
+
     Honeybadger.context({
       email_message: email.to_s,
       smtp_envelope_from: email.smtp_envelope_from,
       smtp_envelope_to: email.smtp_envelope_to,
     })
+
     Threadable::Emails::Validate.call(email)
+
     return if email.smtp_envelope_to =~ /(@|\.)example\.com$/
-    failed_once = false
-    begin
-      email.deliver
-    rescue EOFError
-      raise if failed_once
-      failed_once = true
-      retry
-    end
+
+    deliver_email email
   end
 
   def send_email_async type, *args
@@ -38,7 +37,28 @@ class Threadable::Emails
     types[type.to_sym].new(threadable).generate(type.to_sym, *args)
   end
 
+  def can_send_email? type, *args
+    case type.to_sym
+    when *organization_types
+      recipient = args.first
+      recipient.gets_email?
+    else
+      true
+    end
+  end
+
   private
+
+  def deliver_email email
+    failed_once = false
+    begin
+      email.deliver
+    rescue EOFError
+      raise if failed_once
+      failed_once = true
+      retry
+    end
+  end
 
   def types
     {
