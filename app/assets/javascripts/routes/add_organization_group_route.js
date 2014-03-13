@@ -19,6 +19,7 @@ Threadable.AddOrganizationGroupRoute = Ember.Route.extend({
   },
 
   renderTemplate: function() {
+    this.controllerFor('topbar').set('group', '');
     this.render('add_organization_group', {into: 'organization', outlet: 'pane1'});
     this.controllerFor('organization').set('focus', 'conversations');
   },
