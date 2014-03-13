@@ -7,7 +7,7 @@ class SummaryMailer < Threadable::Mailer
 
   add_template_helper ConversationMailerHelper
 
-  def message_summary(organization, recipient, conversations, time)
+  def message_summary(recipient, organization, conversations, time)
     @organization = organization
     @recipient = recipient
     @conversations = conversations

@@ -2,9 +2,9 @@ class MembershipMailer < Threadable::Mailer
 
   add_template_helper EmailHelper
 
-  def join_notice organization, recipient, personal_message=nil
+  def join_notice recipient, organization, personal_message=nil
     @adder = threadable.current_user
-    @organization, @recipient, @personal_message = organization, recipient, personal_message
+    @recipient, @organization, @personal_message = recipient, organization, personal_message
 
     @subject                  = "You've been added to #{@organization.name}"
     @organization_url         = organization_url(@organization)
@@ -20,9 +20,9 @@ class MembershipMailer < Threadable::Mailer
     )
   end
 
-  def invitation organization, recipient
+  def invitation recipient, organization
     @adder = threadable.current_user
-    @organization, @recipient, @personal_message = organization, recipient
+    @recipient, @organization = recipient, organization
 
     @subject                  = "You've been invited to #{@organization.name}"
     @organization_url         = organization_url(@organization)
@@ -38,8 +38,8 @@ class MembershipMailer < Threadable::Mailer
     )
   end
 
-  def unsubscribe_notice organization, recipient
-    @organization, @recipient = organization, recipient
+  def unsubscribe_notice recipient, organization
+    @recipient, @organization = recipient, organization
 
     organization_resubscribe_token = OrganizationResubscribeToken.encrypt(@organization.id, @recipient.id)
     @organization_resubscribe_url   = organization_resubscribe_url(@organization, organization_resubscribe_token)
@@ -51,8 +51,8 @@ class MembershipMailer < Threadable::Mailer
     )
   end
 
-  def added_to_group_notice organization, group, sender, recipient
-    @organization, @group, @sender, @recipient = organization, group, sender, recipient
+  def added_to_group_notice recipient, organization, group, sender
+    @recipient, @organization, @group, @sender = recipient, organization, group, sender
 
     mail(
       to:      @recipient.formatted_email_address,
@@ -61,8 +61,8 @@ class MembershipMailer < Threadable::Mailer
     )
   end
 
-  def removed_from_group_notice organization, group, sender, recipient
-    @organization, @group, @sender, @recipient = organization, group, sender, recipient
+  def removed_from_group_notice recipient, organization, group, sender
+    @recipient, @organization, @group, @sender = recipient, organization, group, sender
 
     mail(
       to:      @recipient.formatted_email_address,

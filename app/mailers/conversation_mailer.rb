@@ -5,8 +5,8 @@ class ConversationMailer < Threadable::Mailer
 
   add_template_helper EmailHelper
 
-  def conversation_message(organization, message, recipient)
-    @organization, @message, @recipient = organization, message, recipient
+  def conversation_message(recipient, organization, message)
+    @recipient, @organization, @message = recipient, organization, message
     @conversation = @message.conversation
     @task = @conversation if @conversation.task?
 
