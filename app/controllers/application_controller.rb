@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     redirect_to request_url.to_s
   end
 
-  before_action :ensure_mixpanel_distinct_id_is_user_id_when_signed_in!
+  before_action :ensure_mixpanel_distinct_id_is_correct!
   before_action :require_user_be_signed_in!
 
 

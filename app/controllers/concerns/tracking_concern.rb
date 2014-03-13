@@ -10,8 +10,12 @@ module TrackingConcern
     mixpanel_cookie.distinct_id
   end
 
-  def ensure_mixpanel_distinct_id_is_user_id_when_signed_in!
-    mixpanel_cookie.distinct_id = current_user_id if signed_in?
+  def ensure_mixpanel_distinct_id_is_correct!
+    if signed_in?
+      mixpanel_cookie.distinct_id = current_user_id
+    else
+      mixpanel_cookie.reset! if mixpanel_cookie.distinct_id.length < 20
+    end
   end
 
   class MixpanelCookie
