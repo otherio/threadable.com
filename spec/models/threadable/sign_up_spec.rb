@@ -20,6 +20,7 @@ describe Threadable::SignUp, fixtures: false do
   context "when creating the user is successful" do
     let(:user){ double(:user, id: 12321321, persisted?: true) }
     it 'returns the new user and tracks the signup' do
+      expect( user       ).to receive(:track_update!)
       expect( call(threadable, attributes) ).to be user
       assert_tracked(user.id, 'Sign up', attributes)
     end

@@ -64,6 +64,7 @@ describe Threadable::MixpanelTracker do
     it 'calls Mixpanel::Tracker#people.set' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
       expect(people).to receive(:set).with(833,
+        '$user_id' => user.id,
         '$name'    => 'steve',
         '$email'   => 'steve@steve.io',
         '$created' => "2013-12-03T16:24:37-08:00",

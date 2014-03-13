@@ -13,6 +13,8 @@ class SignUpController < ApplicationController
       organization_name: sign_up.organization_name,
     )
 
+    threadable.tracker.set_properties('$email' => sign_up.email_address)
+
     if sign_up.existing_user?
       render(json: {
         redirect_to: sign_in_path(
