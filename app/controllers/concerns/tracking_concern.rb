@@ -10,6 +10,10 @@ module TrackingConcern
     mixpanel_cookie.distinct_id
   end
 
+  def ensure_mixpanel_distinct_id_is_user_id_when_signed_in!
+    mixpanel_cookie.distinct_id = current_user_id if signed_in?
+  end
+
   class MixpanelCookie
     MIXPANEL_COOKIE_NAME = "mp_#{ENV.fetch('MIXPANEL_TOKEN')}_mixpanel"
 

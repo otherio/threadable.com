@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   include DebugCookie
 
   before_action do
-
     return unless request.get?
     request_url = URI.parse(request.url)
     legal_hosts = case
@@ -23,6 +22,7 @@ class ApplicationController < ActionController::Base
     redirect_to request_url.to_s
   end
 
+  before_action :ensure_mixpanel_distinct_id_is_user_id_when_signed_in!
   before_action :require_user_be_signed_in!
 
 
