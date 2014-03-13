@@ -12,19 +12,26 @@ class Threadable::Class
 
   def initialize options={}
     options = options.symbolize_keys
-    @host     = options.fetch(:host){ raise ArgumentError, 'required options: :host' }
-    @port     = options.fetch(:port){ 80 }
-    @protocol = options.fetch(:protocol){ 'http' }
-    @worker   = options.fetch(:worker)  { false }
+
+    @host        = options.fetch(:host)    { raise ArgumentError, 'required options: :host' }
+    @port        = options.fetch(:port)    { 80 }
+    @protocol    = options.fetch(:protocol){ 'http' }
+    @worker      = options.fetch(:worker)  { false }
+    @tracking_id = options[:tracking_id]
+
     self.current_user_id = options[:current_user_id]
   end
 
   attr_reader :protocol, :host, :port, :current_user_id, :tracker, :worker
 
+  def tracking_id
+    current_user_id || @tracking_id
+  end
+
   def current_user_id= user_id
     @current_user_id = user_id
     @current_user = nil
-    Honeybadger.context(user_id: @current_user_id)
+    Honeybadger.context(user_id: user_id)
   end
 
   def current_user= user
@@ -36,24 +43,12 @@ class Threadable::Class
     @current_user ||= Threadable::CurrentUser.new(self, @current_user_id)
   end
 
-  def acting_as user
-    original_current_user_id = @current_user_id
-    original_current_user    = @current_user
-
-    self.current_user = user
-    yield
-  ensure
-    @current_user_id = original_current_user_id
-    @current_user    = original_current_user
-  end
-
   let :tracker do
     Rails.application.config.track_in_memory ?
       Threadable::InMemoryTracker.new(self) :
       Threadable::MixpanelTracker.new(self)
   end
-  delegate :track, to: :tracker
-  delegate :track_for_user, to: :tracker
+  delegate :track, :track_for_user, to: :tracker
 
   let(:emails         ){ Threadable::Emails         .new(self) }
   let(:email_addresses){ Threadable::EmailAddresses .new(self) }

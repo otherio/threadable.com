@@ -15,21 +15,32 @@ module AuthenticationConcern
   end
 
   def threadable
-    @threadable ||= Threadable.new(current_user_id: current_user_id, host: request.host, port: request.port, protocol: request_protocol)
+    @threadable ||= Threadable.new(
+      host:            request.host,
+      port:            request.port,
+      protocol:        request_protocol,
+      current_user_id: current_user_id,
+      tracking_id:     mixpanel_distinct_id,
+    )
   end
 
   def sign_in! user, remember_me: false
     user_id = case user; when Integer, String; user; else; user.id; end
+    user_id or raise ArgumentError, "unable to determine user id from: #{user.inspect}"
     @threadable = nil
     session[:user_id] = user_id
     cookies.permanent[:remember_me] = RememberMeToken.encrypt(user_id) if remember_me
+    mixpanel_cookie.distinct_id = user_id
     true
   end
 
   def sign_out!
+    return unless signed_in?
     @threadable = nil
     session.delete(:user_id)
     cookies.delete(:remember_me)
+    mixpanel_cookie.reset!
+    true
   end
 
   def signed_in?

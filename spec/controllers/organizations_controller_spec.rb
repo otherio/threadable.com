@@ -1,9 +1,17 @@
-require 'spec_helper'
+  require 'spec_helper'
 
 describe OrganizationsController do
 
   let(:creator){ double(:creator) }
   let(:new_organization){ double(:new_organization, creator: creator) }
+
+  let(:mixpand_distinct_id){ SecureRandom.uuid }
+
+  before do
+    request.cookies[TrackingConcern::MixpanelCookie::MIXPANEL_COOKIE_NAME] = {
+      distinct_id: mixpand_distinct_id
+    }.to_json
+  end
 
   when_not_signed_in do
 
@@ -20,15 +28,13 @@ describe OrganizationsController do
         let(:token){ SignUpConfirmationToken.encrypt(organization_name, email_address) }
 
         it "renders the new organization form" do
-          expect(NewOrganization).to receive(:new).with(threadable).and_return(new_organization)
-          expect(new_organization).to receive(:organization_name= ).with(organization_name)
-          expect(new_organization).to receive(:your_email_address=).with(email_address)
+          expect(NewOrganization).to receive(:new).with(controller, organization_name: organization_name, your_email_address: email_address).and_return(new_organization)
           expect(new_organization).to receive(:organization_name  ).and_return(organization_name)
           expect(new_organization).to receive(:your_email_address ).and_return(email_address)
 
           get :new, {token: token}
           expect(response).to render_template :new
-          assert_tracked(nil, 'New Organization Page Visited',
+          assert_tracked(mixpand_distinct_id, 'New Organization Page Visited',
             sign_up_confirmation_token: true,
             organization_name: organization_name,
             email_address: email_address,
@@ -52,8 +58,7 @@ describe OrganizationsController do
         context 'when the new organization is not valid' do
           before{ expect(new_organization).to receive(:create).and_return(false) }
           it "assigns a NewOrganization instance to @new_organization and renders new" do
-            expect(NewOrganization).to receive(:new).with(threadable, {'organization_name' => organization_name}).and_return(new_organization)
-            expect(new_organization).to receive(:your_email_address=).with(email_address)
+            expect(NewOrganization).to receive(:new).with(controller, 'organization_name' => organization_name, 'your_email_address' => email_address).and_return(new_organization)
             expect(controller).to_not receive(:sign_in!)
             expect(controller).to_not receive(:redirect_to)
             post :create, {
@@ -70,14 +75,12 @@ describe OrganizationsController do
 
           before{ expect(new_organization).to receive(:create).and_return(true) }
           it "assigns a NewOrganization instance to @new_organization, creates the organization and signs in as the creator" do
-            expect(NewOrganization).to receive(:new).with(threadable, {'organization_name' => organization_name}).and_return(new_organization)
-            expect(new_organization).to receive(:your_email_address=).with(email_address)
+            expect(NewOrganization).to receive(:new).with(controller, 'organization_name' => organization_name, 'your_email_address' => email_address).and_return(new_organization)
             expect(new_organization).to receive(:organization_name  ).and_return(organization_name)
             expect(new_organization).to receive(:your_email_address ).and_return(email_address)
 
             organization = double(:organization, to_param: 'my-new-org', id: 345)
             expect(new_organization).to receive(:organization).twice.and_return(organization)
-            expect(controller).to receive(:sign_in!).with(creator)
             post :create, {
               token: token,
               new_organization: {organization_name: organization_name}
@@ -85,7 +88,7 @@ describe OrganizationsController do
             expect(assigns(:new_organization)).to be new_organization
             expect(response).to redirect_to controller.compose_conversation_url('my-new-org', 'my')
 
-            assert_tracked(nil, 'Organization Created',
+            assert_tracked(mixpand_distinct_id, 'Organization Created',
               sign_up_confirmation_token: true,
               organization_name: organization_name,
               email_address: email_address,
@@ -101,10 +104,8 @@ describe OrganizationsController do
   when_signed_in_as 'bethany@ucsd.example.com' do
     describe "GET new" do
       it "assigns a NewOrganization instance to @new_organization" do
-        expect(NewOrganization).to receive(:new).with(threadable).and_return(new_organization)
-        expect(new_organization).to receive(:organization_name=).with(nil)
+        expect(NewOrganization).to receive(:new).with(controller, organization_name: nil, your_email_address: nil).and_return(new_organization)
         expect(new_organization).to receive(:organization_name ).and_return(nil)
-        expect(new_organization).to receive(:your_email_address=).with('bethany@ucsd.example.com')
         expect(new_organization).to receive(:your_email_address).and_return(nil)
         get :new, {}
         expect(assigns(:new_organization)).to be new_organization
@@ -121,7 +122,7 @@ describe OrganizationsController do
       context 'when the new organization is not valid' do
         before{ expect(new_organization).to receive(:create).and_return(false) }
         it "assigns a NewOrganization instance to @new_organization and renders new" do
-          expect(NewOrganization).to receive(:new).with(threadable, {'organization_name' => 'my new org'}).and_return(new_organization)
+          expect(NewOrganization).to receive(:new).with(controller, {'organization_name' => 'my new org', 'your_email_address' => nil}).and_return(new_organization)
           expect(new_organization).to_not receive(:your_email_address=)
           expect(controller).to_not receive(:sign_in!)
           expect(controller).to_not receive(:redirect_to)
@@ -137,7 +138,7 @@ describe OrganizationsController do
       context 'when the new organization is valid' do
         before{ expect(new_organization).to receive(:create).and_return(true) }
         it "assigns a NewOrganization instance to @new_organization and creates the organization" do
-          expect(NewOrganization).to receive(:new).with(threadable, {'organization_name' => 'my new org'}).and_return(new_organization)
+          expect(NewOrganization).to receive(:new).with(controller, {'organization_name' => 'my new org', 'your_email_address' => nil}).and_return(new_organization)
           organization = double(:organization, to_param: 'my-new-org', id: 8844)
           expect(new_organization).to receive(:organization_name ).and_return('my new org')
           expect(new_organization).to receive(:your_email_address).and_return(nil)

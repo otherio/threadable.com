@@ -10,9 +10,12 @@ feature "signing up" do
     ]
   end
 
+  attr_reader :original_mixpanel_distinct_id
   def sign_up! organization_name, email_address
-    visit root_url
-    # assert_tracked(nil, 'Homepage visited') # this is client side tracked now to avoid uptime requests padding our demoninator
+    sign_out! # visit root_url
+    # assert_tracked(mixpanel_distinct_id, 'Homepage visited') # this is client side tracked now to avoid uptime requests padding our demoninator
+
+    @original_mixpanel_distinct_id = mixpanel_distinct_id
 
     within first('.sign-up-form') do
       fill_in 'Organization name', with: organization_name
@@ -21,7 +24,7 @@ feature "signing up" do
     end
 
     wait_until_expectation do
-      assert_tracked(nil, 'Homepage sign up',{
+      assert_tracked(mixpanel_distinct_id, 'Homepage sign up',{
         email_address:     email_address,
         organization_name: organization_name,
       })
@@ -29,7 +32,6 @@ feature "signing up" do
   end
 
   scenario %(as new user), fixtures: false do
-    sign_out!
     sign_up! 'Zero point energy machine', 'john@the-hutchison-effect.org'
 
     expect(page).to have_text %(We've sent you a confirmation email.)
@@ -46,7 +48,7 @@ feature "signing up" do
     visit confirmation_url
     expect(page).to be_at_url new_organization_url(token: token)
 
-    assert_tracked(nil, 'New Organization Page Visited',
+    assert_tracked(mixpanel_distinct_id, 'New Organization Page Visited',
       sign_up_confirmation_token: true,
       organization_name: 'Zero point energy machine',
       email_address: 'john@the-hutchison-effect.org',
@@ -66,6 +68,8 @@ feature "signing up" do
     add_members members
     click_on 'Create'
 
+    expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
+
     organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
     expect(organization.members.count).to eq 4
     expect(organization.members.find_by_email_address('john@the-hutchison-effect.org')).to be_confirmed
@@ -80,16 +84,23 @@ feature "signing up" do
       expect( member.role ).to eq :member
     end
 
-    expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
+    user = threadable.users.find_by_email_address!('john@the-hutchison-effect.org')
+    organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
 
-    user = threadable.users.find_by_email_address('john@the-hutchison-effect.org')
-    expect(user).to be
+    expect(mixpanel_distinct_id).to eq user.id
+    expect(threadable.tracker.aliases[user.id]).to eq original_mixpanel_distinct_id
+
+    assert_tracked(user.id, "Sign up",
+      name:                 "John Hutchison",
+      email_address:        "john@the-hutchison-effect.org",
+      confirm_email_address: true,
+    )
 
     assert_tracked(user.user_id, 'Organization Created',
       sign_up_confirmation_token: true,
-      organization_name: 'Zero point energy machine',
-      email_address: 'john@the-hutchison-effect.org',
-      organization_id: Organization.last.id,
+      organization_name:         'Zero point energy machine',
+      email_address:             'john@the-hutchison-effect.org',
+      organization_id:            organization.id,
     )
 
     drain_background_jobs!
@@ -104,8 +115,9 @@ feature "signing up" do
     assert_members! members
   end
 
+
+
   scenario %(with an existing user's email address) do
-    sign_out!
     sign_up! 'Zero point energy machine', 'bethany@ucsd.example.com'
 
     expect(page).to be_at_url sign_in_url(
@@ -120,15 +132,50 @@ feature "signing up" do
     end
 
     expect(page).to be_at_url new_organization_url(organization_name: 'Zero point energy machine')
-    assert_tracked(user_id_for('bethany@ucsd.example.com'), 'New Organization Page Visited',
-      sign_up_confirmation_token: false,
-      organization_name: 'Zero point energy machine',
-      email_address: 'bethany@ucsd.example.com',
-    )
     expect(page).to have_field('Organization name', with: 'Zero point energy machine')
     expect(page).to have_field('address', with: 'zero-point-energy-machine')
     expect(page).to have_text 'Bethany Pattern'
     expect(page).to have_text 'bethany@ucsd.example.com'
+    expect(page).to_not have_field 'Your name'
+    expect(page).to_not have_field 'Password',  match: :prefer_exact
+    expect(page).to_not have_field 'Password confirmation'
+    add_members members
+    click_on 'Create'
+
+    expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
+
+    bethany = threadable.users.find_by_email_address!('bethany@ucsd.example.com')
+    organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
+
+    expect(mixpanel_distinct_id).to eq bethany.user_id
+    expect(threadable.tracker.aliases[bethany.user_id]).to be_nil
+
+    assert_tracked(bethany.user_id, 'New Organization Page Visited',
+      sign_up_confirmation_token: false,
+      organization_name:          'Zero point energy machine',
+      email_address:              'bethany@ucsd.example.com',
+    )
+
+    assert_not_tracked(bethany.user_id, "Sign up")
+
+    assert_tracked(bethany.user_id, 'Organization Created',
+      sign_up_confirmation_token: true,
+      organization_name:         'Zero point energy machine',
+      email_address:             'bethany@ucsd.example.com',
+      organization_id:            organization.id,
+    )
+
+    drain_background_jobs!
+
+    expect(page).to have_text 'Bethany Pattern'
+    expect(page).to have_text 'bethany@ucsd.example.com'
+    expect( sent_emails.sent_to('bethany@ucsd.example.com').length ).to eq 4
+    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('[Zero point energy machine] Welcome to Threadable!')   ).to be
+    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('[✔︎][Zero point energy machine] Add some more members') ).to be
+    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('[Zero point energy machine] Threadable Tips')          ).to be
+    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('Re: [Zero point energy machine] Threadable Tips')      ).to be
+    assert_members! members
+
   end
 
   def add_members members

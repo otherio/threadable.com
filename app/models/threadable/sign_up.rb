@@ -1,7 +1,12 @@
 class Threadable::SignUp < MethodObject
 
   def call threadable, attributes
-    threadable.users.create attributes
+    user = threadable.users.create attributes
+    return user unless user.persisted?
+
+    threadable.tracker.bind_tracking_id_to_user_id! user.id
+    threadable.track_for_user(user.id, 'Sign up', attributes)
+    return user
   end
 
 end

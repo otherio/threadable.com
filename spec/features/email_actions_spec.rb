@@ -26,7 +26,7 @@ describe "Email actions" do
         expect(task).to be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(user.id, tracked_event_name, type: "done", user_id: user.id, record_id: task.id)
+        assert_tracked(user.id, tracked_event_name, type: "done", record_id: task.id)
       end
     end
 
@@ -45,7 +45,7 @@ describe "Email actions" do
         expect(task).to_not be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as not done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(user.id, tracked_event_name, type: "undone", user_id: user.id, record_id: task.id)
+        assert_tracked(user.id, tracked_event_name, type: "undone", record_id: task.id)
       end
     end
 
@@ -63,7 +63,7 @@ describe "Email actions" do
         expect(conversation).to be_muted_by user
         expect(page).to have_text "You muted #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(user.id, tracked_event_name, type: "mute", user_id: user.id, record_id: conversation.id)
+        assert_tracked(user.id, tracked_event_name, type: "mute", record_id: conversation.id)
       end
     end
 
@@ -81,7 +81,7 @@ describe "Email actions" do
         expect(task.doers).to include user
         expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(user.id, tracked_event_name, type: "add", user_id: user.id, record_id: task.id)
+        assert_tracked(user.id, tracked_event_name, type: "add", record_id: task.id)
       end
     end
 
@@ -99,7 +99,7 @@ describe "Email actions" do
         expect(task.doers).to_not include user
         expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(user.id, tracked_event_name, type: "remove", user_id: user.id, record_id: task.id)
+        assert_tracked(user.id, tracked_event_name, type: "remove", record_id: task.id)
       end
     end
 
@@ -114,7 +114,7 @@ describe "Email actions" do
         click_on 'Leave'
         expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
         expect(group.members).to_not include user
-        assert_tracked(nil, tracked_event_name, type: "join", user_id: user.id, record_id: group.id)
+        assert_tracked(user.id, tracked_event_name, type: "join", record_id: group.id)
       end
     end
 
@@ -129,7 +129,7 @@ describe "Email actions" do
         click_on 'Rejoin'
         expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
         expect(group.members).to include user
-        assert_tracked(nil, tracked_event_name, type: "leave", user_id: user.id, record_id: group.id)
+        assert_tracked(user.id, tracked_event_name, type: "leave", record_id: group.id)
       end
     end
 
@@ -166,7 +166,7 @@ describe "Email actions" do
         expect(task).to be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "done", user_id: threadable.current_user.id, record_id: task.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "done", record_id: task.id)
       end
     end
 
@@ -180,7 +180,7 @@ describe "Email actions" do
         expect(task).to_not be_done
         expect(page).to have_text "You marked #{task.subject.inspect} as not done"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "undone", user_id: threadable.current_user.id, record_id: task.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "undone", record_id: task.id)
       end
     end
 
@@ -194,7 +194,7 @@ describe "Email actions" do
         expect(conversation).to be_muted_by user
         expect(page).to have_text "You muted #{conversation.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "mute", user_id: threadable.current_user.id, record_id: conversation.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "mute", record_id: conversation.id)
       end
     end
 
@@ -208,7 +208,7 @@ describe "Email actions" do
         expect(task.doers).to include user
         expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "add", user_id: threadable.current_user.id, record_id: task.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "add", record_id: task.id)
       end
     end
 
@@ -222,7 +222,7 @@ describe "Email actions" do
         expect(task.doers).to_not include user
         expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
         expect_to_be_signed_in_as! 'Bethany Pattern'
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "remove", user_id: threadable.current_user.id, record_id: task.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "remove", record_id: task.id)
       end
     end
 
@@ -235,7 +235,7 @@ describe "Email actions" do
         expect(page).to have_text "You're now a member of the #{group.name.inspect} group"
         expect(page).to be_at_url conversations_url(organization, 'fundraising')
         expect(group.members).to include user
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "join", user_id: threadable.current_user.id, record_id: group.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "join", record_id: group.id)
       end
     end
 
@@ -248,7 +248,7 @@ describe "Email actions" do
         expect(page).to have_text "You're no longer a member of the #{group.name.inspect} group"
         expect(page).to be_at_url conversations_url(organization, 'electronics')
         expect(group.members).to_not include user
-        assert_tracked(threadable.current_user.id, tracked_event_name, type: "leave", user_id: threadable.current_user.id, record_id: group.id)
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "leave", record_id: group.id)
       end
     end
 

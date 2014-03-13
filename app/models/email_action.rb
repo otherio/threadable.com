@@ -73,9 +73,8 @@ class EmailAction
     when 'leave'
       record.members.remove(user)
     end
-    threadable.track('Email action taken',
+    threadable.track_for_user(@user_id, 'Email action taken',
       type:      @type,
-      user_id:   @user_id,
       record_id: @record_id,
     )
   end
