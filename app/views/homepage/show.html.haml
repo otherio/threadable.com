@@ -1,6 +1,8 @@
 :javascript
   mixpanel.track('Homepage visited');
   $(function(){
+    $('.section-one .header-huge, .section-one .header-sub').addClass('shown');
+
     scrollToElement.offsetY = $('.nav').height() * -1;
     var hash = location.hash.slice(1);
     if (hash === "") return;
