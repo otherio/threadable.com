@@ -1,6 +1,6 @@
 #
 # Example usage:
-#   threadable.emails.schedule_send(:conversation_message, organization_id, message_id, recipient_id)
+#   threadable.emails.send_email_async(:conversation_message, organization_id, message_id, recipient_id)
 #
 class SendEmailWorker < Threadable::Worker
 
@@ -12,6 +12,8 @@ class SendEmailWorker < Threadable::Worker
     organization   = threadable.organizations.find_by_id! organization_id
     message   = organization.messages.find_by_id! message_id
     recipient = organization.members.find_by_user_id! recipient_id
+
+    return unless recipient.subscribed?
     threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
     # this marks the sent email record, if there is one, as delivered to mailgun
@@ -25,12 +27,15 @@ class SendEmailWorker < Threadable::Worker
     recipient      = organization.members.find_by_user_id! recipient_id
     conversations  = recipient.summarized_conversations time
 
+    return unless recipient.subscribed?
     threadable.emails.send_email(:message_summary, organization, recipient, conversations, time) if conversations.length > 0
   end
 
   def join_notice organization_id, recipient_id, personal_message=nil
     organization   = threadable.organizations.find_by_id! organization_id
     recipient = organization.members.find_by_user_id! recipient_id
+
+    return unless recipient.subscribed?
     threadable.emails.send_email(:join_notice, organization, recipient, personal_message)
   end
 
@@ -51,6 +56,8 @@ class SendEmailWorker < Threadable::Worker
     group        = organization.groups.find_by_id! group_id
     sender       = organization.members.find_by_user_id! sender_id
     recipient    = organization.members.find_by_user_id! recipient_id
+
+    return unless recipient.subscribed?
     threadable.emails.send_email(:added_to_group_notice, organization, group, sender, recipient)
   end
 
@@ -59,6 +66,8 @@ class SendEmailWorker < Threadable::Worker
     group        = organization.groups.find_by_id! group_id
     sender       = organization.members.find_by_user_id! sender_id
     recipient    = organization.members.find_by_user_id! recipient_id
+
+    return unless recipient.subscribed?
     threadable.emails.send_email(:removed_from_group_notice, organization, group, sender, recipient)
   end
 
