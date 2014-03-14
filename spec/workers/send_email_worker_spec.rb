@@ -51,6 +51,8 @@ describe SendEmailWorker do
       expect(message).to receive(:sent_email).with(recipient).and_return(sent_email)
       expect(sent_email).to receive(:relayed!)
 
+      expect(recipient).to receive(:subscribed?).and_return(true)
+
       expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:conversation_message, organization, message, recipient)
 
       perform!
@@ -69,6 +71,8 @@ describe SendEmailWorker do
 
       expect(recipient).to receive(:summarized_conversations).with(date).and_return(conversations)
 
+      expect(recipient).to receive(:subscribed?).and_return(true)
+
       expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:message_summary, organization, recipient, conversations, date)
 
       perform!
@@ -84,6 +88,8 @@ describe SendEmailWorker do
 
       expect(organization       ).to receive(:members         ).and_return(members)
       expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
+
+      expect(recipient).to receive(:subscribed?).and_return(true)
 
       expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:join_notice, organization, recipient, personal_message)
 
@@ -141,6 +147,8 @@ describe SendEmailWorker do
       expect(organization  ).to receive(:groups         ).and_return(groups)
       expect(groups        ).to receive(:find_by_id!    ).with(group_id).and_return(group)
 
+      expect(recipient).to receive(:subscribed?).and_return(true)
+
       expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:added_to_group_notice, organization, group, sender, recipient)
 
       perform!
@@ -159,6 +167,8 @@ describe SendEmailWorker do
 
       expect(organization  ).to receive(:groups         ).and_return(groups)
       expect(groups        ).to receive(:find_by_id!    ).with(group_id).and_return(group)
+
+      expect(recipient).to receive(:subscribed?).and_return(true)
 
       expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:removed_from_group_notice, organization, group, sender, recipient)
 
