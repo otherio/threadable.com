@@ -59,6 +59,10 @@ class Conversation < ActiveRecord::Base
   validates_presence_of :subject, :slug
   validate :validate_slug_does_not_collide_with_existing_route
 
+  def type
+    read_attribute(:type) || 'Conversation'
+  end
+
   def task?
     type == 'Task'
   end

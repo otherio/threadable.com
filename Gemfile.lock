@@ -41,6 +41,12 @@ GEM
     acts_as_list (0.2.0)
       activerecord (>= 3.0)
     addressable (2.3.5)
+    algoliasearch (1.2.5)
+      httpclient (~> 2.3)
+      json (>= 1.5.1)
+    algoliasearch-rails (1.9.1)
+      algoliasearch (>= 1.2.5)
+      json (>= 1.5.1)
     animate-sass (0.1.1)
       compass (>= 0.11.5)
     arel (4.0.0)
@@ -165,6 +171,7 @@ GEM
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
+    httpclient (2.3.4.1)
     i18n (0.6.9)
     ice_cube (0.11.3)
     incoming (0.1.6)
@@ -363,6 +370,7 @@ DEPENDENCIES
   active_record_query_trace
   activerecord-fixture_builder
   acts_as_list
+  algoliasearch-rails
   animate-sass
   bcrypt-ruby (~> 3.0.0)
   binding_of_caller

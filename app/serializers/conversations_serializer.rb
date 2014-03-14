@@ -22,5 +22,4 @@ class ConversationsSerializer < Serializer
       muted:              conversation.muted?,
     }
   end
-
 end

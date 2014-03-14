@@ -24,7 +24,9 @@ Threadable::Application.routes.draw do
       post :join
       post :leave
     end
-    resources :conversations
+    resources :conversations do
+      get :search, on: :collection
+    end
     resources :tasks
     resources :messages
     resources :events

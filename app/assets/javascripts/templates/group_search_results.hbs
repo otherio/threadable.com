@@ -1,0 +1,13 @@
+<div class="conversations-list">
+  <div class="scrollable">
+    <ol class="uk-list">
+      {{#each conversation in controller}}
+        {{partial 'conversations/list/member'}}
+      {{else}}
+        {{#unless loading}}
+          <li class="empty-list"><h4>No Conversations</h4></li>
+        {{/unless}}
+      {{/each}}
+    </ol>
+  </div>
+</div>
