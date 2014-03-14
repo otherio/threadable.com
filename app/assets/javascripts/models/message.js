@@ -50,11 +50,12 @@ Threadable.Message = RL.Model.extend({
 
 Threadable.replaceAttachmentContentIdsWithAttachmentUrls = function(body, attachments) {
   attachments.forEach(function(attachment){
-    var content_id = attachment.content_id.slice(1,-1)
+    if(!attachment.content_id) { return; }
+    var content_id = attachment.content_id.slice(1,-1);
     if (content_id) body = body.replace('cid:'+content_id, attachment.url);
   });
   return body;
-},
+};
 
 Threadable.RESTAdapter.map("Threadable.Message", {
   primaryKey: "slug"
