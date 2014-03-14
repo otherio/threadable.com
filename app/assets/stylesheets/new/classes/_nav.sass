@@ -1,4 +1,11 @@
 .nav
+  z-index: 10
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  min-width: 100%
+
   &, > .content
     height: $nav-height
     background-color: $black-color
@@ -22,3 +29,6 @@
     font-size: 30px
     svg *
       fill: white
+
+  .button
+    color: $white-color

@@ -1,5 +1,11 @@
 :javascript
   mixpanel.track('Homepage visited');
+  $(function(){
+    scrollToElement.offsetY = $('.nav').height() * -1;
+    var hash = location.hash.slice(1);
+    if (hash === "") return;
+    scrollToElement(hash, false);
+  });
 
 
 .homepage.page-column
@@ -29,7 +35,7 @@
       .big-text GET ENGAGED
       %p Let your email dreams run wild with webhooks and APIs.
 
-  %section.section-three.paneled-section
+  %section.section-three.paneled-section{'data-scroll-position' => 'quit-learning-new-tools'}
     .left-panel.small-panel
 
     .right-panel.large-panel
