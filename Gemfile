@@ -53,6 +53,8 @@ gem 'thread_safe', :git => 'git://github.com/headius/thread_safe.git', :ref => '
 gem 'omniauth'
 gem 'omniauth-trello'
 
+gem 'algoliasearch-rails'
+
 group :production, :staging do
   gem 'rails_12factor'
 end

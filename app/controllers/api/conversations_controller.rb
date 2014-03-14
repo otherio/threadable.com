@@ -29,6 +29,32 @@ class Api::ConversationsController < ApiController
     render json: serialize(:conversations, conversations)
   end
 
+  def search
+    query           = params.require(:q)
+    organization_id = params.require(:organization_id)
+    group_slug      = params.require(:group)
+
+    organization = current_user.organizations.find_by_id!(organization_id)
+
+    tag_filters = ["organization_#{organization.id}"]
+
+    tag_filters << case group_slug
+    when 'my';        current_user.group_ids.map{|id| "group_#{id}"}
+    when 'ungrouped'; 'ungrouped'
+    else;             "group_#{organization.groups.find_by_slug!(group_slug).id}"
+    end
+
+    puts "tag_filters: #{tag_filters.inspect}"
+
+    search_results = Message.algolia_raw_search(query, tagFilters: tag_filters)
+    conversation_ids = search_results["hits"].map{|h| h["conversation_id"] }.uniq
+
+    conversations = Conversation.where(id: conversation_ids).map do |conversation|
+      Threadable::Conversation.new(threadable, conversation)
+    end
+    render json: serialize(:conversations, conversations)
+  end
+
   # post /api/conversations
   def create
     conversation_params = params.require(:conversation).permit(:subject, :task)

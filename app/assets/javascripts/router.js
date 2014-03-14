@@ -20,6 +20,9 @@ Threadable.Router.map(function() {
         this.resource('add_group_member', {path: '/add'});
       });
       this.resource('group_settings', {path: '/settings'});
+      this.resource('group_search', {path: '/search'}, function() {
+        this.resource('group_search_results', {path: '/:query'});
+      });
       this.resource('conversations', {path: '/conversations'}, function(){
         conversationRoutes.call(this, 'conversation');
       });

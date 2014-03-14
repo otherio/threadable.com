@@ -1,5 +1,42 @@
 class Message < ActiveRecord::Base
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute(
+      :id,
+      :organization_id,
+      :conversation_id,
+      :conversation_type,
+      :conversation_subject,
+      :conversation_updated_at,
+      :conversation_group_ids,
+      :creator_name,
+      :creator_email_address,
+      :created_at,
+      :updated_at,
+      :body_plain,
+      :body_html,
+    )
+
+    attributesToIndex %w(
+      unordered(conversation_subject)
+      unordered(body_plain)
+      unordered(body_html)
+      unordered(creator_name)
+      unordered(creator_email_address)
+    )
+
+    attributesForFaceting %w(organization_id conversation_type)
+    attributeForDistinct  'id'
+    ranking               %w(custom)
+    customRanking         %w(desc(conversation_updated_at))
+
+    tags do
+      ["organization_#{organization_id}", "conversation_#{conversation_id}"] +
+        (grouped? ? conversation_group_ids.map{|id| "group_#{id}" } : ['ungrouped'])
+    end
+  end
+
   belongs_to :conversation, counter_cache: true
   belongs_to :parent_message, class_name: 'Message', foreign_key: 'parent_id'
   belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
@@ -32,6 +69,39 @@ class Message < ActiveRecord::Base
   def unique_id
     Base64.urlsafe_encode64 message_id_header
   end
+
+  def organization_id
+    organization.id
+  end
+
+  def conversation_type
+    conversation.type
+  end
+
+  def conversation_subject
+    conversation.subject
+  end
+
+  def conversation_updated_at
+    conversation.updated_at
+  end
+
+  def grouped?
+    conversation.groups.present?
+  end
+
+  def conversation_group_ids
+    conversation.groups.map(&:id)
+  end
+
+  def creator_name
+    creator && creator.name
+  end
+
+  def creator_email_address
+    creator && creator.email_address
+  end
+
 
   private
 
