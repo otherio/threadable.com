@@ -56,6 +56,16 @@ describe FormattedEmailAddress do
     its(:to_s){ should eq %(jared@other.io) }
   end
 
+  context "when given a string with unicode charaters" do
+    let :options do
+      {
+        address: 'jaréd@other.io',
+        display_name: 'Järéd Grîppé',
+      }
+    end
+    its(:to_s){ should eq %(Jared Grippe <jared@other.io>) }
+  end
+
 
   context "when given an address that is not a string" do
     let :options do

@@ -1,14 +1,20 @@
 class FormattedEmailAddress
 
   def initialize options
-    @address      = options[:address].to_s
-    @display_name = options[:display_name].to_s.strip
+    @address      = to_ascii options[:address]
+    @display_name = to_ascii options[:display_name]
     @mail_address = Mail::Address.new(@address)
     @mail_address.display_name = @display_name if @display_name.present?
   end
 
   def to_s
     @mail_address.to_s
+  end
+
+  private
+
+  def to_ascii string
+    string.to_s.to_ascii.gsub(/\s+/, ' ').strip
   end
   #      _         ;-.-._
   #   .-" "-.       \.  _{
