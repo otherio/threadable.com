@@ -80,7 +80,7 @@ class Threadable::Organization::Member < Threadable::User
       Threadable::Organization::Member::Update.call(self, organization_membership_attributes)
     end
     if user_attributes.present?
-      user.update!(user_attributes)
+      user.update(user_attributes)
     end
     return self
   end

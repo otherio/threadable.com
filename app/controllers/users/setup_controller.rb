@@ -17,12 +17,13 @@ class Users::SetupController < ApplicationController
   end
 
   def update
-    if user.update(user_params)
+    user.update(user_params)
+    if user.errors.present?
+      render :edit
+    else
       flash[:notice] = %(You're all setup! Welcome to Threadable.)
       sign_in! user
       redirect_to @destination_path || root_path
-    else
-      render :edit
     end
   end
 
