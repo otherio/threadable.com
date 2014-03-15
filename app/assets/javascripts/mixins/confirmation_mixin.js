@@ -4,7 +4,8 @@ Threadable.ConfirmationMixin = Ember.Mixin.create({
   confirm: function(options) {
     Threadable.ConfirmationView.create({
       container: this.container,
-      message:     options. message,
+      message:     options.message,
+      description: options.description,
       approveText: options.approveText,
       declineText: options.declineText,
       approvedCallback: options.approved || Ember.K,
