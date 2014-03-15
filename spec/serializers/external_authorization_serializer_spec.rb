@@ -15,6 +15,7 @@ describe ExternalAuthorizationsSerializer do
         email_address: 'alice@foo.com',
         nickname: 'alice',
         url: 'http://foo.com/',
+        unique_id: '12345'
       )
     end
     let(:payload){ alice.external_authorizations.all.first }
@@ -29,6 +30,7 @@ describe ExternalAuthorizationsSerializer do
         url: 'http://foo.com/',
         token: 'foo',
         application_key: ENV['THREADABLE_TRELLO_API_KEY'],
+        unique_id: '12345',
       )
     end
   end

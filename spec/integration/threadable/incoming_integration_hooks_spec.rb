@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe Threadable::IncomingIntegrationHooks do
 
-  let(:raceteam      ){ threadable.organizations.find_by_slug!('raceteam') }
-  let(:alice         ){ raceteam.members.find_by_integration_hooks_address!('alice@ucsd.example.com') }
+  let(:organization ){ threadable.organizations.find_by_slug!('raceteam') }
+  let(:group        ){ organization.groups.find_by_slug('fundraising') }
+  let(:request      ){ nil }
 
   let(:params) do
     {
@@ -14,9 +15,9 @@ describe Threadable::IncomingIntegrationHooks do
 
   describe 'create!' do
     it 'makes a record and enqueues the processing job' do
-      hook = threadable.incoming_integration_hooks.create!(params)
-      expect(hook.params).to eq {'foo' => 'bar'}
-      expect(job).to 'be in a queue or something'
+      expect(ProcessIncomingIntegrationHookWorker).to receive(:perform_async)
+      hook = threadable.incoming_integration_hooks.create!(organization, group, request, params)
+      expect(hook.params).to eq({'provider'=>'trello', 'foo' => 'bar'})
     end
 
   end

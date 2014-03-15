@@ -12,6 +12,7 @@ class ExternalAuthorizationsSerializer < Serializer
       url:             external_authorization.url,
       token:           external_authorization.token,
       application_key: external_authorization.application_key,
+      unique_id:       external_authorization.unique_id,
     }
   end
 

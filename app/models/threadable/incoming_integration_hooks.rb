@@ -22,7 +22,7 @@ class Threadable::IncomingIntegrationHooks < Threadable::Collection
 
     provider = params['provider']
 
-    raise Threadable::RecordInvalid("Unknown integration provider: #{provider}") unless provider == 'trello'
+    raise Threadable::RecordNotFound("Unknown integration provider: #{provider}") unless provider == 'trello'
 
     incoming_integration_hook_record = ::IncomingIntegrationHook.create!(
       organization: organization.organization_record,
@@ -34,6 +34,8 @@ class Threadable::IncomingIntegrationHooks < Threadable::Collection
     Threadable.after_transaction do
       ProcessIncomingIntegrationHookWorker.perform_async(threadable.env, incoming_integration_hook_record.id)
     end
+
+    incoming_integration_hook_for incoming_integration_hook_record
   end
 
   def inspect

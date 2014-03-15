@@ -25,6 +25,7 @@ describe Threadable::Class do
     expect( threadable.incoming_emails           .all.map(&:id) ).to eq ::IncomingEmail           .all.map(&:id)
     expect( threadable.incoming_integration_hooks.all.map(&:id) ).to eq ::IncomingIntegrationHook .all.map(&:id)
     expect( threadable.events                    .all.map(&:id) ).to eq ::Event                   .all.map(&:id)
+    expect( threadable.external_authorizations   .all.map(&:id) ).to eq ::ExternalAuthorization   .all.map(&:id)
 
 
     events = threadable.events.all.group_by(&:class)

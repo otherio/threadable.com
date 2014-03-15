@@ -63,6 +63,7 @@ class Threadable::Class
   let(:incoming_integration_hooks){ Threadable::IncomingIntegrationHooks .new(self) }
   let(:events                    ){ Threadable::Events                   .new(self) }
   let(:groups                    ){ Threadable::Groups                   .new(self) }
+  let(:external_authorizations   ){ Threadable::ExternalAuthorizations   .new(self) }
 
   def sign_up attributes
     Threadable::SignUp.call(self, attributes)

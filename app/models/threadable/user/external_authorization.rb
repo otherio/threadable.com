@@ -17,6 +17,7 @@ class Threadable::User::ExternalAuthorization < Threadable::Model
     email_address
     nickname
     url
+    unique_id
   }, to: :external_authorization_record
 
   def application_key

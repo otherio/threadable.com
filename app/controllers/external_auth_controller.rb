@@ -15,6 +15,7 @@ class ExternalAuthController < ApplicationController
       email_address: auth_hash['info']['email'],
       nickname: auth_hash['info']['nickname'],
       url: auth_hash['info']['urls']['profile'],
+      unique_id: auth_hash['uid'],
     }
 
     current_user.external_authorizations.add_or_update!(params)
