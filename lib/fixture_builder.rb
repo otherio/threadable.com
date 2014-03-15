@@ -42,6 +42,7 @@ class FixtureBuilder
 
   def add_member name, email_address
     member = organization.members.add(name: name, email_address: email_address)
+    member.user.update(:munge_reply_to => true)
     @members ||= {}
     @members[email_address] = member
   end
