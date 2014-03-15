@@ -4,11 +4,6 @@ Threadable.GroupSettingsRoute = Ember.Route.extend({
     return this.modelFor('organization').get('groups').findBy('slug', groupSlug);
   },
 
-  afterModel: function(group, transition) {
-    if (group) return
-    this.transitionTo('conversations', 'my');
-  },
-
   renderTemplate: function(controller, model) {
     this.render('group_settings', {into: 'organization', outlet: 'pane1'});
     this.controllerFor('organization').set('focus', 'conversations');

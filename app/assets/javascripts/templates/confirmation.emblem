@@ -1,8 +1,7 @@
 .modal
   .content
     i.icon.uk-icon-warning.uk-icon-large
-    .message= view.message
-    .description= view.description
+    .question= view.message
     .controls
       a.decline-button.uk-button href="" = view.declineText
       a.approve-button.uk-button.uk-button-danger href="" = view.approveText
