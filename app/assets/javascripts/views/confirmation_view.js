@@ -24,13 +24,6 @@ Threadable.ConfirmationView = Ember.View.extend({
       declineButton = this.$('.decline-button'),
       approveButton = this.$('.approve-button');
 
-    element.on('focus', function() {
-      console.debug('confirmation focused');
-    });
-    element.on('focus', function() {
-      console.debug('confirmation focused');
-    });
-
     $(document).on('keydown.confirmation', function(event) {
       if (event.which === 9){
         declineButton.focus();
@@ -48,6 +41,7 @@ Threadable.ConfirmationView = Ember.View.extend({
       event.preventDefault();
       event.stopPropagation();
     });
+
     approveButton.on('keydown.confirmation', function(event) {
       if (event.which !== 9) return;
       declineButton.focus();
@@ -58,6 +52,7 @@ Threadable.ConfirmationView = Ember.View.extend({
     declineButton.on('click.confirmation', function(event) {
       view.decline();
     });
+
     approveButton.on('click.confirmation', function(event) {
       view.approve();
     });

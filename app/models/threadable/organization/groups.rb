@@ -73,7 +73,7 @@ class Threadable::Organization::Groups < Threadable::Groups
   private
 
   def scope
-    organization.organization_record.groups
+    organization.organization_record.groups.unload
   end
 
   def group_for group_record
