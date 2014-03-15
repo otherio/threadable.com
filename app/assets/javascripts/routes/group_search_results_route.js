@@ -10,7 +10,7 @@ Threadable.GroupSearchResultsRoute = Ember.Route.extend({
 
       var request = $.getJSON('/api/conversations/search',{
         q:               params.query,
-        organization_id: this.modelFor('organization').get('id'),
+        organization_id: organization.get('id'),
         group:           group,
       });
 
