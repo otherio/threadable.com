@@ -1,13 +1,12 @@
 class Organization::EmailSubscriptionsController < ApplicationController
 
-  before_filter :deal_with_robots!
+  include ForwardGetRequestsAsPostsConcern
+  skip_before_action :require_user_be_signed_in!
+  before_action :forward_get_requests_as_posts!
+  before_action :decrypt_token!
 
   # GET /:organization_id/unsubscribe/:token
   def unsubscribe
-    organization_id, member_id = OrganizationUnsubscribeToken.decrypt(params.require(:token))
-    threadable.current_user_id ||= member_id
-    @organization = current_user.organizations.find_by_id! organization_id
-    @member = @organization.members.current_member
     @resubscribe_token = OrganizationResubscribeToken.encrypt(@organization.id, @member.id)
     if @member.subscribed?
       @member.unsubscribe!
@@ -17,17 +16,21 @@ class Organization::EmailSubscriptionsController < ApplicationController
 
   # GET /:organization_id/resubscribe/:token
   def resubscribe
-    organization_id, member_id = OrganizationResubscribeToken.decrypt(params.require(:token))
-    threadable.current_user_id ||= member_id
-    @organization = current_user.organizations.find_by_id! organization_id
-    @member = @organization.members.current_member
     @member.subscribe! unless @member.subscribed?
   end
 
   private
 
-  def deal_with_robots!
-    render :auto_post, layout: false if request.get?
+  def decrypt_token!
+    organization_id, member_id = case action_name.to_sym
+    when :unsubscribe
+      OrganizationUnsubscribeToken.decrypt(params.require(:token))
+    when :resubscribe
+      OrganizationResubscribeToken.decrypt(params.require(:token))
+    end
+    threadable.current_user_id ||= member_id
+    @organization = current_user.organizations.find_by_id! organization_id
+    @member = @organization.members.current_member
   end
 
 end
