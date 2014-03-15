@@ -11,7 +11,8 @@ describe Organization::EmailSubscriptionsController do
     describe "GET #{action}" do
       it "should render the auto_post template" do
         get action.to_sym, organization_id: organization.slug, token: 'FAKETOKEN'
-        expect(response).to render_template :auto_post
+        expect(response.status).to eq 200
+        expect(response.body).to include 'auto_post.submit()'
       end
     end
   end
