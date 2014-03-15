@@ -38,6 +38,11 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
     this.set('loading', true);
     this.set('loadFailed', false);
 
+    if (groupSlug !== 'my' && groupSlug !== 'ungrouped' && !organization.get('groups').findBy('slug', groupSlug)){
+      this.transitionToRoute('conversations','my');
+      return;
+    }
+
     promise = Threadable.Conversation.fetchPageByGroupAndScope(organization, groupSlug, scope, page);
 
     promise.then(function(conversations) {
