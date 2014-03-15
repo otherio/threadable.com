@@ -46,7 +46,7 @@
 
       if canEdit
         .danger-zone
-          h4.danger
+          h4.title
             | Danger Zone
           p.subtitle
             | These actions cannot be undone

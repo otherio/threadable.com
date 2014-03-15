@@ -2,6 +2,7 @@ Threadable.ConfirmationView = Ember.View.extend({
   templateName: 'confirmation',
   classNames: 'confirmation',
   message: null,
+  description: null,
   approveText: 'yes',
   declineText: 'no',
   approvedCallback: Ember.K,
