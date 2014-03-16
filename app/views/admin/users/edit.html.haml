@@ -1,0 +1,12 @@
+%h1 Edit #{@user.name}
+
+.well
+  = simple_form_for @user, url: admin_update_user_path do |f|
+    = f.error_notification
+
+    .inputs
+      = f.hidden_field :organization, value: @organization.slug
+      = f.input :munge_reply_to?, as: :select, include_blank: false
+
+    .actions
+      = f.button :submit, value: 'Update User', class: 'btn btn-primary'
