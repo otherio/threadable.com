@@ -655,15 +655,28 @@ describe "processing incoming emails" do
       end
     end
 
-    context 'the recipient email address contains a group that does not exist' do
+    context 'the recipient email address contains a group that does not exist and a group that does' do
       let(:recipient) { 'raceteam+hotdogs+fundraising@127.0.0.1' }
       let(:to)        { 'raceteam+hotdogs+fundraising@127.0.0.1' }
 
-      let(:expected_parent_message){ nil }
-      let(:expected_conversation)  { nil }
-      let(:expected_creator)       { nil }
-      it 'bounces the incoming email' do
-        validate! :bounced
+      let(:expected_groups){ ['Fundraising'] }
+      let(:expected_sent_email_to){ ["raceteam+fundraising@127.0.0.1"] }
+      let(:expected_sent_email_smtp_envelope_from){ "raceteam+fundraising@127.0.0.1" }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_sent_email_reply_to){ %("UCSD Electric Racing: Fundraising" <raceteam+fundraising@127.0.0.1>) }
+      it 'deliveres the email to the group that exists' do
+        validate! :delivered
+      end
+    end
+
+    context 'the recipient email address contains one group that do not exist' do
+      let(:recipient) { 'raceteam+pandapoop@127.0.0.1' }
+      let(:to)        { 'raceteam+pandapoop@127.0.0.1' }
+
+      let(:expected_groups){ [] }
+      let(:expected_sent_email_to){ ["raceteam@127.0.0.1"] }
+      it 'deliveres the email ungrouped' do
+        validate! :delivered
       end
     end
 

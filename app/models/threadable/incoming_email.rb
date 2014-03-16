@@ -121,7 +121,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def groups_valid?
-    email_address_tags.to_set == groups.map(&:email_address_tag).to_set
+    groups.map(&:email_address_tag).to_set.subset?  email_address_tags.to_set
   end
 
   def body_has_content?
