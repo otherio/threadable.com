@@ -36,7 +36,6 @@ describe Threadable::Group do
   it { should delegate(:new_record?       ).to(:group_record) }
   it { should delegate(:persisted?        ).to(:group_record) }
   it { should delegate(:subject_tag       ).to(:group_record) }
-  it { should delegate(:destroy           ).to(:group_record) }
   it { should delegate(:auto_join?        ).to(:group_record) }
   it { should delegate(:hold_messages?    ).to(:group_record) }
   it { should delegate(:alias_email_address     ).to(:group_record) }
@@ -67,5 +66,19 @@ describe Threadable::Group do
     its(:internal_task_email_address  ){ should eq "my-project+thing-factory+task@127.0.0.1" }
     its(:formatted_email_address      ){ should eq %(My Elsewhere <elsewhere@foo.com>) }
     its(:formatted_task_email_address ){ should eq %(My Elsewhere Tasks <elsewhere-task@foo.com>) }
+  end
+
+  describe "#destroy" do
+    it 'destroys the group and updates the group_count cache for each conversation' do
+      conversations = double(:conversations)
+      all_conversations = [double(:conversation1), double(:conversation2), double(:conversation3)]
+      expect(group).to receive(:conversations).and_return(conversations)
+      expect(conversations).to receive(:all).and_return(all_conversations)
+      expect(group_record).to receive(:destroy)
+      all_conversations.each do |conversation|
+        expect(conversation).to receive(:update_group_caches!)
+      end
+      expect(group.destroy).to be group
+    end
   end
 end

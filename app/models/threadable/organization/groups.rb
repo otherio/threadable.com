@@ -10,7 +10,7 @@ class Threadable::Organization::Groups < Threadable::Groups
   attr_reader :organization
 
   def find_by_ids group_ids
-    groups_for scope.find(group_ids)
+    groups_for scope.where(id: group_ids)
   end
 
   def find_by_id group_id
@@ -73,7 +73,7 @@ class Threadable::Organization::Groups < Threadable::Groups
   private
 
   def scope
-    organization.organization_record.groups
+    organization.organization_record.groups.unload
   end
 
   def group_for group_record

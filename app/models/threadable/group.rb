@@ -20,7 +20,6 @@ class Threadable::Group < Threadable::Model
     webhook_url
     new_record?
     persisted?
-    destroy
     auto_join?
     hold_messages?
     webhook_url
@@ -100,6 +99,13 @@ class Threadable::Group < Threadable::Model
 
   def update attributes
     group_record.update_attributes!(attributes)
+    self
+  end
+
+  def destroy
+    conversations = self.conversations.all
+    group_record.destroy
+    conversations.each(&:update_group_caches!)
     self
   end
 

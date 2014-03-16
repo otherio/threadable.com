@@ -15,11 +15,9 @@ class Threadable::Messages::Create < MethodObject
 
   def call messages, options
     @messages      = messages
-    @threadable       = messages.threadable
+    @threadable    = messages.threadable
     @options       = OPTIONS.parse(options)
     @conversation  = @options.conversation
-
-    # unless @options.given_options.keys
 
     create_message!
     if @message.persisted?

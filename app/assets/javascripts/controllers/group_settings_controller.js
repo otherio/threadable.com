@@ -1,4 +1,7 @@
-Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.CurrentUserMixin, {
+Threadable.GroupSettingsController = Ember.ObjectController.extend(
+  Threadable.CurrentUserMixin,
+  Threadable.ConfirmationMixin,
+  {
   needs: ['organization'],
 
   error: null,
@@ -21,6 +24,20 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(Threadable.Cu
   }.property('aliasPlainAddress'),
 
   actions: {
+    deleteGroup: function() {
+      this.confirm({
+        message: 'Are you sure you want to delete the '+this.get('name')+' group?',
+        approveText: 'Delete',
+        declineText: 'cancel',
+        approved: function() {
+          var group = this.get('model');
+          group.deleteRecord().then(function() {
+            this.get('controllers.organization.groups').removeObject(group);
+            this.transitionTo('conversations', 'my');
+          }.bind(this));
+        }.bind(this)
+      });
+    },
     updateGroup: function() {
       this.set('error', null);
 
