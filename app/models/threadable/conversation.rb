@@ -36,6 +36,7 @@ class Threadable::Conversation < Threadable::Model
     new_record?
     errors
     last_message_at
+    external_id
   }, to: :conversation_record
 
   attr_writer :organization

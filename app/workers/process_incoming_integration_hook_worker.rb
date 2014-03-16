@@ -4,7 +4,7 @@ class ProcessIncomingIntegrationHookWorker < Threadable::Worker
     @incoming_integration_hook = threadable.incoming_integration_hooks.find_by_id!(incoming_integration_hook_id)
 
     processing! or begin
-      logger.warn("Rescheduling ProcessIncomingIntegrationHookWorker job. External Message ID: #{@incoming_integration_hook.external_message_id}")
+      logger.warn("Rescheduling ProcessIncomingIntegrationHookWorker job. External Conversation ID: #{@incoming_integration_hook.external_conversation_id}")
       reschedule_for 5.seconds.from_now
       return
     end
@@ -17,7 +17,7 @@ class ProcessIncomingIntegrationHookWorker < Threadable::Worker
   end
 
   def redis_key
-    @redis_key ||= "#{self.class}:#{@incoming_integration_hook.provider}-#{@incoming_integration_hook.external_message_id}"
+    @redis_key ||= "#{self.class}:#{@incoming_integration_hook.provider}-#{@incoming_integration_hook.external_conversation_id}"
   end
 
   def processing!

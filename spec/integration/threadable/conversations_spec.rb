@@ -51,6 +51,22 @@ describe Threadable::Conversations do
     end
   end
 
+  describe 'find_by_external_id' do
+    context 'when given a valid id' do
+      it "returns a conversation with a given id" do
+        conversation_record = ::Conversation.first
+        conversation_record.update(external_id: 'abc123')
+
+        expect(conversations.find_by_external_id('abc123')).to eq Threadable::Conversation.new(threadable, conversation_record)
+      end
+    end
+    context "when given an invalid id" do
+      it "returns nil" do
+        expect(conversations.find_by_external_id('not_there')).to be_nil
+      end
+    end
+  end
+
   describe 'find_by_id!' do
     context 'when given a valid id' do
       it "returns a conversation with a given id" do

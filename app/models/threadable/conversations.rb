@@ -24,6 +24,14 @@ class Threadable::Conversations < Threadable::Collection
     find_by_id(id) or raise Threadable::RecordNotFound, "unable to find Conversation with id #{id.inspect}"
   end
 
+  def find_by_external_id id
+    conversation_for (scope.where(external_id: id).first or return)
+  end
+
+  def find_by_external_id! id
+    find_by_external_id(id) or raise Threadable::RecordNotFound, "unable to find Conversation with external id #{id.inspect}"
+  end
+
   def find_by_slug slug
     conversation_for (scope.where(slug: slug).first or return)
   end

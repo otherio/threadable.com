@@ -4,6 +4,7 @@ class Threadable::Conversations::Create < MethodObject
     required :organization, :subject
     optional :creator, :creator_id, :groups
     optional :task, default: false
+    optional :external_id
   end
 
   def call conversations, options
@@ -32,8 +33,9 @@ class Threadable::Conversations::Create < MethodObject
 
   def create_conversation!
     @conversation_record = scope.create(
-      subject:    @options.subject,
-      creator_id: @options.creator.try(:id) || @options.creator_id,
+      subject:     @options.subject,
+      creator_id:  @options.creator.try(:id) || @options.creator_id,
+      external_id: @options.external_id,
     )
   end
 

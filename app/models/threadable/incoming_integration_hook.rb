@@ -53,10 +53,14 @@ class Threadable::IncomingIntegrationHook < Threadable::Model
     @group ||= Threadable::Group.new(threadable, incoming_integration_hook_record.group)
   end
 
-
   def conversation= conversation
     @conversation = conversation
     incoming_integration_hook_record.conversation = conversation.conversation_record
+  end
+
+  def message= message
+    @message = message
+    incoming_integration_hook_record.message = message.message_record
   end
 
 
