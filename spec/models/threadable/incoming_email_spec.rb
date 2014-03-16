@@ -434,6 +434,12 @@ describe Threadable::IncomingEmail do
 
     context 'with an extra email address tag' do
       let(:email_address_tags) { ['group1', 'group2', 'eeevil'] }
+      it {should be_true}
+    end
+
+    # not sure how this would ever happen
+    context 'missing an email address tag' do
+      let(:email_address_tags) { ['group1'] }
       it {should be_false}
     end
   end
