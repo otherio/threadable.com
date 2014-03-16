@@ -62,8 +62,9 @@ feature "Admin organizations CRUD" do
 
     expect(members_table).to eq [["This organization has no members."]]
 
-    within '.add-existing-member-form' do
-      select 'Nicole Aptekar <nicole@other.io>', from: 'user[id]'
+    within '.add-new-member-form' do
+      fill_in 'Email address', with: 'nicole@other.io'
+      fill_in 'Name', with: 'You Face'
       click_on 'Add Member'
     end
 
@@ -72,8 +73,9 @@ feature "Admin organizations CRUD" do
     ]
     expect( organization.members ).to include nicole
 
-    within '.add-existing-member-form' do
-      select 'Ian Baker <ian@other.io>', from: 'user[id]'
+    within '.add-new-member-form' do
+      fill_in 'Email address', with: 'ian@other.io'
+      fill_in 'Name', with: 'You Face'
       uncheck 'Gets email?'
       uncheck 'Send join notice?'
       click_on 'Add Member'
