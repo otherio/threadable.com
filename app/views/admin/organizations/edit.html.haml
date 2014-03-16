@@ -44,23 +44,24 @@
     %input{type: 'checkbox', name:'user[send_join_notice]', checked: true, value: "true"}
     Send join notice?
 
-.add-existing-member-form
-  %h3 Add existing member
-  = form_tag admin_add_organization_member_path(@organization) do
-    .inputs
-      %label
-        Personal Message (trusted orgs only):
-      %label
-        = text_area_tag :personal_message, '', style: 'height: 5em; width: 20em'
-      %label
-        %select{name: 'user[id]'}
-          %option{selected: true}
-          - @all_users.sort_by(&:name).each do |user|
-            - next if @members.map(&:id).include? user.id
-            %option{value: user.id}= user.formatted_email_address
-      = option_inputs
-    .actions
-      %input{type: 'submit', value: 'Add Member', class: 'btn btn-primary'}
+/ This is causing serious slowitude by loading every fucking member, now that we have 1300+
+/ .add-existing-member-form
+/   %h3 Add existing member
+/   = form_tag admin_add_organization_member_path(@organization) do
+/     .inputs
+/       %label
+/         Personal Message (trusted orgs only):
+/       %label
+/         = text_area_tag :personal_message, '', style: 'height: 5em; width: 20em'
+/       %label
+/         %select{name: 'user[id]'}
+/           %option{selected: true}
+/           - @all_users.sort_by(&:name).each do |user|
+/             - next if @members.map(&:id).include? user.id
+/             %option{value: user.id}= user.formatted_email_address
+/       = option_inputs
+/     .actions
+/       %input{type: 'submit', value: 'Add Member', class: 'btn btn-primary'}
 
 
 .add-new-member-form
