@@ -60,7 +60,10 @@
                 = mail_to group.formatted_email_address, group.email_address
                 = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
                 |
-                = link_to 'Leave', email_action_link(group, @recipient, "leave")
+                - if group.members.include? @recipient
+                  = link_to 'Leave', email_action_link(group, @recipient, "leave")
+                - else
+                  = link_to 'Join', email_action_link(group, @recipient, "join")
 
         .threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
           = link_to @organization.name, organization_url(@organization)
