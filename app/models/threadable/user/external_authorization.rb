@@ -28,10 +28,6 @@ class Threadable::User::ExternalAuthorization < Threadable::Model
     ENV['THREADABLE_TRELLO_API_SECRET'] if provider == 'trello'
   end
 
-  def threadable_token
-    ENV['THREADABLE_TRELLO_USER_TOKEN'] if provider == 'trello'
-  end
-
   def to_s
     "#{user_id}:#{provider}"
   end
