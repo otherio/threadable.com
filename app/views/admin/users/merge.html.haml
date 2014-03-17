@@ -1,0 +1,28 @@
+%h1 Are you sure‽
+%h3 … you want to merge:
+
+.well
+  %p
+    %img{src: @user.avatar_url, height: 70, width: 70}
+  %h3= @user.name
+
+%h3 INTO
+
+.well
+  %p
+    %img{src: @destination_user.avatar_url, height: 70, width: 70}
+  %h3= @destination_user.name
+
+
+%p
+  %strong
+    This will move all data from #{@user.name} (user #{@user.id}) over to
+    user #{@destination_user.name} (user #{@destination_user.id}) and destroy
+    #{@user.name} (user #{@user.id})
+
+%h3 WARNING: THIS OPERATION CANNOT BE UNDONE!
+
+
+= form_tag admin_merge_user_path(@user, confirmed: true), method: 'POST' do |f|
+  = hidden_field_tag :destination_user_id, @destination_user.id
+  = submit_tag "Merge #{@user.name} (user #{@user.id}) into #{@destination_user.name} (user #{@destination_user.id})", class: 'btn btn-danger', confirm: "Are you sure you're sure?"

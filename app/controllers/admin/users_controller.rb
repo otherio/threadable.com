@@ -5,7 +5,6 @@ class Admin::UsersController < ApplicationController
   before_action :require_user_be_admin!
 
   def index
-    @page_size = 20
     @page = params[:page].to_i
     @query = params[:q].to_s
     @users = threadable.users.search(@query, page: @page)
@@ -37,6 +36,18 @@ class Admin::UsersController < ApplicationController
     else
       flash.now[:danger] = "update of #{@user.formatted_email_address} was unsuccessful."
       render :edit
+    end
+  end
+
+  def merge
+    @user = threadable.users.find_by_slug!(params.require(:user_id))
+    @destination_user = threadable.users.find_by_id!(params.require(:destination_user_id))
+
+    raise "you cannot merge yourself" if @user.same_user? current_user
+    if params[:confirmed]
+      @user.merge_into!(@destination_user)
+      flash[:success] = "#{@user.name} (user #{@user.id}) was merge into #{@destination_user.name} (user #{@destination_user.id})"
+      redirect_to admin_user_path(@destination_user)
     end
   end
 
