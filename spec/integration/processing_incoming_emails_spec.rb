@@ -1276,4 +1276,14 @@ describe "processing incoming emails" do
     end
   end
 
+  context 'when the organization holds all messages' do
+    before do
+      expected_organization.hold_all_messages!
+    end
+    let(:expected_conversation){ nil }
+    it 'holds all messages' do
+      validate! :held
+    end
+  end
+
 end

@@ -21,6 +21,7 @@ class Threadable::Organization < Threadable::Model
     errors
     new_record?
     persisted?
+    hold_all_messages?
     trusted?
   }, to: :organization_record
 
@@ -117,6 +118,11 @@ class Threadable::Organization < Threadable::Model
 
   def update attributes
     Update.call(self, attributes)
+  end
+
+  def hold_all_messages!
+    organization_record.update!(hold_all_messages: true)
+    self
   end
 
   def destroy!

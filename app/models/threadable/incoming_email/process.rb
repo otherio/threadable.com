@@ -11,7 +11,7 @@ class Threadable::IncomingEmail::Process < MethodObject
       @incoming_email.find_groups!
       if @incoming_email.bounceable?
         bounce!
-        return process!
+        return processed!
       end
       @incoming_email.find_message!
       @incoming_email.find_creator!
@@ -32,7 +32,7 @@ class Threadable::IncomingEmail::Process < MethodObject
         run_commands!
       end
 
-      return process!
+      return processed!
     end
   end
 
@@ -56,7 +56,7 @@ class Threadable::IncomingEmail::Process < MethodObject
     @incoming_email.drop!
   end
 
-  def process!
+  def processed!
     @incoming_email.processed!
   end
 

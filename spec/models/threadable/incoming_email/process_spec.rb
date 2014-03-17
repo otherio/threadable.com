@@ -57,6 +57,8 @@ describe Threadable::IncomingEmail::Process do
         expect(incoming_email).to receive(:find_creator!)
         expect(incoming_email).to receive(:find_parent_message!)
         expect(incoming_email).to receive(:find_conversation!)
+        expect(incoming_email).to receive(:held?).and_return(false)
+        expect(incoming_email).to receive(:bounced?).and_return(false)
       end
       context 'and the incoming_email is deliverable' do
         before do
