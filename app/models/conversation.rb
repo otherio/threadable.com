@@ -52,7 +52,12 @@ class Conversation < ActiveRecord::Base
     where('last_message_at BETWEEN ? AND ?', start, stop)
   }
 
-  acts_as_url :subject, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
+  acts_as_url(:subject,
+    url_attribute:                        :slug,
+    only_when_blank:                      true,
+    sync_url:                             true,
+    enforce_uniqueness_on_sti_base_class: true,
+  )
 
   alias_method :to_param, :slug
 

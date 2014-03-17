@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315000000) do
+ActiveRecord::Schema.define(version: 20140317204402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20140315000000) do
     t.integer  "groups_count",            default: 0
   end
 
+  add_index "conversations", ["organization_id", "slug"], name: "index_conversations_on_organization_id_and_slug", unique: true, using: :btree
   add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
   add_index "conversations", ["slug"], name: "index_conversations_on_slug", using: :btree
 
