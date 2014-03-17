@@ -1,5 +1,22 @@
 class User < ActiveRecord::Base
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute(:id, :name, :slug)
+
+    attribute :email_addresses do
+      email_addresses.map(&:address).join(' ')
+    end
+
+    attributesToIndex %w(
+      id
+      name
+      slug
+      email_addresses
+    )
+
+  end
+
   include Password
 
   has_many :email_addresses, autosave: true, validate: true
@@ -67,6 +84,10 @@ class User < ActiveRecord::Base
 
   def email_address
     primary_email_address.try(:address)
+  end
+
+  def email_addresses_as_string
+    email_addresses.map(&:address).join("\n")
   end
 
   def avatar_url

@@ -1,0 +1,36 @@
+%h1 Users
+
+= form_tag admin_users_path, method: 'GET' do |f|
+  = text_field_tag :q, params[:q], class: 'input-medium search-query', autofocus: true
+  = submit_tag 'Search', class: 'btn btn-primary'
+
+%table.table
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Slug
+      %th Primary email address
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td
+          = link_to admin_edit_user_path(user) do
+            = user.id
+        %td
+          = link_to admin_edit_user_path(user) do
+            = user.name
+        %td
+          = link_to admin_edit_user_path(user) do
+            = user.slug
+        %td
+          = link_to admin_edit_user_path(user) do
+            = user.email_address
+
+
+.page-links
+  = link_to_if @page > 0, 'prev', url_for(page: @page - 1)
+  \|
+  %span page #{@page}
+  \|
+  = link_to_if @users.length >= 20, 'next', url_for(page: @page + 1)

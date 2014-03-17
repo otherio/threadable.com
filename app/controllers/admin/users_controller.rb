@@ -4,24 +4,40 @@ class Admin::UsersController < ApplicationController
 
   before_action :require_user_be_admin!
 
+  def index
+    @page_size = 20
+    @page = params[:page].to_i
+    @query = params[:q].to_s
+    @users = threadable.users.search(@query, page: @page)
+  end
+
+  def show
+    redirect_to admin_edit_user_path
+  end
+
   def edit
-    @user = threadable.users.find_by_id(params[:user_id])
-    @organization = threadable.organizations.find_by_slug! params[:organization]
+    @user = threadable.users.find_by_slug!(params[:user_id])
   end
 
   # PATCH /admin/users/:user_id
   def update
-    user_id = params.require(:user_id)
-    user_params = params.permit(user: :munge_reply_to)[:user].symbolize_keys
-    user = threadable.users.find_by_id! user_id.to_i
-    if user.update(user_params)
-      flash[:notice] = "update of #{user.formatted_email_address} was successful."
+    @user = threadable.users.find_by_slug!(params[:user_id])
+    @user_params = params[:user].permit(
+      :name,
+      :slug,
+      :password,
+      :password_confirmation,
+      :munge_reply_to,
+      :email_addresses_as_string
+    )
+    email_addresses_as_string = @user_params.delete(:email_addresses_as_string)
+    if @user.update(@user_params)
+      flash[:success] = "update of #{@user.formatted_email_address} was successful."
+      redirect_to admin_users_path
     else
-      flash[:alert] = "update of #{user.formatted_email_address} was unsuccessful."
+      flash.now[:danger] = "update of #{@user.formatted_email_address} was unsuccessful."
+      render :edit
     end
-    redirect_to admin_edit_organization_path(params[:user][:organization])
   end
-
-  private
 
 end

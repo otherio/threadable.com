@@ -22,6 +22,7 @@ class Threadable::User < Threadable::Model
     current_organization_id
     created_at
     munge_reply_to?
+    email_addresses_as_string
   }, to: :user_record
 
   delegate :can?, to: :ability
