@@ -48,6 +48,14 @@ class Threadable::Group < Threadable::Model
   end
   public
 
+  def integration_user
+    return unless group_record.integration_user
+    @integration_user ||= Threadable::User.new(threadable, group_record.integration_user)
+  end
+
+  def integration_user= user
+    group_record.update_attribute(:integration_user, user.user_record)
+  end
 
   def organization_record
     group_record.organization

@@ -50,6 +50,7 @@ class Threadable::ExternalAuthorizations < Threadable::Collection
   end
 
   def external_authorization_for external_authorization_record
+    return unless external_authorization_record.present?
     user = Threadable::User.new(threadable, external_authorization_record.user)
     Threadable::User::ExternalAuthorization.new(user, external_authorization_record) if external_authorization_record
   end

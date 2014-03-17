@@ -1,4 +1,4 @@
-class Threadable::Integrations::TrelloProcessor < MethodObject
+class Threadable::Integrations::TrelloProcessor < Threadable::Integrations::TrelloBase
   def call incoming_integration_hook
     @incoming_integration_hook = incoming_integration_hook
     @organization = incoming_integration_hook.organization
@@ -53,10 +53,13 @@ class Threadable::Integrations::TrelloProcessor < MethodObject
 
   def user
     return @user if @user.present?
-    user_id = threadable.external_authorizations.find_by_unique_id(action['memberCreator']['id']).user_id
-    if user_id.present?
-      @user = threadable.users.find_by_id(user_id)
+    external_auth = threadable.external_authorizations.find_by_unique_id(action['memberCreator']['id'])
+    if external_auth.present?
+      return @user = threadable.users.find_by_id(external_auth.user_id)
     end
+
+    member = client.find(:member, "user1234")
+    return @user = threadable.users.find_by_email_address(member['email'])
   end
 
   def subject

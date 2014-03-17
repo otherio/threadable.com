@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'trello'
 
 describe Threadable::Integrations::TrelloProcessor do
 
@@ -119,7 +120,6 @@ describe Threadable::Integrations::TrelloProcessor do
           expect(conversation.subject).to eq 'This is a card'
           expect(conversation.external_id).to eq 'CARD_ID'
         end
-
       end
 
       describe 'update card description' do
@@ -217,7 +217,32 @@ describe Threadable::Integrations::TrelloProcessor do
     end
 
     context 'when the user is not authenticated with trello' do
-      it 'looks up the user by their email address'
+
+      describe 'new card' do
+        let(:action_type) { 'createCard' }
+        let(:action_data) do
+          {
+            "card" => {
+              "name" => "This is a card",
+              "id" => "OTHER_CARD_ID"
+            }
+          }
+        end
+
+        let(:member) { {'email' => 'alice@ucsd.example.com'} }
+        let(:client) { double(:client) }
+
+        before do
+          Trello::Client.stub(:new).and_return(client)
+          expect(client).to receive(:find).with(:member, 'raindrift').and_return(member)
+        end
+
+        it 'looks up the user by their email address' do
+          call(incoming_integration_hook)
+          conversation = group.conversations.find_by_slug('this-is-a-card')
+          expect(conversation.creator).to eq alice
+        end
+      end
 
       context 'when the user cannot be found' do
         it 'uses the email address without setting a creator'

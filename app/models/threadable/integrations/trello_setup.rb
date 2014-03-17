@@ -1,35 +1,23 @@
-class Threadable::Integrations::TrelloSetup < MethodObject
+class Threadable::Integrations::TrelloSetup < Threadable::Integrations::TrelloBase
   include Rails.application.routes.url_helpers
 
   def call group
     @threadable = group.threadable
-    @auth = threadable.current_user.external_authorizations.for_provider('trello')
-    return unless @auth.present?
+    @current_user = threadable.current_user
+    return unless auth.present?
 
     board_id = group.integration_params['id']
 
-    client.create(
+    hook = client.create(
       :webhook,
       'description' => 'Threadable',
       'callbackURL' => integration_hook_url(provider: 'trello', organization_id: group.organization.slug, group_id: group.slug),
       'idModel'     => board_id,
     )
 
+    group.integration_user = current_user if hook
   end
 
-  attr_reader :auth, :threadable
-
-  def client
-    @client ||= Trello::Client.new(
-      consumer_key:       auth.application_key,
-      consumer_secret:    auth.application_secret,
-      oauth_token:        auth.token,
-      oauth_token_secret: auth.secret,
-    )
-  end
-
-  def default_url_options
-    { host: threadable.host, port: threadable.port }
-  end
+  attr_reader :threadable, :current_user
 
 end

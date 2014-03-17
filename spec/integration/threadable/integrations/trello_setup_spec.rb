@@ -19,16 +19,18 @@ describe Threadable::Integrations::TrelloSetup do
         expect(Trello::Client).to receive(:new).and_return(client)
       end
 
-      it 'creates a webhook that points to our trello endpoint' do
+      it 'creates a webhook that points to our trello endpoint, and sets the group integration user' do
         expect(client).to receive(:create).with(
           :webhook,
           'description' => 'Threadable',
           'callbackURL' => integration_hook_url(provider: 'trello', organization_id: 'raceteam', group_id: 'fundraising'),
           'idModel' => 'board_id'
-        )
+        ).and_return(true)
 
         call(group)
+        expect(group.integration_user).to eq current_user
       end
+
 
       it 'replaces an existing webhook if one already exists'
 
