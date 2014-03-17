@@ -117,6 +117,7 @@ describe Admin::UsersController do
       before do
         expect( threadable.users ).to receive(:find_by_slug!).with('jared-grippe').and_return(user)
         expect( threadable.users ).to receive(:find_by_id!).with('89').and_return(destination_user)
+        expect( user             ).to receive(:same_user?).with(current_user).and_return(false)
       end
 
       context 'when params[:confirmed] is not present' do
