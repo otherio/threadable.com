@@ -5,7 +5,6 @@ class Admin::UsersController < ApplicationController
   before_action :require_user_be_admin!
 
   def index
-    @page_size = 20
     @page = params[:page].to_i
     @query = params[:q].to_s
     @users = threadable.users.search(@query, page: @page)
