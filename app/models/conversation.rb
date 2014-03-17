@@ -61,7 +61,9 @@ class Conversation < ActiveRecord::Base
 
   alias_method :to_param, :slug
 
-  validates_presence_of :subject, :slug
+  validates :organization_id, presence: true
+  validates :subject,         presence: true
+  validates :slug,            presence: true
   validate :validate_slug_does_not_collide_with_existing_route
 
   def type
