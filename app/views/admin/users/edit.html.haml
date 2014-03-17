@@ -1,10 +1,12 @@
 %h1 Edit #{@user.name}
 
 .well
+  %p
+    %img{src: @user.avatar_url, height: 70, width: 70}
   = simple_form_for @user, url: admin_update_user_path do |f|
     = f.error_notification
 
-    = f.input :name
+    = f.input :name, autofocus: true
     = f.input :slug
     = f.input :password, required: false
     = f.input :password_confirmation, required: false
@@ -14,3 +16,10 @@
     .actions
       = f.button :submit, value: 'Update User', class: 'btn btn-primary'
       = link_to 'cancel', admin_users_path, class: 'btn'
+
+%h1 Merge user
+%h4 Merge #{@user.name} (user #{@user.id}) into:
+.well
+  = form_tag admin_merge_user_path(@user), method: 'POST' do |f|
+    = text_field_tag :destination_user_id, nil, class: 'input-medium', style: 'margin: 0', placeholder: 'destination user id'
+    = submit_tag 'Merge!', class: 'btn btn-danger'

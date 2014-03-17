@@ -58,6 +58,7 @@ Threadable::Application.routes.draw do
     get    'users'                  => 'users#index',  as: 'users'
     get    'users/:user_id'         => 'users#show',   as: 'user'
     get    'users/:user_id/edit'    => 'users#edit',   as: 'edit_user'
+    post   'users/:user_id/merge'   => 'users#merge',  as: 'merge_user'
     patch  'users/:user_id'         => 'users#update', as: 'update_user'
 
     get    'incoming_emails'           => 'incoming_emails#index',  as: 'incoming_emails'

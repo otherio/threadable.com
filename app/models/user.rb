@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
 
   include Password
 
+  # NOTE! If you add an association here please update Threadable::User::MergeInto - Jared
   has_many :email_addresses, autosave: true, validate: true
   has_many :organization_memberships, dependent: :destroy
   has_many :organizations, :through => :organization_memberships
@@ -27,7 +28,9 @@ class User < ActiveRecord::Base
   has_many :organization_messages, through: :organizations, source: :messages
   has_many :conversations, ->{ uniq }, through: :organizations
   has_many :external_authorizations
+  has_many :events
 
+  has_many :task_doers
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
   accepts_nested_attributes_for :email_addresses

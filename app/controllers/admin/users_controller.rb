@@ -40,4 +40,14 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def merge
+    @user = threadable.users.find_by_slug!(params.require(:user_id))
+    @destination_user = threadable.users.find_by_id!(params.require(:destination_user_id))
+    if params[:confirmed]
+      @user.merge_into!(@destination_user)
+      flash[:success] = "#{@user.name} (user #{@user.id}) was merge into #{@destination_user.name} (user #{@destination_user.id})"
+      redirect_to admin_user_path(@destination_user)
+    end
+  end
+
 end

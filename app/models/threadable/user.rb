@@ -91,6 +91,10 @@ class Threadable::User < Threadable::Model
     end
   end
 
+  def merge_into! destination_user
+    MergeInto.call(self, destination_user)
+  end
+
   def track_update!
     threadable.tracker.track_user_change(self)
   end
