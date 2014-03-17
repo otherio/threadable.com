@@ -9,7 +9,7 @@ module Threadable::Events::WithGroup
   end
 
   def group
-    @group ||= organization.groups.find_by_id!(group_id) if group_id
+    @group ||= organization.groups.find_by_id(group_id) if group_id
   end
 
   def group= group
