@@ -3,6 +3,7 @@ require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
 require File.expand_path("../../config/environment", __FILE__)
+require Rails.root.join("spec/support/disabled_angolia_search")
 Rails.application.eager_load!
 
 require 'rspec/rails'
