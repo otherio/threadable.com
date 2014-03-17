@@ -7,6 +7,7 @@
     = f.input :slug, required: false
     = f.input :email_address_username, as: :string, required: false
     = f.input :trusted?, as: :boolean, label: "Trusted organization"
+    = f.input :hold_all_messages?, as: :boolean, label: "Holds all messages"
     - unless @organization.persisted?
       = f.input :add_current_user_as_a_member, as: :boolean, input_html: {checked: false}, label: "Add #{current_user.name} as a member?"
   .actions
