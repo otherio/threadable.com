@@ -42,10 +42,14 @@ feature "Held messages" do
 
     expect(page).to have_text email_subject
     expect(page).to_not have_text body
+
+    click_on email_subject
+    expect(page).to have_text email_subject
+    expect(page).to have_text body
   end
 
   scenario %(accepting a held message) do
-    within('tr', text: email_subject){ click_on 'Accept' }
+    click_on 'Accept'
     # expect(page).to have_text 'Notice! the message was accepted'
     expect(page).to_not have_text email_subject
 
@@ -62,7 +66,7 @@ feature "Held messages" do
   end
 
   scenario %(rejecting a held message) do
-    within('tr', text: email_subject){ click_on 'Reject' }
+    click_on 'Reject'
     # expect(page).to have_text 'Notice! the message was rejected'
 
     drain_background_jobs!

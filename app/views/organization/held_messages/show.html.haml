@@ -1,0 +1,20 @@
+
+.controls.pull-right
+  = link_to 'back',   organization_held_messages_path(@organization)
+  = link_to 'Reject', reject_organization_held_message_path(@organization, @held_message), class: 'btn', data:{method:'POST'}
+  = link_to 'Accept', accept_organization_held_message_path(@organization, @held_message), class: 'btn', data:{method:'POST'}
+
+%h1 Held message
+
+%table.table.table-bordered
+  %tbody
+    %tr
+      %th Subject
+      %td= @held_message.subject
+    -# %tr
+    -#   %th Body (html)
+    -#   %td= @held_message.body_html.html_safe
+    %tr
+      %th Body
+      %td
+        %pre= @held_message.body_plain

@@ -14,6 +14,8 @@ class Threadable::Organization::HeldMessage < Threadable::Model
     from
     subject
     to_param
+    body_html
+    body_plain
   }, to: :incoming_email
 
   def accept!

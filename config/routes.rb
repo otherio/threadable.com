@@ -95,7 +95,7 @@ Threadable::Application.routes.draw do
 
   scope '/:organization_id', :as => 'organization' do
 
-    resources :held_messages, :only => [:index], controller: 'organization/held_messages' do
+    resources :held_messages, :only => [:index, :show], controller: 'organization/held_messages' do
       post :accept, on: :member
       post :reject, on: :member
     end

@@ -8,6 +8,10 @@ class Organization::HeldMessagesController < ApplicationController
     @held_messages = organization.held_messages.all
   end
 
+  def show
+    @held_message = organization.held_messages.find_by_id!(params[:id])
+  end
+
   def accept
     held_message.accept!
     flash[:notice] = 'the message was accepted'

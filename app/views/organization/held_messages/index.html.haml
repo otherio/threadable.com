@@ -12,8 +12,12 @@
   %tbody
     - @held_messages.each do |held_message|
       %tr
-        %td= held_message.from
-        %td= held_message.subject
+        %td
+          = link_to organization_held_message_path(@organization, held_message) do
+            = held_message.from
+        %td
+          = link_to organization_held_message_path(@organization, held_message) do
+            = held_message.subject
         %td
           = link_to 'Reject', reject_organization_held_message_path(@organization, held_message), class: 'btn', data:{method:'POST'}
           = link_to 'Accept', accept_organization_held_message_path(@organization, held_message), class: 'btn', data:{method:'POST'}
