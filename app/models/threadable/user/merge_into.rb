@@ -24,18 +24,16 @@ class Threadable::User::MergeInto < MethodObject
 
   def move_organization_memberships!
     @user_record.organization_memberships.find_each(batch_size:10) do |organization_membership|
-      begin
+      ignore_record_not_unique_errors do
         organization_membership.update(user_id: @destination_user_id)
-      rescue PG::UniqueViolation
       end
     end
   end
 
   def move_group_memberships!
     @user_record.group_memberships.find_each do |group_membership|
-      begin
+      ignore_record_not_unique_errors do
         group_membership.update(user_id: @destination_user_id)
-      rescue PG::UniqueViolation
       end
     end
   end
@@ -57,24 +55,29 @@ class Threadable::User::MergeInto < MethodObject
 
   def move_external_authorizations!
     @user_record.external_authorizations.find_each do |external_authorization|
-      begin
+      ignore_record_not_unique_errors do
         external_authorization.update(user_id: @destination_user_id)
-      rescue PG::UniqueViolation
       end
     end
   end
 
   def move_task_doers!
     @user_record.task_doers.find_each do |task_doer|
-      begin
+      ignore_record_not_unique_errors do
         task_doer.update(user_id: @destination_user_id)
-      rescue PG::UniqueViolation
       end
     end
   end
 
   def destroy_user!
     User.find(@user_record.id).destroy!
+  end
+
+  def ignore_record_not_unique_errors
+    ActiveRecord::Base.transaction(requires_new: true) do
+      yield
+    end
+  rescue ActiveRecord::RecordNotUnique
   end
 
 end
