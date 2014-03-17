@@ -65,6 +65,9 @@ Threadable::Application.routes.draw do
     get    'incoming_emails/:id'       => 'incoming_emails#show',   as: 'incoming_email'
     post   'incoming_emails/:id/retry' => 'incoming_emails#retry',  as: 'retry_incoming_email'
 
+    get    'outgoing_emails'           => 'outgoing_emails#edit',   as: 'outgoing_emails'
+    post   'outgoing_emails/retry'     => 'outgoing_emails#retry',  as: 'retry_outgoing_email'
+
     constraints AdminConstraint.new do
       require 'sidekiq/web'
       mount Sidekiq::Web => '/background_jobs'

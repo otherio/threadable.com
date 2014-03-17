@@ -1,0 +1,12 @@
+%h1 Re-send email
+
+.well
+  %p
+  = simple_form_for :email, url: admin_retry_outgoing_email_path do |f|
+    = f.error_notification
+
+    = f.input :user_id, label: 'User ID', autofocus: true
+    = f.input :message_id, label: 'Message ID'
+
+    .actions
+      = f.button :submit, value: 'Re-send message', class: 'btn btn-primary'

@@ -111,13 +111,15 @@ class Threadable::Message < Threadable::Model
     Threadable.after_transaction do
       recipients.all.each do |recipient|
         next if !send_to_creator && recipient.same_user?(creator)
-        begin
-          sent_to! recipient
-        rescue ActiveRecord::RecordNotUnique
-          next
-        end
-        threadable.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
+        send_for_recipient recipient
       end
+    end
+  end
+
+  def send_email_for! recipient
+    return unless recipient.gets_email? && recipient.confirmed?
+    Threadable.after_transaction do
+      send_for_recipient recipient
     end
   end
 
@@ -134,6 +136,11 @@ class Threadable::Message < Threadable::Model
       user_id: recipient.user_id,
       email_address_id: recipient.email_addresses.primary.id,
     )
+  end
+
+  def not_sent_to! recipient
+    sent_record = message_record.sent_emails.where(user_id: recipient.id).first
+    sent_record.destroy if sent_record.present?
   end
 
   def inspect
@@ -166,4 +173,14 @@ class Threadable::Message < Threadable::Model
     }
   end
 
+  private
+
+  def send_for_recipient recipient
+    begin
+      sent_to! recipient
+    rescue ActiveRecord::RecordNotUnique
+      return
+    end
+    threadable.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
+  end
 end
