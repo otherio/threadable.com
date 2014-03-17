@@ -27,8 +27,7 @@ class Threadable::IncomingEmail::Process < MethodObject
       drop!    if @incoming_email.droppable?
       bounce!  if @incoming_email.bounceable?
 
-
-      if !duplicate && @threadable.current_user
+      if !@incoming_email.held? && !@incoming_email.bounced? && !duplicate && @threadable.current_user
         run_commands!
       end
 
