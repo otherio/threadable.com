@@ -9,15 +9,15 @@
 
       <fieldset>
         <div class="form-row">
-          <label>
-            Name:
-            {{input value=name class="uk-form-blank" name="name" autofocus="autofocus"}}
+          <label class="inline-label">
+            <div class="label-text">Name:</div>
+            <div class="label-input">{{input value=name class="uk-form-blank" name="name" autofocus="autofocus"}}</div>
           </label>
         </div>
         <div class="form-row">
-          <label>
-            Email:
-            {{input type="email" value=emailAddress class="uk-form-blank" name="emailAddress"}}
+          <label class="inline-label">
+            <div class="label-text">Email:</div>
+            <div class="label-input">{{input type="email" value=emailAddress class="uk-form-blank" name="emailAddress"}}</div>
           </label>
         </div>
         {{#if organization.trusted}}

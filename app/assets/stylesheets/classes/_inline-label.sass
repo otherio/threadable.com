@@ -1,0 +1,11 @@
+.inline-label
+  +display-flex
+  +align-items(flex-start)
+
+  > .label-text
+    padding-right: 1em
+
+  > .label-input
+    +flex-grow(10)
+    > input:not([type=button]):not([type=password]):not([type=checkbox])
+      width: 100%

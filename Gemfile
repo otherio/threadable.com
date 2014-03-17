@@ -35,6 +35,7 @@ gem 'let'
 
 gem 'haml-rails'
 gem 'compass-rails', '~> 1.1.2'
+gem 'compass-flexbox'
 gem 'sass-rails'
 gem 'ember-rails'
 gem 'emblem-rails'
