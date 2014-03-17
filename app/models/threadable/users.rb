@@ -9,6 +9,10 @@ class Threadable::Users < Threadable::Collection
     users_for scope.includes(:email_addresses).to_a
   end
 
+  def search *args
+    users_for User.search(*args)
+  end
+
   def find_by_email_address email_address
     user_for (scope.find_by_email_address(email_address.strip_non_ascii) or return)
   end

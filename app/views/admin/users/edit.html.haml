@@ -4,9 +4,13 @@
   = simple_form_for @user, url: admin_update_user_path do |f|
     = f.error_notification
 
-    .inputs
-      = f.hidden_field :organization, value: @organization.slug
-      = f.input :munge_reply_to?, as: :select, include_blank: false
+    = f.input :name
+    = f.input :slug
+    = f.input :password, required: false
+    = f.input :password_confirmation, required: false
+    = f.input :munge_reply_to?, as: :boolean
+    = f.input :email_addresses_as_string, as: :text, label: 'Email addresses', disabled: true
 
     .actions
       = f.button :submit, value: 'Update User', class: 'btn btn-primary'
+      = link_to 'cancel', admin_users_path, class: 'btn'

@@ -25,7 +25,9 @@
           %td= member.role
           %td= member.ungrouped_mail_delivery
           %td
-            = link_to 'edit', admin_edit_organization_member_path(@organization, member)
+            = link_to 'edit user', admin_edit_user_path(member)
+            \|
+            = link_to 'edit member', admin_edit_organization_member_path(@organization, member)
             \|
             = link_to 'remove', admin_remove_organization_member_path(@organization, member), :method => :delete, :data => { :confirm => 'Are you sure?' }
 

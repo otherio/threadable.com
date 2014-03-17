@@ -55,6 +55,8 @@ Threadable::Application.routes.draw do
     get    'organizations/:id/edit' => 'organizations#edit',    as: 'edit_organization'
     patch  'organizations/:id'      => 'organizations#update',  as: 'organization'
     delete 'organizations/:id'      => 'organizations#destroy'
+    get    'users'                  => 'users#index',  as: 'users'
+    get    'users/:user_id'         => 'users#show',   as: 'user'
     get    'users/:user_id/edit'    => 'users#edit',   as: 'edit_user'
     patch  'users/:user_id'         => 'users#update', as: 'update_user'
 
