@@ -74,11 +74,11 @@ class Threadable::IncomingEmail < Threadable::Model
 
   def accept!
     deliver!
-    threadable.emails.send_email(:message_accepted_notice, self)
+    threadable.emails.send_email(:message_accepted_notice, self) unless organization.hold_all_messages?
   end
 
   def reject!
-    threadable.emails.send_email(:message_rejected_notice, self)
+    threadable.emails.send_email(:message_rejected_notice, self) unless organization.hold_all_messages?
     incoming_email_record.delete
   end
 
