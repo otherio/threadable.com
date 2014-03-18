@@ -11,7 +11,7 @@ describe Threadable::IncomingEmail do
   end
   let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params, groups: []) }
   let(:incoming_email){ described_class.new(threadable, incoming_email_record) }
-  let(:organization){ double(:organization, members: double(:members), subject_tag: 'foo') }
+  let(:organization){ double(:organization, members: double(:members), subject_tag: 'foo', hold_all_messages?: false) }
 
   subject{ incoming_email }
 
@@ -100,20 +100,28 @@ describe Threadable::IncomingEmail do
   end
 
   describe 'hold!' do
-    context 'when held? returns false' do
-      before{ expect(incoming_email).to receive(:held?).and_return(false)}
-      it 'runs the Hold method object on its self' do
-        expect(threadable.emails).to receive(:send_email).with(:message_held_notice, incoming_email)
-        expect(incoming_email).to receive(:held!)
-        incoming_email.hold!
-      end
-    end
     context 'when held? returns true' do
       before{ expect(incoming_email).to receive(:held?).and_return(true)}
       it 'does not run the Hold method object on its self' do
         expect(threadable.emails).to_not receive(:send_email)
         expect(incoming_email).to_not receive(:held!)
         incoming_email.hold!
+      end
+    end
+    context 'when held? returns false' do
+      before{ expect(incoming_email).to receive(:held?).and_return(false)}
+      it 'sends out the held message notice and marks its self as held' do
+        expect(threadable.emails).to receive(:send_email).with(:message_held_notice, incoming_email)
+        expect(incoming_email).to receive(:held!)
+        incoming_email.hold!
+      end
+      context 'when the organization holds all messages' do
+        before{ organization.stub hold_all_messages?: true }
+        it 'just marks its self as held' do
+          expect(threadable.emails).to_not receive(:send_email)
+          expect(incoming_email).to receive(:held!)
+          incoming_email.hold!
+        end
       end
     end
   end
