@@ -14,8 +14,11 @@ class FormattedEmailAddress
   private
 
   def to_ascii string
-    string.to_s.to_ascii.gsub(/\s+/, ' ').strip
+    string = string.to_s
+    string = string.to_ascii if string =~ /[^\u0000-\u007F]/
+    string.gsub(/\s+/, ' ').strip
   end
+
   #      _         ;-.-._
   #   .-" "-.       \.  _{
   #  /       \      /   o )_
