@@ -26,7 +26,10 @@ module RSpec::Support::SentEmail
 
     def with_subject subject
       find_all do |email|
-        email.subject == subject
+        case subject
+        when Regexp; email.subject =~ subject
+        else;        email.subject == subject
+        end
       end
     end
 

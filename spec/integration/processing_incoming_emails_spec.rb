@@ -140,18 +140,23 @@ describe "processing incoming emails" do
       expect( incoming_email.params['attachment-3']     ).to be_present
 
       if result == :held
-        # held mail gets sent an auto-response
-        held_notice = sent_emails.first
-        expect( held_notice.smtp_envelope_from ).to eq "no-reply-auto@#{threadable.email_host}"
-        expect( held_notice.smtp_envelope_to   ).to eq [envelope_from.gsub(/[<>]/, '')]
-        expect( held_notice.to                 ).to eq [envelope_from.gsub(/[<>]/, '')]
-        expect( held_notice.from               ).to eq ["support+message-held@#{threadable.email_host}"]
-        expect( held_notice.subject            ).to eq "[message held] #{subject}"
+        if expect_message_held_notice_sent
+          # held mail gets sent an auto-response
+          expect(sent_emails.size).to eq 1
+          held_notice = sent_emails.first
+          expect( held_notice.smtp_envelope_from ).to eq "no-reply-auto@#{threadable.email_host}"
+          expect( held_notice.smtp_envelope_to   ).to eq [envelope_from.gsub(/[<>]/, '')]
+          expect( held_notice.to                 ).to eq [envelope_from.gsub(/[<>]/, '')]
+          expect( held_notice.from               ).to eq ["support+message-held@#{threadable.email_host}"]
+          expect( held_notice.subject            ).to eq "[message held] #{subject}"
 
-        expect( held_notice.header['Reply-To'].to_s       ).to eq "Threadable message held <support+message-held@#{threadable.email_host}>"
-        expect( held_notice.header['In-Reply-To'].to_s    ).to eq incoming_email.message_id
-        expect( held_notice.header['References'].to_s     ).to eq incoming_email.message_id
-        expect( held_notice.header['Auto-Submitted'].to_s ).to eq 'auto-replied'
+          expect( held_notice.header['Reply-To'].to_s       ).to eq "Threadable message held <support+message-held@#{threadable.email_host}>"
+          expect( held_notice.header['In-Reply-To'].to_s    ).to eq incoming_email.message_id
+          expect( held_notice.header['References'].to_s     ).to eq incoming_email.message_id
+          expect( held_notice.header['Auto-Submitted'].to_s ).to eq 'auto-replied'
+        else
+          expect(sent_emails.size).to eq 0
+        end
       end
 
       return
@@ -358,6 +363,7 @@ describe "processing incoming emails" do
   let(:expected_sent_email_body_html)          { body_html }
   let(:expected_sent_email_body_plain)         { body_plain }
   let(:expected_groups)                        { [] }
+  let(:expect_message_held_notice_sent)        { false }
 
 
   it 'delivers the email' do
@@ -464,6 +470,7 @@ describe "processing incoming emails" do
 
         let(:expected_conversation){ nil }
         let(:expected_creator     ){ nil }
+        let(:expect_message_held_notice_sent){ true }
 
         it 'holds the incoming email' do
           validate! :held
@@ -496,7 +503,7 @@ describe "processing incoming emails" do
 
         let(:expected_conversation){ nil }
         let(:expected_creator)     { threadable.users.find_by_email_address(sender) }
-
+        let(:expect_message_held_notice_sent){ true }
 
         it 'holds the incoming email' do
           validate! :held
@@ -1281,6 +1288,7 @@ describe "processing incoming emails" do
       expected_organization.hold_all_messages!
     end
     let(:expected_conversation){ nil }
+    let(:expect_message_held_notice_sent){ false }
     it 'holds all messages' do
       validate! :held
     end

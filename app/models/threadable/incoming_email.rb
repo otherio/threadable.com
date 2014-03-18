@@ -54,7 +54,7 @@ class Threadable::IncomingEmail < Threadable::Model
 
   def hold!
     return if held?
-    threadable.emails.send_email(:message_held_notice, self)
+    threadable.emails.send_email(:message_held_notice, self) unless organization.hold_all_messages?
     held!
   end
 
