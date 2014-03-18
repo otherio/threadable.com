@@ -9,9 +9,13 @@ describe Threadable::IncomingEmail do
       sender:        'alice.neilson@gmail.com',
     )
   end
-  let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params, groups: [], organization: organization) }
+
+  let(:creator) { double(:creator, id: 1234) }
+
+  let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params, groups: [], organization: organization, creator: creator) }
   let(:incoming_email){ described_class.new(threadable, incoming_email_record) }
-  let(:organization){ double(:organization, members: double(:members), subject_tag: 'foo', hold_all_messages?: false) }
+  let(:organization){ double(:organization, members: double(:members, find_by_user_id: member), subject_tag: 'foo', hold_all_messages?: false) }
+  let(:member) { double(:member, role: :member)}
 
   subject{ incoming_email }
 
@@ -161,8 +165,8 @@ describe Threadable::IncomingEmail do
     end
   end
 
-  describe 'creator_is_a_organization_member?' do
-    subject{ incoming_email.creator_is_a_organization_member? }
+  describe 'creator_is_an_organization_member?' do
+    subject{ incoming_email.creator_is_an_organization_member? }
     context 'when organization is nil' do
       before{ expect(incoming_email).to receive(:organization).and_return(nil) }
       it { should be_false }
@@ -305,10 +309,13 @@ describe Threadable::IncomingEmail do
   describe 'holdable?' do
     subject{ incoming_email.holdable? }
 
-    before{ expect(incoming_email).to receive(:organization).and_return(organization) }
+    before{ incoming_email.stub(:organization).and_return(organization) }
 
     context 'when the organization holds all messages' do
-      before{ organization.stub :hold_all_messages? => true }
+      before do
+        organization.stub :hold_all_messages? => true
+        expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
+      end
       it { should be_true }
     end
 
@@ -341,7 +348,7 @@ describe Threadable::IncomingEmail do
             before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
 
             context 'when creator is not a member of the organization' do
-              before{ expect(incoming_email).to receive(:creator_is_a_organization_member?).and_return(false) }
+              before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
               it { should be_true }
             end
 
@@ -539,7 +546,7 @@ describe Threadable::IncomingEmail do
   describe 'find_conversation!' do
     # these are integration tested
   end
-  describe 'creator_is_a_organization_member?' do
+  describe 'creator_is_an_organization_member?' do
     # these are integration tested
   end
   describe 'find_groups!' do
