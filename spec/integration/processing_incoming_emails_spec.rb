@@ -1287,11 +1287,28 @@ describe "processing incoming emails" do
     before do
       expected_organization.hold_all_messages!
     end
-    let(:expected_conversation){ nil }
-    let(:expect_message_held_notice_sent){ false }
-    it 'holds all messages' do
-      validate! :held
+
+    context 'and the sender is a member' do
+      let(:expected_conversation){ nil }
+      let(:expect_message_held_notice_sent){ false }
+      it 'holds all messages' do
+        validate! :held
+      end
     end
+
+    context 'and the sender is an owner' do
+      let(:from)         { 'Alice Neilson <alice@ucsd.example.com>' }
+      let(:envelope_from){ '<alice@ucsd.example.com>' }
+      let(:sender)       { 'alice@ucsd.example.com' }
+
+      let(:expected_creator)          { threadable.users.find_by_email_address('alice@ucsd.example.com') }
+      let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com"] }
+
+      it 'delivers the messages' do
+        validate! :delivered
+      end
+    end
+
   end
 
 end

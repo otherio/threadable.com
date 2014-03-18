@@ -82,9 +82,15 @@ class Threadable::IncomingEmail < Threadable::Model
     incoming_email_record.delete
   end
 
-  def creator_is_a_organization_member?
+  def creator_is_an_organization_member?
     return false if organization.nil? || creator.nil?
     organization.members.include?(creator)
+  end
+
+  def creator_is_an_owner?
+    return false if organization.nil? || creator.nil? || !creator_is_an_organization_member?
+    member = organization.members.find_by_user_id(creator.id)
+    member.role == :owner
   end
 
   # delegated methods:
@@ -105,8 +111,8 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def holdable?
-    organization.hold_all_messages? ||
-    (groups.all?(&:hold_messages?) && !bounceable? && (!reply? && !creator_is_a_organization_member?))
+    (organization.hold_all_messages? && !creator_is_an_owner?) ||
+    (groups.all?(&:hold_messages?) && !bounceable? && (!reply? && !creator_is_an_organization_member?))
   end
 
   def reply?
