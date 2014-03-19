@@ -20,6 +20,7 @@ describe OrganizationsSerializer do
         has_held_messages: false,
         trusted:           true,
 
+        email_address_username:       raceteam.email_address_username,
         email_address:                raceteam.email_address,
         task_email_address:           raceteam.task_email_address,
         formatted_email_address:      raceteam.formatted_email_address,
@@ -46,6 +47,7 @@ describe OrganizationsSerializer do
           has_held_messages: false,
           trusted:           true,
 
+          email_address_username:       raceteam.email_address_username,
           email_address:                raceteam.email_address,
           task_email_address:           raceteam.task_email_address,
           formatted_email_address:      raceteam.formatted_email_address,
@@ -63,6 +65,7 @@ describe OrganizationsSerializer do
           has_held_messages: false,
           trusted:           false,
 
+          email_address_username:       sfhealth.email_address_username,
           email_address:                sfhealth.email_address,
           task_email_address:           sfhealth.task_email_address,
           formatted_email_address:      sfhealth.formatted_email_address,
