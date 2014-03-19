@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140317215053) do
+ActiveRecord::Schema.define(version: 20140319184303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 20140317215053) do
     t.boolean  "hold_all_messages",      default: false, null: false
   end
 
+  add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree
   add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
 
   create_table "sent_emails", force: true do |t|
