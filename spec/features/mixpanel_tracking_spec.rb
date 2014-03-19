@@ -15,7 +15,7 @@ feature "mixpanel tracking" do
     within first('.sign-up-form') do
       fill_in 'Organization name', with: organization_name
       fill_in 'Email address',     with: email_address
-      click_on 'SIGN UP'
+      click_on 'CREATE'
     end
 
     expect(page).to have_text %(We've sent you a confirmation email.)
