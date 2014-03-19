@@ -8,7 +8,9 @@
   up to date about what needs to get done.
 
 %p
-  Of course, before people in <%= organization.name %> can receive
+  Of course, before people in
+  = organization.name
+  can receive
   mail from Threadable, you’ll need to
   -if organization.trusted?
     add
@@ -26,7 +28,9 @@
       then click "Add member & send welcome message".
 
   Each member you add will receive an email from you, explaining that you've
-  added them to the <%=organization.name%> organization on
+  added them to the
+  = organization.name
+  organization on
   Threadable.
 
 -if organization.trusted?
