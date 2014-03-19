@@ -7,6 +7,7 @@ Threadable.Organization = RL.Model.extend({
   subjectTag:                RL.attr('string'),
   description:               RL.attr('string'),
 
+  emailAddressUsername:      RL.attr('string'),
   emailAddress:              RL.attr('string'),
   taskEmailAddress:          RL.attr('string'),
   formattedEmailAddress:     RL.attr('string'),

@@ -12,6 +12,7 @@ class OrganizationsSerializer < Serializer
       has_held_messages: organization.held_messages.count > 0,
       trusted:           organization.trusted?,
 
+      email_address_username:       organization.email_address_username,
       email_address:                organization.email_address,
       task_email_address:           organization.task_email_address,
       formatted_email_address:      organization.formatted_email_address,
