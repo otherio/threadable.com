@@ -54,11 +54,11 @@ module TrackingConcern
     end
 
     def distinct_id
-      self['distinct_id'] ||= SecureRandom.uuid
+      (self['distinct_id'] ||= SecureRandom.uuid).to_s
     end
 
     def distinct_id= distinct_id
-      self['distinct_id'] = distinct_id
+      self['distinct_id'] = distinct_id.to_s
     end
 
     private
