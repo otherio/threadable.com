@@ -18,9 +18,13 @@ when PRODUCTION; 'production_spec'
 else;            'spec'
 end
 
-if STAGING # || PRODUCTION
-
+case object
+when STAGING
+  `git push -f git@heroku.com:threadable-staging.git origin/staging:master`
+when PRODUCTION
+  # `git push git@heroku.com:threadable-production.git origin/production:master`
 end
+
 
 ALL_SPECS = Dir[RAILS_ROOT.join("#{spec_dir}/**/*_spec.rb")].map do |path|
   Pathname(path).relative_path_from(RAILS_ROOT).to_s

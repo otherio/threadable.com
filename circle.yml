@@ -6,11 +6,8 @@ machine:
     THREADABLE_SIGNUP_ENABLED: true
 
 test:
-  pre:
-    - script/pre-build
   override:
-    - true
-    # - script/ci-parallel: {timeout: 200, parallel: true}
+    - script/ci-parallel: {timeout: 200, parallel: true}
 
 deployment:
   staging:
