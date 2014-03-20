@@ -1,7 +1,4 @@
 machine:
-  pre:
-    - /home/ubuntu/threadable.com/script/pre-build
-
   environment:
     RACK_ENV: test
     HONEYBADGER_API_KEY: FAKE_HONEYBADGER_API_KEY
@@ -9,6 +6,8 @@ machine:
     THREADABLE_SIGNUP_ENABLED: true
 
 test:
+  pre:
+    - script/pre-build
   override:
     - true
     # - script/ci-parallel: {timeout: 200, parallel: true}
