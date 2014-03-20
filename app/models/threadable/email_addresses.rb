@@ -23,7 +23,7 @@ class Threadable::EmailAddresses < Threadable::Collection
   end
 
   def find_by_address address
-    email_address_for (scope.where(address: address).first or return)
+    email_address_for (scope.address(address).first or return)
   end
 
   def find_by_address! address
@@ -31,7 +31,7 @@ class Threadable::EmailAddresses < Threadable::Collection
   end
 
   def find_by_addresses addresses
-    email_address_records = scope.where(address: addresses).to_a
+    email_address_records = scope.address(addresses).to_a
     email_address_records = addresses.map do |email_address|
       email_address_records.find do |email_address_record|
         email_address_record.address == email_address

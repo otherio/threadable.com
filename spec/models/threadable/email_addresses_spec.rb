@@ -58,5 +58,13 @@ describe Threadable::EmailAddresses do
     end
   end
 
+  describe '#find_or_create_by_address!' do
+    it 'finds or creates an email address by the lower case version of the given address' do
+      a = email_addresses.find_or_create_by_address!('foo@bar.com')
+      b = email_addresses.find_or_create_by_address!('foo@bar.com')
+      expect(a.id).to eq b.id
+    end
+  end
+
 
 end

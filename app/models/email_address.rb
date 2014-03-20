@@ -22,6 +22,10 @@ class EmailAddress < ActiveRecord::Base
     where(arel_table[:address].not_eq(address))
   }
 
+  scope :address, ->(addresses){
+    where(address: Array(addresses).map{|a| a.to_s.downcase.strip_non_ascii })
+  }
+
   def confirmed?
     !confirmed_at.nil?
   end
