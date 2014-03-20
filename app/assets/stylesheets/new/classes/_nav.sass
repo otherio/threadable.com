@@ -5,6 +5,7 @@
   left: 0
   right: 0
   min-width: 100%
+  white-space: nowrap
 
   &, > .content
     height: $nav-height
@@ -32,3 +33,12 @@
 
   .button
     color: $white-color
+
+
+
+  @media (max-width: 400px)
+    > .content > .right-nav
+      > *
+        display: none
+      > .sign-in-button
+        display: inline-block
