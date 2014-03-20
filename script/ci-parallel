@@ -18,7 +18,7 @@ when PRODUCTION; 'production_spec'
 else;            'spec'
 end
 
-case object
+case
 when STAGING
   `git push -f git@heroku.com:threadable-staging.git origin/staging:master`
 when PRODUCTION
