@@ -1,7 +1,6 @@
 machine:
   pre:
-    - pwd
-    # - script/pre-build
+    - /home/ubuntu/threadable.com/script/pre-build
 
   environment:
     RACK_ENV: test
@@ -11,7 +10,7 @@ machine:
 
 test:
   override:
-    - pwd
+    - true
     # - script/ci-parallel: {timeout: 200, parallel: true}
 
 deployment:
