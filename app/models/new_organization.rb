@@ -84,6 +84,8 @@ class NewOrganization
       name:                  your_name,
       email_address:         your_email_address,
       confirm_email_address: true,
+      password:              password,
+      password_confirmation: password_confirmation,
     )
   end
 

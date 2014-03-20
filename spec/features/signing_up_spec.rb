@@ -113,6 +113,14 @@ feature "signing up" do
     expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[Zero point energy machine] Threadable Tips')          ).to be
     expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('Re: [Zero point energy machine] Threadable Tips')      ).to be
     assert_members! members
+
+    visit sign_out_url
+    click_on 'SIGN IN'
+    fill_in 'Email Address', with: 'john@the-hutchison-effect.org'
+    fill_in 'Password',      with: 'imacharlatan'
+    click_on 'Sign in'
+
+    expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
   end
 
 
