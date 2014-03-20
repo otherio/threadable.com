@@ -1,5 +1,6 @@
 machine:
   pre:
+    - pwd
     - script/pre-build
 
   environment:
