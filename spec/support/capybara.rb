@@ -19,3 +19,11 @@ Capybara.server_port            = begin
 ensure
   server.close if server
 end
+
+
+module RSpec::Support
+  module Capybara
+  end
+end
+
+Dir[File.expand_path('../capybara', __FILE__) + '/*.rb'].each{|p| require p}

@@ -91,3 +91,7 @@ group :test do
   gem 'ffaker'
   gem 'rest-client'
 end
+
+group :staging_spec do
+  gem 'nvlope', '0.0.2'
+end

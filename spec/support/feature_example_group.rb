@@ -3,6 +3,7 @@ require 'support/capybara'
 module RSpec::Support::FeatureExampleGroup
 
   extend ActiveSupport::Concern
+  include RSpec::Support::Capybara
 
   included do
     metadata[:driver] = :selenium
@@ -24,33 +25,6 @@ module RSpec::Support::FeatureExampleGroup
     evaluate_script('Ember.run(function(){ ember_is_done = true })')
     Timeout.timeout(Capybara.default_wait_time) do
       sleep 0.01 until evaluate_script('ember_is_done')
-    end
-  end
-
-  def wait_until_expectation
-    exception = nil
-    begin
-      page.current_scope.synchronize do
-        begin
-          yield
-        rescue RSpec::Expectations::ExpectationNotMetError => e
-          exception = e
-          raise Capybara::ExpectationNotMet
-        end
-      end
-    rescue Capybara::ExpectationNotMet
-      raise exception
-    end
-  end
-
-  def wait_until
-    begin
-      page.current_scope.synchronize do
-        yield or raise Capybara::ExpectationNotMet
-      end
-      return true
-    rescue Capybara::ExpectationNotMet
-      return false
     end
   end
 

@@ -1,4 +1,4 @@
-module RSpec::Support::FeatureExampleGroup
+module RSpec::Support::Capybara
 
   def resize_window_to size
     window = Capybara.current_session.driver.browser.manage.window
