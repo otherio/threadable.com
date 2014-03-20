@@ -1,7 +1,7 @@
 machine:
   pre:
     - pwd
-    - script/pre-build
+    # - script/pre-build
 
   environment:
     RACK_ENV: test
@@ -11,7 +11,8 @@ machine:
 
 test:
   override:
-    - script/ci-parallel: {timeout: 200, parallel: true}
+    - pwd
+    # - script/ci-parallel: {timeout: 200, parallel: true}
 
 deployment:
   staging:
