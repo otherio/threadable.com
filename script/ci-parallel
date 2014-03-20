@@ -8,7 +8,13 @@ CIRCLE_ARTIFACTS  = ENV['CIRCLE_ARTIFACTS']
 
 RAILS_ROOT = Pathname File.expand_path('../../', __FILE__)
 
-ALL_SPECS = Dir[RAILS_ROOT.join('spec/**/*_spec.rb')].map do |path|
+spec_dir = case ENV['CIRCLE_BRANCH']
+when 'staging';    'staging_spec'
+when 'production'; 'production_spec'
+else;              'spec'
+end
+
+ALL_SPECS = Dir[RAILS_ROOT.join("#{spec_dir}/**/*_spec.rb")].map do |path|
   Pathname(path).relative_path_from(RAILS_ROOT).to_s
 end.uniq.sort
 
