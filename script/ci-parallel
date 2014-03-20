@@ -5,13 +5,21 @@ require 'pathname'
 CIRCLE_NODE_TOTAL = ENV['CIRCLE_NODE_TOTAL'].to_i
 CIRCLE_NODE_INDEX = ENV['CIRCLE_NODE_INDEX'].to_i
 CIRCLE_ARTIFACTS  = ENV['CIRCLE_ARTIFACTS']
+CIRCLE_BRANCH     = ENV['CIRCLE_BRANCH']
+
+STAGING    = CIRCLE_BRANCH == 'staging'
+PRODUCTION = CIRCLE_BRANCH == 'production'
 
 RAILS_ROOT = Pathname File.expand_path('../../', __FILE__)
 
-spec_dir = case ENV['CIRCLE_BRANCH']
-when 'staging';    'staging_spec'
-when 'production'; 'production_spec'
-else;              'spec'
+spec_dir = case
+when STAGING;    'staging_spec'
+when PRODUCTION; 'production_spec'
+else;            'spec'
+end
+
+if STAGING # || PRODUCTION
+
 end
 
 ALL_SPECS = Dir[RAILS_ROOT.join("#{spec_dir}/**/*_spec.rb")].map do |path|
@@ -22,7 +30,7 @@ GROUPED_SPECS = ALL_SPECS.each_with_index.group_by do |spec, index|
   index % CIRCLE_NODE_TOTAL
 end
 
-MY_SPECS = GROUPED_SPECS[CIRCLE_NODE_INDEX].map(&:first)
+MY_SPECS = ( GROUPED_SPECS[CIRCLE_NODE_INDEX] || [] ).map(&:first)
 
 puts "Running specs:"
 puts MY_SPECS.map{|x| "  #{x}"}

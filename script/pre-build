@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+CIRCLE_BRANCH = ENV['CIRCLE_BRANCH']
+
+if CIRCLE_BRANCH == 'staging'
+  `git push git@heroku.com:threadable-#{CIRCLE_BRANCH}.git HEAD:master`
+end
