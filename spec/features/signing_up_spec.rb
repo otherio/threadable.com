@@ -87,7 +87,7 @@ feature "signing up" do
     user = threadable.users.find_by_email_address!('john@the-hutchison-effect.org')
     organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
 
-    expect(mixpanel_distinct_id).to eq user.id
+    expect(mixpanel_distinct_id).to eq user.id.to_s
     expect(threadable.tracker.aliases[user.id]).to eq original_mixpanel_distinct_id
 
     assert_tracked(user.id, "Sign up",
@@ -155,7 +155,7 @@ feature "signing up" do
     bethany = threadable.users.find_by_email_address!('bethany@ucsd.example.com')
     organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
 
-    expect(mixpanel_distinct_id).to eq bethany.user_id
+    expect(mixpanel_distinct_id).to eq bethany.user_id.to_s
     expect(threadable.tracker.aliases[bethany.user_id]).to be_nil
 
     assert_tracked(bethany.user_id, 'New Organization Page Visited',

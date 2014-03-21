@@ -53,7 +53,7 @@ feature "mixpanel tracking" do
     user         = threadable.users.find_by_email_address!(email_address)
     organization = threadable.organizations.find_by_slug!(organization_slug)
 
-    expect(mixpanel_distinct_id).to eq user.id
+    expect(mixpanel_distinct_id).to eq user.id.to_s
     expect(threadable.tracker.aliases[user.id]).to eq original_mixpanel_distinct_id
 
     assert_tracked(user.id, 'Sign up',
@@ -83,7 +83,7 @@ feature "mixpanel tracking" do
     expect(page).to be_at_url conversations_url('raceteam', 'my')
     user = threadable.users.find_by_email_address!('alice@ucsd.example.com')
     expect(threadable.tracker.aliases[user.id]).to be_nil
-    expect(mixpanel_distinct_id).to eq user.id
+    expect(mixpanel_distinct_id).to eq user.id.to_s
     visit sign_out_url
     expect(mixpanel_distinct_id.length).to_not eq user.id
     expect(mixpanel_distinct_id.length).to be > 10
