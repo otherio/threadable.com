@@ -31,6 +31,7 @@ class Threadable::EmailAddresses < Threadable::Collection
   end
 
   def find_by_addresses addresses
+    addresses = addresses.map{ |address| EmailAddress.normalize(address) }
     email_address_records = scope.address(addresses).to_a
     email_address_records = addresses.map do |email_address|
       email_address_records.find do |email_address_record|

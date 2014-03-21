@@ -1,5 +1,10 @@
 class EmailAddress < ActiveRecord::Base
 
+  def self.normalize address
+    address.to_s.downcase.strip_non_ascii
+  end
+  delegate :normalize, to: :class
+
   belongs_to :user
 
   validates :address, :presence => true, :email => true
@@ -23,15 +28,19 @@ class EmailAddress < ActiveRecord::Base
   }
 
   scope :address, ->(addresses){
-    where(address: Array(addresses).map{|a| a.to_s.downcase.strip_non_ascii })
+    where(address: Array(addresses).map{|a| normalize(a) })
   }
 
   def confirmed?
     !confirmed_at.nil?
   end
 
+  def address
+    normalize read_attribute(:address)
+  end
+
   def address= address
-    write_attribute(:address, address.to_s.downcase.strip_non_ascii)
+    write_attribute(:address, normalize(address))
   end
 
   def has_taken_error?

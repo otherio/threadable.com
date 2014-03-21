@@ -1,5 +1,9 @@
 class Threadable::EmailAddress < Threadable::Model
 
+  class << self
+    delegate :normalize, to: ::EmailAddress
+  end
+
   self.model_name = ::EmailAddress.model_name
 
   def initialize threadable, email_address_record

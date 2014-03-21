@@ -66,5 +66,4 @@ describe Threadable::EmailAddresses do
     end
   end
 
-
 end
