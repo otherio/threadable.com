@@ -121,7 +121,7 @@ describe Threadable::IncomingEmail::Process do
         end
 
         context 'and the incoming_email is droppable' do
-          before{ expect(incoming_email).to receive(:droppable?).once.and_return(true) }
+          before{ expect(incoming_email).to receive(:droppable?).twice.and_return(true) }
 
           context 'and the creator is found' do
             let(:current_user) {double(:current_user)}
