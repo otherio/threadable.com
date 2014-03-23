@@ -12,7 +12,7 @@
 <div {{bind-attr class=":body :complete view.showQuotedText::uk-hidden html::text-only"}}>{{{bodyWithAttachmentsInline}}}</div>
 
 {{#if hasQuotedText}}
-  <i {{action 'toggleQuotedText' target='view'}} class="uk-icon-ellipsis-h uk-badge expand-quoted"></i>
+  <i {{action 'toggleQuotedText' target='view'}} class="uk-icon-ellipsis-h uk-badge expand-quoted"><span class="sr-only">Show quoted text</span></i>
 {{/if}}
 
 {{#if attachments}}
@@ -24,7 +24,7 @@
       <div class="filename">
         {{attachment.filename}}
       </div>
-      <i class="uk-icon-cloud-download download-link"></i>
+      <i class="uk-icon-cloud-download download-link"><span class="sr-only">Download</span></i>
     </li>
     </a>
   {{/each}}

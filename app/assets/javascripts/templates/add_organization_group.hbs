@@ -28,7 +28,7 @@
           {{else}}
             <div class="uk-form-controls input-field">
               {{controllers.organization.emailAddressUsername}}+{{calculatedEmailAddressTag}}@threadable.com
-              <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"></i></a>
+              <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
             </div>
           {{/if}}
         </div>
@@ -44,7 +44,7 @@
           {{else}}
             <div class="uk-form-controls input-field">
               [{{calculatedSubjectTag}}] Example email subject!
-              <a href {{action editSubjectTag}}><i class="uk-icon-edit"></i></a>
+              <a href {{action editSubjectTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
             </div>
           {{/if}}
         </div>

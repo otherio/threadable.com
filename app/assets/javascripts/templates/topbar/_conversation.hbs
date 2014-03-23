@@ -1,19 +1,23 @@
 <div class="left-nav">
   <a href="" {{action focusConversations}} class="back-button">
-    <i class="uk-icon-chevron-left"></i>
+    <i class="uk-icon-chevron-left"><span class="sr-only">Back</span></i>
   </a>
 
 </div>
 <div class="right-nav">
   {{#if conversation.task}}
     {{#if conversation.done}}
-      <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i></a>
+      <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"><span class="sr-only">Undone</span></i></a>
     {{else}}
-      <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i></a>
+      <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check"><span class="sr-only">Done</span></i></a>
     {{/if}}
-    <a href="" {{action 'toggleDoerSelector'}}><i class="uk-icon-user"></i></a>
+    <a href="" {{action 'toggleDoerSelector'}}><i class="uk-icon-user"><span class="sr-only">Doers</span></i></a>
   {{/if}}
   {{#if conversation}}
-    <a href="" {{action 'toggleMuted'}}><i {{bind-attr class="conversation.isMuted:uk-icon-volume-up:uk-icon-volume-down"}}></i></a>
+    {{#if conversation.isMuted}}
+      <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-up"><span class="sr-only">Unmute</span></i></a>
+    {{else}}
+      <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-down"><span class="sr-only">Mute</span></i></a>
+    {{/if}}
   {{/if}}
 </div>

@@ -18,8 +18,12 @@
               .slider
                 .on
                   i.uk-icon-check
+                  span.sr-only
+                    | On
                 .off
                   i.uk-icon-times
+                  span.sr-only
+                    | Off
                 .switch
         br
         p.subtitle

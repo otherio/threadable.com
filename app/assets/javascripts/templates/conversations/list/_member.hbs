@@ -2,7 +2,11 @@
   {{#link-to conversationRoute organizationSlug groupSlug conversation.slug class="not-link"}}
 
     <section class="icon">
-      <i {{bind-attr class="conversation.task:uk-icon-check:uk-icon-comment-o"}}></i>
+      {{#if conversation.task}}
+        <i class="uk-icon-check"><span class="sr-only">Task</span></i>
+      {{else}}
+        <i class="uk-icon-comment-o"><span class="sr-only">Conversation</span></i>
+      {{/if}}
     </section>
 
     <section class="line line-1">

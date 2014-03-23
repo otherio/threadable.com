@@ -1,7 +1,7 @@
 <li class="task" {{bind-attr draggable=draggable}} data-task-id="{{unbound task.id}}">
   {{#if prioritizing}}
     <div>
-      <i class="uk-icon-bars burger"></i>
+      <i class="uk-icon-bars burger"><span class="sr-only">Drag to prioritize</span></i>
       {{partial 'tasks/list/member/details'}}
     </div>
 
@@ -9,7 +9,7 @@
 
     {{#link-to conversationRoute organizationSlug groupSlug task.slug class="not-link"}}
 
-      <i class="uk-icon-chevron-right arrow"></i>
+      <i class="uk-icon-chevron-right arrow"><span class="sr-only">View</span></i>
       {{partial 'tasks/list/member/details'}}
 
     {{/link-to}}

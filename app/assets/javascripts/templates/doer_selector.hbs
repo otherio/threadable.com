@@ -1,7 +1,7 @@
 <div class="doer-selector scrollable">
   <a href="" class="label not-link" {{action toggleDoerSelector}}>
     <div class="uk-float-right"><i class="uk-icon-times"></i></div>
-    <i class="caret-icon uk-icon-caret-down"></i>
+    <i class="caret-icon uk-icon-caret-down"><span class="sr-only">Show doers</span></i>
     doers:
   </a>
   <ul>
@@ -9,7 +9,11 @@
       <li {{bind-attr class="member.isChanged:changed member.isDoer:is-doer :member :uk-clearfix"}}>
         <a href="" class="not-link" {{action 'toggleDoer'}}>
           <div class="right-content uk-float-right">
-            <i {{bind-attr class=":toggle-doer member.isDoer:uk-icon-minus:uk-icon-plus"}}></i>
+            {{#if member.isDoer}}
+              <i class="toggle-doer uk-icon-minus"><span class="sr-only">Remove</span></i>
+            {{else}}
+              <i class="toggle-doer uk-icon-plus"><span class="sr-only">Add</span></i>
+            {{/if}}
           </div>
 
           <div class="left-content">

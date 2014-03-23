@@ -22,11 +22,11 @@ feature "Adding doers to a task" do
     first('.group-selector .groups a.badge', text: 'Electronics').click
     expect(page).to have_text 'added this task to +Electronics'
 
-    expect(groups).to eq Set['+Electronics']
+    expect(groups).to eq Set['+Electronics Remove']  # icon descriptions don't show up, but capybara sees them
 
     reload!
     expect(page).to have_text 'added this task to +Electronics'
-    expect(groups).to eq Set['+Electronics']
+    expect(groups).to eq Set['+Electronics Remove']
 
     first('.conversation-groups i.uk-icon-times').click
     first('.controls a.approve-button').click

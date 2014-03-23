@@ -8,10 +8,10 @@
 <div class="right-nav">
   <span data-uk-button-radio class="uk-button-group">
     <a href="" {{action composeTask}} {{bind-attr class=":nav-button :uk-button compose.isTask:uk-active"}}>
-      <i class="uk-icon-check"></i>
+      <i class="uk-icon-check"><span class="sr-only">Task</span></i>
     </a>
     <a href="" {{action composeConversation}} {{bind-attr class=":nav-button :uk-button compose.isTask::uk-active"}}>
-      <i class="uk-icon-comment-o"></i>
+      <i class="uk-icon-comment-o"><span class="sr-only">Conversation</span></i>
     </a>
   </span>
   <span>
