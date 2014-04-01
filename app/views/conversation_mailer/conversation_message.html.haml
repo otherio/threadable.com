@@ -65,10 +65,10 @@
                 - else
                   = link_to 'Join', email_action_link(group, @recipient, "join")
 
-        .threadable-organization{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 12px"}
+        .threadable-organization{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
           = link_to @organization.name, organization_url(@organization)
           |
           = mail_to @organization.email_address, @organization.email_address
-        .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 10px"}
+        .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px"}
           = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
   = image_tag @footer_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-footerable'
