@@ -35,6 +35,7 @@ feature "Adding doers to a task" do
     expect(page).to have_text '&remove Alice Neilson as a doer'
     click_on 'Update'
 
+    wait_for_ember!
     expect(page).to have_text 'removed Alice Neilson as a doer'
     expect(doers).to eq Set[]
   end
