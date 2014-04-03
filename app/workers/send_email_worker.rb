@@ -52,10 +52,14 @@ class SendEmailWorker < Threadable::Worker
   end
 
   def added_to_group_notice organization_id, group_id, sender_id, recipient_id
-    organization = threadable.organizations.find_by_id! organization_id
-    group        = organization.groups.find_by_id! group_id
-    sender       = organization.members.find_by_user_id! sender_id
-    recipient    = organization.members.find_by_user_id! recipient_id
+    begin
+      organization = threadable.organizations.find_by_id! organization_id
+      group        = organization.groups.find_by_id! group_id
+      sender       = organization.members.find_by_user_id! sender_id
+      recipient    = organization.members.find_by_user_id! recipient_id
+    rescue Threadable::RecordNotFound
+      return
+    end
 
     return unless recipient.subscribed?
     threadable.emails.send_email(:added_to_group_notice, organization, group, sender, recipient)

@@ -2,7 +2,7 @@ class SendStarterContentWorker < Threadable::Worker
 
   def perform! email, organization_id
     @email = email
-    @organization = threadable.organizations.find_by_id(organization_id)
+    @organization = threadable.organizations.find_by_id(organization_id) or return
 
     starter_data = HashWithIndifferentAccess.new(YAML.load(Rails.root.join("config/starter_data.yml").read))
     @params = starter_data[:conversations][email]
