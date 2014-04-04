@@ -21,7 +21,7 @@ gem 'mail'
 gem 'encryptor'
 gem 'acts_as_list'
 gem 'simple_form'
-gem 'virtus'
+gem 'virtus', '0.5.5'
 gem 'cancan'
 
 gem 'filepicker-rails'
