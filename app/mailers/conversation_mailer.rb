@@ -117,7 +117,9 @@ class ConversationMailer < Threadable::Mailer
     if dmarc_verified
       from = from_address
     else
-      from = Mail::Address.new("#{from_address.name} via Threadable <placeholder@#{threadable.email_host}>")
+      name = from_address.name
+      name ||= from_address.local
+      from = Mail::Address.new("#{name} via Threadable <placeholder@#{threadable.email_host}>")
     end
 
     email_params = {
