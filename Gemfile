@@ -54,6 +54,7 @@ gem 'omniauth'
 gem 'omniauth-trello'
 
 gem 'algoliasearch-rails'
+gem 'dnsruby'
 
 group :production, :staging do
   gem 'rails_12factor'

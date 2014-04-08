@@ -23,7 +23,6 @@ class ConversationMailer < Threadable::Mailer
     @subject.sub!(/^\s*(re:\s?)*/i, "\\1#{@conversation.subject_tag} ")
     @subject = "Re: #{@subject}" if @subject !~ /re:/i && @message.parent_message.present?
 
-    from = @message.from || @message.creator.try(:formatted_email_address ) || @organization.formatted_email_address
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
 
@@ -44,8 +43,6 @@ class ConversationMailer < Threadable::Mailer
         attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
       end
     end
-
-    reply_to_address = @conversation.canonical_formatted_email_address if @recipient.munge_reply_to?
 
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
 
@@ -77,18 +74,8 @@ class ConversationMailer < Threadable::Mailer
       }
     end
 
-    begin
-      to_addresses = as_address_objects(@message.to_header.to_s)
-      cc_addresses = as_address_objects(@message.cc_header.to_s)
-    rescue Mail::Field::ParseError
-      # sometimes people remove the quotes and leave the colon, or the phrase part contains misplaced unicode.
-      # so, this works around shortcomings in Mail's AddressListParser
-      to_header = @message.to_header
-      cc_header = @message.cc_header
-
-      to_addresses = to_header.present? ? as_address_objects(@message.to_header.to_ascii.gsub(/:/, '')) : []
-      cc_addresses = cc_header.present? ? as_address_objects(@message.cc_header.to_ascii.gsub(/:/, '')) : []
-    end
+    to_addresses = as_address_objects(@message.to_header.to_s)
+    cc_addresses = as_address_objects(@message.cc_header.to_s)
 
     @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten.compact)
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
@@ -116,6 +103,8 @@ class ConversationMailer < Threadable::Mailer
 
     if !sender_is_a_member && @message.from.present? && @recipient.munge_reply_to?
       cc_addresses << Mail::Address.new(@message.from)
+    elsif @recipient.munge_reply_to? && !dmarc_verified
+      cc_addresses << from_address
     end
 
     cc_addresses = filter_organization_email_addresses(cc_addresses)
@@ -124,6 +113,12 @@ class ConversationMailer < Threadable::Mailer
     cc = cc_addresses.map(&:to_s).join(', ').presence || nil
 
     to ||= @conversation.canonical_formatted_email_address
+
+    if dmarc_verified
+      from = from_address
+    else
+      from = Mail::Address.new("#{from_address.name} via Threadable <placeholder@#{threadable.email_host}>")
+    end
 
     email_params = {
       :css                   => 'email',
@@ -152,6 +147,20 @@ class ConversationMailer < Threadable::Mailer
   end
 
   private
+
+  def reply_to_address
+    return @conversation.canonical_formatted_email_address if @recipient.munge_reply_to?
+    return from_address.address unless dmarc_verified
+    nil
+  end
+
+  def from_address
+    @from_address ||= as_address_objects(@message.from || @message.creator.try(:formatted_email_address ) || @organization.formatted_email_address).first
+  end
+
+  def dmarc_verified
+    @dmarc_verified ||= VerifyDmarc.call(from_address)
+  end
 
   def recipient_email_addresses
     @recipient_email_addresses ||= @conversation.recipients.all.map(&:email_address)
@@ -225,7 +234,14 @@ class ConversationMailer < Threadable::Mailer
     if email_addresses.kind_of?(Array)
       email_addresses = email_addresses.join(', ')
     end
-    Mail::AddressList.new(email_addresses).addresses
+
+    begin
+      Mail::AddressList.new(email_addresses).addresses
+    rescue Mail::Field::ParseError
+      # sometimes people remove the quotes and leave the colon, or the phrase part contains misplaced unicode.
+      # so, this works around shortcomings in Mail's AddressListParser
+      Mail::AddressList.new(email_addresses.to_ascii.gsub(/:/, '')).addresses
+    end
   end
 
   def has_groups

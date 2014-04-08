@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe "processing incoming emails" do
 
+  before do
+    VerifyDmarc.stub(:call).and_return(true)
+  end
+
   let :params do
     create_incoming_email_params(
       subject:       subject,

@@ -109,6 +109,7 @@ GEM
     debugger-ruby_core_source (1.3.2)
     descendants_tracker (0.0.3)
     diff-lcs (1.2.4)
+    dnsruby (1.54)
     docile (1.1.1)
     dotenv (0.8.0)
     dotenv-rails (0.8.0)
@@ -389,6 +390,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   compass-flexbox
   compass-rails (~> 1.1.2)
+  dnsruby
   dotenv-rails
   ember-rails
   ember-source

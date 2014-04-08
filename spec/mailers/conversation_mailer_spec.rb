@@ -26,6 +26,12 @@ describe ConversationMailer do
     let(:text_part){ mail.text_part.body.to_s }
     let(:html_part){ mail.html_part.body.to_s }
 
+    let(:dmarc_verified) { true }
+
+    before do
+      VerifyDmarc.stub(:call).and_return(dmarc_verified)
+    end
+
     def validate_mail!
       mail.subject.should include "[RaceTeam]"
       mail.subject.should include conversation.subject
@@ -114,7 +120,33 @@ describe ConversationMailer do
       end
     end
 
-    context "message summary" do
+    context "with a from address domain that has a restrictive DMARC policy" do
+      let(:dmarc_verified) { false }
+
+      context 'with reply-to munging enabled' do
+        let(:expected_cc  ){ message.from }
+        let(:expected_from){ 'Tom Canver via Threadable <placeholder@127.0.0.1>' }
+
+        it "rewrites from, and adds from to cc" do
+          validate_mail!
+        end
+      end
+
+      context 'with reply-to munging disabled' do
+        let(:expected_from    ){ 'Tom Canver via Threadable <placeholder@127.0.0.1>' }
+        let(:expected_reply_to) { 'tom@ucsd.example.com' }
+
+        before do
+          recipient.update(munge_reply_to: false)
+        end
+
+        it "rewrites from, adds from to reply-to" do
+          validate_mail!
+        end
+      end
+    end
+
+    describe "message summary" do
       let(:body){
         %(Everybody, yeah Rock your body, yeah Everybody, yeah Rock your body right Backstreet's )+
         %(back, alright Hey, yeah Oh my God, we're back again Brothers, sisters, everybody sing )+
