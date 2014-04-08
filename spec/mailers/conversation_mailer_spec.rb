@@ -134,7 +134,7 @@ describe ConversationMailer do
 
       context 'with reply-to munging disabled' do
         let(:expected_from    ){ 'Tom Canver via Threadable <placeholder@127.0.0.1>' }
-        let(:expected_reply_to) { 'tom@ucsd.example.com' }
+        let(:expected_reply_to) { message.from }
 
         before do
           recipient.update(munge_reply_to: false)

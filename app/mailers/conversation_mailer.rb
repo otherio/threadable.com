@@ -152,7 +152,7 @@ class ConversationMailer < Threadable::Mailer
 
   def reply_to_address
     return @conversation.canonical_formatted_email_address if @recipient.munge_reply_to?
-    return from_address.address unless dmarc_verified
+    return from_address.to_s unless dmarc_verified
     nil
   end
 
