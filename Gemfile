@@ -78,6 +78,7 @@ group :development, :test do
   gem 'rspec-instafail'
   gem 'jasmine'
   gem 'timecop', require: nil
+  gem 'rb-readline'  #needed because rbenv and homebrew readline still don't seem to play nice together
 end
 
 group :test do
