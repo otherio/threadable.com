@@ -12,7 +12,7 @@ class VerifyDmarc < MethodObject
       return true
     end
 
-    rdata_records = query.answer.map(&:rdata).compact.join(';')
+    rdata_records = query.answer.select{|r| r.type == 'TXT'}.map(&:rdata).compact.join(';')
     !rdata_records.include?('p=reject')
   end
 end

@@ -10,7 +10,7 @@ describe VerifyDmarc, fixtures: false do
   let(:address) { Mail::Address.new('Foo Guy <foo@bar.com>') }
 
   # stub the Dnsruby response
-  let(:answer) { [ double(:dns_record1, rdata: rdata) ] }
+  let(:answer) { [ double(:dns_record1, rdata: rdata, type: 'TXT') ] }
   let(:rdata) { ["v=DMARC1; p=#{policy}; rua=mailto:mailauth-reports@foo.com"] }
   let(:policy) { 'quarantine' }
 
@@ -21,6 +21,13 @@ describe VerifyDmarc, fixtures: false do
   it 'queries the DMARC txt record for the email address domain' do
     expect(resolver).to receive(:query).with('_dmarc.bar.com', Types.TXT)
     call(address)
+  end
+
+  context 'when address is a cname' do
+    let(:answer) { [ double(:dns_record1, type: 'CNAME') ] }
+    it 'ignores it for now' do
+      expect(call(address)).to be_true
+    end
   end
 
   describe 'checking the dmarc policy' do
