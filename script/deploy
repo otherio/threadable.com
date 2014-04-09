@@ -31,4 +31,4 @@ heroku run rake db:migrate --app threadable-$ENV
 # tag this rev as having been released
 git push --delete origin latest-$ENV
 git tag -f latest-$ENV $BRANCH
-git push --tags
+git push origin latest-$ENV
