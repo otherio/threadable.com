@@ -6,7 +6,7 @@ ENV=$1
 if [ $ENV == 'production' ]
   then
     BRANCH=origin
-    REFSPEC="--tag latest-staging"
+    REFSPEC="latest-staging"
 elif [ $ENV == 'staging' ]
   then
     REFSPEC=HEAD
@@ -30,5 +30,5 @@ heroku run rake db:migrate --app threadable-$ENV
 
 # tag this rev as having been released
 git push --delete origin latest-$ENV
-git tag -f latest-$ENV $BRANCH
+git tag -f latest-$ENV $REFSPEC
 git push origin latest-$ENV
