@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+# WARNING
+# this script sucks. i mean, it works, but it's pretty clear i gave no shits, yeah?
+
+require 'rest_client'
+require 'json'
+
+def get_logs
+  RestClient.get "https://api:#{ENV['THREADABLE_MAILGUN_KEY']}"\
+  "@api.mailgun.net/v2/threadable.com/events",
+   :params => {
+    :'event'       => 'failed',
+    :'end'         => 'Apr 4 00:00:00 PDT 2014 -0000'
+   }
+end
+
+def get_more_logs url
+  url.gsub!(/api.mailgun.net/, "api:#{ENV['THREADABLE_MAILGUN_KEY']}@api.mailgun.net")
+
+  log = RestClient.get url
+
+  page = JSON.parse(log)
+  page['items'].each do |log|
+    next unless log['severity'] == 'permanent'
+    next unless log['user-variables']['organization']
+    next unless log['message']['headers']['from'] =~ /yahoo/
+    puts "#{log['user-variables']['organization']} : #{log['user-variables']['recipient-id']} : #{log['message']['headers']['message-id']} : #{log['message']['headers']['from']} : #{log['message']['recipients'].first} : #{log['delivery-status']['message']}"
+  end
+
+  if page['paging']['next'] && page['items'].length > 0
+    get_more_logs page['paging']['next']
+  end
+end
+
+page = JSON.parse(get_logs)
+page['items'].each do |log|
+  next unless log['severity'] == 'permanent'
+  next unless log['user-variables']['organization']
+  next unless log['message']['headers']['from'] =~ /yahoo/
+  puts "#{log['user-variables']['organization']} : #{log['user-variables']['recipient-id']} : #{log['message']['headers']['message-id']} : #{log['message']['headers']['from']} : #{log['message']['recipients'].first} : #{log['delivery-status']['message']}"
+end
+
+if page['paging']['next']
+  get_more_logs page['paging']['next']
+end
