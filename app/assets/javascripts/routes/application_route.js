@@ -8,6 +8,13 @@ Threadable.ApplicationRoute = Ember.Route.extend({
     Threadable.notifyPendingNotifications();
   },
 
+
+  renderTemplate: function() {
+    this._super.apply(this, arguments);
+    Threadable.WelcomeModalView.create({container: this.container}).appendTo('body');
+  },
+
+
   actions: {
     error: function(error, transition) {
       // console.debug('ERROR: ', error.stack, transition);
