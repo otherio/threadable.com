@@ -15,9 +15,7 @@ class Conversation < ActiveRecord::Base
   serialize :group_ids_cache, Array
   serialize :muter_ids_cache, Array
 
-  def self.default_scope
-    order('conversations.updated_at DESC')
-  end
+  default_scope { order('conversations.updated_at DESC') }
 
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
   scope :task, ->{ where(type: 'Task') }
