@@ -7,7 +7,18 @@ class ApplicationController < ActionController::Base
   include RescueFromExceptionsConcern
   include DebugCookie
 
-  before_action do
+  before_action :redirect_from_unknown_host!
+  before_action :ensure_mixpanel_distinct_id_is_correct!
+  before_action :require_user_be_signed_in!
+
+
+  def inspect
+    %(#<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
+  end
+
+  private
+
+  def redirect_from_unknown_host!
     return unless request.get?
     request_url = URI.parse(request.url)
     legal_hosts = case
@@ -20,14 +31,6 @@ class ApplicationController < ActionController::Base
     return if legal_hosts.include?(request_url.host)
     request_url.host = legal_hosts.first
     redirect_to request_url.to_s
-  end
-
-  before_action :ensure_mixpanel_distinct_id_is_correct!
-  before_action :require_user_be_signed_in!
-
-
-  def inspect
-    %(#<#{self.class} #{request.request_method} #{request.url} #{params.inspect[1..-2]}>) rescue super
   end
 
 end
