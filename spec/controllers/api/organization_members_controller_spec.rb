@@ -73,7 +73,7 @@ describe Api::OrganizationMembersController do
         it 'renders not acceptable' do
           xhr :post, :create, format: :json, organization_member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
           expect(response.status).to eq 406
-          expect(response.body).to eq '{"error":"param is missing or the value is empty: organization_id"}'
+          expect(response.body).to eq '{"error":"param not found: organization_id"}'
         end
       end
     end
@@ -113,7 +113,7 @@ describe Api::OrganizationMembersController do
         it 'renders not acceptable' do
           xhr :delete, :destroy, format: :json, id: user.id
           expect(response.status).to eq 406
-          expect(response.body).to eq '{"error":"param is missing or the value is empty: organization_id"}'
+          expect(response.body).to eq '{"error":"param not found: organization_id"}'
         end
       end
     end

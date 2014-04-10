@@ -10,7 +10,7 @@ class Threadable::IncomingEmails < Threadable::Collection
 
   PAGE_SIZE = 10
   def page page, conditions=nil
-    query = scope.reload.limit(PAGE_SIZE).offset(page * PAGE_SIZE).reorder(created_at: :desc)
+    query = scope.reload.limit(PAGE_SIZE).offset(page * PAGE_SIZE).order(created_at: :desc)
     query = query.where(conditions) if conditions.present?
     incoming_emails_for query
   end

@@ -21,7 +21,7 @@ module Threadable::Conversation::Scopes
   def done_tasks page
     conversations_for tasks_scope_with_includes.
       done.
-      reorder(done_at: :asc).
+      order(done_at: :asc).
       limit(PAGE_SIZE).
       offset(PAGE_SIZE * page).uniq
   end
@@ -29,7 +29,7 @@ module Threadable::Conversation::Scopes
   def not_done_tasks page
     conversations_for tasks_scope_with_includes.
       not_done.
-      reorder(position: :asc).
+      order(position: :asc).
       limit(PAGE_SIZE).
       offset(PAGE_SIZE * page).uniq
   end
@@ -38,7 +38,7 @@ module Threadable::Conversation::Scopes
     conversations_for tasks_scope_with_includes.
       doing_by(threadable.current_user_id).
       done.
-      reorder(done_at: :asc).
+      order(done_at: :asc).
       limit(PAGE_SIZE).
       offset(PAGE_SIZE * page).uniq
   end
@@ -47,7 +47,7 @@ module Threadable::Conversation::Scopes
     conversations_for tasks_scope_with_includes.
       doing_by(threadable.current_user_id).
       not_done.
-      reorder(position: :asc).
+      order(position: :asc).
       limit(PAGE_SIZE).
       offset(PAGE_SIZE * page).uniq
   end

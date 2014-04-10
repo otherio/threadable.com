@@ -9,7 +9,7 @@ describe User do
   it { should have_many :organizations }
   it { should have_many :messages }
   it { should have_many :conversations }
-  # it { should have_many :tasks } # somehow this is broken now as well
+  it { should have_and_belong_to_many :tasks }
 
   it { should validate_presence_of :name }
   # it { should validate_presence_of :email_addresses } # somehow this is broken now
@@ -60,7 +60,7 @@ describe User do
       def user_attributes
         { password: "asjkdhjksadhjksa" }
       end
-      it { should eq ["doesn't match Password", "can't be blank"] }
+      it { should eq ["can't be blank"] }
     end
 
   end

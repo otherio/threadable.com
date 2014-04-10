@@ -6,8 +6,8 @@ factory :user do
   end
 
   sequence(:name)       {|i| "user #{i}"}
-  password              { web_enabled ? 'password' : '' }
-  password_confirmation { web_enabled ? 'password' : '' }
+  password              { 'password' if web_enabled }
+  password_confirmation { 'password' if web_enabled }
 
   after :build do |user, evaluator|
     user.email_addresses << build(:email_address,

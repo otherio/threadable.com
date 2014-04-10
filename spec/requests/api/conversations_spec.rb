@@ -12,19 +12,19 @@ describe "/api/conversations" do
         it "renders either not authorized or not found" do
           get('/api/conversations.json')
           expect(response.status).to eq 406
-          expect(response.body).to include 'param is missing or the value is empty: organization'
+          expect(response.body).to include 'param not found: organization'
 
           get('/api/conversations.json', organization: 'raceteam')
           expect(response.status).to eq 406
-          expect(response.body).to include 'param is missing or the value is empty: group'
+          expect(response.body).to include 'param not found: group'
 
           get('/api/conversations.json', organization: 'raceteam', group: 'my')
           expect(response.status).to eq 406
-          expect(response.body).to include 'param is missing or the value is empty: scope'
+          expect(response.body).to include 'param not found: scope'
 
           get('/api/conversations.json', organization: 'raceteam', group: 'my', scope: 'muted_conversations')
           expect(response.status).to eq 406
-          expect(response.body).to include 'param is missing or the value is empty: page'
+          expect(response.body).to include 'param not found: page'
 
           get('/api/conversations.json', organization: 'raceteam', group: 'my', scope: 'muted_conversations', page: 0)
           expect(response.status).to eq 200

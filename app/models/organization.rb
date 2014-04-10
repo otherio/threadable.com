@@ -4,8 +4,8 @@ class Organization < ActiveRecord::Base
   has_many :messages, through: :conversations
   has_many :tasks, -> { order "position" }, class_name: 'Task'
   has_many :organization_memberships, dependent: :destroy
-  has_many :memberships, class_name: 'OrganizationMembership', dependent: :destroy
-  has_many :members, :through => :memberships, :source => :user do
+  has_many :memberships, class_name: 'OrganizationMembership'
+  has_many :members, :through => :organization_memberships, :source => 'user' do
     def who_get_email
       where organization_memberships: {active: true, gets_email: true, confirmed: true}
     end
@@ -14,7 +14,7 @@ class Organization < ActiveRecord::Base
       where organization_memberships: {active: true}
     end
   end
-  has_many :members_who_get_email, -> { where organization_memberships: {gets_email:true} }, :through => :organization_memberships, :source => :user
+  has_many :members_who_get_email, -> { where organization_memberships: {gets_email:true} }, :through => :organization_memberships, :source => 'user'
   has_many :events, -> { order "created_at" }, dependent: :destroy
   has_many :incoming_emails, -> { order "created_at" }, dependent: :destroy
   has_many :groups

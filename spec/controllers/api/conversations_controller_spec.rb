@@ -293,7 +293,7 @@ describe Api::ConversationsController do
         it 'returns a param not found error' do
           xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: {  }
           expect(response.status).to eq 406
-          expect(response.body).to eq '{"error":"param is missing or the value is empty: conversation"}'
+          expect(response.body).to eq '{"error":"param not found: conversation"}'
         end
       end
 
@@ -301,7 +301,7 @@ describe Api::ConversationsController do
         it 'returns a param not found error' do
           xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation: { subject: '' }
           expect(response.status).to eq 406
-          expect(response.body).to eq '{"error":"param is missing or the value is empty: subject"}'
+          expect(response.body).to eq '{"error":"param not found: subject"}'
         end
       end
     end
