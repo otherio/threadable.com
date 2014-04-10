@@ -15,8 +15,8 @@ describe IncomingEmail do
   it { should belong_to :organization }
   it { should belong_to :message }
   it { should belong_to :parent_message }
-  it { should have_and_belong_to_many :attachments }
-  it { should have_and_belong_to_many :groups }
+  it { should have_many :attachments }
+  it { should have_many :groups }
 
   it { should validate_presence_of :params }
 end
