@@ -28,9 +28,6 @@ class ApplicationController < ActionController::Base
     when Rails.env.test?;        ['test.host', '127.0.0.1']
     else return
     end
-    return if legal_hosts.include?(request_url.host)
-    request_url.host = legal_hosts.first
-    redirect_to request_url.to_s
   end
 
 end

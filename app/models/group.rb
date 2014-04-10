@@ -16,7 +16,7 @@ class Group < ActiveRecord::Base
   has_many :conversation_groups, dependent: :destroy
   has_many :conversations, -> { where(conversation_groups: {active:true}) }, through: :conversation_groups
   has_many :memberships, class_name: 'GroupMembership', dependent: :destroy
-  has_many :members, through: :memberships, source: 'user'
+  has_many :members, through: :memberships, source: :user
   has_many :tasks,
     -> { order "position" },
     class_name: 'Task',

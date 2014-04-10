@@ -1,4 +1,5 @@
 raise "refusing to load file #{__FILE__} in #{Rails.env}" if Rails.env.production?
+require 'timecop'
 
 module Fixtures
 
