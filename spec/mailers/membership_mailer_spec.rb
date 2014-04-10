@@ -12,6 +12,12 @@ describe MembershipMailer do
   let(:message){ conversation.messages.latest }
   let(:text_part){ mail.body.encoded }
 
+  let(:dmarc_verified) { true }
+
+  before do
+    VerifyDmarc.stub(:call).and_return(dmarc_verified)
+  end
+
   describe "join_notice" do
     let(:personal_message){ "yo dude, I added you to the organization. Thanks for the help!" }
     let(:mail){ MembershipMailer.new(threadable).generate(:join_notice, organization, recipient, personal_message) }
@@ -19,7 +25,6 @@ describe MembershipMailer do
     before do
       expect(mail.subject).to eq "You've been added to #{organization.name}"
       expect(mail.to     ).to eq [recipient.email_address.to_s]
-      expect(mail.from   ).to eq ['bethany@ucsd.example.com']
       expect(text_part   ).to include personal_message
       expect(text_part   ).to include organization_url(organization)
 
@@ -33,6 +38,7 @@ describe MembershipMailer do
       it "should not have a user setup link" do
         user_setup_token = extract_user_setup_token(text_part)
         expect( user_setup_token ).to be_nil
+        expect(mail.from).to eq ['bethany@ucsd.example.com']
       end
     end
 
@@ -42,6 +48,16 @@ describe MembershipMailer do
       it "should have a user setup link" do
         user_setup_token = extract_user_setup_token(text_part)
         expect(UserSetupToken.decrypt(user_setup_token)).to eq [recipient.id, organization_path(organization)]
+        expect(mail.from).to eq ['bethany@ucsd.example.com']
+      end
+    end
+
+    context 'when the sender domain has a restrictive dmarc policy' do
+      let(:recipient){ organization.members.all.find(&:web_enabled?) }
+      let(:dmarc_verified) { false }
+      it "has different from and reply-to addresses" do
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
       end
     end
 
@@ -75,6 +91,14 @@ describe MembershipMailer do
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include conversations_url(organization, group)
     end
+
+    context 'when the sender domain has a restrictive dmarc policy' do
+      let(:dmarc_verified) { false }
+      it "has different from and reply-to addresses" do
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
+      end
+    end
   end
 
   describe 'removed_from_group_notice' do
@@ -90,6 +114,34 @@ describe MembershipMailer do
       expect(text_part    ).to include %(I removed you from the +#{group.name} group)
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include group_members_url(organization, group)
+    end
+
+    context 'when the sender domain has a restrictive dmarc policy' do
+      let(:dmarc_verified) { false }
+      it "has different from and reply-to addresses" do
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
+      end
+    end
+  end
+
+  describe 'invitation' do
+    let(:sender){ organization.members.find_by_user_id!(threadable.current_user.id) }
+    let(:member) { organization.members.find_by_email_address('tom@ucsd.example.com') }
+    let(:mail){ MembershipMailer.new(threadable).generate(:invitation, organization, member) }
+
+    it "should return the expected message" do
+      expect(mail.subject ).to eq "You've been invited to #{organization.name}"
+      expect(mail.to      ).to eq ['tom@ucsd.example.com']
+      expect(mail.from    ).to eq [sender.email_address.to_s]
+    end
+
+    context 'when the sender domain has a restrictive dmarc policy' do
+      let(:dmarc_verified) { false }
+      it "has different from and reply-to addresses" do
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
+      end
     end
   end
 
