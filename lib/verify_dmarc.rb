@@ -7,7 +7,7 @@ class VerifyDmarc < MethodObject
   def call email_address
     domain = email_address.domain
     @resolver = Dnsruby::Resolver.new
-    ! dmarc_records("_dmarc.#{domain}").join(';').include?('p=reject')
+    ! dmarc_records("_dmarc.#{domain}").flatten.join(';').include?('p=reject')
   end
 
   private
