@@ -62,6 +62,7 @@ group :production, :staging do
 end
 
 group :development do
+  gem 'spring'
   gem 'active_record_query_trace'
 end
 
