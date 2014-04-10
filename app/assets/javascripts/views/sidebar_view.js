@@ -47,7 +47,13 @@ Threadable.SidebarView = Ember.View.extend({
       view.set('otherOrganizationsOpen', false);
     });
 
-    element.on('click.sidebar', '.group .disclosure-triangle', function() {
+    element.on('click.sidebar', '.group', function() {
+      $(this).closest('.group').addClass('open');
+    });
+
+    element.on('click.sidebar', '.group .disclosure-triangle', function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
       $(this).closest('.group').toggleClass('open');
     });
   },
