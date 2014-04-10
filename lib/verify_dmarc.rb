@@ -2,17 +2,32 @@ class VerifyDmarc < MethodObject
 
   include Dnsruby
 
+  attr_reader :resolver
+
   def call email_address
     domain = email_address.domain
+    @resolver = Dnsruby::Resolver.new
+    ! dmarc_records("_dmarc.#{domain}").join(';').include?('p=reject')
+  end
 
-    resolver = Dnsruby::Resolver.new
+  private
+
+  def dmarc_records host, depth=0
+    return [] if depth > 5
+
     begin
-      query = resolver.query("_dmarc.#{domain}", Types.TXT)
+      query = resolver.query(host, Types.TXT)
     rescue Dnsruby::NXDomain
-      return true
+      return []
     end
 
-    rdata_records = query.answer.select{|r| r.type == 'TXT'}.map(&:rdata).compact.join(';')
-    !rdata_records.include?('p=reject')
+    rdata_records = query.answer.select{|r| r.type == 'TXT'}.map(&:rdata).flatten.compact || []
+
+    cname_records = query.answer.select{|r| r.type == 'CNAME'}.map{|r| r.rdata.first.to_s}.compact
+    cname_records.each do |cname|
+      rdata_records << dmarc_records(cname, depth + 1)
+    end
+
+    return rdata_records
   end
 end
