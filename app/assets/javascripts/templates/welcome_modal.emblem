@@ -7,4 +7,4 @@
       .uk-float-left
         a href="" click="dismissWelcomeModalView false" I'll watch later
       .uk-float-right
-        a href="" click="dismissWelcomeModalView true" Thanks, I've got it
+        a href="" click="dismissWelcomeModalView true" Got it, don't show this again
