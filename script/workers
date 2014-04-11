@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-if ENV['RAILS_ENV'] == 'development'
+if ENV['RAILS_ENV'].nil? || ENV['RAILS_ENV'] == 'development'
   require 'bundler/setup'
   require 'dotenv'
   Dotenv.load!
@@ -8,4 +8,4 @@ end
 
 ENV['DB_POOL'] = ENV['THREADABLE_WORKER_THREAD_COUNT']
 
-exec %( echo bundle exec sidekiq -c $THREADABLE_WORKER_THREAD_COUNT )
+exec %( bundle exec sidekiq -c $THREADABLE_WORKER_THREAD_COUNT )
