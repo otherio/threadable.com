@@ -78,19 +78,21 @@ describe Threadable::Messages::Create do
     it "sends the message with the expected data, and tracks that it was done" do
 
       expect(conversation_record.messages).to receive(:create).with(
-        parent_message_id: expected_parent_message_id,
-        subject:           expected_subject,
-        from:              expected_from,
-        creator_id:        expected_creator_id,
-        body_plain:        expected_body_plain,
-        body_html:         expected_body_html,
-        stripped_plain:    expected_stripped_plain,
-        stripped_html:     expected_stripped_html,
-        message_id_header: expected_message_id_header,
-        references_header: expected_references_header,
-        to_header:         expected_to_header,
-        cc_header:         expected_cc_header,
-        date_header:       expected_date_header,
+        parent_message_id:   expected_parent_message_id,
+        subject:             expected_subject,
+        from:                expected_from,
+        creator_id:          expected_creator_id,
+        body_plain:          expected_body_plain,
+        body_html:           expected_body_html,
+        stripped_plain:      expected_stripped_plain,
+        stripped_html:       expected_stripped_html,
+        message_id_header:   expected_message_id_header,
+        references_header:   expected_references_header,
+        to_header:           expected_to_header,
+        cc_header:           expected_cc_header,
+        date_header:         expected_date_header,
+        thread_index_header: nil,
+        thread_topic_header: nil,
       ).and_return(message_record)
 
       expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
@@ -133,19 +135,21 @@ describe Threadable::Messages::Create do
     it "gets the parent message from the conversation" do
 
       expect(conversation_record.messages).to receive(:create).with(
-        parent_message_id: expected_parent_message_id,
-        subject:           expected_subject,
-        from:              expected_from,
-        creator_id:        expected_creator_id,
-        body_plain:        expected_body_plain,
-        body_html:         expected_body_html,
-        stripped_plain:    expected_stripped_plain,
-        stripped_html:     expected_stripped_html,
-        message_id_header: expected_message_id_header,
-        references_header: expected_references_header,
-        to_header:         expected_to_header,
-        cc_header:         expected_cc_header,
-        date_header:       expected_date_header,
+        parent_message_id:   expected_parent_message_id,
+        subject:             expected_subject,
+        from:                expected_from,
+        creator_id:          expected_creator_id,
+        body_plain:          expected_body_plain,
+        body_html:           expected_body_html,
+        stripped_plain:      expected_stripped_plain,
+        stripped_html:       expected_stripped_html,
+        message_id_header:   expected_message_id_header,
+        references_header:   expected_references_header,
+        to_header:           expected_to_header,
+        cc_header:           expected_cc_header,
+        date_header:         expected_date_header,
+        thread_index_header: nil,
+        thread_topic_header: nil,
       ).and_return(message_record)
 
       expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)

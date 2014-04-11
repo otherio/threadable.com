@@ -24,7 +24,7 @@ describe Threadable::IncomingEmail::Deliver do
   let :incoming_email do
     double(:incoming_email,
       threadable:     threadable,
-      id: 879,
+      id:             879,
       incoming_email_record: double(:incoming_email_record),
       params:         params,
       subject:        subject,
@@ -45,6 +45,8 @@ describe Threadable::IncomingEmail::Deliver do
       stripped_plain: stripped_plain,
       stripped_html:  double(:incoming_email_stripped_html),
       groups:         groups,
+      thread_index:   nil,
+      thread_topic:   nil,
     )
   end
 
@@ -87,20 +89,22 @@ describe Threadable::IncomingEmail::Deliver do
       with(incoming_email.stripped_html).and_return('stripped incoming_email.stripped_html')
 
     expect(conversation.messages).to receive(:create!).with(
-      creator_id:        54,
-      message_id_header: incoming_email.message_id,
-      references_header: incoming_email.references,
-      date_header:       'rfc2822 version of date',
-      to_header:         incoming_email.to,
-      cc_header:         incoming_email.cc,
-      subject:           expected_subject,
-      parent_message:    incoming_email.parent_message,
-      from:              incoming_email.from,
-      body_plain:        'stripped incoming_email.body_plain',
-      body_html:         'stripped incoming_email.body_html',
-      stripped_plain:    'stripped incoming_email.stripped_plain',
-      stripped_html:     'stripped incoming_email.stripped_html',
-      attachments:       incoming_email.attachments.all,
+      creator_id:          54,
+      message_id_header:   incoming_email.message_id,
+      references_header:   incoming_email.references,
+      date_header:         'rfc2822 version of date',
+      to_header:           incoming_email.to,
+      cc_header:           incoming_email.cc,
+      subject:             expected_subject,
+      parent_message:      incoming_email.parent_message,
+      from:                incoming_email.from,
+      body_plain:          'stripped incoming_email.body_plain',
+      body_html:           'stripped incoming_email.body_html',
+      stripped_plain:      'stripped incoming_email.stripped_plain',
+      stripped_html:       'stripped incoming_email.stripped_html',
+      attachments:         incoming_email.attachments.all,
+      thread_index_header: nil,
+      thread_topic_header: nil,
     ).and_return(message)
 
     expect(incoming_email).to receive(:message=).with(message)
