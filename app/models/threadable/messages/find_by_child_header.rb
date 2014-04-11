@@ -45,7 +45,7 @@ class Threadable::Messages::FindByChildHeader < MethodObject
   def past_thread_indices thread_index_decoded
     previous_thread_index = thread_index_decoded[0..-6]
 
-    if previous_thread_index.length > 27
+    if previous_thread_index.length > 22
       return [Base64.strict_encode64(previous_thread_index)] + past_thread_indices(previous_thread_index)
     end
 
