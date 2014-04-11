@@ -160,6 +160,11 @@ class FixtureBuilder
     member.update! avatar_url: "/fixture_images/#{filename}"
   end
 
+  def dismiss_welcome_modal!
+    require_current_user_be_web_enabled!
+    current_user.dismissed_welcome_modal!
+  end
+
   def add_email_address! email_address, primary=false
     require_current_user_be_web_enabled!
     current_user.email_addresses.add! email_address, primary

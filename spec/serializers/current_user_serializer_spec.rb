@@ -25,6 +25,7 @@ describe CurrentUserSerializer do
         external_authorizations: serialize(:external_authorizations, alice.external_authorizations.all).values.first,
         current_organization_id: alice.current_organization_id,
         organizations:           serialize(:organizations, alice.organizations.all).values.first,
+        dismissed_welcome_modal: true,
       )
     end
   end
@@ -43,6 +44,7 @@ describe CurrentUserSerializer do
         external_authorizations: [],
         current_organization_id: marcus.current_organization_id,
         organizations:           serialize(:organizations, marcus.organizations.all).values.first,
+        dismissed_welcome_modal: true,
       )
     end
   end

@@ -5,8 +5,24 @@ Threadable.ApplicationRoute = Ember.Route.extend({
   },
 
   afterModel: function(currentUser, transition) {
+    this.set('currentUser', currentUser);
     Threadable.notifyPendingNotifications();
   },
+
+
+  welcomeModalView: function() {
+    this._welcomeModalView = this._welcomeModalView || Threadable.WelcomeModalView.create({
+      controller: this.controller,
+      container: this.container
+    });
+    return this._welcomeModalView;
+  },
+
+  renderTemplate: function(controller, currentUser) {
+    this._super.apply(this, arguments);
+    if (!currentUser.get('dismissedWelcomeModal')) this.welcomeModalView().appendTo('body');
+  },
+
 
   actions: {
     error: function(error, transition) {
@@ -26,7 +42,12 @@ Threadable.ApplicationRoute = Ember.Route.extend({
       var target = currentPath.pop();
       this.transitionTo(target);
       if (options.refresh) this.router.router.refresh();
-    }
+    },
+    dismissWelcomeModalView: function(dismissWelcomeModal) {
+      this.welcomeModalView().destroy();
+      delete this._welcomeModalView;
+      if (dismissWelcomeModal) this.get('currentUser').dismissWelcomeModal();
+    },
   }
 
 });

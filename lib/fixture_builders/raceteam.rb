@@ -17,6 +17,7 @@ FixtureBuilder.build do
   web_enable! 'alice@ucsd.example.com'
   as 'alice@ucsd.example.com' do
     set_avatar! 'alice.jpg'
+    dismiss_welcome_modal!
 
     # Alice invites her organization mates
     add_member 'Tom Canver',       'tom@ucsd.example.com'
@@ -44,6 +45,7 @@ FixtureBuilder.build do
   web_enable! 'tom@ucsd.example.com'
   as 'tom@ucsd.example.com' do
     set_avatar! 'tom.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'yan@ucsd.example.com'
@@ -51,17 +53,20 @@ FixtureBuilder.build do
     set_avatar! 'yan.jpg'
     add_email_address! 'yan@yansterdam.io'
     confirm_email_address! 'yan@yansterdam.io'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'bethany@ucsd.example.com'
   as 'bethany@ucsd.example.com' do
     set_avatar! 'bethany.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'bob@ucsd.example.com'
   as 'bob@ucsd.example.com' do
     set_avatar! 'bob.jpg'
     add_email_address! 'bob.cauchois@example.com'
+    dismiss_welcome_modal!
   end
 
   as 'jonathan@ucsd.example.com' do
@@ -72,6 +77,7 @@ FixtureBuilder.build do
   as 'cal.naughton@ucsd.example.com' do
     set_avatar! 'cal.naughton.jpg'
     set_ungrouped_mail_delivery :no_mail
+    dismiss_welcome_modal!
   end
 
   # create some groups and put people in them

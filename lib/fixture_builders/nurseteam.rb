@@ -45,71 +45,85 @@ FixtureBuilder.build do
   web_enable! 'sfmedstudent@gmail.com'
   as 'sfmedstudent@gmail.com' do
     set_avatar! 'sandeep.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'lilith@sfhealth.example.com'
   as 'lilith@sfhealth.example.com' do
     set_avatar! 'lilith.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'anil@sfhealth.example.com'
   as 'anil@sfhealth.example.com' do
     set_avatar! 'anil.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'trapper@sfhealth.example.com'
   as 'trapper@sfhealth.example.com' do
     set_avatar! 'trapper.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'marcus@sfhealth.example.com'
   as 'marcus@sfhealth.example.com' do
     set_avatar! 'marcus.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'mquinn@sfhealth.example.com'
   as 'mquinn@sfhealth.example.com' do
     set_avatar! 'mquinn.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'bj@sfhealth.example.com'
   as 'bj@sfhealth.example.com' do
     set_avatar! 'bj.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'smaturin@sfhealth.example.com'
   as 'smaturin@sfhealth.example.com' do
     set_avatar! 'stephen.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'lcuddy@sfhealth.example.com'
   as 'lcuddy@sfhealth.example.com' do
     set_avatar! 'lisa.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'house@sfhealth.example.com'
   as 'house@sfhealth.example.com' do
     set_avatar! 'house.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'ritsuko@sfhealth.example.com'
   as 'ritsuko@sfhealth.example.com' do
     set_avatar! 'ritsuko.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'yuriz@sfhealth.example.com'
   as 'yuriz@sfhealth.example.com' do
     set_avatar! 'yuri.jpg'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'zarkov@sfhealth.example.com'
   as 'zarkov@sfhealth.example.com' do
     set_avatar! 'zarkov.gif'
+    dismiss_welcome_modal!
   end
 
   web_enable! 'ecto@sfhealth.example.com'
   as 'ecto@sfhealth.example.com' do
     set_avatar! 'venkman.jpg'
+    dismiss_welcome_modal!
   end
 
   # create some groups and put people in them

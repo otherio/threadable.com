@@ -11,8 +11,17 @@ Threadable.CurrentUser = RL.Model.extend({
   avatarUrl:              RL.attr('string'),
   currentOrganizationId:  RL.attr('number'),
   externalAuthorizations: RL.attr('object'),
+  dismissedWelcomeModal:  RL.attr('boolean'),
 
   organizations: RL.hasMany('Threadable.Organization'),
+
+  update: function(data) {
+    return $.ajax({
+      type: 'PUT',
+      url: '/api/users/current',
+      data: {current_user: data}
+    });
+  },
 
   currentOrganization: function() {
     var
@@ -32,20 +41,16 @@ Threadable.CurrentUser = RL.Model.extend({
   }.property('currentOrganizationId'),
 
   currentOrganizationIdChanged: function() {
-    $.ajax({
-      type: 'PUT',
-      url: '/api/users/current',
-      data: {
-        current_user:{
-          current_organization_id: this.get('currentOrganizationId')
-        }
-      }
-    });
+    this.update({current_organization_id: this.get('currentOrganizationId')});
   }.observes('currentOrganizationId'),
 
   authorizationFor: function(provider) {
     return this.get('externalAuthorizations').filter(function(auth) { return auth.provider == provider; })[0];
-  }.property('externalAuthorizations')
+  }.property('externalAuthorizations'),
+
+  dismissWelcomeModal: function() {
+    this.update({dismissed_welcome_modal: true});
+  },
 
 });
 
