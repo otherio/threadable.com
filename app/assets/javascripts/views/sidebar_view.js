@@ -48,13 +48,22 @@ Threadable.SidebarView = Ember.View.extend({
     });
 
     element.on('click.sidebar', '.group', function() {
-      $(this).closest('.group').addClass('open');
+      var group = $(this).closest('.group');
+      element.find('.group.open').not(group).removeClass('open');
+      group.addClass('open');
     });
 
     element.on('click.sidebar', '.group .disclosure-triangle', function(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      $(this).closest('.group').toggleClass('open');
+      var group  = $(this).closest('.group');
+      var isOpen = group.is('.open');
+      if (isOpen){
+        group.removeClass('open')
+      }else{
+        element.find('.group.open').not(group).removeClass('open');
+        group.addClass('open');
+      }
     });
   },
 
