@@ -8,6 +8,7 @@ describe Threadable::Messages::FindByChildHeader do
     {
       'In-Reply-To' => in_reply_to_header,
       'References'  => references_header,
+      'message-headers' => [].to_json,
     }
   end
 

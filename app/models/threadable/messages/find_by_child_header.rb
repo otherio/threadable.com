@@ -4,8 +4,7 @@ class Threadable::Messages::FindByChildHeader < MethodObject
     @organization_id, @header = organization_id, header
     in_reply_to  = header['In-Reply-To'].to_s
     references   = header['References'].to_s.split(/\s+/)
-    message_headers = JSON.parse(header['message-headers'])
-    thread_index = Hash[message_headers]['Thread-Index'].to_s if message_headers
+    thread_index = Hash[JSON.parse(header['message-headers'])]['Thread-Index'].to_s
 
     # this fixes a bug in the Eudora mail client (see the JWZ threading algorithm)
     references.push(in_reply_to) if in_reply_to.present?
