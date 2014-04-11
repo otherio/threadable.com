@@ -1,3 +1,10 @@
 .modal
   .content
     h3 Take a moment to learn the basics of Threadable!
+    iframe src="//player.vimeo.com/video/90926057" frameborder="0" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allowfullscreen="allowfullscreen"
+
+    .uk-clearfix
+      .uk-float-left
+        a href="" click="dismissWelcomeModalView false" I'll watch later
+      .uk-float-right
+        a href="" click="dismissWelcomeModalView true" Thanks, I've got it

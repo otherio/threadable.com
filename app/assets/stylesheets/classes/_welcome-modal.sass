@@ -15,25 +15,13 @@
     $padding: $default-font-size
     position: relative
     max-width: 90%
-    width: 400px
+    width: 600px
     border: 1px solid black
     background-color: $white-color
     +border-radius(5px)
     .content
-      padding: $padding $padding $padding $padding * 5
+      padding: $padding
 
-    .icon
-      +absolute($padding, $padding, null, null)
-
-    .message
-      font-size: $larger-font-size
-      line-height: 150%
-
-    .description
-
-
-    .controls
-      margin-top: 1em
-      text-align: right
-      > a
-        margin: 0 0.5em
+      iframe
+        width: 100%
+        height: 350px
