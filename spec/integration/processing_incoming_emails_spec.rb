@@ -30,6 +30,9 @@ describe "processing incoming emails" do
       stripped_html: stripped_html,
       stripped_text: stripped_text,
       attachments:   attachments,
+
+      thread_index:  thread_index,
+      thread_topic:  thread_topic,
     )
   end
 
@@ -95,6 +98,8 @@ describe "processing incoming emails" do
       ["To",              to],
       ["Cc",              cc],
       ["Content-Type",    content_type],
+      ["Thread-Index",    thread_index],
+      ["Thread-Topic",    thread_topic],
     ]
     expect( incoming_email.body_html      ).to eq(body_html)
     expect( incoming_email.body_plain     ).to eq(body_plain)
@@ -195,18 +200,20 @@ describe "processing incoming emails" do
     expect( incoming_email.params['attachment-2']     ).to be_nil
     expect( incoming_email.params['attachment-3']     ).to be_nil
 
-    expect( message.organization      ).to eq expected_organization
-    expect( message.conversation      ).to eq expected_conversation
-    expect( message.message_id_header ).to eq message_id
-    expect( message.to_header         ).to eq to
-    expect( message.cc_header         ).to eq cc
-    expect( message.date_header       ).to eq date.rfc2822
-    expect( message.references_header ).to eq references
-    expect( message.subject           ).to eq expected_message_subject
-    expect( message.body_plain        ).to eq expected_message_body_plain
-    expect( message.body_html         ).to eq expected_message_body_html
-    expect( message.stripped_html     ).to eq expected_message_stripped_html
-    expect( message.stripped_plain    ).to eq expected_message_stripped_text
+    expect( message.organization        ).to eq expected_organization
+    expect( message.conversation        ).to eq expected_conversation
+    expect( message.message_id_header   ).to eq message_id
+    expect( message.to_header           ).to eq to
+    expect( message.cc_header           ).to eq cc
+    expect( message.date_header         ).to eq date.rfc2822
+    expect( message.references_header   ).to eq references
+    expect( message.subject             ).to eq expected_message_subject
+    expect( message.body_plain          ).to eq expected_message_body_plain
+    expect( message.body_html           ).to eq expected_message_body_html
+    expect( message.stripped_html       ).to eq expected_message_stripped_html
+    expect( message.stripped_plain      ).to eq expected_message_stripped_text
+    expect( message.thread_index_header ).to eq expected_message_thread_index
+    expect( message.thread_topic_header ).to eq expected_message_thread_topic
 
     expect( message.conversation.groups.all.map(&:name) ).to match_array expected_groups
 
@@ -313,6 +320,8 @@ describe "processing incoming emails" do
 
   let(:in_reply_to)  { '' }
   let(:references)   { '' }
+  let(:thread_index) { '' }
+  let(:thread_topic) { '' }
 
   let(:body_html){
     %(<p>I think we should build it out of fiberglass and duck tape.\n</p>\n)+
@@ -353,6 +362,8 @@ describe "processing incoming emails" do
   let(:expected_message_body_plain)            { body_plain }
   let(:expected_message_stripped_html)         { stripped_html }
   let(:expected_message_stripped_text)         { stripped_text }
+  let(:expected_message_thread_index)          { thread_index }
+  let(:expected_message_thread_topic)          { thread_topic }
   let(:expect_conversation_to_be_a_task)       { false }
   let(:expect_task_to_be_done)                 { false }
   let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com"] }
@@ -537,6 +548,28 @@ describe "processing incoming emails" do
       let(:expected_parent_message){ expected_conversation.messages.latest }
       let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
       let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
+
+      it 'delivers the email' do
+        validate! :delivered
+      end
+    end
+
+    context 'a parent message can be found via the Thread-Index header' do
+      let(:in_reply_to){ '' }
+      let(:references) { '' }
+
+      let(:parent_thread_index_decoded) { "#{SecureRandom.uuid}12345" }
+      let(:thread_index) { Base64.strict_encode64("#{parent_thread_index_decoded}67890") }
+      let(:thread_topic) { expected_conversation.subject }
+
+      let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
+      let(:expected_parent_message){ expected_conversation.messages.latest }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
+
+      before do
+        expected_parent_message.update(thread_index_header: Base64.strict_encode64(parent_thread_index_decoded))
+      end
 
       it 'delivers the email' do
         validate! :delivered

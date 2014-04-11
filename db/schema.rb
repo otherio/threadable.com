@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319184303) do
+ActiveRecord::Schema.define(version: 20140411015842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(version: 20140319184303) do
   end
 
   create_table "messages", force: true do |t|
-    t.integer  "conversation_id",                   null: false
+    t.integer  "conversation_id",                     null: false
     t.integer  "user_id"
     t.text     "body_plain"
     t.boolean  "reply"
@@ -178,21 +178,24 @@ ActiveRecord::Schema.define(version: 20140319184303) do
     t.integer  "parent_id"
     t.string   "message_id_header"
     t.text     "references_header"
-    t.boolean  "shareworthy",       default: false
-    t.boolean  "knowledge",         default: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.text     "stripped_plain",    default: ""
-    t.text     "body_html",         default: ""
-    t.text     "stripped_html",     default: ""
+    t.boolean  "shareworthy",         default: false
+    t.boolean  "knowledge",           default: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.text     "stripped_plain",      default: ""
+    t.text     "body_html",           default: ""
+    t.text     "stripped_html",       default: ""
     t.string   "date_header"
     t.text     "to_header"
     t.text     "cc_header"
+    t.string   "thread_index_header"
+    t.string   "thread_topic_header"
   end
 
   add_index "messages", ["conversation_id", "user_id"], name: "index_messages_on_conversation_id_and_user_id", using: :btree
   add_index "messages", ["created_at"], name: "index_messages_on_created_at", using: :btree
   add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
+  add_index "messages", ["thread_index_header"], name: "index_messages_on_thread_index_header", using: :btree
 
   create_table "organization_memberships", force: true do |t|
     t.integer  "organization_id",                         null: false

@@ -10,6 +10,7 @@ class Threadable::Messages::Create < MethodObject
     optional :body_plain, :body_html, :stripped_plain, :stripped_html
     optional :message_id_header, :references_header, :date_header
     optional :to_header, :cc_header
+    optional :thread_index_header, :thread_topic_header
     optional :sent_via_web, default: false
   end
 
@@ -89,21 +90,31 @@ class Threadable::Messages::Create < MethodObject
     @options.cc_header
   end
 
+  let :thread_index_header do
+    @options.thread_index_header
+  end
+
+  let :thread_topic_header do
+    @options.thread_topic_header
+  end
+
   def create_message!
     @message_record = @conversation.conversation_record.messages.create(
-      parent_message_id: parent_message.try(:id),
-      subject:           subject,
-      from:              from,
-      creator_id:        creator_id,
-      body_plain:        body_plain || "",
-      body_html:         clean_up_html(body_html) || "",
-      stripped_plain:    stripped_plain,
-      stripped_html:     clean_up_html(stripped_html),
-      message_id_header: message_id_header,
-      references_header: references_header.try(:strip),
-      to_header:         to_header,
-      cc_header:         cc_header,
-      date_header:       date_header,
+      parent_message_id:   parent_message.try(:id),
+      subject:             subject,
+      from:                from,
+      creator_id:          creator_id,
+      body_plain:          body_plain || "",
+      body_html:           clean_up_html(body_html) || "",
+      stripped_plain:      stripped_plain,
+      stripped_html:       clean_up_html(stripped_html),
+      message_id_header:   message_id_header,
+      references_header:   references_header.try(:strip),
+      to_header:           to_header,
+      cc_header:           cc_header,
+      date_header:         date_header,
+      thread_index_header: thread_index_header,
+      thread_topic_header: thread_topic_header
     )
     @conversation.update(last_message_at: @message_record.created_at)
     @conversation.update_participant_names_cache!

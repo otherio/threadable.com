@@ -71,20 +71,22 @@ class Threadable::IncomingEmail::Deliver < MethodObject
 
   def create_message!
     @incoming_email.message = @incoming_email.conversation.messages.create!(
-      creator_id:        @incoming_email.creator.try(:id),
-      message_id_header: @incoming_email.message_id,
-      references_header: @incoming_email.references,
-      date_header:       @incoming_email.date.rfc2822,
-      to_header:         @incoming_email.to,
-      cc_header:         @incoming_email.cc,
-      subject:           @incoming_email.subject[0..254],
-      parent_message:    @incoming_email.parent_message,
-      from:              @incoming_email.from,
-      body_plain:        strip_threadable_content(@incoming_email.body_plain),
-      body_html:         strip_threadable_content(@incoming_email.body_html),
-      stripped_plain:    strip_threadable_content(@incoming_email.stripped_plain),
-      stripped_html:     strip_threadable_content(@incoming_email.stripped_html),
-      attachments:       @incoming_email.attachments.all,
+      creator_id:          @incoming_email.creator.try(:id),
+      message_id_header:   @incoming_email.message_id,
+      references_header:   @incoming_email.references,
+      date_header:         @incoming_email.date.rfc2822,
+      to_header:           @incoming_email.to,
+      cc_header:           @incoming_email.cc,
+      subject:             @incoming_email.subject[0..254],
+      parent_message:      @incoming_email.parent_message,
+      from:                @incoming_email.from,
+      body_plain:          strip_threadable_content(@incoming_email.body_plain),
+      body_html:           strip_threadable_content(@incoming_email.body_html),
+      stripped_plain:      strip_threadable_content(@incoming_email.stripped_plain),
+      stripped_html:       strip_threadable_content(@incoming_email.stripped_html),
+      attachments:         @incoming_email.attachments.all,
+      thread_index_header: @incoming_email.thread_index,
+      thread_topic_header: @incoming_email.thread_topic,
     )
   end
 

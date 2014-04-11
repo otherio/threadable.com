@@ -31,6 +31,8 @@ describe Threadable::Message do
   it { should delegate(:created_at         ).to(:message_record) }
   it { should delegate(:persisted?         ).to(:message_record) }
   it { should delegate(:errors             ).to(:message_record) }
+  it { should delegate(:thread_index_header).to(:message_record) }
+  it { should delegate(:thread_topic_header).to(:message_record) }
 
 
   its(:threadable){ should eq threadable }

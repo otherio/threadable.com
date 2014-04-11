@@ -6,8 +6,9 @@ describe Threadable::Messages::FindByChildHeader do
 
   let :header do
     {
-      'In-Reply-To' => in_reply_to_header,
-      'References'  => references_header,
+      'In-Reply-To'  => in_reply_to_header,
+      'References'   => references_header,
+      'message-headers' => [['Thread-Index', thread_index_header]].to_json,
     }
   end
 
@@ -18,6 +19,8 @@ describe Threadable::Messages::FindByChildHeader do
   end
 
   delegate :call, to: :described_class
+
+  let(:thread_index_header) { "" }
 
   context 'when the In-Reply-To and References headers are blank' do
     let(:in_reply_to_header){ stringable("") }
@@ -57,4 +60,28 @@ describe Threadable::Messages::FindByChildHeader do
     end
   end
 
+  context "when the parent message is identifed by the Thread-Index header" do
+    let(:parent_message     ){ organization.messages.latest }
+    let(:in_reply_to_header ){ stringable("") }
+    let(:references_header  ){ stringable("") }
+    let(:thread_index_header) { Base64.strict_encode64("#{parent_thread_index_decoded}67890") }
+
+    let(:parent_thread_index_decoded) { "#{SecureRandom.uuid}12345" }
+
+    before do
+      parent_message.update(thread_index_header: Base64.strict_encode64(parent_thread_index_decoded))
+    end
+
+    it "returns the parent message" do
+      expect( call(organization.id, header) ).to eq parent_message.message_record
+    end
+
+    context "when the parent message is identifed by a much older Thread-Index header" do
+      let(:thread_index_header) { Base64.strict_encode64("#{parent_thread_index_decoded}678901234567890") }
+
+      it "returns the parent message" do
+        expect( call(organization.id, header) ).to eq parent_message.message_record
+      end
+    end
+  end
 end

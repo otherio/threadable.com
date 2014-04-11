@@ -25,6 +25,8 @@ class Threadable::Message < Threadable::Model
     body_plain
     stripped_html
     stripped_plain
+    thread_index_header
+    thread_topic_header
     created_at
     persisted?
     errors

@@ -36,6 +36,8 @@ class IncomingEmailParamsFactory < MethodObject
     # threading
     @options[:in_reply_to]   ||= ''
     @options[:references]    ||= ''
+    @options[:thread_topic]  ||= ''
+    @options[:thread_index]  ||= ''
 
     # content
     @options[:body_html]     ||= Faker::Email.html_body
@@ -57,6 +59,8 @@ class IncomingEmailParamsFactory < MethodObject
       ["To",              @options[:to]],
       ["Cc",              @options[:cc]],
       ["Content-Type",    @options[:content_type]],
+      ["Thread-Index",    @options[:thread_index]],
+      ["Thread-Topic",    @options[:thread_topic]],
     ]
   end
 

@@ -216,6 +216,13 @@ class Threadable::IncomingEmail < Threadable::Model
     params['stripped-text']
   end
 
+  def thread_topic
+    message_headers_as_hash['Thread-Topic']
+  end
+
+  def thread_index
+    message_headers_as_hash['Thread-Index']
+  end
 
 
   def from_email_addresses
