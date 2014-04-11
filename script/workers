@@ -1,6 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-export DB_POOL=20
+require 'bundler/setup'
+require 'dotenv'
+Dotenv.load!
 
-# 20 worker processes
-bundle exec sidekiq -c 20
+ENV['DB_POOL'] = ENV['THREADABLE_WORKER_THREAD_COUNT']
+
+exec %( echo bundle exec sidekiq -c $THREADABLE_WORKER_THREAD_COUNT )
