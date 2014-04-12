@@ -46,7 +46,7 @@ class Threadable::Task::Doers
       task.task_record.doer_ids -= doer_user_ids
       doer_user_ids.each do |user_id|
         task.events.create!(:task_removed_doer,
-          user_id: threadable.current_user.id,
+          user_id: threadable.current_user.try(:id),
           doer_id: user_id,
         )
       end

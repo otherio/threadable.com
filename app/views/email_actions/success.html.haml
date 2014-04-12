@@ -11,16 +11,25 @@
   .well-when-not-small
     %p
       #{@email_action.success_description}
-    %p
-      If this is in error, you can easily undo!
-    %p
-      - case @email_action.type
-        - when 'join'
-          - rejoin_url = email_action_url(token: EmailActionToken.encrypt(@email_action.record.id, @email_action.user.id, 'leave'))
-          %a.uk-button.uk-button-primary.uk-button-large.undo-button{href:rejoin_url}
-            Leave #{@email_action.record.name.inspect}
-        - when 'leave'
-          - rejoin_url = email_action_url(token: EmailActionToken.encrypt(@email_action.record.id, @email_action.user.id, 'join'))
-          %a.uk-button.uk-button-primary.uk-button-large.undo-button{href:rejoin_url}
-            Rejoin #{@email_action.record.name.inspect}
 
+    - if @email_action.opposite_type
+      %p
+        If this is in error, you can easily undo!
+      %p
+        - undo_url = email_action_url(token: EmailActionToken.encrypt(@email_action.record_id, @email_action.user.id, @email_action.opposite_type))
+        %a.uk-button.uk-button-primary.uk-button-large.undo-button{href:undo_url}
+          - case @email_action.type
+            - when 'done'
+              Mark #{@email_action.record.subject.inspect} as not done
+            - when 'undone'
+              Mark #{@email_action.record.subject.inspect} as done
+            - when 'mute'
+              Unmute #{@email_action.record.subject.inspect}
+            - when 'add'
+              Remove yourself as a doer of #{@email_action.record.subject.inspect}
+            - when 'remove'
+              Add yourself as a doer of #{@email_action.record.subject.inspect}
+            - when 'join'
+              Leave #{@email_action.record.name.inspect}
+            - when 'leave'
+              Rejoin #{@email_action.record.name.inspect}
