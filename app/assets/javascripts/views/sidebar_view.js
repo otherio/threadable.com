@@ -56,14 +56,7 @@ Threadable.SidebarView = Ember.View.extend({
     element.on('click.sidebar', '.group .disclosure-triangle', function(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      var group  = $(this).closest('.group');
-      var isOpen = group.is('.open');
-      if (isOpen){
-        group.removeClass('open')
-      }else{
-        element.find('.group.open').not(group).removeClass('open');
-        group.addClass('open');
-      }
+      $(this).closest('.group').toggleClass('open');
     });
   },
 
