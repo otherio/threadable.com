@@ -14,7 +14,7 @@ feature "the welcome modal" do
 
     reload!
     expect(page).to have_text 'Take a moment to learn the basics of Threadable!'
-    click_on "Thanks, I've got it"
+    click_on "Got it, don't show this again"
     expect(page).to_not have_text 'Take a moment to learn the basics of Threadable!'
     expect(current_user.user_record.reload.dismissed_welcome_modal?).to be_true
 
