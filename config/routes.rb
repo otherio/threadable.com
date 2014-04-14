@@ -1,5 +1,7 @@
 Threadable::Application.routes.draw do
 
+  use_doorkeeper
+
   get   '/sign_in'           => 'authentication#show'
   post  '/sign_in'           => 'authentication#sign_in'
   post  '/recover-password'  => 'authentication#recover_password', as: 'recover_password'
