@@ -18,7 +18,7 @@ class EmailAction
     raise InvalidType, "expected one of: #{TYPES.inspect}. Got: #{@type.inspect}" if TYPES.exclude?(@type)
   end
 
-  attr_reader :threadable, :type, :user_id, :record_id, :conversation
+  attr_reader :threadable, :type, :user, :conversation
 
   def user
     @user ||= threadable.current_user || threadable.users.find_by_id(@user_id)
@@ -40,25 +40,13 @@ class EmailAction
 
   def requires_user_to_be_signed_in?
     case @type
-    when 'done';   false
-    when 'undone'; false
-    when 'mute';   false
-    when 'add';    false
-    when 'remove'; false
+    when 'done';   true
+    when 'undone'; true
+    when 'mute';   true
+    when 'add';    true
+    when 'remove'; true
     when 'join';   false
     when 'leave';  false
-    end
-  end
-
-  def opposite_type
-    case @type
-    when 'done';   'undone'
-    when 'undone'; 'done'
-    when 'mute';   nil # 'unmute'
-    when 'add';    'remove'
-    when 'remove'; 'add'
-    when 'join';   'leave'
-    when 'leave';  'join'
     end
   end
 
@@ -68,6 +56,7 @@ class EmailAction
 
   def execute!
     raise AlreadyExecuted if executed?
+    @executed = true
     case type
     when 'done'
       record.done!
@@ -84,7 +73,6 @@ class EmailAction
     when 'leave'
       record.members.remove(user)
     end
-    @executed = true
     threadable.track_for_user(@user_id, 'Email action taken',
       type:      @type,
       record_id: @record_id,
