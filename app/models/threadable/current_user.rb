@@ -16,11 +16,17 @@ class Threadable::CurrentUser < Threadable::User
 
   delegate *%w{
     dismissed_welcome_modal?
+    api_access_token
   }, to: :user_record
 
   def dismissed_welcome_modal!
     user_record.update! dismissed_welcome_modal: true
     self
+  end
+
+  def regenerate_api_access_token!
+    user_record.api_access_tokens.update_all(active: false)
+    ApiAccessToken.create! user: user_record
   end
 
 end

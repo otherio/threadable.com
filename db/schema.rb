@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411204913) do
+ActiveRecord::Schema.define(version: 20140415204230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
+
+  create_table "api_access_tokens", force: true do |t|
+    t.integer  "user_id",                   null: false
+    t.string   "token",                     null: false
+    t.boolean  "active",     default: true
+    t.datetime "created_at",                null: false
+  end
 
   create_table "attachments", force: true do |t|
     t.string   "url"
@@ -50,20 +58,20 @@ ActiveRecord::Schema.define(version: 20140411204913) do
 
   create_table "conversations", force: true do |t|
     t.string   "type"
-    t.string   "subject",                             null: false
-    t.integer  "organization_id",                     null: false
+    t.string   "subject",                                   null: false
+    t.integer  "organization_id",                           null: false
     t.integer  "creator_id"
     t.integer  "position"
-    t.string   "slug",                                null: false
+    t.string   "slug",                                      null: false
     t.datetime "done_at"
     t.integer  "messages_count",          default: 0
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "group_ids_cache"
     t.string   "message_summary_cache"
     t.string   "participant_names_cache"
     t.string   "muter_ids_cache"
-    t.datetime "last_message_at"
+    t.datetime "last_message_at",         default: "now()"
     t.integer  "groups_count",            default: 0
   end
 
@@ -196,6 +204,45 @@ ActiveRecord::Schema.define(version: 20140411204913) do
   add_index "messages", ["created_at"], name: "index_messages_on_created_at", using: :btree
   add_index "messages", ["message_id_header"], name: "index_messages_on_message_id_header", using: :btree
   add_index "messages", ["thread_index_header"], name: "index_messages_on_thread_index_header", using: :btree
+
+  create_table "oauth_access_grants", force: true do |t|
+    t.integer  "resource_owner_id", null: false
+    t.integer  "application_id",    null: false
+    t.string   "token",             null: false
+    t.integer  "expires_in",        null: false
+    t.text     "redirect_uri",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "revoked_at"
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
+
+  create_table "oauth_access_tokens", force: true do |t|
+    t.integer  "resource_owner_id"
+    t.integer  "application_id"
+    t.string   "token",             null: false
+    t.string   "refresh_token"
+    t.integer  "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at",        null: false
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
+
+  create_table "oauth_applications", force: true do |t|
+    t.string   "name",         null: false
+    t.string   "uid",          null: false
+    t.string   "secret",       null: false
+    t.text     "redirect_uri", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "organization_memberships", force: true do |t|
     t.integer  "organization_id",                         null: false

@@ -9,6 +9,7 @@ describe User do
   it { should have_many :organizations }
   it { should have_many :messages }
   it { should have_many :conversations }
+  it { should have_many :api_access_tokens }
   # it { should have_many :tasks } # somehow this is broken now as well
 
   it { should validate_presence_of :name }

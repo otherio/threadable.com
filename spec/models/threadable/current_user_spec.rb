@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Threadable::CurrentUser do
 
   let(:user_record){ Factories.create(:user) }
-  let(:current_user){ Threadable::CurrentUser.new(threadable, user_record.id) }
+  let(:current_user){ described_class.new(threadable, user_record.id) }
   subject{ current_user }
 
   its(:to_param     ){ should eq user_record.to_param     }
@@ -48,5 +48,28 @@ describe Threadable::CurrentUser do
     end
   end
 
+  describe 'regenerate_api_access_token!' do
+    it 'should deactivate any existing tokens and generate a new one' do
+      expect(ApiAccessToken.all).to match_array []
+      expect(current_user.api_access_token).to be_nil
+
+      token1 = current_user.regenerate_api_access_token!
+      expect(ApiAccessToken.all).to match_array [token1]
+      expect(token1).to be_a ApiAccessToken
+      expect(token1).to be_active
+      expect(token1.user_id).to be current_user.id
+      expect(current_user.api_access_token).to eq token1
+
+
+      token2 = current_user.regenerate_api_access_token!
+      expect(ApiAccessToken.all).to match_array [token1, token2]
+      expect(current_user.api_access_token).to eq token2
+
+      token1.reload
+      expect(token1).to_not be_active
+      expect(token2).to be_active
+      expect(token1).to_not eq(token2)
+    end
+  end
 
 end
