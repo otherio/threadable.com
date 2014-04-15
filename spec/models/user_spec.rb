@@ -9,6 +9,7 @@ describe User do
   it { should have_many :organizations }
   it { should have_many :messages }
   it { should have_many :conversations }
+  it { should have_many :api_access_tokens }
   # it { should have_many :tasks } # somehow this is broken now as well
 
   it { should validate_presence_of :name }
@@ -114,6 +115,19 @@ describe User do
         user.email_address = 'foo@bar.love'
         user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net','foo@bar.love']
       end
+    end
+  end
+
+  describe "#api_access_token" do
+
+    subject(:user){ create(:user) }
+
+    it "returns the first active access token" do
+      expect(user.api_access_token).to be_nil
+      token = ApiAccessToken.create!(user: user)
+      expect(user.api_access_token).to eq token
+      token.deactivate!
+      expect(user.api_access_token).to be_nil
     end
   end
 

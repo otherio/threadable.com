@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   has_many :conversations, ->{ uniq }, through: :organizations
   has_many :external_authorizations
   has_many :events
+  has_many :api_access_tokens
 
   has_many :task_doers
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
@@ -65,6 +66,10 @@ class User < ActiveRecord::Base
   # this makes user objects look like Threadable::User objects
   def user_id
     id
+  end
+
+  def api_access_token
+    api_access_tokens.active.first
   end
 
   def email_address= address

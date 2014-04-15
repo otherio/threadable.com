@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411204913) do
+ActiveRecord::Schema.define(version: 20140415204230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
+
+  create_table "api_access_tokens", force: true do |t|
+    t.integer  "user_id",                   null: false
+    t.string   "token",                     null: false
+    t.boolean  "active",     default: true
+    t.datetime "created_at",                null: false
+  end
 
   create_table "attachments", force: true do |t|
     t.string   "url"
@@ -50,20 +58,20 @@ ActiveRecord::Schema.define(version: 20140411204913) do
 
   create_table "conversations", force: true do |t|
     t.string   "type"
-    t.string   "subject",                             null: false
-    t.integer  "organization_id",                     null: false
+    t.string   "subject",                                   null: false
+    t.integer  "organization_id",                           null: false
     t.integer  "creator_id"
     t.integer  "position"
-    t.string   "slug",                                null: false
+    t.string   "slug",                                      null: false
     t.datetime "done_at"
     t.integer  "messages_count",          default: 0
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "group_ids_cache"
     t.string   "message_summary_cache"
     t.string   "participant_names_cache"
     t.string   "muter_ids_cache"
-    t.datetime "last_message_at"
+    t.datetime "last_message_at",         default: "now()"
     t.integer  "groups_count",            default: 0
   end
 
