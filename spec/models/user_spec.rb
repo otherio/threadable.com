@@ -118,4 +118,17 @@ describe User do
     end
   end
 
+  describe "#api_access_token" do
+
+    subject(:user){ create(:user) }
+
+    it "returns the first active access token" do
+      expect(user.api_access_token).to be_nil
+      token = ApiAccessToken.create!(user: user)
+      expect(user.api_access_token).to eq token
+      token.deactivate!
+      expect(user.api_access_token).to be_nil
+    end
+  end
+
 end
