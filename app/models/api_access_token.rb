@@ -15,4 +15,7 @@ class ApiAccessToken < ActiveRecord::Base
     update! active: false
   end
 
+  alias_method :to_s, :token
+  alias_method :to_str, :token
+
 end
