@@ -28,7 +28,7 @@ module RescueFromExceptionsConcern
 
   def rescue_from_exception exception
     raise exception if debug_enabled?
-    logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})"
+    logger.debug "rescuing from exception: #{exception.class}(#{exception.message.inspect})\n#{exception.backtrace.join("\n")}"
 
     sign_out! if Threadable::CurrentUserNotFound === exception
 

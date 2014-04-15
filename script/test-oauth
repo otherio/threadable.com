@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+Bundler.setup
+require 'pry'
+require 'oauth2'
+require 'httparty'
+require 'capybara'
+require 'capybara/dsl'
+
+
+
+class OauthTest
+
+  include Capybara::DSL
+
+  def initialize
+
+    client_id     = '585e101529fd4f21c0bb03b666a57845cf810e04e30608ac8926187b4e8e20a7' # your client's id generated with rake db:setup
+    client_secret = '991941b7ca4bf44b337dbe80d966a9555f56dd2ad14e0d36c79a87bf72adbfae' # your client's secret
+    redirect_uri  = 'urn:ietf:wg:oauth:2.0:oob' # your client's redirect uri
+    site          = "http://0.0.0.0:3000" # your provider server, mine is running on localhost
+
+
+    Capybara.current_driver = :selenium
+    Capybara.app_host = site
+
+    client = OAuth2::Client.new(client_id, client_secret, :site => site)
+    authorize_url = client.auth_code.authorize_url(:redirect_uri => redirect_uri)
+
+    visit authorize_url
+    fill_in 'Email Address', with: 'jared@other.io'
+    fill_in 'Password', with: 'password'
+    click_on 'Sign in'
+
+    # page.has_text? 'Authorization code:'
+    code = find('#authorization_code').text
+    token = client.auth_code.get_token(code, :redirect_uri => redirect_uri)
+
+    current_user = JSON.parse token.get('/api/users/current.json').body
+
+    some_conversations = JSON.parse token.get('/api/conversations.json?organization=adminteam&group=ungrouped&scope=not_muted_conversations&page=0').body
+
+    binding.pry
+  end
+
+end
+
+
+OauthTest.new

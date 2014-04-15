@@ -100,3 +100,5 @@ end
 group :staging_spec do
   gem 'nvlope', '0.0.2'
 end
+
+gem 'oauth2'

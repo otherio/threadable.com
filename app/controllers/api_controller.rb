@@ -3,6 +3,7 @@ class ApiController < ApplicationController
   include SerializerConcern
 
   prepend_before_action :ensure_request_accepts_json!
+  doorkeeper_for :all
 
   private
 

@@ -3,11 +3,12 @@ module AuthenticationConcern
   extend ActiveSupport::Concern
 
   included do
+    include TrackingConcern
     helper_method :threadable, :current_user, :signed_in?
   end
 
   def current_user_id
-    session[:user_id] ||= decrypt_remember_me_cookie!
+    session[:user_id] ||= doorkeeper_token.try(:resource_owner_id) || decrypt_remember_me_cookie!
   end
 
   def current_user

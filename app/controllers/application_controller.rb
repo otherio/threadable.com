@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   include AuthenticationConcern
-  include TrackingConcern
   include RescueFromExceptionsConcern
   include DebugCookie
 

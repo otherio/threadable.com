@@ -1,6 +1,8 @@
 Threadable::Application.routes.draw do
 
-  use_doorkeeper
+  use_doorkeeper do
+    skip_controllers :applications, :authorized_applications
+  end
 
   get   '/sign_in'           => 'authentication#show'
   post  '/sign_in'           => 'authentication#sign_in'
@@ -42,6 +44,11 @@ Threadable::Application.routes.draw do
   # OLD ROUTES START
 
   get '/admin' => 'admin#show'
+  scope :admin do
+    use_doorkeeper do
+      skip_controllers :authorizations, :tokens
+    end
+  end
   namespace :admin do
     get    'debug'         => 'debug#show'
     get    'debug/enable'  => 'debug#enable'
