@@ -12,7 +12,7 @@ class ApiController < ApplicationController
 
   def current_user_id_from_access_token
     params[:access_token].present? or return nil
-    ApiAccessToken.find_by_token(params[:access_token]).try(:user_id)
+    ApiAccessToken.active.find_by_token(params[:access_token]).try(:user_id)
   end
 
   def ensure_request_accepts_json!

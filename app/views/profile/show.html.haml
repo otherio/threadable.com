@@ -80,9 +80,35 @@
     %a{href: '/auth/trello'}
       Trello
 
+.well
+  %h2 API Access Token
+
+
+  - if current_user.api_access_token.present?
+    %input.api-access-token{type:'text', name: 'api_access_token', value: current_user.api_access_token}
+    = form_tag api_access_tokens_path, method: 'post' do
+      = submit_tag :Regenerate, class: 'btn btn-primary', 'data-confirm' => 'This will disable your current api access token. Are you sure?'
+
+  - else
+    %small Generate an access token to use Threadable through our API.
+    = form_tag api_access_tokens_path, method: 'post' do
+      = submit_tag :Generate, class: 'btn btn-primary'
+
 :sass
   table.email-addresses
     td, th
       white-space: nowrap
   .well
     overflow: hidden
+  .api-access-token
+    width: 20em
+
+:javascript
+  $(function(){
+    $('.api-access-token').on('click', function(e){
+      $(this).select();
+    });
+    $('.api-access-token').on('keydown', function(e){
+      e.preventDefault();
+    });
+  });

@@ -96,6 +96,8 @@ Threadable::Application.routes.draw do
   post  '/email_addresses/resend_confirmation_email' => 'email_addresses#resend_confirmation_email', as: 'resend_email_address_confirmation'
   match '/email_addresses/confirm/:token' => 'email_addresses#confirm', as: 'confirm_email_address', via: [:get, :post]
 
+  post  '/api_access_tokens' => 'api_access_tokens#create', as: 'api_access_tokens'
+
   scope '/:organization_id', :as => 'organization' do
 
     resources :held_messages, :only => [:index, :show], controller: 'organization/held_messages' do
