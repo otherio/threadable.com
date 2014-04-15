@@ -23,7 +23,7 @@ class VerifyDmarc < MethodObject
 
     rdata_records = query.answer.select{|r| r.type == 'TXT'}.map(&:rdata).flatten.compact || []
 
-    cname_records = query.answer.select{|r| r.type == 'CNAME'}.map{|r| r.rdata.first.to_s}.compact
+    cname_records = query.answer.select{|r| r.type == 'CNAME'}.map{|r| r.rdata.to_s}.compact
     cname_records.each do |cname|
       rdata_records << dmarc_records(cname, depth + 1)
     end

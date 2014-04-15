@@ -64,7 +64,7 @@ describe VerifyDmarc, fixtures: false do
   end
 
   context 'when address is a cname' do
-    let(:rdata) { ["_dmarc.fooalicious.com"] }
+    let(:rdata) { "_dmarc.fooalicious.com" }
     let(:answer) { [ double(:dns_record1, type: 'CNAME', rdata: rdata) ] }
 
     let(:rdata2) { ["v=DMARC1; p=#{policy}; rua=mailto:mailauth-reports@foo.com"] }
