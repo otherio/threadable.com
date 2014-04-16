@@ -4,6 +4,12 @@ HOST: https://threadable.com/
 # Threadable
 Threadable is a *better mailing list* for group discussions. This API lets you control it from your application!
 
+# Not done yet!
+The Threadable API is a work-in-progress. We'll try to avoid breaking changes, of course, but you can expect
+it to evolve a lot in the coming months.
+
+If you're using this api, let us know! Drop us an email at hello@threadable.com
+
 # Authentication
 To authenticate, you need a token. Get the token from your user profile page, https://threadable.com/profile
 
@@ -361,20 +367,145 @@ Remove the current user from a group
 
 # Group Conversations
 
+## Conversations Collection [/api/conversations]
+### List all Conversations [GET]
++ Response 200 (application/json)
+
+        {
+          "conversations":[
+            {
+              "id":51,
+              "slug":"inventory-led-supplies",
+              "organization_slug":"raceteam",
+              "subject":"inventory led supplies",
+              "task":true,
+              "created_at":"2014-02-02T19:10:58.850Z",
+              "updated_at":"2014-02-02T19:41:14.719Z",
+              "last_message_at":"2014-02-02T19:12:57.798Z",
+              "participant_names":[
+                "Alice", "Bob"
+              ],
+              "number_of_messages":1,
+              "message_summary":"Cars need lights, so lets get a sense of our led si",
+              "group_ids":[
+                5,
+                7,
+                6
+              ],
+              "doers":[
+
+              ],
+              "doing":false,
+              "done_at":null,
+              "done":false,
+              "position":10,
+              "muted":false
+            },
+            {
+              "id":47,
+              "slug":"get-some-4-gauge-wire",
+              "organization_slug":"raceteam",
+              "subject":"get some 4 gauge wire",
+              "task":true,
+              "created_at":"2014-02-02T13:48:39.805Z",
+              "updated_at":"2014-02-02T13:54:32.417Z",
+              "last_message_at":null,
+              "participant_names":[
+                "Alice"
+              ],
+              "number_of_messages":0,
+              "message_summary":null,
+              "group_ids":[
+                5,
+                6
+              ],
+              "doers":[
+
+              ],
+              "doing":false,
+              "done_at":null,
+              "done":false,
+              "position":9,
+              "muted":false
+            }
+          ]
+        }
+
+# Create a conversation [POST]
++ Request (application/json)
+
+        {
+          "conversation":{
+            "subject":"Fundraiser party",
+            "task":false,
+            "group_ids":[
+              6
+            ],
+          },
+          "organization_id":"raceteam"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "conversation":{
+            "id":52,
+            "slug":"fundraiser-party",
+            "organization_slug":"raceteam",
+            "subject":"Fundraiser party",
+            "task":false,
+            "created_at":"2014-04-16T23:18:32.012Z",
+            "updated_at":"2014-04-16T23:18:32.331Z",
+            "last_message_at":null,
+            "participant_names":[
+              "Darth"
+            ],
+            "number_of_messages":0,
+            "message_summary":null,
+            "group_ids":[
+              6
+            ],
+            "doers":[
+
+            ],
+            "doing":null,
+            "done_at":null,
+            "done":null,
+            "position":-1,
+            "muted":false
+          }
+        }
+
+## Conversations Search [/api/conversations/search]
+
+## Conversation [/api/conversations/{id}]
+
 # Group Tasks
+## Tasks Collection [/api/tasks]
+## Task [/api/tasks/{id}]
 
 # Group Messages
+## Messages Collection [/api/messages]
+## Message [/api/messages/{id}]
 
 # Group Events
+## Events Collection [/api/events]
+## Event [/api/events/{id}]
 
-# Group Users
+# Group Current User
+## Current User [/api/users/current]
 
 # Group Organization Members
+## Organization Members Collection [/api/organization_members]
+## Organization Member [/api/organization_members/{id}]
 
 # Group Group Members
+## Group Members Collection [/api/group_members]
+## Group Member [/api/group_members/{id}]
 
 # Group Task Doers
-
+## Task Doers Collection [/api/task_doers]
+## Task Doer [/api/task_doers/{id}]
 
 # Group Notes (this is an example from apiary, make sure to delete it)
 Notes related resources of the **Notes API**
