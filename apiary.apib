@@ -15,10 +15,9 @@ Then just append your token to the request. For instance, if you wanted to get t
 *Oauth2 coming soon!*
 
 # Group Organizations
-Organization related resources of the **Threadable API**
 An Organization can contain many groups, conversations, and messages. A user can be a member of many organizations.
 
-## Organizations Collection [/organizations]
+## Organizations Collection [/api/organizations]
 ### List all Organizations [GET]
 + Response 200 (application/json)
 
@@ -89,7 +88,7 @@ An Organization can contain many groups, conversations, and messages. A user can
           ]
         }
 
-## Organization [/organizations/{id}]
+## Organization [/api/organizations/{id}]
 A single Organization object with all its details.
 
 + Parameters
@@ -165,6 +164,195 @@ A single Organization object with all its details.
 
 # Group Groups
 
+## Groups collection [/api/groups]
+### Create a Group [POST]
++ Request (application/json)
+
+        {
+          "group":{
+            "name":"Graphic Design",
+            "email_address_tag":"graphic-design",
+            "subject_tag":"Design",
+            "color":"#D35400",
+            "auto_join":false,
+            "hold_messages":false
+          },
+          "organization_id":"raceteam"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "id":7,
+          "slug":"graphic-design",
+          "name":"Graphic Design",
+          "email_address_tag":"graphic-design",
+          "subject_tag":"RaceTeam+Graphic Design",
+          "color":"#f2ad40",
+          "auto_join":true,
+          "hold_messages":true,
+          "alias_email_address":"",
+          "webhook_url":"",
+          "email_address":"raceteam+graphic-design@threadable.com",
+          "task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
+          "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
+          "internal_email_address":"raceteam+graphic-design@threadable.com",
+          "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "conversations_count":1,
+          "members_count":9,
+          "organization_slug":"raceteam",
+          "current_user_is_a_member":false
+        }
+
+## Group [/api/groups/{id}]
+A single Group object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with. Has example value.
+
+### Retrieve a Group [GET]
++ Response 200 (application/json)
+
+        {
+          "id":7,
+          "slug":"graphic-design",
+          "name":"Graphic Design",
+          "email_address_tag":"graphic-design",
+          "subject_tag":"RaceTeam+Graphic Design",
+          "color":"#f2ad40",
+          "auto_join":true,
+          "hold_messages":true,
+          "alias_email_address":"",
+          "webhook_url":"",
+          "email_address":"raceteam+graphic-design@threadable.com",
+          "task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
+          "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
+          "internal_email_address":"raceteam+graphic-design@threadable.com",
+          "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "conversations_count":1,
+          "members_count":9,
+          "organization_slug":"raceteam",
+          "current_user_is_a_member":false
+        }
+
+### Update a Group [PUT]
++ Request (application/json)
+
+        {
+          "group":{
+            "subject_tag":"Design",
+            "color":"#D35400",
+            "auto_join":false,
+            "hold_messages":false,
+            "alias_email_address":"Design Team \u003cdesign@ucsd.example.com\u003e",
+            "webhool_url":"http://example.com/hookreceiver"
+          },
+          "organization_id":"raceteam"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "id":7,
+          "slug":"graphic-design",
+          "name":"Graphic Design",
+          "email_address_tag":"graphic-design",
+          "subject_tag":"RaceTeam+Graphic Design",
+          "color":"#f2ad40",
+          "auto_join":true,
+          "hold_messages":true,
+          "alias_email_address":"Design Team \u003cdesign@ucsd.example.com\u003e",
+          "webhool_url":"http://example.com/hookreceiver",
+          "email_address":"raceteam+graphic-design@threadable.com",
+          "task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
+          "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
+          "internal_email_address":"raceteam+graphic-design@threadable.com",
+          "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "conversations_count":1,
+          "members_count":9,
+          "organization_slug":"raceteam",
+          "current_user_is_a_member":false
+        }
+
+### Remove a Group [DELETE]
++ Response 204
+
+## Group join action [/api/groups/{id}/join]
+Add the current user to a group
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with. Has example value.
+
+### Join a Group [POST]
++ Request
+
+        (empty)
+
++ Response 200 (application/json)
+
+        {
+          "id":7,
+          "slug":"graphic-design",
+          "name":"Graphic Design",
+          "email_address_tag":"graphic-design",
+          "subject_tag":"RaceTeam+Graphic Design",
+          "color":"#f2ad40",
+          "auto_join":true,
+          "hold_messages":true,
+          "alias_email_address":"",
+          "webhook_url":"",
+          "email_address":"raceteam+graphic-design@threadable.com",
+          "task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
+          "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
+          "internal_email_address":"raceteam+graphic-design@threadable.com",
+          "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "conversations_count":1,
+          "members_count":9,
+          "organization_slug":"raceteam",
+          "current_user_is_a_member":false
+        }
+
+## Group leave action [/api/groups/{id}/leave]
+Remove the current user from a group
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with. Has example value.
+
+### Leave a Group [POST]
++ Request
+
+        (empty)
+
++ Response 200 (application/json)
+
+        {
+          "id":7,
+          "slug":"graphic-design",
+          "name":"Graphic Design",
+          "email_address_tag":"graphic-design",
+          "subject_tag":"RaceTeam+Graphic Design",
+          "color":"#f2ad40",
+          "auto_join":true,
+          "hold_messages":true,
+          "alias_email_address":"",
+          "webhook_url":"",
+          "email_address":"raceteam+graphic-design@threadable.com",
+          "task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
+          "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
+          "internal_email_address":"raceteam+graphic-design@threadable.com",
+          "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
+          "conversations_count":1,
+          "members_count":9,
+          "organization_slug":"raceteam",
+          "current_user_is_a_member":false
+        }
+
+
 # Group Conversations
 
 # Group Tasks
@@ -182,7 +370,7 @@ A single Organization object with all its details.
 # Group Task Doers
 
 
-# Group Notes (this is an example, make sure to delete it)
+# Group Notes (this is an example from apiary, make sure to delete it)
 Notes related resources of the **Notes API**
 
 ## Notes Collection [/notes]
