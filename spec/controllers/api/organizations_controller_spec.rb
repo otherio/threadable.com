@@ -9,30 +9,30 @@ describe Api::OrganizationsController do
         expect(response.status).to eq 401
       end
     end
-    describe 'create' do
-      it 'renders unauthorized' do
-        xhr :post, :create, format: :json
-        expect(response.status).to eq 401
-      end
-    end
     describe 'show' do
       it 'renders unauthorized' do
         xhr :get, :show, format: :json, id: 1
         expect(response.status).to eq 401
       end
     end
-    describe 'update' do
-      it 'renders unauthorized' do
-        xhr :patch, :update, format: :json, id: 1
-        expect(response.status).to eq 401
-      end
-    end
-    describe 'destroy' do
-      it 'renders unauthorized' do
-        xhr :delete, :destroy, format: :json, id: 1
-        expect(response.status).to eq 401
-      end
-    end
+    # describe 'create' do
+    #   it 'renders unauthorized' do
+    #     xhr :post, :create, format: :json
+    #     expect(response.status).to eq 401
+    #   end
+    # end
+    # describe 'update' do
+    #   it 'renders unauthorized' do
+    #     xhr :patch, :update, format: :json, id: 1
+    #     expect(response.status).to eq 401
+    #   end
+    # end
+    # describe 'destroy' do
+    #   it 'renders unauthorized' do
+    #     xhr :delete, :destroy, format: :json, id: 1
+    #     expect(response.status).to eq 401
+    #   end
+    # end
   end
 
   when_signed_in_as 'bob@ucsd.example.com' do
