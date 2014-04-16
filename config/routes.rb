@@ -19,7 +19,7 @@ Threadable::Application.routes.draw do
       resource :current, controller: 'current_user', only: [:show, :update]
     end
 
-    resources :organizations
+    resources :organizations, only: [:index, :show]
     resources :groups do
       post :join
       post :leave
