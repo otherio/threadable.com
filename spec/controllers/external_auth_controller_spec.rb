@@ -6,6 +6,7 @@ describe ExternalAuthController do
     let(:auth_hash) do
       {
         'provider' => 'trello',
+        'uid' => '1234567890',
         'credentials' => {
           'token' => 'TOKEN',
           'secret' => 'SECRET',

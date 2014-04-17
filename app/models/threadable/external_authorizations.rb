@@ -46,7 +46,7 @@ class Threadable::ExternalAuthorizations < Threadable::Collection
   private
 
   def scope
-    ::ExternalAuthorization
+    ::ExternalAuthorization.all
   end
 
   def external_authorization_for external_authorization_record

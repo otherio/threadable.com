@@ -40,7 +40,7 @@ describe IntegrationHooksController do
           expect(response.body).to be_blank
 
           incoming_integration_hook = organization.incoming_integration_hooks.all.first
-          expect(incoming_integration_hook.params).to eq {foo: 'bar'}
+          expect(incoming_integration_hook.params).to eq({'foo' => 'bar', 'provider' => 'trello'})
         end
       end
 

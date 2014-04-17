@@ -45,8 +45,6 @@ class ConversationMailer < Threadable::Mailer
       end
     end
 
-    reply_to_address = @conversation.canonical_formatted_email_address if @recipient.munge_reply_to?
-
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
 
     if has_many_groups
