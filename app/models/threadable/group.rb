@@ -25,6 +25,7 @@ class Threadable::Group < Threadable::Model
     webhook_url
     integration_type
     integration_params
+    integration_user
   }, to: :group_record
 
   def group_id

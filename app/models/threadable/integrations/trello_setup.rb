@@ -15,7 +15,7 @@ class Threadable::Integrations::TrelloSetup < Threadable::Integrations::TrelloBa
       'idModel'     => board_id,
     )
 
-    group.integration_user = current_user if hook
+    group.update(integration_user: current_user) if hook
   end
 
   attr_reader :threadable, :current_user
