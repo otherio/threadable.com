@@ -8,9 +8,25 @@ describe Threadable::Integrations::TrelloProcessor do
   let(:organization) { threadable.organizations.find_by_slug!('raceteam') }
   let(:group) { organization.groups.find_by_slug('fundraising') }
   let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com')}
+  let(:bob) { organization.members.find_by_email_address('bob@ucsd.example.com')}
   let(:request) { nil }
 
   let(:incoming_integration_hook) { threadable.incoming_integration_hooks.create!(organization, group, request, params) }
+
+  before do
+    bob.external_authorizations.add_or_update!(
+      provider: 'trello',
+      token: 'foo',
+      secret: 'bar',
+      name: 'Bob Cauchois',
+      email_address: 'alice@foo.com',
+      nickname: 'bobc',
+      url: 'http://foo.com/',
+      unique_id: 'BOB_USER_ID'
+    )
+
+    group.update(integration_user: bob.user_record)
+  end
 
   describe '#call' do
     let(:params) do
@@ -24,7 +40,7 @@ describe Threadable::Integrations::TrelloProcessor do
             "type" => action_type,
             "date" => "2014-03-16T03:14:59.371Z",
             "memberCreator" => {
-              "id" => "USER_ID",
+              "id" => "ALICE_USER_ID",
               "avatarHash" => "e9336c46b73a5cff14ff49632d18c6d0",
               "fullName" => "Ian Baker",
               "initials" => "IB",
@@ -87,7 +103,7 @@ describe Threadable::Integrations::TrelloProcessor do
           email_address: 'alice@foo.com',
           nickname: 'alice',
           url: 'http://foo.com/',
-          unique_id: 'USER_ID'
+          unique_id: 'ALICE_USER_ID'
         )
       end
 

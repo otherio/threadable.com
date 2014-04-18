@@ -1,7 +1,7 @@
 class Threadable::Integrations::TrelloBase < MethodObject
 
   def auth
-    current_user.external_authorizations.for_provider('trello')
+    group.integration_user.external_authorizations.for_provider('trello')
   end
 
   def client

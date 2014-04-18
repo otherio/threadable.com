@@ -58,7 +58,7 @@ class Threadable::Integrations::TrelloProcessor < Threadable::Integrations::Trel
       return @user = threadable.users.find_by_id(external_auth.user_id)
     end
 
-    member = client.find(:member, "user1234")
+    member = client.find(:member, action['memberCreator']['username'])
     return @user = threadable.users.find_by_email_address(member['email'])
   end
 
