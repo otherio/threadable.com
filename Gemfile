@@ -92,7 +92,6 @@ group :test do
   gem 'shoulda-matchers', require: nil
   gem 'launchy'
   gem 'factory_girl_rails'
-  gem 'codeclimate-test-reporter', require: nil
   gem 'ffaker'
   gem 'rest-client'
 end
