@@ -10,6 +10,7 @@
     = simple_form_for current_user, url: current_url do |f|
       = f.input :name
       = f.input :munge_reply_to?, as: :select, :collection => [['The original sender',false],['The group',true]], :include_blank => false, :label => "When you reply to an email, it should go to:"
+      = f.input :show_mail_buttons?, as: :select, :collection => [['Do not display email action buttons',false],['Display email action buttons',true]], :include_blank => false, :label => "Email action buttons:"
       = f.submit :Update, class: 'btn btn-primary'
 
   .well.span5

@@ -169,6 +169,24 @@ describe ConversationMailer do
       end
     end
 
+    describe "mail buttons" do
+      context "with mail buttons enabled" do
+        it "has the buttons in the mail" do
+          mail.html_part.body.to_s.should include 'class="threadable-button"'
+          mail.html_part.body.to_s.should_not include 'class="threadable-conversation"'
+        end
+      end
+      context "with mail buttons disabled" do
+        before do
+          recipient.update(show_mail_buttons: false)
+        end
+        it "doesn't have buttons in the mail" do
+          mail.html_part.body.to_s.should_not include 'class="threadable-button"'
+          mail.html_part.body.to_s.should include 'class="threadable-conversation"'
+        end
+      end
+    end
+
     context 'with attachments' do
       let(:conversation) { organization.conversations.find_by_slug! 'how-are-we-paying-for-the-motor-controller' }
 

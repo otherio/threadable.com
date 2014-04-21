@@ -20,6 +20,8 @@ class ConversationMailer < Threadable::Mailer
     buffer_length = 0 if buffer_length < 0
     @message_summary = "#{@message.body_plain.to_s[0,200]}#{' ' * buffer_length}#{'_' * buffer_length}"
 
+    @show_mail_buttons = recipient.show_mail_buttons?
+
     @subject = PrepareEmailSubject.call(@organization, @message)
     @subject.sub!(/^\s*(re:\s?)*/i, "\\1#{@conversation.subject_tag} ")
     @subject = "Re: #{@subject}" if @subject !~ /re:/i && @message.parent_message.present?

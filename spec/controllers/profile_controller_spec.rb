@@ -48,6 +48,15 @@ describe ProfileController do
         end
       end
 
+      context 'when updating your email button display' do
+        it 'should update the email button display setting' do
+          patch :update, user: { name: 'Yan!', show_mail_buttons: false }
+          expect(response).to redirect_to profile_path
+          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').show_mail_buttons?).to be_false
+          expect(flash[:notice]).to eq "We've updated your profile"
+        end
+      end
+
       context 'when updating your password' do
         it 'should update your password' do
           patch :update, user: {
