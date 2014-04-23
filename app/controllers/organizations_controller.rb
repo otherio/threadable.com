@@ -2,7 +2,7 @@ class OrganizationsController < ApplicationController
 
   skip_before_action :require_user_be_signed_in!
   before_action :require_user_be_signed_in_or_have_a_sign_up_confirmation_token!
-  before_action :decrypy_sign_up_confirmation_token!
+  before_action :decrypt_sign_up_confirmation_token!
 
   # GET /create
   def new
@@ -49,7 +49,7 @@ class OrganizationsController < ApplicationController
     redirect_to sign_in_path(r: new_organization_path)
   end
 
-  def decrypy_sign_up_confirmation_token!
+  def decrypt_sign_up_confirmation_token!
     return unless sign_up_confirmation_token
     @organization_name, @email_address = SignUpConfirmationToken.decrypt(sign_up_confirmation_token)
   end
