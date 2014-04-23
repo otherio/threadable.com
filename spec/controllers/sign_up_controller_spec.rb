@@ -63,7 +63,6 @@ describe SignUpController, fixtures: true do
           threadable.track('Homepage sign up', email_address: email_address, organization_name: organization_name)
         end
       end
-
     end
 
     describe 'GET /sign_up/confirmation/:token' do

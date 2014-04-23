@@ -148,6 +148,18 @@ describe NewOrganization, fixtures: false do
 
         expect(subject.organization.members.count).to eq 3
       end
+
+      context 'when the email has Upper Case characters' do
+        let(:your_email_address) { 'ILoveUpperCase@gmail.com' }
+        it 'finds the user using the lowercase email address' do
+          expect(controller).to receive(:sign_in!).
+            with{ threadable.users.find_by_email_address!('iloveuppercase@gmail.com') }.
+            and_return{|user| threadable.current_user = user; true }
+
+          expect(subject.create).to be_true
+
+        end
+      end
     end
 
     context 'when signed in' do

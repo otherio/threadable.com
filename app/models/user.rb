@@ -73,13 +73,14 @@ class User < ActiveRecord::Base
   end
 
   def email_address= address
-    if email_address = EmailAddress.where(address: address, user_id: nil).first
+    if email_address = EmailAddress.where(address: address.downcase, user_id: nil).first
+      primary_email_address && primary_email_address.update_attribute(:primary, false)
       email_address.primary = true
       email_addresses << email_address
     else
       email_addresses.build(
         user: self,
-        address: address,
+        address: address.downcase,
         primary: new_record?,
         confirmed_at: nil,
       )

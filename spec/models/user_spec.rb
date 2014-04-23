@@ -115,6 +115,29 @@ describe User do
         user.email_address = 'foo@bar.love'
         user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net','foo@bar.love']
       end
+
+      it "downcases the address" do
+        user.email_address = 'FoO@bar.love'
+        user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net','foo@bar.love']
+      end
+
+      context 'when the address exists, but is not owned by any user' do
+        before do
+          EmailAddress.create!(address: 'foo@bar.love', user_id: nil)
+        end
+
+        it "adopts it and sets it to primary" do
+          user.email_address = 'foo@bar.love'
+          user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net', 'foo@bar.love']
+          user.email_address.should == 'foo@bar.love'
+        end
+
+        it "adopts it even if the case does not match" do
+          user.email_address = 'FoO@bar.love'
+          user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net', 'foo@bar.love']
+          user.email_address.should == 'foo@bar.love'
+        end
+      end
     end
   end
 

@@ -5,11 +5,11 @@ describe OrganizationsController do
   let(:creator){ double(:creator) }
   let(:new_organization){ double(:new_organization, creator: creator) }
 
-  let(:mixpand_distinct_id){ SecureRandom.uuid }
+  let(:mixpanel_distinct_id){ SecureRandom.uuid }
 
   before do
     request.cookies[TrackingConcern::MixpanelCookie::MIXPANEL_COOKIE_NAME] = {
-      distinct_id: mixpand_distinct_id
+      distinct_id: mixpanel_distinct_id
     }.to_json
   end
 
@@ -34,7 +34,7 @@ describe OrganizationsController do
 
           get :new, {token: token}
           expect(response).to render_template :new
-          assert_tracked(mixpand_distinct_id, 'New Organization Page Visited',
+          assert_tracked(mixpanel_distinct_id, 'New Organization Page Visited',
             sign_up_confirmation_token: true,
             organization_name: organization_name,
             email_address: email_address,
@@ -71,24 +71,32 @@ describe OrganizationsController do
             expect(trackings).to be_blank
           end
         end
+
         context 'when the new organization is valid' do
+          let(:new_organization_params) do
+            {
+              organization_name:      organization_name,
+              email_address_username: 'my-new-org',
+              your_name:              'michael Faraday',
+              password:               'passest of words',
+              password_confirmation:  'passest of words',
+            }
+          end
 
-          before{ expect(new_organization).to receive(:create).and_return(true) }
+          let(:email_address) { 'Michael.Faraday@gmail.com' }
+
           it "assigns a NewOrganization instance to @new_organization, creates the organization and signs in as the creator" do
-            expect(NewOrganization).to receive(:new).with(controller, 'organization_name' => organization_name, 'your_email_address' => email_address).and_return(new_organization)
-            expect(new_organization).to receive(:organization_name  ).and_return(organization_name)
-            expect(new_organization).to receive(:your_email_address ).and_return(email_address)
-
-            organization = double(:organization, to_param: 'my-new-org', id: 345)
-            expect(new_organization).to receive(:organization).twice.and_return(organization)
             post :create, {
               token: token,
-              new_organization: {organization_name: organization_name}
+              new_organization: new_organization_params
             }
-            expect(assigns(:new_organization)).to be new_organization
+
+            new_organization = threadable.organizations.find_by_slug('my-new-org')
+            expect(new_organization.name).to eq 'my new org'
             expect(response).to redirect_to controller.compose_conversation_url('my-new-org', 'my')
 
-            assert_tracked(mixpand_distinct_id, 'Organization Created',
+            new_user = threadable.users.find_by_email_address(email_address)
+            assert_tracked(new_user.id, 'Organization Created',
               sign_up_confirmation_token: true,
               organization_name: organization_name,
               email_address: email_address,
