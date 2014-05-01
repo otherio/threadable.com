@@ -89,5 +89,16 @@ describe PrepareEmailSubject do
         it { should eq "[walmart]" }
       end
     end
+
+    context "with a nil message" do
+      let(:stripped_plain) { nil }
+      context "[foobar] " do
+        it { should be_nil }
+      end
+
+      context "[walmart]" do
+        it { should eq "[walmart]" }
+      end
+    end
   end
 end

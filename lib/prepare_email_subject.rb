@@ -8,6 +8,7 @@ class PrepareEmailSubject < MethodObject
     possible_subject_tags = possible_subject_tags.map{|tag| Regexp.escape tag}.join('|')
     subject = email.subject.gsub(%r{\s*\[(#{possible_subject_tags}|task|✔|✔\uFE0E|✔\uFE0F)\](\s*)}, '\2').sub(/^\s+/, '')
     return subject[0..254] if subject.present?
+    return nil unless email.stripped_plain
     split_body = email.stripped_plain.split(/\s+/)
     if split_body[8]
       subject = "#{split_body[0..7].join(' ').sub(/\W+$/, '')}..."
