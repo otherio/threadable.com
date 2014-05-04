@@ -672,6 +672,11 @@ Event types: `conversation_created`, `conversation_added_group`, `conversation_r
 # Group Messages
 When creating a message, make sure to first create the conversation that the message lives in.
 
+For the message body, you can specify any of `body`, `body_plain`, `body_html`, `stripped_plain`,
+`stripped_html` and Threadable will figure out what to do.
+
+Note: The stripped- forms are the same as the body, but with quoted text removed.
+
 ## Messages Collection [/api/messages]
 ### Create a Message [POST]
 + Request (application/json)
