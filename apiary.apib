@@ -708,7 +708,7 @@ When creating a message, make sure to first create the conversation that the mes
             "subject":"Let's make breakfast",
             "body":"\u003cp\u003eI have everything we need for pancakes. We could also make biscuits.\u003c/p\u003e",
             "body_stripped":"\u003cp\u003eI have everything we need for pancakes. We could also make biscuits.\u003c/p\u003e",
-            "message_id_header":"\u003c5366984c86264_86c03feb088670e4556ef@localhost\u003e",
+            "message_id_header":"\u003c5366984c86264_86c03feb088670e4556ef@threadable.com\u003e",
             "references_header":null,
             "date_header":"Sun, 04 May 2014 19:43:08 -0000",
             "html":true,
@@ -750,24 +750,169 @@ When creating a message, make sure to first create the conversation that the mes
           }
         }
 
-# Group Tasks
-## Tasks Collection [/api/tasks]
-## Task [/api/tasks/{id}]
-
-
-
 # Group Current User
+The current user record tells you about your own account. It also contains links to all of
+the current user's groups.
+
 ## Current User [/api/users/current]
 
+### Fetch the current user [GET]
++ Response (application/json)
+        {
+          "user":{
+            "id":"current",
+            "user_id":3,
+            "param":"ian-baker",
+            "name":"Ian Baker",
+            "email_address":"ian@other.io",
+            "slug":"ian-baker",
+            "avatar_url":"//gravatar.com/avatar/e792b3a504932f24c669684b64c5edc9.png?s=70\u0026d=retro",
+            "external_authorizations":[],
+            "current_organization_id":2,
+            "organizations":[
+              {
+                "id":1,
+                "param":"raceteam",
+                "name":"Electric Race Car Team",
+                "short_name":"raceteam",
+                "slug":"raceteam",
+                "subject_tag":"raceteam",
+                "description":"Senior engineering electric race car team!",
+                "has_held_messages":false,
+                "trusted":false,
+                "email_address_username":"raceteam",
+                "email_address":"raceteam@threadable.com",
+                "task_email_address":"raceteam+task@threadable.com",
+                "formatted_email_address":"Other Admins \u003craceteam@threadable.com\u003e",
+                "formatted_task_email_address":"Other Admins Tasks \u003craceteam+task@threadable.com\u003e",
+                "groups":[]
+              },
+              {
+                "id":2,
+                "param":"sfhealth",
+                "name":"SF Health Center",
+                "short_name":"SFHealth",
+                "slug":"sfhealth",
+                "subject_tag":"SFHealth",
+                "description":"San Francisco Health Center",
+                "has_held_messages":false,
+                "trusted":false,
+                "email_address_username":"sfhealth",
+                "email_address":"sfhealth@threadable.com",
+                "task_email_address":"sfhealth+task@threadable.com",
+                "formatted_email_address":"SF Health Center \u003csfhealth@threadable.com\u003e",
+                "formatted_task_email_address":"SF Health Center Tasks \u003csfhealth+task@threadable.com\u003e",
+                "groups":[
+                  {
+                    "id":4,
+                    "slug":"cardiology",
+                    "name":"Cardiology",
+                    "email_address_tag":"cardiology",
+                    "subject_tag":"SFHealth+Cardiology",
+                    "color":"#d94876",
+                    "auto_join":false,
+                    "hold_messages":true,
+                    "alias_email_address":"",
+                    "webhook_url":"",
+                    "email_address":"sfhealth+cardiology@threadable.com",
+                    "task_email_address":"sfhealth+cardiology+task@threadable.com",
+                    "formatted_email_address":"\"SF Health Center: Cardiology\" \u003csfhealth+cardiology@threadable.com\u003e",
+                    "formatted_task_email_address":"\"SF Health Center: Cardiology Tasks\" \u003csfhealth+cardiology+task@threadable.com\u003e",
+                    "internal_email_address":"sfhealth+cardiology@threadable.com",
+                    "internal_task_email_address":"sfhealth+cardiology+task@threadable.com",
+                    "conversations_count":1,
+                    "members_count":6,
+                    "organization_slug":"sfhealth",
+                    "current_user_is_a_member":false
+                  },
+                  {
+                    "id":3,
+                    "slug":"anesthiology",
+                    "name":"Anesthiology",
+                    "email_address_tag":"anesthiology",
+                    "subject_tag":"SFHealth+Anesthiology",
+                    "color":"#f2ad40",
+                    "auto_join":false,
+                    "hold_messages":true,
+                    "alias_email_address":"",
+                    "webhook_url":"",
+                    "email_address":"sfhealth+anesthiology@threadable.com",
+                    "task_email_address":"sfhealth+anesthiology+task@threadable.com",
+                    "formatted_email_address":"\"SF Health Center: Anesthiology\" \u003csfhealth+anesthiology@threadable.com\u003e",
+                    "formatted_task_email_address":"\"SF Health Center: Anesthiology Tasks\" \u003csfhealth+anesthiology+task@threadable.com\u003e",
+                    "internal_email_address":"sfhealth+anesthiology@threadable.com",
+                    "internal_task_email_address":"sfhealth+anesthiology+task@threadable.com",
+                    "conversations_count":2,
+                    "members_count":6,
+                    "organization_slug":"sfhealth",
+                    "current_user_is_a_member":false
+                  },
+                  {
+                    "id":2,
+                    "slug":"triage",
+                    "name":"Triage",
+                    "email_address_tag":"triage",
+                    "subject_tag":"SFHealth+Triage",
+                    "color":"#5a9de1",
+                    "auto_join":false,
+                    "hold_messages":true,
+                    "alias_email_address":"",
+                    "webhook_url":"",
+                    "email_address":"sfhealth+triage@threadable.com",
+                    "task_email_address":"sfhealth+triage+task@threadable.com",
+                    "formatted_email_address":"\"SF Health Center: Triage\" \u003csfhealth+triage@threadable.com\u003e",
+                    "formatted_task_email_address":"\"SF Health Center: Triage Tasks\" \u003csfhealth+triage+task@threadable.com\u003e",
+                    "internal_email_address":"sfhealth+triage@threadable.com",
+                    "internal_task_email_address":"sfhealth+triage+task@threadable.com",
+                    "conversations_count":11,
+                    "members_count":11,
+                    "organization_slug":"sfhealth",
+                    "current_user_is_a_member":false
+                  },
+                  {
+                    "id":1,
+                    "slug":"social",
+                    "name":"Social",
+                    "email_address_tag":"social",
+                    "subject_tag":"SFHealth+Social",
+                    "color":"#3498db",
+                    "auto_join":true,
+                    "hold_messages":true,
+                    "alias_email_address":"",
+                    "webhook_url":"",
+                    "email_address":"sfhealth+social@threadable.com",
+                    "task_email_address":"sfhealth+social+task@threadable.com",
+                    "formatted_email_address":"\"SF Health Center: Social\" \u003csfhealth+social@threadable.com\u003e",
+                    "formatted_task_email_address":"\"SF Health Center: Social Tasks\" \u003csfhealth+social+task@threadable.com\u003e",
+                    "internal_email_address":"sfhealth+social@threadable.com",
+                    "internal_task_email_address":"sfhealth+social+task@threadable.com",
+                    "conversations_count":8,
+                    "members_count":17,
+                    "organization_slug":"sfhealth",
+                    "current_user_is_a_member":true
+                  }
+                ]
+              }
+            ],
+            "dismissed_welcome_modal":true
+          }
+        }
+
 # Group Organization Members
+Coming soon!
+
 ## Organization Members Collection [/api/organization_members]
 ## Organization Member [/api/organization_members/{id}]
 
 # Group Group Members
+Coming soon!
+
 ## Group Members Collection [/api/group_members]
 ## Group Member [/api/group_members/{id}]
 
 # Group Task Doers
+Coming soon!
+
 ## Task Doers Collection [/api/task_doers]
 ## Task Doer [/api/task_doers/{id}]
 
