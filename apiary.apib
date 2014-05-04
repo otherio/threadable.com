@@ -436,7 +436,7 @@ Remove the current user from a group
           ]
         }
 
-# Create a conversation [POST]
+### Create a conversation [POST]
 + Request (application/json)
 
         {
@@ -473,6 +473,51 @@ Remove the current user from a group
             "doers":[
 
             ],
+            "doing":null,
+            "done_at":null,
+            "done":null,
+            "position":-1,
+            "muted":false
+          }
+        }
+
+### Update a Conversation [PUT]
++ Request (application/json)
+
+        {
+          "conversation":{
+            "id":32,
+            "task":true,
+            "group_ids":[
+              6,
+              8
+            ]
+          },
+          "organization_id":"raceteam"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "conversation":{
+            "id":32,
+            "slug":"fundraiser-party",
+            "organization_slug":"raceteam",
+            "subject":"Fundraiser party",
+            "task":true,
+            "created_at":"2014-04-16T23:18:32.012Z",
+            "updated_at":"2014-04-16T23:18:32.331Z",
+            "last_message_at":null,
+            "participant_names":[
+              "Darth"
+            ],
+            "number_of_messages":0,
+            "message_summary":null,
+            "group_ids":[
+              6,
+              8
+            ],
+            "doers":[],
             "doing":null,
             "done_at":null,
             "done":null,
@@ -531,6 +576,17 @@ Other events are more complex, like composing a message. Each event record will 
 associated records. So, a Composed Message event will include the message, which will
 in turn include links to that message's attachments.
 
+Event types:
+  - conversation_created
+  - conversation_added_group
+  - conversation_removed_group
+  - created_message
+  - task_created
+  - task_done
+  - task_added_doer
+  - task_undone
+  - task_removed_doer
+
 ## Events Collection [/api/events?organization_id={organization_id}&conversation_id={conversation_id}]
 
 + Parameters
@@ -540,17 +596,164 @@ in turn include links to that message's attachments.
 ### Fetch events for a Conversation [GET]
 + Response 200 (application/json)
 
-        TODO: format this json
-        {"events":[{"id":43,"event_type":"conversation_created","actor":"Stephen Maturin","doer":null,"group":null,"created_at":"2014-04-24T15:16:46.907Z","message":null},{"id":"message-24","event_type":"created_message","actor":"Stephen Maturin","doer":null,"group":null,"created_at":"2014-04-24T15:18:05.000Z","message":{"id":24,"unique_id":"PDUzNTkyYjJjOTA0Y2NfMTQ0MTMzZmU5YzkwNWU2ZTQyODI3N0BleGFtcGxlLmNvbT4=","from":"Stephen Maturin \u003csmaturin@sfhealth.example.com\u003e","subject":"Look at these adorable corgis!","body":"This is simply absurd.","body_stripped":"This is simply absurd.","message_id_header":"\u003c53592b2c904cc_144133fe9c905e6e428277@example.com\u003e","references_header":null,"date_header":"Thu, 24 Apr 2014 15:18:05 -0000","html":false,"root":true,"shareworthy":false,"knowledge":false,"created_at":"2014-04-24T15:18:26.478Z","sent_at":"2014-04-24T15:18:05.000Z","parent_message_id":null,"avatar_url":"/fixture_images/stephen.jpg","sender_name":"Stephen Maturin","attachments":[{"url":"/storage/development/9aca244b-639d-46b4-9618-53736042bf12/some.gif","filename":"some.gif","mimetype":"image/gif","size":1829,"content_id":"\u003csomegifcontentid\u003e"}]}},{"id":"message-25","event_type":"created_message","actor":"Ritsuko Akagi","doer":null,"group":null,"created_at":"2014-04-24T16:18:42.000Z","message":{"id":25,"unique_id":"PDUzNTkzOTYxM2E0M2JfMTQ0MTMzZmU5YzkwNWU2ZTQyODNlOEBleGFtcGxlLmNvbT4=","from":"Ritsuko Akagi \u003critsuko@sfhealth.example.com\u003e","subject":"Look at these adorable corgis!","body":"We claim this stick in the name of England and Queen Elizabeth! And more!","body_stripped":"We claim this stick in the name of England and Queen Elizabeth!","message_id_header":"\u003c535939613a43b_144133fe9c905e6e4283e8@example.com\u003e","references_header":"\u003c53592b2c904cc_144133fe9c905e6e428277@example.com\u003e","date_header":"Thu, 24 Apr 2014 16:18:42 -0000","html":false,"root":false,"shareworthy":false,"knowledge":false,"created_at":"2014-04-24T16:18:58.928Z","sent_at":"2014-04-24T16:18:42.000Z","parent_message_id":24,"avatar_url":"/fixture_images/ritsuko.jpg","sender_name":"Ritsuko Akagi","attachments":[]}}]}
+        {
+          "events":[
+            {
+              "id":43,
+              "event_type":"conversation_created",
+              "actor":"Stephen Maturin",
+              "doer":null,
+              "group":null,
+              "created_at":"2014-04-24T15:16:46.907Z",
+              "message":null
+            },
+            {
+              "id":"message-24",
+              "event_type":"created_message",
+              "actor":"Stephen Maturin",
+              "doer":null,
+              "group":null,
+              "created_at":"2014-04-24T15:18:05.000Z",
+              "message":{
+                "id":24,
+                "unique_id":"PDUzNTkyYjJjOTA0Y2NfMTQ0MTMzZmU5YzkwNWU2ZTQyODI3N0BleGFtcGxlLmNvbT4=",
+                "from":"Stephen Maturin \u003csmaturin@sfhealth.example.com\u003e",
+                "subject":"Look at these adorable corgis!",
+                "body":"This is simply absurd.",
+                "body_stripped":"This is simply absurd.",
+                "message_id_header":"\u003c53592b2c904cc_144133fe9c905e6e428277@example.com\u003e",
+                "references_header":null,
+                "date_header":"Thu, 24 Apr 2014 15:18:05 -0000",
+                "html":false,
+                "root":true,
+                "shareworthy":false,
+                "knowledge":false,
+                "created_at":"2014-04-24T15:18:26.478Z",
+                "sent_at":"2014-04-24T15:18:05.000Z",
+                "parent_message_id":null,
+                "avatar_url":"/fixture_images/stephen.jpg",
+                "sender_name":"Stephen Maturin",
+                "attachments":[
+                  {
+                    "url":"/storage/development/9aca244b-639d-46b4-9618-53736042bf12/some.gif",
+                    "filename":"corgis.gif",
+                    "mimetype":"image/gif",
+                    "size":1829,
+                    "content_id":"\u003csomegifcontentid\u003e"
+                  }
+                ]
+              }
+            },
+            {
+              "id":"message-25",
+              "event_type":"created_message",
+              "actor":"Ritsuko Akagi",
+              "doer":null,
+              "group":null,
+              "created_at":"2014-04-24T16:18:42.000Z",
+              "message":{
+                "id":25,
+                "unique_id":"PDUzNTkzOTYxM2E0M2JfMTQ0MTMzZmU5YzkwNWU2ZTQyODNlOEBleGFtcGxlLmNvbT4=",
+                "from":"Ritsuko Akagi \u003critsuko@sfhealth.example.com\u003e",
+                "subject":"Look at these adorable corgis!",
+                "body":"We claim this stick in the name of England and Queen Elizabeth! And more!",
+                "body_stripped":"We claim this stick in the name of England and Queen Elizabeth!",
+                "message_id_header":"\u003c535939613a43b_144133fe9c905e6e4283e8@example.com\u003e",
+                "references_header":"\u003c53592b2c904cc_144133fe9c905e6e428277@example.com\u003e",
+                "date_header":"Thu, 24 Apr 2014 16:18:42 -0000",
+                "html":false,
+                "root":false,
+                "shareworthy":false,
+                "knowledge":false,
+                "created_at":"2014-04-24T16:18:58.928Z",
+                "sent_at":"2014-04-24T16:18:42.000Z",
+                "parent_message_id":24,
+                "avatar_url":"/fixture_images/ritsuko.jpg",
+                "sender_name":"Ritsuko Akagi",
+                "attachments":[]
+              }
+            }
+          ]
+        }
 
+
+
+# Group Messages
+When creating a message, make sure to first create the conversation that the message lives in.
+
+## Messages Collection [/api/messages]
+### Create a Message [POST]
++ Request (application/json)
+
+        {
+          "message":{
+            "conversation_id":33,
+            "conversation_slug":"lets-make-breakfast",
+            "organization_slug":"sfhealth",
+            "subject":"Let's make breakfast",
+            "body_plain":"I have everything we need for pancakes. We could also make biscuits.",
+            "body_html":"<p>I have everything we need for pancakes. We could also make biscuits.</p>",
+            "html":false
+          },
+          "organization_id":"sfhealth"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "message":{
+            "id":27,
+            "unique_id":"PDUzNjY5ODRjODYyNjRfODZjMDNmZWIwODg2NzBlNDU1NmVmQGxvY2FsaG9zdD4=",
+            "from":"Ian Baker \u003cian@threadable.com\u003e",
+            "subject":"Let's make breakfast",
+            "body":"\u003cp\u003eI have everything we need for pancakes. We could also make biscuits.\u003c/p\u003e",
+            "body_stripped":"\u003cp\u003eI have everything we need for pancakes. We could also make biscuits.\u003c/p\u003e",
+            "message_id_header":"\u003c5366984c86264_86c03feb088670e4556ef@localhost\u003e",
+            "references_header":null,
+            "date_header":"Sun, 04 May 2014 19:43:08 -0000",
+            "html":true,
+            "root":true,
+            "shareworthy":false,
+            "knowledge":false,
+            "created_at":"2014-05-04T19:43:08.551Z",
+            "sent_at":"2014-05-04T19:43:08.000Z",
+            "parent_message_id":null,
+            "avatar_url":"//gravatar.com/avatar/e792b3a504932f24c669684b64c5edc9.png?s=70\u0026d=retro",
+            "sender_name":"Ian Baker",
+            "attachments":[
+
+            ],
+            "conversation":{
+              "id":33,
+              "slug":"lets-make-breakfast",
+              "organization_slug":"sfhealth",
+              "subject":"Let's make breakfast",
+              "task":false,
+              "created_at":"2014-05-04T19:43:08.269Z",
+              "updated_at":"2014-05-04T19:43:25.940Z",
+              "last_message_at":"2014-05-04T19:43:08.551Z",
+              "participant_names":[
+                "Ian"
+              ],
+              "number_of_messages":1,
+              "message_summary":"I have everything we need for pancakes. We could al",
+              "group_ids":[
+                1
+              ],
+              "doers":[]
+              "doing":null,
+              "done_at":null,
+              "done":null,
+              "position":-1,
+              "muted":false
+            }
+          }
+        }
 
 # Group Tasks
 ## Tasks Collection [/api/tasks]
 ## Task [/api/tasks/{id}]
 
-# Group Messages
-## Messages Collection [/api/messages]
-## Message [/api/messages/{id}]
 
 
 # Group Current User
