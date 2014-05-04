@@ -109,70 +109,68 @@ A single Organization object with all its details.
 ### Retrieve an Organization [GET]
 + Response 200 (application/json)
 
-    + Body
-
+        {
+          "id":3,
+          "param":"raceteam",
+          "name":"UCSD Electric Racing",
+          "short_name":"RaceTeam",
+          "slug":"raceteam",
+          "subject_tag":"RaceTeam",
+          "description":"Senior engineering electric race team!",
+          "has_held_messages":false,
+          "trusted":true,
+          "email_address_username":"raceteam",
+          "email_address":"raceteam@threadable.com",
+          "task_email_address":"raceteam+task@threadable.com",
+          "formatted_email_address":"UCSD Electric Racing \u003craceteam@threadable.com\u003e",
+          "formatted_task_email_address":"UCSD Electric Racing Tasks \u003craceteam+task@threadable.com\u003e",
+          "groups":[
             {
-              "id":3,
-              "param":"raceteam",
-              "name":"UCSD Electric Racing",
-              "short_name":"RaceTeam",
-              "slug":"raceteam",
-              "subject_tag":"RaceTeam",
-              "description":"Senior engineering electric race team!",
-              "has_held_messages":false,
-              "trusted":true,
-              "email_address_username":"raceteam",
-              "email_address":"raceteam@threadable.com",
-              "task_email_address":"raceteam+task@threadable.com",
-              "formatted_email_address":"UCSD Electric Racing \u003craceteam@threadable.com\u003e",
-              "formatted_task_email_address":"UCSD Electric Racing Tasks \u003craceteam+task@threadable.com\u003e",
-              "groups":[
-                {
-                  "id":8,
-                  "slug":"press",
-                  "name":"Press",
-                  "email_address_tag":"press",
-                  "subject_tag":"RaceTeam+Press",
-                  "color":"#e67e22",
-                  "auto_join":false,
-                  "hold_messages":true,
-                  "alias_email_address":"Press Enquiries \u003cpress@ucsd.example.com\u003e",
-                  "webhook_url":"",
-                  "email_address":"press@ucsd.example.com",
-                  "task_email_address":"press-task@ucsd.example.com",
-                  "formatted_email_address":"Press Enquiries \u003cpress@ucsd.example.com\u003e",
-                  "formatted_task_email_address":"Press Enquiries Tasks \u003cpress-task@ucsd.example.com\u003e",
-                  "internal_email_address":"raceteam+press@threadable.com",
-                  "internal_task_email_address":"raceteam+press+task@threadable.com",
-                  "conversations_count":0,
-                  "members_count":2,
-                  "organization_slug":"raceteam",
-                  "current_user_is_a_member":false
-                },
-                {
-                  "id":7,
-                  "slug":"graphic-design",
-                  "name":"Graphic Design",
-                  "email_address_tag":"graphic-design",
-                  "subject_tag":"RaceTeam+Graphic Design",
-                  "color":"#f2ad40",
-                  "auto_join":true,
-                  "hold_messages":true,
-                  "alias_email_address":"",
-                  "webhook_url":"",
-                  "email_address":"raceteam+graphic-design@threadable.com",
-                  "task_email_address":"raceteam+graphic-design+task@threadable.com",
-                  "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
-                  "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
-                  "internal_email_address":"raceteam+graphic-design@threadable.com",
-                  "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
-                  "conversations_count":1,
-                  "members_count":9,
-                  "organization_slug":"raceteam",
-                  "current_user_is_a_member":false
-                }
-              ]
+              "id":8,
+              "slug":"press",
+              "name":"Press",
+              "email_address_tag":"press",
+              "subject_tag":"RaceTeam+Press",
+              "color":"#e67e22",
+              "auto_join":false,
+              "hold_messages":true,
+              "alias_email_address":"Press Enquiries \u003cpress@ucsd.example.com\u003e",
+              "webhook_url":"",
+              "email_address":"press@ucsd.example.com",
+              "task_email_address":"press-task@ucsd.example.com",
+              "formatted_email_address":"Press Enquiries \u003cpress@ucsd.example.com\u003e",
+              "formatted_task_email_address":"Press Enquiries Tasks \u003cpress-task@ucsd.example.com\u003e",
+              "internal_email_address":"raceteam+press@threadable.com",
+              "internal_task_email_address":"raceteam+press+task@threadable.com",
+              "conversations_count":0,
+              "members_count":2,
+              "organization_slug":"raceteam",
+              "current_user_is_a_member":false
+            },
+            {
+              "id":7,
+              "slug":"graphic-design",
+              "name":"Graphic Design",
+              "email_address_tag":"graphic-design",
+              "subject_tag":"RaceTeam+Graphic Design",
+              "color":"#f2ad40",
+              "auto_join":true,
+              "hold_messages":true,
+              "alias_email_address":"",
+              "webhook_url":"",
+              "email_address":"raceteam+graphic-design@threadable.com",
+              "task_email_address":"raceteam+graphic-design+task@threadable.com",
+              "formatted_email_address":"\"UCSD Electric Racing: Graphic Design\" \u003craceteam+graphic-design@threadable.com\u003e",
+              "formatted_task_email_address":"\"UCSD Electric Racing: Graphic Design Tasks\" \u003craceteam+graphic-design+task@threadable.com\u003e",
+              "internal_email_address":"raceteam+graphic-design@threadable.com",
+              "internal_task_email_address":"raceteam+graphic-design+task@threadable.com",
+              "conversations_count":1,
+              "members_count":9,
+              "organization_slug":"raceteam",
+              "current_user_is_a_member":false
             }
+          ]
+        }
 
 # Group Groups
 
@@ -367,7 +365,14 @@ Remove the current user from a group
 
 # Group Conversations
 
-## Conversations Collection [/api/conversations]
+## Conversations Collection [/api/conversations?organization={organization}&group={group}&scope={scope}&page={page}]
+
++ Parameters
+    + organization (required, string, `sfhealth`) ... String slug of the Organization to perform action with. Has example value.
+    + group (required, string, `triage`) ... Group slug. Special slugs: `my` (all the user's subscribed groups), `ungrouped` (conversations with no group)
+    + scope (optional, string, `not-done-tasks`) ... Which type of messages to fetch. Valid scopes: `muted_conversations`, `not_muted_conversations`, `done_tasks`, `not_done_tasks`, `done_doing_tasks`, `not_done_doing_tasks`
+    + page (optional, numeric, `0`) ... The page of results to return
+
 ### List all Conversations [GET]
 + Response 200 (application/json)
 
@@ -476,9 +481,68 @@ Remove the current user from a group
           }
         }
 
-## Conversations Search [/api/conversations/search]
+## Conversations Search [/api/conversations/search?organization_id={organization_id}&q={q}&group={group}]
 
-## Conversation [/api/conversations/{id}]
++ Parameters
+    + organization_id (required, number, `2`) ... Numeric `id` of the Organization to perform action with. Has example value.
+    + q (required, string, `donuts`) ... String for which to query.
+    + group (required, string, `electronics`) ... Group slug. Special slugs: `my` (all the user's subscribed groups), `ungrouped` (conversations with no group)
+
+### List Conversations matching query [GET]
+
++ Response 200 (application/json)
+
+        {
+          "conversations":[
+            {
+              "id":52,
+              "slug":"fundraiser-party",
+              "organization_slug":"raceteam",
+              "subject":"Fundraiser Party",
+              "task":false,
+              "created_at":"2014-02-28T18:58:47.384Z",
+              "updated_at":"2014-04-22T21:23:37.927Z",
+              "last_message_at":"2014-04-22T21:22:10.147Z",
+              "participant_names":[
+                "Darth",
+                "Joe",
+                "Nicole"
+              ],
+              "number_of_messages":5,
+              "message_summary":"let's do this next wednesday. i have the perfect venue for",
+              "group_ids":[
+                6,
+              ],
+              "doers":[
+
+              ],
+              "doing":null,
+              "done_at":null,
+              "done":null,
+              "position":-1,
+              "muted":false
+            }
+          ]
+        }
+
+# Group Events
+A conversation has many events. Some events are simple, like adding or removing a group.
+Other events are more complex, like composing a message. Each event record will include
+associated records. So, a Composed Message event will include the message, which will
+in turn include links to that message's attachments.
+
+## Events Collection [/api/events?organization_id={organization_id}&conversation_id={conversation_id}]
+
++ Parameters
+    + organization_id (required, string, `sfhealth`) ... String slug of the Organization to perform action with. Has example value.
+    + conversation_id (required, string, `look-at-these-adorable-corgis`) ... String slug of the Conversation for which to retrieve events.
+
+### Fetch events for a Conversation [GET]
++ Response 200 (application/json)
+
+        TODO: format this json
+        {"events":[{"id":43,"event_type":"conversation_created","actor":"Stephen Maturin","doer":null,"group":null,"created_at":"2014-04-24T15:16:46.907Z","message":null},{"id":"message-24","event_type":"created_message","actor":"Stephen Maturin","doer":null,"group":null,"created_at":"2014-04-24T15:18:05.000Z","message":{"id":24,"unique_id":"PDUzNTkyYjJjOTA0Y2NfMTQ0MTMzZmU5YzkwNWU2ZTQyODI3N0BleGFtcGxlLmNvbT4=","from":"Stephen Maturin \u003csmaturin@sfhealth.example.com\u003e","subject":"Look at these adorable corgis!","body":"This is simply absurd.","body_stripped":"This is simply absurd.","message_id_header":"\u003c53592b2c904cc_144133fe9c905e6e428277@example.com\u003e","references_header":null,"date_header":"Thu, 24 Apr 2014 15:18:05 -0000","html":false,"root":true,"shareworthy":false,"knowledge":false,"created_at":"2014-04-24T15:18:26.478Z","sent_at":"2014-04-24T15:18:05.000Z","parent_message_id":null,"avatar_url":"/fixture_images/stephen.jpg","sender_name":"Stephen Maturin","attachments":[{"url":"/storage/development/9aca244b-639d-46b4-9618-53736042bf12/some.gif","filename":"some.gif","mimetype":"image/gif","size":1829,"content_id":"\u003csomegifcontentid\u003e"}]}},{"id":"message-25","event_type":"created_message","actor":"Ritsuko Akagi","doer":null,"group":null,"created_at":"2014-04-24T16:18:42.000Z","message":{"id":25,"unique_id":"PDUzNTkzOTYxM2E0M2JfMTQ0MTMzZmU5YzkwNWU2ZTQyODNlOEBleGFtcGxlLmNvbT4=","from":"Ritsuko Akagi \u003critsuko@sfhealth.example.com\u003e","subject":"Look at these adorable corgis!","body":"We claim this stick in the name of England and Queen Elizabeth! And more!","body_stripped":"We claim this stick in the name of England and Queen Elizabeth!","message_id_header":"\u003c535939613a43b_144133fe9c905e6e4283e8@example.com\u003e","references_header":"\u003c53592b2c904cc_144133fe9c905e6e428277@example.com\u003e","date_header":"Thu, 24 Apr 2014 16:18:42 -0000","html":false,"root":false,"shareworthy":false,"knowledge":false,"created_at":"2014-04-24T16:18:58.928Z","sent_at":"2014-04-24T16:18:42.000Z","parent_message_id":24,"avatar_url":"/fixture_images/ritsuko.jpg","sender_name":"Ritsuko Akagi","attachments":[]}}]}
+
 
 # Group Tasks
 ## Tasks Collection [/api/tasks]
@@ -488,9 +552,6 @@ Remove the current user from a group
 ## Messages Collection [/api/messages]
 ## Message [/api/messages/{id}]
 
-# Group Events
-## Events Collection [/api/events]
-## Event [/api/events/{id}]
 
 # Group Current User
 ## Current User [/api/users/current]
