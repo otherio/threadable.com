@@ -104,7 +104,7 @@ An Organization can contain many groups, conversations, and messages. A user can
 A single Organization object with all its details.
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Organization to perform action with. Has example value.
+    + id (required, number, `1`) ... Numeric `id` of the Organization to perform action with.
 
 ### Retrieve an Organization [GET]
 + Response 200 (application/json)
@@ -219,7 +219,7 @@ A single Organization object with all its details.
 A single Group object with all its details
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with. Has example value.
+    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with.
 
 ### Retrieve a Group [GET]
 + Response 200 (application/json)
@@ -294,7 +294,7 @@ A single Group object with all its details
 Add the current user to a group
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with. Has example value.
+    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with.
 
 ### Join a Group [POST]
 + Request
@@ -330,7 +330,7 @@ Add the current user to a group
 Remove the current user from a group
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with. Has example value.
+    + id (required, number, `1`) ... Numeric `id` of the Group to perform action with.
 
 ### Leave a Group [POST]
 + Request
@@ -368,7 +368,7 @@ Remove the current user from a group
 ## Conversations Collection [/api/conversations?organization={organization}&group={group}&scope={scope}&page={page}]
 
 + Parameters
-    + organization (required, string, `sfhealth`) ... String slug of the Organization to perform action with. Has example value.
+    + organization (required, string, `sfhealth`) ... String slug of the Organization to perform action with.
     + group (required, string, `triage`) ... Group slug. Special slugs: `my` (all the user's subscribed groups), `ungrouped` (conversations with no group)
     + scope (optional, string, `not-done-tasks`) ... Which type of messages to fetch. Valid scopes: `muted_conversations`, `not_muted_conversations`, `done_tasks`, `not_done_tasks`, `done_doing_tasks`, `not_done_doing_tasks`
     + page (optional, numeric, `0`) ... The page of results to return
@@ -529,7 +529,7 @@ Remove the current user from a group
 ## Conversations Search [/api/conversations/search?organization_id={organization_id}&q={q}&group={group}]
 
 + Parameters
-    + organization_id (required, number, `2`) ... Numeric `id` of the Organization to perform action with. Has example value.
+    + organization_id (required, number, `2`) ... Numeric `id` of the Organization to perform action with.
     + q (required, string, `donuts`) ... String for which to query.
     + group (required, string, `electronics`) ... Group slug. Special slugs: `my` (all the user's subscribed groups), `ungrouped` (conversations with no group)
 
@@ -590,7 +590,7 @@ Event types:
 ## Events Collection [/api/events?organization_id={organization_id}&conversation_id={conversation_id}]
 
 + Parameters
-    + organization_id (required, string, `sfhealth`) ... String slug of the Organization to perform action with. Has example value.
+    + organization_id (required, string, `sfhealth`) ... String slug of the Organization to perform action with.
     + conversation_id (required, string, `look-at-these-adorable-corgis`) ... String slug of the Conversation for which to retrieve events.
 
 ### Fetch events for a Conversation [GET]
@@ -942,7 +942,7 @@ Notes related resources of the **Notes API**
 A single Note object with all its details
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with.
 
 ### Retrieve a Note [GET]
 + Response 200 (application/json)
