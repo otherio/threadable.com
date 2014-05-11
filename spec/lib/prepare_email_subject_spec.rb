@@ -82,7 +82,7 @@ describe PrepareEmailSubject do
     context "with an empty message" do
       let(:stripped_plain) { '' }
       context "[foobar] " do
-        it { should eq '(no subject)' }
+        it { should be_nil }
       end
 
       context "[walmart]" do
@@ -93,7 +93,18 @@ describe PrepareEmailSubject do
     context "with a nil message" do
       let(:stripped_plain) { nil }
       context "[foobar] " do
-        it { should eq '(no subject)' }
+        it { should be_nil }
+      end
+
+      context "[walmart]" do
+        it { should eq "[walmart]" }
+      end
+    end
+
+    context "with a message that contains no slug-able characters" do
+      let(:stripped_plain) { '-- ' }
+      context "[foobar] " do
+        it { should be_nil }
       end
 
       context "[walmart]" do

@@ -445,6 +445,20 @@ describe "processing incoming emails" do
           validate! :bounced
         end
       end
+
+      context 'and the body contains no characters that can make a slug, but is not blank' do
+        let(:recipient){ expected_organization.email_address }
+        let(:to)       { expected_organization.formatted_email_address }
+
+        let(:stripped_text) { '-- ' }
+
+        let(:expected_parent_message){ nil }
+        let(:expected_conversation)  { nil }
+        let(:expected_creator)       { nil }
+        it 'bounces the incoming email' do
+          validate! :bounced
+        end
+      end
     end
 
     context 'the subject begins with some form of re:' do
