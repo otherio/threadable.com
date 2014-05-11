@@ -105,7 +105,7 @@ class ConversationMailer < Threadable::Mailer
     cc_addresses = correct_threadable_email_addresses(cc_addresses)
 
     if !sender_is_a_member && @message.from.present? && @recipient.munge_reply_to?
-      cc_addresses << Mail::Address.new(@message.from)
+      cc_addresses << as_address_objects(@message.from).first
     elsif @recipient.munge_reply_to? && !dmarc_verified
       cc_addresses << from_address
     end
@@ -243,7 +243,7 @@ class ConversationMailer < Threadable::Mailer
     begin
       Mail::AddressList.new(email_addresses).addresses
     rescue Mail::Field::ParseError
-      # sometimes people remove the quotes and leave the colon, or the phrase part contains misplaced unicode.
+      # sometimes people remove the quotes and leave the colon, or the phrase part contains unsupported unicode.
       # so, this works around shortcomings in Mail's AddressListParser
       Mail::AddressList.new(email_addresses.to_ascii.gsub(/:/, '')).addresses
     end
