@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140418212825) do
+ActiveRecord::Schema.define(version: 20140514055833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -195,8 +195,8 @@ ActiveRecord::Schema.define(version: 20140418212825) do
     t.string   "date_header"
     t.text     "to_header"
     t.text     "cc_header"
-    t.string   "thread_index_header"
-    t.string   "thread_topic_header"
+    t.text     "thread_index_header"
+    t.text     "thread_topic_header"
   end
 
   add_index "messages", ["conversation_id", "user_id"], name: "index_messages_on_conversation_id_and_user_id", using: :btree
