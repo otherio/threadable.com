@@ -22,8 +22,12 @@ class EmailActionsController < ApplicationController
     end
 
     if @email_action.requires_user_to_be_signed_in? && !signed_in?
-      render :pending
-      return
+      user = threadable.users.find_by_id(user_id)
+
+      if user.secure_mail_buttons?
+        render :pending
+        return
+      end
     end
 
     @email_action.execute!

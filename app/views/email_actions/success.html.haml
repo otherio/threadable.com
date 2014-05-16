@@ -14,7 +14,7 @@
 
     - if @email_action.opposite_type
       %p
-        If this is in error, you can easily undo!
+        If you did this by accident, you can undo it:
       %p
         - undo_url = email_action_url(token: EmailActionToken.encrypt(@email_action.record_id, @email_action.user.id, @email_action.opposite_type))
         %a.uk-button.uk-button-primary.uk-button-large.undo-button{href:undo_url}
@@ -25,6 +25,8 @@
               Mark #{@email_action.record.subject.inspect} as done
             - when 'mute'
               Unmute #{@email_action.record.subject.inspect}
+            - when 'unmute'
+              Mute #{@email_action.record.subject.inspect}
             - when 'add'
               Remove yourself as a doer of #{@email_action.record.subject.inspect}
             - when 'remove'

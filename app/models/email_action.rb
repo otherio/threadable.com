@@ -7,6 +7,7 @@ class EmailAction
     done
     undone
     mute
+    unmute
     add
     remove
     join
@@ -31,6 +32,7 @@ class EmailAction
     when 'done';   thing.tasks.find_by_id(@record_id)
     when 'undone'; thing.tasks.find_by_id(@record_id)
     when 'mute';   thing.conversations.find_by_id(@record_id)
+    when 'unmute'; thing.conversations.find_by_id(@record_id)
     when 'add';    thing.tasks.find_by_id(@record_id)
     when 'remove'; thing.tasks.find_by_id(@record_id)
     when 'join';   thing.groups.find_by_id(@record_id)
@@ -43,6 +45,7 @@ class EmailAction
     when 'done';   true
     when 'undone'; true
     when 'mute';   true
+    when 'unmute'; true
     when 'add';    true
     when 'remove'; true
     when 'join';   false
@@ -54,7 +57,8 @@ class EmailAction
     case @type
     when 'done';   'undone'
     when 'undone'; 'done'
-    when 'mute';   nil # 'unmute'
+    when 'mute';   'unmute'
+    when 'unmute'; 'mute'
     when 'add';    'remove'
     when 'remove'; 'add'
     when 'join';   'leave'
@@ -75,6 +79,8 @@ class EmailAction
       record.undone!
     when 'mute'
       record.mute_for(user)
+    when 'unmute'
+      record.unmute_for(user)
     when 'add'
       record.doers.add(user)
     when 'remove'
@@ -99,6 +105,8 @@ class EmailAction
       "mark #{record.subject.inspect} as not done"
     when 'mute'
       "mute #{record.subject.inspect}"
+    when 'unmute'
+      "un-mute #{record.subject.inspect}"
     when 'add'
       "add yourself as a doer of #{record.subject.inspect}"
     when 'remove'
@@ -118,6 +126,8 @@ class EmailAction
       "You marked #{record.subject.inspect} as not done"
     when 'mute'
       "You muted #{record.subject.inspect}"
+    when 'unmute'
+      "You un-muted #{record.subject.inspect}"
     when 'add'
       "You're added as a doer of #{record.subject.inspect}"
     when 'remove'
@@ -136,6 +146,8 @@ class EmailAction
     when 'undone'
       routes.task_url(record.organization, 'my', record, success: success_description)
     when 'mute'
+      routes.conversation_url(record.organization, 'my', record, success: success_description)
+    when 'unmute'
       routes.conversation_url(record.organization, 'my', record, success: success_description)
     when 'add'
       routes.task_url(record.organization, 'my', record, success: success_description)
