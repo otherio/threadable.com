@@ -40,11 +40,11 @@ class EmailAction
 
   def requires_user_to_be_signed_in?
     case @type
-    when 'done';   false
-    when 'undone'; false
-    when 'mute';   false
-    when 'add';    false
-    when 'remove'; false
+    when 'done';   true
+    when 'undone'; true
+    when 'mute';   true
+    when 'add';    true
+    when 'remove'; true
     when 'join';   false
     when 'leave';  false
     end

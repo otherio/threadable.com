@@ -11,87 +11,92 @@ describe "Email actions" do
 
   i_am_not_signed_in do
 
-    describe "done" do
-      let(:task){ organization.tasks.find_by_slug!('get-a-new-soldering-iron') }
-      let(:token){ EmailActionToken.encrypt(task.id, user.id, 'done') }
-      it "should immediately mark the task as done" do
-        expect(task).to_not be_done
-        visit url
-        expect(page).to have_text "You marked #{task.subject.inspect} as done"
-        task.reload
-        expect(task).to be_done
-        assert_tracked(user.id, tracked_event_name, type: "done", record_id: task.id)
-
-        click_on "Mark #{task.subject.inspect} as not done"
-        expect(page).to have_text "You marked #{task.subject.inspect} as not done"
-        task.reload
-        expect(task).to_not be_done
-        assert_tracked(user.id, tracked_event_name, type: "undone", record_id: task.id)
-      end
+    context 'with secure buttons enabled' do
     end
 
-    describe "undone" do
-      let(:task){ organization.tasks.find_by_slug!('layup-body-carbon') }
-      let(:token){ EmailActionToken.encrypt(task.id, user.id, 'undone') }
-      it "should immediately mark the task as undone" do
-        expect(task).to be_done
-        visit url
-        expect(page).to have_text "You marked #{task.subject.inspect} as not done"
-        task.reload
-        expect(task).to_not be_done
-        assert_tracked(user.id, tracked_event_name, type: "undone", record_id: task.id)
+    context 'with secure buttons disabled' do
+      describe "done" do
+        let(:task){ organization.tasks.find_by_slug!('get-a-new-soldering-iron') }
+        let(:token){ EmailActionToken.encrypt(task.id, user.id, 'done') }
+        it "should immediately mark the task as done" do
+          expect(task).to_not be_done
+          visit url
+          expect(page).to have_text "You marked #{task.subject.inspect} as done"
+          task.reload
+          expect(task).to be_done
+          assert_tracked(user.id, tracked_event_name, type: "done", record_id: task.id)
 
-        click_on "Mark #{task.subject.inspect} as done"
-        expect(page).to have_text "You marked #{task.subject.inspect} as done"
-        task.reload
-        expect(task).to be_done
-        assert_tracked(user.id, tracked_event_name, type: "done", record_id: task.id)
+          click_on "Mark #{task.subject.inspect} as not done"
+          expect(page).to have_text "You marked #{task.subject.inspect} as not done"
+          task.reload
+          expect(task).to_not be_done
+          assert_tracked(user.id, tracked_event_name, type: "undone", record_id: task.id)
+        end
       end
-    end
 
-    describe "mute" do
-      let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
-      let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'mute') }
-      it "should immediately mute the conversation" do
-        visit url
-        expect(page).to have_text "You muted #{conversation.subject.inspect}"
-        conversation.reload
-        expect(conversation).to be_muted_by user
-        assert_tracked(user.id, tracked_event_name, type: "mute", record_id: conversation.id)
+      describe "undone" do
+        let(:task){ organization.tasks.find_by_slug!('layup-body-carbon') }
+        let(:token){ EmailActionToken.encrypt(task.id, user.id, 'undone') }
+        it "should immediately mark the task as undone" do
+          expect(task).to be_done
+          visit url
+          expect(page).to have_text "You marked #{task.subject.inspect} as not done"
+          task.reload
+          expect(task).to_not be_done
+          assert_tracked(user.id, tracked_event_name, type: "undone", record_id: task.id)
+
+          click_on "Mark #{task.subject.inspect} as done"
+          expect(page).to have_text "You marked #{task.subject.inspect} as done"
+          task.reload
+          expect(task).to be_done
+          assert_tracked(user.id, tracked_event_name, type: "done", record_id: task.id)
+        end
       end
-    end
 
-    describe "add" do
-      let(:task){ organization.tasks.find_by_slug!('install-mirrors') }
-      let(:token){ EmailActionToken.encrypt(task.id, user.id, 'add') }
-      it "should immediately add me as a doer of the task" do
-        expect(task.doers).to_not include user
-        visit url
-        expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
-        expect(task.doers).to include user
-        assert_tracked(user.id, tracked_event_name, type: "add", record_id: task.id)
-
-        click_on "Remove yourself as a doer of #{task.subject.inspect}"
-        expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
-        expect(task.doers).to_not include user
-        assert_tracked(user.id, tracked_event_name, type: "remove", record_id: task.id)
+      describe "mute" do
+        let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+        let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'mute') }
+        it "should immediately mute the conversation" do
+          visit url
+          expect(page).to have_text "You muted #{conversation.subject.inspect}"
+          conversation.reload
+          expect(conversation).to be_muted_by user
+          assert_tracked(user.id, tracked_event_name, type: "mute", record_id: conversation.id)
+        end
       end
-    end
 
-    describe "remove" do
-      let(:task){ organization.tasks.find_by_slug!('get-a-new-soldering-iron') }
-      let(:token){ EmailActionToken.encrypt(task.id, user.id, 'remove') }
-      it "should immediately remove me from the doers of the task" do
-        expect(task.doers).to include user
-        visit url
-        expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
-        expect(task.doers).to_not include user
-        assert_tracked(user.id, tracked_event_name, type: "remove", record_id: task.id)
+      describe "add" do
+        let(:task){ organization.tasks.find_by_slug!('install-mirrors') }
+        let(:token){ EmailActionToken.encrypt(task.id, user.id, 'add') }
+        it "should immediately add me as a doer of the task" do
+          expect(task.doers).to_not include user
+          visit url
+          expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
+          expect(task.doers).to include user
+          assert_tracked(user.id, tracked_event_name, type: "add", record_id: task.id)
 
-        click_on "Add yourself as a doer of #{task.subject.inspect}"
-        expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
-        expect(task.doers).to include user
-        assert_tracked(user.id, tracked_event_name, type: "add", record_id: task.id)
+          click_on "Remove yourself as a doer of #{task.subject.inspect}"
+          expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
+          expect(task.doers).to_not include user
+          assert_tracked(user.id, tracked_event_name, type: "remove", record_id: task.id)
+        end
+      end
+
+      describe "remove" do
+        let(:task){ organization.tasks.find_by_slug!('get-a-new-soldering-iron') }
+        let(:token){ EmailActionToken.encrypt(task.id, user.id, 'remove') }
+        it "should immediately remove me from the doers of the task" do
+          expect(task.doers).to include user
+          visit url
+          expect(page).to have_text "You're no longer a doer of #{task.subject.inspect}"
+          expect(task.doers).to_not include user
+          assert_tracked(user.id, tracked_event_name, type: "remove", record_id: task.id)
+
+          click_on "Add yourself as a doer of #{task.subject.inspect}"
+          expect(page).to have_text "You're added as a doer of #{task.subject.inspect}"
+          expect(task.doers).to include user
+          assert_tracked(user.id, tracked_event_name, type: "add", record_id: task.id)
+        end
       end
     end
 
