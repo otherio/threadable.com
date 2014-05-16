@@ -12,7 +12,7 @@ class ProfileController < ApplicationController
 
     case
     when user_params.key?(:name)
-      current_user.update user_params.permit(:name, :munge_reply_to, :show_mail_buttons)
+      current_user.update user_params.permit(:name, :munge_reply_to, :show_mail_buttons, :secure_mail_buttons)
       notice = "We've updated your profile"
     when user_params.key?(:current_password)
       current_user.change_password user_params.permit(:current_password, :password, :password_confirmation)

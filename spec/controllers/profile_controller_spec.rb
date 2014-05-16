@@ -57,6 +57,15 @@ describe ProfileController do
         end
       end
 
+      context 'when updating your secure button preference' do
+        it 'should update the secure button preference' do
+          patch :update, user: { name: 'Yan!', secure_mail_buttons: true }
+          expect(response).to redirect_to profile_path
+          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').secure_mail_buttons?).to be_true
+          expect(flash[:notice]).to eq "We've updated your profile"
+        end
+      end
+
       context 'when updating your password' do
         it 'should update your password' do
           patch :update, user: {

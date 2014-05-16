@@ -24,6 +24,7 @@ class Threadable::User < Threadable::Model
     munge_reply_to?
     email_addresses_as_string
     show_mail_buttons?
+    secure_mail_buttons?
   }, to: :user_record
 
   delegate :can?, to: :ability
