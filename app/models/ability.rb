@@ -12,6 +12,7 @@ class Ability
       when :owner
         can :remove_member_from, Threadable::Organization
         can :make_owners_for, Threadable::Organization
+        can :remove_non_empty_group_from, Threadable::Organization
       when :member
 
       end

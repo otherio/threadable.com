@@ -141,10 +141,17 @@
         <span class="badge" {{bind-attr style="editableGroup.badgeStyle"}}>+{{name}}</span>
       </div>
     </div>
-    <div class="example-email well danger-zone">
-      <h4 class="title">Danger Zone</h4>
-      <p class="subtitle">These actions cannot be undone</p>
-      <button {{action deleteGroup}} class="uk-button uk-button-danger">Delete group</button>
-    </div>
+
+    {{#if canDelete}}
+      <div class="example-email well danger-zone">
+        <h4 class="title">Danger Zone</h4>
+        <p class="subtitle">These actions cannot be undone</p>
+        <button {{action deleteGroup}} class="uk-button uk-button-danger">Delete group</button>
+      </div>
+    {{else}}
+      <div class="well">
+        You can only delete this group if it is empty
+      </div>
+    {{/if}}
   </div>
 </div>

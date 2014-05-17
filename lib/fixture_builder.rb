@@ -40,8 +40,8 @@ class FixtureBuilder
     @organization or raise 'please create a organization first'
   end
 
-  def add_member name, email_address
-    member = organization.members.add(name: name, email_address: email_address)
+  def add_member name, email_address, owner = false
+    member = organization.members.add(name: name, email_address: email_address, role: owner ? 0 : 1)
     member.user.update(:munge_reply_to => true)
     @members ||= {}
     @members[email_address] = member

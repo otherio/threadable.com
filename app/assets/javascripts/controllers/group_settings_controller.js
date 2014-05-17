@@ -8,6 +8,10 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
 
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
+  canDelete: function() {
+    return this.get('currentMember.isOwner') || this.get('conversationsCount') == 0;
+  }.property('userId', 'currentMember.userId', 'currentMember.isOwner'),
+
   aliasPlainAddress: function() {
     var aliasEmailAddress = this.get('editableGroup.aliasEmailAddress');
     if(aliasEmailAddress.match(/\<(.*)\>/)) {

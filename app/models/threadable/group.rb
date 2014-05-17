@@ -104,6 +104,11 @@ class Threadable::Group < Threadable::Model
 
   def destroy
     conversations = self.conversations.all
+
+    if conversations.length > 0 && !organization.members.current_member.can?(:remove_non_empty_group_from, organization)
+      raise Threadable::AuthorizationError, 'You are not authorized to remove groups that contain messages'
+    end
+
     group_record.destroy
     conversations.each(&:update_group_caches!)
     self

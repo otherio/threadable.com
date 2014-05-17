@@ -7,7 +7,7 @@ FixtureBuilder.build do
       description: 'Senior engineering electric race team!',
       trusted: true,
     )
-    add_member 'Alice Neilson', 'alice@ucsd.example.com'
+    add_member 'Alice Neilson', 'alice@ucsd.example.com', true
   end
 
   Time.zone = 'US/Pacific'
