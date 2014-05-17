@@ -29,7 +29,7 @@ describe Api::GroupsController do
     end
   end
 
-  when_signed_in_as 'bob@ucsd.example.com' do
+  when_signed_in_as 'alice@ucsd.example.com' do
 
     let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
     let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
