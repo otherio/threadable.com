@@ -16,7 +16,7 @@ describe SendStarterContentWorker do
     it 'creates the specified message in the specified organization' do
       perform! :welcome, organization.id
       drain_background_jobs!
-      expect(sent_emails.length).to eq 6
+      expect(sent_emails.length).to eq 7
       expect(sent_emails.first.subject).to eq '[RaceTeam] Welcome to Threadable!'
       expect(sent_emails.first.html_part.to_s).to include organization.name
     end
@@ -30,7 +30,7 @@ describe SendStarterContentWorker do
       perform! :tips_groups, organization.id
       drain_background_jobs!
       expect(organization.conversations.all.length).to eq total_conversations
-      expect(sent_emails.length).to eq 6
+      expect(sent_emails.length).to eq 7
       expect(sent_emails.first.subject).to eq 'Re: [RaceTeam] Threadable Tips'
     end
   end

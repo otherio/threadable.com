@@ -366,7 +366,7 @@ describe "processing incoming emails" do
   let(:expected_message_thread_topic)          { thread_topic }
   let(:expect_conversation_to_be_a_task)       { false }
   let(:expect_task_to_be_done)                 { false }
-  let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com"] }
+  let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com", "lilith@sfhealth.example.com"] }
   let(:expected_sent_email_to)                 { ['raceteam@127.0.0.1'] }
   let(:expected_sent_email_cc)                 { '' }
   let(:expected_sent_email_subject)            { "#{expected_conversation.subject_tag} OMG guys I love threadable!" }
@@ -485,7 +485,7 @@ describe "processing incoming emails" do
         let(:expected_creator)           { threadable.users.find_by_email_address(sender) }
         let(:expected_sent_email_smtp_envelope_from){ expected_organization.email_address }
         let(:expected_sent_email_subject){ "#{expected_conversation.subject_tag} #{subject}" }
-        let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+        let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
 
         it 'delivers the email' do
           validate! :delivered
@@ -546,7 +546,7 @@ describe "processing incoming emails" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
-      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
       let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       it 'delivers the email' do
@@ -560,7 +560,7 @@ describe "processing incoming emails" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
-      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
       let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       it 'delivers the email' do
@@ -578,7 +578,7 @@ describe "processing incoming emails" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
-      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
       let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       before do
@@ -596,7 +596,7 @@ describe "processing incoming emails" do
 
       let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
       let(:expected_parent_message){ expected_conversation.messages.latest }
-      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
       let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
       it 'prefers the In-Reply-To message id over the References message ids' do
@@ -619,7 +619,7 @@ describe "processing incoming emails" do
 
         let(:expected_creator)         { threadable.users.find_by_email_address!(sender) }
         let(:expected_sent_email_cc)   { 'Anil Kapoor <anil@sfhealth.example.com>' }
-        let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+        let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
 
         it 'it delivers the message and copies the non-member to the cc header' do
           validate! :delivered
@@ -633,7 +633,7 @@ describe "processing incoming emails" do
 
         let(:expected_creator){ nil }
         let(:expected_sent_email_cc){ 'Who Knows <who.knows@example.com>' }
-        let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+        let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
 
         it 'it delivers the message and copies the unknown email address to the cc header' do
           validate! :delivered
@@ -646,7 +646,7 @@ describe "processing incoming emails" do
         let(:sender)       { 'alice@ucsd.example.com' }
 
         let(:expected_creator){ threadable.users.find_by_email_address!(sender) }
-        let(:expected_email_recipients){ ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+        let(:expected_email_recipients){ ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
 
         it 'it delivers the message' do
           validate! :delivered
@@ -683,7 +683,7 @@ describe "processing incoming emails" do
           let(:expect_task_to_be_done)           { false }
           let(:expected_sent_email_to)           { ['raceteam+task@127.0.0.1'] }
           let(:expected_sent_email_subject)      { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
-          let(:expected_email_recipients)        { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+          let(:expected_email_recipients)        { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
           let(:expected_conversation)            { expected_organization.conversations.find_by_slug('layup-body-carbon') }
           let!(:expected_parent_message)         { expected_conversation.messages.latest }
 
@@ -1028,7 +1028,7 @@ describe "processing incoming emails" do
     let(:envelope_from)           { '<bj@sfhealth.example.com>' }
     let(:sender)                  { 'bob@ucsd.example.com' }
     let(:expected_creator)        { threadable.users.find_by_email_address('bob@ucsd.example.com') }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
     it 'sets the creator as the user matching the sender address' do
       validate! :delivered
     end
@@ -1039,7 +1039,7 @@ describe "processing incoming emails" do
     let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'house@sfhealth.example.com' }
     let(:expected_creator)        { threadable.users.find_by_email_address('bethany@ucsd.example.com') }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
     it 'sets the creator as user matching the envelope from address' do
       validate! :delivered
     end
@@ -1050,7 +1050,7 @@ describe "processing incoming emails" do
     let(:envelope_from)           { '<zarkov@sfhealth.example.com>' }
     let(:sender)                  { 'trapper@sfhealth.example.com' }
     let(:expected_creator)        { threadable.users.find_by_email_address('jonathan@ucsd.example.com') }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
     it 'sets the creator as user matching the from address' do
       validate! :delivered
     end
@@ -1061,7 +1061,7 @@ describe "processing incoming emails" do
     let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'bob@ucsd.example.com' }
     let(:expected_creator)        { threadable.users.find_by_email_address('jonathan@ucsd.example.com') }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
     it 'sets the creator as user matching the from address' do
       validate! :delivered
     end
@@ -1072,7 +1072,7 @@ describe "processing incoming emails" do
     let(:envelope_from)           { '<bethany@ucsd.example.com>' }
     let(:sender)                  { 'bob@ucsd.example.com' }
     let(:expected_creator)        { threadable.users.find_by_email_address('bethany@ucsd.example.com') }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
     it 'sets the creator as user matching the envelope from address' do
       validate! :delivered
     end
@@ -1264,7 +1264,7 @@ describe "processing incoming emails" do
     let(:expected_sent_email_to){ ['raceteam@127.0.0.1'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
     let(:expected_parent_message){ expected_conversation.messages.latest }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
 
     it 'replace that email with the non task version' do
       validate! :delivered
@@ -1280,7 +1280,7 @@ describe "processing incoming emails" do
     let(:expected_sent_email_subject) { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
     let(:expected_sent_email_to){ ['raceteam+task@127.0.0.1'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('layup-body-carbon') }
-    let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com"] }
+    let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com", "lilith@sfhealth.example.com"] }
     let(:expected_parent_message){ expected_conversation.messages.latest }
     let(:expected_sent_email_smtp_envelope_from){ expected_organization.task_email_address }
     let(:expect_conversation_to_be_a_task) { true }
@@ -1353,7 +1353,7 @@ describe "processing incoming emails" do
       let(:sender)       { 'alice@ucsd.example.com' }
 
       let(:expected_creator)          { threadable.users.find_by_email_address('alice@ucsd.example.com') }
-      let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com"] }
+      let(:expected_email_recipients) { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com", "lilith@sfhealth.example.com"] }
 
       it 'delivers the messages' do
         validate! :delivered

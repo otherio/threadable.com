@@ -20,6 +20,7 @@ describe Threadable::Organization::Members do
         jonathan@ucsd.example.com
         ricky.bobby@ucsd.example.com
         cal.naughton@ucsd.example.com
+        lilith@sfhealth.example.com
       }
     end
 

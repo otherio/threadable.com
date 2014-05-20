@@ -3,7 +3,7 @@ require "spec_helper"
 feature "recovering password" do
 
   scenario "Users who lose their password should be able recover their account" do
-    i_am 'alice@ucsd.example.com'
+    i_am 'lilith@sfhealth.example.com'
 
     visit sign_in_url
     resize_window_to :large
@@ -33,10 +33,10 @@ feature "recovering password" do
     click_button 'Update'
 
     expect(page).to have_text "you're a member of the following"
-    expect(page).to have_text 'UCSD Electric Racing'
+    expect(page).to have_text 'SF Health Center'
     click_link 'Looks good!'
 
-    expect(page).to have_text "Alice Neilson"
+    expect(page).to have_text "Lilith Sternin"
 
     page.find('.sidebar .toggle-user-settings').click
     sleep 0.2
