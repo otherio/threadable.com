@@ -18,6 +18,15 @@ class Threadable::User::Organization < Threadable::Organization
     members.remove(user: user)
   end
 
+  def confirm!
+    organization_membership_record.update_attribute(:confirmed, true)
+  end
+
+  private
+
+  def organization_membership_record
+    organization_record.organization_memberships.where(user_id: user.id).first
+  end
 end
 
 require_dependency 'threadable/user/organization/groups'

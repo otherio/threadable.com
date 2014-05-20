@@ -35,6 +35,9 @@ FixtureBuilder.build do
     set_avatar! 'ricky.bobby.jpg', for: 'ricky.bobby@ucsd.example.com'
     set_ungrouped_mail_delivery :in_summary, for: 'ricky.bobby@ucsd.example.com'
 
+    # Add member from sfhealth, to have a member in two orgs
+    add_member 'Lilith Sternin',  'lilith@sfhealth.example.com'
+
     # Alice sends a welcome email
     @welcome_message = create_conversation(
       subject: 'Welcome to our Threadable organization!',

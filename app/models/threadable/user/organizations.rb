@@ -14,6 +14,10 @@ class Threadable::User::Organizations < Threadable::Organizations
     %(#<#{self.class} for_user: #{user.inspect}>)
   end
 
+  def unconfirmed
+    scope.where(organization_memberships: { confirmed: false }).map{ |organization| organization_for organization }
+  end
+
   private
 
   def scope

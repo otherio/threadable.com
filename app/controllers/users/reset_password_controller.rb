@@ -30,7 +30,15 @@ class Users::ResetPasswordController < ApplicationController
     attributes = params.require(:user).permit(:password, :password_confirmation)
     if current_user.update(attributes)
       flash[:notice] = 'Your password has been updated'
-      redirect_to confirm_organizations_path
+      unconfirmed_organizations = current_user.organizations.unconfirmed
+      if unconfirmed_organizations.present?
+        unconfirmed_organizations.each do |organization|
+          organization.confirm!
+        end
+        redirect_to confirm_organizations_path
+      else
+        redirect_to root_path
+      end
     else
       render :show
     end
