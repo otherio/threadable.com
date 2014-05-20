@@ -31,6 +31,11 @@ feature "recovering password" do
     fill_in 'user[password]', with: 'p@$$w0rd'
     fill_in 'user[password_confirmation]', with: 'p@$$w0rd'
     click_button 'Update'
+
+    expect(page).to have_text "you're a member of the following"
+    expect(page).to have_text 'UCSD Electric Racing'
+    click_link 'Looks good!'
+
     expect(page).to have_text "Alice Neilson"
 
     page.find('.sidebar .toggle-user-settings').click

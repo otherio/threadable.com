@@ -1,6 +1,6 @@
 class Users::ResetPasswordController < ApplicationController
 
-  skip_before_action :require_user_be_signed_in!
+  skip_before_action :require_user_be_signed_in!, only: [:request_link, :show, :reset]
 
   def request_link
     email = params.require(:password_recovery).require(:email)
@@ -30,10 +30,14 @@ class Users::ResetPasswordController < ApplicationController
     attributes = params.require(:user).permit(:password, :password_confirmation)
     if current_user.update(attributes)
       flash[:notice] = 'Your password has been updated'
-      redirect_to root_path
+      redirect_to confirm_organizations_path
     else
       render :show
     end
+  end
+
+  def confirm_organizations
+    render :confirm_organizations
   end
 
   private

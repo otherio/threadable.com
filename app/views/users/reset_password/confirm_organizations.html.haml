@@ -1,0 +1,13 @@
+.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2
+  %h2 Threadable
+  .well-when-not-small
+    %h2 Almost done!
+    Just to confirm, you're a member of the following organizations:
+
+    %ul
+      -current_user.organizations.all.each do |organization|
+        %li
+          =organization.name
+          ="(#{link_to 'unsubscribe', organization_unsubscribe_path(organization.slug, OrganizationUnsubscribeToken.encrypt(organization.id, current_user.id))})".html_safe
+
+    =link_to 'Looks good!', root_path, class: 'uk-button uk-button-primary'

@@ -78,9 +78,10 @@ Threadable::Application.routes.draw do
 
   # OLD ROUTES START
 
-  get   '/reset_password/:token' => 'users/reset_password#show', as: 'reset_password'
-  patch '/reset_password/:token' => 'users/reset_password#reset'
-  post  '/reset_password'        => 'users/reset_password#request_link', as: 'request_reset_password_link'
+  get   '/reset_password/confirm_organizations' => 'users/reset_password#confirm_organizations', as: 'confirm_organizations'
+  get   '/reset_password/:token'                => 'users/reset_password#show', as: 'reset_password'
+  patch '/reset_password/:token'                => 'users/reset_password#reset'
+  post  '/reset_password'                       => 'users/reset_password#request_link', as: 'request_reset_password_link'
 
   resources :users, except: [:new, :destroy] do
     collection do
