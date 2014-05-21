@@ -5,6 +5,10 @@ describe OrganizationsSerializer do
   let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
   let(:sfhealth) { threadable.organizations.find_by_slug!('sfhealth') }
 
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
+
   context 'when given a single record' do
     let(:payload){ raceteam }
     let(:expected_key){ :organization }
@@ -26,7 +30,9 @@ describe OrganizationsSerializer do
         formatted_email_address:      raceteam.formatted_email_address,
         formatted_task_email_address: raceteam.formatted_task_email_address,
 
-        groups: serialize(:groups, raceteam.groups.all).values.first
+        groups: serialize(:groups, raceteam.groups.all).values.first,
+
+        can_remove_non_empty_group:   true
       )
     end
   end
@@ -53,7 +59,9 @@ describe OrganizationsSerializer do
           formatted_email_address:      raceteam.formatted_email_address,
           formatted_task_email_address: raceteam.formatted_task_email_address,
 
-          groups: serialize(:groups, raceteam.groups.all).values.first
+          groups: serialize(:groups, raceteam.groups.all).values.first,
+
+          can_remove_non_empty_group:   true
         },{
           id:                sfhealth.id,
           param:             "sfhealth",
@@ -71,7 +79,9 @@ describe OrganizationsSerializer do
           formatted_email_address:      sfhealth.formatted_email_address,
           formatted_task_email_address: sfhealth.formatted_task_email_address,
 
-          groups: serialize(:groups, sfhealth.groups.all).values.first
+          groups: serialize(:groups, sfhealth.groups.all).values.first,
+
+          can_remove_non_empty_group:   false
         }
       ]
     end

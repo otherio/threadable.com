@@ -16,7 +16,9 @@ Threadable.Organization = RL.Model.extend({
   hasHeldMessages:           RL.attr('boolean'),
   trusted:                   RL.attr('boolean'),
 
-  groups: RL.hasMany('Threadable.Group'),
+  groups:                    RL.hasMany('Threadable.Group'),
+
+  canRemoveNonEmptyGroup:    RL.attr('boolean'),
 
   loadMembers: RL.loadAssociationMethod('members', function(organization){
     return Threadable.OrganizationMember.fetch({

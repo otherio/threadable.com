@@ -1,6 +1,8 @@
 class OrganizationsSerializer < Serializer
 
   def serialize_record organization
+    current_member = organization.members.current_member
+
     {
       id:                organization.id,
       param:             organization.to_param,
@@ -19,6 +21,8 @@ class OrganizationsSerializer < Serializer
       formatted_task_email_address: organization.formatted_task_email_address,
 
       groups: serialize(:groups, organization.groups.all),
+
+      can_remove_non_empty_group:   !! current_member && current_member.can?(:remove_non_empty_group_from, organization)
     }
   end
 
