@@ -4,5 +4,4 @@ class ExternalAuthorization < ActiveRecord::Base
   validates_uniqueness_of :provider, scope: :user
   validates_presence_of :provider
   validates_presence_of :token
-  validates_presence_of :secret
 end

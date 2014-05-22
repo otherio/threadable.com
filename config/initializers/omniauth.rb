@@ -1,4 +1,12 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :trello, ENV['THREADABLE_TRELLO_API_KEY'], ENV['THREADABLE_TRELLO_API_SECRET'],
-  app_name: "Threadable", scope: 'read,write,account', expiration: 'never'
+  provider :trello,
+    ENV['THREADABLE_TRELLO_API_KEY'],
+    ENV['THREADABLE_TRELLO_API_SECRET'],
+    app_name: "Threadable",
+    scope: 'read,write,account',
+    expiration: 'never'
+
+  provider :google_oauth2,
+    ENV["GOOGLE_CLIENT_ID"],
+    ENV["GOOGLE_CLIENT_SECRET"]
 end

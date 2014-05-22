@@ -71,8 +71,8 @@
       %tbody
         - current_user.external_authorizations.all.each do |auth|
           %tr
-            %td= auth.provider
-            %td= "#{auth.name} (#{auth.nickname}) &lt;#{auth.email_address}&gt;".html_safe
+            %td= auth.pretty_provider
+            %td= "#{auth.name} #{auth.nickname ? "(#{auth.nickname})" : ''} &lt;#{auth.email_address}&gt;".html_safe
   - else
     .no-accounts
       <b>You have no connected accounts.</b>
@@ -81,6 +81,8 @@
     Add or update a connected account:
     %a{href: '/auth/trello'}
       Trello
+    %a{href: '/auth/google_oauth2'}
+      Google
 
 .well
   %h2 API Access Token
