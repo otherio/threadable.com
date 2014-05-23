@@ -29,6 +29,24 @@ class ConversationMailer < Threadable::Mailer
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
 
+    @message.attachments.all.each do |attachment|
+      filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
+      attachments[filename] = {
+        :content    => attachment.content,
+        :content_id => attachment.content_id,
+        :encoding   => 'binary',
+      }
+
+      # this has to be here (not in the declaration above) to work around some
+      # weird bug where attachments of type message/rfc822 don't work otherwise
+      attachments[filename][:mime_type] = attachment.mimetype
+
+      if attachment.content_id
+        attachments[filename][:content_id] = attachment.content_id
+        attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
+      end
+    end
+
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
 
     if has_many_groups
@@ -129,27 +147,6 @@ class ConversationMailer < Threadable::Mailer
 
     email.smtp_envelope_from = @conversation.internal_email_address
     email.smtp_envelope_to = @recipient.email_address.to_s
-
-    # attach these here, such that hopefully they end up at the end of the message instead of the beginning.
-    @message.attachments.all.each do |attachment|
-      filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
-      next if filename == 'signature.asc'  #strip pgp/gpg signatures since we break them anyway.
-
-      attachments[filename] = {
-        :content    => attachment.content,
-        :content_id => attachment.content_id,
-        :encoding   => 'binary',
-      }
-
-      # this has to be here (not in the declaration above) to work around some
-      # weird bug where attachments of type message/rfc822 don't work otherwise
-      attachments[filename][:mime_type] = attachment.mimetype
-
-      if attachment.content_id
-        attachments[filename][:content_id] = attachment.content_id
-        attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
-      end
-    end
 
     email
   end
