@@ -23,6 +23,8 @@ class Group < ActiveRecord::Base
     through: :conversation_groups,
     source: :conversation
 
+  belongs_to :google_sync_user, class_name: 'User'
+
   def name= name
     unless email_address_tag.present?
       write_attribute(:email_address_tag, name.gsub(/[^0-9A-Za-z-]+/, '-').strip.downcase)

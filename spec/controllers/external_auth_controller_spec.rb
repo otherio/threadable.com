@@ -3,28 +3,28 @@ require 'spec_helper'
 describe ExternalAuthController do
 
   describe "POST create" do
-    let(:auth_hash) do
-      {
-        'provider' => 'trello',
-        'credentials' => {
-          'token' => 'TOKEN',
-          'secret' => 'SECRET',
-        },
-        "info"=> {
-          "name"=>"NAME",
-          "email"=>"email@foo.com",
-          "nickname"=>"NICKNAME",
-          "urls"=>{"profile"=>"https://trello.com/foop"}
-        },
-      }
-    end
-
-    before do
-      request.env['omniauth.auth'] = auth_hash
-    end
-
     when_signed_in_as 'yan@ucsd.example.com' do
       context "with a valid oauth callback" do
+        let(:auth_hash) do
+          {
+            'provider' => 'trello',
+            'credentials' => {
+              'token' => 'TOKEN',
+              'secret' => 'SECRET',
+            },
+            "info"=> {
+              "name"=>"NAME",
+              "email"=>"email@foo.com",
+              "nickname"=>"NICKNAME",
+              "urls"=>{"profile"=>"https://trello.com/foop"}
+            },
+          }
+        end
+
+        before do
+          request.env['omniauth.auth'] = auth_hash
+        end
+
         context "with the trello provider" do
           it "should render succesfully" do
             post :create, provider: 'trello'
@@ -47,11 +47,17 @@ describe ExternalAuthController do
               'provider' => 'google_oauth2',
               'credentials' => {
                 'token' => 'TOKEN',
+                'refresh_token' => 'REFRESH_TOKEN',
               },
-              "info"=> {
-                "name"=>"NAME",
-                "email"=>"email@foo.com",
+              'info'=> {
+                'name'=>'NAME',
+                'email'=>'email@foo.com',
               },
+              'extra' => {
+                'raw_info' => {
+                  'hd' => 'DOMAIN',
+                }
+              }
             }
           end
 
@@ -64,14 +70,16 @@ describe ExternalAuthController do
             expect(auth.token).to eq 'TOKEN'
             expect(auth.name).to eq 'NAME'
             expect(auth.email_address).to eq 'email@foo.com'
+            expect(auth.domain).to eq 'DOMAIN'
+            expect(auth.refresh_token).to eq 'REFRESH_TOKEN'
           end
         end
-      end
 
-      context "with an incorrect provider" do
-        it "should render not found" do
-          post :create, provider: 'faxtagram'
-          expect(response.status).to eq 404
+        context "with an incorrect provider" do
+          it "should render not found" do
+            post :create, provider: 'faxtagram'
+            expect(response.status).to eq 404
+          end
         end
       end
 

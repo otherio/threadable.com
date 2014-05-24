@@ -12,6 +12,8 @@ class Threadable::User::ExternalAuthorization < Threadable::Model
     user_id
     provider
     token
+    refresh_token
+    domain
     secret
     name
     email_address

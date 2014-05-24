@@ -55,6 +55,8 @@ gem 'omniauth'
 gem 'omniauth-trello'
 gem 'omniauth-google-oauth2'
 
+gem 'google-api-client'
+
 gem 'algoliasearch-rails'
 gem 'dnsruby'
 

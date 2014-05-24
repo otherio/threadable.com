@@ -2,9 +2,10 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
   Threadable.CurrentUserMixin,
   Threadable.ConfirmationMixin,
   {
-  needs: ['organization'],
+  needs: ['organization', 'application'],
 
   error: null,
+  currentUser: Ember.computed.alias('controllers.application.currentUser'),
 
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
@@ -12,9 +13,13 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
     return this.get('controllers.organization.canRemoveNonEmptyGroup') || this.get('conversationsCount') === 0;
   }.property('userId', 'controllers.organization.canRemoveNonEmptyGroup'),
 
+  hasGoogleAuth: function() {
+    return !! this.get('currentUser').authorizationFor('google_oauth2').domain;
+  }.property('currentUser'),
+
   aliasPlainAddress: function() {
     var aliasEmailAddress = this.get('editableGroup.aliasEmailAddress');
-    if(aliasEmailAddress.match(/\<(.*)\>/)) {
+    if(aliasEmailAddress.match(/<(.*)>/)) {
       return RegExp.$1;
     }
     if(aliasEmailAddress.match(/@/)) {
@@ -55,6 +60,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
         holdMessages:      this.get('editableGroup.holdMessages'),
         aliasEmailAddress: this.get('editableGroup.aliasEmailAddress'),
         webhookUrl:        this.get('editableGroup.webhookUrl'),
+        googleSync:        this.get('editableGroup.googleSync'),
       });
 
       group.saveRecord().then(groupSaved.bind(this), error.bind(this));

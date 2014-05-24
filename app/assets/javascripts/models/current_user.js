@@ -46,7 +46,7 @@ Threadable.CurrentUser = RL.Model.extend({
 
   authorizationFor: function(provider) {
     return this.get('externalAuthorizations').filter(function(auth) { return auth.provider == provider; })[0];
-  }.property('externalAuthorizations'),
+  },
 
   dismissWelcomeModal: function() {
     this.update({dismissed_welcome_modal: true});

@@ -121,6 +121,8 @@ ActiveRecord::Schema.define(version: 20140525004803) do
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "refresh_token"
+    t.string   "domain"
   end
 
   add_index "external_authorizations", ["user_id", "provider"], name: "index_external_authorizations_on_user_id_and_provider", unique: true, using: :btree
@@ -147,7 +149,12 @@ ActiveRecord::Schema.define(version: 20140525004803) do
     t.boolean  "hold_messages",       default: true
     t.string   "alias_email_address", default: "",    null: false
     t.string   "webhook_url",         default: "",    null: false
+<<<<<<< HEAD
     t.string   "description"
+=======
+    t.boolean  "google_sync",         default: false, null: false
+    t.integer  "google_sync_user_id"
+>>>>>>> auth with google, setting to associate a group with google
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
