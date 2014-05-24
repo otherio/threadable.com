@@ -53,6 +53,10 @@ GEM
       compass (>= 0.11.5)
     arel (5.0.0)
     atomic (1.1.16)
+    autoparse (0.3.3)
+      addressable (>= 2.3.1)
+      extlib (>= 0.9.15)
+      multi_json (>= 1.0.0)
     backports (3.3.5)
     barber (0.4.2)
       ember-source
@@ -129,6 +133,7 @@ GEM
     excon (0.31.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    extlib (0.9.16)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.2.1)
@@ -157,6 +162,16 @@ GEM
       rspec (~> 2.0)
       rspec-instafail (~> 0.2.0)
       ruby-progressbar (~> 1.0)
+    google-api-client (0.6.4)
+      addressable (>= 2.3.2)
+      autoparse (>= 0.3.3)
+      extlib (>= 0.9.15)
+      faraday (~> 0.8.4)
+      jwt (>= 0.1.5)
+      launchy (>= 2.1.1)
+      multi_json (>= 1.0.0)
+      signet (~> 0.4.5)
+      uuidtools (>= 2.1.0)
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -350,6 +365,11 @@ GEM
       celluloid (>= 0.14.1)
       ice_cube (~> 0.11.0)
       sidekiq (~> 2.15.0)
+    signet (0.4.5)
+      addressable (>= 2.2.3)
+      faraday (~> 0.8.1)
+      jwt (>= 0.1.5)
+      multi_json (>= 1.0.0)
     simple_form (1.4.1)
     sinatra (1.4.4)
       rack (~> 1.4)
@@ -385,6 +405,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uuidtools (2.1.4)
     virtus (0.5.5)
       backports (~> 3.3)
       descendants_tracker (~> 0.0.1)
@@ -418,6 +439,7 @@ DEPENDENCIES
   filepicker-rails
   fog
   fuubar
+  google-api-client
   haml-rails
   honeybadger
   htmlentities

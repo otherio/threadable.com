@@ -23,6 +23,7 @@ class Threadable::Group < Threadable::Model
     auto_join?
     hold_messages?
     webhook_url
+    google_sync
   }, to: :group_record
 
   def group_id
@@ -53,6 +54,10 @@ class Threadable::Group < Threadable::Model
 
   def organization
     @organization ||= Threadable::Organization.new(threadable, organization_record)
+  end
+
+  def google_sync= sync
+    update(google_sync_user: threadable.current_user.user_record)
   end
 
   def email_address
@@ -120,6 +125,11 @@ class Threadable::Group < Threadable::Model
 
   def inspect
     %(#<#{self.class} group_id: #{id.inspect}, name: #{name.inspect}>)
+  end
+
+  def reload
+    group_record.reload
+    self
   end
 
   private

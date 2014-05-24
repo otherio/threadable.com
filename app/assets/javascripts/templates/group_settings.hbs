@@ -66,6 +66,10 @@
                 <div class="uk-form-controls input-field">
                   {{input value=editableGroup.aliasEmailAddress class="uk-width-1-1" name="aliasEmailAddress"}}
                 </div>
+                {{#if hasGoogleAuth}}
+                  {{input checked=editableGroup.googleSync type="checkbox" name="googleSync"}}
+                  Sync with google apps for drive and calendar
+                {{/if}}
               </label>
             </div>
 

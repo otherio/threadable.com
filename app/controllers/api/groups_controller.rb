@@ -7,7 +7,7 @@ class Api::GroupsController < ApiController
 
   # post /api/groups
   def create
-    group_params = params.require(:group).permit(:color, :name, :subject_tag, :email_address_tag, :auto_join, :alias_email_address)
+    group_params = params.require(:group).permit(:color, :name, :subject_tag, :email_address_tag, :auto_join, :alias_email_address, :google_sync)
     group = organization.groups.create(group_params)
     if group.persisted?
       render json: serialize(:groups, group), status: 201
@@ -24,7 +24,7 @@ class Api::GroupsController < ApiController
   # patch /api/groups/:id
   def update
     group = organization.groups.find_by_email_address_tag!(params[:id])
-    group_params = params.require(:group).permit(:color, :subject_tag, :auto_join, :hold_messages, :alias_email_address, :webhook_url)
+    group_params = params.require(:group).permit(:color, :subject_tag, :auto_join, :hold_messages, :alias_email_address, :webhook_url, :google_sync)
     group_params[:webhook_url].try(&:strip)
     group.update(group_params)
     render json: serialize(:groups, group), status: 200
