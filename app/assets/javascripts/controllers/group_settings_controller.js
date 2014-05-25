@@ -48,6 +48,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
 
       var group = this.get('content');
       group.setProperties({
+        description:       this.get('editableGroup.description'),
         subjectTag:        this.get('editableGroup.subjectTag'),
         color:             this.get('editableGroup.color'),
         autoJoin:          this.get('editableGroup.autoJoin'),

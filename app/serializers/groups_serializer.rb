@@ -5,6 +5,7 @@ class GroupsSerializer < Serializer
       id:                           group.id,
       slug:                         group.slug,
       name:                         group.name,
+      description:                  group.description,
       email_address_tag:            group.email_address_tag,
       subject_tag:                  group.subject_tag,
       color:                        group.color,

@@ -21,6 +21,7 @@ describe GroupsSerializer do
         color:               "#964bf8",
         auto_join:           false,
         hold_messages:       true,
+        description:         'Soldering and wires and stuff!',
 
         email_address:                electronics.email_address,
         task_email_address:           electronics.task_email_address,
@@ -54,6 +55,7 @@ describe GroupsSerializer do
           color:               "#964bf8",
           auto_join:           false,
           hold_messages:       true,
+          description:         'Soldering and wires and stuff!',
 
           email_address:                electronics.email_address,
           task_email_address:           electronics.task_email_address,
@@ -78,6 +80,7 @@ describe GroupsSerializer do
           color:               "#5a9de1",
           auto_join:           false,
           hold_messages:       true,
+          description:         'Cash Monet',
 
           email_address:                fundraising.email_address,
           task_email_address:           fundraising.task_email_address,
@@ -112,6 +115,7 @@ describe GroupsSerializer do
             color:               "#964bf8",
             auto_join:           false,
             hold_messages:       true,
+            description:         'Soldering and wires and stuff!',
 
             email_address:                electronics.email_address,
             task_email_address:           electronics.task_email_address,
@@ -136,6 +140,7 @@ describe GroupsSerializer do
             color:               "#5a9de1",
             auto_join:           false,
             hold_messages:       true,
+            description:         'Cash Monet',
 
             email_address:                fundraising.email_address,
             task_email_address:           fundraising.task_email_address,

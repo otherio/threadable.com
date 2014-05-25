@@ -12,6 +12,7 @@ class Threadable::Group < Threadable::Model
     to_param
     slug
     name
+    description
     email_address_tag
     subject_tag
     color

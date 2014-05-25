@@ -1,6 +1,14 @@
 .group
   position: relative
 
+  .description
+    font-size: 0.8em
+    width: 210px
+    display: inline-block
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
   .badge
     float: right
 
@@ -16,6 +24,9 @@
     box-shadow: none
     > i
       width: auto
+
+    &.with-description
+      line-height: 44px
 
   > .group-controls
     position: relative

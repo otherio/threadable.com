@@ -28,17 +28,18 @@ describe Threadable::Group do
   it { should have_constant :Conversations }
   it { should have_constant :Tasks }
 
-  it { should delegate(:id                ).to(:group_record) }
-  it { should delegate(:to_param          ).to(:group_record) }
-  it { should delegate(:name              ).to(:group_record) }
-  it { should delegate(:email_address_tag ).to(:group_record) }
-  it { should delegate(:errors            ).to(:group_record) }
-  it { should delegate(:new_record?       ).to(:group_record) }
-  it { should delegate(:persisted?        ).to(:group_record) }
-  it { should delegate(:subject_tag       ).to(:group_record) }
-  it { should delegate(:auto_join?        ).to(:group_record) }
-  it { should delegate(:hold_messages?    ).to(:group_record) }
-  it { should delegate(:alias_email_address     ).to(:group_record) }
+  it { should delegate(:id                 ).to(:group_record) }
+  it { should delegate(:to_param           ).to(:group_record) }
+  it { should delegate(:name               ).to(:group_record) }
+  it { should delegate(:email_address_tag  ).to(:group_record) }
+  it { should delegate(:errors             ).to(:group_record) }
+  it { should delegate(:new_record?        ).to(:group_record) }
+  it { should delegate(:persisted?         ).to(:group_record) }
+  it { should delegate(:subject_tag        ).to(:group_record) }
+  it { should delegate(:auto_join?         ).to(:group_record) }
+  it { should delegate(:hold_messages?     ).to(:group_record) }
+  it { should delegate(:alias_email_address).to(:group_record) }
+  it { should delegate(:description        ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }

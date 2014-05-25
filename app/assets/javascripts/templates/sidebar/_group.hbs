@@ -1,9 +1,12 @@
 <li class="group" data-group-id="{{unbound group.id}}">
-  {{#link-to 'conversations' group.slug}}
-    <span class="name">+{{group.name}}</span>
+  {{#link-to 'conversations' group.slug classNames="group-row"}}
     <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
+    <span class="name">+{{group.name}}</span><br/>
+    {{#if group.description}}
+      <span class="description">{{group.description}}</span>
+    {{/if}}
   {{/link-to}}
-  <a href="" class="disclosure-triangle">
+  <a href="" {{bind-attr class=":disclosure-triangle group.description:with-description"}}>
     <i class="caret uk-icon-caret-right"></i>
     <span class="sr-only">Group Options</span>
   </a>

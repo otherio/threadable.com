@@ -3,6 +3,7 @@ Threadable.Group = RL.Model.extend({
   organizationSlug:          RL.attr('string'),
   slug:                      RL.attr('string'),
   name:                      RL.attr('string'),
+  description:               RL.attr('string'),
   emailAddressTag:           RL.attr('string'),
   subjectTag:                RL.attr('string'),
   color:                     RL.attr('string'),

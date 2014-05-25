@@ -85,18 +85,18 @@ FixtureBuilder.build do
 
   # create some groups and put people in them
   as 'alice@ucsd.example.com' do
-    @electronics_group = create_group name: 'Electronics', color: '#964bf8', auto_join: false
+    @electronics_group = create_group name: 'Electronics', description: 'Soldering and wires and stuff!', color: '#964bf8', auto_join: false
     add_member_to_group 'electronics', 'tom@ucsd.example.com'
     add_member_to_group 'electronics', 'bethany@ucsd.example.com'
 
-    @fundraising_group = create_group name: 'Fundraising', color: '#5a9de1', auto_join: false
+    @fundraising_group = create_group name: 'Fundraising', description: 'Cash Monet', color: '#5a9de1', auto_join: false
     add_member_to_group 'fundraising', 'alice@ucsd.example.com'
     add_member_to_group 'fundraising', 'bob@ucsd.example.com'
     add_member_to_group 'fundraising', 'nadya@ucsd.example.com'
 
-    @graphic_design_group = create_group name: 'Graphic Design', color: '#f2ad40', auto_join: true
+    @graphic_design_group = create_group name: 'Graphic Design', description: 'I like helvetica', color: '#f2ad40', auto_join: true
 
-    @press_group = create_group name: 'Press', color: '#e67e22', auto_join: false, alias_email_address: 'Press Enquiries <press@ucsd.example.com>'
+    @press_group = create_group name: 'Press', color: '#e67e22', description: 'How to talk to the news media', auto_join: false, alias_email_address: 'Press Enquiries <press@ucsd.example.com>'
     add_member_to_group 'press', 'tom@ucsd.example.com'
     add_member_to_group 'press', 'nadya@ucsd.example.com'
   end
