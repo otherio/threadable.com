@@ -23,3 +23,14 @@
   = form_tag admin_merge_user_path(@user), method: 'POST' do |f|
     = text_field_tag :destination_user_id, nil, class: 'input-medium', style: 'margin: 0', placeholder: 'destination user id'
     = submit_tag 'Merge!', class: 'btn btn-danger'
+
+%h1 Organizations
+.well
+  %ul
+    - @user.organizations.all.each do |organization|
+      %li
+        = link_to organization.name, admin_edit_organization_path(organization)
+        \|
+        = link_to 'edit member', admin_edit_organization_member_path(organization, @user)
+        \|
+        = link_to 'remove', admin_remove_organization_member_path(organization, @user), :method => :delete, :data => { :confirm => 'Are you sure?' }
