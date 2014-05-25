@@ -8,6 +8,7 @@
       = f.input :role, as: :select, collection: OrganizationMembership::ROLES, include_blank: false
       = f.input :ungrouped_mail_delivery, as: :select, collection: OrganizationMembership::UNGROUPED_MAIL_DELIVERY_VALUES, include_blank: false
       = f.input :gets_email?, as: :select, include_blank: false
+      = f.input :confirmed?, as: :select, include_blank: false
 
     .actions
       = f.button :submit, value: 'Update Membership', class: 'btn btn-primary'

@@ -2,7 +2,7 @@ require_dependency 'threadable/organization/member'
 
 class Threadable::Organization::Member::Update < MethodObject
 
-  ATTRIBUTES = [:gets_email, :subscribed, :role, :ungrouped_mail_delivery].freeze
+  ATTRIBUTES = [:gets_email, :confirmed, :subscribed, :role, :ungrouped_mail_delivery].freeze
 
   attr_reader :threadable, :current_user, :current_member, :member, :attributes
 

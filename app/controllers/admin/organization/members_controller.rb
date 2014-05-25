@@ -19,7 +19,7 @@ class Admin::Organization::MembersController < ApplicationController
 
   # PATCH /admin/organizations/:organization_slug/members/:user_id
   def update
-    member_params = params.require(:user).permit(:name, :email_address, :slug, :role, :ungrouped_mail_delivery, :gets_email).symbolize_keys
+    member_params = params.require(:user).permit(:name, :email_address, :slug, :role, :ungrouped_mail_delivery, :gets_email, :confirmed).symbolize_keys
     member = organization.members.find_by_user_slug! params[:user_id]
     if member.update(member_params)
       flash[:notice] = "update of #{member.formatted_email_address} membership to #{organization.name} was successful."
@@ -94,8 +94,9 @@ class Admin::Organization::MembersController < ApplicationController
 
   def member_params
     @member_params or begin
-      @member_params = params.require(:user).permit(:id, :name, :email_address, :gets_email, :send_join_notice).symbolize_keys
+      @member_params = params.require(:user).permit(:id, :name, :email_address, :gets_email, :send_join_notice, :confirmed).symbolize_keys
       @member_params[:gets_email]       = @member_params[:gets_email] == 'true'
+      @member_params[:confirmed]        = @member_params[:confirmed] == 'true'
       @member_params[:send_join_notice] = @member_params[:send_join_notice] == 'true'
       @member_params[:personal_message] = params[:personal_message]
     end

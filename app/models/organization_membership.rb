@@ -50,6 +50,7 @@ class OrganizationMembership < ActiveRecord::Base
   end
 
   validates_inclusion_of :gets_email, :in => [ true, false ]
+  validates_inclusion_of :confirmed, :in => [ true, false ]
   validates_inclusion_of :role, :in => ROLES
   validates_inclusion_of :ungrouped_mail_delivery, :in => UNGROUPED_MAIL_DELIVERY_VALUES
 
