@@ -15,7 +15,6 @@ class Api::GroupsController < ApiController
       :auto_join,
       :alias_email_address,
       :description,
-      :google_sync,
     )
 
     group = organization.groups.create(group_params)

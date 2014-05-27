@@ -83,11 +83,7 @@ describe Api::GroupsController do
     describe 'create' do
       context 'when given a unique group name' do
         it 'creates and returns the new group' do
-<<<<<<< HEAD
           xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { name: 'Fluffy', color: '#bebebe', email_address_tag: 'floofy', description: 'The Floof', subject_tag: 'FL', auto_join: false, alias_email_address: 'foo@bar.com' }
-=======
-          xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { name: 'Fluffy', color: '#bebebe', email_address_tag: 'floofy', subject_tag: 'FL', auto_join: false, alias_email_address: 'foo@bar.com', google_sync: true }
->>>>>>> auth with google, setting to associate a group with google
           expect(response.status).to eq 201
           group = raceteam.groups.find_by_email_address_tag('floofy')
           expect(group).to be
@@ -95,11 +91,7 @@ describe Api::GroupsController do
           expect(group.subject_tag).to eq 'FL'
           expect(group.auto_join?).to eq false
           expect(group.alias_email_address).to eq 'foo@bar.com'
-<<<<<<< HEAD
           expect(group.description).to eq 'The Floof'
-=======
-          expect(group.google_sync).to be_true
->>>>>>> auth with google, setting to associate a group with google
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end
@@ -128,22 +120,14 @@ describe Api::GroupsController do
 
       context 'when given a valid group id' do
         it "updates the group and returns the new one" do
-<<<<<<< HEAD
           xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', description: 'They are super', subject_tag: "superheroes", auto_join: false, alias_email_address: 'foo@bar.com' }
-=======
-          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', subject_tag: "superheroes", auto_join: false, alias_email_address: 'foo@bar.com', google_sync: true }
->>>>>>> auth with google, setting to associate a group with google
           expect(response).to be_ok
           group = raceteam.groups.find_by_email_address_tag('electronics')
           expect(group.color).to eq '#964bf8'
           expect(group.subject_tag).to eq 'superheroes'
           expect(group.auto_join?).to be_false
           expect(group.alias_email_address).to eq 'foo@bar.com'
-<<<<<<< HEAD
           expect(group.description).to eq 'They are super'
-=======
-          expect(group.google_sync).to be_true
->>>>>>> auth with google, setting to associate a group with google
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end
