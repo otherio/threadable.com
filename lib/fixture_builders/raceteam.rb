@@ -89,7 +89,7 @@ FixtureBuilder.build do
     add_member_to_group 'electronics', 'tom@ucsd.example.com'
     add_member_to_group 'electronics', 'bethany@ucsd.example.com'
 
-    @fundraising_group = create_group name: 'Fundraising', description: 'Cash Monet', color: '#5a9de1', auto_join: false
+    @fundraising_group = create_group name: 'Fundraising', description: 'Cache Monet', color: '#5a9de1', auto_join: false
     add_member_to_group 'fundraising', 'alice@ucsd.example.com'
     add_member_to_group 'fundraising', 'bob@ucsd.example.com'
     add_member_to_group 'fundraising', 'nadya@ucsd.example.com'

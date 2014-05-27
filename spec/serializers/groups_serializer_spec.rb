@@ -82,7 +82,7 @@ describe GroupsSerializer do
           color:               "#5a9de1",
           auto_join:           false,
           hold_messages:       true,
-          description:         'Cash Monet',
+          description:         'Cache Monet',
           google_sync:         false,
 
           email_address:                fundraising.email_address,
@@ -144,7 +144,7 @@ describe GroupsSerializer do
             color:               "#5a9de1",
             auto_join:           false,
             hold_messages:       true,
-            description:         'Cash Monet',
+            description:         'Cache Monet',
             google_sync:         false,
 
             email_address:                fundraising.email_address,
