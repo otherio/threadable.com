@@ -45,7 +45,9 @@ Threadable.CurrentUser = RL.Model.extend({
   }.observes('currentOrganizationId'),
 
   authorizationFor: function(provider) {
-    return this.get('externalAuthorizations').filter(function(auth) { return auth.provider == provider; })[0];
+    var authorizations = this.get('externalAuthorizations');
+    if(!authorizations) { return null; }
+    return authorizations.filter(function(auth) { return auth.provider == provider; })[0];
   },
 
   dismissWelcomeModal: function() {

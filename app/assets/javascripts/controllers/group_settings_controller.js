@@ -14,7 +14,9 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
   }.property('userId', 'controllers.organization.canRemoveNonEmptyGroup'),
 
   hasGoogleAuth: function() {
-    return !! this.get('currentUser').authorizationFor('google_oauth2').domain;
+    var authorization = this.get('currentUser').authorizationFor('google_oauth2');
+    if(!authorization) { return false; }
+    return !! authorization.domain;
   }.property('currentUser'),
 
   aliasPlainAddress: function() {
