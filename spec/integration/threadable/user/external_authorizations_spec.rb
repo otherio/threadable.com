@@ -18,4 +18,14 @@ describe Threadable::User::ExternalAuthorizations do
       expect(authorizations.first.token).to eq 'baz'
     end
   end
+
+  describe '#find_by_provider' do
+    it 'returns the auth that matches the given provider' do
+      user.external_authorizations.add_or_update(provider: 'twitterfax', token: 'foo', secret: 'bar')
+      user.external_authorizations.add_or_update(provider: 'faxchat', token: 'baz', secret: 'bar2')
+      authorization = user.external_authorizations.find_by_provider('faxchat')
+      expect(authorization.provider).to eq 'faxchat'
+      expect(authorization.token).to eq 'baz'\
+    end
+  end
 end

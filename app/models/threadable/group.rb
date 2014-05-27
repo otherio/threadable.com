@@ -1,3 +1,7 @@
+require 'google/api_client'
+require 'google/api_client/client_secrets'
+require 'google/api_client/auth/installed_app'
+
 class Threadable::Group < Threadable::Model
 
   self.model_name = ::Group.model_name
@@ -58,7 +62,37 @@ class Threadable::Group < Threadable::Model
   end
 
   def google_sync= sync
-    update(google_sync_user: threadable.current_user.user_record)
+    unless sync
+      group_record.update_attributes(google_sync_user: nil, google_sync: false)
+      return
+    end
+
+    group_response = google_client.execute(
+      api_method: google_directory_api.groups.get,
+      parameters: {'groupKey' => alias_email_address_object.address}
+    )
+
+    if group_response.status == 404
+      insert_response = google_client.execute(
+        api_method: google_directory_api.groups.insert,
+        body_object: {
+          'email'       => alias_email_address_object.address,
+          'name'        => "#{name} on Threadable",
+          'description' => "This group enables Google Apps services sync for #{name} on Threadable / #{description}"
+        }
+      )
+
+      raise Threadable::ExternalServiceError, 'Creating proxy google group failed' unless insert_response.status == 200
+    elsif group_response.status != 200
+      raise Threadable::ExternalServiceError, 'Searching for google group failed'
+    end
+
+    group_record.update_attributes(google_sync_user: threadable.current_user.user_record, google_sync: true)
+  end
+
+  def google_sync_user
+    return nil unless group_record.google_sync_user
+    Threadable::User.new(threadable, group_record.google_sync_user)
   end
 
   def email_address
@@ -104,6 +138,9 @@ class Threadable::Group < Threadable::Model
   end
 
   def update attributes
+    new_google_sync = [attributes.delete('google_sync'), attributes.delete(:google_sync)].compact.first
+    self.google_sync = new_google_sync unless new_google_sync.nil? || new_google_sync == google_sync
+
     group_record.update_attributes!(attributes)
     self
   end
@@ -149,4 +186,21 @@ class Threadable::Group < Threadable::Model
     display_name
   end
 
+  def google_client
+    return @google_client if @google_client
+    raise(Threadable::ExternalServiceError, 'You do not have a connected google account') unless external_authorization = threadable.current_user.external_authorizations.find_by_provider('google_oauth2')
+
+    @google_client = Google::APIClient.new(
+      application_name: 'Threadable',
+      application_version: '1.0'
+    )
+
+    @google_client.authorization.access_token = external_authorization.token
+    @google_client.authorization.refresh_token = external_authorization.refresh_token
+    @google_client
+  end
+
+  def google_directory_api
+    @google_directory_api ||= google_client.discovered_api('admin', 'directory_v1')
+  end
 end

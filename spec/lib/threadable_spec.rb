@@ -181,6 +181,7 @@ describe Threadable, :type => :threadable do
       Threadable::Events::TaskDone
       Threadable::Events::TaskRemovedDoer
       Threadable::Events::TaskUndone
+      Threadable::ExternalServiceError
       Threadable::InMemoryTracker
       Threadable::IncomingEmail
       Threadable::IncomingEmail::Attachments

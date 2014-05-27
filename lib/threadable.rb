@@ -5,12 +5,13 @@ module Threadable
   require 'threadable/transactions'
   extend Threadable::Transactions
 
-  ThreadableError        = Class.new(StandardError)
-  RecordNotFound      = Class.new(ThreadableError)
-  RecordInvalid       = Class.new(ThreadableError)
-  CurrentUserNotFound = Class.new(RecordNotFound)
-  AuthorizationError  = Class.new(ThreadableError)
-  AuthenticationError = Class.new(ThreadableError)
+  ThreadableError      = Class.new(StandardError)
+  RecordNotFound       = Class.new(ThreadableError)
+  RecordInvalid        = Class.new(ThreadableError)
+  CurrentUserNotFound  = Class.new(RecordNotFound)
+  AuthorizationError   = Class.new(ThreadableError)
+  AuthenticationError  = Class.new(ThreadableError)
+  ExternalServiceError = Class.new(ThreadableError)
 
   def self.config name
     Threadable::Config[name]

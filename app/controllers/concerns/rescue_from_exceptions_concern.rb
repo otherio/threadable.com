@@ -24,6 +24,7 @@ module RescueFromExceptionsConcern
     AbstractController::ActionNotFound,
     ActiveRecord::RecordNotFound,
     Threadable::RecordNotFound,
+    Threadable::ExternalServiceError,
   ].freeze
 
   def rescue_from_exception exception

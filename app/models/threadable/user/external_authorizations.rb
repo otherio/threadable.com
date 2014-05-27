@@ -13,6 +13,10 @@ class Threadable::User::ExternalAuthorizations < Threadable::Collection
     external_authorizations_for scope
   end
 
+  def find_by_provider provider
+    external_authorization_for scope.where(provider: provider).first
+  end
+
   def add_or_update params
     external_authorization_record = nil
     Threadable.transaction do
