@@ -79,6 +79,7 @@ describe Threadable::Group do
           alice.external_authorizations.add_or_update!(
             provider: 'google_oauth2',
             token: 'foo',
+            refresh_token: 'moar foo',
             name: 'Alice Neilson',
             email_address: 'alice@foo.com',
             domain: 'foo.com',
@@ -96,7 +97,8 @@ describe Threadable::Group do
             application_version: '1.0',
           ).and_return(google_client)
 
-          expect(authorization).to receive(:access_token=).with(external_authorization)
+          expect(authorization).to receive(:access_token=).with(external_authorization.token)
+          expect(authorization).to receive(:refresh_token=).with(external_authorization.refresh_token)
           expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
         end
 
@@ -117,8 +119,6 @@ describe Threadable::Group do
 
           context 'when disabling google sync' do
             it 'removes the link to the google sync user' do
-              expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
-
               group.google_sync = true
               expect(group.reload.google_sync_user).to eq alice
               group.google_sync = false
