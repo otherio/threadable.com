@@ -1,9 +1,5 @@
 require 'spec_helper'
 
-require 'google/api_client'
-require 'google/api_client/client_secrets'
-require 'google/api_client/auth/installed_app'
-
 describe Threadable::Group do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
@@ -74,104 +70,79 @@ describe Threadable::Group do
         group.update(alias_email_address: '"Electronics for Jesus" <electronics@foo.com>')
       end
 
-      context 'when the user has proper google credentials' do
-        let!(:external_authorization) do
-          alice.external_authorizations.add_or_update!(
-            provider: 'google_oauth2',
-            token: 'foo',
-            refresh_token: 'moar foo',
-            name: 'Alice Neilson',
-            email_address: 'alice@foo.com',
-            domain: 'foo.com',
-          )
+      let(:google_client) { double(:google_client, authorization: double(:authorization), discovered_api: google_directory_api) }
+      let(:google_directory_api) { double(:google_directory_api, groups: directory_api_groups)}
+      let(:directory_api_groups) { double(:directory_api_groups, get: 'GET API DESCRIPTION', insert: 'INSERT API DESCRIPTION') }
+
+      before do
+        expect(group).to receive(:client_for).with(threadable.current_user).and_return(google_client)
+        group.stub(:directory_api).and_return(google_directory_api)
+        expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
+      end
+
+      context 'when the group can be found on their google apps domain' do
+        let(:api_response) { double(:api_response, status: 200, body: 'RESPONSE JSON') }
+
+        it 'enables sync and sets the sync user' do
+          group.google_sync = true
+          expect(group.reload.google_sync_user).to eq alice
+          expect(group.reload.google_sync).to be_true
         end
 
-        let(:google_client) { double(:google_client, authorization: authorization, discovered_api: google_directory_api) }
-        let(:authorization) { double(:authorization) }
-        let(:google_directory_api) { double(:google_directory_api, groups: groups)}
-        let(:groups) { double(:groups, get: 'GET API DESCRIPTION', insert: 'INSERT API DESCRIPTION') }
-
-        before do
-          expect(Google::APIClient).to receive(:new).with(
-            application_name: 'Threadable',
-            application_version: '1.0',
-          ).and_return(google_client)
-
-          expect(authorization).to receive(:access_token=).with(external_authorization.token)
-          expect(authorization).to receive(:refresh_token=).with(external_authorization.refresh_token)
-          expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
+        it 'enables sync and sets the sync user when called via update' do
+          group.update(google_sync: true)
+          expect(group.reload.google_sync_user).to eq alice
+          expect(group.reload.google_sync).to be_true
         end
 
-        context 'when the group can be found on their google apps domain' do
-          let(:api_response) { double(:api_response, status: 200, body: 'RESPONSE JSON') }
-
-          it 'enables sync and sets the sync user' do
+        context 'when disabling google sync' do
+          it 'removes the link to the google sync user' do
             group.google_sync = true
             expect(group.reload.google_sync_user).to eq alice
-            expect(group.reload.google_sync).to be_true
-          end
-
-          it 'enables sync and sets the sync user when called via update' do
-            group.update(google_sync: true)
-            expect(group.reload.google_sync_user).to eq alice
-            expect(group.reload.google_sync).to be_true
-          end
-
-          context 'when disabling google sync' do
-            it 'removes the link to the google sync user' do
-              group.google_sync = true
-              expect(group.reload.google_sync_user).to eq alice
-              group.google_sync = false
-              expect(group.reload.google_sync_user).to be_nil
-              expect(group.reload.google_sync).to be_false
-            end
-          end
-        end
-
-        context 'when the group can not be found on their google apps domain' do
-          let(:api_response) { double(:api_response, status: 404, body: 'RESPONSE JSON') }
-          let(:api_insert_response) { double(:api_insert_response, status: 200, body: 'RESPONSE JSON') }
-          let(:group_insert_parameters) do
-            {
-              'email' => 'electronics@foo.com',
-              'name' => 'Electronics on Threadable',
-              'description' => 'This group enables Google Apps services sync for Electronics on Threadable / Soldering and wires and stuff!'
-            }
-          end
-
-          before do
-            expect(google_client).to receive(:execute).
-              with(api_method: 'INSERT API DESCRIPTION', body_object: group_insert_parameters).
-              and_return(api_insert_response)
-          end
-
-          it 'creates the group, enables sync, and sets the sync user' do
-            group.google_sync = true
-            expect(group.reload.google_sync_user).to eq alice
-            expect(group.reload.google_sync).to be_true
-          end
-
-          context 'when group creation fails' do
-            let(:api_insert_response) { double(:api_insert_response, status: 500, body: 'RESPONSE JSON') }
-
-            it 'raises an exception' do
-              expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Creating proxy google group failed'
-            end
-          end
-        end
-
-        context 'when searching for the group fails' do
-          let(:api_response) { double(:api_response, status: 500, body: 'RESPONSE JSON') }
-
-          it 'raises an exception' do
-            expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Searching for google group failed'
+            group.google_sync = false
+            expect(group.reload.google_sync_user).to be_nil
+            expect(group.reload.google_sync).to be_false
           end
         end
       end
 
-      context 'when the user does not have google credentials' do
+      context 'when the group can not be found on their google apps domain' do
+        let(:api_response) { double(:api_response, status: 404, body: 'RESPONSE JSON') }
+        let(:api_insert_response) { double(:api_insert_response, status: 200, body: 'RESPONSE JSON') }
+        let(:group_insert_parameters) do
+          {
+            'email' => 'electronics@foo.com',
+            'name' => 'Electronics on Threadable',
+            'description' => 'This group enables Google Apps services sync for Electronics on Threadable / Soldering and wires and stuff!'
+          }
+        end
+
+        before do
+          expect(google_client).to receive(:execute).
+            with(api_method: 'INSERT API DESCRIPTION', body_object: group_insert_parameters).
+            and_return(api_insert_response)
+        end
+
+        it 'creates the group, enables sync, and sets the sync user' do
+          group.google_sync = true
+          expect(group.reload.google_sync_user).to eq alice
+          expect(group.reload.google_sync).to be_true
+        end
+
+        context 'when group creation fails' do
+          let(:api_insert_response) { double(:api_insert_response, status: 500, body: 'RESPONSE JSON') }
+
+          it 'raises an exception' do
+            expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Creating proxy google group failed'
+          end
+        end
+      end
+
+      context 'when searching for the group fails' do
+        let(:api_response) { double(:api_response, status: 500, body: 'RESPONSE JSON') }
+
         it 'raises an exception' do
-          expect { group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'You do not have a connected google account'
+          expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Searching for google group failed'
         end
       end
     end
