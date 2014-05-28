@@ -88,7 +88,7 @@ describe Threadable::Group do
 
           group.google_sync = true
           expect(group.reload.google_sync_user).to eq alice
-          expect(group.reload.google_sync).to be_true
+          expect(group.reload.google_sync?).to be_true
         end
 
         it 'enables sync and sets the sync user when called via update' do
@@ -96,7 +96,7 @@ describe Threadable::Group do
 
           group.update(google_sync: true)
           expect(group.reload.google_sync_user).to eq alice
-          expect(group.reload.google_sync).to be_true
+          expect(group.reload.google_sync?).to be_true
         end
 
         context 'when disabling google sync' do
@@ -106,7 +106,7 @@ describe Threadable::Group do
             expect(group.reload.google_sync_user).to eq alice
             group.google_sync = false
             expect(group.reload.google_sync_user).to be_nil
-            expect(group.reload.google_sync).to be_false
+            expect(group.reload.google_sync?).to be_false
           end
         end
       end
@@ -133,7 +133,7 @@ describe Threadable::Group do
 
           group.google_sync = true
           expect(group.reload.google_sync_user).to eq alice
-          expect(group.reload.google_sync).to be_true
+          expect(group.reload.google_sync?).to be_true
         end
 
         context 'when group creation fails' do
