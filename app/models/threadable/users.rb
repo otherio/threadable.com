@@ -27,8 +27,8 @@ class Threadable::Users < Threadable::Collection
     user_records = scope.where(id: user_ids).to_a
     email_addresses.map do |email_address|
       next unless email_address
-      user_record = user_records.find do |user_record|
-        user_record.user_id == email_address.user_id
+      user_record = user_records.find do |record|
+        record.user_id == email_address.user_id
       end
       user_record ? user_for(user_record) : nil
     end

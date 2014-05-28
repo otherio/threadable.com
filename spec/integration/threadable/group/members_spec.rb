@@ -14,6 +14,13 @@ describe Threadable::Group::Members do
     end
   end
 
+  describe '#all_with_email_addresses' do
+    it 'returns all the members of the group as Threadable::User instances' do
+      expect( members.all_with_email_addresses ).to be_a Array
+      expect( members.all_with_email_addresses.first ).to be_a Threadable::User
+    end
+  end
+
   describe '#add' do
     it 'adds the given member to the group and does not send email' do
       new_member = (organization.members.all - members.all).first

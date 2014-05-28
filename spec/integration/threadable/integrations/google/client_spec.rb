@@ -30,11 +30,18 @@ describe Threadable::Integrations::Google::Client do
 
   describe '.client_for' do
     context 'with proper google credentials' do
+      before do
+        ENV['GOOGLE_CLIENT_ID'] = 'CLIENT ID'
+        ENV['GOOGLE_CLIENT_SECRET'] = 'CLIENT SECRET'
+      end
+
       it 'returns a valid and correct Google::APIClient object' do
         client = described_module.client_for(alice)
         expect(client).to be_a Google::APIClient
         expect(client.authorization.access_token).to eq 'foo'
         expect(client.authorization.refresh_token).to eq 'moar foo'
+        expect(client.authorization.client_id).to eq 'CLIENT ID'
+        expect(client.authorization.client_secret).to eq 'CLIENT SECRET'
       end
     end
 

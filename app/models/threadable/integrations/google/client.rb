@@ -15,6 +15,8 @@ module Threadable::Integrations::Google::Client
 
     @google_api_client.authorization.access_token = external_authorization.token
     @google_api_client.authorization.refresh_token = external_authorization.refresh_token
+    @google_api_client.authorization.client_id = ENV['GOOGLE_CLIENT_ID']
+    @google_api_client.authorization.client_secret = ENV['GOOGLE_CLIENT_SECRET']
     @google_api_client
   end
 

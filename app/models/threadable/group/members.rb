@@ -12,6 +12,10 @@ class Threadable::Group::Members < Threadable::Collection
     members_for scope
   end
 
+  def all_with_email_addresses
+    members_for scope.includes(user: :email_addresses)
+  end
+
   def find_by_user_id user_id
     member_for (scope.where(user_id:user_id).first or return)
   end
