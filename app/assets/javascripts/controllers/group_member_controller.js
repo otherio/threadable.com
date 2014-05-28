@@ -2,10 +2,11 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
   needs: ['group_members'],
   group: Ember.computed.alias('controllers.group_members.group').readOnly(),
 
+  updateInProgress: false,
+
   isMember: function() {
     return !!this.get('group.members').findBy('userId', this.get('userId'));
   }.property('group.members.@each'),
-
 
   actions: {
     addMember: function(organizationMember) {
@@ -13,12 +14,15 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
         controller = this,
         group      = this.get('group');
 
+      this.set('updateInProgress', true);
+
       organizationMember.addToGroup(group).then(function(groupMember) {
         groupMember.set('group', group);
         groupMember.set('organization', group.get('organization'));
         group.get('members').addObject(groupMember);
         controller.transitionToRoute('group_member', groupMember);
-      });
+        this.set('updateInProgress', false);
+      }.bind(this));
     },
 
     removeMember: function(organizationMember) {
@@ -37,11 +41,14 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
         approveText: 'remove',
         declineText: 'cancel',
         approved: function() {
+          this.set('updateInProgress', true);
+
           organizationMember.removeFromGroup(group).then(function() {
             groupMembers.removeObject(groupMember);
             controller.transitionToRoute('group_members');
-          });
-        }
+            this.set('updateInProgress', false);
+          }.bind(this));
+        }.bind(this)
       });
     },
 

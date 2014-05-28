@@ -5,12 +5,20 @@
         if member.isMember
           link-to "group_member" member.slug class="not-link group-member-settings-link"
             partial "group_members/details"
-          a.toggle.uk-button.remove href="" click="removeMember member"
-            span.normal member
-            span.hover remove
+          if member.updateInProgress
+            button.toggle.uk-button.remove
+              partial "lines_spinner_button"
+          else
+            a.toggle.uk-button.remove href="" click="removeMember member"
+              span.normal member
+              span.hover remove
         else
           div
             partial "group_members/details"
-          a.toggle.uk-button.add href="" click="addMember member"
-            i.uk-icon-plus
-            | &nbsp; add
+          if member.updateInProgress
+            button.toggle.uk-button.add
+              partial "lines_spinner_button"
+          else
+            a.toggle.uk-button.add href="" click="addMember member"
+              i.uk-icon-plus
+              | &nbsp; add
