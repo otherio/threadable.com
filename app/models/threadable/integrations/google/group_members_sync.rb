@@ -4,7 +4,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
 
 
   def call threadable, group
-    google_client = client_for(threadable.current_user)
+    google_client = client_for(group.google_sync_user)
 
     list_response = google_client.execute(
       api_method: directory_api.members.list,
@@ -13,10 +13,21 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
 
     raise Threadable::ExternalServiceError, 'Could not retrieve google group users' unless list_response.status == 200
 
-    emails = JSON.parse(list_response.body)['members'].map{ |google_member| google_member['email'] }
-    missing_members = group.members.all_with_email_addresses.select do |member|
-      ! (member.email_addresses.all.map(&:address) & emails).present?
+    group_members = group.members.all_with_email_addresses
+
+    google_group_email_addresses = JSON.parse(list_response.body)['members'].map do |google_member|
+      google_member['email']
     end
+
+    missing_members = group_members.select do |member|
+      ! (member.email_addresses.all.map(&:address) & google_group_email_addresses).present?
+    end
+
+    group_member_email_addresses = group_members.map do |m|
+      m.email_addresses.all.map(&:address)
+    end.flatten
+
+    extra_email_addresses = google_group_email_addresses - group_member_email_addresses
 
     missing_members.each do |member|
       insert_response = google_client.execute(
@@ -28,6 +39,18 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
       )
 
       raise Threadable::ExternalServiceError, 'Adding user to google group failed' unless insert_response.status == 200
+    end
+
+    extra_email_addresses.each do |email_address|
+      delete_response = google_client.execute(
+        api_method: directory_api.members.delete,
+        parameters: {'groupKey' => group.email_address},
+        body_object: {
+          'email' => email_address
+        }
+      )
+
+      raise Threadable::ExternalServiceError, 'Removing user from google group failed' unless delete_response.status == 200
     end
   end
 

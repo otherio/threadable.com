@@ -7,10 +7,18 @@ describe Threadable::Integrations::Google::GroupMembersSync do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:group) { organization.groups.find_by_slug('electronics') }
   let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com')}
+  let(:bob) { organization.members.find_by_email_address('bob@ucsd.example.com')}
 
   let(:google_client) { double(:google_client, authorization: double(:authorization), discovered_api: google_directory_api) }
   let(:google_directory_api) { double(:google_directory_api, members: directory_api_members)}
-  let(:directory_api_members) { double(:directory_api_members, list: 'LIST API DESCRIPTION', insert: 'INSERT API DESCRIPTION') }
+  let(:directory_api_members) do
+    double(
+      :directory_api_members,
+      list: 'LIST API DESCRIPTION',
+      insert: 'INSERT API DESCRIPTION',
+      delete: 'DELETE API DESCRIPTION',
+    )
+  end
 
   let(:list_response) { double(:list_response, status: 200, body: response_body) }
   let(:response_body) do
@@ -29,11 +37,12 @@ describe Threadable::Integrations::Google::GroupMembersSync do
 
   before do
     sign_in_as 'alice@ucsd.example.com'
-    expect_any_instance_of(described_class).to receive(:client_for).with(threadable.current_user).and_return(google_client)
+    bob_as_user = Threadable::User.new(threadable, bob.user_record)
+    expect_any_instance_of(described_class).to receive(:client_for).with(bob_as_user).and_return(google_client)
     described_class.any_instance.stub(:directory_api).and_return(google_directory_api)
 
     group.update(alias_email_address: '"Electronics for Jesus" <electronics@foo.com>')
-    group.group_record.update_attributes(google_sync: true, google_sync_user: alice.user_record)
+    group.group_record.update_attributes(google_sync: true, google_sync_user: bob.user_record)
     expect(google_client).to receive(:execute).with(api_method: 'LIST API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com', 'maxResults' => 1000 }).and_return(list_response)
   end
 
@@ -62,7 +71,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
 
   context 'when the threadable group has members that are not in the google group' do
     let(:tom) { organization.members.find_by_email_address('tom@ucsd.example.com')}
-    let(:google_group_members) { [ 'foo@bar.com' ] }
+    let(:google_group_members) { [ ] }
     let(:insert_response) { double(:insert_response, status: 200) }
 
     before do
@@ -85,6 +94,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
           'email' => 'tom@ucsd.example.com'
         }
       ).and_return(insert_response)
+
       call(threadable, group)
     end
 
@@ -103,6 +113,53 @@ describe Threadable::Integrations::Google::GroupMembersSync do
         expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user to google group failed'
       end
     end
+  end
+
+  context 'when the google group contains members who are not part of the threadable group' do
+    let(:tom) { organization.members.find_by_email_address('tom@ucsd.example.com')}
+    let(:google_group_members) { [ 'foo@bar.com', 'bob@ucsd.example.com', 'bethany@ucsd.example.com', 'tomfoo@foo.com' ] }
+    let(:delete_response) { double(:delete_response, status: 200) }
+
+    before do
+      tom.email_addresses.add('tomfoo@foo.com', primary: false)
+    end
+
+    it 'removes the extra members from the google group' do
+      expect(google_client).to receive(:execute).with(
+        api_method: 'DELETE API DESCRIPTION',
+        parameters: {'groupKey' => 'electronics@foo.com' },
+        body_object: {
+          'email' => 'bob@ucsd.example.com'
+        }
+      ).and_return(delete_response)
+
+      expect(google_client).to receive(:execute).with(
+        api_method: 'DELETE API DESCRIPTION',
+        parameters: {'groupKey' => 'electronics@foo.com' },
+        body_object: {
+          'email' => 'foo@bar.com'
+        }
+      ).and_return(delete_response)
+
+      call(threadable, group)
+    end
+
+    context 'when removing a member fails' do
+      let(:delete_response) { double(:delete_response, status: 500) }
+
+      before do
+        expect(google_client).to receive(:execute).with(
+          api_method: 'DELETE API DESCRIPTION',
+          parameters: {'groupKey' => 'electronics@foo.com' },
+          body_object: anything
+        ).and_return(delete_response)
+      end
+
+      it 'raises an exception' do
+        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Removing user from google group failed'
+      end
+    end
+
   end
 
   context 'when the google group does not exist' do
