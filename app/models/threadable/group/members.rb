@@ -39,6 +39,8 @@ class Threadable::Group::Members < Threadable::Collection
         threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
       end
     end
+    Threadable::Integrations::Google::GroupMembersSync.call(threadable, group) if group.google_sync?
+
     member_for group_membership_record
   end
 
@@ -49,6 +51,8 @@ class Threadable::Group::Members < Threadable::Collection
     if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
       threadable.emails.send_email_async(:removed_from_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
     end
+    Threadable::Integrations::Google::GroupMembersSync.call(threadable, group) if group.google_sync?
+
     self
   end
 

@@ -24,7 +24,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
   let(:response_body) do
     {
       "kind"=>"admin#directory#members",
-      "members"=> google_group_members.map do |email|
+      "members"=> google_group_members.nil? ? nil : google_group_members.map do |email|
         {
           "kind"=>"admin#directory#member",
           "email"=>email,
@@ -71,7 +71,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
 
   context 'when the threadable group has members that are not in the google group' do
     let(:tom) { organization.members.find_by_email_address('tom@ucsd.example.com')}
-    let(:google_group_members) { [ ] }
+    let(:google_group_members) { nil }
     let(:insert_response) { double(:insert_response, status: 200) }
 
     before do
@@ -127,17 +127,17 @@ describe Threadable::Integrations::Google::GroupMembersSync do
     it 'removes the extra members from the google group' do
       expect(google_client).to receive(:execute).with(
         api_method: 'DELETE API DESCRIPTION',
-        parameters: {'groupKey' => 'electronics@foo.com' },
-        body_object: {
-          'email' => 'bob@ucsd.example.com'
+        parameters: {
+          'groupKey' => 'electronics@foo.com',
+          'memberKey' => 'bob@ucsd.example.com'
         }
       ).and_return(delete_response)
 
       expect(google_client).to receive(:execute).with(
         api_method: 'DELETE API DESCRIPTION',
-        parameters: {'groupKey' => 'electronics@foo.com' },
-        body_object: {
-          'email' => 'foo@bar.com'
+        parameters: {
+          'groupKey' => 'electronics@foo.com',
+          'memberKey' => 'foo@bar.com'
         }
       ).and_return(delete_response)
 
@@ -150,8 +150,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       before do
         expect(google_client).to receive(:execute).with(
           api_method: 'DELETE API DESCRIPTION',
-          parameters: {'groupKey' => 'electronics@foo.com' },
-          body_object: anything
+          parameters: anything
         ).and_return(delete_response)
       end
 

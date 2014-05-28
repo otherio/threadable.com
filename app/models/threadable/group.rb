@@ -26,7 +26,7 @@ class Threadable::Group < Threadable::Model
     auto_join?
     hold_messages?
     webhook_url
-    google_sync
+    google_sync?
   }, to: :group_record
 
   def group_id
@@ -88,6 +88,8 @@ class Threadable::Group < Threadable::Model
     end
 
     group_record.update_attributes(google_sync_user: threadable.current_user.user_record, google_sync: true)
+
+    Threadable::Integrations::Google::GroupMembersSync.call(threadable, self)
   end
 
   def google_sync_user
@@ -139,7 +141,7 @@ class Threadable::Group < Threadable::Model
 
   def update attributes
     new_google_sync = [attributes.delete('google_sync'), attributes.delete(:google_sync)].compact.first
-    self.google_sync = new_google_sync unless new_google_sync.nil? || new_google_sync == google_sync
+    self.google_sync = new_google_sync unless new_google_sync.nil? || new_google_sync == google_sync?
 
     group_record.update_attributes!(attributes)
     self

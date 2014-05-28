@@ -15,8 +15,14 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
 
     group_members = group.members.all_with_email_addresses
 
-    google_group_email_addresses = JSON.parse(list_response.body)['members'].map do |google_member|
-      google_member['email']
+    members_response = JSON.parse(list_response.body)['members']
+
+    if members_response.present?
+      google_group_email_addresses = members_response.map do |google_member|
+        google_member['email']
+      end
+    else
+      google_group_email_addresses = []
     end
 
     missing_members = group_members.select do |member|
@@ -44,13 +50,13 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
     extra_email_addresses.each do |email_address|
       delete_response = google_client.execute(
         api_method: directory_api.members.delete,
-        parameters: {'groupKey' => group.email_address},
-        body_object: {
-          'email' => email_address
+        parameters: {
+          'groupKey' => group.email_address,
+          'memberKey' => email_address
         }
       )
 
-      raise Threadable::ExternalServiceError, 'Removing user from google group failed' unless delete_response.status == 200
+      raise Threadable::ExternalServiceError, 'Removing user from google group failed' unless delete_response.status == 200 || delete_response.status == 404
     end
   end
 

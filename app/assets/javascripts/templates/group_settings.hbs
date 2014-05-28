@@ -127,7 +127,11 @@
         {{/if}}
 
         <div class="uk-form-row">
-          <input type="submit" class="uk-button uk-button-primary" value="Update group settings"></input>
+          {{#if updateInProgress}}
+            <button class="uk-button uk-button-primary update-button">{{partial 'lines_spinner_button'}}</button>
+          {{else}}
+            <input type="submit" class="uk-button uk-button-primary update-button" value="Update group settings"></input>
+          {{/if}}
         </div>
 
       </fieldset>

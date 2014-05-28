@@ -83,13 +83,17 @@ describe Threadable::Group do
       context 'when the group can be found on their google apps domain' do
         let(:api_response) { double(:api_response, status: 200, body: 'RESPONSE JSON') }
 
-        it 'enables sync and sets the sync user' do
+        it 'enables sync, sets the sync user, and synchronizes the users' do
+          expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+
           group.google_sync = true
           expect(group.reload.google_sync_user).to eq alice
           expect(group.reload.google_sync).to be_true
         end
 
         it 'enables sync and sets the sync user when called via update' do
+          expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+
           group.update(google_sync: true)
           expect(group.reload.google_sync_user).to eq alice
           expect(group.reload.google_sync).to be_true
@@ -97,6 +101,7 @@ describe Threadable::Group do
 
         context 'when disabling google sync' do
           it 'removes the link to the google sync user' do
+            expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
             group.google_sync = true
             expect(group.reload.google_sync_user).to eq alice
             group.google_sync = false
@@ -124,6 +129,8 @@ describe Threadable::Group do
         end
 
         it 'creates the group, enables sync, and sets the sync user' do
+          expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+
           group.google_sync = true
           expect(group.reload.google_sync_user).to eq alice
           expect(group.reload.google_sync).to be_true

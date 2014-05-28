@@ -58,6 +58,23 @@ describe Threadable::Group::Members do
       end
     end
 
+    context 'when google sync is enabled' do
+      let(:google_sync_user) { organization.members.find_by_email_address('bob@ucsd.example.com') }
+      let(:new_member) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
+
+      before do
+        group.group_record.update_attributes(
+          google_sync: true,
+          google_sync_user: google_sync_user.user_record
+        )
+      end
+
+      it 'synchronizes the users' do
+        expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+        members.add new_member
+      end
+    end
+
   end
 
   describe '#remove' do
@@ -93,6 +110,23 @@ describe Threadable::Group::Members do
           drain_background_jobs!
           expect(sent_emails.first.subject).to include 'I removed you from +Electronics on UCSD Electric Racing'
         end
+      end
+    end
+
+    context 'when google sync is enabled' do
+      let(:google_sync_user) { organization.members.find_by_email_address('bob@ucsd.example.com') }
+      let(:member_to_remove) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
+
+      before do
+        group.group_record.update_attributes(
+          google_sync: true,
+          google_sync_user: google_sync_user.user_record
+        )
+      end
+
+      it 'synchronizes the users' do
+        expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+        members.remove member_to_remove
       end
     end
   end
