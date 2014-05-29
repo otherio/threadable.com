@@ -43,7 +43,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         api_method: directory_api.members.insert,
         parameters: {'groupKey' => group.email_address},
         body_object: {
-          'email' => member.email_addresses.for_domain(google_apps_domain)
+          'email' => member.email_addresses.for_domain(google_apps_domain).address
         }
       )
 
