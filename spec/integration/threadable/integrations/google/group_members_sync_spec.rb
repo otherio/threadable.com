@@ -37,6 +37,16 @@ describe Threadable::Integrations::Google::GroupMembersSync do
 
   before do
     sign_in_as 'alice@ucsd.example.com'
+
+    bob.external_authorizations.add_or_update!(
+      provider: 'google_oauth2',
+      token: 'foo',
+      refresh_token: 'moar foo',
+      name: 'Bob Cauchois',
+      email_address: 'bob@foo.com',
+      domain: 'foo.com',
+    )
+
     bob_as_user = Threadable::User.new(threadable, bob.user_record)
     expect_any_instance_of(described_class).to receive(:client_for).with(bob_as_user).and_return(google_client)
     described_class.any_instance.stub(:directory_api).and_return(google_directory_api)
@@ -78,7 +88,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       tom.email_addresses.add('tomfoo@foo.com', primary: false)
     end
 
-    it 'adds the members to the google group using their primary addresses' do
+    it 'adds the members to the google group using their domain addresses' do
       expect(google_client).to receive(:execute).with(
         api_method: 'INSERT API DESCRIPTION',
         parameters: {'groupKey' => 'electronics@foo.com' },
@@ -91,7 +101,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
         api_method: 'INSERT API DESCRIPTION',
         parameters: {'groupKey' => 'electronics@foo.com' },
         body_object: {
-          'email' => 'tom@ucsd.example.com'
+          'email' => 'tomfoo@foo.com'
         }
       ).and_return(insert_response)
 

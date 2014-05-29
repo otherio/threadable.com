@@ -2,8 +2,11 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
 
   include Threadable::Integrations::Google::Client
 
+  attr_reader :group
 
   def call threadable, group
+    @group = group
+
     google_client = client_for(group.google_sync_user)
 
     list_response = google_client.execute(
@@ -40,7 +43,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         api_method: directory_api.members.insert,
         parameters: {'groupKey' => group.email_address},
         body_object: {
-          'email' => member.email_address.address
+          'email' => member.email_addresses.for_domain(google_apps_domain)
         }
       )
 
@@ -56,8 +59,12 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         }
       )
 
-      raise Threadable::ExternalServiceError, 'Removing user from google group failed' unless delete_response.status == 200 || delete_response.status == 404
+      raise Threadable::ExternalServiceError, 'Removing user from google group failed' unless [200, 204, 404].include?(delete_response.status)
     end
+  end
+
+  def google_apps_domain
+    @google_apps_domain ||= group.google_sync_user.external_authorizations.find_by_provider('google_oauth2').domain
   end
 
 end

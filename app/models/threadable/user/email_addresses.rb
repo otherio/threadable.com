@@ -31,6 +31,15 @@ class Threadable::User::EmailAddresses < Threadable::EmailAddresses
     email_address
   end
 
+  def for_domain domain
+    email_address_record = all.find do |e|
+      Mail::Address.new(e.address).domain == domain
+    end
+
+    email_address_record ||= scope.where(primary: true).first
+    email_address_for email_address_record
+  end
+
   def inspect
     %(#<#{self.class} user_id: #{user.id}>)
   end
