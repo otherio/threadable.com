@@ -18,6 +18,17 @@
 
       .setting
         h4.label
+          | Confirmed:
+        .control
+          if isUnconfirmed
+            span.unconfirmed
+              | not yet confirmed for #{organization.name}
+          else
+            span
+              | confirmed for #{organization.name}
+
+      .setting
+        h4.label
           | Subscribed:
         .control
           a.subscribed.input-switch href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled} click="toggleSubscribed"
