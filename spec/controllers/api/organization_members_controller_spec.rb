@@ -130,5 +130,54 @@ describe Api::OrganizationMembersController do
 
   end
 
+  describe '#resend_invitation' do
+    let(:user) { raceteam.members.find_by_email_address('bethany@ucsd.example.com') }
+
+    when_signed_in_as 'alice@ucsd.example.com' do
+      context "when given a valid organization id" do
+        before do
+          sent_emails.clear
+        end
+
+        it "resends the invitation email when the user is unconfirmed" do
+          user.unconfirm!
+          xhr :post, :resend_invitation, format: :json, organization_id: raceteam.slug, organization_member_id: user.id
+          expect(response.status).to eq 201
+          expect(sent_emails.with_subject("You've been invited to UCSD Electric Racing")).to be
+        end
+
+        it "does nothing when the user is already confirmed" do
+          user.confirm!
+          xhr :post, :resend_invitation, format: :json, organization_id: raceteam.slug, organization_member_id: user.id
+          expect(response.status).to eq 200
+          expect(sent_emails.with_subject("You've been invited to UCSD Electric Racing")).to be_empty
+        end
+      end
+
+      context "when given an organization id of an organization that does not exist" do
+        it 'renders not found' do
+          xhr :post, :resend_invitation, format: :json, organization_id: 'foobar', organization_member_id: user.id
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"foobar\""}'
+        end
+      end
+      context 'when given an organization id of an organization that the current user is not in' do
+        it 'renders not found' do
+          xhr :post, :resend_invitation, format: :json, organization_id: sfhealth.slug, organization_member_id: user.id
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"unable to find organization with slug \"sfhealth\""}'
+        end
+      end
+      context 'when given no organization id' do
+        it 'renders not acceptable' do
+          xhr :post, :resend_invitation, format: :json, organization_member_id: user.id
+          expect(response.status).to eq 406
+          expect(response.body).to eq '{"error":"param is missing or the value is empty: organization_id"}'
+        end
+      end
+    end
+
+  end
+
 
 end

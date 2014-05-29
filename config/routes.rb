@@ -30,9 +30,12 @@ Threadable::Application.routes.draw do
     resources :tasks
     resources :messages
     resources :events
-    resources :organization_members, only: [:index, :create, :update, :destroy]
+    resources :organization_members, only: [:index, :create, :update, :destroy, :resend_invitation] do
+      post :resend_invitation
+    end
     resources :group_members,        only: [:index, :create, :update, :destroy]
     resources :task_doers
+
   end
 
   get '/auth/:provider/callback', to: 'external_auth#create'

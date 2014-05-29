@@ -23,7 +23,7 @@ class Api::OrganizationMembersController < ApiController
   def destroy
     user = organization.members.find_by_user_id(params[:id])
 
-    if !user || !organization.members.include?(user)
+    unless user && organization.members.include?(user)
       return render json: {error: "user is not a member"}, status: :unprocessable_entity
     end
 
@@ -36,6 +36,22 @@ class Api::OrganizationMembersController < ApiController
     member = organization.members.find_by_user_slug!(member_params.delete(:slug))
     member.update(member_params)
     render json: serialize(:organization_members, member)
+  end
+
+  def resend_invitation
+    user = organization.members.find_by_user_id(params[:organization_member_id])
+
+    unless user && organization.members.include?(user)
+      return render json: {error: "user is not a member"}, status: :unprocessable_entity
+    end
+
+    unless user.confirmed?
+      threadable.emails.send_email_async(:invitation, organization.id, user.id)
+      render json: {}, status: 201
+    else
+      render json: {}, status: 200
+    end
+
   end
 
   private
