@@ -12,6 +12,9 @@ Threadable.OrganizationMemberRoute = Ember.Route.extend({
     transitionToOrganizationMembers: function(organization) {
       this.transitionTo("organization_members", organization.get('slug'));
       this.controllerFor('organization').set('focus', 'conversations');
+    },
+    willTransition: function() {
+      this.controllerFor('organization_member').set('invitationNotSent', true);
     }
   }
 });

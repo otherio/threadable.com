@@ -22,7 +22,12 @@
         .control
           if isUnconfirmed
             span.unconfirmed
-              | not yet confirmed for #{organization.name}
+              | not yet confirmed:
+            span
+              if invitationNotSent
+                button.uk-button click="resendInvitation" resend invitation
+              else
+                button.uk-button disabled="disabled" invitation sent
           else
             span
               | confirmed for #{organization.name}

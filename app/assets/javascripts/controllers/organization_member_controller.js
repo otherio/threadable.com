@@ -4,6 +4,7 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
   currentMember: Ember.computed.alias('controllers.organization_members.currentMember').readOnly(),
 
   saving: false,
+  invitationNotSent: true,
   roles: ['owner', 'member'],
 
   canEdit: function() {
@@ -67,6 +68,14 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
         }.bind(this)
       });
     },
+    resendInvitation: function() {
+      $.ajax({
+        type: "POST",
+        url: "/api/organization_members/" + this.get('userId') + "/resend_invitation",
+        data: { organization_id: this.get('organization.slug')}
+      });
+      this.set('invitationNotSent', false);
+    }
   },
 
   save: function() {
