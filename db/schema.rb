@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140525004803) do
+ActiveRecord::Schema.define(version: 20140529231826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,7 +150,6 @@ ActiveRecord::Schema.define(version: 20140525004803) do
     t.string   "alias_email_address", default: "",    null: false
     t.string   "webhook_url",         default: "",    null: false
     t.boolean  "google_sync",         default: false, null: false
-    t.integer  "google_sync_user_id"
     t.string   "description"
   end
 
@@ -234,6 +233,7 @@ ActiveRecord::Schema.define(version: 20140525004803) do
     t.string   "email_address_username"
     t.boolean  "trusted",                default: false
     t.boolean  "hold_all_messages",      default: false, null: false
+    t.integer  "google_user_id"
   end
 
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree

@@ -7,7 +7,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
   def call threadable, group
     @group = group
 
-    google_client = client_for(group.google_sync_user)
+    google_client = client_for(group.organization.google_user)
 
     list_response = google_client.execute(
       api_method: directory_api.members.list,
@@ -64,7 +64,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
   end
 
   def google_apps_domain
-    @google_apps_domain ||= group.google_sync_user.external_authorizations.find_by_provider('google_oauth2').domain
+    @google_apps_domain ||= group.organization.google_user.external_authorizations.find_by_provider('google_oauth2').domain
   end
 
 end

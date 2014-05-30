@@ -1,6 +1,8 @@
 class GroupsSerializer < Serializer
 
   def serialize_record group
+    current_member = group.organization.members.try(:current_member)
+
     {
       id:                           group.id,
       slug:                         group.slug,
@@ -27,6 +29,8 @@ class GroupsSerializer < Serializer
       organization_slug:            group.organization.slug,
 
       current_user_is_a_member:     current_user_group_ids.include?(group.id),
+
+      can_set_google_sync:          !! current_member && current_member.can?(:set_google_sync_for, group),
     }
   end
 
