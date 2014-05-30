@@ -151,7 +151,7 @@ ActiveRecord::Schema.define(version: 20140605195146) do
     t.string   "webhook_url",         default: "",    null: false
     t.string   "description"
     t.boolean  "google_sync",         default: false, null: false
-    t.integer  "google_sync_user_id"
+    t.string   "description"
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
@@ -236,6 +236,7 @@ ActiveRecord::Schema.define(version: 20140605195146) do
     t.string   "email_address_username"
     t.boolean  "trusted",                default: false
     t.boolean  "hold_all_messages",      default: false, null: false
+    t.integer  "google_user_id"
   end
 
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree

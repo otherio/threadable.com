@@ -61,7 +61,7 @@ class Threadable::Group < Threadable::Model
 
   def google_sync= sync
     unless sync
-      group_record.update_attributes(google_sync_user: nil, google_sync: false)
+      group_record.update_attributes(google_sync: false)
       return
     end
 
@@ -87,14 +87,9 @@ class Threadable::Group < Threadable::Model
       raise Threadable::ExternalServiceError, 'Searching for google group failed'
     end
 
-    group_record.update_attributes(google_sync_user: threadable.current_user.user_record, google_sync: true)
+    group_record.update_attributes(google_sync: true)
 
     Threadable::Integrations::Google::GroupMembersSync.call(threadable, self)
-  end
-
-  def google_sync_user
-    return nil unless group_record.google_sync_user
-    Threadable::User.new(threadable, group_record.google_sync_user)
   end
 
   def email_address

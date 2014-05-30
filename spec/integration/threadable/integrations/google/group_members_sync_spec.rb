@@ -52,7 +52,8 @@ describe Threadable::Integrations::Google::GroupMembersSync do
     described_class.any_instance.stub(:directory_api).and_return(google_directory_api)
 
     group.update(alias_email_address: '"Electronics for Jesus" <electronics@foo.com>')
-    group.group_record.update_attributes(google_sync: true, google_sync_user: bob.user_record)
+    group.group_record.update_attributes(google_sync: true)
+    organization.google_user = bob
     expect(google_client).to receive(:execute).with(api_method: 'LIST API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com', 'maxResults' => 1000 }).and_return(list_response)
   end
 

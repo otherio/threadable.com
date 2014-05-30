@@ -17,8 +17,10 @@ Threadable.Organization = RL.Model.extend({
   trusted:                   RL.attr('boolean'),
 
   groups:                    RL.hasMany('Threadable.Group'),
+  googleUser:                RL.belongsTo('Threadable.User'),
 
   canRemoveNonEmptyGroup:    RL.attr('boolean'),
+  canSetGoogleUser:          RL.attr('boolean'),
 
   loadMembers: RL.loadAssociationMethod('members', function(organization){
     return Threadable.OrganizationMember.fetch({

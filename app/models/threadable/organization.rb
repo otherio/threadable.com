@@ -103,7 +103,17 @@ class Threadable::Organization < Threadable::Model
     @all_email_addresses.flatten!
   end
 
-  # TODO remove me in favor of a rails json view file
+  def google_user
+    return nil unless organization_record.google_user
+    Threadable::User.new(threadable, organization_record.google_user)
+  end
+
+  def google_user= user
+    organization_record.update_attributes(google_user: user.user_record)
+  end
+
+  # TODO/LIES remove me in favor of a rails json view file
+  # Updated lies: we have serializers. This might do nothing.
   def as_json options=nil
     {
       id:          id,

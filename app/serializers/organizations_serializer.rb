@@ -21,8 +21,10 @@ class OrganizationsSerializer < Serializer
       formatted_task_email_address: organization.formatted_task_email_address,
 
       groups: serialize(:groups, organization.groups.all),
+      google_user: organization.google_user.present? ? serialize(:users, organization.google_user) : nil,
 
-      can_remove_non_empty_group:   !! current_member && current_member.can?(:remove_non_empty_group_from, organization)
+      can_remove_non_empty_group: !! current_member && current_member.can?(:remove_non_empty_group_from, organization),
+      can_set_google_user:        !! current_member && current_member.can?(:set_google_user_for, organization),
     }
   end
 

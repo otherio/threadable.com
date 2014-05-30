@@ -11,7 +11,13 @@ describe OrganizationsSerializer do
 
   context 'when given a single record' do
     let(:payload){ raceteam }
+    let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
     let(:expected_key){ :organization }
+
+    before do
+      raceteam.google_user = alice
+    end
+
     it do
       should eq(
         id:                raceteam.id,
@@ -31,8 +37,10 @@ describe OrganizationsSerializer do
         formatted_task_email_address: raceteam.formatted_task_email_address,
 
         groups: serialize(:groups, raceteam.groups.all).values.first,
+        google_user: serialize(:users, alice).values.first,
 
-        can_remove_non_empty_group:   true
+        can_remove_non_empty_group:   true,
+        can_set_google_user:          true
       )
     end
   end
@@ -60,8 +68,10 @@ describe OrganizationsSerializer do
           formatted_task_email_address: raceteam.formatted_task_email_address,
 
           groups: serialize(:groups, raceteam.groups.all).values.first,
+          google_user: nil,
 
-          can_remove_non_empty_group:   true
+          can_remove_non_empty_group:   true,
+          can_set_google_user:          true
         },{
           id:                sfhealth.id,
           param:             "sfhealth",
@@ -80,8 +90,10 @@ describe OrganizationsSerializer do
           formatted_task_email_address: sfhealth.formatted_task_email_address,
 
           groups: serialize(:groups, sfhealth.groups.all).values.first,
+          google_user: nil,
 
-          can_remove_non_empty_group:   false
+          can_remove_non_empty_group:   false,
+          can_set_google_user:          false
         }
       ]
     end

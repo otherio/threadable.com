@@ -75,6 +75,7 @@ describe Threadable::Group do
       let(:directory_api_groups) { double(:directory_api_groups, get: 'GET API DESCRIPTION', insert: 'INSERT API DESCRIPTION') }
 
       before do
+        organization.google_user = alice
         expect(group).to receive(:client_for).with(threadable.current_user).and_return(google_client)
         group.stub(:directory_api).and_return(google_directory_api)
         expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
@@ -87,7 +88,6 @@ describe Threadable::Group do
           expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
 
           group.google_sync = true
-          expect(group.reload.google_sync_user).to eq alice
           expect(group.reload.google_sync?).to be_true
         end
 
@@ -95,7 +95,6 @@ describe Threadable::Group do
           expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
 
           group.update(google_sync: true)
-          expect(group.reload.google_sync_user).to eq alice
           expect(group.reload.google_sync?).to be_true
         end
 
@@ -103,9 +102,8 @@ describe Threadable::Group do
           it 'removes the link to the google sync user' do
             expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
             group.google_sync = true
-            expect(group.reload.google_sync_user).to eq alice
+            expect(group.reload.google_sync?).to be_true
             group.google_sync = false
-            expect(group.reload.google_sync_user).to be_nil
             expect(group.reload.google_sync?).to be_false
           end
         end
@@ -132,7 +130,6 @@ describe Threadable::Group do
           expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
 
           group.google_sync = true
-          expect(group.reload.google_sync_user).to eq alice
           expect(group.reload.google_sync?).to be_true
         end
 

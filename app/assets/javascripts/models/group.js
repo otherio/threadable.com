@@ -22,6 +22,8 @@ Threadable.Group = RL.Model.extend({
   membersCount:              RL.attr('count'),
   currentUserIsAMember:      RL.attr('boolean'),
 
+  canSetGoogleSync:          RL.attr('boolean'),
+
   badgeStyle: function() {
     return "background-color: "+this.get('color')+";";
   }.property('color'),

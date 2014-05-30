@@ -179,4 +179,24 @@ describe Threadable::Organization do
 
   end
 
+  describe '#google_user' do
+    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+    before do
+      organization_record.update_attributes(google_user: alice.user_record)
+    end
+
+    it 'returns the connected google user' do
+      expect(organization.google_user).to eq Threadable::User.new(threadable, alice.user_record)
+    end
+  end
+
+  describe '#google_user=' do
+    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+    it 'sets the google sync user' do
+      organization.google_user = alice
+      expect(organization.google_user).to eq Threadable::User.new(threadable, alice.user_record)
+    end
+  end
+
 end
