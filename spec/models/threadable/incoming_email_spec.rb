@@ -16,6 +16,7 @@ describe Threadable::IncomingEmail do
   let(:incoming_email){ described_class.new(threadable, incoming_email_record) }
   let(:organization){ double(:organization, members: double(:members, find_by_user_id: member), subject_tag: 'foo', hold_all_messages?: false) }
   let(:member) { double(:member, role: :member)}
+  let(:owner) { double(:owner, role: :owner)}
 
   subject{ incoming_email }
 
@@ -113,16 +114,23 @@ describe Threadable::IncomingEmail do
       end
     end
     context 'when held? returns false' do
-      before{ expect(incoming_email).to receive(:held?).and_return(false)}
+      before do
+        expect(incoming_email).to receive(:held?).and_return(false)
+        incoming_email.stub_chain(:organization, :members, :who_are_owners).and_return [owner]
+      end
+
       it 'sends out the held message notice and marks its self as held' do
+        incoming_email.stub_chain(:organization, :hold_all_messages?).and_return false
         expect(threadable.emails).to receive(:send_email).with(:message_held_notice, incoming_email)
+        expect(threadable.emails).to receive(:send_email).with(:message_held_owner_notice, incoming_email, owner)
         expect(incoming_email).to receive(:held!)
         incoming_email.hold!
       end
       context 'when the organization holds all messages' do
-        before{ organization.stub hold_all_messages?: true }
         it 'just marks its self as held' do
-          expect(threadable.emails).to_not receive(:send_email)
+          incoming_email.stub_chain(:organization, :hold_all_messages?).and_return true
+          expect(threadable.emails).to_not receive(:send_email).with(:message_held_notice, anything)
+          expect(threadable.emails).to receive(:send_email).with(:message_held_owner_notice, incoming_email, owner)
           expect(incoming_email).to receive(:held!)
           incoming_email.hold!
         end

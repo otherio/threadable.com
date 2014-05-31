@@ -55,6 +55,11 @@ class Threadable::IncomingEmail < Threadable::Model
   def hold!
     return if held?
     threadable.emails.send_email(:message_held_notice, self) unless organization.hold_all_messages?
+
+    organization.members.who_are_owners.each do |owner|
+      threadable.emails.send_email(:message_held_owner_notice, self, owner)
+    end
+
     held!
   end
 

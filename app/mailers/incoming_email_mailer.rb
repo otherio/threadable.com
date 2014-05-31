@@ -33,6 +33,27 @@ class IncomingEmailMailer < Threadable::Mailer
     )
   end
 
+  def message_held_owner_notice incoming_email, owner
+    @incoming_email = incoming_email
+    @organization = incoming_email.organization
+
+    message = mail({
+      :css              => 'email',
+      :'auto-submitted' => 'auto-replied',
+      :'to'             => owner.email_address,
+      :'from'           => "Threadable message held <#{threadable.support_email_address('message-held')}>",
+      :'Reply-To'       => "Threadable message held <#{threadable.support_email_address('message-held')}>",
+      :'In-Reply-To'    => @incoming_email.message_id,
+      :'References'     => [@incoming_email.message_id],
+      :'subject'        => "[message held, action required] #{@incoming_email.subject}",
+      :'List-ID'        => @organization.list_id,
+      :'List-Archive'   => "<#{conversations_url(@organization,'my')}>",
+      :'List-Post'      => "<mailto:#{@organization.email_address}>, <#{compose_conversation_url(@organization, 'my')}>"
+    })
+
+    message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
+  end
+
   private
 
   def auto_response_mail options={}

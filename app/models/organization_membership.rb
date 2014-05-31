@@ -19,6 +19,8 @@ class OrganizationMembership < ActiveRecord::Base
 
   scope :who_get_email, ->{ where(active: true, gets_email: true, confirmed: true) }
 
+  scope :who_are_owners, ->{ where(role: ROLES.index(:owner)) }
+
   scope :active, ->{ where(active: true) }
 
   scope :for_organization, ->(organization_id){

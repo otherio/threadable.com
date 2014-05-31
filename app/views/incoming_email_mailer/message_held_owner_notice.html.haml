@@ -1,0 +1,12 @@
+%p
+  A message was held in your organization, with the subject:
+
+%p
+  %blockquote= @incoming_email.subject
+
+%p
+  Please
+  #{link_to "visit the Threadable web app", organization_held_messages_url(@incoming_email.organization)}
+  to approve or reject it.
+
+%p ♥

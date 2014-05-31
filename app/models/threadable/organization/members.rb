@@ -16,6 +16,10 @@ class Threadable::Organization::Members < Threadable::Collection
     scope.who_get_email.reload.map{|membership| member_for membership }
   end
 
+  def who_are_owners
+    scope.who_are_owners.reload.map{|membership| member_for membership }
+  end
+
   def who_get_summaries
     membership_records = scope.who_get_email.who_get_ungrouped_summaries
     grouped_userids = groups_scope.who_get_summaries.map(&:user_id)
