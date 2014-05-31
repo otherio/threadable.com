@@ -316,7 +316,23 @@ describe Threadable::IncomingEmail do
         organization.stub :hold_all_messages? => true
         expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
       end
-      it { should be_true }
+
+      context 'when a parent message is not present' do
+        before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+
+        it { should be_true }
+      end
+
+      context 'when a parent message is present' do
+        let(:group){ double :group, :hold_messages? => false }
+
+        before do
+          expect(incoming_email).to receive(:parent_message).and_return(5235)
+          expect(incoming_email).to receive(:groups).and_return([group])
+        end
+
+        it { should be_false }
+      end
     end
 
     context 'when the organization does not hold all messages' do
