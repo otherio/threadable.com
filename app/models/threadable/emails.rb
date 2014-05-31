@@ -53,6 +53,7 @@ class Threadable::Emails
       reset_password:               UserMailer,
       email_address_confirmation:   UserMailer,
       message_held_notice:          IncomingEmailMailer,
+      message_held_owner_notice:    IncomingEmailMailer,
       message_rejected_notice:      IncomingEmailMailer,
       message_accepted_notice:      IncomingEmailMailer,
       spam_complaint:               ErrorMailer,

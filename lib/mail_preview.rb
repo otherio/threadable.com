@@ -43,6 +43,10 @@ class MailPreview < MailView
     threadable.emails.generate(:message_held_notice, threadable.incoming_emails.latest)
   end
 
+  def message_held_owner_notice
+    threadable.emails.generate(:message_held_owner_notice, threadable.incoming_emails.latest)
+  end
+
   def message_accepted_notice
     threadable.emails.generate(:message_accepted_notice, threadable.incoming_emails.latest)
   end

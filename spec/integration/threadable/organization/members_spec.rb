@@ -31,4 +31,11 @@ describe Threadable::Organization::Members do
 
   end
 
+  describe '#who_are_owners' do
+    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+    it 'returns all the org owners' do
+      expect(members.who_are_owners).to eq [alice]
+    end
+  end
+
 end
