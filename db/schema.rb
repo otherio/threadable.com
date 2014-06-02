@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140525004803) do
+ActiveRecord::Schema.define(version: 20140602214934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,9 +67,9 @@ ActiveRecord::Schema.define(version: 20140525004803) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "group_ids_cache"
-    t.string   "message_summary_cache"
-    t.string   "participant_names_cache"
-    t.string   "muter_ids_cache"
+    t.text     "message_summary_cache"
+    t.text     "participant_names_cache"
+    t.text     "muter_ids_cache"
     t.datetime "last_message_at"
     t.integer  "groups_count",            default: 0
   end
@@ -149,9 +149,9 @@ ActiveRecord::Schema.define(version: 20140525004803) do
     t.boolean  "hold_messages",       default: true
     t.string   "alias_email_address", default: "",    null: false
     t.string   "webhook_url",         default: "",    null: false
+    t.string   "description"
     t.boolean  "google_sync",         default: false, null: false
     t.integer  "google_sync_user_id"
-    t.string   "description"
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
