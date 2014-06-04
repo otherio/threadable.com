@@ -191,12 +191,53 @@ describe Threadable::Organization do
   end
 
   describe '#google_user=' do
-    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+    context 'when the user has the correct permissions' do
+      let(:user) { organization.members.find_by_email_address('alice@ucsd.example.com') }
 
-    it 'sets the google sync user' do
-      organization.google_user = alice
-      expect(organization.google_user).to eq Threadable::User.new(threadable, alice.user_record)
+      context 'when the user has an external authorization' do
+        before do
+          user.external_authorizations.add_or_update!(
+            provider: 'google_oauth2',
+            token: 'foo',
+            refresh_token: 'moar foo',
+            name: 'Bob Cauchois',
+            email_address: 'bob@foo.com',
+            domain: auth_domain,
+          )
+        end
+
+        context 'and the authorization is good' do
+          let(:auth_domain) { 'foo.com' }
+          it 'sets the google sync user' do
+            organization.google_user = user
+            expect(organization.google_user).to eq Threadable::User.new(threadable, user.user_record)
+          end
+        end
+
+        context 'and the auth lacks a domain' do
+          let(:auth_domain) { nil }
+
+          it 'fails with an error message' do
+            expect{ organization.google_user = user }.to raise_error Threadable::ExternalServiceError, "User's Google authorization does not have a domain. Are they a google apps domain admin?"
+          end
+        end
+      end
+
+      context 'when the user does not have an external auth' do
+        it 'fails with a different error message' do
+          expect{ organization.google_user = user }.to raise_error Threadable::ExternalServiceError, 'User does not have a Google authorization'
+        end
+      end
     end
+
+    context 'when the user does not have the correct permissions' do
+      let(:user) { organization.members.find_by_email_address('bob@ucsd.example.com') }
+
+      it 'sets the google sync user' do
+        expect { organization.google_user = user }.to raise_error Threadable::AuthorizationError, 'User does not have permission to be the google apps domain user'
+      end
+    end
+
   end
 
 end

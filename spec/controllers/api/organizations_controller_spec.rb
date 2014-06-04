@@ -64,7 +64,7 @@ describe Api::OrganizationsController do
         end
       end
       context 'when given an invalid organization id' do
-        it "should render the current users's organizations as json" do
+        it "should fail with not found" do
           xhr :get, :show, format: :json, id: 32843874832
           expect(response.status).to eq 404
         end
@@ -79,6 +79,40 @@ describe Api::OrganizationsController do
     # delete /api/organizations/:id
     describe 'destroy' do
 
+    end
+
+    describe 'claim_google_account' do
+      context 'when the user is an owner' do
+        when_signed_in_as 'alice@ucsd.example.com' do
+          let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
+
+          before do
+            alice.external_authorizations.add_or_update!(
+              provider: 'google_oauth2',
+              token: 'foo',
+              refresh_token: 'moar foo',
+              name: 'Alice Neilson',
+              email_address: 'alice@foo.com',
+              domain: 'foo.com',
+            )
+          end
+
+          it 'sets the google auth user to the current user and returns the updated organization' do
+            xhr :post, :claim_google_account, format: :json, organization_id: raceteam.slug
+            expect(response.status).to eq 200
+            updated_organization = threadable.organizations.find_by_slug!('raceteam')
+            expect(updated_organization.google_user).to eq alice
+            expect(response.body).to eq serialize(:organizations, updated_organization).to_json
+          end
+        end
+      end
+
+      context 'when the user does not have the correct permissions' do
+        it 'fails authorization' do
+          xhr :post, :claim_google_account, format: :json, organization_id: raceteam.slug
+          expect(response.status).to eq 401
+        end
+      end
     end
 
   end

@@ -15,7 +15,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
   }.property('userId', 'controllers.organization.canRemoveNonEmptyGroup'),
 
   canSetGoogleSync: function() {
-    return !! this.get('canSetGoogleSync') && this.get('controllers.organization.googleUser');
+    return !! this.get('model.canSetGoogleSync') && this.get('controllers.organization.googleUser');
   }.property('currentUser'),
 
   aliasPlainAddress: function() {

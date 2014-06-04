@@ -1,7 +1,7 @@
 class OrganizationsSerializer < Serializer
 
   def serialize_record organization
-    current_member = organization.members.current_member
+    @current_member = organization.members.current_member
 
     {
       id:                organization.id,
@@ -23,9 +23,16 @@ class OrganizationsSerializer < Serializer
       groups: serialize(:groups, organization.groups.all),
       google_user: organization.google_user.present? ? serialize(:users, organization.google_user) : nil,
 
-      can_remove_non_empty_group: !! current_member && current_member.can?(:remove_non_empty_group_from, organization),
-      can_set_google_user:        !! current_member && current_member.can?(:set_google_user_for, organization),
+      can_remove_non_empty_group: can?(:remove_non_empty_group_from, organization),
+      can_be_google_user:         can?(:be_google_user_for, organization),
+      can_change_settings:        can?(:change_settings_for, organization),
     }
+  end
+
+  private
+
+  def can? ability, organization
+    !! @current_member && @current_member.can?(ability, organization)
   end
 
 end

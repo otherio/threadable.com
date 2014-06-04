@@ -199,7 +199,7 @@ feature "signing up" do
 
   def assert_members! members
     within_element('the sidebar'){ find('.organization-details').click }
-    within('.organization-settings'){ click_on 'Members' }
+    within('.organization-controls'){ click_on 'Members' }
     members.each do |(name, email_address)|
       expect(page).to have_text name
       expect(page).to have_text email_address

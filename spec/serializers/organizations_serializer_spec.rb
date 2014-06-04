@@ -40,7 +40,8 @@ describe OrganizationsSerializer do
         google_user: serialize(:users, alice).values.first,
 
         can_remove_non_empty_group:   true,
-        can_set_google_user:          true
+        can_be_google_user:           true,
+        can_change_settings:          true,
       )
     end
   end
@@ -71,7 +72,8 @@ describe OrganizationsSerializer do
           google_user: nil,
 
           can_remove_non_empty_group:   true,
-          can_set_google_user:          true
+          can_be_google_user:          true,
+          can_change_settings:          true,
         },{
           id:                sfhealth.id,
           param:             "sfhealth",
@@ -93,7 +95,8 @@ describe OrganizationsSerializer do
           google_user: nil,
 
           can_remove_non_empty_group:   false,
-          can_set_google_user:          false
+          can_be_google_user:          false,
+          can_change_settings:          false,
         }
       ]
     end

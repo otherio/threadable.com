@@ -19,7 +19,10 @@ Threadable::Application.routes.draw do
       resource :current, controller: 'current_user', only: [:show, :update]
     end
 
-    resources :organizations, only: [:index, :show]
+    resources :organizations, only: [:index, :show, :claim_google_account] do
+      post :claim_google_account
+    end
+
     resources :groups do
       post :join
       post :leave

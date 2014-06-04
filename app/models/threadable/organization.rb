@@ -109,6 +109,11 @@ class Threadable::Organization < Threadable::Model
   end
 
   def google_user= user
+    user.can?(:be_google_user_for, self) or raise Threadable::AuthorizationError, 'User does not have permission to be the google apps domain user'
+    external_auth = user.external_authorizations.find_by_provider('google_oauth2')
+    raise Threadable::ExternalServiceError, 'User does not have a Google authorization' unless external_auth.present?
+    raise Threadable::ExternalServiceError, "User's Google authorization does not have a domain. Are they a google apps domain admin?" unless external_auth.domain.present?
+
     organization_record.update_attributes(google_user: user.user_record)
   end
 
