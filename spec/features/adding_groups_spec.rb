@@ -11,7 +11,7 @@ feature "Adding groups spec" do
 
   scenario %(changing the settings of a group) do
     within selector_for('the sidebar') do
-      page.find('.toggle-organization-settings').click
+      page.find('.toggle-organization-controls').click
       sleep 0.2
       expect(page).to have_text "Create new group"
       click_on "Create new group"

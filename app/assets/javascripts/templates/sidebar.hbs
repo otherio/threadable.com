@@ -30,7 +30,7 @@
     </ul>
   </div>
 
-  <a class="organization-details toggle-organization-settings" href="">
+  <a class="organization-details toggle-organization-controls" href="">
     <div class="name">{{organization.name}}</div>
     <div class="email-address">{{organization.emailAddress}}</div>
     <div class="caret-container">
@@ -38,14 +38,8 @@
     </div>
   </a>
 
-  <div class="organization-settings">
+  <div {{bind-attr class=":organization-controls organization.canChangeSettings:with-settings"}}>
     <ul class="nested">
-      {{!-- <li>
-        {{#link-to 'organization_settings' organization.slug}}
-          <i class="uk-icon-gear"></i>
-          Settings
-        {{/link-to}}
-      </li> --}}
       <li>
         {{#link-to 'organization_members' organization.slug}}
           <i class="uk-icon-users"></i>
@@ -58,6 +52,14 @@
           Create new group
         {{/link-to}}
       </li>
+      {{#if organization.canChangeSettings}}
+        <li>
+          {{#link-to 'organization_settings' organization.slug}}
+            <i class="uk-icon-gear"></i>
+            Organization settings
+          {{/link-to}}
+        </li>
+      {{/if}}
       <li>
         <a href="" class="open-other-organizations dont-close-sidebar">
           <i class="uk-icon-sign-out"></i>

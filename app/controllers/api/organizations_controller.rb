@@ -26,4 +26,10 @@ class Api::OrganizationsController < ApiController
 
   end
 
+  def claim_google_account
+    organization = current_user.organizations.find_by_slug!(params[:organization_id])
+    organization.google_user = organization.members.current_member
+    render json: serialize(:organizations, organization)
+  end
+
 end

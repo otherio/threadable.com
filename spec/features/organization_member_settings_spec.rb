@@ -154,7 +154,7 @@ feature "organization member settings" do
     within_element 'the sidebar' do
       find('.organization-details').click
       sleep 0.2
-      within '.organization-settings' do
+      within '.organization-controls' do
         click_on 'Members'
       end
     end

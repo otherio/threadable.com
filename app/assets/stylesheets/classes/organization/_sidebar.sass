@@ -98,7 +98,7 @@
         background-color: #226a99
 
 
-  .user-settings, .organization-settings
+  .user-settings, .organization-controls
     position: relative
     height: 0
     +animate-property(height)
@@ -113,8 +113,11 @@
     .user-settings
       height: 83px
 
-  &.organization-settings-open
+  // TODO: make two of these so we can have one that is for owners or some shit
+  &.organization-controls-open
     .organization-details .caret
       +rotate(-90deg)
-    .organization-settings
+    .organization-controls
       height: 124px
+      &.with-settings
+        height: 165px

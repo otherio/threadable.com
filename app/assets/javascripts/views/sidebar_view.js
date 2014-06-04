@@ -4,12 +4,12 @@ Threadable.SidebarView = Ember.View.extend({
   classNames: ['sidebar'],
   classNameBindings: [
     'userSettingsOpen',
-    'organizationSettingsOpen',
+    'organizationControlsOpen',
     'otherOrganizationsOpen'
   ],
 
   userSettingsOpen: false,
-  organizationSettingsOpen: false,
+  organizationControlsOpen: false,
   otherOrganizationsOpen: false,
 
   unbindEvents: function() {
@@ -35,8 +35,8 @@ Threadable.SidebarView = Ember.View.extend({
       view.toggleProperty('userSettingsOpen');
     });
 
-    element.on('click.sidebar', '.toggle-organization-settings', function() {
-      view.toggleProperty('organizationSettingsOpen');
+    element.on('click.sidebar', '.toggle-organization-controls', function() {
+      view.toggleProperty('organizationControlsOpen');
     });
 
     element.on('click.sidebar', '.open-other-organizations', function() {

@@ -12,9 +12,10 @@ class Ability
       when :owner
         can :remove_member_from,          Threadable::Organization
         can :make_owners_for,             Threadable::Organization
+        can :change_settings_for,         Threadable::Organization
         can :remove_non_empty_group_from, Threadable::Organization
         can :set_google_sync_for,         Threadable::Group
-        can :set_google_user_for,         Threadable::Organization
+        can :be_google_user_for,          Threadable::Organization
       when :member
 
       end
