@@ -16,12 +16,12 @@ class Threadable::Emails
     })
     Threadable::Emails::Validate.call(email)
     return if email.smtp_envelope_to =~ /(@|\.)example\.com$/
-    failed_once = false
+    failures = 0
     begin
       email.deliver
     rescue EOFError
-      raise if failed_once
-      failed_once = true
+      raise if failures > 2
+      failures += 1
       retry
     end
   end
