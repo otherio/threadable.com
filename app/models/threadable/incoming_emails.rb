@@ -31,6 +31,10 @@ class Threadable::IncomingEmails < Threadable::Collection
     Create.call(self, mailgun_params)
   end
 
+  def truncate!
+    scope.where('created_at < ?', 14.days.ago).destroy_all
+  end
+
   def inspect
     %(#<#{self.class}>)
   end
