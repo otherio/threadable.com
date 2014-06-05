@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140602214934) do
+ActiveRecord::Schema.define(version: 20140605195146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,9 +149,8 @@ ActiveRecord::Schema.define(version: 20140602214934) do
     t.boolean  "hold_messages",       default: true
     t.string   "alias_email_address", default: "",    null: false
     t.string   "webhook_url",         default: "",    null: false
-    t.string   "description"
     t.boolean  "google_sync",         default: false, null: false
-    t.integer  "google_sync_user_id"
+    t.string   "description"
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
@@ -178,6 +177,8 @@ ActiveRecord::Schema.define(version: 20140602214934) do
     t.integer  "message_id"
     t.boolean  "held",              default: false
   end
+
+  add_index "incoming_emails", ["held"], name: "index_incoming_emails_on_held", using: :btree
 
   create_table "messages", force: true do |t|
     t.integer  "conversation_id",                     null: false
@@ -234,6 +235,7 @@ ActiveRecord::Schema.define(version: 20140602214934) do
     t.string   "email_address_username"
     t.boolean  "trusted",                default: false
     t.boolean  "hold_all_messages",      default: false, null: false
+    t.integer  "google_user_id"
   end
 
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree

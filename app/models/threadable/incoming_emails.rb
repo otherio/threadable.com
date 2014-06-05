@@ -32,7 +32,10 @@ class Threadable::IncomingEmails < Threadable::Collection
   end
 
   def truncate!
-    scope.where('created_at < ?', 14.days.ago).destroy_all
+    scope.
+      where('created_at < ?', 14.days.ago).
+      where(held: false, processed: true).
+      destroy_all
   end
 
   def inspect
