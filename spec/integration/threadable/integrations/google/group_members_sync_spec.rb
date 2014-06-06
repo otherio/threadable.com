@@ -38,22 +38,22 @@ describe Threadable::Integrations::Google::GroupMembersSync do
   before do
     sign_in_as 'alice@ucsd.example.com'
 
-    bob.external_authorizations.add_or_update!(
+    alice.external_authorizations.add_or_update!(
       provider: 'google_oauth2',
       token: 'foo',
       refresh_token: 'moar foo',
-      name: 'Bob Cauchois',
-      email_address: 'bob@foo.com',
+      name: 'Alice Neilson',
+      email_address: 'alice@foo.com',
       domain: 'foo.com',
     )
 
-    bob_as_user = Threadable::User.new(threadable, bob.user_record)
-    expect_any_instance_of(described_class).to receive(:client_for).with(bob_as_user).and_return(google_client)
+    alice_as_user = Threadable::User.new(threadable, alice.user_record)
+    expect_any_instance_of(described_class).to receive(:client_for).with(alice_as_user).and_return(google_client)
     described_class.any_instance.stub(:directory_api).and_return(google_directory_api)
 
     group.update(alias_email_address: '"Electronics for Jesus" <electronics@foo.com>')
     group.group_record.update_attributes(google_sync: true)
-    organization.google_user = bob
+    organization.google_user = alice
     expect(google_client).to receive(:execute).with(api_method: 'LIST API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com', 'maxResults' => 1000 }).and_return(list_response)
   end
 

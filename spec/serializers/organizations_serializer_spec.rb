@@ -15,6 +15,15 @@ describe OrganizationsSerializer do
     let(:expected_key){ :organization }
 
     before do
+      alice.external_authorizations.add_or_update!(
+        provider: 'google_oauth2',
+        token: 'foo',
+        refresh_token: 'moar foo',
+        name: 'Alice Neilson',
+        email_address: 'alice@foo.com',
+        domain: 'foo.com',
+      )
+
       raceteam.google_user = alice
     end
 
