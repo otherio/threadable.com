@@ -59,19 +59,24 @@ describe Threadable::Group::Members do
     end
 
     context 'when google sync is enabled' do
-      let(:google_sync_user) { organization.members.find_by_email_address('bob@ucsd.example.com') }
+      let(:google_user) { organization.members.find_by_email_address('bob@ucsd.example.com').user_record }
       let(:new_member) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
       before do
         group.group_record.update_attributes(
-          google_sync: true,
-          google_sync_user: google_sync_user.user_record
+          google_sync: true
         )
+        organization.update(google_user: google_user)
+
+        GoogleSyncWorker.sidekiq_options unique: false
       end
 
+      after { GoogleSyncWorker.sidekiq_options unique: true }
+
       it 'synchronizes the users' do
-        expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+        expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(anything, group)
         members.add new_member
+        drain_background_jobs!
       end
     end
 
@@ -114,19 +119,24 @@ describe Threadable::Group::Members do
     end
 
     context 'when google sync is enabled' do
-      let(:google_sync_user) { organization.members.find_by_email_address('bob@ucsd.example.com') }
+      let(:google_user) { organization.members.find_by_email_address('bob@ucsd.example.com').user_record }
       let(:member_to_remove) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
       before do
         group.group_record.update_attributes(
           google_sync: true,
-          google_sync_user: google_sync_user.user_record
         )
+        organization.update(google_user: google_user)
+
+        GoogleSyncWorker.sidekiq_options unique: false
       end
 
+      after { GoogleSyncWorker.sidekiq_options unique: true }
+
       it 'synchronizes the users' do
-        expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(threadable, group)
+        expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(anything, group)
         members.remove member_to_remove
+        drain_background_jobs!
       end
     end
   end

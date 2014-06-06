@@ -9,6 +9,7 @@ gem 'sinatra'
 gem 'sidekiq'
 gem 'sidekiq-failures'
 gem 'sidetiq'
+gem 'sidekiq-unique-jobs'
 
 gem 'redis'
 gem 'pg'

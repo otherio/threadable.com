@@ -89,7 +89,7 @@ class Threadable::Group < Threadable::Model
 
     group_record.update_attributes(google_sync: true)
 
-    Threadable::Integrations::Google::GroupMembersSync.call(threadable, self)
+    GoogleSyncWorker.perform_async(threadable.env, organization.id, self.id)
   end
 
   def email_address
