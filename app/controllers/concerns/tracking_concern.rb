@@ -26,7 +26,12 @@ module TrackingConcern
     end
 
     def to_hash
-      @hash ||= JSON.parse(@cookies[MIXPANEL_COOKIE_NAME] || '{}')
+      return @hash if @hash
+      @hash = begin
+        JSON.parse(@cookies[MIXPANEL_COOKIE_NAME] || '{}')
+      rescue JSON::ParserError
+        {}
+      end
     end
 
     def [] key
