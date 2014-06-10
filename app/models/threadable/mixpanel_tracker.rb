@@ -44,14 +44,14 @@ class Threadable::MixpanelTracker < Threadable::Tracker
   end
 
   def recover_from_expected_errors
-    retries = 0
+    retries ||= 0
     yield
     return nil
-  rescue Errno::ECONNRESET => error
+  rescue Mixpanel::ConnectionError, OpenSSL::SSL::SSLError, Net::ReadTimeout, Errno::ECONNRESET => error
     threadable.report_exception!(error)
     retries = retries + 1
-    retry if retries >= 2
-    raise
+    retry if retries <= 2
+    return nil
   end
 
 end

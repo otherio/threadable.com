@@ -54,6 +54,34 @@ describe Threadable::MixpanelTracker do
         threadable_mixpanel_tracker.track_for_user(user_id, "An event", {things: 'are good'})
       end
     end
+
+    context 'when mixpanel fails' do
+      known_errors = [
+        Errno::ECONNRESET,
+        Mixpanel::ConnectionError,
+        OpenSSL::SSL::SSLError,
+        Net::ReadTimeout,
+      ]
+
+      known_errors.each do |known_error|
+        it "retries twice for #{known_error.to_s}" do
+          expect(mixpanel_tracker).to receive(:track).twice.and_raise(known_error)
+          expect(mixpanel_tracker).to receive(:track).once.and_return(true)
+          threadable_mixpanel_tracker.track_for_user(user_id, "An event", {things: 'are good'})
+        end
+
+        it "continues if #{known_error.to_s} keeps occurring" do
+          expect(mixpanel_tracker).to receive(:track).exactly(3).times.and_raise(known_error)
+          expect{ threadable_mixpanel_tracker.track_for_user(user_id, "An event", {things: 'are good'}) }.to_not raise_error
+        end
+      end
+
+      it 'raises an unknown exception' do
+        expect(mixpanel_tracker).to receive(:track).and_raise(Exception)
+        expect{ threadable_mixpanel_tracker.track_for_user(user_id, "An event", {things: 'are good'}) }.to raise_error Exception
+      end
+
+    end
   end
 
 
