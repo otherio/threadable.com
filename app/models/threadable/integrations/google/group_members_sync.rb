@@ -39,16 +39,18 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
     extra_email_addresses = google_group_email_addresses - group_member_email_addresses
 
     missing_members.each do |member|
-      email = member.email_addresses.for_domain(google_apps_domain).address
+      email_address = member.email_addresses.for_domain(google_apps_domain).address
       insert_response = google_client.execute(
         api_method: directory_api.members.insert,
         parameters: {'groupKey' => group.email_address},
         body_object: {
-          'email' => email
+          'email' => email_address
         }
       )
 
-      raise Threadable::ExternalServiceError, "Adding user #{email} to google group failed, response #{insert_response.status}" unless insert_response.status == 200
+      unless insert_response.status == 200
+        raise Threadable::ExternalServiceError, "Adding user #{email_address} to google group failed, status: #{insert_response.status}, message: #{extract_error_message(insert_response)}"
+      end
     end
 
     extra_email_addresses.each do |email_address|
@@ -60,12 +62,24 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         }
       )
 
-      raise Threadable::ExternalServiceError, "Removing user #{email_address} from google group failed, response #{delete_response.status}" unless [200, 204, 404].include?(delete_response.status)
+      unless [200, 204, 404].include?(delete_response.status)
+        raise Threadable::ExternalServiceError, "Removing user #{email_address} from google group failed, status: #{delete_response.status}, message: #{extract_error_message(delete_response)}"
+      end
     end
   end
 
+  private
+
   def google_apps_domain
     @google_apps_domain ||= group.organization.google_user.external_authorizations.find_by_provider('google_oauth2').domain
+  end
+
+  def extract_error_message response
+    begin
+      JSON.parse(response.body)['error']['message']
+    rescue JSON::ParserError, TypeError
+      nil
+    end || '(no error message found)'
   end
 
 end

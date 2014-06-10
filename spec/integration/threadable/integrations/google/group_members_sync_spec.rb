@@ -110,7 +110,8 @@ describe Threadable::Integrations::Google::GroupMembersSync do
     end
 
     context 'when adding a member fails' do
-      let(:insert_response) { double(:insert_response, status: 500) }
+      let(:insert_response) { double(:insert_response, status: 500, body: insert_response_body) }
+      let(:insert_response_body) { "{\n \"error\": {\n  \"errors\": [\n   {\n    \"domain\": \"global\",\n    \"reason\": \"notFound\",\n    \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n   }\n  ],\n  \"code\": 404,\n  \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n }\n}\n" }
 
       before do
         expect(google_client).to receive(:execute).with(
@@ -121,7 +122,15 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       end
 
       it 'raises an exception' do
-        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, response 500'
+        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, status: 500, message: Resource Not Found: raindrift+hey@gmail.com'
+      end
+
+      context 'when the response body is unparsable' do
+        let(:insert_response_body) { nil }
+
+        it 'raises a more generic exception' do
+          expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, status: 500, message: (no error message found)'
+        end
       end
     end
   end
@@ -156,7 +165,8 @@ describe Threadable::Integrations::Google::GroupMembersSync do
     end
 
     context 'when removing a member fails' do
-      let(:delete_response) { double(:delete_response, status: 500) }
+      let(:delete_response) { double(:delete_response, status: 500, body: delete_response_body) }
+      let(:delete_response_body) { "{\n \"error\": {\n  \"errors\": [\n   {\n    \"domain\": \"global\",\n    \"reason\": \"notFound\",\n    \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n   }\n  ],\n  \"code\": 404,\n  \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n }\n}\n" }
 
       before do
         expect(google_client).to receive(:execute).with(
@@ -166,7 +176,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       end
 
       it 'raises an exception' do
-        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Removing user foo@bar.com from google group failed, response 500'
+        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Removing user foo@bar.com from google group failed, status: 500, message: Resource Not Found: raindrift+hey@gmail.com'
       end
     end
 
