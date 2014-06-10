@@ -48,7 +48,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         }
       )
 
-      unless insert_response.status == 200
+      unless [200, 409].include? insert_response.status
         raise Threadable::ExternalServiceError, "Adding user #{email_address} to google group failed, status: #{insert_response.status}, message: #{extract_error_message(insert_response)}"
       end
     end
@@ -62,7 +62,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         }
       )
 
-      unless [200, 204, 404].include?(delete_response.status)
+      unless [200, 204, 404].include? delete_response.status
         raise Threadable::ExternalServiceError, "Removing user #{email_address} from google group failed, status: #{delete_response.status}, message: #{extract_error_message(delete_response)}"
       end
     end

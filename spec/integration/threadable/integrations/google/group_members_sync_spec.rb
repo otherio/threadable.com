@@ -132,6 +132,20 @@ describe Threadable::Integrations::Google::GroupMembersSync do
           expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, status: 500, message: (no error message found)'
         end
       end
+
+      context 'when the failure happens because the user is already a group member, but under a different email address' do
+        let(:insert_response) { double(:insert_response, status: 409, body: nil) }
+
+        it 'continues adding members' do
+          expect(google_client).to receive(:execute).with(
+            api_method: 'INSERT API DESCRIPTION',
+            parameters: {'groupKey' => 'electronics@foo.com' },
+            body_object: anything
+          ).and_return(insert_response)
+
+          call(threadable, group)
+        end
+      end
     end
   end
 
