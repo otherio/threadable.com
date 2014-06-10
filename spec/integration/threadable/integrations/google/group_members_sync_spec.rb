@@ -121,7 +121,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       end
 
       it 'raises an exception' do
-        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user to google group failed'
+        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, response 500'
       end
     end
   end
@@ -166,7 +166,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       end
 
       it 'raises an exception' do
-        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Removing user from google group failed'
+        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Removing user foo@bar.com from google group failed, response 500'
       end
     end
 
@@ -176,7 +176,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
     let(:list_response) { double(:list_response, status: 500, body: 'FOO MOM') }
 
     it 'raises an exception' do
-      expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Could not retrieve google group users'
+      expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Could not retrieve google group users for electronics@foo.com'
     end
   end
 end

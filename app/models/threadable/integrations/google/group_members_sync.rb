@@ -14,7 +14,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
       parameters: {'groupKey' => group.email_address, 'maxResults' => 1000},
     )
 
-    raise Threadable::ExternalServiceError, 'Could not retrieve google group users' unless list_response.status == 200
+    raise Threadable::ExternalServiceError, "Could not retrieve google group users for #{group.email_address}" unless list_response.status == 200
 
     group_members = group.members.all_with_email_addresses
 
@@ -39,15 +39,16 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
     extra_email_addresses = google_group_email_addresses - group_member_email_addresses
 
     missing_members.each do |member|
+      email = member.email_addresses.for_domain(google_apps_domain).address
       insert_response = google_client.execute(
         api_method: directory_api.members.insert,
         parameters: {'groupKey' => group.email_address},
         body_object: {
-          'email' => member.email_addresses.for_domain(google_apps_domain).address
+          'email' => email
         }
       )
 
-      raise Threadable::ExternalServiceError, 'Adding user to google group failed' unless insert_response.status == 200
+      raise Threadable::ExternalServiceError, "Adding user #{email} to google group failed, response #{insert_response.status}" unless insert_response.status == 200
     end
 
     extra_email_addresses.each do |email_address|
@@ -59,7 +60,7 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
         }
       )
 
-      raise Threadable::ExternalServiceError, 'Removing user from google group failed' unless [200, 204, 404].include?(delete_response.status)
+      raise Threadable::ExternalServiceError, "Removing user #{email_address} from google group failed, response #{delete_response.status}" unless [200, 204, 404].include?(delete_response.status)
     end
   end
 
