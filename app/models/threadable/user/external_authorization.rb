@@ -23,8 +23,12 @@ class Threadable::User::ExternalAuthorization < Threadable::Model
   }, to: :external_authorization_record
 
   def application_key
-    ENV['THREADABLE_TRELLO_API_KEY'] if provider == 'trello'
-    ENV['GOOGLE_CLIENT_ID'] if provider == 'google_oauth2'
+    case provider
+    when 'trello'
+      ENV['THREADABLE_TRELLO_API_KEY']
+    when 'google_oauth2'
+      ENV['GOOGLE_CLIENT_ID']
+    end
   end
 
   def pretty_provider
