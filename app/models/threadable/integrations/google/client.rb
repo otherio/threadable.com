@@ -25,4 +25,12 @@ module Threadable::Integrations::Google::Client
     @google_directory_api ||= @google_api_client.discovered_api('admin', 'directory_v1')
   end
 
+  def extract_error_message response
+    begin
+      JSON.parse(response.body)['error']['message']
+    rescue JSON::ParserError, TypeError
+      nil
+    end || '(no error message found)'
+  end
+
 end

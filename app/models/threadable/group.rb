@@ -82,9 +82,9 @@ class Threadable::Group < Threadable::Model
         }
       )
 
-      raise Threadable::ExternalServiceError, 'Creating proxy google group failed' unless insert_response.status == 200
+      raise Threadable::ExternalServiceError, "Creating proxy google group failed (#{insert_response.status}): #{extract_error_message(insert_response)}" unless insert_response.status == 200
     elsif group_response.status != 200
-      raise Threadable::ExternalServiceError, 'Searching for google group failed'
+      raise Threadable::ExternalServiceError, "Searching for google group failed (#{group_response.status}): #{extract_error_message(group_response)}"
     end
 
     group_record.update_attributes(google_sync: true)

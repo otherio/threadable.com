@@ -66,4 +66,21 @@ describe Threadable::Integrations::Google::Client do
       expect{ described_module.directory_api }.to raise_error Threadable::ExternalServiceError, 'No client present'
     end
   end
+
+  describe '.extract_error_message' do
+    let(:insert_response) { double(:insert_response, status: 500, body: insert_response_body) }
+    let(:insert_response_body) { "{\n \"error\": {\n  \"errors\": [\n   {\n    \"domain\": \"global\",\n    \"reason\": \"notFound\",\n    \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n   }\n  ],\n  \"code\": 404,\n  \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n }\n}\n" }
+
+    it 'fetches the error message' do
+      expect(described_module.extract_error_message(insert_response)).to eq "Resource Not Found: raindrift+hey@gmail.com"
+    end
+
+    context 'with no valid error message' do
+      let(:insert_response_body) { nil }
+
+      it 'returns (no error message found)' do
+        expect(described_module.extract_error_message(insert_response)).to eq '(no error message found)'
+      end
+    end
+  end
 end

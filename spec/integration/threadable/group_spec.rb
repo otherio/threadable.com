@@ -156,7 +156,7 @@ describe Threadable::Group do
           let(:api_insert_response) { double(:api_insert_response, status: 500, body: 'RESPONSE JSON') }
 
           it 'raises an exception' do
-            expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Creating proxy google group failed'
+            expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Creating proxy google group failed (500): (no error message found)'
           end
         end
       end
@@ -165,7 +165,7 @@ describe Threadable::Group do
         let(:api_response) { double(:api_response, status: 500, body: 'RESPONSE JSON') }
 
         it 'raises an exception' do
-          expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Searching for google group failed'
+          expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Searching for google group failed (500): (no error message found)'
         end
       end
     end

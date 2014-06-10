@@ -74,12 +74,4 @@ class Threadable::Integrations::Google::GroupMembersSync < MethodObject
     @google_apps_domain ||= group.organization.google_user.external_authorizations.find_by_provider('google_oauth2').domain
   end
 
-  def extract_error_message response
-    begin
-      JSON.parse(response.body)['error']['message']
-    rescue JSON::ParserError, TypeError
-      nil
-    end || '(no error message found)'
-  end
-
 end

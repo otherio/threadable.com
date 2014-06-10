@@ -122,15 +122,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
       end
 
       it 'raises an exception' do
-        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, status: 500, message: Resource Not Found: raindrift+hey@gmail.com'
-      end
-
-      context 'when the response body is unparsable' do
-        let(:insert_response_body) { nil }
-
-        it 'raises a more generic exception' do
-          expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError, 'Adding user tomfoo@foo.com to google group failed, status: 500, message: (no error message found)'
-        end
+        expect{ call(threadable, group) }.to raise_error Threadable::ExternalServiceError
       end
 
       context 'when the failure happens because the user is already a group member, but under a different email address' do
