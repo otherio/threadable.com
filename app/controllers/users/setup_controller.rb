@@ -21,7 +21,6 @@ class Users::SetupController < ApplicationController
     if user.errors.present?
       render :edit
     else
-      flash[:notice] = %(You're all setup! Welcome to Threadable.)
       sign_in! user
       redirect_to @destination_path || root_path
     end
