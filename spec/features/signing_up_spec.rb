@@ -18,8 +18,8 @@ feature "signing up" do
     @original_mixpanel_distinct_id = mixpanel_distinct_id
 
     within first('.sign-up-form') do
-      fill_in 'Organization name', with: organization_name
-      fill_in 'Email address',     with: email_address
+      fill_in 'Organization name',  with: organization_name
+      fill_in 'Your email address', with: email_address
       click_on 'CREATE'
     end
 
