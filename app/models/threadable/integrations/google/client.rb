@@ -5,7 +5,7 @@ require 'google/api_client/auth/installed_app'
 module Threadable::Integrations::Google::Client
   def client_for user
     unless external_authorization = user.external_authorizations.find_by_provider('google_oauth2')
-      raise(Threadable::ExternalServiceError, 'You do not have a connected google account')
+      raise(Threadable::ExternalServiceError, 'No connected google account')
     end
 
     @google_api_client ||= ::Google::APIClient.new(

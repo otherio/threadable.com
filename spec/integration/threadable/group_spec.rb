@@ -63,6 +63,8 @@ describe Threadable::Group do
   describe '#google_sync=' do
     context 'when enabling google sync' do
       let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com')}
+      let(:alice_as_user) { Threadable::User.new(threadable, alice.user_record) }
+      let(:bob) { organization.members.find_by_email_address('bob@ucsd.example.com')}
       let(:group) { organization.groups.find_by_slug('electronics') }
 
       let(:google_client) { double(:google_client, authorization: double(:authorization), discovered_api: google_directory_api) }
@@ -81,11 +83,11 @@ describe Threadable::Group do
           domain: 'foo.com',
         )
 
-        sign_in_as 'alice@ucsd.example.com'
+        sign_in_as 'bob@ucsd.example.com'
         group.update(alias_email_address: '"Electronics for Jesus" <electronics@foo.com>')
 
         organization.google_user = alice
-        expect(group).to receive(:client_for).with(threadable.current_user).and_return(google_client)
+        expect(group).to receive(:client_for).with(alice_as_user).and_return(google_client)
         group.stub(:directory_api).and_return(google_directory_api)
         expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
         drain_background_jobs!

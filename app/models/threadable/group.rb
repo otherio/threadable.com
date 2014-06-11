@@ -65,7 +65,7 @@ class Threadable::Group < Threadable::Model
       return
     end
 
-    google_client = client_for(threadable.current_user)
+    google_client = client_for(organization.google_user)
 
     group_response = google_client.execute(
       api_method: directory_api.groups.get,

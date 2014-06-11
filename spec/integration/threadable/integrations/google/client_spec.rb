@@ -48,7 +48,7 @@ describe Threadable::Integrations::Google::Client do
     context 'with no google credentials' do
       let(:external_authorization) { nil }
       it 'raises an exception' do
-        expect { described_module.client_for(alice) }.to raise_error Threadable::ExternalServiceError, 'You do not have a connected google account'
+        expect { described_module.client_for(alice) }.to raise_error Threadable::ExternalServiceError, 'No connected google account'
       end
     end
   end
