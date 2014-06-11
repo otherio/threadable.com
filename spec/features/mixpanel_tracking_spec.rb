@@ -14,7 +14,7 @@ feature "mixpanel tracking" do
 
     within first('.sign-up-form') do
       fill_in 'Organization name', with: organization_name
-      fill_in 'Email address',     with: email_address
+      fill_in 'Your email address',     with: email_address
       click_on 'CREATE'
     end
 
