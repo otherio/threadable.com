@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     return unless request.get?
     request_url = URI.parse(request.url)
     return if legal_hosts.include?(request_url.host)
-    slug_blacklist = ['www', 'blog', 'staging']  #TODO: make this be a real thing: https://www.pivotaltracker.com/story/show/62884858
+    slug_blacklist = ['www', 'blog']  #TODO: make this be a real thing: https://www.pivotaltracker.com/story/show/62884858
     subdomain = request_url.host.split('.')[0]
     return if slug_blacklist.include?(subdomain)
     request_url.host = legal_hosts.first
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   def legal_hosts
     case
     when Rails.env.production?;  ['threadable.com']
-    when Rails.env.staging?;     ['staging.threadable.com']
+    when Rails.env.staging?;     ['threadablestaging.com']
     when Rails.env.development?; ['127.0.0.1', 'threadable.local']
     when Rails.env.test?;        ['test.host', '127.0.0.1']
     else return
