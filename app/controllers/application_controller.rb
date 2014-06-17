@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     subdomain = request_url.host.split('.')[0]
     return if slug_blacklist.include?(subdomain)
     request_url.host = legal_hosts.first
-    request_url.path = "/#{subdomain}/"
+    request_url.path = "/#{subdomain}/my/conversations"
     redirect_to request_url.to_s
   end
 
