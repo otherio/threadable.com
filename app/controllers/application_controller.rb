@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     return unless request.get?
     request_url = URI.parse(request.url)
     return if legal_hosts.include?(request_url.host)
-    slug_blacklist = ['www', 'blog']  #TODO: make this be a real thing: https://www.pivotaltracker.com/story/show/62884858
+    slug_blacklist = ['www', 'blog', 'staging']  #TODO: make this be a real thing: https://www.pivotaltracker.com/story/show/62884858
     subdomain = request_url.host.split('.')[0]
     return if slug_blacklist.include?(subdomain)
     request_url.host = legal_hosts.first
