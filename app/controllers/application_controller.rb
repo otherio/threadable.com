@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
     when Rails.env.production?;  ['threadable.com']
     when Rails.env.staging?;     ['staging.threadable.com']
     when Rails.env.development?; ['127.0.0.1', 'threadable.local']
-    when Rails.env.test?;        ['test.host', '127.0.0.1']
+    when Rails.env.test?;        ['test.host', '127.0.0.1', 'www.example.com']
     else return
     end
   end
