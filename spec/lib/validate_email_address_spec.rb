@@ -11,13 +11,13 @@ describe ValidateEmailAddress do
     'jared+money@other.io',
     'jared+money+sex@other.io',
     'jared+money+sex@a.b.c.d.e.f.g.h.i.j.other.io',
+    'jared@localhost',
   ]
 
   invalid = [
     '',
     'a',
     'jared plus money@other.io',
-    'jared@localhost',
     'jared@.com',
     '@other.io',
     'heh℥@foo.com',

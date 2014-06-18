@@ -352,7 +352,7 @@ describe "actual broken incoming emails" do
 
   context "with a broken message from zac at apportable" do
     let(:proxy_from) { 'alice@ucsd.example.com' }
-    let(:proxy_recipient) { 'raceteam@127.0.0.1' }
+    let(:proxy_recipient) { 'raceteam@localhost' }
 
     let :attachments do
       [

@@ -28,11 +28,12 @@ describe Threadable::SignUp, fixtures: false do
     %(jared@127.0.0.1),
     %(\xEF\xBB\xBFjared@deadlyicon.com), # FYI this string contains a zero-width no-break space (U+FEFF)
     %(jared+\xE2\x98\x83@deadlyicon.com),
+    %(jared@localhost),
   ]
 
   invalid_email_addresses = [
-    %(jared@localhost),
     %(jared),
+    %(amazon.com),
     %(ian.baker@foo),
   ]
 

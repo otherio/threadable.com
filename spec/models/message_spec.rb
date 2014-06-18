@@ -8,7 +8,7 @@ describe Message do
   it { should belong_to(:conversation) }
 
   it "has a message id with a predictable domain (not some heroku crap hostname)" do
-    subject.message_id_header.should =~ /^<.+\@#{Regexp.escape(Capybara.server_host)}>$/
+    subject.message_id_header.should =~ /^<.+\@localhost>$/
   end
 
   context "with a parent message" do

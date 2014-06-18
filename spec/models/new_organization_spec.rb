@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe NewOrganization, fixtures: false do
 
-  let(:threadable){ Threadable.new(host: 'example.com') }
+  let(:threadable){ Threadable.new(host: 'threadable.com') }
 
   let(:organization_name)      { 'CERN' }
   let(:email_address_username) { 'cern' }
