@@ -584,6 +584,18 @@ describe Threadable::IncomingEmail do
       let(:recipient){ 'foo@threadable.com' }
       it{ should eq [] }
     end
+    context 'when the email address is groupy+bar@org.threadable.com' do
+      let(:recipient){ 'groupy+bar@org.threadable.com' }
+      it{ should eq ['groupy'] }
+    end
+    context 'when the email address is groupy@org.threadable.com' do
+      let(:recipient){ 'groupy@org.threadable.com' }
+      it{ should eq ['groupy'] }
+    end
+    context 'when the email address is groupy@org.threadable.com' do
+      let(:recipient){ 'groupy+task@org.threadable.com' }
+      it{ should eq ['groupy'] }
+    end
     context 'when the email address contains many tags' do
       let(:recipient){ 'foo+bar+baz@threadable.com' }
       it{ should eq ['bar', 'baz'] }

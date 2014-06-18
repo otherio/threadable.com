@@ -5,7 +5,7 @@ class Threadable::Class
     'threadablestaging.com'  => 'threadablestaging.com',
     'beta.covered.io'        => 'covered.io',
     'www-staging.covered.io' => 'staging.covered.io',
-    '127.0.0.1'              => '127.0.0.1', # for dev
+    '127.0.0.1'              => 'localhost', # for dev
   }.freeze
 
   include Let
@@ -68,6 +68,10 @@ class Threadable::Class
 
   def email_host
     Threadable::Class::EMAIL_HOSTS[host] || host
+  end
+
+  def email_hosts
+    Threadable::Class::EMAIL_HOSTS.values
   end
 
   def support_email_address tag=nil

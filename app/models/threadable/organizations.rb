@@ -23,9 +23,14 @@ class Threadable::Organizations < Threadable::Collection
   def find_by_email_address email_address
     email_address.present? or return
     email_address_username, host = email_address.downcase.strip_non_ascii.split('@')
-    # grab the stuff before the + here.
-    if email_address_username =~ /^(.+?)(\+|--)/
-      email_address_username = $1
+
+    if threadable.email_hosts.include?(host)
+      # grab the stuff before the + here.
+      if email_address_username =~ /^(.+?)(\+|--)/
+        email_address_username = $1
+      end
+    else
+      email_address_username = host.split('.')[0]
     end
 
     # return nil if threadable.host != host

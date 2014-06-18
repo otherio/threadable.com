@@ -137,7 +137,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def groups_valid?
-    groups.map(&:email_address_tag).to_set.subset?  email_address_tags.to_set
+    groups.map(&:email_address_tag).to_set.subset? email_address_tags.to_set
   end
 
   def body_has_content?
@@ -237,8 +237,13 @@ class Threadable::IncomingEmail < Threadable::Model
   SPECIAL_EMAIL_ADDRESS_TAGS = %w{ task }.freeze
   def email_address_tags
     @email_address_tags ||= begin
-      local = recipient.strip_non_ascii.downcase.split('@').first
-      @email_address_tags = local.split(/(?:\+|--)/)[1..-1] - SPECIAL_EMAIL_ADDRESS_TAGS
+      local, host = recipient.strip_non_ascii.downcase.split('@')
+      local_components = local.split(/(?:\+|--)/) - SPECIAL_EMAIL_ADDRESS_TAGS
+      if threadable.email_hosts.include?(host)
+        @email_address_tags = local_components[1..-1]
+      else
+        @email_address_tags = [local_components[0]]
+      end
     end
   end
 

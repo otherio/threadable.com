@@ -5,7 +5,7 @@ class ValidateEmailAddress < MethodObject
     # We must check that value contains a domain and that value is an email address
     return false unless mail_address.domain
     return false unless mail_address.address == email_address_string
-    return true if Rails.env.development? && email_address_string =~ /localhost/
+    return true if (Rails.env.development? || Rails.env.test?) && email_address_string =~ /localhost/
     tree = mail_address.__send__(:tree)
     # We need to dig into treetop
     # A valid domain must have dot_atom_text elements size > 1

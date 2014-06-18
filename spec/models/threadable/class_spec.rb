@@ -77,6 +77,16 @@ describe Threadable::Class do
     end
   end
 
+  describe '#email_hosts' do
+    before do
+      stub_const('Threadable::Class::EMAIL_HOSTS', {'example.com' => 'mail.example.com', 'foo.com' => 'foo.com'})
+    end
+
+    it 'returns the valid basic email hosts' do
+      expect(threadable.email_hosts).to match_array ['mail.example.com', 'foo.com']
+    end
+  end
+
   describe '#support_email_address' do
     it "returns a support email address" do
       expect( threadable.support_email_address ).to eq 'support@example.com'
