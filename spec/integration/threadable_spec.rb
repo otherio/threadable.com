@@ -66,7 +66,7 @@ describe "threadable", fixtures: false do
     expect( threadable                 ).to be_a Threadable::Class
     expect( threadable.protocol        ).to eq 'http'
     expect( threadable.host            ).to eq '127.0.0.1'
-    expect( threadable.email_host      ).to eq '127.0.0.1'
+    expect( threadable.email_host      ).to eq 'localhost'
     expect( threadable.port            ).to eq Capybara.server_port
     expect( threadable.tracker         ).to be_a Threadable::InMemoryTracker
     expect( threadable.current_user_id ).to be_nil
@@ -213,7 +213,7 @@ describe "threadable", fixtures: false do
       expect(sent_emails.size).to eq 1
       email = sent_emails.first
       expect(email.text_content).to include 'OMG I love their belly fat'
-      expect(email.text_content).to include 'support@127.0.0.1'
+      expect(email.text_content).to include 'support@localhost'
       expect(email.html_content).to include "<p>OMG I love their belly fat</p>"
       expect(email.html_content).to include "feedback"
       expect(email.urls.map(&:to_s)).to include organization_url(htp)

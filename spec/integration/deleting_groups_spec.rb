@@ -45,8 +45,8 @@ describe 'deleting groups' do
         from:          'Ricky Bobby <ricky.bobby@ucsd.example.com>',
         envelope_from: 'ricky.bobby@ucsd.example.com',
 
-        recipient:     'raceteam+saels@127.0.0.1',
-        to:            '"UCSD Electric Racing: Saels" <raceteam+saels@127.0.0.1>',
+        recipient:     'raceteam+saels@localhost',
+        to:            '"UCSD Electric Racing: Saels" <raceteam+saels@localhost>',
 
         in_reply_to:   @message.message_id_header,
         references:    [@message.message_id_header],

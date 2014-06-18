@@ -32,8 +32,8 @@ feature "Group web hook" do
     expect(page).to be_at_url conversations_url('raceteam', 'fundraising')
 
     incoming_email = send_email(
-      to:         'raceteam+fundraising@127.0.0.1',
-      recipient:  'raceteam+fundraising@127.0.0.1',
+      to:         'raceteam+fundraising@localhost',
+      recipient:  'raceteam+fundraising@localhost',
       subject:    'Testing the new webhook',
       body_html:  '<p>this is a test message<p/>',
       body_plain: 'this is a test message',

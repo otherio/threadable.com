@@ -130,7 +130,7 @@ describe Threadable::Organization::Member do
           from: 'Amy <amywong.phd@gmail.com>',
           body_plain: 'message body',
           body_html: 'message body html',
-          to_header: 'sfhealth@127.0.0.1',
+          to_header: 'sfhealth@localhost',
         )
 
         Timecop.return

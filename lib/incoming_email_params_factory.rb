@@ -25,8 +25,8 @@ class IncomingEmailParamsFactory < MethodObject
     @options[:sender]        ||= @options[:envelope_from]
 
     # to email addresses
-    @options[:recipient]     ||= 'raceteam@127.0.0.1'
-    @options[:to]            ||= "UCSD Electric Racing <raceteam@127.0.0.1>"
+    @options[:recipient]     ||= 'raceteam@localhost'
+    @options[:to]            ||= "UCSD Electric Racing <raceteam@localhost>"
     @options[:cc]            ||= ''
 
     @options[:content_type]  ||= %(multipart/alternative; boundary="f46d0438942f7e6e4a04ebf98c9c")

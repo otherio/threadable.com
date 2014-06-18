@@ -56,7 +56,7 @@ describe MembershipMailer do
       let(:recipient){ organization.members.all.find(&:web_enabled?) }
       let(:dmarc_verified) { false }
       it "has different from and reply-to addresses" do
-        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
       end
     end
@@ -95,7 +95,7 @@ describe MembershipMailer do
     context 'when the sender domain has a restrictive dmarc policy' do
       let(:dmarc_verified) { false }
       it "has different from and reply-to addresses" do
-        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
       end
     end
@@ -119,7 +119,7 @@ describe MembershipMailer do
     context 'when the sender domain has a restrictive dmarc policy' do
       let(:dmarc_verified) { false }
       it "has different from and reply-to addresses" do
-        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
       end
     end
@@ -139,7 +139,7 @@ describe MembershipMailer do
     context 'when the sender domain has a restrictive dmarc policy' do
       let(:dmarc_verified) { false }
       it "has different from and reply-to addresses" do
-        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@127.0.0.1>'
+        expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
       end
     end

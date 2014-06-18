@@ -50,7 +50,7 @@ describe SummaryMailer do
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
 
       expect(email.link('feedback')).to be_present
-      expect(email.link('feedback')[:href]).to eq "mailto:support@127.0.0.1"
+      expect(email.link('feedback')[:href]).to eq "mailto:support@localhost"
 
       expect(text_part).to include organization.email_address
       expect(text_part).to include organization.task_email_address

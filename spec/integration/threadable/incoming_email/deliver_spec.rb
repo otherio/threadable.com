@@ -6,7 +6,7 @@ describe Threadable::IncomingEmail::Deliver do
   let(:conversation)       { double(:conversation, messages: double(:messages)) }
   let(:subject)            { 'I love this community!' }
   let(:stripped_plain)     { 'i am a message body' }
-  let(:recipient)          { 'raceteam@127.0.0.1' }
+  let(:recipient)          { 'raceteam@localhost' }
   let(:preexisting_message){ nil }
   let(:group1)             { double(:group1, subject_tag: 'group1') }
   let(:group2)             { double(:group2, subject_tag: 'group2') }
@@ -163,7 +163,7 @@ describe Threadable::IncomingEmail::Deliver do
       end
     end
     context 'and recipient is a +task email address' do
-      let(:recipient){'raceteam+task@127.0.0.1' }
+      let(:recipient){'raceteam+task@localhost' }
       before do
         expect(incoming_email.organization.tasks).to receive(:create!).with(
           subject:    'I love this community!',

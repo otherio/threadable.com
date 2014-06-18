@@ -32,8 +32,8 @@ describe Threadable::Organization do
       'foo+bar@threadable.com'         => false,
       'foo@staging.threadable.com'     => false,
 
-      'raceteam+fundraising@127.0.0.1' => true,
-      'raceteam@127.0.0.1'             => true,
+      'raceteam+fundraising@localhost' => true,
+      'raceteam@localhost'             => true,
       'press@ucsd.example.com'         => true,
     }
 
@@ -52,7 +52,7 @@ describe Threadable::Organization do
       'foo+bar@threadable.com'         => false,
       'foo@staging.threadable.com'     => false,
 
-      'raceteam+fundraising@127.0.0.1'    => true,
+      'raceteam+fundraising@localhost'    => true,
       'raceteam@covered.io'               => true,
       'raceteam@threadable.com'           => true,
       'raceteam+something@threadable.com' => true,

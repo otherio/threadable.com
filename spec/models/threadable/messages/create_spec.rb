@@ -49,7 +49,7 @@ describe Threadable::Messages::Create do
   let(:expected_body_html)          { '<p>hi there</p>' }
   let(:expected_stripped_plain)     { 'hi there' }
   let(:expected_stripped_html)      { '<p>hi there</p>' }
-  let(:expected_message_id_header)  { "<529695e5b8b3a_13b723fe73985e6d876688@127.0.0.1>" }
+  let(:expected_message_id_header)  { "<529695e5b8b3a_13b723fe73985e6d876688@localhost>" }
   let(:expected_references_header)  { nil }
   let(:expected_date_header)        { "Sat, 26 Oct 1985 08:22:00 -0000" }
   let(:expected_to_header)          { nil }

@@ -54,7 +54,7 @@ describe ConversationMailer do
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
 
       expect(email.link('feedback')).to be_present
-      expect(email.link('feedback')[:href]).to eq "mailto:support@127.0.0.1"
+      expect(email.link('feedback')[:href]).to eq "mailto:support@localhost"
 
       expect(text_part).to include organization.task_email_address
 
@@ -125,7 +125,7 @@ describe ConversationMailer do
 
       context 'with reply-to munging enabled' do
         let(:expected_cc  ){ message.from }
-        let(:expected_from){ 'Tom Canver via Threadable <placeholder@127.0.0.1>' }
+        let(:expected_from){ 'Tom Canver via Threadable <placeholder@localhost>' }
 
         it "rewrites from, and adds from to cc" do
           validate_mail!
@@ -133,7 +133,7 @@ describe ConversationMailer do
       end
 
       context 'with reply-to munging disabled' do
-        let(:expected_from    ){ 'Tom Canver via Threadable <placeholder@127.0.0.1>' }
+        let(:expected_from    ){ 'Tom Canver via Threadable <placeholder@localhost>' }
         let(:expected_reply_to) { message.from }
 
         before do
