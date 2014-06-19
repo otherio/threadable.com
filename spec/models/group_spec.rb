@@ -7,7 +7,7 @@ describe Group do
     it "requires a name" do
       group = Group.new(organization_id: 1, subject_tag: '')
       group.save.should be_false
-      group.errors[:name].should =~ ["can't be blank", "is invalid"]
+      group.errors[:name].should =~ ["can't be blank"]
 
       group.name = 'electronics'
       group.save.should be_true
@@ -46,16 +46,6 @@ describe Group do
       group = Group.new(name: 'hi-there', organization_id: 1, subject_tag: '')
       group.save.should be_false
       group.errors[:email_address_tag].should == ["has already been taken"]
-    end
-
-    it "requires the name to not contain special characters" do
-      group = Group.new(name: 'Foo+3', organization_id: 1, subject_tag: '')
-      group.save.should be_false
-      group.errors[:name].should == ['is invalid']
-
-      group.name = 'F-o-o'
-      group.save.should be_true
-      group.errors.should be_blank
     end
 
     it "requires the subject tag to not contain special characters" do

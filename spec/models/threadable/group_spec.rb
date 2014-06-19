@@ -41,6 +41,7 @@ describe Threadable::Group do
   it { should delegate(:alias_email_address).to(:group_record) }
   it { should delegate(:description        ).to(:group_record) }
   it { should delegate(:google_sync?       ).to(:group_record) }
+  it { should delegate(:primary?           ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }

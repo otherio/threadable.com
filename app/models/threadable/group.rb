@@ -27,6 +27,7 @@ class Threadable::Group < Threadable::Model
     hold_messages?
     webhook_url
     google_sync?
+    primary?
   }, to: :group_record
 
   def group_id
