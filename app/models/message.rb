@@ -18,10 +18,17 @@ class Message < ActiveRecord::Base
       # :body_html,
     )
 
+    # attributesToIndex %w(
+    #   unordered(conversation_subject)
+    #   unordered(body_plain)
+    #   unordered(body_html)
+    #   unordered(creator_name)
+    #   unordered(creator_email_address)
+    # )
+
     attributesToIndex %w(
       unordered(conversation_subject)
       unordered(body_plain)
-      unordered(body_html)
       unordered(creator_name)
       unordered(creator_email_address)
     )
