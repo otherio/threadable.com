@@ -1,8 +1,7 @@
 class Message < ActiveRecord::Base
 
   include AlgoliaSearch
-  algoliasearch auto_index: false do
-    # don't auto-index because manual indexing can catch errors when our data is too big.
+  algoliasearch do
     attribute(
       :id,
       :organization_id,
@@ -15,13 +14,13 @@ class Message < ActiveRecord::Base
       :creator_email_address,
       :created_at,
       :updated_at,
-      :body_plain,
-      :body_html_as_text,
+      :body_plain_for_search,
+      :body_html_for_search,
     )
 
     attributesToIndex %w(
       unordered(conversation_subject)
-      unordered(body_plain)
+      unordered(body_plain_for_search)
       unordered(creator_name)
       unordered(creator_email_address)
     )
@@ -102,8 +101,12 @@ class Message < ActiveRecord::Base
     creator && creator.email_address
   end
 
-  def body_html_as_text
-    StripHtml.call(body_html)
+  def body_html_for_search
+    StripHtml.call(body_html)[0...(9728-body_plain_for_search.length)]
+  end
+
+  def body_plain_for_search
+    @body_plain_for_search ||= body_plain[0...9728]
   end
 
   private

@@ -30,10 +30,56 @@ describe Message do
     end
   end
 
-  describe "#body_html_as_text" do
-    it 'returns the body html as plaintext' do
-      subject.body_html_as_text.should == "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny. Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway. Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway."
+  describe 'search' do
+    before do
+      message.update(body_plain: body_plain, body_html: body_html)
+    end
+
+    describe "#body_html_for_search" do
+      context 'when body plain is 5k' do
+        let(:body_plain) { 'a' * 5120 }
+        let(:body_html) { 'b' * 5120 }
+        it 'returns the first 4.5k of the html' do
+          subject.body_html_for_search.length.should == 4608
+        end
+      end
+
+      context 'when the body plain is 10k' do
+        let(:body_plain) { 'a' * 10240 }
+        let(:body_html) { 'b' * 5120 }
+
+        it 'returns an empty string' do
+          subject.body_html_for_search.length.should == 0
+        end
+      end
+
+      context 'when the body plain is 0k' do
+        let(:body_plain) { '' }
+        let(:body_html) { 'b' * 10240 }
+
+        it 'returns the first 9.5k of the body_html' do
+          subject.body_html_for_search.length.should == 9728
+        end
+      end
+
+      context 'when the html body contains html' do
+        let(:body_plain) { '' }
+        let(:body_html) { '<b>hi</b>' }
+
+        it 'returns the body html as plaintext' do
+          subject.body_html_for_search.should == "hi"
+        end
+      end
+
+    end
+
+    describe "#body_plain_for_search" do
+      let(:body_plain) { 'a' * 15360 }
+      let(:body_html) { '' }
+
+      it 'returns the first 9.5k of body_plain' do
+        subject.body_plain_for_search.length.should == 9728
+      end
     end
   end
-
 end

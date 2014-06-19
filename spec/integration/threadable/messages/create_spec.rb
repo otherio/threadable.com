@@ -16,34 +16,10 @@ describe Threadable::Messages::Create do
     }
   end
 
-  describe 'algolia search' do
-    it 'creates the message and then indexes it separately' do
-      expect_any_instance_of(Message).to receive(:index!)
+  it 'creates the message' do
+    message = call(conversation.messages, message_options)
 
-      message = call(conversation.messages, message_options)
-
-      expect(message.creator).to eq alice
-      expect(message.body_plain).to eq 'This is the text of the message'
-    end
-
-    it 'succeeds when algolia refuses to index because of a quota error' do
-
-      expect_any_instance_of(Message).to receive(:index!).and_raise(
-        Algolia::AlgoliaProtocolError.new(400, 'Cannot PUT to https://FOO-3.algolia.io/1/indexes/messages/12345: {"message":"Record is too big size=234567 bytes. Contact us if you need an extended quota" }')
-      )
-
-      message = call(conversation.messages, message_options)
-
-      expect(message.creator).to eq alice
-      expect(message.body_plain).to eq 'This is the text of the message'
-    end
-
-    it 'fails for other sorts of algolia error' do
-      expect_any_instance_of(Message).to receive(:index!).and_raise(
-        Algolia::AlgoliaProtocolError.new(401, 'Go away')
-      )
-
-      expect { call(conversation.messages, message_options) }.to raise_error
-    end
+    expect(message.creator).to eq alice
+    expect(message.body_plain).to eq 'This is the text of the message'
   end
 end

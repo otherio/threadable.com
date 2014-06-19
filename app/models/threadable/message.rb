@@ -98,7 +98,6 @@ class Threadable::Message < Threadable::Model
 
   def update attributes
     message_record.update_attributes!(attributes)
-    message_record.index!
   end
 
 

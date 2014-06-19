@@ -117,8 +117,6 @@ class Threadable::Messages::Create < MethodObject
       thread_topic_header: thread_topic_header
     )
 
-    @message_record.index!
-
     @conversation.update(last_message_at: @message_record.created_at)
     @conversation.update_participant_names_cache!
     @conversation.update_message_summary_cache!
