@@ -31,6 +31,21 @@ describe Threadable, :type => :threadable do
       end
     end
 
+    context 'when running in a migration' do
+      before do
+        Threadable::Transactions.expect_test_transaction = true
+        Threadable::Transactions.in_migration = true
+        expect(Threadable.transaction_open?).to be_false
+      end
+
+      it 'does not raise an error' do
+        ActiveRecord::Base.transaction do
+          expect{ Threadable.transaction{ } }.to_not raise_error
+        end
+      end
+
+    end
+
     it 'after_transaction runs the given callback immediately when outside of a transaction' do
       callback_called = false
       Threadable.after_transaction{ callback_called = true }

@@ -4,7 +4,7 @@
 module Threadable::Transactions
 
   class << self
-    attr_accessor :expect_test_transaction
+    attr_accessor :expect_test_transaction, :in_migration
   end
 
   def transactions
@@ -14,6 +14,8 @@ module Threadable::Transactions
   def transaction_open?
     # this is production code that knows when its being tested. Awesome right? ::facepalm::
     if Threadable::Transactions.expect_test_transaction && RSpec::Support::Transactions.test_transaction_open?
+      ActiveRecord::Base.connection.open_transactions > 1
+    elsif Threadable::Transactions.in_migration
       ActiveRecord::Base.connection.open_transactions > 1
     else
       ActiveRecord::Base.connection.open_transactions > 0
