@@ -15,7 +15,7 @@ class Message < ActiveRecord::Base
       :created_at,
       :updated_at,
       :body_plain,
-      :body_html,
+      # :body_html,
     )
 
     attributesToIndex %w(
