@@ -30,4 +30,10 @@ describe Message do
     end
   end
 
+  describe "#body_html_as_text" do
+    it 'returns the body html as plaintext' do
+      subject.body_html_as_text.should == "This turned out super awesome! Yan and Bethany and I stayed til 8pm doing the layup and fitting everything on the vacuum table. The pieces are curing in the oven now, but we got some photos of them before they went in. Bethany got epoxy everywhere! It was pretty funny. Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway. Wow, thanks Andy! Super helpful. I think we'll just go for the carbon/glass like you suggested, since we're under weight on the wheels anyway."
+    end
+  end
+
 end
