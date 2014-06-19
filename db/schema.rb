@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20140623171632) do
     t.string   "webhook_url",         default: "",    null: false
     t.string   "description"
     t.boolean  "google_sync",         default: false, null: false
+    t.boolean  "primary",             default: false, null: false
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
