@@ -21,8 +21,20 @@ class Threadable::Organizations::Create < MethodObject
       )
     end
 
+    create_primary_group!
     populate_starter_data! if populate_starter_data
     return @organization
+  end
+
+  def create_primary_group!
+    organization.groups.create!(
+      name: organization.name,
+      subject_tag: organization.subject_tag,
+      email_address_tag: organization.email_address_username,
+      auto_join: false,
+      primary: true,
+      color: '#7f8c8d',
+    )
   end
 
   def populate_starter_data!
