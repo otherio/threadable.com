@@ -11,7 +11,8 @@ class AddPrimaryToGroups < ActiveRecord::Migration
         subject_tag: organization.subject_tag,
         email_address_tag: organization.email_address_username,
         auto_join: false,
-        primary: true
+        primary: true,
+        color: '#7f8c8d',
       }
 
       group = organization.groups.create(attributes)
