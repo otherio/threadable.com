@@ -28,6 +28,9 @@ describe MembershipMailer do
       expect(text_part   ).to include personal_message
       expect(text_part   ).to include organization_url(organization)
 
+      expect(mail.smtp_envelope_to  ).to eq [recipient.email_address.to_s]
+      expect(mail.smtp_envelope_from).to eq organization.email_address
+
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
     end
@@ -72,6 +75,9 @@ describe MembershipMailer do
       expect(mail.from    ).to eq [organization.email_address.to_s]
       expect(text_part    ).to include %(You've been unsubscribed from the "#{organization.name}" organization on Threadable.)
 
+      expect(mail.smtp_envelope_to  ).to eq ['bethany@ucsd.example.com']
+      expect(mail.smtp_envelope_from).to eq organization.email_address
+
       organization_resubscribe_token = extract_organization_resubscribe_token(text_part)
       expect( OrganizationResubscribeToken.decrypt(organization_resubscribe_token) ).to eq [organization.id, current_user.id]
     end
@@ -90,6 +96,9 @@ describe MembershipMailer do
       expect(text_part    ).to include %(I added you to the +#{group.name} group)
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include conversations_url(organization, group)
+
+      expect(mail.smtp_envelope_to  ).to eq ['tom@ucsd.example.com']
+      expect(mail.smtp_envelope_from).to eq organization.email_address
     end
 
     context 'when the sender domain has a restrictive dmarc policy' do
@@ -97,6 +106,9 @@ describe MembershipMailer do
       it "has different from and reply-to addresses" do
         expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
+
+        expect(mail.smtp_envelope_to  ).to eq ['tom@ucsd.example.com']
+        expect(mail.smtp_envelope_from).to eq organization.email_address
       end
     end
   end
@@ -114,6 +126,9 @@ describe MembershipMailer do
       expect(text_part    ).to include %(I removed you from the +#{group.name} group)
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include group_members_url(organization, group)
+
+      expect(mail.smtp_envelope_to  ).to eq ['tom@ucsd.example.com']
+      expect(mail.smtp_envelope_from).to eq organization.email_address
     end
 
     context 'when the sender domain has a restrictive dmarc policy' do
@@ -121,6 +136,9 @@ describe MembershipMailer do
       it "has different from and reply-to addresses" do
         expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
+
+        expect(mail.smtp_envelope_to  ).to eq ['tom@ucsd.example.com']
+        expect(mail.smtp_envelope_from).to eq organization.email_address
       end
     end
   end
@@ -134,6 +152,9 @@ describe MembershipMailer do
       expect(mail.subject ).to eq "You've been invited to #{organization.name}"
       expect(mail.to      ).to eq ['tom@ucsd.example.com']
       expect(mail.from    ).to eq [sender.email_address.to_s]
+
+      expect(mail.smtp_envelope_to  ).to eq ['tom@ucsd.example.com']
+      expect(mail.smtp_envelope_from).to eq organization.email_address
     end
 
     context 'when the sender domain has a restrictive dmarc policy' do
@@ -141,6 +162,9 @@ describe MembershipMailer do
       it "has different from and reply-to addresses" do
         expect(mail.header['From'].to_s).to eq 'Bethany Pattern via Threadable <placeholder@localhost>'
         expect(mail.header['Reply-to'].to_s).to eq 'Bethany Pattern <bethany@ucsd.example.com>'
+
+        expect(mail.smtp_envelope_to  ).to eq ['tom@ucsd.example.com']
+        expect(mail.smtp_envelope_from).to eq organization.email_address
       end
     end
   end
