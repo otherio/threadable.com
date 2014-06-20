@@ -90,6 +90,7 @@ describe Threadable::Organization::Member do
           "who-wants-to-pick-up-breakfast",
           "who-wants-to-pick-up-dinner",
           "who-wants-to-pick-up-lunch",
+          "inventory-led-supplies",
         ]
       end
     end

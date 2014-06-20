@@ -4,6 +4,8 @@ describe Threadable::Organization do
 
   let(:organization_record){ find_organization_by_slug('raceteam') }
   let(:organization){ described_class.new(threadable, organization_record) }
+  let(:primary_group) { raceteam.groups.primary }
+
   subject{ organization }
 
 

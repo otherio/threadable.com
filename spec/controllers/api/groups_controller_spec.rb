@@ -108,7 +108,7 @@ describe Api::GroupsController do
         it 'raises an ParameterMissing error' do
           xhr :post, :create, format: :json, organization_id: raceteam.slug, group: { color: '#bebebe' }
           expect(response.status).to eq 406
-          expect(response_json).to eq({"error"=>"Name can't be blank, Name is invalid, and Email address tag is invalid"})
+          expect(response_json).to eq({"error"=>"Name can't be blank and Email address tag is invalid"})
         end
       end
 

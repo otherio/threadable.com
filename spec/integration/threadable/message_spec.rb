@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe Threadable::Message do
 
-  let(:message){ threadable.messages.latest }
-  let(:recipient){ message.conversation.organization.members.all.last }
+  let(:conversation) { threadable.conversations.find_by_slug('inventory-led-supplies')}
+  let(:organization) { conversation.organization }
+  let(:message){ conversation.messages.latest }
+  let(:recipient){ organization.members.find_by_email_address('cal.naughton@ucsd.example.com') }
   subject{ message }
 
   it "knows if it has been sent to a given recipient" do
@@ -25,10 +27,6 @@ describe Threadable::Message do
 
     context 'with no message creator' do
       let(:message) { Threadable::Message.new(threadable, Message.where(user_id: nil).first)}
-      # before do
-      #   message.creator = nil
-      #   message.from = 'Joe Bob <joe@bob.com>'
-      # end
 
       it 'uses the name and email of the sender' do
         expect(message.sender_name).to eq '"Andy Lee Issacson" <andy@example.com>'

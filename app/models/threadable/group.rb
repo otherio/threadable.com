@@ -163,6 +163,7 @@ class Threadable::Group < Threadable::Model
     end
 
     group_record.destroy
+    conversations.each(&:ensure_group_membership!)
     conversations.each(&:update_group_caches!)
     self
   end

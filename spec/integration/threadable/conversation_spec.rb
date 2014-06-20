@@ -294,4 +294,18 @@ describe Threadable::Conversation do
       end
     end
   end
+
+  describe '#ensure_group_membership!' do
+    let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
+
+    before do
+      conversation.groups.all.first.group_record.destroy
+    end
+
+    it 'adds the conversation to the primary group if it has no groups' do
+      expect(conversation.groups.all).to eq []
+      conversation.ensure_group_membership!
+      expect(conversation.groups.all.map(&:email_address_tag)).to eq ['raceteam']
+    end
+  end
 end

@@ -55,6 +55,10 @@ class Threadable::Organization < Threadable::Model
     self.groups.primary.formatted_task_email_address
   end
 
+  def no_subdomain_email_address
+    "#{email_address_username}@#{threadable.email_host}"
+  end
+
   def list_id
     "#{name} <#{email_address_username}.#{threadable.email_host}>"
   end
@@ -99,7 +103,7 @@ class Threadable::Organization < Threadable::Model
     @all_email_addresses = groups.all.map do |group|
       [group.email_address, group.task_email_address]
     end
-    @all_email_addresses << [email_address, task_email_address]
+    @all_email_addresses << [email_address, task_email_address, no_subdomain_email_address]
     @all_email_addresses.flatten!
   end
 
