@@ -58,7 +58,7 @@
                 %b
                   = link_to "+#{group.name}", conversations_url(@organization, group)
                 |
-                = mail_to group.formatted_email_address, group.email_address
+                = mail_to group.email_address, group.email_address
                 = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
                 |
                 - if group.members.include? @recipient

@@ -190,6 +190,11 @@ class Threadable::Conversation < Threadable::Model
     self.groups.all.include? self.organization.groups.primary
   end
 
+  def ensure_group_membership!
+    return unless self.groups.all == []
+    self.groups.add self.organization.groups.primary
+  end
+
   # cache methods
 
   def update_muter_ids_cache!

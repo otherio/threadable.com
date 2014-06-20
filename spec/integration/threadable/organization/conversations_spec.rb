@@ -79,24 +79,25 @@ describe Threadable::Organization::Conversations do
       end
     end
 
-    describe 'ungrouped' do
-      it 'returns the ungrouped conversations' do
-        expect(conversations.ungrouped.map(&:slug)).to match_array [
-          "get-carbon-and-fiberglass",
-          "get-epoxy",
-          "get-release-agent",
-          "how-are-we-going-to-build-the-body",
-          "install-mirrors",
-          "layup-body-carbon",
-          "make-wooden-form-for-carbon-layup",
-          "trim-body-panels",
-          "welcome-to-our-threadable-organization",
-          "who-wants-to-pick-up-breakfast",
-          "who-wants-to-pick-up-dinner",
-          "who-wants-to-pick-up-lunch",
-        ]
-      end
-    end
+# NO MAO GROUAP
+    # describe 'ungrouped' do
+    #   it 'returns the ungrouped conversations' do
+    #     expect(conversations.ungrouped.map(&:slug)).to match_array [
+    #       "get-carbon-and-fiberglass",
+    #       "get-epoxy",
+    #       "get-release-agent",
+    #       "how-are-we-going-to-build-the-body",
+    #       "install-mirrors",
+    #       "layup-body-carbon",
+    #       "make-wooden-form-for-carbon-layup",
+    #       "trim-body-panels",
+    #       "welcome-to-our-threadable-organization",
+    #       "who-wants-to-pick-up-breakfast",
+    #       "who-wants-to-pick-up-dinner",
+    #       "who-wants-to-pick-up-lunch",
+    #     ]
+    #   end
+    # end
 
   end
 

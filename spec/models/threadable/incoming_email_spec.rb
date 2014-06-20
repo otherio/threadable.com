@@ -484,6 +484,7 @@ describe Threadable::IncomingEmail do
 
     before do
       incoming_email.stub groups: groups, email_address_tags: email_address_tags
+      incoming_email.organization.stub_chain(:groups, :primary, :email_address_tag).and_return('primary_tag')
     end
 
     subject{ incoming_email.groups_valid? }

@@ -6,31 +6,32 @@ describe Threadable::Conversation::Groups do
   let(:conversation){ organization.conversations.find_by_slug('layup-body-carbon') }
   let(:all_groups) { organization.groups.all }
   let(:groups){ conversation.groups }
+  let(:primary_group){ organization.groups.primary }
 
   subject{ groups }
 
-  its(:all){ should be_empty }
+  its(:all){ should eq [primary_group] }
 
   describe '#add' do
 
     it 'should add the given groups to the conversation' do
-      group1, group2 = all_groups.first(2)
+      group1, group2 = all_groups.last(2)
 
-      expect(conversation.groups.all).to eq []
-      expect(conversation.groups.count).to eq 0
-      expect(conversation.group_ids).to eq []
+      expect(conversation.groups.all).to eq [primary_group]
+      expect(conversation.groups.count).to eq 1
+      expect(conversation.group_ids).to eq [primary_group.id]
 
       conversation.groups.add(group1)
 
-      expect(conversation.groups.all).to match_array [group1]
-      expect(conversation.groups.count).to eq 1
-      expect(conversation.group_ids).to match_array [group1.id]
+      expect(conversation.groups.all).to match_array [primary_group, group1]
+      expect(conversation.groups.count).to eq 2
+      expect(conversation.group_ids).to match_array [primary_group.id, group1.id]
 
       conversation.groups.add(group2)
 
-      expect(conversation.groups.all).to match_array [group1, group2]
-      expect(conversation.groups.count).to eq 2
-      expect(conversation.group_ids).to match_array [group1.id, group2.id]
+      expect(conversation.groups.all).to match_array [primary_group, group1, group2]
+      expect(conversation.groups.count).to eq 3
+      expect(conversation.group_ids).to match_array [primary_group.id, group1.id, group2.id]
 
       events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
       expect(events).to eq [
@@ -72,21 +73,22 @@ describe Threadable::Conversation::Groups do
   describe '#add_unless_removed' do
 
     it 'should add the given groups to the conversation' do
-      groups = all_groups.first(2)
-      expect(conversation.groups.all).to eq []
-      expect(conversation.groups.count).to eq 0
-      expect(conversation.group_ids).to eq []
+      added_groups = all_groups.last(2)
+      expected_groups = added_groups + [primary_group]
+      expect(conversation.groups.all).to eq [primary_group]
+      expect(conversation.groups.count).to eq 1
+      expect(conversation.group_ids).to eq [primary_group.id]
 
-      conversation.groups.add_unless_removed(groups)
+      conversation.groups.add_unless_removed(added_groups)
 
-      expect(conversation.groups.all).to match_array groups
-      expect(conversation.groups.count).to eq 2
-      expect(conversation.group_ids).to match_array groups.map(&:id)
+      expect(conversation.groups.all).to match_array expected_groups
+      expect(conversation.groups.count).to eq 3
+      expect(conversation.group_ids).to match_array expected_groups.map(&:id)
 
       events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
       expect(events).to eq [
-        [:conversation_added_group, groups.first.id],
-        [:conversation_added_group, groups.last.id],
+        [:conversation_added_group, added_groups.first.id],
+        [:conversation_added_group, added_groups.last.id],
       ]
     end
 

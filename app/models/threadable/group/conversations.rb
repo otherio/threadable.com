@@ -9,7 +9,7 @@ class Threadable::Group::Conversations < Threadable::Organization::Conversations
   attr_reader :group
 
   def create attributes={}
-    super attributes.merge(group: group)
+    super attributes.merge(groups: [group])
   end
 
   def inspect

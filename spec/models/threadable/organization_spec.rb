@@ -9,6 +9,7 @@ describe Threadable::Organization do
       email_address_username: 'C02-cleaners',
     )
   end
+
   let(:organization){ described_class.new(threadable, organization_record) }
   subject{ organization }
 
@@ -36,11 +37,27 @@ describe Threadable::Organization do
     its(:model_name){ should == ::Organization.model_name }
   end
 
-  its(:email_address                ){ should eq "C02-cleaners@localhost" }
-  its(:task_email_address           ){ should eq "C02-cleaners+task@localhost" }
-  its(:formatted_email_address      ){ should eq "C02 Cleaners <C02-cleaners@localhost>" }
-  its(:formatted_task_email_address ){ should eq "C02 Cleaners Tasks <C02-cleaners+task@localhost>" }
-  its(:list_id                      ){ should eq "C02 Cleaners <C02-cleaners.localhost>" }
+  describe 'email addresses' do
+    let(:groups) { double(:groups, primary: primary_group) }
+    let(:primary_group) do
+      double(:primary_group,
+        email_address:                "C02-cleaners@localhost",
+        task_email_address:           "C02-cleaners+task@localhost",
+        formatted_email_address:      "C02 Cleaners <C02-cleaners@localhost>",
+        formatted_task_email_address: "C02 Cleaners Tasks <C02-cleaners+task@localhost>",
+      )
+    end
+
+    before do
+      organization.stub(:groups).and_return(groups)
+    end
+
+    its(:email_address                ){ should eq "C02-cleaners@localhost" }
+    its(:task_email_address           ){ should eq "C02-cleaners+task@localhost" }
+    its(:formatted_email_address      ){ should eq "C02 Cleaners <C02-cleaners@localhost>" }
+    its(:formatted_task_email_address ){ should eq "C02 Cleaners Tasks <C02-cleaners+task@localhost>" }
+    its(:list_id                      ){ should eq "C02 Cleaners <C02-cleaners.localhost>" }
+  end
 
   its(:members)        { should be_a Threadable::Organization::Members        }
   its(:conversations)  { should be_a Threadable::Organization::Conversations  }

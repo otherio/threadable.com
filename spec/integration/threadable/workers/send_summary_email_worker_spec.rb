@@ -19,7 +19,7 @@ describe SendSummaryEmailWorker do
       expect(sent_emails.length).to eq 2
       expect(sent_emails.map(&:subject)).to match_array [
         "[RaceTeam] Summary for Sun, Feb 2: 4 new messages in 3 conversations",
-        "[RaceTeam] Summary for Sun, Feb 2: 12 new messages in 5 conversations"
+        "[RaceTeam] Summary for Sun, Feb 2: 13 new messages in 6 conversations"
       ]
     end
   end

@@ -65,7 +65,7 @@ describe 'deleting groups' do
       @incoming_email = threadable.incoming_emails.latest
       expect(@incoming_email).to be_delivered
       expect(@incoming_email.message.parent_message).to eq @message
-      expect(@incoming_email.conversation.groups.all).to be_empty
+      expect(@incoming_email.conversation.groups.all.first.slug).to eq "raceteam"
     end
   end
 
@@ -76,11 +76,11 @@ describe 'deleting groups' do
   end
 
   def create_message!
-    @conversation = organization.conversations.create!(
+    @conversation = @group.conversations.create!(
       creator: current_user,
       subject: 'I made my first sale!',
     )
-    @conversation.groups.add(@group)
+    # @conversation.groups.add(@group)
     @message = @conversation.messages.create!(
       creator: current_user,
       subject: 'I made my first sale!',

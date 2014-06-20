@@ -54,14 +54,14 @@ describe Threadable::Organization::Groups do
 
   describe "#auto_joinable" do
     it 'returns the groups where auto_join is true' do
-      expect(groups.auto_joinable.map(&:email_address_tag)).to eq ['graphic-design']
+      expect(groups.auto_joinable.map(&:email_address_tag)).to eq ['raceteam', 'graphic-design']
     end
   end
 
   describe "#all_for_user" do
     let(:user) { organization.members.find_by_email_address('bethany@ucsd.example.com') }
     it 'returns the groups that a particular user is in' do
-      expect(groups.all_for_user(user).map(&:email_address_tag)).to match_array ['electronics', 'graphic-design']
+      expect(groups.all_for_user(user).map(&:email_address_tag)).to match_array ['raceteam', 'electronics', 'graphic-design']
     end
   end
 
