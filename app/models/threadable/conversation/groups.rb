@@ -54,9 +54,9 @@ class Threadable::Conversation::Groups < Threadable::Groups
 
   def remove *groups
     group_ids = groups.flatten.compact.map(&:id)
+    return if group_ids.length == 1 && groups.first == conversation.organization.groups.primary
     Threadable.transaction do
       conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: false)
-      conversation.update_group_caches!
 
       group_ids.each do |group_id|
         conversation.events.create!(:conversation_removed_group,
@@ -64,6 +64,9 @@ class Threadable::Conversation::Groups < Threadable::Groups
           group_id: group_id,
         )
       end
+
+      conversation.ensure_group_membership!
+      conversation.update_group_caches!
     end
     self
   end
