@@ -18,7 +18,9 @@ class MembershipMailer < Threadable::Mailer
       subject: @subject,
     }.merge(dmarc_aware_headers(@adder.formatted_email_address))
 
-    mail(mail_params)
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
   end
 
   def invitation organization, recipient
@@ -37,7 +39,9 @@ class MembershipMailer < Threadable::Mailer
       subject: @subject,
     }.merge(dmarc_aware_headers(@adder.formatted_email_address))
 
-    mail(mail_params)
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
   end
 
   def unsubscribe_notice organization, recipient
@@ -61,7 +65,9 @@ class MembershipMailer < Threadable::Mailer
       subject: "I added you to +#{group.name} on #{organization.name}",
     }.merge(dmarc_aware_headers(@sender.formatted_email_address))
 
-    mail(mail_params)
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
   end
 
   def removed_from_group_notice organization, group, sender, recipient
@@ -72,7 +78,9 @@ class MembershipMailer < Threadable::Mailer
       subject: "I removed you from +#{group.name} on #{organization.name}",
     }.merge(dmarc_aware_headers(@sender.formatted_email_address))
 
-    mail(mail_params)
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
   end
 
   private
