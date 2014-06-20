@@ -54,7 +54,7 @@ describe Threadable::Organization::Groups do
 
   describe "#auto_joinable" do
     it 'returns the groups where auto_join is true' do
-      expect(groups.auto_joinable.map(&:email_address_tag)).to eq ['raceteam', 'graphic-design']
+      expect(groups.auto_joinable.map(&:email_address_tag)).to match_array ['raceteam', 'graphic-design']
     end
   end
 
