@@ -53,8 +53,13 @@ class Threadable::Conversation::Groups < Threadable::Groups
   end
 
   def remove *groups
-    group_ids = groups.flatten.compact.map(&:id)
-    return if group_ids.length == 1 && groups.first == conversation.organization.groups.primary
+    groups = groups.flatten.compact
+    group_ids = groups.map(&:id)
+    return if
+      group_ids.length == 1 &&
+      conversation.groups.count == 1 &&
+      groups.first == conversation.organization.groups.primary
+
     Threadable.transaction do
       conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: false)
 
