@@ -31,7 +31,7 @@ class Threadable::Organizations::Create < MethodObject
       name: organization.name,
       subject_tag: organization.subject_tag,
       email_address_tag: organization.email_address_username,
-      auto_join: false,
+      auto_join: true,
       primary: true,
       color: '#7f8c8d',
     )

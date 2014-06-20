@@ -5,6 +5,12 @@ describe Threadable::Conversation do
   let(:conversation){ threadable.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
   subject{ conversation }
 
+  let(:primary_group_conversation  ) { 'welcome-to-our-threadable-organization' }
+  let(:single_group_conversation   ) { 'parts-for-the-motor-controller' }
+  let(:multiple_group_conversation ) { 'drive-trains-are-expensive' }
+  let(:primary_group_task          ) { 'layup-body-carbon' }
+  let(:single_group_task           ) { 'get-a-new-soldering-iron' }
+  let(:multiple_group_task         ) { 'get-some-4-gauge-wire' }
 
   describe '#mute!' do
     context 'when signed in' do
@@ -64,19 +70,12 @@ describe Threadable::Conversation do
   end
 
   describe 'email addresses' do
-    let(:no_group_conversation       ) { 'welcome-to-our-threadable-organization' }
-    let(:single_group_conversation   ) { 'parts-for-the-motor-controller' }
-    let(:multiple_group_conversation ) { 'drive-trains-are-expensive' }
-    let(:no_group_task               ) { 'layup-body-carbon' }
-    let(:single_group_task           ) { 'get-a-new-soldering-iron' }
-    let(:multiple_group_task         ) { 'get-some-4-gauge-wire' }
-
     describe '#formatted_email_addresses' do
       context 'when the conversation is not a task' do
-        context 'and there are no groups' do
-          let(:conversation) { threadable.conversations.find_by_slug!(no_group_conversation) }
+        context 'and it is in the primary group' do
+          let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
           it 'returns the organization email address' do
-            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing <raceteam@localhost>']
+            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing <raceteam+raceteam@localhost>']
           end
         end
 
@@ -96,10 +95,10 @@ describe Threadable::Conversation do
       end
 
       context 'when the conversation is a task' do
-        context 'and there are no groups' do
-          let(:conversation) { threadable.conversations.find_by_slug!(no_group_task) }
-          it 'returns the organization task email address' do
-            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing Tasks <raceteam+task@localhost>']
+        context 'and it is in the primary group' do
+          let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
+          it 'returns the primary group task email address' do
+            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>']
           end
         end
 
@@ -121,27 +120,27 @@ describe Threadable::Conversation do
 
     describe '#email_addresses' do
       it 'returns just the email address component of the formatted address' do
-        expect(conversation.email_addresses).to eq ['raceteam@localhost']
+        expect(conversation.email_addresses).to eq ['raceteam+raceteam@localhost']
       end
     end
 
     describe '#canonical_email_address' do
       it 'returns just the email address component of the canonical formatted address' do
-        expect(conversation.canonical_email_address).to eq 'raceteam@localhost'
+        expect(conversation.canonical_email_address).to eq 'raceteam+raceteam@localhost'
       end
     end
 
     describe '#canonical_formatted_email_address' do
-      context 'and there are no groups' do
-        let(:conversation) { threadable.conversations.find_by_slug!(no_group_conversation) }
+      context 'and it is in the primary group' do
+        let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
         it 'returns the organization formatted email address' do
-          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam@localhost>'
+          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam+raceteam@localhost>'
         end
 
         context 'and it is a task' do
-          let(:conversation) { threadable.conversations.find_by_slug!(no_group_task) }
+          let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
           it 'returns the organization formatted task email address' do
-            expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing Tasks <raceteam+task@localhost>'
+            expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>'
           end
         end
       end
@@ -156,22 +155,22 @@ describe Threadable::Conversation do
       context 'and there are many groups' do
         let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
         it 'returns the organization formatted email address' do
-          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam@localhost>'
+          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam+raceteam@localhost>'
         end
       end
     end
 
     describe '#list_id' do
-      context 'and there are no groups' do
-        let(:conversation) { threadable.conversations.find_by_slug!(no_group_conversation) }
-        it 'returns the organization list id' do
-          expect(conversation.list_id).to eq 'UCSD Electric Racing <raceteam.localhost>'
+      context 'and it is in the primary group' do
+        let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
+        it 'returns the primary group list id' do
+          expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
         end
 
         context 'and it is a task' do
-          let(:conversation) { threadable.conversations.find_by_slug!(no_group_task) }
-          it 'returns the organization list id' do
-            expect(conversation.list_id).to eq 'UCSD Electric Racing <raceteam.localhost>'
+          let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
+          it 'returns the primary group list id' do
+            expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
           end
         end
       end
@@ -185,23 +184,23 @@ describe Threadable::Conversation do
 
       context 'and there are many groups' do
         let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
-        it 'returns the organization list id' do
-          expect(conversation.list_id).to eq 'UCSD Electric Racing <raceteam.localhost>'
+        it 'returns the primary group list id' do
+          expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
         end
       end
     end
 
     describe '#list_post_email_address' do
-      context 'and there are no groups' do
-        let(:conversation) { threadable.conversations.find_by_slug!(no_group_conversation) }
-        it 'returns the organization list post address' do
-          expect(conversation.list_post_email_address).to eq 'raceteam@localhost'
+      context 'and it is in the primary group' do
+        let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
+        it 'returns the primary group list post address' do
+          expect(conversation.list_post_email_address).to eq 'raceteam+raceteam@localhost'
         end
 
         context 'and it is a task' do
-          let(:conversation) { threadable.conversations.find_by_slug!(no_group_task) }
-          it 'returns the organization list post address' do
-            expect(conversation.list_post_email_address).to eq 'raceteam@localhost'
+          let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
+          it 'returns the primary group list post address' do
+            expect(conversation.list_post_email_address).to eq 'raceteam+raceteam@localhost'
           end
         end
       end
@@ -215,22 +214,22 @@ describe Threadable::Conversation do
 
       context 'and there are many groups' do
         let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
-        it 'returns the organization list post address' do
-          expect(conversation.list_post_email_address).to eq 'raceteam@localhost'
+        it 'returns the primary group list post address' do
+          expect(conversation.list_post_email_address).to eq 'raceteam+raceteam@localhost'
         end
       end
     end
 
     describe '#subject_tag' do
-      context 'and there are no groups' do
-        let(:conversation) { threadable.conversations.find_by_slug!(no_group_conversation) }
+      context 'and it is in the primary group' do
+        let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
         it 'returns the organization subject tag' do
           expect(conversation.subject_tag).to eq '[RaceTeam]'
         end
 
         context 'and it is a task' do
-          let(:conversation) { threadable.conversations.find_by_slug!(no_group_task) }
-          it 'returns the organization task subject tag' do
+          let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
+          it 'returns the primary group task subject tag' do
             expect(conversation.subject_tag).to eq "[✔\uFE0E][RaceTeam]"
           end
         end
@@ -258,7 +257,7 @@ describe Threadable::Conversation do
 
         context 'and it is a task' do
           let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_task) }
-          it 'returns the organization task subject tag' do
+          it 'returns the primary group task subject tag' do
             expect(conversation.subject_tag).to eq "[✔\uFE0E][RaceTeam]"
           end
         end
@@ -274,6 +273,24 @@ describe Threadable::Conversation do
           'raceteam+electronics@localhost',
           'raceteam+fundraising@localhost',
         ]
+      end
+    end
+  end
+
+  describe '#in_primary_group?' do
+    context 'when in the primary group' do
+      let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
+
+      it 'is true' do
+        expect(conversation.in_primary_group?).to be_true
+      end
+    end
+
+    context 'when in some other group' do
+      let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
+
+      it 'is false' do
+        expect(conversation.in_primary_group?).to be_false
       end
     end
   end

@@ -27,7 +27,6 @@ describe Threadable::Organization::Groups do
   end
 
   describe '#find_by_email_address_tags!' do
-
     context 'when given valid group email address tags' do
       it 'returns an identically ordered array with the matching groups' do
         email_address_tags = ['electronics', 'fundraising']
@@ -96,6 +95,12 @@ describe Threadable::Organization::Groups do
         end
       end
 
+    end
+  end
+
+  describe '#primary' do
+    it 'returns the primary group' do
+      expect(groups.primary.slug).to eq 'raceteam'
     end
   end
 

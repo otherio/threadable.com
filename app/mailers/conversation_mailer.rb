@@ -58,7 +58,7 @@ class ConversationMailer < Threadable::Mailer
         class: 'many',
         color: '#95a5a6',
       }
-    elsif has_groups
+    else
       group = @conversation.groups.all.first
       @new_task_url = "mailto:#{URI::encode(group.task_email_address)}"
       @new_conversation_url = "mailto:#{URI::encode(group.email_address)}"
@@ -66,14 +66,6 @@ class ConversationMailer < Threadable::Mailer
         name: "+#{truncate_with_ellipsis(group.name)}",
         class: 'grouped',
         color: group.color,
-      }
-    else
-      @new_task_url = "mailto:#{URI::encode(@organization.task_email_address)}"
-      @new_conversation_url = "mailto:#{URI::encode(@organization.email_address)}"
-      @group_indicator_options = {
-        name: "Ungrouped",
-        class: 'ungrouped',
-        color: "#ecf0f1",
       }
     end
 
@@ -190,15 +182,19 @@ class ConversationMailer < Threadable::Mailer
 
   def filter_organization_email_addresses email_addresses
     organization_email_address = Mail::Address.new(@organization_email_address)
-    addresses_to_insert = has_groups ? @missing_addresses : organization_email_address
 
     email_addresses.map do |email_address|
       if email_address.address == organization_email_address.address
-        unless @missing_addresses_inserted
-          @missing_addresses_inserted = true
-          addresses_to_insert
-        else
+        if @missing_addresses_inserted
           nil
+        else
+          @missing_addresses_inserted = true
+
+          addresses_to_insert = @missing_addresses
+          if @conversation.in_primary_group? && ! addresses_to_insert.map(&:address).include?(organization_email_address.address)
+            addresses_to_insert += [organization_email_address]
+          end
+          addresses_to_insert
         end
       else
         email_address
@@ -247,10 +243,6 @@ class ConversationMailer < Threadable::Mailer
       # so, this works around shortcomings in Mail's AddressListParser
       Mail::AddressList.new(email_addresses.to_ascii.gsub(/:/, '')).addresses
     end
-  end
-
-  def has_groups
-    @has_groups ||= @conversation.groups.count > 0
   end
 
   def has_many_groups

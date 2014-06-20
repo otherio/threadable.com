@@ -151,11 +151,12 @@ class Threadable::Conversation < Threadable::Model
   def list_id
     if groups.count == 1
       group = groups.all.first
-      email_address = Mail::Address.new(group.formatted_email_address)
-      name = email_address.display_name || "#{organization.name}: #{group.name}"
-      return "\"#{name}\" <#{email_address.address.gsub(/\@/, '.')}>"
+    else
+      group = organization.groups.primary
     end
-    organization.list_id
+    email_address = Mail::Address.new(group.formatted_email_address)
+    name = email_address.display_name || "#{organization.name}: #{group.name}"
+    return "\"#{name}\" <#{email_address.address.gsub(/\@/, '.')}>"
   end
 
   def canonical_formatted_email_address
@@ -185,6 +186,9 @@ class Threadable::Conversation < Threadable::Model
     task? ? "[✔\uFE0E]#{subject_tag}" : subject_tag
   end
 
+  def in_primary_group?
+    self.groups.all.include? self.organization.groups.primary
+  end
 
   # cache methods
 

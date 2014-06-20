@@ -137,7 +137,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def groups_valid?
-    groups.map(&:email_address_tag).to_set.subset? email_address_tags.to_set
+    groups.map(&:email_address_tag).to_set.subset? email_address_tags.push(organization.groups.primary.email_address_tag).to_set
   end
 
   def body_has_content?
@@ -256,6 +256,7 @@ class Threadable::IncomingEmail < Threadable::Model
   def find_groups!
     return self if groups.present? || organization.nil?
     self.groups = organization.groups.find_by_email_address_tags(email_address_tags)
+    self.groups = [organization.groups.primary] unless self.groups.present?
     return self
   end
 

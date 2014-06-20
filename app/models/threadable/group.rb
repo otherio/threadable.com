@@ -190,7 +190,11 @@ class Threadable::Group < Threadable::Model
     display_name = if alias_email_address.present?
       alias_email_address_object.display_name
     else
-      "#{organization.name}: #{name}"
+      if organization.name == name
+        name
+      else
+        "#{organization.name}: #{name}"
+      end
     end
     display_name += " Tasks" if task && display_name
     display_name

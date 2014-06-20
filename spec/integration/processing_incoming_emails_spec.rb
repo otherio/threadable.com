@@ -323,8 +323,8 @@ describe "processing incoming emails" do
   let(:envelope_from){ '<yan@ucsd.example.com>' }
   let(:sender)       { 'yan@ucsd.example.com' }
 
-  let(:recipient)    { 'raceteam@localhost' }
-  let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
+  let(:recipient)    { 'raceteam+raceteam@localhost' }
+  let(:to)           { 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
   let(:cc)           { '' }
 
   let(:content_type) { 'multipart/alternative; boundary="089e0158ba9ec5cbb704eb3fc74e"' }
@@ -379,17 +379,17 @@ describe "processing incoming emails" do
   let(:expect_conversation_to_be_a_task)       { false }
   let(:expect_task_to_be_done)                 { false }
   let(:expected_email_recipients)              { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com", "lilith@sfhealth.example.com"] }
-  let(:expected_sent_email_to)                 { ['raceteam@localhost'] }
+  let(:expected_sent_email_to)                 { ['raceteam+raceteam@localhost'] }
   let(:expected_sent_email_cc)                 { '' }
   let(:expected_sent_email_subject)            { "#{expected_conversation.subject_tag} OMG guys I love threadable!" }
-  let(:expected_sent_email_smtp_envelope_from) { 'raceteam@localhost' }
-  let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@localhost>' }
+  let(:expected_sent_email_smtp_envelope_from) { 'raceteam+raceteam@localhost' }
+  let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
   let(:expected_sent_email_list_id)            { expected_conversation.list_id }
   let(:expected_sent_email_list_archive)       { "<#{conversations_url(expected_organization, 'my')}>" }
   let(:expected_sent_email_list_post)          { "<mailto:#{expected_conversation.list_post_email_address}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
   let(:expected_sent_email_body_html)          { body_html }
   let(:expected_sent_email_body_plain)         { body_plain }
-  let(:expected_groups)                        { [] }
+  let(:expected_groups)                        { ['UCSD Electric Racing'] }
   let(:expect_message_held_notices_sent)        { false }
 
 
@@ -693,7 +693,7 @@ describe "processing incoming emails" do
 
           let(:expect_conversation_to_be_a_task) { true }
           let(:expect_task_to_be_done)           { false }
-          let(:expected_sent_email_to)           { ['raceteam+task@localhost'] }
+          let(:expected_sent_email_to)           { ['raceteam+raceteam+task@localhost'] }
           let(:expected_sent_email_subject)      { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
           let(:expected_email_recipients)        { ["yan@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
           let(:expected_conversation)            { expected_organization.conversations.find_by_slug('layup-body-carbon') }
@@ -743,8 +743,8 @@ describe "processing incoming emails" do
       let(:recipient) { 'raceteam+pandapoop@localhost' }
       let(:to)        { 'raceteam+pandapoop@localhost' }
 
-      let(:expected_groups){ [] }
-      let(:expected_sent_email_to){ ["raceteam@localhost"] }
+      let(:expected_groups){ ['UCSD Electric Racing'] }
+      let(:expected_sent_email_to){ ["raceteam+raceteam@localhost"] }
       it 'delivers the email ungrouped' do
         validate! :delivered
       end
@@ -849,8 +849,8 @@ describe "processing incoming emails" do
         context do
           let(:expected_conversation)        { expected_organization.conversations.find_by_slug('parts-for-the-motor-controller') }
           let(:expected_groups)              { ['Electronics', 'Fundraising'] }
-          let(:expected_sent_email_list_id)  { "UCSD Electric Racing <raceteam.localhost>" }
-          let(:expected_sent_email_list_post){ "<mailto:#{expected_conversation.list_post_email_address.sub(/\+(electronics|fundraising)/,'')}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
+          let(:expected_sent_email_list_id)  { '"UCSD Electric Racing" <raceteam+raceteam.localhost>' }
+          let(:expected_sent_email_list_post){ "<mailto:raceteam+raceteam@localhost>, <#{compose_conversation_url(expected_organization, 'my')}>" }
           let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
           it 'adds the new groups to the conversation' do
             validate! :delivered
@@ -986,7 +986,7 @@ describe "processing incoming emails" do
 
     context "but the message was cc'd to the regular organization address" do
       let(:to){ 'someone else <someone.else@example.com>' }
-      let(:cc){ 'UCSD Electric Racing <raceteam@localhost>' }
+      let(:cc){ 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
 
       let(:expected_sent_email_to){ ['someone.else@example.com'] }
       let(:expected_sent_email_cc){ expected_organization.formatted_task_email_address }
@@ -1104,7 +1104,7 @@ describe "processing incoming emails" do
     let(:to) { "Alice Neilson <alice@ucsd.example.com>" }
     let(:cc) { '' }
 
-    let(:expected_sent_email_to){ ['raceteam@localhost'] }
+    let(:expected_sent_email_to){ ['raceteam+raceteam@localhost'] }
     let(:expected_sent_email_cc){ '' }
 
     it 'adds the organization to the to' do
@@ -1114,9 +1114,9 @@ describe "processing incoming emails" do
 
   context 'when there are only members in the to header, and the organization is in the CC' do
     let(:to) { "Alice Neilson <alice@ucsd.example.com>" }
-    let(:cc) { 'UCSD Electric Racing <raceteam@localhost>' }
+    let(:cc) { 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
 
-    let(:expected_sent_email_to){ ['raceteam@localhost'] }
+    let(:expected_sent_email_to){ ['raceteam+raceteam@localhost'] }
     let(:expected_sent_email_cc){ '' }
 
     it 'moves the organization from the cc header to the to header' do
@@ -1126,10 +1126,10 @@ describe "processing incoming emails" do
 
   context 'when there are non-members in the to header, and the organization is in the CC' do
     let(:to) { "Frank Rizzo <frank.rizzo@jerkyboys.co>" }
-    let(:cc) { 'UCSD Electric Racing <raceteam@localhost>' }
+    let(:cc) { 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
 
     let(:expected_sent_email_to){ ['frank.rizzo@jerkyboys.co'] }
-    let(:expected_sent_email_cc){ 'UCSD Electric Racing <raceteam@localhost>' }
+    let(:expected_sent_email_cc){ 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
 
     it 'does not move the organization from the cc header to the to header' do
       validate! :delivered
@@ -1203,7 +1203,7 @@ describe "processing incoming emails" do
 
     context 'when there are only members in the to header, and the group and organization are in the CC' do
       let(:to) { "Tom Canver <tom@ucsd.example.com>" }
-      let(:cc) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>, UCSD Electric Racing <raceteam@localhost>' }
+      let(:cc) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>, UCSD Electric Racing <raceteam+raceteam@localhost>' }
 
       let(:expected_sent_email_to){ ['raceteam+electronics@localhost'] }
       let(:expected_sent_email_cc){ '' }
@@ -1214,7 +1214,7 @@ describe "processing incoming emails" do
     end
 
     context 'when the organization is in the to header, and the group is not present in the headers' do
-      let(:to) { 'UCSD Electric Racing <raceteam@localhost>' }
+      let(:to) { 'UCSD Electric Racing <raceteam+raceteam@localhost>' }
       let(:cc) { '' }
 
       let(:expected_sent_email_to){ ['raceteam+electronics@localhost'] }
@@ -1277,13 +1277,13 @@ describe "processing incoming emails" do
   end
 
   context 'when the message is a reply to a non-task conversation but the message was sent to the organization task email addresss' do
-    let(:recipient)  { 'raceteam+task@localhost' }
-    let(:to)         { 'UCSD Electric Racing Tasks <raceteam+task@localhost>' }
+    let(:recipient)  { 'raceteam+raceteam+task@localhost' }
+    let(:to)         { 'UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>' }
     let(:in_reply_to){ expected_parent_message.message_id_header }
     let(:references) { '' }
 
     let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
-    let(:expected_sent_email_to){ ['raceteam@localhost'] }
+    let(:expected_sent_email_to){ ['raceteam+raceteam@localhost'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
     let(:expected_parent_message){ expected_conversation.messages.latest }
     let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
@@ -1294,13 +1294,13 @@ describe "processing incoming emails" do
   end
 
   context 'when the message is a reply to a task but the message was sent to the organization non-task email addresss' do
-    let(:recipient)  { 'raceteam@localhost' }
-    let(:to)         { 'UCSD Electric Racing Tasks <raceteam@localhost>' }
+    let(:recipient)  { 'raceteam+raceteam@localhost' }
+    let(:to)         { 'UCSD Electric Racing Tasks <raceteam+raceteam@localhost>' }
     let(:in_reply_to){ expected_parent_message.message_id_header }
     let(:references) { '' }
 
     let(:expected_sent_email_subject) { "Re: [✔︎][RaceTeam] OMG guys I love threadable!" }
-    let(:expected_sent_email_to){ ['raceteam+task@localhost'] }
+    let(:expected_sent_email_to){ ['raceteam+raceteam+task@localhost'] }
     let(:expected_conversation)  { expected_organization.conversations.find_by_slug('layup-body-carbon') }
     let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "nadya@ucsd.example.com", "bob@ucsd.example.com", "lilith@sfhealth.example.com"] }
     let(:expected_parent_message){ expected_conversation.messages.latest }
@@ -1326,7 +1326,7 @@ describe "processing incoming emails" do
   context 'when the recipient is at covered.io' do
     let(:recipient) { 'raceteam@covered.io' }
     let(:to)        { 'UCSD Electric Racing <raceteam@covered.io>, Mr. Race Team <raceteam@example.com>' }
-    let(:expected_sent_email_to)   { ["raceteam@localhost", "raceteam@example.com"] }
+    let(:expected_sent_email_to)   { ["raceteam+raceteam@localhost", "raceteam@example.com"] }
     it 'replaces covered.io with threadable.com' do
       validate! :delivered
     end

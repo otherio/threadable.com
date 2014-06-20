@@ -66,6 +66,10 @@ class Threadable::Organization::Groups < Threadable::Groups
     group
   end
 
+  def primary
+    group_for scope.where(primary: true).first
+  end
+
   def inspect
     %(#<#{self.class} organization_id: #{organization.id.inspect}>)
   end

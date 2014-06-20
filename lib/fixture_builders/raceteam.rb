@@ -33,7 +33,6 @@ FixtureBuilder.build do
     remove_member 'darth@ucsd.example.com' # he's hard to work with.
 
     set_avatar! 'ricky.bobby.jpg', for: 'ricky.bobby@ucsd.example.com'
-    set_ungrouped_mail_delivery :in_summary, for: 'ricky.bobby@ucsd.example.com'
 
     # Add member from sfhealth, to have a member in two orgs
     add_member 'Lilith Sternin',  'lilith@sfhealth.example.com'
@@ -43,6 +42,11 @@ FixtureBuilder.build do
       subject: 'Welcome to our Threadable organization!',
       text: 'Hey all! I think we should try this way to organize our conversation and work for the car. Thanks for joining up!',
     )
+  end
+
+  web_enable! 'ricky.bobby@ucsd.example.com'
+  as 'ricky.bobby@ucsd.example.com' do
+    set_group_to_summary 'raceteam'
   end
 
   web_enable! 'tom@ucsd.example.com'
@@ -79,7 +83,7 @@ FixtureBuilder.build do
   web_enable! 'cal.naughton@ucsd.example.com'
   as 'cal.naughton@ucsd.example.com' do
     set_avatar! 'cal.naughton.jpg'
-    set_ungrouped_mail_delivery :no_mail
+    remove_member_from_group 'raceteam', 'cal.naughton@ucsd.example.com'
     dismiss_welcome_modal!
   end
 
@@ -99,6 +103,8 @@ FixtureBuilder.build do
     @press_group = create_group name: 'Press', color: '#e67e22', description: 'How to talk to the news media', auto_join: false, alias_email_address: 'Press Enquiries <press@ucsd.example.com>'
     add_member_to_group 'press', 'tom@ucsd.example.com'
     add_member_to_group 'press', 'nadya@ucsd.example.com'
+
+    @primary_group = organization.groups.find_by_slug!('raceteam')
   end
 
   as 'bob@ucsd.example.com' do
@@ -123,7 +129,7 @@ FixtureBuilder.build do
       )
     )
 
-    create_conversation(
+    @parts_for_the_motor_controller = create_conversation(
       subject: 'Parts for the motor controller',
       text:    %(Where should we get the SCRs for the motor controller? My usual supplier is out of them.),
       groups:  [@electronics_group],
@@ -189,6 +195,10 @@ FixtureBuilder.build do
     add_conversation_to_group       @get_a_new_soldering_iron, @electronics_group
     add_conversation_to_group       @get_some_4_gauge_wire, @electronics_group
     add_conversation_to_group       @get_some_4_gauge_wire, @fundraising_group
+
+    remove_conversation_from_group  @get_a_new_soldering_iron, @primary_group
+    remove_conversation_from_group  @get_some_4_gauge_wire, @primary_group
+    remove_conversation_from_group  @get_some_4_gauge_wire, @primary_group
   end
 
   as 'yan@ucsd.example.com' do

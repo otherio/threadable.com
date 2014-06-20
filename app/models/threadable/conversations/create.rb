@@ -38,8 +38,11 @@ class Threadable::Conversations::Create < MethodObject
   end
 
   def add_groups!
-    return unless @options.groups.present?
-    @conversation_record.groups = @options.groups.map(&:group_record)
+    if @options.groups.present?
+      @conversation_record.groups = @options.groups.map(&:group_record)
+    else
+      @conversation_record.groups = [@organization.groups.primary.group_record]
+    end
     @conversation.update_group_caches!
   end
 
