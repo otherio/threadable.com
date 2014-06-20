@@ -5,7 +5,7 @@ AlgoliaSearch.configuration = {
 
 
 module AlgoliaSearch::ClassMethods
-  def algolia_index_name
+  def algolia_index_name(options = nil)
     "#{Rails.env}-#{table_name}"
   end
 end
