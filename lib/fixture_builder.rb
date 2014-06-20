@@ -83,16 +83,16 @@ class FixtureBuilder
     group.members.add(organization.members.find_by_email_address(email_address))
   end
 
+  def remove_member_from_group group_slug, email_address
+    require_current_user_be_web_enabled!
+    group = organization.groups.find_by_slug!(group_slug)
+    group.members.remove(organization.members.find_by_email_address(email_address))
+  end
+
   def set_group_to_summary group_slug
     require_current_user_be_web_enabled!
     group = organization.groups.find_by_slug!(group_slug)
     group.members.current_member.gets_in_summary!
-  end
-
-  def set_ungrouped_mail_delivery value, options={}
-    require_current_user_be_web_enabled!
-    member = options.key?(:for) ? member(options[:for]) : current_member
-    member.update(ungrouped_mail_delivery: value)
   end
 
   def web_enable! email_address

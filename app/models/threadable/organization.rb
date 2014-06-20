@@ -36,11 +36,11 @@ class Threadable::Organization < Threadable::Model
   end
 
   def internal_email_address
-    "#{email_address_username}@#{threadable.email_host}" if email_address_username.present?
+    self.groups.primary.email_address
   end
 
   def internal_task_email_address
-    "#{email_address_username}+task@#{threadable.email_host}" if email_address_username.present?
+    self.groups.primary.task_email_address
   end
 
   def email_addresses
@@ -48,11 +48,11 @@ class Threadable::Organization < Threadable::Model
   end
 
   def formatted_email_address
-    FormattedEmailAddress.new(display_name: name, address: email_address).to_s
+    self.groups.primary.formatted_email_address
   end
 
   def formatted_task_email_address
-    FormattedEmailAddress.new(display_name: "#{name} Tasks", address: task_email_address).to_s
+    self.groups.primary.formatted_task_email_address
   end
 
   def list_id

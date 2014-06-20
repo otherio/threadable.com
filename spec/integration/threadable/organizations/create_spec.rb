@@ -30,7 +30,9 @@ describe Threadable::Organizations::Create do
     end
 
     it 'sets one of the starter groups to primary' do
-      expect(organization.groups.find_by_slug('notyourmom').primary?).to be_true
+      group = organization.groups.find_by_slug('notyourmom')
+      expect(group.primary?).to be_true
+      expect(group.auto_join?).to be_true
     end
   end
 end
