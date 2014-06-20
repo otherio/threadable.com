@@ -7,6 +7,8 @@ describe Threadable::Conversation::Groups do
   let(:all_groups) { organization.groups.all }
   let(:groups){ conversation.groups }
   let(:primary_group){ organization.groups.primary }
+  let(:electronics) { organization.groups.find_by_email_address_tag('electronics') }
+
 
   subject{ groups }
 
@@ -42,27 +44,27 @@ describe Threadable::Conversation::Groups do
 
     context 'when a given group was already removed from the conversation' do
       let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
-      let(:group) { conversation.groups.all.first }
 
       it 'should add the given groups to the conversation' do
-        expect(conversation.groups.all).to eq [group]
+        expect(conversation.groups.all).to eq [electronics]
 
-        conversation.groups.remove(group)
+        conversation.groups.remove(electronics)
 
-        expect(conversation.groups.all).to eq []
-        expect(conversation.groups.count).to eq 0
-        expect(conversation.group_ids).to eq []
-
-        conversation.groups.add(group)
-
-        expect(conversation.groups.all).to eq [group]
+        expect(conversation.groups.all).to eq [primary_group]
         expect(conversation.groups.count).to eq 1
-        expect(conversation.group_ids).to eq [group.id]
+        expect(conversation.group_ids).to eq [primary_group.id]
 
-        events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
+        conversation.groups.add(electronics)
+
+        expect(conversation.groups.all).to match_array [electronics, primary_group]
+        expect(conversation.groups.count).to eq 2
+        expect(conversation.group_ids).to match_array [electronics.id, primary_group.id]
+
+        events = conversation.events.all.last(3).map{|e| [e.event_type, e.group_id]}
         expect(events).to eq [
-          [:conversation_removed_group, group.id],
-          [:conversation_added_group,   group.id],
+          [:conversation_removed_group, electronics.id],
+          [:conversation_added_group,   primary_group.id],
+          [:conversation_added_group,   electronics.id],
         ]
       end
 
@@ -94,24 +96,23 @@ describe Threadable::Conversation::Groups do
 
     context 'when a given group was already removed from the conversation' do
       let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
-      let(:group) { conversation.groups.all.first }
 
       it 'should not add that group to the conversation' do
-        expect(conversation.groups.all).to eq [group]
+        expect(conversation.groups.all).to eq [electronics]
 
-        conversation.groups.remove(group)
+        conversation.groups.remove(electronics)
 
         starting_events_count = conversation.events.count
 
-        expect(conversation.groups.all).to eq []
-        expect(conversation.groups.count).to eq 0
-        expect(conversation.group_ids).to eq []
+        expect(conversation.groups.all).to eq [primary_group]
+        expect(conversation.groups.count).to eq 1
+        expect(conversation.group_ids).to eq [primary_group.id]
 
-        conversation.groups.add_unless_removed(group)
+        conversation.groups.add_unless_removed(electronics)
 
-        expect(conversation.groups.all).to eq []
-        expect(conversation.groups.count).to eq 0
-        expect(conversation.group_ids).to eq []
+        expect(conversation.groups.all).to eq [primary_group]
+        expect(conversation.groups.count).to eq 1
+        expect(conversation.group_ids).to eq [primary_group.id]
 
         expect(conversation.events.count).to eq starting_events_count
       end
@@ -122,20 +123,59 @@ describe Threadable::Conversation::Groups do
 
   describe '#remove' do
     let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
-    let(:group) { conversation.groups.all.first }
 
-    it 'should remove the given groups from the conversation' do
-      expect(conversation.groups.all).to eq [group]
+    context 'with more than one group' do
+      let(:fundraising) { organization.groups.find_by_email_address_tag('fundraising') }
 
-      conversation.groups.remove(group)
-      expect(conversation.groups.all).to eq []
-      expect(conversation.groups.count).to eq 0
-      expect(conversation.group_ids).to eq []
+      before do
+        conversation.groups.add fundraising
+      end
 
-      events = conversation.events.all.last(1).map{|e| [e.event_type, e.group_id]}
-      expect(events).to eq [[:conversation_removed_group, group.id]]
+      it 'should remove the given groups from the conversation' do
+        expect(conversation.groups.all).to match_array [electronics, fundraising]
+
+        conversation.groups.remove(electronics)
+        expect(conversation.groups.all).to eq [fundraising]
+        expect(conversation.groups.count).to eq 1
+        expect(conversation.group_ids).to eq [fundraising.id]
+
+        events = conversation.events.all.last(1).map{|e| [e.event_type, e.group_id]}
+        expect(events).to eq [[:conversation_removed_group, electronics.id]]
+      end
     end
 
+    context 'with one group' do
+      it 'removes the group and puts the conversation in the primary group' do
+        expect(conversation.groups.all).to eq [electronics]
+
+        conversation.groups.remove(electronics)
+        expect(conversation.groups.all).to eq [primary_group]
+        expect(conversation.groups.count).to eq 1
+        expect(conversation.group_ids).to eq [primary_group.id]
+
+        events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
+        expect(events).to eq [
+          [:conversation_removed_group, electronics.id],
+          [:conversation_added_group,   primary_group.id],
+        ]
+      end
+    end
+
+    context 'when there is one group and it is primary' do
+      let(:conversation){ organization.conversations.find_by_slug('layup-body-carbon') }
+
+      it 'does not change the groups, and creates no events' do
+        expect(conversation.groups.all).to eq [primary_group]
+
+        conversation.groups.remove(primary_group)
+        expect(conversation.groups.all).to eq [primary_group]
+        expect(conversation.groups.count).to eq 1
+        expect(conversation.group_ids).to eq [primary_group.id]
+
+        events = conversation.events.all.last(1).map{|e| e.event_type}
+        expect(events).to_not eq [:conversation_removed_group]
+      end
+    end
   end
 
 end
