@@ -406,8 +406,9 @@ describe Api::ConversationsController do
           }
           expect(response.status).to eq 200
           conversation = raceteam.conversations.find_by_slug('get-a-new-soldering-iron')
-          expect(conversation.groups.all.length).to eq 0
-          expect(conversation.events.all.length).to eq(5)
+          expect(conversation.groups.all.length).to eq 1
+          expect(conversation.groups.all.first.slug).to eq 'raceteam'
+          expect(conversation.events.all.length).to eq(6)
         end
       end
 
