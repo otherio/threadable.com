@@ -397,6 +397,15 @@ describe "processing incoming emails" do
     validate! :delivered
   end
 
+  context 'when the message is sent to the non-subdomain organization address' do
+    let(:recipient)    { 'raceteam@localhost' }
+    let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
+
+    it 'delivers the email' do
+      validate! :delivered
+    end
+  end
+
   context 'when the same message is processed twice' do
     let(:expected_email_recipients){ [] }
 
