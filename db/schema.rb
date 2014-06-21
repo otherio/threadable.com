@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140623171632) do
-=======
-ActiveRecord::Schema.define(version: 20140619184523) do
->>>>>>> Migration to create the primary group and add users/conversations to it
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
