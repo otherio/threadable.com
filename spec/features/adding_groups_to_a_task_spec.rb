@@ -30,9 +30,9 @@ feature "Adding doers to a task" do
 
     first('.conversation-groups i.uk-icon-times').click
     first('.controls a.approve-button').click
-    expect(page).to have_text 'removed this task from +UCSD Electric Racing'
+    expect(page).to have_text 'removed this task from +Electronics'
 
-    expect(groups).to eq Set["+Electronics Remove"]
+    expect(groups).to eq Set["+UCSD Electric Racing Remove"]
   end
 
 
