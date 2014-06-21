@@ -4,10 +4,10 @@ describe Threadable::Conversation::Groups do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:conversation){ organization.conversations.find_by_slug('layup-body-carbon') }
-  let(:all_groups) { organization.groups.all }
   let(:groups){ conversation.groups }
   let(:primary_group){ organization.groups.primary }
   let(:electronics) { organization.groups.find_by_email_address_tag('electronics') }
+  let(:fundraising) { organization.groups.find_by_email_address_tag('fundraising') }
 
 
   subject{ groups }
@@ -17,28 +17,26 @@ describe Threadable::Conversation::Groups do
   describe '#add' do
 
     it 'should add the given groups to the conversation' do
-      group1, group2 = all_groups.last(2)
-
       expect(conversation.groups.all).to eq [primary_group]
       expect(conversation.groups.count).to eq 1
       expect(conversation.group_ids).to eq [primary_group.id]
 
-      conversation.groups.add(group1)
+      conversation.groups.add(fundraising)
 
-      expect(conversation.groups.all).to match_array [primary_group, group1]
+      expect(conversation.groups.all).to match_array [primary_group, fundraising]
       expect(conversation.groups.count).to eq 2
-      expect(conversation.group_ids).to match_array [primary_group.id, group1.id]
+      expect(conversation.group_ids).to match_array [primary_group.id, fundraising.id]
 
-      conversation.groups.add(group2)
+      conversation.groups.add(electronics)
 
-      expect(conversation.groups.all).to match_array [primary_group, group1, group2]
+      expect(conversation.groups.all).to match_array [primary_group, fundraising, electronics]
       expect(conversation.groups.count).to eq 3
-      expect(conversation.group_ids).to match_array [primary_group.id, group1.id, group2.id]
+      expect(conversation.group_ids).to match_array [primary_group.id, fundraising.id, electronics.id]
 
       events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
       expect(events).to eq [
-        [:conversation_added_group, group1.id],
-        [:conversation_added_group, group2.id],
+        [:conversation_added_group, fundraising.id],
+        [:conversation_added_group, electronics.id],
       ]
     end
 
@@ -75,8 +73,8 @@ describe Threadable::Conversation::Groups do
   describe '#add_unless_removed' do
 
     it 'should add the given groups to the conversation' do
-      added_groups = all_groups.last(2)
-      expected_groups = added_groups + [primary_group]
+      added_groups = [electronics, fundraising]
+      expected_groups = [electronics, fundraising, primary_group]
       expect(conversation.groups.all).to eq [primary_group]
       expect(conversation.groups.count).to eq 1
       expect(conversation.group_ids).to eq [primary_group.id]
@@ -125,8 +123,6 @@ describe Threadable::Conversation::Groups do
     let(:conversation){ organization.conversations.find_by_slug('parts-for-the-motor-controller') }
 
     context 'with more than one group' do
-      let(:fundraising) { organization.groups.find_by_email_address_tag('fundraising') }
-
       before do
         conversation.groups.add fundraising
       end
