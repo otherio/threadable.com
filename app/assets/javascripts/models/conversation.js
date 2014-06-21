@@ -44,7 +44,7 @@ Threadable.Conversation = RL.Model.extend({
     if (!groupIds) return [];
     return groups.filter(function(group) {
       return groupIds.indexOf(group.get('id')) > -1;
-    });
+    }).sortBy('name');
   }.property('groupIds','organization.groups'),
 
 
