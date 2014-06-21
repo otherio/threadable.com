@@ -33,10 +33,10 @@ feature "Held messages" do
     expect(held_message_notification_email.text_content).to include email_subject
 
     sign_in_as 'tom@ucsd.example.com'
-    visit conversation_url(organization, 'ungrouped', 'can-i-be-on-your-organization')
+    visit conversation_url(organization, 'raceteam', 'can-i-be-on-your-organization')
     expect(page).to_not have_text email_subject
 
-    visit conversations_url(organization, 'ungrouped')
+    visit conversations_url(organization, 'raceteam')
     expect(page).to have_text "Held Messages"
     click_on 'held messages'
 
@@ -55,7 +55,7 @@ feature "Held messages" do
 
     drain_background_jobs!
 
-    visit conversation_url(organization, 'ungrouped', 'can-i-be-on-your-organization')
+    visit conversation_url(organization, 'raceteam', 'can-i-be-on-your-organization')
     expect(page).to have_text from
     expect(page).to have_text body
 
@@ -71,7 +71,7 @@ feature "Held messages" do
 
     drain_background_jobs!
 
-    visit conversation_url(organization, 'ungrouped', 'can-i-be-on-your-organization')
+    visit conversation_url(organization, 'raceteam', 'can-i-be-on-your-organization')
     expect(page).to_not have_text email_subject
 
     rejected_message_notification_email = sent_emails.to('tom.sucksateverything@example.com').with_subject("[message rejected] #{email_subject}").first

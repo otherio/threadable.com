@@ -754,7 +754,7 @@ describe "processing incoming emails" do
 
       let(:expected_groups){ ['UCSD Electric Racing'] }
       let(:expected_sent_email_to){ ["raceteam+raceteam@localhost"] }
-      it 'delivers the email ungrouped' do
+      it 'delivers the email to the primary group' do
         validate! :delivered
       end
     end
