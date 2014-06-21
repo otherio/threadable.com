@@ -11,16 +11,11 @@ class Threadable::Organization::My
   private
 
   def conversations_scope
-    scope_ungrouped organization_record.conversations.for_user(threadable.current_user.id)
+    organization_record.conversations.for_user(threadable.current_user.id).grouped
   end
 
   def tasks_scope
-    scope_ungrouped organization_record.tasks.for_user(threadable.current_user.id)
-  end
-
-  def scope_ungrouped scope
-    return scope.grouped unless organization.members.current_member.gets_each_ungrouped_message?
-    scope
+    organization_record.tasks.for_user(threadable.current_user.id).grouped
   end
 
 end

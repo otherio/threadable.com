@@ -32,7 +32,7 @@ class Message < ActiveRecord::Base
 
     tags do
       ["organization_#{organization_id}", "conversation_#{conversation_id}"] +
-        (grouped? ? conversation_group_ids.map{|id| "group_#{id}" } : ['ungrouped'])
+        conversation_group_ids.map{|id| "group_#{id}" }
     end
   end
 
@@ -83,10 +83,6 @@ class Message < ActiveRecord::Base
 
   def conversation_updated_at
     conversation.updated_at
-  end
-
-  def grouped?
-    conversation.groups.present?
   end
 
   def conversation_group_ids

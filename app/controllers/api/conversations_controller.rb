@@ -11,7 +11,6 @@ class Api::ConversationsController < ApiController
 
     group = case group_slug
     when 'my';        organization.my
-    when 'ungrouped'; organization.ungrouped
     else; organization.groups.find_by_slug!(group_slug)
     end
 
@@ -43,8 +42,6 @@ class Api::ConversationsController < ApiController
       current_user.group_ids.map{|id| "group_#{id}"} + (
         organization.members.current_member.gets_each_ungrouped_message? ? ['ungrouped'] : []
       )
-    when 'ungrouped'
-      'ungrouped'
     else
       "group_#{organization.groups.find_by_slug!(group_slug).id}"
     end

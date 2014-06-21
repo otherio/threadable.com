@@ -12,7 +12,6 @@
       %th Email sddress
       %th Gets email?
       %th Role
-      %th Ungrouped mail delivery
       %th Actions
   %tbody
     - if @members.present?
@@ -23,7 +22,6 @@
           %td= member.email_address
           %td= member.gets_email? ? 'yes' : 'no'
           %td= member.role
-          %td= member.ungrouped_mail_delivery
           %td
             = link_to 'edit user', admin_edit_user_path(member)
             \|
