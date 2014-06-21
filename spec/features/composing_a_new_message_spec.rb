@@ -76,22 +76,6 @@ feature "Composing a new message" do
     end
   end
 
-  scenario %(In the "Ungrouped Conversations" section) do
-    within_element 'the sidebar' do
-      click_on 'Ungrouped Conversations'
-    end
-    within_element 'the conversations pane' do
-      click_on 'Conversations'
-    end
-    expect(page).to be_at_url conversations_url('raceteam', 'ungrouped')
-    send_new_message!
-    expect(page).to be_at_url conversation_url('raceteam', 'ungrouped','hey-party-people')
-    expect_new_message_to_be_created!
-    send_reply!
-    expect(page).to be_at_url conversation_url('raceteam', 'ungrouped','hey-party-people')
-    expect_reply_to_be_created!
-  end
-
   scenario %(In a group's "Conversations" section) do
     within_element 'the sidebar' do
       click_on '+Fundraising'

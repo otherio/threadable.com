@@ -22,7 +22,7 @@ class Threadable::Organization::Members < Threadable::Collection
 
   def who_get_summaries
     grouped_userids = groups_scope.who_get_summaries.map(&:user_id)
-    membership_records = scope.who_get_email.where(user_id: grouped_userids)
+    membership_records = scope.who_get_email.where(user_id: grouped_userids).to_a
     membership_records.compact.uniq.map{|membership| member_for membership }
   end
 

@@ -8,12 +8,6 @@ describe 'getting conversations' do
   # organization.       my.not_done_doing_tasks
   # organization.       my.    done_not_doing_task
   # organization.       my.not_done_not_doing_task
-  # organization.ungrouped.    muted_conversations
-  # organization.ungrouped.not_muted_conversations
-  # organization.ungrouped.    done_doing_tasks
-  # organization.ungrouped.not_done_doing_tasks
-  # organization.ungrouped.    done_not_doing_task
-  # organization.ungrouped.not_done_not_doing_task
   # group.                     muted_conversations
   # group.                 not_muted_conversations
   # group.                     done_doing_tasks
@@ -33,7 +27,7 @@ describe 'getting conversations' do
           @done_doing_tasks    = organization.    done_doing_tasks(0)
       @not_done_doing_tasks    = organization.not_done_doing_tasks(0)
 
-      check_consistancy!
+      check_consistency!
 
       # my
 
@@ -44,25 +38,10 @@ describe 'getting conversations' do
           @done_doing_tasks    = organization.my.    done_doing_tasks(0)
       @not_done_doing_tasks    = organization.my.not_done_doing_tasks(0)
 
-      check_consistancy!
+      check_consistency!
 
       all.each do |conversation|
         conversation.groups.empty? || (conversation.groups.all & my_groups).present? or fail("#{conversation.inspect} is not mine.")
-      end
-
-      # ungrouped
-
-          @muted_conversations = organization.ungrouped.    muted_conversations(0)
-      @not_muted_conversations = organization.ungrouped.not_muted_conversations(0)
-          @done_tasks          = organization.ungrouped.    done_tasks(0)
-      @not_done_tasks          = organization.ungrouped.not_done_tasks(0)
-          @done_doing_tasks    = organization.ungrouped.    done_doing_tasks(0)
-      @not_done_doing_tasks    = organization.ungrouped.not_done_doing_tasks(0)
-
-      check_consistancy!
-
-      all.each do |conversation|
-        expect(conversation.groups).to be_empty
       end
 
       # for each group
@@ -75,7 +54,7 @@ describe 'getting conversations' do
         @not_done_tasks          = group.not_done_tasks(0)
             @done_doing_tasks    = group.    done_doing_tasks(0)
         @not_done_doing_tasks    = group.not_done_doing_tasks(0)
-        check_consistancy!
+        check_consistency!
 
         all.each do |conversation|
           expect(conversation.groups).to include group
@@ -87,7 +66,7 @@ describe 'getting conversations' do
 
 
 
-    def check_consistancy!
+    def check_consistency!
       expect(@muted_conversations  & @not_muted_conversations).to eq []
       expect(@done_tasks           & @not_done_tasks         ).to eq []
       expect(@done_doing_tasks     & @not_done_doing_tasks   ).to eq []

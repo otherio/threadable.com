@@ -37,7 +37,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
     deleteGroup: function() {
       this.confirm({
         message: 'Are you sure you want to delete the '+this.get('name')+' group?',
-        description: 'This will move all conversations in this group to Ungrouped',
+        description: 'This will move all conversations only in this group to the primary group',
         approveText: 'Delete',
         declineText: 'cancel',
         approved: function() {
