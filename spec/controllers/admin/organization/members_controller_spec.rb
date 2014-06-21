@@ -152,7 +152,6 @@ describe Admin::Organization::MembersController do
       let :member_params do
         {
           role: 'owner',
-          ungrouped_mail_delivery: 'in_summary',
           gets_email: false,
           confirmed: false,
         }

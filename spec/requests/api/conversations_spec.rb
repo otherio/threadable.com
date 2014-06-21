@@ -55,20 +55,6 @@ describe "/api/conversations" do
           conversation['group_ids'].empty? || (conversation['group_ids'] & my_group_ids).present? or fail("#{conversation['slug'].inspect} is not mine.")
         end
 
-            @muted_conversations = request! 'ungrouped', 'muted_conversations'
-        @not_muted_conversations = request! 'ungrouped', 'not_muted_conversations'
-            @done_tasks          = request! 'ungrouped', 'done_tasks'
-        @not_done_tasks          = request! 'ungrouped', 'not_done_tasks'
-            @done_doing_tasks    = request! 'ungrouped', 'done_doing_tasks'
-        @not_done_doing_tasks    = request! 'ungrouped', 'not_done_doing_tasks'
-
-
-        check_consistency!
-
-        all.each do |conversation|
-          expect(conversation['group_ids']).to be_empty
-        end
-
         organization.groups.all.each do |group|
 
               @muted_conversations = request! group.slug, 'muted_conversations'

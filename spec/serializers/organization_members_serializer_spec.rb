@@ -20,7 +20,6 @@ describe OrganizationMembersSerializer do
         avatar_url:    "/fixture_images/alice.jpg",
         subscribed:    true,
         role:          :owner,
-        ungrouped_mail_delivery: :each_message,
         confirmed:     true,
       )
     end
@@ -41,7 +40,6 @@ describe OrganizationMembersSerializer do
           avatar_url:    "/fixture_images/alice.jpg",
           subscribed:    true,
           role:          :owner,
-          ungrouped_mail_delivery: :each_message,
           confirmed:     true,
         },{
           id:            bob.id,
@@ -53,7 +51,6 @@ describe OrganizationMembersSerializer do
           avatar_url:    "/fixture_images/bob.jpg",
           subscribed:    true,
           role:          :member,
-          ungrouped_mail_delivery: :each_message,
           confirmed:     true,
         }
       ]

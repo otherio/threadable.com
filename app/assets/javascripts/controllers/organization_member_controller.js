@@ -14,7 +14,7 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
   memberChanged: function() {
     console.debug('Member changed', this.get('model').serialize());
     this.save();
-  }.observes('role', 'subscribed', 'ungroupedMailDelivery'),
+  }.observes('role', 'subscribed'),
 
   actions: {
     toggleSubscribed: function() {
@@ -38,18 +38,6 @@ Threadable.OrganizationMemberController = Ember.ObjectController.extend(Threadab
       });
 
 
-    },
-    setGetsNoUngroupedMail: function() {
-      if (this.get('saving')) return;
-      this.set('ungroupedMailDelivery', 'no_mail');
-    },
-    setGetsEachUngroupedMessage: function() {
-      if (this.get('saving')) return;
-      this.set('ungroupedMailDelivery', 'each_message');
-    },
-    setGetsUngroupedInSummary: function() {
-      if (this.get('saving')) return;
-      this.set('ungroupedMailDelivery', 'in_summary');
     },
     removeMember: function() {
       this.confirm({

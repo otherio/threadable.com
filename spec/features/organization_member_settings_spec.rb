@@ -90,42 +90,6 @@ feature "organization member settings" do
     end
   end
 
-  scenario %(ungrouped mail delivery) do
-    sign_in_as 'bethany@ucsd.example.com'
-
-    expect(bethany.ungrouped_mail_delivery).to eq :each_message
-
-    visit_organization_settings
-
-    within '.organization-members' do
-      click_on 'Bethany Pattern'
-    end
-
-    expect(page).to have_selector '.uk-active', text: 'each message'
-
-    click_on 'no mail'
-    expect(page).to have_selector '.uk-active', text: 'no mail'
-
-    wait_until_expectation do
-      expect(bethany.ungrouped_mail_delivery).to eq :no_mail
-    end
-
-    click_on 'daily summary'
-    expect(page).to have_selector '.uk-active', text: 'daily summary'
-
-    wait_until_expectation do
-      expect(bethany.ungrouped_mail_delivery).to eq :in_summary
-    end
-
-    click_on 'each message'
-    expect(page).to have_selector '.uk-active', text: 'each message'
-
-    wait_until_expectation do
-      expect(bethany.ungrouped_mail_delivery).to eq :each_message
-    end
-
-  end
-
   scenario %(removing a member) do
     sign_in_as 'alice@ucsd.example.com'
 

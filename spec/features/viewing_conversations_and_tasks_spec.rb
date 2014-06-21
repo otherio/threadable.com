@@ -20,16 +20,6 @@ feature "Viewing conversations and tasks" do
     goto :my_tasks
     expect_listed_tasks_to_eq organization.my.not_done_doing_tasks(0)
 
-    goto :ungrouped_conversations
-    goto :conversations
-    expect_listed_conversations_to_eq organization.ungrouped.not_muted_conversations(0)
-    goto :muted
-    expect_listed_conversations_to_eq organization.ungrouped.muted_conversations(0)
-    goto :all_tasks
-    expect_listed_tasks_to_eq organization.ungrouped.not_done_tasks(0)
-    goto :my_tasks
-    expect_listed_tasks_to_eq organization.ungrouped.not_done_doing_tasks(0)
-
     organization.groups.all.each do |group|
       goto group
       goto :conversations
@@ -47,8 +37,6 @@ feature "Viewing conversations and tasks" do
     case destination
     when :my_conversations
       within_element('the sidebar'){ click_on 'My Conversations' }
-    when :ungrouped_conversations
-      within_element('the sidebar'){ click_on 'Ungrouped Conversations' }
     when Threadable::Group
       within_element('the sidebar'){ click_on "+#{destination.name}" }
     when :conversations

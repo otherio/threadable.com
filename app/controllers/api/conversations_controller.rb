@@ -39,9 +39,7 @@ class Api::ConversationsController < ApiController
 
     tag_filters << case group_slug
     when 'my'
-      current_user.group_ids.map{|id| "group_#{id}"} + (
-        organization.members.current_member.gets_each_ungrouped_message? ? ['ungrouped'] : []
-      )
+      current_user.group_ids.map{|id| "group_#{id}"}
     else
       "group_#{organization.groups.find_by_slug!(group_slug).id}"
     end
