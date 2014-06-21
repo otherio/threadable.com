@@ -41,11 +41,7 @@ class Threadable::Conversation::Recipients
 
     groups = conversation.groups.all
 
-    if groups.present?
-      recipients = recipients.in_groups_without_summary(groups.map(&:id))
-    else
-      recipients = recipients.who_get_ungrouped
-    end
+    recipients = recipients.in_groups_without_summary(groups.map(&:id))
 
     recipients
   end

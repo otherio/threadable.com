@@ -26,7 +26,6 @@ class Threadable::Organization::Member < Threadable::User
     gets_email?
     subscribed?
     role
-    ungrouped_mail_delivery
     confirmed?
   }, to: :organization_membership_record
 
@@ -40,23 +39,8 @@ class Threadable::Organization::Member < Threadable::User
     organization_membership_record.id
   end
 
-  def gets_no_ungrouped_mail?
-    ungrouped_mail_delivery == :no_mail
-  end
-
-  def gets_each_ungrouped_message?
-    ungrouped_mail_delivery == :each_message
-  end
-
-  def gets_ungrouped_in_summary?
-    ungrouped_mail_delivery == :in_summary
-  end
-
   def summarized_conversations time
     conversations = []
-    if ungrouped_mail_delivery == :in_summary
-      conversations += organization.conversations.ungrouped_with_last_message_at time
-    end
 
     groups.with_summary.each do |group|
       conversations += group.conversations.with_last_message_at time

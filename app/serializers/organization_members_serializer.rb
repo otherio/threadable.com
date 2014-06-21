@@ -4,7 +4,6 @@ class OrganizationMembersSerializer < UsersSerializer
     super.merge(
       subscribed:              member.subscribed?,
       role:                    member.role,
-      ungrouped_mail_delivery: member.ungrouped_mail_delivery,
       confirmed:               member.confirmed?,
     )
   end

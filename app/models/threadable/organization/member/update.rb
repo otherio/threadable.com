@@ -2,7 +2,7 @@ require_dependency 'threadable/organization/member'
 
 class Threadable::Organization::Member::Update < MethodObject
 
-  ATTRIBUTES = [:gets_email, :confirmed, :subscribed, :role, :ungrouped_mail_delivery].freeze
+  ATTRIBUTES = [:gets_email, :confirmed, :subscribed, :role].freeze
 
   attr_reader :threadable, :current_user, :current_member, :member, :attributes
 
@@ -31,7 +31,6 @@ class Threadable::Organization::Member::Update < MethodObject
     original_values = {
       subscribed:              record.subscribed?,
       role:                    record.role,
-      ungrouped_mail_delivery: record.ungrouped_mail_delivery,
     }
 
     record.attributes = attributes
@@ -47,13 +46,6 @@ class Threadable::Organization::Member::Update < MethodObject
       track('Organization membership role changed', {
         'from' => original_values[:role],
         'to'   => record.role,
-      });
-    end
-
-    if record.ungrouped_mail_delivery != original_values[:ungrouped_mail_delivery]
-      track('Ungrouped mail delivery changed', {
-        'from' => original_values[:ungrouped_mail_delivery],
-        'to'   => record.ungrouped_mail_delivery,
       });
     end
 

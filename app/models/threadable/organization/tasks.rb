@@ -8,7 +8,6 @@ class Threadable::Organization::Tasks < Threadable::Tasks
   end
   attr_reader :organization
 
-  let(:ungrouped){ Threadable::Organization::Tasks::Ungrouped.new(organization) }
   let(:my)       { Threadable::Organization::Tasks::My       .new(organization) }
 
   def doing
@@ -47,5 +46,4 @@ class Threadable::Organization::Tasks < Threadable::Tasks
 
 end
 
-require_dependency 'threadable/organization/tasks/ungrouped'
 require_dependency 'threadable/organization/tasks/my'

@@ -52,18 +52,6 @@
         p.subtitle
           | Turn off to completely disable email delivery for #{name} on #{organization.name}.
 
-      .setting
-        h4.label
-          | Ungrouped mail delivery:
-        .control
-          div class="uk-button-group"
-            button class={:uk-button getsNoUngroupedMail:uk-active      } click="setGetsNoUngroupedMail" no mail
-            button class={:uk-button getsEachUngroupedMessage:uk-active } click="setGetsEachUngroupedMessage" each message
-            button class={:uk-button getsUngroupedInSummary:uk-active   } click="setGetsUngroupedInSummary" daily summary
-        br
-        p.subtitle
-          | How should #{name} receive messages that are not in any groups?
-
       if canEdit
         .danger-zone
           h4.title

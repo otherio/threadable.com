@@ -33,8 +33,6 @@
               +{{group.name}}
               <a href="" {{action removeGroup group}}><i class="uk-icon-times"><span class="sr-only">Remove</span></i></a>
             </span>
-          {{else}}
-            <span class="no-groups">ungrouped</span>
           {{/each}}
           {{group-selector groups=unselectedGroups target=controller}}
         </div>

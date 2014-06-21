@@ -83,7 +83,6 @@ class Threadable::Organization < Threadable::Model
   end
   public
   let(:my)       { Threadable::Organization::My       .new(self) }
-  let(:ungrouped){ Threadable::Organization::Ungrouped.new(self) }
 
   def has_email_address? email_address
     email_address = email_address.address if email_address.is_a? Mail::Address
