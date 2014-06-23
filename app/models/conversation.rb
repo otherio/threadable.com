@@ -51,6 +51,7 @@ class Conversation < ActiveRecord::Base
     only_when_blank:                      true,
     sync_url:                             true,
     enforce_uniqueness_on_sti_base_class: true,
+    limit:                                50,
   )
 
   alias_method :to_param, :slug
