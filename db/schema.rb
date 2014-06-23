@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140605195146) do
+ActiveRecord::Schema.define(version: 20140623171632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20140605195146) do
 
   create_table "conversations", force: true do |t|
     t.string   "type"
-    t.string   "subject",                             null: false
+    t.text     "subject",                             null: false
     t.integer  "organization_id",                     null: false
     t.integer  "creator_id"
     t.integer  "position"
@@ -151,7 +151,6 @@ ActiveRecord::Schema.define(version: 20140605195146) do
     t.string   "webhook_url",         default: "",    null: false
     t.string   "description"
     t.boolean  "google_sync",         default: false, null: false
-    t.string   "description"
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
@@ -187,7 +186,7 @@ ActiveRecord::Schema.define(version: 20140605195146) do
     t.text     "body_plain"
     t.boolean  "reply"
     t.string   "from"
-    t.string   "subject"
+    t.text     "subject"
     t.string   "children"
     t.integer  "parent_id"
     t.string   "message_id_header"
