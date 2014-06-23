@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   validates :email_address, presence: true
   validates_associated :email_addresses
 
-  acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :length => 20
+  acts_as_url :name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :limit => 20
   alias_method :to_param, :slug
 
   default_scope { includes(:email_addresses) }

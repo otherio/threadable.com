@@ -36,7 +36,7 @@ class Organization < ActiveRecord::Base
   validates_format_of :email_address_username, with: /\A[\.a-z0-9_-]+\z/
   validate :username_special_characters
 
-  acts_as_url :short_name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true
+  acts_as_url :short_name, :url_attribute => :slug, :only_when_blank => true, :sync_url => true, :limit => 50
 
   def name= name
     self.short_name = name if short_name.blank?
