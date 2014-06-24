@@ -144,8 +144,9 @@ class Threadable::Group < Threadable::Model
   end
 
   def destroy
-    conversations = self.conversations.all
+    raise Threadable::AuthorizationError, 'The primary group cannot be removed' if primary?
 
+    conversations = self.conversations.all
     if conversations.length > 0 && !organization.members.current_member.can?(:remove_non_empty_group_from, organization)
       raise Threadable::AuthorizationError, 'You are not authorized to remove groups that contain messages'
     end

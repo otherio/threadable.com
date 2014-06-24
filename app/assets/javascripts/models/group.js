@@ -10,6 +10,7 @@ Threadable.Group = RL.Model.extend({
   autoJoin:                  RL.attr('boolean'),
   holdMessages:              RL.attr('boolean'),
   googleSync:                RL.attr('boolean'),
+  primary:                   RL.attr('boolean'),
   emailAddress:              RL.attr('string'),
   taskEmailAddress:          RL.attr('string'),
   formattedEmailAddress:     RL.attr('string'),

@@ -25,6 +25,7 @@ describe GroupsSerializer do
         hold_messages:       true,
         description:         'Soldering and wires and stuff!',
         google_sync:         false,
+        primary:             false,
 
         email_address:                electronics.email_address,
         task_email_address:           electronics.task_email_address,
@@ -61,6 +62,7 @@ describe GroupsSerializer do
           hold_messages:       true,
           description:         'Soldering and wires and stuff!',
           google_sync:         false,
+          primary:             false,
 
           email_address:                electronics.email_address,
           task_email_address:           electronics.task_email_address,
@@ -88,6 +90,7 @@ describe GroupsSerializer do
           hold_messages:       true,
           description:         'Cache Monet',
           google_sync:         false,
+          primary:             false,
 
           email_address:                fundraising.email_address,
           task_email_address:           fundraising.task_email_address,
