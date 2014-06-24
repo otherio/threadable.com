@@ -56,7 +56,9 @@ describe ConversationMailer do
       expect(email.link('feedback')).to be_present
       expect(email.link('feedback')[:href]).to eq "mailto:support@localhost"
 
-      expect(text_part).to include organization.task_email_address
+      conversation.groups.all.each do |group|
+        expect(text_part).to include group.email_address
+      end
 
       expect(mail.header[:'Reply-To'].to_s).to eq expected_reply_to
       expect(mail.header[:'List-ID'].to_s ).to eq conversation.list_id
