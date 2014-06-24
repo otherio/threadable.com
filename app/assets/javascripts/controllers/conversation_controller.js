@@ -11,6 +11,11 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
     return groups;
   }.property('allGroups.length', 'groups.length'),
 
+  canRemoveGroups: function() {
+    var groups = this.get('groups');
+    return (! (groups.length == 1 && groups[0].get('primary')));
+  }.property('groups'),
+
   addGroup: function(group) {
     var groups = this.get('groups');
     if (typeof group === 'string') group = this.get('organization.groups').findBy('slug', group);
