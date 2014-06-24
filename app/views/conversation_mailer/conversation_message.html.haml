@@ -50,19 +50,18 @@
   %table.threadable-details{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
     %tr
       %td.threadable-details-inner{:style => "color: #95A5A6; text-align: left;"}
-        - if @conversation.groups.count > 0
-          .threadable-groups
-            - @conversation.groups.all.each do |group|
-              .threadable-group
-                = link_to "#{group.name}", conversations_url(@organization, group)
-                |
-                = mail_to group.email_address, group.email_address
-                = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
-                |
-                - if group.members.include? @recipient
-                  = link_to 'Leave', email_action_link(group, @recipient, "leave")
-                - else
-                  = link_to 'Join', email_action_link(group, @recipient, "join")
+        .threadable-groups
+          - @conversation.groups.all.each do |group|
+            .threadable-group
+              = link_to "#{group.name}", conversations_url(@organization, group)
+              |
+              = mail_to group.email_address, group.email_address
+              = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
+              |
+              - if group.members.include? @recipient
+                = link_to 'Leave', email_action_link(group, @recipient, "leave")
+              - else
+                = link_to 'Join', email_action_link(group, @recipient, "join")
         - unless @show_mail_buttons
           .threadable-conversation{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
             = link_to 'Web View', conversation_url(@organization, 'my', @conversation)
