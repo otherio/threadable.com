@@ -36,7 +36,7 @@ describe 'sending emails' do
         expect( email.header['References'].to_s  ).to eq message.references_header
         expect( email.header['Subject'].to_s     ).to eq "Re: [✔\uFE0E][RaceTeam] layup body carbon"
 
-        expect( email.header['List-ID'].to_s      ).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
+        expect( email.header['List-ID'].to_s      ).to eq '"UCSD Electric Racing" <raceteam.raceteam.localhost>'
         expect( email.header['List-Archive'].to_s ).to eq "<#{conversations_url(organization,'my')}>"
 
         expect( email.header["List-Unsubscribe"].to_s ).to match %r{/raceteam/unsubscribe/}
