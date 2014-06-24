@@ -145,7 +145,9 @@ feature "Viewing conversations and tasks" do
   end
 
   def groups_for conversation, current_group
-    conversation.groups.all.map do |group|
+    groups = conversation.groups
+    return [].to_set if groups.count == 1 && groups.all.first.primary?
+    groups.all.map do |group|
       "+#{group.name}" if group != current_group
     end.compact.to_set
   end

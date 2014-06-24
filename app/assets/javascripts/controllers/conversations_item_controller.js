@@ -3,12 +3,12 @@ Threadable.ConversationsItemController = Ember.ObjectController.extend(Threadabl
   currentGroupSlug: Ember.computed.alias('controllers.group.model').readOnly(),
 
   groups: function() {
-    var displayGroups = this.get('model.groups').rejectBy('slug', this.get('currentGroupSlug'));
-    if(displayGroups.length > 1) {
-      return displayGroups;
+    var currentGroupSlug = this.get('currentGroupSlug');
+    var displayGroups = this.get('model.groups').rejectBy('slug', currentGroupSlug);
+    if(displayGroups.length == 1 && currentGroupSlug == 'my') {
+      return displayGroups.rejectBy('primary');
     }
 
-    // only show the primary group when there's more than one group
-    return displayGroups.rejectBy('primary');
+    return displayGroups;
   }.property('model.groups')
 });
