@@ -58,6 +58,18 @@ describe Threadable::Group do
         end
       end
     end
+
+    context "when it's the primary group" do
+      let(:group) { organization.groups.find_by_slug('raceteam')}
+
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+      end
+
+      it "raises an exception" do
+        expect{ group.destroy }.to raise_error Threadable::AuthorizationError, 'The primary group cannot be removed'
+      end
+    end
   end
 
   describe '#google_sync=' do
