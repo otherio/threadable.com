@@ -2,15 +2,9 @@
 
 
 _____
-<% if @conversation.groups.count > 0 %>
-In <%= "#{'Group'.pluralize(@conversation.groups.count)}" %>:
 <% @conversation.groups.all.each do |group| %>
-  +<%= group.name %>: <%= group.email_address %>
+<%= group.name %>: <%= group.email_address %>
 <% end %>
-<% end %>
-
-New conversation: <%= @organization.email_address %>
-New task: <%= @organization.task_email_address %>
 
 Web view:
 <%= @message_url %>
