@@ -16,7 +16,7 @@ feature "Adding doers to a task" do
 
     expect(page).to be_at_url conversation_url('raceteam', 'my', 'make-wooden-form-for-carbon-layup')
 
-    expect(groups).to eq Set["+UCSD Electric Racing Remove"]
+    expect(groups).to eq Set["+UCSD Electric Racing"]
 
     click_element 'the change groups button'
     first('.group-selector .groups a.badge', text: 'Electronics').click
@@ -32,7 +32,7 @@ feature "Adding doers to a task" do
     first('.controls a.approve-button').click
     expect(page).to have_text 'removed this task from +Electronics'
 
-    expect(groups).to eq Set["+UCSD Electric Racing Remove"]
+    expect(groups).to eq Set["+UCSD Electric Racing"]
   end
 
 
