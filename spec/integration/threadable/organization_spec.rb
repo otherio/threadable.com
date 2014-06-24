@@ -54,11 +54,15 @@ describe Threadable::Organization do
       'foo+bar@threadable.com'         => false,
       'foo@staging.threadable.com'     => false,
 
-      'raceteam+fundraising@localhost'    => true,
-      'raceteam@covered.io'               => true,
-      'raceteam@threadable.com'           => true,
-      'raceteam+something@threadable.com' => true,
-      'press@ucsd.example.com'            => true,
+      'raceteam+fundraising@localhost'         => true,
+      'raceteam@covered.io'                    => true,
+      'raceteam@threadable.com'                => true,
+      'raceteam+something@threadable.com'      => true,
+      'press@ucsd.example.com'                 => true,
+      'something@raceteam.threadable.com'      => true,
+      'something+task@raceteam.threadable.com' => true,
+      'raceteam--something@threadable.com'     => true,
+      'raceteam--task@threadable.com'          => true,
     }
 
     examples.each do |email_address, expected_result|

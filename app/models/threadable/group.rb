@@ -122,11 +122,11 @@ class Threadable::Group < Threadable::Model
   end
 
   def internal_email_address
-    "#{organization.email_address_username}+#{email_address_tag}@#{threadable.email_host}"
+    "#{email_address_tag}@#{organization.email_host}"
   end
 
   def internal_task_email_address
-    "#{organization.email_address_username}+#{email_address_tag}+task@#{threadable.email_host}"
+    "#{email_address_tag}+task@#{organization.email_host}"
   end
 
   def formatted_email_address
