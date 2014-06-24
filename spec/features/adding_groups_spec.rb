@@ -24,14 +24,14 @@ feature "Adding groups spec" do
       click_on "Create new group"
     end
 
-    expect(page).to have_text '[Super-Tr] +Super Troops'
+    expect(page).to have_text '[Super-Tr] Super Troops'
 
     expect(organization.groups.all.map(&:name)).to include "Super Troops"
 
     expect(current_url).to eq group_members_url('raceteam', 'super-troops')
 
     within(selector_for('the sidebar')) do
-      within(find('.group', text: '+Super Troops')) do
+      within(find('.group', text: 'Super Troops')) do
         find('.disclosure-triangle').click
         click_on 'Settings'
       end
@@ -41,7 +41,7 @@ feature "Adding groups spec" do
     click_on 'Delete'
 
     within(selector_for('the sidebar')) do
-      expect(page).to_not have_text '+Super Troops'
+      expect(page).to_not have_text 'Super Troops'
     end
 
     expect(organization.groups.all.map(&:name)).to_not include "Super Troops"

@@ -24,7 +24,7 @@
     <section class="line line-3">
       <span class="groups">
         {{#each group in conversation.groups}}
-          <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>+{{group.name}}</span>
+          <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>{{group.name}}</span>
         {{/each}}
         <i class="uk-icon-chevron-right arrow"></i>
       </span>

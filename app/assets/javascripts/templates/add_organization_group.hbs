@@ -23,11 +23,11 @@
           </label>
           {{#if editingEmailAddressTag}}
             <div class="uk-form-controls input-field">
-              {{controllers.organization.emailAddressUsername}}+{{input value=emailAddressTag name="emailAddressTag"}}@threadable.com
+              {{input value=emailAddressTag name="emailAddressTag"}}@{{controllers.organization.emailAddressUsername}}.threadable.com
             </div>
           {{else}}
             <div class="uk-form-controls input-field">
-              {{controllers.organization.emailAddressUsername}}+{{calculatedEmailAddressTag}}@threadable.com
+              {{calculatedEmailAddressTag}}@{{controllers.organization.emailAddressUsername}}.threadable.com
               <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
             </div>
           {{/if}}
@@ -94,7 +94,7 @@
 
       <h4 class="uk-text-bold">Conversation list badge:</h4>
       <div>
-        <span class="badge" {{bind-attr style="badgeStyle"}}>+{{name}}</span>
+        <span class="badge" {{bind-attr style="badgeStyle"}}>{{name}}</span>
       </div>
     </div>
   </div>
