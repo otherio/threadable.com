@@ -24,7 +24,7 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
     var name = this.get('name') || '';
     var whichTag = this.get('editingEmailAddressTag') ? 'emailAddressTag' : 'calculatedEmailAddressTag';
 
-    return this.get('controllers.organization.emailAddressUsername') + '+' + this.get(whichTag) + '@threadable.com';
+    return  this.get(whichTag) + '@' + this.get('controllers.organization.emailAddressUsername') + '.threadable.com';
   }.property('name', 'emailAddressTag'),
 
   actions: {

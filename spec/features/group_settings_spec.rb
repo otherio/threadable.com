@@ -8,7 +8,7 @@ feature "Group settings" do
 
   scenario %(changing the settings of a group) do
     within selector_for('the sidebar') do
-      within 'li.group', text: '+Fundraising' do
+      within 'li.group', text: 'Fundraising' do
         find('.disclosure-triangle').click
         sleep 0.2
         click_on "Settings"
@@ -25,7 +25,7 @@ feature "Group settings" do
 
     click_on "Update group settings"
 
-    expect(page).to have_text '[cops] +Fundraising'
+    expect(page).to have_text '[cops] Fundraising'
     expect(current_url).to eq conversations_url('raceteam', 'fundraising')
 
     fundraising = current_user.organizations.find_by_slug!('raceteam').groups.find_by_slug!('fundraising')

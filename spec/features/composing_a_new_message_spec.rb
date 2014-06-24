@@ -78,7 +78,7 @@ feature "Composing a new message" do
 
   scenario %(In a group's "Conversations" section) do
     within_element 'the sidebar' do
-      click_on '+Fundraising'
+      click_on 'Fundraising'
     end
     within_element 'the conversations pane' do
       click_on 'Conversations'

@@ -10,7 +10,7 @@ feature "Group web hook" do
     visit root_url
 
     within selector_for('the sidebar') do
-      within 'li.group', text: '+Fundraising' do
+      within 'li.group', text: 'Fundraising' do
         find('.disclosure-triangle').click
         sleep 0.2
         click_on "Settings"
