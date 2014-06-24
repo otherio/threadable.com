@@ -52,11 +52,9 @@
       %td.threadable-details-inner{:style => "color: #95A5A6; text-align: left;"}
         - if @conversation.groups.count > 0
           .threadable-groups
-            = "Conversation in #{'group'.pluralize(@conversation.groups.count)}:"
             - @conversation.groups.all.each do |group|
               .threadable-group
-                %b
-                  = link_to "+#{group.name}", conversations_url(@organization, group)
+                = link_to "#{group.name}", conversations_url(@organization, group)
                 |
                 = mail_to group.email_address, group.email_address
                 = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
@@ -65,16 +63,13 @@
                   = link_to 'Leave', email_action_link(group, @recipient, "leave")
                 - else
                   = link_to 'Join', email_action_link(group, @recipient, "join")
-
-        .threadable-organization{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
-          = link_to @organization.name, organization_url(@organization)
-          |
-          = mail_to @organization.email_address, @organization.email_address
         - unless @show_mail_buttons
           .threadable-conversation{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
             = link_to 'Web View', conversation_url(@organization, 'my', @conversation)
             |
             = link_to 'Mute', email_action_link(@conversation, @recipient, "mute")
         .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px"}
+          = link_to @organization.name, organization_url(@organization)
+          |
           = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
   = image_tag @footer_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-footerable'
