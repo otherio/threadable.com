@@ -49,10 +49,10 @@ describe Threadable::Group do
   end
 
   its(:organization_record          ){ should eq organization_record }
-  its(:email_address                ){ should eq "my-project+thing-factory@localhost" }
-  its(:task_email_address           ){ should eq "my-project+thing-factory+task@localhost" }
-  its(:formatted_email_address      ){ should eq %("My Project: thing factory" <my-project+thing-factory@localhost>) }
-  its(:formatted_task_email_address ){ should eq %("My Project: thing factory Tasks" <my-project+thing-factory+task@localhost>) }
+  its(:email_address                ){ should eq "thing-factory@my-project.localhost" }
+  its(:task_email_address           ){ should eq "thing-factory+task@my-project.localhost" }
+  its(:formatted_email_address      ){ should eq %("My Project: thing factory" <thing-factory@my-project.localhost>) }
+  its(:formatted_task_email_address ){ should eq %("My Project: thing factory Tasks" <thing-factory+task@my-project.localhost>) }
 
   its(:members      ){ should be_a Threadable::Group::Members }
   its(:conversations){ should be_a Threadable::Group::Conversations }
@@ -65,8 +65,8 @@ describe Threadable::Group do
 
     its(:email_address                ){ should eq "elsewhere@foo.com" }
     its(:task_email_address           ){ should eq "elsewhere-task@foo.com" }
-    its(:internal_email_address       ){ should eq "my-project+thing-factory@localhost" }
-    its(:internal_task_email_address  ){ should eq "my-project+thing-factory+task@localhost" }
+    its(:internal_email_address       ){ should eq "thing-factory@my-project.localhost" }
+    its(:internal_task_email_address  ){ should eq "thing-factory+task@my-project.localhost" }
     its(:formatted_email_address      ){ should eq %(My Elsewhere <elsewhere@foo.com>) }
     its(:formatted_task_email_address ){ should eq %(My Elsewhere Tasks <elsewhere-task@foo.com>) }
   end

@@ -33,8 +33,9 @@ describe Threadable::Organization do
       'ian@other.io'                   => false,
       'foo+bar@threadable.com'         => false,
       'foo@staging.threadable.com'     => false,
+      'raceteam+fundraising@localhost' => false,
 
-      'raceteam+fundraising@localhost' => true,
+      'fundraising@raceteam.localhost' => true,
       'raceteam@localhost'             => true,
       'press@ucsd.example.com'         => true,
     }
