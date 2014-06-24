@@ -35,6 +35,7 @@ class Threadable::Conversation::Recipients
   def scope
     recipients = OrganizationMembership.
       includes(:user).
+      distinct.
       who_get_email.
       for_organization(conversation.organization_id).
       who_have_not_muted(conversation.id)

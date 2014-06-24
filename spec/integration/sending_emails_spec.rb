@@ -28,8 +28,8 @@ describe 'sending emails' do
         email = sent_emails.to(recipient.email_address).with_subject("Re: [✔\uFE0E][RaceTeam] layup body carbon").first
         expect(email).to be_present
         expect( email.header['From'].to_s        ).to eq 'Tom Canver <tom@ucsd.example.com>'
-        expect( email.header['Reply-To'].to_s    ).to eq 'UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>'
-        expect( email.header['To'].to_s          ).to eq 'UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>'
+        expect( email.header['Reply-To'].to_s    ).to eq 'UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>'
+        expect( email.header['To'].to_s          ).to eq 'UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>'
         expect( email.header['Date'].to_s        ).to eq message.date_header.sub('-','+')
         expect( email.header['Message-ID'].to_s  ).to eq message.message_id_header
         expect( email.header['In-Reply-To'].to_s ).to eq message.parent_message.message_id_header
@@ -40,7 +40,7 @@ describe 'sending emails' do
         expect( email.header['List-Archive'].to_s ).to eq "<#{conversations_url(organization,'my')}>"
 
         expect( email.header["List-Unsubscribe"].to_s ).to match %r{/raceteam/unsubscribe/}
-        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam+raceteam@localhost>, <#{compose_conversation_url(organization, 'my')}>"
+        expect( email.header["List-Post"].to_s        ).to eq "<mailto:raceteam@raceteam.localhost>, <#{compose_conversation_url(organization, 'my')}>"
       end
 
       context "sync" do
@@ -67,7 +67,7 @@ describe 'sending emails' do
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up lunch?").first
 
           expect( email.header['To'].to_s ).to_not be_blank
-          expect( email.header['To'].to_s ).to     include 'UCSD Electric Racing <raceteam+raceteam@localhost>'
+          expect( email.header['To'].to_s ).to     include 'UCSD Electric Racing <raceteam@raceteam.localhost>'
           expect( email.header['To'].to_s ).to     include 'somebody@else.io'
           expect( email.header['To'].to_s ).to_not include 'alice@ucsd.example.com'
           expect( email.header['To'].to_s ).to_not include 'bethany@ucsd.example.com'
@@ -86,7 +86,7 @@ describe 'sending emails' do
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up dinner?").first
 
           expect( email.header['To'].to_s ).to_not be_blank
-          expect( email.header['Cc'].to_s ).to include 'UCSD Electric Racing <raceteam+raceteam@localhost>'
+          expect( email.header['Cc'].to_s ).to include 'UCSD Electric Racing <raceteam@raceteam.localhost>'
         end
       end
       context 'when the organization is in the BCC header and there are multiple people in the TO and CC headers' do
@@ -98,8 +98,8 @@ describe 'sending emails' do
           email = sent_emails.to(recipient.email_address).with_subject("[RaceTeam] Who wants to pick up breakfast?").first
 
           expect( email.header['To'].to_s ).to_not be_blank
-          expect( email.header['Cc'].to_s ).to_not include 'UCSD Electric Racing <raceteam+raceteam@localhost>'
-          expect( email.header['To'].to_s ).to_not include 'UCSD Electric Racing <raceteam+raceteam@localhost>'
+          expect( email.header['Cc'].to_s ).to_not include 'UCSD Electric Racing <raceteam@raceteam.localhost>'
+          expect( email.header['To'].to_s ).to_not include 'UCSD Electric Racing <raceteam@raceteam.localhost>'
         end
       end
     end

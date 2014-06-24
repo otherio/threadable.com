@@ -69,14 +69,12 @@ class ConversationMailer < Threadable::Mailer
       }
     end
 
-    to_addresses = as_address_objects(@message.to_header.to_s)
-    cc_addresses = as_address_objects(@message.cc_header.to_s)
+    to_addresses = canonicalize_email_addresses(@message.to_header.to_s)
+    cc_addresses = canonicalize_email_addresses(@message.cc_header.to_s)
 
     @missing_addresses = missing_threadable_addresses([to_addresses, cc_addresses].flatten.compact)
     sender_is_a_member = @message.creator.present? && @organization.members.include?(@message.creator)
 
-    to_addresses = transform_stale_group_references(to_addresses)
-    to_addresses = correct_threadable_email_addresses(to_addresses)
     to_addresses = filter_out_recipients(to_addresses)
     to_addresses = filter_organization_email_addresses(to_addresses)
 
@@ -91,10 +89,8 @@ class ConversationMailer < Threadable::Mailer
       end
     end
 
-    cc_addresses = transform_stale_group_references(cc_addresses)
     cc_addresses = filter_out_recipients(cc_addresses)
     cc_addresses = subtract_addresses(cc_addresses, to_addresses)
-    cc_addresses = correct_threadable_email_addresses(cc_addresses)
 
     if !sender_is_a_member && @message.from.present? && @recipient.munge_reply_to?
       cc_addresses << as_address_objects(@message.from).first
@@ -169,30 +165,17 @@ class ConversationMailer < Threadable::Mailer
     end
   end
 
-  def transform_stale_group_references email_addresses
-    return if email_addresses.nil?
-    email_addresses.map do |email_address|
-      if @organization.matches_email_address?(email_address)
-        @conversation.all_email_addresses.include?(email_address.address) ? email_address : Mail::Address.new(@organization_email_address)
-      else
-        email_address
-      end
-    end
-  end
-
   def filter_organization_email_addresses email_addresses
-    organization_email_address = Mail::Address.new(@organization_email_address)
-
     email_addresses.map do |email_address|
-      if email_address.address == organization_email_address.address
+      if email_address.address == organization_email_address_object.address
         if @missing_addresses_inserted
           nil
         else
           @missing_addresses_inserted = true
 
           addresses_to_insert = @missing_addresses
-          if @conversation.in_primary_group? && ! addresses_to_insert.map(&:address).include?(organization_email_address.address)
-            addresses_to_insert += [organization_email_address]
+          if @conversation.in_primary_group? && ! addresses_to_insert.map(&:address).include?(organization_email_address_object.address)
+            addresses_to_insert += [organization_email_address_object]
           end
           addresses_to_insert
         end
@@ -203,9 +186,8 @@ class ConversationMailer < Threadable::Mailer
   end
 
   def missing_threadable_addresses header_addresses
-    header_addresses = header_addresses.map do |email_address|
-      email_address.address
-    end
+    header_addresses = header_addresses.map(&:address)
+
     formatted_email_addresses = @conversation.formatted_email_addresses.map{ |addr| Mail::Address.new(addr) }
     formatted_email_addresses.map{ |addr| header_addresses.include?(addr.address) ? nil : addr }.compact
   end
@@ -215,20 +197,35 @@ class ConversationMailer < Threadable::Mailer
     master_list.reject{ |addr| remove_list_addresses.include? addr.address }
   end
 
-  def correct_threadable_email_addresses email_addresses
-    map = formatted_email_addresses.inject({}) do |hash, formatted_email_address|
-      hash.update formatted_email_address.local => formatted_email_address
+  def canonicalize_email_addresses email_addresses
+    as_address_objects(email_addresses).map do |email_address|
+      canonicalize_email_address email_address
     end
-    email_addresses.map do |email_address|
-      next email_address unless @organization.matches_email_address?(email_address)
-      local = email_address.local
-      local.gsub!(/--/, '+')
-      map[local] || email_address
+  end
+
+  def canonicalize_email_address email_address
+    return email_address unless @organization.matches_email_address?(email_address)
+
+    local = email_address.local.gsub(/--/, '+')
+    host = email_address.domain.split('.').first
+
+    unless host == @organization.slug
+      local = local.split('+', 2).last
     end
+
+    # if found, convert to the canonical address format
+    # if not found, convert to the org (primary group) email address
+    return conversation_email_addresses_map[local] || organization_email_address_object
   end
 
   def formatted_email_addresses
     @formatted_email_addresses ||= as_address_objects(@conversation.formatted_email_addresses)
+  end
+
+  def conversation_email_addresses_map
+    @conversation_email_addresses_map ||= formatted_email_addresses.inject({}) do |hash, formatted_email_address|
+      hash.update formatted_email_address.local => formatted_email_address
+    end
   end
 
   def as_address_objects email_addresses
@@ -247,6 +244,10 @@ class ConversationMailer < Threadable::Mailer
 
   def has_many_groups
     @has_many_groups ||= @conversation.groups.count > 1
+  end
+
+  def organization_email_address_object
+    @organization_email_address_object ||= Mail::Address.new(@organization_email_address)
   end
 
   def truncate_with_ellipsis string, length = 21

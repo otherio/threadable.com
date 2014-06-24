@@ -55,6 +55,10 @@ class Threadable::Organization < Threadable::Model
     self.groups.primary.formatted_task_email_address
   end
 
+  def email_host
+    "#{email_address_username}.#{threadable.email_host}"
+  end
+
   def no_subdomain_email_address
     "#{email_address_username}@#{threadable.email_host}"
   end
@@ -91,7 +95,11 @@ class Threadable::Organization < Threadable::Model
 
   def matches_email_address? email_address
     email_address = Mail::Address.new(email_address) unless email_address.is_a? Mail::Address
-    if (Threadable::Class::EMAIL_HOSTS.values.include? email_address.domain) && (email_address.local.split(/(\+|--)/).first == slug)
+    domain = email_address.domain.split('.').last(2).join('.')
+    domain = 'localhost' if domain =~ /localhost$/ # for dev
+    host = email_address.domain.split('.').first
+    if (Threadable::Class::EMAIL_HOSTS.values.include? domain) &&
+      ( (email_address.local.split(/(\+|--)/).first == slug) || (host == slug) )
       return true
     end
     has_email_address? email_address

@@ -75,21 +75,21 @@ describe Threadable::Conversation do
         context 'and it is in the primary group' do
           let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
           it 'returns the organization email address' do
-            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing <raceteam+raceteam@localhost>']
+            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing <raceteam@raceteam.localhost>']
           end
         end
 
         context 'and there is one group' do
           let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
           it 'returns the group email address' do
-            expect(conversation.formatted_email_addresses).to eq ['"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>']
+            expect(conversation.formatted_email_addresses).to eq ['"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>']
           end
         end
 
         context 'and there are many groups' do
           let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
           it 'returns a list of all group email addresses' do
-            expect(conversation.formatted_email_addresses).to match_array ['"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>', '"UCSD Electric Racing: Fundraising" <raceteam+fundraising@localhost>']
+            expect(conversation.formatted_email_addresses).to match_array ['"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>', '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>']
           end
         end
       end
@@ -98,21 +98,21 @@ describe Threadable::Conversation do
         context 'and it is in the primary group' do
           let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
           it 'returns the primary group task email address' do
-            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>']
+            expect(conversation.formatted_email_addresses).to eq ['UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>']
           end
         end
 
         context 'and there is one group' do
           let(:conversation) { threadable.conversations.find_by_slug!(single_group_task) }
           it 'returns the group task email address' do
-            expect(conversation.formatted_email_addresses).to eq ['"UCSD Electric Racing: Electronics Tasks" <raceteam+electronics+task@localhost>']
+            expect(conversation.formatted_email_addresses).to eq ['"UCSD Electric Racing: Electronics Tasks" <electronics+task@raceteam.localhost>']
           end
         end
 
         context 'and there are many groups' do
           let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_task) }
           it 'returns a list of all group task email addresses' do
-            expect(conversation.formatted_email_addresses).to match_array ['"UCSD Electric Racing: Electronics Tasks" <raceteam+electronics+task@localhost>', '"UCSD Electric Racing: Fundraising Tasks" <raceteam+fundraising+task@localhost>']
+            expect(conversation.formatted_email_addresses).to match_array ['"UCSD Electric Racing: Electronics Tasks" <electronics+task@raceteam.localhost>', '"UCSD Electric Racing: Fundraising Tasks" <fundraising+task@raceteam.localhost>']
           end
         end
       end
@@ -120,13 +120,13 @@ describe Threadable::Conversation do
 
     describe '#email_addresses' do
       it 'returns just the email address component of the formatted address' do
-        expect(conversation.email_addresses).to eq ['raceteam+raceteam@localhost']
+        expect(conversation.email_addresses).to eq ['raceteam@raceteam.localhost']
       end
     end
 
     describe '#canonical_email_address' do
       it 'returns just the email address component of the canonical formatted address' do
-        expect(conversation.canonical_email_address).to eq 'raceteam+raceteam@localhost'
+        expect(conversation.canonical_email_address).to eq 'raceteam@raceteam.localhost'
       end
     end
 
@@ -134,13 +134,13 @@ describe Threadable::Conversation do
       context 'and it is in the primary group' do
         let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
         it 'returns the organization formatted email address' do
-          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam+raceteam@localhost>'
+          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam@raceteam.localhost>'
         end
 
         context 'and it is a task' do
           let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
           it 'returns the organization formatted task email address' do
-            expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing Tasks <raceteam+raceteam+task@localhost>'
+            expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>'
           end
         end
       end
@@ -148,14 +148,14 @@ describe Threadable::Conversation do
       context 'and there is one group' do
         let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
         it 'returns the group formatted email address' do
-          expect(conversation.canonical_formatted_email_address).to eq '"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>'
+          expect(conversation.canonical_formatted_email_address).to eq '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>'
         end
       end
 
       context 'and there are many groups' do
         let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
         it 'returns the organization formatted email address' do
-          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam+raceteam@localhost>'
+          expect(conversation.canonical_formatted_email_address).to eq 'UCSD Electric Racing <raceteam@raceteam.localhost>'
         end
       end
     end
@@ -164,13 +164,13 @@ describe Threadable::Conversation do
       context 'and it is in the primary group' do
         let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
         it 'returns the primary group list id' do
-          expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
+          expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam.raceteam.localhost>'
         end
 
         context 'and it is a task' do
           let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
           it 'returns the primary group list id' do
-            expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
+            expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam.raceteam.localhost>'
           end
         end
       end
@@ -178,14 +178,14 @@ describe Threadable::Conversation do
       context 'and there is one group' do
         let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
         it 'returns the group list id' do
-          expect(conversation.list_id).to eq '"UCSD Electric Racing: Electronics" <raceteam+electronics.localhost>'
+          expect(conversation.list_id).to eq '"UCSD Electric Racing: Electronics" <electronics.raceteam.localhost>'
         end
       end
 
       context 'and there are many groups' do
         let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
         it 'returns the primary group list id' do
-          expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam+raceteam.localhost>'
+          expect(conversation.list_id).to eq '"UCSD Electric Racing" <raceteam.raceteam.localhost>'
         end
       end
     end
@@ -194,13 +194,13 @@ describe Threadable::Conversation do
       context 'and it is in the primary group' do
         let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
         it 'returns the primary group list post address' do
-          expect(conversation.list_post_email_address).to eq 'raceteam+raceteam@localhost'
+          expect(conversation.list_post_email_address).to eq 'raceteam@raceteam.localhost'
         end
 
         context 'and it is a task' do
           let(:conversation) { threadable.conversations.find_by_slug!(primary_group_task) }
           it 'returns the primary group list post address' do
-            expect(conversation.list_post_email_address).to eq 'raceteam+raceteam@localhost'
+            expect(conversation.list_post_email_address).to eq 'raceteam@raceteam.localhost'
           end
         end
       end
@@ -208,14 +208,14 @@ describe Threadable::Conversation do
       context 'and there is one group' do
         let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
         it 'returns the group list post address' do
-          expect(conversation.list_post_email_address).to eq 'raceteam+electronics@localhost'
+          expect(conversation.list_post_email_address).to eq 'electronics@raceteam.localhost'
         end
       end
 
       context 'and there are many groups' do
         let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
         it 'returns the primary group list post address' do
-          expect(conversation.list_post_email_address).to eq 'raceteam+raceteam@localhost'
+          expect(conversation.list_post_email_address).to eq 'raceteam@raceteam.localhost'
         end
       end
     end
@@ -268,10 +268,10 @@ describe Threadable::Conversation do
       let(:conversation) { threadable.conversations.find_by_slug!(multiple_group_conversation) }
       it 'returns all the email addresses in all formats' do
         expect(conversation.all_email_addresses).to match_array [
-          '"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>',
-          '"UCSD Electric Racing: Fundraising" <raceteam+fundraising@localhost>',
-          'raceteam+electronics@localhost',
-          'raceteam+fundraising@localhost',
+          '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>',
+          '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>',
+          'electronics@raceteam.localhost',
+          'fundraising@raceteam.localhost',
         ]
       end
     end
