@@ -12,7 +12,7 @@ describe Threadable::IncomingEmail do
 
   let(:creator) { double(:creator, id: 1234) }
 
-  let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params, groups: [], organization: organization, creator: creator) }
+  let(:incoming_email_record){ double(:incoming_email_record, id: 8342, params: params, groups: [], organization: organization, creator: creator, parent_message: nil) }
   let(:incoming_email){ described_class.new(threadable, incoming_email_record) }
   let(:organization){ double(:organization, members: double(:members, find_by_user_id: member), subject_tag: 'foo', hold_all_messages?: false) }
   let(:member) { double(:member, role: :member)}
