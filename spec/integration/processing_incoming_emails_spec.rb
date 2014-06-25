@@ -679,6 +679,20 @@ describe "processing incoming emails" do
       let(:expected_parent_message){ expected_conversation.messages.latest }
       let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
 
+      context 'and the body is blank, but contains no commands' do
+        let(:body_html)    {'<img>'}
+        let(:body_plain)   {''}
+        let(:stripped_html){'<img>'}
+        let(:stripped_text){''}
+
+        let(:expected_message_subject) { subject }
+        let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
+
+        it 'delivers the message' do
+          validate! :delivered
+        end
+      end
+
       context 'but the creator exists but is not a organization member' do
         let(:from)         { 'Anil Kapoor <anil@sfhealth.example.com>' }
         let(:envelope_from){ '<anil@sfhealth.example.com>' }
@@ -773,7 +787,7 @@ describe "processing incoming emails" do
           let(:expected_conversation)          { expected_organization.conversations.find_by_slug('layup-body-carbon') }
           let!(:expected_parent_message)       { expected_conversation.messages.latest }
 
-          it 'delivers the email' do
+          it 'drops the email' do
             validate! :dropped
           end
         end
