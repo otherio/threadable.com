@@ -21,7 +21,7 @@ feature "Editing groups spec" do
 
     visit group_settings_url('raceteam', 'electronics')
 
-    fill_in "subjectTag", with: "cops"
+    fill_in "description", with: "cops"
     fill_in "color", with: "#aaa333"
 
     click_on "Update group settings"

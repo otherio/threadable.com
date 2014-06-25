@@ -24,7 +24,7 @@ feature "Adding groups spec" do
       click_on "Create new group"
     end
 
-    expect(page).to have_text '[Super-Tr] Super Troops'
+    expect(page).to have_text 'Super Troops super-troops@raceteam.'
 
     expect(organization.groups.all.map(&:name)).to include "Super Troops"
 
