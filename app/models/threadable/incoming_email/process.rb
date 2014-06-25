@@ -8,6 +8,7 @@ class Threadable::IncomingEmail::Process < MethodObject
 
     Threadable.transaction do
       @incoming_email.find_organization!
+      @incoming_email.find_parent_message!
       @incoming_email.find_groups!
       if @incoming_email.bounceable?
         bounce!
@@ -15,7 +16,6 @@ class Threadable::IncomingEmail::Process < MethodObject
       end
       @incoming_email.find_message!
       @incoming_email.find_creator!
-      @incoming_email.find_parent_message!
       @incoming_email.find_conversation!
 
       sign_in_as_creator!

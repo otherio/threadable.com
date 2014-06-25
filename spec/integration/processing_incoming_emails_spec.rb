@@ -404,6 +404,20 @@ describe "processing incoming emails" do
     it 'delivers the email' do
       validate! :delivered
     end
+
+    context 'when the primary group has been renamed' do
+      let(:expected_sent_email_to)                 { ['main@raceteam.localhost'] }
+      let(:expected_sent_email_reply_to)           { "UCSD Electric Racing <main@raceteam.localhost>" }
+      let(:expected_sent_email_smtp_envelope_from) { 'main@raceteam.localhost' }
+
+      before do
+        expected_organization.groups.primary.update(email_address_tag: 'main')
+      end
+
+      it 'delivers the email' do
+        validate! :delivered
+      end
+    end
   end
 
   context 'when the same message is processed twice' do
@@ -431,14 +445,46 @@ describe "processing incoming emails" do
     end
   end
 
-
   context "when the recipient email address matches an organization" do
     let(:recipient){ expected_organization.email_address }
     let(:to)       { expected_organization.formatted_email_address }
 
-    let(:expected_organization)      { threadable.organizations.find_by_slug!('raceteam') }
+    let(:expected_organization) { threadable.organizations.find_by_slug!('raceteam') }
     let(:expected_sent_email_to){ [recipient] }
     let(:expected_sent_email_cc){ '' }
+
+
+    context "but it is to a group that does not exist" do
+      let(:recipient){ 'foo@raceteam.localhost' }
+      let(:to)       { 'UCSD Electric Racing: Foo <foo@raceteam.localhost>' }
+
+      let(:expected_organization)  { threadable.organizations.find_by_slug!('raceteam') }
+
+      context 'with no parent message' do
+        let(:expected_parent_message){ nil }
+        let(:expected_conversation)  { nil }
+        let(:expected_creator)       { nil }
+        it 'bounces the incoming email' do
+          validate! :bounced
+        end
+      end
+
+      context 'with a parent message' do
+        let(:in_reply_to){ expected_parent_message.message_id_header }
+        let(:references) { '' }
+
+        let(:expected_conversation)  { expected_organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }
+        let(:expected_parent_message){ expected_conversation.messages.latest }
+        let(:expected_sent_email_to){ ['raceteam@raceteam.localhost'] }
+        let(:expected_email_recipients){ ["alice@ucsd.example.com", "tom@ucsd.example.com", "bob@ucsd.example.com", "nadya@ucsd.example.com", "lilith@sfhealth.example.com"] }
+        let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
+
+        it 'delivers the mail' do
+          validate! :delivered
+        end
+      end
+    end
+
 
     context 'the subject contains only stuff that is stripped and spaces' do
       let(:subject) { '[RaceTeam] ' }
@@ -748,14 +794,18 @@ describe "processing incoming emails" do
       end
     end
 
-    context 'the recipient email address contains one group that do not exist' do
+    context 'the recipient email address contains one group that does not exist' do
       let(:recipient) { 'raceteam+pandapoop@localhost' }
       let(:to)        { 'raceteam+pandapoop@localhost' }
 
-      let(:expected_groups){ ['UCSD Electric Racing'] }
-      let(:expected_sent_email_to){ ["raceteam@raceteam.localhost"] }
-      it 'delivers the email to the primary group' do
-        validate! :delivered
+      let(:expected_groups)        { nil }
+      let(:expected_conversation)  { nil }
+      let(:expected_sent_email_to) { nil }
+      let(:expected_parent_message){ nil }
+      let(:expected_creator)       { nil }
+
+      it 'bounces the message' do
+        validate! :bounced
       end
     end
 
