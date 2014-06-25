@@ -25,7 +25,7 @@ feature "Group settings" do
 
     click_on "Update group settings"
 
-    expect(page).to have_text '[cops] Fundraising'
+    expect(page).to have_text 'Fundraising fundraising@raceteam.'
     expect(current_url).to eq conversations_url('raceteam', 'fundraising')
 
     fundraising = current_user.organizations.find_by_slug!('raceteam').groups.find_by_slug!('fundraising')
