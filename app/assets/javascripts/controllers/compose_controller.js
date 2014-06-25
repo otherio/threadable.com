@@ -20,8 +20,14 @@ Threadable.ComposeController = Ember.Controller.extend({
   }.property('allGroups.length', 'groups.length'),
 
   addGroup: function(group) {
-    var groups = this.get('groups');
-    if (typeof group === 'string') group = this.get('organization.groups').findBy('slug', group);
+    var group, groups = this.get('groups');
+    if (typeof group === 'string') {
+      if(group == 'my') {
+        group = this.get('organization.groups').findBy('primary', true);
+      } else {
+        group = this.get('organization.groups').findBy('slug', group);
+      }
+    }
     if (!group) return;
     if (groups.indexOf(group) === -1) groups.pushObject(group);
   },
