@@ -21,7 +21,7 @@ namespace :db do
   namespace :backup do
     backup = -> environment do
       Bundler.with_clean_env do
-        system("heroku pgbackups:capture --app threadable-#{environment}")
+        system("heroku pgbackups:capture --expire --app threadable-#{environment}")
       end
     end
     desc "tells heroku to backup staging database"
