@@ -112,7 +112,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def bounceable?
-    organization.nil? || !subject_valid? || !groups_valid?
+    organization.nil? || !subject_valid? || !(groups_valid? || reply?)
   end
 
   def holdable?
@@ -137,7 +137,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def groups_valid?
-    groups.map(&:email_address_tag).to_set.subset? email_address_tags.push(organization.groups.primary.email_address_tag).to_set
+    groups.present? && (groups.map(&:email_address_tag).to_set.subset? email_address_tags.push(organization.groups.primary.email_address_tag).to_set)
   end
 
   def body_has_content?
@@ -240,9 +240,10 @@ class Threadable::IncomingEmail < Threadable::Model
       local, host = recipient.strip_non_ascii.downcase.split('@')
       local_components = local.split(/(?:\+|--)/) - SPECIAL_EMAIL_ADDRESS_TAGS
       if threadable.email_hosts.include?(host)
-        @email_address_tags = local_components[1..-1]
+        local_components[1..-1]
       else
-        @email_address_tags = [local_components[0]]
+        # the whole local part
+        [local_components[0]]
       end
     end
   end
@@ -255,8 +256,11 @@ class Threadable::IncomingEmail < Threadable::Model
 
   def find_groups!
     return self if groups.present? || organization.nil?
-    self.groups = organization.groups.find_by_email_address_tags(email_address_tags)
-    self.groups = [organization.groups.primary] unless self.groups.present?
+    if email_address_tags.present?
+      self.groups = organization.groups.find_by_email_address_tags(email_address_tags)
+    else
+      self.groups = [organization.groups.primary]
+    end
     return self
   end
 
