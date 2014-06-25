@@ -38,7 +38,7 @@ feature "Viewing conversations and tasks" do
     when :my_conversations
       within_element('the sidebar'){ click_on 'My Conversations' }
     when Threadable::Group
-      if group.members.all.map(&:id).include? current_user.id
+      if destination.members.all.map(&:id).include? current_user.id
         within_element('my groups'){ click_on "#{destination.name}" }
       else
         within_element('other groups'){ click_on "#{destination.name}" }
