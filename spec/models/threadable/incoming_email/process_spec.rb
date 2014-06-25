@@ -38,6 +38,7 @@ describe Threadable::IncomingEmail::Process do
       incoming_email.stub :processed? => false
       expect(Threadable).to receive(:transaction).and_yield
       expect(incoming_email).to receive(:find_organization!)
+      expect(incoming_email).to receive(:find_parent_message!)
       expect(incoming_email).to receive(:find_groups!)
     end
     context 'and the organization or groups are not found' do
@@ -55,7 +56,6 @@ describe Threadable::IncomingEmail::Process do
         expect(incoming_email).to receive(:bounceable?).twice.and_return(false)
         expect(incoming_email).to receive(:find_message!)
         expect(incoming_email).to receive(:find_creator!)
-        expect(incoming_email).to receive(:find_parent_message!)
         expect(incoming_email).to receive(:find_conversation!)
         expect(incoming_email).to receive(:held?).and_return(false)
         expect(incoming_email).to receive(:bounced?).and_return(false)
