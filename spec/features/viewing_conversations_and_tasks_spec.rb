@@ -38,7 +38,11 @@ feature "Viewing conversations and tasks" do
     when :my_conversations
       within_element('the sidebar'){ click_on 'My Conversations' }
     when Threadable::Group
-      within_element('the sidebar'){ click_on "#{destination.name}" }
+      if group.members.all.map(&:id).include? current_user.id
+        within_element('my groups'){ click_on "#{destination.name}" }
+      else
+        within_element('other groups'){ click_on "#{destination.name}" }
+      end
     when :conversations
       within_element('the conversations pane'){ click_on 'Conversations' }
     when :muted
@@ -148,7 +152,7 @@ feature "Viewing conversations and tasks" do
     groups = conversation.groups
     return [].to_set if groups.count == 1 && groups.all.first.primary?
     groups.all.map do |group|
-      "#{group.name}" if group != current_group
+      group.name if group != current_group
     end.compact.to_set
   end
 
