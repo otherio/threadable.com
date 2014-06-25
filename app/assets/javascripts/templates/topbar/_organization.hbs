@@ -4,11 +4,16 @@
   </a>
 
   <span class="current-org-and-group">
-    {{#if subjectTag}}
-      <span>[{{subjectTag}}]</span>
-    {{/if}}
     {{#if group}}
-      <span>{{group.name}}</span>
+      {{group.name}}
+      <span class="group-email-address">
+        {{group.emailAddress}}
+      </span>
+    {{else}}
+      {{organization.name}}: My Conversations
+      <span class="group-email-address">
+        {{organization.emailAddress}}
+      </span>
     {{/if}}
   </span>
 </div>
