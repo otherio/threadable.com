@@ -23,11 +23,11 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
   }.property('organization.model','currentUser.organizations'),
 
   myGroups: function() {
-    return this.get('organization.groups').filterBy('currentUserIsAMember', true);
+    return this.get('organization.groups').filterBy('currentUserIsAMember', true).sort(this.primaryGroupFirst);
   }.property('organization.groups.@each.currentUserIsAMember'),
 
   otherGroups: function() {
-    return this.get('organization.groups').filterBy('currentUserIsAMember', false);
+    return this.get('organization.groups').filterBy('currentUserIsAMember', false).sort(this.primaryGroupFirst);
   }.property('organization.groups.@each.currentUserIsAMember'),
 
   actions: {
@@ -63,6 +63,15 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
     Ember.run.later(function() {
       $('.disable-all-transitions').removeClass('disable-all-transitions');
     }, 200); // this should match the animation length
+  },
+
+  primaryGroupFirst: function(a,b) {
+    if(b.get('primary')) {
+      return 1;
+    } else if (a.get('primary')) {
+      return -1;
+    }
+    return b.get('name') < a.get('name') ? 1 : -1;
   }
 
 });
