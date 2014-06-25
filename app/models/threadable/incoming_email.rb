@@ -129,7 +129,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def droppable?
-    !parent_message.nil? && !body_has_content?
+    !parent_message.nil? && command_only_message?
   end
 
   def subject_valid?
@@ -140,13 +140,15 @@ class Threadable::IncomingEmail < Threadable::Model
     groups.present? && (groups.map(&:email_address_tag).to_set.subset? email_address_tags.push(organization.groups.primary.email_address_tag).to_set)
   end
 
-  def body_has_content?
-    body = StripThreadableContentFromEmailMessageBody.call(stripped_plain)
-    lines = body[0..1024].split(/\n/)
+  def command_only_message?
+    body = stripped_plain[0..1024]
+    lines = body.split(/\n/)
+
+    return false unless body =~ /^\s*&(done|undone|add|remove|mute|unmute)/m
     lines.reject! do |line|
       line =~ /^\s*&(done|undone|add|remove|mute|unmute)/
     end
-    true if lines.join('') =~ /\S/m
+    ! (lines.join('') =~ /\S/m)
   end
 
   def subject
