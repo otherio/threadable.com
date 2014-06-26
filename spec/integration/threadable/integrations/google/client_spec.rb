@@ -72,7 +72,7 @@ describe Threadable::Integrations::Google::Client do
 
     it 'returns a Google::APIClient object' do
       client = described_module.client_for(alice)
-      expect(client).to receive(:discovered_api).with('admin', 'groups_settings_v1').and_return(api_description)
+      expect(client).to receive(:discovered_api).with('groupssettings').and_return(api_description)
       expect(described_module.groups_settings_api).to eq api_description
     end
 
