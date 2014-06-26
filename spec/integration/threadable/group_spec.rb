@@ -83,6 +83,11 @@ describe Threadable::Group do
       let(:google_directory_api) { double(:google_directory_api, groups: directory_api_groups)}
       let(:directory_api_groups) { double(:directory_api_groups, get: 'GET API DESCRIPTION', insert: 'INSERT API DESCRIPTION') }
 
+      let(:google_groups_settings_api) { double(:google_groups_settings_api, groups: groups_settings_api_groups)}
+      let(:groups_settings_api_groups) { double(:groups_settings_api_groups, update: 'SETTINGS UPDATE API DESCRIPTION') }
+
+      let(:api_settings_response) { double(:api_response, status: 200, body: 'SETTINGS RESPONSE JSON') }
+
       before do
         GoogleSyncWorker.sidekiq_options unique: false
 
@@ -101,7 +106,13 @@ describe Threadable::Group do
         organization.google_user = alice
         expect(group).to receive(:client_for).with(alice_as_user).and_return(google_client)
         group.stub(:directory_api).and_return(google_directory_api)
+        group.stub(:groups_settings_api).and_return(google_groups_settings_api)
         expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
+        google_client.stub(:execute).with(
+          api_method: 'SETTINGS UPDATE API DESCRIPTION',
+          parameters: anything,
+          body_object: anything,
+        ).and_return(api_settings_response)
         drain_background_jobs!
       end
 
@@ -112,8 +123,18 @@ describe Threadable::Group do
       context 'when the group can be found on their google apps domain' do
         let(:api_response) { double(:api_response, status: 200, body: 'RESPONSE JSON') }
 
-        it 'enables sync, sets the sync user, and synchronizes the users' do
+        it 'enables sync, sets the sync user, sets permissions, and synchronizes the users' do
           expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(anything, group)
+
+          expect(google_client).to receive(:execute).with(
+            api_method: 'SETTINGS UPDATE API DESCRIPTION',
+            parameters: {'groupUniqueId' => 'electronics@foo.com' },
+            body_object: {
+              "whoCanViewMembership" => "ALL_IN_DOMAIN_CAN_VIEW",
+              "whoCanViewGroup"      => "ALL_IN_DOMAIN_CAN_VIEW",
+              "whoCanPostMessage"    => "ALL_IN_DOMAIN_CAN_POST",
+            }
+          ).and_return(api_settings_response)
 
           group.google_sync = true
           drain_background_jobs!
@@ -158,8 +179,18 @@ describe Threadable::Group do
             and_return(api_insert_response)
         end
 
-        it 'creates the group, enables sync, and sets the sync user' do
+        it 'creates the group, enables sync, sets permissions, and sets the sync user' do
           expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(anything, group)
+
+          expect(google_client).to receive(:execute).with(
+            api_method: 'SETTINGS UPDATE API DESCRIPTION',
+            parameters: {'groupUniqueId' => 'electronics@foo.com' },
+            body_object: {
+              "whoCanViewMembership" => "ALL_IN_DOMAIN_CAN_VIEW",
+              "whoCanViewGroup"      => "ALL_IN_DOMAIN_CAN_VIEW",
+              "whoCanPostMessage"    => "ALL_IN_DOMAIN_CAN_POST",
+            }
+          ).and_return(api_settings_response)
 
           group.google_sync = true
           drain_background_jobs!
@@ -180,6 +211,15 @@ describe Threadable::Group do
 
         it 'raises an exception' do
           expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Searching for google group failed (500): (no error message found)'
+        end
+      end
+
+      context 'when searching for the group fails' do
+        let(:api_response) { double(:api_response, status: 200, body: 'RESPONSE JSON') }
+        let(:api_settings_response) { double(:api_settings_response, status: 500, body: 'SETTINGS RESPONSE JSON') }
+
+        it 'raises an exception' do
+          expect{ group.google_sync = true }.to raise_error Threadable::ExternalServiceError, 'Updating permissions for proxy google group failed (500): (no error message found)'
         end
       end
     end

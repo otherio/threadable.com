@@ -67,6 +67,20 @@ describe Threadable::Integrations::Google::Client do
     end
   end
 
+  describe '.groups_settings_api' do
+    let(:api_description) { double(:api_description) }
+
+    it 'returns a Google::APIClient object' do
+      client = described_module.client_for(alice)
+      expect(client).to receive(:discovered_api).with('admin', 'groups_settings_v1').and_return(api_description)
+      expect(described_module.groups_settings_api).to eq api_description
+    end
+
+    it 'fails when no client has been initialized' do
+      expect{ described_module.groups_settings_api }.to raise_error Threadable::ExternalServiceError, 'No client present'
+    end
+  end
+
   describe '.extract_error_message' do
     let(:insert_response) { double(:insert_response, status: 500, body: insert_response_body) }
     let(:insert_response_body) { "{\n \"error\": {\n  \"errors\": [\n   {\n    \"domain\": \"global\",\n    \"reason\": \"notFound\",\n    \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n   }\n  ],\n  \"code\": 404,\n  \"message\": \"Resource Not Found: raindrift+hey@gmail.com\"\n }\n}\n" }
