@@ -87,6 +87,18 @@ class Threadable::Group < Threadable::Model
       raise Threadable::ExternalServiceError, "Searching for google group failed (#{group_response.status}): #{extract_error_message(group_response)}"
     end
 
+    settings_response = google_client.execute(
+      api_method: groups_settings_api.groups.update,
+      parameters: {'groupUniqueId' => alias_email_address_object.address},
+      body_object: {
+        "whoCanViewMembership" => "ALL_IN_DOMAIN_CAN_VIEW",
+        "whoCanViewGroup"      => "ALL_IN_DOMAIN_CAN_VIEW",
+        "whoCanPostMessage"    => "ALL_IN_DOMAIN_CAN_POST",
+      }
+    )
+
+    raise Threadable::ExternalServiceError, "Updating permissions for proxy google group failed (#{settings_response.status}): #{extract_error_message(settings_response)}" unless settings_response.status == 200
+
     group_record.update_attributes(google_sync: true)
 
     GoogleSyncWorker.perform_async(threadable.env, organization.id, self.id)

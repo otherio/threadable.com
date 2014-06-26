@@ -25,6 +25,11 @@ module Threadable::Integrations::Google::Client
     @google_directory_api ||= @google_api_client.discovered_api('admin', 'directory_v1')
   end
 
+  def groups_settings_api
+    raise(Threadable::ExternalServiceError, 'No client present') unless @google_api_client
+    @google_groups_settings_api ||= @google_api_client.discovered_api('groupssettings')
+  end
+
   def extract_error_message response
     begin
       JSON.parse(response.body)['error']['message']
