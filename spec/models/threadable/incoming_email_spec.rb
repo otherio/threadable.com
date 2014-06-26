@@ -419,13 +419,13 @@ describe Threadable::IncomingEmail do
       before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
 
       context 'and it contains only commands and whitespace' do
-        before { expect(incoming_email).to receive(:body_has_content?).and_return(false) }
+        before { expect(incoming_email).to receive(:command_only_message?).and_return(true) }
 
         it { should be_true }
       end
 
       context 'and it has non-command content' do
-        before { expect(incoming_email).to receive(:body_has_content?).and_return(true) }
+        before { expect(incoming_email).to receive(:command_only_message?).and_return(false) }
 
         it { should be_false }
       end
@@ -502,8 +502,8 @@ describe Threadable::IncomingEmail do
     end
   end
 
-  describe '#body_has_content?' do
-    subject{ incoming_email.body_has_content? }
+  describe '#command_only_message?' do
+    subject{ incoming_email.command_only_message? }
 
     before do
       incoming_email.stub(:stripped_plain).and_return(body)
@@ -516,21 +516,14 @@ describe Threadable::IncomingEmail do
 
     context 'with a body that contains only commands and random whitespace' do
       let(:body) { '&add Maria Rivera\n\n \n' }
-      it { should be_false }
-    end
-
-    context 'with a body that contains commands and threadable tips' do
-      let(:body){
-        %(&done\n)
-      }
-      it { should be_false }
+      it { should be_true }
     end
 
     context 'with a body that contains commands and real live text' do
       let(:body){
         %(&done\n\n Hello Seattle, I am a mountaineer, in the hills and highlands. I fall asleep in hospital parking lots.)
       }
-      it { should be_true }
+      it { should be_false }
     end
   end
 
