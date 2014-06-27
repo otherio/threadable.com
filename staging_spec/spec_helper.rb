@@ -17,7 +17,7 @@ Pathname.new(File.expand_path('../support', __FILE__)).children.each do |path|
   require path
 end
 
-Capybara.app_host = 'http://staging.threadable.com'
+Capybara.app_host = 'http://threadablestaging.com'
 
 RSpec.configure do |config|
   config.order = "random"
