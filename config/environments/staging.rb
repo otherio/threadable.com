@@ -7,8 +7,13 @@ Threadable::Application.configure do
   config.log_level = :debug
 
   config.action_mailer.smtp_settings.merge!(
-    :user_name => 'postmaster@staging.threadable.com',
-    :domain => 'staging.threadable.com',
+    :user_name => 'postmaster@threadablestaging.com',
+    :password => Threadable.config('mailgun')['password'],
+    :domain => 'threadablestaging.com',
+    :address => 'smtp.mailgun.org',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
   )
 
   # TODO: should live in a yaml file or ENV or something someday
