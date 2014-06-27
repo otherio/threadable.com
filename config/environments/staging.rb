@@ -20,7 +20,7 @@ Threadable::Application.configure do
   config.token_key = 'staging key so there'
 
   # for scheduled jobs, which have no web request
-  config.default_host = 'staging.threadable.com'
+  config.default_host = 'threadablestaging.com'
   config.default_protocol = 'http'
   config.default_port = 80
 end
