@@ -11,6 +11,7 @@
       %th Name
       %th Email sddress
       %th Gets email?
+      %th Confirmed?
       %th Role
       %th Actions
   %tbody
@@ -21,6 +22,7 @@
             = link_to member.name, admin_edit_user_path(member)
           %td= member.email_address
           %td= member.gets_email? ? 'yes' : 'no'
+          %td= member.confirmed? ? 'yes' : 'no'
           %td= member.role
           %td
             = link_to 'edit user', admin_edit_user_path(member)
