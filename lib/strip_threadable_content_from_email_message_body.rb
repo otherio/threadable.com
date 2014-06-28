@@ -4,7 +4,7 @@ class StripThreadableContentFromEmailMessageBody < MethodObject
   REMOVE_CONTROLS_DIV_REGEXP = %r(#{div_strategy}.*?#{div_strategy})msu
 
   # http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454
-  REMOVE_OPEN_TRACKER_REGEXP = %r{\<img width="1px" height="1px" alt="" src="http://email\.(staging\.|)threadable.com/[^>]+">}msu
+  REMOVE_OPEN_TRACKER_REGEXP = %r{\<img width="1px" height="1px" alt="" src="http://email\.(staging\.|)threadable(staging|).com/[^>]+">}msu
 
   REMOVE_CONTROLS_HEADER_IMG_REGEXP = %r{\<img[^<]+superable-specialable-threadable-dividerable-headerable[^>]+\>.*?\<img[^<]+superable-specialable-threadable-dividerable-headerable[^>]+\>}msu
   REMOVE_CONTROLS_FOOTER_IMG_REGEXP = %r{\<img[^<]+superable-specialable-threadable-dividerable-footerable[^>]+\>.*?\<img[^<]+superable-specialable-threadable-dividerable-footerable[^>]+\>}msu

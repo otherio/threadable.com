@@ -187,8 +187,6 @@ class ConversationMailer < Threadable::Mailer
 
   def missing_threadable_addresses header_addresses
     header_addresses = header_addresses.map(&:address)
-
-    formatted_email_addresses = @conversation.formatted_email_addresses.map{ |addr| Mail::Address.new(addr) }
     formatted_email_addresses.map{ |addr| header_addresses.include?(addr.address) ? nil : addr }.compact
   end
 

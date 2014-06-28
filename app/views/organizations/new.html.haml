@@ -47,7 +47,7 @@
             = f.input :organization_name,                   placeholder: 'Organization name', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
           .uk-form-row.email-address-username
             = f.input :email_address_username, as: :string, placeholder: 'address',           input_html: {class: 'uk-width-1-1 uk-form-large', maxlength: 30}, label: false, required: true
-            %span @threadable.com
+            %span @[your-organization].threadable.com
 
       %section.creator
         - if signed_in?
