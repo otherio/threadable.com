@@ -38,4 +38,17 @@ describe Threadable::Organization::Members do
     end
   end
 
+  describe '#current_member' do
+    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+    end
+
+    it 'returns the current group member' do
+      expect(members.current_member).to eq alice
+      expect(members.current_member).to be_a Threadable::Organization::Member
+    end
+  end
+
 end
