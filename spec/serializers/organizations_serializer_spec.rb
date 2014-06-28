@@ -4,6 +4,7 @@ describe OrganizationsSerializer do
 
   let(:raceteam) { threadable.organizations.find_by_slug!('raceteam') }
   let(:sfhealth) { threadable.organizations.find_by_slug!('sfhealth') }
+  let(:alice)    { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
 
   before do
     sign_in_as 'alice@ucsd.example.com'
@@ -11,7 +12,6 @@ describe OrganizationsSerializer do
 
   context 'when given a single record' do
     let(:payload){ raceteam }
-    let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
     let(:expected_key){ :organization }
 
     before do
@@ -58,6 +58,12 @@ describe OrganizationsSerializer do
   context 'when given a collection of records' do
     let(:payload){ [raceteam,sfhealth] }
     let(:expected_key){ :organizations }
+
+    before do
+      # you have to be a member of an org to list its groups
+      sfhealth.members.add(email_address: 'alice@ucsd.example.com')
+    end
+
     it do
       should eq [
         {
@@ -81,7 +87,7 @@ describe OrganizationsSerializer do
           google_user: nil,
 
           can_remove_non_empty_group:   true,
-          can_be_google_user:          true,
+          can_be_google_user:           true,
           can_change_settings:          true,
         },{
           id:                sfhealth.id,
@@ -104,7 +110,7 @@ describe OrganizationsSerializer do
           google_user: nil,
 
           can_remove_non_empty_group:   false,
-          can_be_google_user:          false,
+          can_be_google_user:           false,
           can_change_settings:          false,
         }
       ]
