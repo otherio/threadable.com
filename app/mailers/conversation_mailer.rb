@@ -103,7 +103,7 @@ class ConversationMailer < Threadable::Mailer
     to = to_addresses.map(&:to_s).join(', ').presence || nil
     cc = cc_addresses.map(&:to_s).join(', ').presence || nil
 
-    to ||= @conversation.canonical_formatted_email_address
+    to ||= @conversation.formatted_email_addresses
 
     if dmarc_verified
       from = from_address
@@ -142,7 +142,7 @@ class ConversationMailer < Threadable::Mailer
   private
 
   def reply_to_address
-    return @conversation.canonical_formatted_email_address if @recipient.munge_reply_to?
+    return @conversation.formatted_email_addresses if @recipient.munge_reply_to?
     return from_address.to_s unless dmarc_verified
     nil
   end

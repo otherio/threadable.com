@@ -580,12 +580,14 @@ describe "processing incoming emails" do
             expected_organization.groups.find_by_slug!('electronics').update(hold_messages: false)
           end
 
-          let(:expected_sent_email_cc) { from }
-          let(:expected_conversation)  { expected_organization.conversations.latest }
-          let(:expected_creator)       { threadable.users.find_by_email_address(sender) }
-          let(:expected_groups)        { ['Electronics', 'Fundraising'] }
-          let(:expected_email_recipients) { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com"] }
-          let(:expected_sent_email_to) { Set["electronics@raceteam.localhost", "fundraising@raceteam.localhost"] }
+          let(:expected_sent_email_cc)       { from }
+          let(:expected_conversation)        { expected_organization.conversations.latest }
+          let(:expected_creator)             { threadable.users.find_by_email_address(sender) }
+          let(:expected_groups)              { ['Electronics', 'Fundraising'] }
+          let(:expected_email_recipients)    { ["alice@ucsd.example.com", "tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com"] }
+          let(:expected_sent_email_to)       { Set["electronics@raceteam.localhost", "fundraising@raceteam.localhost"] }
+          let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>, "UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>' }
+
           it 'delivers the email' do
             validate! :delivered
           end
@@ -830,10 +832,11 @@ describe "processing incoming emails" do
       let(:recipient)    { 'raceteam+electronics+fundraising@localhost' }
       let(:to)           { '"UCSD Electric Racing: Electronics" <raceteam+electronics+fundraising@localhost>' }
 
-      let(:expected_creator)         { threadable.users.find_by_email_address!(sender) }
-      let(:expected_email_recipients){ ["tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com"] }
-      let(:expected_groups)          { ['Electronics', 'Fundraising'] }
-      let(:expected_sent_email_to)   { ["electronics@raceteam.localhost", "fundraising@raceteam.localhost"].to_set }
+      let(:expected_creator)             { threadable.users.find_by_email_address!(sender) }
+      let(:expected_email_recipients)    { ["tom@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com"] }
+      let(:expected_groups)              { ['Electronics', 'Fundraising'] }
+      let(:expected_sent_email_to)       { ["electronics@raceteam.localhost", "fundraising@raceteam.localhost"].to_set }
+      let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>, "UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
 
       it "delivers the message to only those groups' members" do
         validate! :delivered
@@ -843,6 +846,7 @@ describe "processing incoming emails" do
         let(:recipient)    { 'raceteam+electronics@localhost, raceteam+fundraising@localhost' }
         let(:posted_attachments) { Set.new() }
         let(:check_attachments) { false }
+        let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>, "UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
 
         it "creates two incoming emails and delivers the message to only those groups' members" do
           # we are asserting on the contents of the second email, but there is only one message.
@@ -924,7 +928,9 @@ describe "processing incoming emails" do
           let(:expected_groups)              { ['Electronics', 'Fundraising'] }
           let(:expected_sent_email_list_id)  { '"UCSD Electric Racing" <raceteam.raceteam.localhost>' }
           let(:expected_sent_email_list_post){ "<mailto:raceteam@raceteam.localhost>, <#{compose_conversation_url(expected_organization, 'my')}>" }
-          let(:expected_sent_email_subject) { "Re: [RaceTeam] OMG guys I love threadable!" }
+          let(:expected_sent_email_subject)  { "Re: [RaceTeam] OMG guys I love threadable!" }
+          let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>, "UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
+
           it 'adds the new groups to the conversation' do
             validate! :delivered
           end
@@ -1294,7 +1300,7 @@ describe "processing incoming emails" do
       let(:expected_sent_email_to){ ['electronics@raceteam.localhost'] }
       let(:expected_sent_email_cc){ '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
       let(:expected_groups)       { ['Electronics', 'Fundraising'] }
-      let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@raceteam.localhost>' }
+      let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>, "UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
       let(:expected_email_recipients)              { ["alice@ucsd.example.com", "bethany@ucsd.example.com", "nadya@ucsd.example.com", "tom@ucsd.example.com"] }
       let(:expected_sent_email_smtp_envelope_from) { 'raceteam@raceteam.localhost' }
 
@@ -1311,7 +1317,7 @@ describe "processing incoming emails" do
       let(:expected_sent_email_to){ ['electronics@raceteam.localhost'] }
       let(:expected_sent_email_cc){ 'UCSD Electric Racing <raceteam@raceteam.localhost>' }
       let(:expected_groups)       { ['Electronics', 'UCSD Electric Racing'] }
-      let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@raceteam.localhost>' }
+      let(:expected_sent_email_reply_to)           { 'UCSD Electric Racing <raceteam@raceteam.localhost>, "UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>' }
       let(:expected_email_recipients)              { ["alice@ucsd.example.com", "bethany@ucsd.example.com", "bob@ucsd.example.com", "lilith@sfhealth.example.com", "nadya@ucsd.example.com", "tom@ucsd.example.com"] }
       let(:expected_sent_email_smtp_envelope_from) { 'raceteam@raceteam.localhost' }
 

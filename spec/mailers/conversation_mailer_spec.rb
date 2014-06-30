@@ -14,7 +14,7 @@ describe ConversationMailer do
     let(:mail){ ConversationMailer.new(threadable).generate(:conversation_message, organization, message, recipient) }
     let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
 
-    let(:expected_to           ){ organization.task_email_address }
+    let(:expected_to           ){ [organization.task_email_address] }
     let(:expected_cc           ){ '' }
     let(:expected_from         ){ message.from }
     let(:expected_envelope_to  ){ recipient.email_address }
@@ -37,7 +37,7 @@ describe ConversationMailer do
       mail.subject.should include conversation.subject
       mail.subject.scan('RaceTeam').size.should == 1
 
-      mail.to.should                    == [expected_to]
+      mail.to.should                    match_array expected_to
       mail.header['From'].to_s.should   == expected_from
       mail.smtp_envelope_to.should      == [expected_envelope_to]
       mail.smtp_envelope_from.should    == expected_envelope_from
@@ -107,6 +107,20 @@ describe ConversationMailer do
       end
       let(:expected_reply_to) { '' }
       it "should set the from address as the organization instead of the sender" do
+        validate_mail!
+      end
+    end
+
+    context 'when the conversation is in multiple groups' do
+      let(:expected_reply_to) { 'UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>, "UCSD Electric Racing: Fundraising Tasks" <fundraising+task@raceteam.localhost>' }
+      let(:fundraising) { organization.groups.find_by_slug('fundraising') }
+      let(:expected_to           ){ conversation.email_addresses }
+
+      before do
+        conversation.groups.add fundraising
+      end
+
+      it "puts both groups in the reply-to" do
         validate_mail!
       end
     end

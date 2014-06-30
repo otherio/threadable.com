@@ -198,7 +198,6 @@ FixtureBuilder.build do
 
     remove_conversation_from_group  @get_a_new_soldering_iron, @primary_group
     remove_conversation_from_group  @get_some_4_gauge_wire, @primary_group
-    remove_conversation_from_group  @get_some_4_gauge_wire, @primary_group
   end
 
   as 'yan@ucsd.example.com' do
