@@ -62,7 +62,7 @@ class MembershipMailer < Threadable::Mailer
 
     mail_params = {
       to:      @recipient.formatted_email_address,
-      subject: "I added you to +#{group.name} on #{organization.name}",
+      subject: "I added you to #{group.name} on #{organization.name}",
     }.merge(dmarc_aware_headers(@sender.formatted_email_address))
 
     email = mail(mail_params)
@@ -75,7 +75,7 @@ class MembershipMailer < Threadable::Mailer
 
     mail_params = {
       to:      @recipient.formatted_email_address,
-      subject: "I removed you from +#{group.name} on #{organization.name}",
+      subject: "I removed you from #{group.name} on #{organization.name}",
     }.merge(dmarc_aware_headers(@sender.formatted_email_address))
 
     email = mail(mail_params)

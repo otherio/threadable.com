@@ -1,6 +1,6 @@
 %p
   I added you to the
-  = link_to "+#{@group.name}", conversations_url(@organization, @group)
+  = link_to @group.name, conversations_url(@organization, @group)
   group in the
   = link_to @organization.name, conversations_url(@organization, 'my')
   organization on Threadable.
@@ -12,7 +12,7 @@
 
 %p
   If you don't want to be in the
-  = link_to "+#{@group.name}", conversations_url(@organization, @group)
+  = link_to @group.name, conversations_url(@organization, @group)
   group, you can
   = link_to 'click here to leave', email_action_link(@group, @recipient, "leave")
 

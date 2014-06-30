@@ -89,11 +89,11 @@ describe MembershipMailer do
     let(:mail){ MembershipMailer.new(threadable).generate(:added_to_group_notice, organization, group, sender, member) }
 
     it "should return the expected message" do
-      expect(mail.subject ).to eq "I added you to +#{group.name} on #{organization.name}"
+      expect(mail.subject ).to eq "I added you to #{group.name} on #{organization.name}"
       expect(mail.to      ).to eq ['tom@ucsd.example.com']
       expect(mail.from    ).to eq [sender.email_address.to_s]
       expect(text_part    ).to include 'This message was automatically generated'
-      expect(text_part    ).to include %(I added you to the +#{group.name} group)
+      expect(text_part    ).to include %(I added you to the #{group.name} group)
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include conversations_url(organization, group)
 
@@ -119,11 +119,11 @@ describe MembershipMailer do
     let(:mail){ MembershipMailer.new(threadable).generate(:removed_from_group_notice, organization, group, sender, member) }
 
     it "should return the expected message" do
-      expect(mail.subject ).to eq "I removed you from +#{group.name} on #{organization.name}"
+      expect(mail.subject ).to eq "I removed you from #{group.name} on #{organization.name}"
       expect(mail.to      ).to eq ['tom@ucsd.example.com']
       expect(mail.from    ).to eq [sender.email_address.to_s]
       expect(text_part    ).to include 'This message was automatically generated'
-      expect(text_part    ).to include %(I removed you from the +#{group.name} group)
+      expect(text_part    ).to include %(I removed you from the #{group.name} group)
       expect(text_part    ).to include %("#{organization.name}" organization on Threadable.)
       expect(text_part    ).to include group_members_url(organization, group)
 

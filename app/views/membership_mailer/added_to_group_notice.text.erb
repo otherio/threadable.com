@@ -1,4 +1,4 @@
-I added you to the +<%= @group.name %> group in the
+I added you to the <%= @group.name %> group in the
 "<%= @organization.name %>" organization on Threadable.
 
 This means that messages sent to:
@@ -8,7 +8,7 @@ This means that messages sent to:
 will now be sent to your inbox.
 
 
-If you don't want to be in the +<%= @group.name %> group, you leave by going to the following url:
+If you don't want to be in the <%= @group.name %> group, you leave by going to the following url:
 
   <%= email_action_link(@group, @recipient, "leave") %>
 
