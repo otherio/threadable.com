@@ -142,7 +142,14 @@ class ConversationMailer < Threadable::Mailer
   private
 
   def reply_to_address
-    return @conversation.formatted_email_addresses if @recipient.munge_reply_to?
+    if @recipient.munge_reply_to?
+      if formatted_email_addresses.length > 1
+        return formatted_email_addresses.map(&:address).join(', ')
+      else
+        return formatted_email_addresses.map(&:to_s).join(', ')
+      end
+    end
+
     return from_address.to_s unless dmarc_verified
     nil
   end
