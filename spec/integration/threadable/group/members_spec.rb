@@ -53,7 +53,7 @@ describe Threadable::Group::Members do
           expect(member.id).to_not eq current_user.id
           members.add member
           drain_background_jobs!
-          expect(sent_emails.first.subject).to include 'I added you to +Electronics on UCSD Electric Racing'
+          expect(sent_emails.first.subject).to include 'I added you to Electronics on UCSD Electric Racing'
         end
       end
     end
@@ -113,7 +113,7 @@ describe Threadable::Group::Members do
           expect(member.id).to_not eq current_user.id
           members.remove member
           drain_background_jobs!
-          expect(sent_emails.first.subject).to include 'I removed you from +Electronics on UCSD Electric Racing'
+          expect(sent_emails.first.subject).to include 'I removed you from Electronics on UCSD Electric Racing'
         end
       end
     end
