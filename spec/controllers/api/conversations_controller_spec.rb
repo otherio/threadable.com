@@ -232,7 +232,7 @@ describe Api::ConversationsController do
           expect(response.status).to eq 201
           conversation = raceteam.conversations.find_by_slug('my-conversation')
           expect(conversation).to be
-          expect(conversation.groups.all.map(&:email_address_tag)).to match_array ['raceteam', 'electronics']
+          expect(conversation.groups.all.map(&:email_address_tag)).to match_array ['electronics']
           expect(response.body).to eq serialize(:conversations, conversation).to_json
         end
       end
