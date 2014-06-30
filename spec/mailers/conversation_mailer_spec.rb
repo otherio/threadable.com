@@ -112,7 +112,7 @@ describe ConversationMailer do
     end
 
     context 'when the conversation is in multiple groups' do
-      let(:expected_reply_to) { 'raceteam+task@raceteam.localhost, fundraising+task@raceteam.localhost' }
+      let(:expected_reply_to) { 'UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>, "UCSD Electric Racing: Fundraising Tasks" <fundraising+task@raceteam.localhost>' }
       let(:fundraising) { organization.groups.find_by_slug('fundraising') }
       let(:expected_to           ){ conversation.email_addresses }
 
