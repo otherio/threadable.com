@@ -6,6 +6,8 @@ class AddPrimaryToGroups < ActiveRecord::Migration
     threadable = Threadable.new(threadable_env)
 
     threadable.organizations.all.each do |organization|
+      puts "#{organization.name} starting"
+
       attributes = {
         name: organization.name,
         subject_tag: organization.subject_tag,
@@ -32,7 +34,7 @@ class AddPrimaryToGroups < ActiveRecord::Migration
         conversation.groups.add group
       end
 
-      puts organization.name
+      puts "#{organization.name} done"
     end
   end
 
