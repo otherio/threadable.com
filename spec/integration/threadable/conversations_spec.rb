@@ -37,6 +37,17 @@ describe Threadable::Conversations do
     end
   end
 
+  describe '#all_with_multiple_groups' do
+    let(:organization) { threadable.organizations.find_by_slug('raceteam') }
+    it 'returns all the conversations in more than one group' do
+      expect(organization.conversations.all_with_multiple_groups.map(&:slug)).to match_array [
+        "drive-trains-are-expensive",
+        "get-some-4-gauge-wire",
+        "inventory-led-supplies",
+      ]
+    end
+  end
+
   describe 'find_by_id' do
     context 'when given a valid id' do
       it "returns a conversation with a given id" do

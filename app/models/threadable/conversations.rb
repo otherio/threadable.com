@@ -16,6 +16,15 @@ class Threadable::Conversations < Threadable::Collection
     scope.with_last_message_at(time).map {|conversation_record| conversation_for(conversation_record) }
   end
 
+  def all_with_multiple_groups
+    scope.
+      joins(:conversation_groups).
+      where(conversation_groups: {active: true}).
+      group('conversations.id').
+      having('count(conversation_groups.group_id) > 1').
+      map {|conversation_record| conversation_for(conversation_record) }
+  end
+
   def find_by_id id
     conversation_for (scope.where(id: id).first or return)
   end
