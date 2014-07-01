@@ -21,6 +21,7 @@ class AddPrimaryToGroups < ActiveRecord::Migration
 
       organization.members.all.each do |member|
         next if member.organization_membership_record.ungrouped_mail_delivery == 0
+        puts "    #{member.email_address}"
         membership = group.members.add member, send_notice: false
         if member.organization_membership_record.ungrouped_mail_delivery == 2
           membership.gets_in_summary!
