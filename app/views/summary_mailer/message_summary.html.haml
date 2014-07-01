@@ -45,7 +45,7 @@
             %td.spacer
             %td
               - conversation.groups.all.each do |group|
-                = link_to "+#{group.name}", conversations_url(@organization, group), class: 'badge badge-small', style: "background-color: #{group.color}"
+                = link_to group.name, conversations_url(@organization, group), class: 'badge badge-small', style: "background-color: #{group.color}"
 
   %br
 
