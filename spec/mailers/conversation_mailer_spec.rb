@@ -60,7 +60,8 @@ describe ConversationMailer do
         expect(text_part).to include group.email_address
       end
 
-      expect(mail.header[:'Reply-To'].to_s).to eq expected_reply_to
+      expect(mail.header[:'Reply-To'].to_s.split(/,\s*/)).to match_array expected_reply_to.split(/,\s*/)
+
       expect(mail.header[:'List-ID'].to_s ).to eq conversation.list_id
       expect(mail.header[:'Cc'].to_s      ).to eq expected_cc
       expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
