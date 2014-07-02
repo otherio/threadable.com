@@ -8,16 +8,22 @@ class AddPrimaryToGroups < ActiveRecord::Migration
     threadable.organizations.all.each do |organization|
       puts "#{organization.name} starting"
 
-      attributes = {
-        name: organization.name,
-        subject_tag: organization.subject_tag,
-        email_address_tag: organization.email_address_username,
-        auto_join: false,
-        primary: true,
-        color: '#7f8c8d',
-      }
+      group = organization.groups.all.find { |g| g.name == organization.name }
 
-      group = organization.groups.create(attributes)
+      if group
+        group.update(auto_join: false, primary: true)
+      else
+        attributes = {
+          name: organization.name,
+          subject_tag: organization.subject_tag,
+          email_address_tag: organization.email_address_username,
+          auto_join: false,
+          primary: true,
+          color: '#7f8c8d',
+        }
+
+        group = organization.groups.create(attributes)
+      end
 
       organization.members.all.each do |member|
         next if member.organization_membership_record.ungrouped_mail_delivery == 0
@@ -35,7 +41,9 @@ class AddPrimaryToGroups < ActiveRecord::Migration
         "(#{group.id},#{conversation.id})"
       end.join(',')
 
-      execute "insert into conversation_groups (group_id, conversation_id) values #{conversation_fragments}"
+      if conversation_fragments.present?
+        execute "insert into conversation_groups (group_id, conversation_id) values #{conversation_fragments}"
+      end
 
       puts "#{organization.name} done"
     end
