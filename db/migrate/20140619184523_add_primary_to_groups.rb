@@ -37,13 +37,16 @@ class AddPrimaryToGroups < ActiveRecord::Migration
       group.update(auto_join: true)
 
       # now move mail
-      conversation_fragments = organization.conversations.ungrouped.map do |conversation|
+      conversations_to_update = organization.conversations.ungrouped
+      conversation_fragments = conversations_to_update.map do |conversation|
         "(#{group.id},#{conversation.id})"
       end.join(',')
 
       if conversation_fragments.present?
         execute "insert into conversation_groups (group_id, conversation_id) values #{conversation_fragments}"
       end
+
+      conversations_to_update.each { |conversation| conversation.update_group_caches! }
 
       puts "#{organization.name} done"
     end
