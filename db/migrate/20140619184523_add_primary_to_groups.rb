@@ -46,7 +46,23 @@ class AddPrimaryToGroups < ActiveRecord::Migration
         execute "insert into conversation_groups (group_id, conversation_id) values #{conversation_fragments}"
       end
 
-      conversations_to_update.each { |conversation| conversation.update_group_caches! }
+      conversation_ids = conversations_to_update.map(&:id).join(',')
+
+      if conversation_ids.present?
+        # with many groups
+        execute "update conversations set
+          groups_count = groups_count + 1,
+          group_ids_cache = concat(group_ids_cache, '- #{group.id}\n') where
+            id in (#{conversation_ids}) and
+            group_ids_cache != '--- []\n'"
+
+        execute "update conversations set
+          groups_count = groups_count + 1,
+          group_ids_cache = '---\n- #{group.id}\n' where
+            id in (#{conversation_ids}) and
+            group_ids_cache = '--- []\n'"
+
+      end
 
       puts "#{organization.name} done"
     end
