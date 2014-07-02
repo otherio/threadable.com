@@ -63,7 +63,7 @@ class ConversationMailer < Threadable::Mailer
       @new_task_url = "mailto:#{URI::encode(group.task_email_address)}"
       @new_conversation_url = "mailto:#{URI::encode(group.email_address)}"
       @group_indicator_options = {
-        name: "+#{truncate_with_ellipsis(group.name)}",
+        name: "#{truncate_with_ellipsis(group.name)}",
         class: 'grouped',
         color: group.color,
       }
