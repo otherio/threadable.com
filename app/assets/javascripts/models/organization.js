@@ -15,6 +15,7 @@ Threadable.Organization = RL.Model.extend({
 
   hasHeldMessages:           RL.attr('boolean'),
   trusted:                   RL.attr('boolean'),
+  plan:                      RL.attr('string'),
 
   groups:                    RL.hasMany('Threadable.Group'),
   googleUser:                RL.belongsTo('Threadable.User'),
