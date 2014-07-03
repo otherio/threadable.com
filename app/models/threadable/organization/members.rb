@@ -79,7 +79,7 @@ class Threadable::Organization::Members < Threadable::Collection
   def current_member
     raise Threadable::AuthorizationError if threadable.current_user_id.nil?
     @current_member_cache ||= {}
-    @current_member_cache[threadable.current_user_id] ||= find_by_user_id!(threadable.current_user_id)
+    @current_member_cache[threadable.current_user_id] ||= find_by_user_id(threadable.current_user_id)
   end
 
   def email_addresses
