@@ -31,15 +31,20 @@ class ConversationMailer < Threadable::Mailer
 
     @message.attachments.all.each do |attachment|
       filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
-      attachments[filename] = {
-        :content    => attachment.content,
-        :content_id => attachment.content_id,
-        :encoding   => 'binary',
-      }
 
-      # this has to be here (not in the declaration above) to work around some
-      # weird bug where attachments of type message/rfc822 don't work otherwise
-      attachments[filename][:mime_type] = attachment.mimetype
+      if attachment.mimetype == 'message/rfc822'
+        # for some reason just attaching these doesn't work
+        filename = "#{filename}.eml" unless filename =~ /\.eml\Z/
+        attachments[filename] = {
+          :content    => attachment.content,
+        }
+      else
+        attachments[filename] = {
+          :content    => attachment.content,
+          :encoding   => 'binary',
+          :mime_type  => attachment.mimetype,
+        }
+      end
 
       if attachment.content_id
         attachments[filename][:content_id] = attachment.content_id

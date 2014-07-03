@@ -215,6 +215,35 @@ describe ConversationMailer do
         expect(attachment.content_id).to eq '<somejpgcontentid>'
         expect(attachment.header['X-Attachment-Id'].value).to eq 'somejpgcontentid'
       end
+
+      context 'with different mime types' do
+        before do
+          message.attachments.all.
+            find{ |a| a.filename == attachment_filename}.
+            attachment_record.
+            update_attributes(mimetype: attachment_mimetype)
+        end
+
+        context 'when one of the attachments is of type application/octet-stream' do
+          let(:attachment_filename) { 'some.jpg' }
+          let(:attachment_mimetype) { 'application/octet-stream' }
+
+          it 'persists the content-type' do
+            attachment = mail.attachments.find { |attachment| attachment.filename == 'some.jpg' }
+            expect(attachment.mime_type).to eq 'application/octet-stream'
+          end
+        end
+
+        context 'when one of the attachments is of type message/rfc822' do
+          let(:attachment_filename) { 'some.txt' }
+          let(:attachment_mimetype) { 'message/rfc822' }
+
+          it 'persists the content-type' do
+            attachment = mail.attachments.find { |attachment| attachment.filename == 'some.txt.eml' }
+            expect(attachment.mime_type).to eq 'message/rfc822'
+          end
+        end
+      end
     end
 
   end
