@@ -50,6 +50,7 @@ feature "Admin organizations CRUD" do
       fill_in "Subject tag",            with: "United Hations"
       fill_in "Slug",                   with: "united-hations"
       fill_in "Email address username", with: "united-hations"
+      select  "paid",                   from: "Plan"
       click_on 'Update Organization'
     end
     organization = threadable.organizations.find_by_slug!("united-hations")
@@ -57,6 +58,7 @@ feature "Admin organizations CRUD" do
     expect(organization.subject_tag           ).to eq "United Hations"
     expect(organization.slug                  ).to eq "united-hations"
     expect(organization.email_address_username).to eq "united-hations"
+    expect(organization.plan                  ).to eq :paid
 
     expect(organization.members.all).to be_empty
 

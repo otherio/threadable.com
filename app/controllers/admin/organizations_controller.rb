@@ -63,6 +63,7 @@ class Admin::OrganizationsController < ApplicationController
         :add_current_user_as_a_member,
         :trusted,
         :hold_all_messages,
+        :plan,
       ).symbolize_keys
       if @organization_params.key? :add_current_user_as_a_member
         @organization_params[:add_current_user_as_a_member] = @organization_params[:add_current_user_as_a_member] == "1"

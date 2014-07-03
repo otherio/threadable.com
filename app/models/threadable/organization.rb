@@ -23,7 +23,12 @@ class Threadable::Organization < Threadable::Model
     persisted?
     hold_all_messages?
     trusted?
+    plan
   }, to: :organization_record
+
+  Organization::PLANS.each do |plan|
+    define_method("#{plan}?"){ self.plan == plan }
+  end
 
   def email_address
     # this will soon do aliasing

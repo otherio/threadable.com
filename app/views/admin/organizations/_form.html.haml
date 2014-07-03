@@ -6,6 +6,7 @@
     = f.input :subject_tag, required: false
     = f.input :slug, required: false
     = f.input :email_address_username, as: :string, required: false
+    = f.input :plan, as: :select, collection: Organization::PLANS, include_blank: false
     = f.input :trusted?, as: :boolean, label: "Trusted organization"
     = f.input :hold_all_messages?, as: :boolean, label: "Holds all messages"
     - unless @organization.persisted?

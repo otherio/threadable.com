@@ -13,6 +13,7 @@ class OrganizationsSerializer < Serializer
       description:       organization.description,
       has_held_messages: organization.held_messages.count > 0,
       trusted:           organization.trusted?,
+      plan:              organization.plan,
 
       email_address_username:       organization.email_address_username,
       email_address:                organization.email_address,

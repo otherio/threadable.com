@@ -38,6 +38,7 @@ describe OrganizationsSerializer do
         description:       "Senior engineering electric race team!",
         has_held_messages: false,
         trusted:           true,
+        plan:              :paid,
 
         email_address_username:       raceteam.email_address_username,
         email_address:                raceteam.email_address,
@@ -76,6 +77,7 @@ describe OrganizationsSerializer do
           description:       "Senior engineering electric race team!",
           has_held_messages: false,
           trusted:           true,
+          plan:              :paid,
 
           email_address_username:       raceteam.email_address_username,
           email_address:                raceteam.email_address,
@@ -99,6 +101,7 @@ describe OrganizationsSerializer do
           description:       "San Francisco Health Center",
           has_held_messages: false,
           trusted:           false,
+          plan:              :free,
 
           email_address_username:       sfhealth.email_address_username,
           email_address:                sfhealth.email_address,

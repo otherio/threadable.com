@@ -244,7 +244,20 @@ describe Threadable::Organization do
         expect { organization.google_user = user }.to raise_error Threadable::AuthorizationError, 'User does not have permission to be the google apps domain user'
       end
     end
+  end
 
+  describe 'plans' do
+    describe '#free?' do
+      it 'tells us whether the org is free' do
+        expect(organization.free?).to be_false
+      end
+    end
+
+    describe '#paid?' do
+      it 'tells us whether the org is paid' do
+        expect(organization.paid?).to be_true
+      end
+    end
   end
 
 end

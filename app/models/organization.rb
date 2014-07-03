@@ -1,5 +1,11 @@
 class Organization < ActiveRecord::Base
 
+  # WARNING! you can only append to this list. The indices are meaningful!
+  PLANS = [
+    :free,
+    :paid,
+  ].freeze
+
   has_many :conversations, dependent: :destroy
   has_many :messages, through: :conversations
   has_many :tasks, -> { order "position" }, class_name: 'Task'
@@ -30,6 +36,14 @@ class Organization < ActiveRecord::Base
     references(:organization_memberships)
   end
 
+  # makes free_plans and paid_plans scopes.
+  # maybe useful, but don't uncomment without making the required index.
+  #
+  # PLANS.each do |plan|
+  #   scope "#{plan.to_s}_plans".to_sym, -> { where(plan: plan) }
+  # end
+
+  validates_inclusion_of :plan, :in => PLANS
   validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :slug, :email_address_username
   validates_format_of :subject_tag, with: /\A([\w \&\.\'\-+]+|)\z/
@@ -59,6 +73,17 @@ class Organization < ActiveRecord::Base
     self.subject_tag = short_name
     self.slug = nil
     self.email_address_username = short_name.downcase.gsub(/\W+/,'-')
+  end
+
+  def plan
+    PLANS[super]
+  end
+
+  def plan= value
+    value = value.to_sym
+    index = PLANS.index(value)
+    index or raise ArgumentError, "expected #{value.inspect} to be one of #{PLANS.inspect}"
+    super(index)
   end
 
   def to_param

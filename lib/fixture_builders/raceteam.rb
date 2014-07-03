@@ -6,6 +6,7 @@ FixtureBuilder.build do
       short_name: 'RaceTeam',
       description: 'Senior engineering electric race team!',
       trusted: true,
+      plan: :paid,
     )
     add_member 'Alice Neilson', 'alice@ucsd.example.com', true
   end
