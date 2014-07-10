@@ -15,6 +15,14 @@ describe Users::SetupController do
         expect(response).to render_template :edit
         expect(bones.reload).to be_confirmed
       end
+
+      context 'when the token contains an organization id' do
+        it 'should render the account setup form, and confirm the user' do
+          get :edit, token: UserSetupToken.encrypt(bones.id, sfhealth.id)
+          expect(response).to render_template :edit
+          expect(bones.reload).to be_confirmed
+        end
+      end
     end
   end
 
@@ -27,6 +35,14 @@ describe Users::SetupController do
         get :edit, token: UserSetupToken.encrypt(amy.id, organization_path(sfhealth))
         expect(response).to redirect_to organization_path(sfhealth)
         expect(amy.reload).to be_confirmed
+      end
+
+      context 'when the token contains an organization id' do
+        it 'should redirect to the organization path' do
+          get :edit, token: UserSetupToken.encrypt(amy.id, sfhealth.id)
+          expect(response).to redirect_to organization_path(sfhealth)
+          expect(amy.reload).to be_confirmed
+        end
       end
     end
   end

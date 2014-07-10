@@ -8,7 +8,7 @@ class MembershipMailer < Threadable::Mailer
 
     @subject                  = "You've been added to #{@organization.name}"
     @organization_url         = organization_url(@organization)
-    user_setup_token          = UserSetupToken.encrypt(@recipient.id, organization_path(@organization))
+    user_setup_token          = UserSetupToken.encrypt(@recipient.id, @organization.id)
     @recipient_setup_url      = setup_users_url(user_setup_token)
     organization_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @organization_unsubscribe_url  = organization_unsubscribe_url(@organization, organization_unsubscribe_token)
@@ -29,7 +29,7 @@ class MembershipMailer < Threadable::Mailer
 
     @subject                  = "You've been invited to #{@organization.name}"
     @organization_url         = organization_url(@organization)
-    user_setup_token          = UserSetupToken.encrypt(@recipient.id, organization_path(@organization))
+    user_setup_token          = UserSetupToken.encrypt(@recipient.id, @organization.id)
     @recipient_setup_url      = setup_users_url(user_setup_token)
     organization_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @organization_unsubscribe_url  = organization_unsubscribe_url(@organization, organization_unsubscribe_token)

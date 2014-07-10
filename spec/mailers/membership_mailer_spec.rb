@@ -50,7 +50,7 @@ describe MembershipMailer do
 
       it "should have a user setup link" do
         user_setup_token = extract_user_setup_token(text_part)
-        expect(UserSetupToken.decrypt(user_setup_token)).to eq [recipient.id, organization_path(organization)]
+        expect(UserSetupToken.decrypt(user_setup_token)).to eq [recipient.id, organization.id]
         expect(mail.from).to eq ['bethany@ucsd.example.com']
       end
     end
