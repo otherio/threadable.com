@@ -46,8 +46,9 @@ describe OrganizationsSerializer do
         formatted_email_address:      raceteam.formatted_email_address,
         formatted_task_email_address: raceteam.formatted_task_email_address,
 
-        groups: serialize(:groups, raceteam.groups.all).values.first,
-        google_user: serialize(:users, alice).values.first,
+        groups:        serialize(:groups, raceteam.groups.all).values.first,
+        email_domains: serialize(:email_domains, raceteam.email_domains.all).values.first,
+        google_user:   serialize(:users, alice).values.first,
 
         can_remove_non_empty_group:   true,
         can_be_google_user:           true,
@@ -85,8 +86,9 @@ describe OrganizationsSerializer do
           formatted_email_address:      raceteam.formatted_email_address,
           formatted_task_email_address: raceteam.formatted_task_email_address,
 
-          groups: serialize(:groups, raceteam.groups.all).values.first,
-          google_user: nil,
+          groups:        serialize(:groups, raceteam.groups.all).values.first,
+          email_domains: serialize(:email_domains, raceteam.email_domains.all).values.first,
+          google_user:   nil,
 
           can_remove_non_empty_group:   true,
           can_be_google_user:           true,
@@ -109,8 +111,9 @@ describe OrganizationsSerializer do
           formatted_email_address:      sfhealth.formatted_email_address,
           formatted_task_email_address: sfhealth.formatted_task_email_address,
 
-          groups: serialize(:groups, sfhealth.groups.all).values.first,
-          google_user: nil,
+          groups:        serialize(:groups, sfhealth.groups.all).values.first,
+          email_domains: serialize(:email_domains, sfhealth.email_domains.all).values.first,
+          google_user:   nil,
 
           can_remove_non_empty_group:   false,
           can_be_google_user:           false,

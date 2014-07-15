@@ -18,6 +18,7 @@ Threadable.Organization = RL.Model.extend({
   plan:                      RL.attr('string'),
 
   groups:                    RL.hasMany('Threadable.Group'),
+  emailDomains:              RL.hasMany('Threadable.EmailDomain'),
   googleUser:                RL.belongsTo('Threadable.User'),
 
   canRemoveNonEmptyGroup:    RL.attr('boolean'),

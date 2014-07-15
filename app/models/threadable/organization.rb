@@ -26,7 +26,7 @@ class Threadable::Organization < Threadable::Model
     plan
   }, to: :organization_record
 
-  Organization::PLANS.each do |plan|
+  ::Organization::PLANS.each do |plan|
     define_method("#{plan}?"){ self.plan == plan }
   end
 
