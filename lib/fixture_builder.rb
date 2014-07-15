@@ -37,7 +37,7 @@ class FixtureBuilder
   end
 
   def organization
-    @organization or raise 'please create a organization first'
+    @organization or raise 'please create an organization first'
   end
 
   def add_member name, email_address, owner = false
@@ -63,6 +63,10 @@ class FixtureBuilder
 
   def create_group attributes
     organization.groups.create!(attributes)
+  end
+
+  def add_domain domain, outgoing=false
+    organization.email_domains.add(domain, outgoing)
   end
 
   def remove_conversation_from_group conversation, group

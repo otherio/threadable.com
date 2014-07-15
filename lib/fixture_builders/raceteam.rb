@@ -9,6 +9,8 @@ FixtureBuilder.build do
       plan: :paid,
     )
     add_member 'Alice Neilson', 'alice@ucsd.example.com', true
+    add_domain 'raceteam.com'
+    add_domain 'raceteam.ucsd.edu'
   end
 
   Time.zone = 'US/Pacific'

@@ -30,6 +30,8 @@ class Threadable::Organization < Threadable::Model
     define_method("#{plan}?"){ self.plan == plan }
   end
 
+  let(:email_domains) { Threadable::Organization::EmailDomains.new(self) }
+
   def email_address
     # this will soon do aliasing
     internal_email_address

@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703181651) do
+ActiveRecord::Schema.define(version: 20140711185436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "api_access_tokens", force: true do |t|
     t.integer  "user_id",                   null: false
@@ -57,20 +58,20 @@ ActiveRecord::Schema.define(version: 20140703181651) do
 
   create_table "conversations", force: true do |t|
     t.string   "type"
-    t.text     "subject",                             null: false
-    t.integer  "organization_id",                     null: false
+    t.text     "subject",                                   null: false
+    t.integer  "organization_id",                           null: false
     t.integer  "creator_id"
     t.integer  "position"
-    t.string   "slug",                                null: false
+    t.string   "slug",                                      null: false
     t.datetime "done_at"
     t.integer  "messages_count",          default: 0
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "group_ids_cache"
     t.text     "message_summary_cache"
     t.text     "participant_names_cache"
     t.text     "muter_ids_cache"
-    t.datetime "last_message_at"
+    t.datetime "last_message_at",         default: "now()"
     t.integer  "groups_count",            default: 0
   end
 
@@ -96,6 +97,14 @@ ActiveRecord::Schema.define(version: 20140703181651) do
   add_index "email_addresses", ["address"], name: "index_email_addresses_on_address", unique: true, using: :btree
   add_index "email_addresses", ["primary"], name: "index_email_addresses_on_primary", using: :btree
   add_index "email_addresses", ["user_id"], name: "index_email_addresses_on_user_id", using: :btree
+
+  create_table "email_domains", force: true do |t|
+    t.integer "organization_id"
+    t.string  "domain",                          null: false
+    t.boolean "outgoing",        default: false, null: false
+  end
+
+  add_index "email_domains", ["domain"], name: "index_email_domains_on_domain", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "event_type"
@@ -149,8 +158,8 @@ ActiveRecord::Schema.define(version: 20140703181651) do
     t.boolean  "hold_messages",       default: true
     t.string   "alias_email_address", default: "",    null: false
     t.string   "webhook_url",         default: "",    null: false
-    t.string   "description"
     t.boolean  "google_sync",         default: false, null: false
+    t.string   "description"
     t.boolean  "primary",             default: false, null: false
   end
 
