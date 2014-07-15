@@ -17,10 +17,23 @@ describe Threadable::Organization::EmailDomains do
   end
 
   describe '#add' do
-    it 'adds the domain' do
-      email_domains.add('foo.com')
-      expect(email_domains.all.length).to eq 3
+    context 'with a paid organization' do
+      it 'adds the domain' do
+        email_domains.add('foo.com')
+        expect(email_domains.all.length).to eq 3
+      end
     end
+
+    context 'with a free organization' do
+      before do
+        organization.update(plan: :free)
+      end
+
+      it 'raises an error' do
+        expect { email_domains.add('foo.com') }.to raise_error Threadable::AuthorizationError, "A paid account is required to change domain settings"
+      end
+    end
+
   end
 
 end

@@ -18,11 +18,22 @@ describe Threadable::Organization::EmailDomain do
   its(:to_s      ){ should eq email_domain.domain           }
 
   describe '#outgoing!' do
-    context 'when the email domain is not outgoing but confirmed' do
+    context 'with a paid organization' do
       it 'returns true' do
         expect(email_domain_record).to_not be_outgoing
         expect(email_domain.outgoing!).to be_true
       end
     end
+
+    context 'with a free organization' do
+      before do
+        organization.update(plan: :free)
+      end
+
+      it 'raises an error' do
+        expect { email_domain.outgoing! }.to raise_error Threadable::AuthorizationError, "A paid account is required to change domain settings"
+      end
+    end
+
   end
 end

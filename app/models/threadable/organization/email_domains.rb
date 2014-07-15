@@ -14,6 +14,7 @@ class Threadable::Organization::EmailDomains < Threadable::EmailDomains
   end
 
   def add email_domain, outgoing=false
+    raise(Threadable::AuthorizationError, 'A paid account is required to change domain settings') unless organization.paid?
     Threadable.transaction do
       email_domain = email_domain_for organization.organization_record.email_domains.create(domain: email_domain)
       email_domain.outgoing! if outgoing
