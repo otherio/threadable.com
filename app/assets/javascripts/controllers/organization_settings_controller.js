@@ -20,6 +20,10 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     return this.get('currentUser.slug') == this.get('googleUser.slug');
   }.property('currentUser', 'googleUser'),
 
+  internalDomainOutgoing: function() {
+    return ! this.get('emailDomains').find(function(domain) { return domain.get('outgoing'); });
+  }.property('emailDomains'),
+
   actions: {
     // updateOrganization: function() {
     //   this.set('error', null);

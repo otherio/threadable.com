@@ -33,7 +33,13 @@ describe Threadable::Organization::EmailDomains do
         expect { email_domains.add('foo.com') }.to raise_error Threadable::AuthorizationError, "A paid account is required to change domain settings"
       end
     end
+  end
 
+  describe '#remove' do
+    it 'removes the domain' do
+      email_domains.remove('raceteam.com')
+      expect(email_domains.all.length).to eq 1
+    end
   end
 
 end

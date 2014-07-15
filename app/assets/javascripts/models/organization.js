@@ -25,6 +25,10 @@ Threadable.Organization = RL.Model.extend({
   canBeGoogleUser:           RL.attr('boolean'),
   canChangeSettings:         RL.attr('boolean'),
 
+  isPaid: function() {
+    return this.get('plan') == 'paid';
+  }.property('plan'),
+
   loadMembers: RL.loadAssociationMethod('members', function(organization){
     return Threadable.OrganizationMember.fetch({
       organization_id: organization.get('slug')

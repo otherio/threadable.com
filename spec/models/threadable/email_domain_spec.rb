@@ -16,6 +16,7 @@ describe Threadable::EmailDomain do
   it { should delegate(:id        ).to(:email_domain_record) }
   it { should delegate(:outgoing? ).to(:email_domain_record) }
   it { should delegate(:errors    ).to(:email_domain_record) }
+  it { should delegate(:destroy   ).to(:email_domain_record) }
 
   its(:threadable         ){ should eq threadable }
   its(:email_domain_record){ should eq email_domain_record }

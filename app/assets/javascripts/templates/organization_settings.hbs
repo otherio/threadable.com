@@ -7,41 +7,59 @@
         <h3>Error: {{error}}</h3>
       {{/if}}
 
-      <fieldset>
-        <div class="uk-form-row">
-          <label class="uk-form-label input-label">
-            Name: {{editableOrganization.name}}
-          </label>
-          <div class="uk-form-controls input-field">
-          </div>
-        </div>
-      </fieldset>
     </form>
 
-    <div class="well-when-not-small">
-      <h4 class="uk-text-bold">Google Apps domain connection</h4>
-      <p>
-        {{#if googleUser}}
-          <b>Connected using:</b>
-          <br/>
-          {{googleUser.name}} &lt;{{googleUser.emailAddress}}&gt;
-        {{else}}
-          This organization is not connected to a Google Apps domain.
-        {{/if}}
-      </p>
-
-      <p>
-        {{#if currentUserIsGoogleUser}}
-          (your account)
-        {{else}}
-          {{#if hasGoogleAuth}}
-            <button {{action claimGoogleAccount}} class="uk-button uk-button-primary">Connect to my Google account</button>
+    {{#if isPaid}}
+      <div>
+        <h4 class="uk-text-bold">Google Apps domain connection</h4>
+        <p>
+          {{#if googleUser}}
+            <b>Connected using:</b>
+            <br/>
+            {{googleUser.name}} &lt;{{googleUser.emailAddress}}&gt;
           {{else}}
-            To connect your Google Apps domain admin account, visit your <a href="/profile">profile</a>.
+            This organization is not connected to a Google Apps domain.
           {{/if}}
-        {{/if}}
-      </p>
-    </div>
+        </p>
+
+        <p>
+          {{#if currentUserIsGoogleUser}}
+            (your account)
+          {{else}}
+            {{#if hasGoogleAuth}}
+              <button {{action claimGoogleAccount}} class="uk-button uk-button-primary">Connect to my Google account</button>
+            {{else}}
+              To connect your Google Apps domain admin account, visit your <a href="/profile">profile</a>.
+            {{/if}}
+          {{/if}}
+        </p>
+      </div>
+
+      <div>
+        <h4 class="uk-text-bold">Your domains</h4>
+        <p>Your organization can receive email at the following domains:</p>
+        <ul>
+          <li>
+            {{emailAddressUsername}}.threadable.com
+            {{#if internalDomainOutgoing}}
+              [outgoing]
+            {{/if}}
+          </li>
+
+          {{#each emailDomain in emailDomains}}
+            <li>
+              {{emailDomain.domain}}
+              {{#if emailDomain.outgoing}}
+                [outgoing]
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+
+    {{else}}
+      With a Threadable Pro account you can do more things here.
+    {{/if}}
 
   </div>
 </div>

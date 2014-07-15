@@ -12,6 +12,7 @@ class Threadable::EmailDomain < Threadable::Model
     errors
     persisted?
     outgoing?
+    destroy
   }, to: :email_domain_record
 
   def domain

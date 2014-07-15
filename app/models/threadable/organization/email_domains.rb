@@ -28,6 +28,11 @@ class Threadable::Organization::EmailDomains < Threadable::EmailDomains
     email_domain
   end
 
+  def remove email_domain
+    domain_object = organization.email_domains.find_by_domain(email_domain)
+    domain_object.destroy if domain_object.present?
+  end
+
   def inspect
     %(#<#{self.class} organization_id: #{organization.id}>)
   end
