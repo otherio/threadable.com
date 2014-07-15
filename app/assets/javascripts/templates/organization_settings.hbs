@@ -42,7 +42,7 @@
           <li>
             {{emailAddressUsername}}.threadable.com
             {{#if internalDomainOutgoing}}
-              [outgoing]
+              (outgoing)
             {{/if}}
           </li>
 
@@ -50,15 +50,45 @@
             <li>
               {{emailDomain.domain}}
               {{#if emailDomain.outgoing}}
-                [outgoing]
+                (outgoing)
               {{/if}}
             </li>
           {{/each}}
         </ul>
+
+        <form class="uk-form" {{action addDomain on='submit'}}>
+          <fieldset>
+            <div class="uk-form-row">
+              <label class="uk-text-bold uk-form-label input-label">
+                New Domain:
+              </label>
+              <div class="uk-form-controls input-field">
+                {{input value=domain name="domain"}}
+              </div>
+            </div>
+
+            <div class="uk-form-row">
+              <input type="submit" class="uk-button uk-button-primary" value="Add"></input>
+            </div>
+
+          </fieldset>
+        </form>
       </div>
 
     {{else}}
-      With a Threadable Pro account you can do more things here.
+      <p>
+        Right now, there are only settings for Pro-level features.
+      </p>
+
+      <p>
+        With a Threadable Pro account, you can:
+        <ul>
+          <li>Use a custom email domain</li>
+          <li>Connect Threadable to Google Apps</li>
+          <li>More soon!</li>
+        </ul>
+        <a href="mailto:support@threadable.com">Contact us</a> to get in on the Threadable Pro beta program!
+      </p>
     {{/if}}
 
   </div>
