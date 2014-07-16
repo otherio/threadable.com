@@ -66,6 +66,31 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
         var error = response && JSON.parse(response.responseText).error || 'an unknown error occurred';
         this.set('error', error);
       }.bind(this));
+    },
+
+    addDomain: function() {
+      var organization = this.get('content');
+
+      var domain = Threadable.EmailDomain.create({
+        domain: this.get('domain'),
+        organization: organization
+      });
+
+      domain.saveRecord().then(
+        domainSaved.bind(this),
+        error.bind(this)
+      );
+
+      function domainSaved(response) {
+        domain.deserialize(response.domain);
+        this.get('controllers.organization.emailDomains').pushObject(domain);
+        this.set('domain', null);
+      }
+
+      function error(response) {
+        var error = response && response.error || 'an unknown error occurred';
+        this.set('error', error);
+      }
     }
 
   }

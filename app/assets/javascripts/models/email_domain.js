@@ -5,7 +5,7 @@ Threadable.EmailDomain = RL.Model.extend({
 });
 
 Threadable.RESTAdapter.map("Threadable.EmailDomain", {
-  primaryKey: "domain"
+  primaryKey: "id"
 });
 
 Threadable.EmailDomain.reopen(Threadable.AddOrganizationIdToRequestsMixin);

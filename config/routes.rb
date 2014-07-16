@@ -23,6 +23,8 @@ Threadable::Application.routes.draw do
       post :claim_google_account
     end
 
+    resources :email_domains, only: [:index, :create, :update, :destroy]
+
     resources :groups do
       post :join
       post :leave

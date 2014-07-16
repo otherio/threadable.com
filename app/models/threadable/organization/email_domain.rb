@@ -10,13 +10,27 @@ class Threadable::Organization::EmailDomain < Threadable::EmailDomain
 
   def outgoing!
     # TODO: remember to check confirmed here when we have that.
-    raise(Threadable::AuthorizationError, 'A paid account is required to change domain settings') unless organization.paid?
+    require_paid
     Threadable.transaction do
       ::EmailDomain.where(organization_id: organization.id).update_all(outgoing: false)
       email_domain_record.update(outgoing: true)
     end
     organization.organization_record.email_domains.reload
     return true
+  end
+
+  def not_outgoing!
+    # TODO: remember to check confirmed here when we have that.
+    require_paid
+    email_domain_record.update(outgoing: false)
+    organization.organization_record.email_domains.reload
+    return true
+  end
+
+  private
+
+  def require_paid
+    raise(Threadable::AuthorizationError, 'A paid account is required to change domain settings') unless organization.paid?
   end
 
 end
