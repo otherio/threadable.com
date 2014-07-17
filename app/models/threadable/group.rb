@@ -109,7 +109,7 @@ class Threadable::Group < Threadable::Model
     if alias_email_address.present?
       alias_email_address_object.address
     else
-      internal_email_address
+      "#{email_address_tag}@#{organization.email_host}"
     end
   end
 
@@ -117,16 +117,16 @@ class Threadable::Group < Threadable::Model
     if alias_email_address.present?
       "#{alias_email_address_object.local}-task@#{alias_email_address_object.domain}"
     else
-      internal_task_email_address
+      "#{email_address_tag}+task@#{organization.email_host}"
     end
   end
 
   def internal_email_address
-    "#{email_address_tag}@#{organization.email_host}"
+    "#{email_address_tag}@#{organization.internal_email_host}"
   end
 
   def internal_task_email_address
-    "#{email_address_tag}+task@#{organization.email_host}"
+    "#{email_address_tag}+task@#{organization.internal_email_host}"
   end
 
   def formatted_email_address

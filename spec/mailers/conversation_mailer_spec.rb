@@ -76,6 +76,20 @@ describe ConversationMailer do
       validate_mail!
     end
 
+    context 'with a custom domain' do
+      let(:email_domain) { organization.email_domains.find_by_domain('raceteam.com') }
+      let(:expected_to         ){ ['raceteam+task@raceteam.com'] }
+      signed_in_as 'alice@ucsd.example.com'
+
+      before do
+        email_domain.outgoing!
+      end
+
+      it "inserts the custom domain in the To: header, but not the envelope" do
+        validate_mail!
+      end
+    end
+
     context "when the subject is a reply" do
       it "should parse and construct the correct subject" do
         message.stub(subject: "RE: Re: [RaceTeam] #{conversation.subject}")

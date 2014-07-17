@@ -156,7 +156,7 @@ class Threadable::Conversation < Threadable::Model
     end
     email_address = Mail::Address.new(group.formatted_email_address)
     name = email_address.display_name || "#{organization.name}: #{group.name}"
-    return "\"#{name}\" <#{email_address.address.gsub(/\@/, '.')}>"
+    return "\"#{name}\" <#{group.internal_email_address.gsub(/\@/, '.')}>"
   end
 
   def canonical_formatted_email_address

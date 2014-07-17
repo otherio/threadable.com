@@ -260,4 +260,25 @@ describe Threadable::Organization do
     end
   end
 
+  describe '#email_host' do
+    it 'returns the email host' do
+      expect(organization.email_host).to eq 'raceteam.localhost'
+      expect(organization.internal_email_host).to eq 'raceteam.localhost'
+    end
+
+    context 'with a primary email domain' do
+      let(:email_domain) { organization.email_domains.find_by_domain('raceteam.com') }
+
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+        email_domain.outgoing!
+      end
+
+      it 'returns the primary email domain' do
+        expect(organization.email_host).to eq 'raceteam.com'
+        expect(organization.internal_email_host).to eq 'raceteam.localhost'
+      end
+    end
+  end
+
 end

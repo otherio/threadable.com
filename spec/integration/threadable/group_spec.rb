@@ -4,6 +4,34 @@ describe Threadable::Group do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
 
+  describe 'email addresses' do
+    let(:group) { organization.groups.find_by_slug('electronics') }
+    let(:email_domain) { organization.email_domains.find_by_domain('raceteam.com') }
+
+    context 'with an outgoing email domain' do
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+        email_domain.outgoing!
+      end
+
+      it 'returns an address using the email domain' do
+        expect(group.formatted_email_address).to eq '"UCSD Electric Racing: Electronics" <electronics@raceteam.com>'
+        expect(group.formatted_task_email_address).to eq '"UCSD Electric Racing: Electronics Tasks" <electronics+task@raceteam.com>'
+        expect(group.internal_email_address).to eq 'electronics@raceteam.localhost'
+      end
+
+      context 'with an alias email address defined' do
+        before do
+          group.update(alias_email_address: 'My Elsewhere <my@elsewhere.com>')
+        end
+
+        it 'returns the alias email address' do
+          expect(group.formatted_email_address).to eq 'My Elsewhere <my@elsewhere.com>'
+        end
+      end
+    end
+  end
+
   describe "#destroy" do
     context 'when the group has messages' do
       let(:group) { organization.groups.find_by_slug('electronics') }

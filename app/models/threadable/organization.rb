@@ -33,21 +33,19 @@ class Threadable::Organization < Threadable::Model
   let(:email_domains) { Threadable::Organization::EmailDomains.new(self) }
 
   def email_address
-    # this will soon do aliasing
     internal_email_address
   end
 
   def task_email_address
-    # this will soon do aliasing
     internal_task_email_address
   end
 
   def internal_email_address
-    self.groups.primary.email_address
+    self.groups.primary.internal_email_address
   end
 
   def internal_task_email_address
-    self.groups.primary.task_email_address
+    self.groups.primary.internal_task_email_address
   end
 
   def email_addresses
@@ -63,6 +61,12 @@ class Threadable::Organization < Threadable::Model
   end
 
   def email_host
+    outgoing_domain = email_domains.outgoing
+    return outgoing_domain.domain if outgoing_domain.present?
+    internal_email_host
+  end
+
+  def internal_email_host
     "#{email_address_username}.#{threadable.email_host}"
   end
 
