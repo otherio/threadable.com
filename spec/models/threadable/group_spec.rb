@@ -6,7 +6,7 @@ describe Threadable::Group do
     double(:organization_record,
       id: 5678,
       email_address_username: 'my-project',
-      name: 'My Project'
+      name: 'My Project',
     )
   end
 
@@ -23,6 +23,10 @@ describe Threadable::Group do
   let(:group){ described_class.new(threadable, group_record) }
   let(:alias_email_address) { nil }
   subject{ group }
+
+  before do
+    group.organization.stub(:email_domains).and_return(double(:email_domains, outgoing: nil))
+  end
 
   it { should have_constant :Members }
   it { should have_constant :Conversations }

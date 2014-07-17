@@ -182,11 +182,11 @@ class Threadable::Group < Threadable::Model
     self
   end
 
-  private
-
   def alias_email_address_object
     @alias_email_address_object ||= Mail::Address.new(alias_email_address)
   end
+
+  private
 
   def email_address_display_name task=false
     display_name = if alias_email_address.present?

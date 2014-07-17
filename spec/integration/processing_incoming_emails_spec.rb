@@ -1462,7 +1462,7 @@ describe "processing incoming emails" do
     end
 
     context 'when the message is to the aliased address' do
-      let(:to)        { 'UCSD Electric Racing <raceteam+press@covered.io>' }
+      let(:to)        { 'UCSD Electric Racing <press@ucsd.example.com>' }
       it 'preserves the alias address in the headers' do
         validate! :delivered
       end

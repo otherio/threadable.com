@@ -5,7 +5,7 @@ describe Api::EmailDomainsController do
   let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
 
   describe '#index' do
-    when_signed_in_as 'bob@ucsd.example.com' do
+    when_signed_in_as 'alice@ucsd.example.com' do
       context "when given a valid organization id" do
         it "returns the email domains as json" do
           xhr :get, :index, format: :json, organization_id: raceteam.slug
@@ -18,7 +18,7 @@ describe Api::EmailDomainsController do
   end
 
   describe '#create' do
-    when_signed_in_as 'bob@ucsd.example.com' do
+    when_signed_in_as 'alice@ucsd.example.com' do
       context "when given a valid organization id" do
         it "creates the domain and renders it as json" do
           xhr :post, :create, format: :json, organization_id: raceteam.slug, email_domain: { domain: 'foo.com', outgoing: false }
@@ -55,7 +55,7 @@ describe Api::EmailDomainsController do
   end
 
   describe '#update' do
-    when_signed_in_as 'bob@ucsd.example.com' do
+    when_signed_in_as 'alice@ucsd.example.com' do
       context "when given a valid organization id" do
         let(:domain) { raceteam.email_domains.find_by_domain('raceteam.com') }
         it "updates the domain's outgoing flag" do
@@ -72,7 +72,7 @@ describe Api::EmailDomainsController do
   end
 
   describe '#destroy' do
-    when_signed_in_as 'bob@ucsd.example.com' do
+    when_signed_in_as 'alice@ucsd.example.com' do
       context "when given a valid organization id" do
         let(:domain) { raceteam.email_domains.find_by_domain('raceteam.com') }
         it "removes the domain" do

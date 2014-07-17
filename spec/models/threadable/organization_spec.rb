@@ -42,7 +42,9 @@ describe Threadable::Organization do
     let(:primary_group) do
       double(:primary_group,
         email_address:                "C02-cleaners@localhost",
+        internal_email_address:       "C02-cleaners@localhost",
         task_email_address:           "C02-cleaners+task@localhost",
+        internal_task_email_address:  "C02-cleaners+task@localhost",
         formatted_email_address:      "C02 Cleaners <C02-cleaners@localhost>",
         formatted_task_email_address: "C02 Cleaners Tasks <C02-cleaners+task@localhost>",
       )
