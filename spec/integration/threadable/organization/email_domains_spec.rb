@@ -9,6 +9,10 @@ describe Threadable::Organization::EmailDomains do
   its(:threadable){ should eq threadable }
 
   describe '#outgoing' do
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+    end
+
     it 'returns the outgoing domain, if present' do
       expect(email_domains.outgoing).to be_nil
       email_domains.all.first.outgoing!
