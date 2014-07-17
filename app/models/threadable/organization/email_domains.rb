@@ -14,7 +14,9 @@ class Threadable::Organization::EmailDomains < Threadable::EmailDomains
   end
 
   def add email_domain, outgoing=false
+    require_settings_permission
     raise(Threadable::AuthorizationError, 'A paid account is required to change domain settings') unless organization.paid?
+
     Threadable.transaction do
       email_domain = email_domain_for organization.organization_record.email_domains.create(domain: email_domain)
       email_domain.outgoing! if outgoing
@@ -29,6 +31,8 @@ class Threadable::Organization::EmailDomains < Threadable::EmailDomains
   end
 
   def remove email_domain
+    require_settings_permission
+
     domain_object = organization.email_domains.find_by_domain(email_domain)
     domain_object.destroy if domain_object.present?
   end
@@ -45,6 +49,10 @@ class Threadable::Organization::EmailDomains < Threadable::EmailDomains
 
   def email_domain_for email_domain_record
     Threadable::Organization::EmailDomain.new(organization, email_domain_record) if email_domain_record
+  end
+
+  def require_settings_permission
+    organization.members.current_member.can?(:change_settings_for, organization) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this organization'
   end
 
 end

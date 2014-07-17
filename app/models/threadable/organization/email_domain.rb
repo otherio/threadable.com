@@ -10,6 +10,7 @@ class Threadable::Organization::EmailDomain < Threadable::EmailDomain
 
   def outgoing!
     # TODO: remember to check confirmed here when we have that.
+    require_settings_permission
     require_paid
     return if email_domain_record.outgoing?
     Threadable.transaction do
@@ -22,6 +23,7 @@ class Threadable::Organization::EmailDomain < Threadable::EmailDomain
 
   def not_outgoing!
     # TODO: remember to check confirmed here when we have that.
+    require_settings_permission
     require_paid
     return unless email_domain_record.outgoing?
     Threadable.transaction do
@@ -35,6 +37,10 @@ class Threadable::Organization::EmailDomain < Threadable::EmailDomain
 
   def require_paid
     raise(Threadable::AuthorizationError, 'A paid account is required to change domain settings') unless organization.paid?
+  end
+
+  def require_settings_permission
+    organization.members.current_member.can?(:change_settings_for, organization) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this organization'
   end
 
 end

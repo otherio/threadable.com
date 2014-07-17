@@ -9,6 +9,9 @@ FixtureBuilder.build do
       plan: :paid,
     )
     add_member 'Alice Neilson', 'alice@ucsd.example.com', true
+  end
+
+  as 'alice@ucsd.example.com' do
     add_domain 'raceteam.com'
     add_domain 'raceteam.ucsd.edu'
   end
