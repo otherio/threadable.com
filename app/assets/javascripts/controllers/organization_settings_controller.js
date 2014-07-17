@@ -59,6 +59,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     // },
 
     claimGoogleAccount: function() {
+      this.set('error', null);
       $.ajax({
         type: "POST",
         url: "/api/organizations/" + this.get('slug') + "/claim_google_account"
@@ -71,6 +72,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     },
 
     addDomain: function() {
+      this.set('error', null);
       var organization = this.get('content');
 
       var domain = Threadable.EmailDomain.create({
@@ -96,6 +98,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     },
 
     outgoingDomain: function(domain) {
+      this.set('error', null);
       var organization = this.get('content');
 
       if(domain == 'none') {
@@ -111,6 +114,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     },
 
     deleteDomain: function(domain) {
+      this.set('error', null);
       domain.deleteRecord().then(
         this.get('content').loadEmailDomains(true)
       );
