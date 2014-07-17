@@ -1,7 +1,8 @@
 Threadable.EmailDomain = RL.Model.extend({
-  id:         RL.attr('number'),
-  domain:     RL.attr('string'),
-  outgoing:   RL.attr('boolean'),
+  id:               RL.attr('number'),
+  organizationSlug: RL.attr('string'),
+  domain:           RL.attr('string'),
+  outgoing:         RL.attr('boolean'),
 });
 
 Threadable.RESTAdapter.map("Threadable.EmailDomain", {

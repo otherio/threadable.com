@@ -6,6 +6,8 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
 
   error: null,
   currentUser: Ember.computed.alias('controllers.application.currentUser'),
+  domainSortProperties: ['domain:asc'],
+  sortedDomains: Ember.computed.sort('emailDomains', 'domainSortProperties'),
   updateInProgress: false,
 
   editableOrganization: function() { return this.get('model').copy(); }.property('model'),
@@ -91,7 +93,29 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
         var error = response && response.error || 'an unknown error occurred';
         this.set('error', error);
       }
-    }
+    },
+
+    outgoingDomain: function(domain) {
+      var organization = this.get('content');
+
+      if(domain == 'none') {
+        domain = organization.get('emailDomains').find(function(domain) { return domain.get('outgoing'); });
+        domain.set('outgoing', false);
+      } else {
+        domain.set('outgoing', true);
+      }
+
+      domain.saveRecord().then(
+        this.get('content').loadEmailDomains(true)
+      );
+    },
+
+    deleteDomain: function(domain) {
+      domain.deleteRecord().then(
+        this.get('content').loadEmailDomains(true)
+      );
+    },
+
 
   }
 

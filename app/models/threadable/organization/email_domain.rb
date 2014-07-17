@@ -11,19 +11,23 @@ class Threadable::Organization::EmailDomain < Threadable::EmailDomain
   def outgoing!
     # TODO: remember to check confirmed here when we have that.
     require_paid
+    return if email_domain_record.outgoing?
     Threadable.transaction do
       ::EmailDomain.where(organization_id: organization.id).update_all(outgoing: false)
       email_domain_record.update(outgoing: true)
+      organization.organization_record.email_domains.reload
     end
-    organization.organization_record.email_domains.reload
     return true
   end
 
   def not_outgoing!
     # TODO: remember to check confirmed here when we have that.
     require_paid
-    email_domain_record.update(outgoing: false)
-    organization.organization_record.email_domains.reload
+    return unless email_domain_record.outgoing?
+    Threadable.transaction do
+      email_domain_record.update(outgoing: false)
+      organization.organization_record.email_domains.reload
+    end
     return true
   end
 

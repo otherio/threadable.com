@@ -36,7 +36,14 @@ Threadable.Organization = RL.Model.extend({
       organizationMembers.setEach('organization', organization);
       return organizationMembers;
     });
-  })
+  }),
+
+  loadEmailDomains: RL.loadAssociationMethod('emailDomains', function(organization){
+    return Threadable.EmailDomain.fetch({
+      organization_id: organization.get('slug')
+    });
+  }),
+
 });
 
 Threadable.RESTAdapter.map("Threadable.Organization", {

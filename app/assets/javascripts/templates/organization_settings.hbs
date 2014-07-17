@@ -1,4 +1,4 @@
-<div class="group-settings scrollable">
+<div class="group-settings organization-settings scrollable">
   <div>
     <form class="uk-form" {{action updateOrganization on='submit'}}>
 
@@ -37,21 +37,33 @@
 
       <div>
         <h4 class="uk-text-bold">Your domains</h4>
-        <p>Your organization can receive email at the following domains:</p>
-        <ul>
+        <p>
+          Your organization can receive email at all of the following domains.
+          Messages will be sent using the outgoing domain.
+        </p>
+        <ul class='uk-list uk-list-striped email-domains'>
           <li>
+            <span class="controls default">
+              {{#if internalDomainOutgoing}}
+                <i class="uk-icon-arrow-circle-right"></i> outgoing
+              {{else}}
+                <a {{action "outgoingDomain" "none"}}>set outgoing</a>
+              {{/if}}
+            </span>
             {{emailAddressUsername}}.threadable.com
-            {{#if internalDomainOutgoing}}
-              (outgoing)
-            {{/if}}
           </li>
 
-          {{#each emailDomain in emailDomains}}
+          {{#each emailDomain in sortedDomains}}
             <li>
+              <span class="controls">
+                {{#if emailDomain.outgoing}}
+                  <i class="uk-icon-arrow-circle-right"></i> outgoing
+                {{else}}
+                  <a {{action "outgoingDomain" emailDomain}}>set outgoing</a>
+                {{/if}}
+                <a {{action "deleteDomain" emailDomain}}><i class='uk-icon-times'></i></a>
+              </span>
               {{emailDomain.domain}}
-              {{#if emailDomain.outgoing}}
-                (outgoing)
-              {{/if}}
             </li>
           {{/each}}
         </ul>

@@ -14,9 +14,10 @@ describe EmailDomainsSerializer do
     let(:expected_key){ :email_domain }
     it do
       should eq(
-        id:       domain1.id,
-        domain:   domain1.domain,
-        outgoing: false,
+        id:                domain1.id,
+        organization_slug: domain1.organization.slug,
+        domain:            domain1.domain,
+        outgoing:          false,
       )
     end
   end
@@ -27,13 +28,15 @@ describe EmailDomainsSerializer do
     it do
       should eq [
         {
-          id:       domain1.id,
-          domain:   domain1.domain,
-          outgoing: false,
+          id:                domain1.id,
+          organization_slug: domain1.organization.slug,
+          domain:            domain1.domain,
+          outgoing:          false,
         },{
-          id:       domain2.id,
-          domain:   domain2.domain,
-          outgoing: false,
+          id:                domain2.id,
+          organization_slug: domain2.organization.slug,
+          domain:            domain2.domain,
+          outgoing:          false,
         },
       ]
     end
