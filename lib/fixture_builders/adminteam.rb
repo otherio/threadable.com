@@ -6,17 +6,14 @@ FixtureBuilder.build do
       short_name: 'adminteam',
       description: 'For some fucking reason we have a description!',
     )
-    add_member 'Jared Grippe', 'jared@other.io'
+    add_member 'Ian Baker', 'ian@other.io'
   end
 
-  web_enable! 'jared@other.io'
-  as 'jared@other.io' do
-    # Jared invites her organization mates
+  web_enable! 'ian@other.io'
+  as 'ian@other.io' do
     add_member 'Nicole Aptekar',  'nicole@other.io'
-    add_member 'Aaron Muszalski', 'aaron@other.io'
     add_member 'Ian Baker',       'ian@other.io'
 
-    # Jared sends a welcome email
     @welcome_message = create_conversation(
       subject: 'Holy fuck',
       text: "Hey all! You're admins!",

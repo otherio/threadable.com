@@ -12,10 +12,8 @@ feature "Admin organizations CRUD" do
   #   )
   # end
 
-  let(:jared) { threadable.users.find_by_email_address! 'jared@other.io'  }
   let(:ian)   { threadable.users.find_by_email_address! 'ian@other.io'    }
   let(:nicole){ threadable.users.find_by_email_address! 'nicole@other.io' }
-  let(:aaron) { threadable.users.find_by_email_address! 'aaron@other.io'  }
 
   def members_table
     all('.members.table tbody tr').map do |tr|
@@ -24,7 +22,7 @@ feature "Admin organizations CRUD" do
   end
 
   scenario %(creating an organization) do
-    sign_in_as 'jared@other.io'
+    sign_in_as 'ian@other.io'
     visit admin_new_organization_path
     fill_in 'Name', with: 'United Nations'
     check 'Trusted organization'
@@ -154,7 +152,7 @@ feature "Admin organizations CRUD" do
   end
 
   scenario %(adding a member to a organization you (the admin) are not a member of) do
-    sign_in_as 'jared@other.io'
+    sign_in_as 'ian@other.io'
     visit admin_organizations_path
     click_on 'SF Health Center'
     within '.add-new-member-form' do

@@ -45,7 +45,7 @@ feature "Admin incoming emails" do
   end
 
   scenario %(viewing incoming emails) do
-    sign_in_as 'jared@other.io'
+    sign_in_as 'ian@other.io'
     visit admin_url
     click_on 'Incoming emails'
 
