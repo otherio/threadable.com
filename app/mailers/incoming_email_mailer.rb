@@ -54,14 +54,52 @@ class IncomingEmailMailer < Threadable::Mailer
     message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
   end
 
-  private
+  def message_bounced_notice incoming_email
+    @incoming_email = incoming_email
 
-  def auto_response_mail options={}
-    to = @incoming_email.mail_message.return_path || @incoming_email.envelope_from
     message = mail({
       :css              => 'email',
       :'auto-submitted' => 'auto-replied',
-      :'to'             => to,
+      :'to'             => return_path,
+      :'from'           => "Threadable Mail Error <no-reply-auto@#{threadable.email_host}>",
+      :'In-Reply-To'    => @incoming_email.message_id,
+      :'References'     => [@incoming_email.message_id],
+      :'subject'        => "Delivery Status Notification (Failure)",
+    })
+
+    message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
+
+    status_headers = Mail::Header.new
+    status_headers.fields = [
+      "Final-Recipient: rfc822;#{@incoming_email.recipient}",
+      "Original-Recipient: rfc822;#{@incoming_email.recipient}",
+      "Action: failed",
+      "Status: 5.1.1",
+      "Remote-MTA: dns;mxa.#{threadable.host}",
+      "Diagnostic-Code: smtp; 550-5.1.1 The threadable organization/group you tried to reach does not exist.",
+    ]
+
+    message.part content_type: 'message/delivery-status', body: status_headers.to_s
+
+    message_headers = Mail::Header.new
+
+    message_headers.fields = JSON.parse(@incoming_email.params['message-headers']).map do |header_and_value|
+      (header, value) = header_and_value
+      "#{header}: #{value}"
+    end
+
+    message.part content_type: 'message/rfc822', body: message_headers.to_s
+
+    message.content_type = "multipart/report; report-type=delivery-status; boundary=#{message.boundary}"
+  end
+
+  private
+
+  def auto_response_mail options={}
+    message = mail({
+      :css              => 'email',
+      :'auto-submitted' => 'auto-replied',
+      :'to'             => return_path,
       :'In-Reply-To'    => @incoming_email.message_id,
       :'References'     => [@incoming_email.message_id],
       :'List-ID'        => @organization.list_id,
@@ -73,4 +111,7 @@ class IncomingEmailMailer < Threadable::Mailer
     message
   end
 
+  def return_path
+    @incoming_email.mail_message.return_path || @incoming_email.envelope_from
+  end
 end
