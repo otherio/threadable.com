@@ -56,6 +56,7 @@ class Threadable::Emails
       message_held_owner_notice:    IncomingEmailMailer,
       message_rejected_notice:      IncomingEmailMailer,
       message_accepted_notice:      IncomingEmailMailer,
+      message_bounced_dsn:          IncomingEmailMailer,
       spam_complaint:               ErrorMailer,
     }
   end

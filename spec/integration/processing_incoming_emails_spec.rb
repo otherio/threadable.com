@@ -178,6 +178,19 @@ describe "processing incoming emails" do
         else
           expect(sent_emails.size).to eq 1
         end
+      elsif result == :bounced
+        expect(sent_emails.size).to eq 1
+        bounced_dsn = sent_emails.with_subject("Delivery Status Notification (Failure)").first
+        expect( bounced_dsn.smtp_envelope_from ).to eq "no-reply-auto@#{threadable.email_host}"
+        expect( bounced_dsn.to                 ).to eq [envelope_from.gsub(/[<>]/, '')]
+        expect( bounced_dsn.from               ).to eq ["no-reply-auto@#{threadable.email_host}"]
+
+        expect( bounced_dsn.header['In-Reply-To'].to_s    ).to eq incoming_email.message_id
+        expect( bounced_dsn.header['References'].to_s     ).to eq incoming_email.message_id
+        expect( bounced_dsn.header['Auto-Submitted'].to_s ).to eq 'auto-replied'
+
+        delivery_status_part = bounced_dsn.parts[1]
+        expect(delivery_status_part.body.to_s).to include "Status: #{expected_bounce_status_code}"
       end
 
       return
@@ -390,8 +403,8 @@ describe "processing incoming emails" do
   let(:expected_sent_email_body_html)          { body_html }
   let(:expected_sent_email_body_plain)         { body_plain }
   let(:expected_groups)                        { ['UCSD Electric Racing'] }
-  let(:expect_message_held_notices_sent)        { false }
-
+  let(:expect_message_held_notices_sent)       { false }
+  let(:expected_bounce_status_code)            { '5.1.1'}
 
   it 'delivers the email' do
     validate! :delivered

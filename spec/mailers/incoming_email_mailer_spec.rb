@@ -13,11 +13,15 @@ describe IncomingEmailMailer do
     create_incoming_email_params(
       subject:       subject_line,
       recipient:     recipient,
+      body_html:     body_html,
+      body_plain:    body_plain,
     )
   end
   let(:incoming_email){ threadable.incoming_emails.create!(params).first }
 
   let(:subject_line) { 'i am a subject line, see me subject' }
+  let(:body_plain)   { 'i am a body, watch me bod.' }
+  let(:body_html)    { '<body>i am a <strong>body</strong>, watch me bod.</body>' }
   let(:recipient)    { 'raceteam@localhost' }
   let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
 
@@ -37,48 +41,65 @@ describe IncomingEmailMailer do
     end
   end
 
-  describe "#message_bounced_notice" do
-    let(:recipient)    { 'not-there@localhost' }
-    let(:to)           { 'This is wrong <not-there@localhost>' }
+  describe "#message_bounced_dsn" do
 
-    let(:mail){ described_class.new(threadable).generate(:message_bounced_notice, incoming_email) }
+    let(:text_part)             { mail.parts[0] }
+    let(:delivery_status_part)  { mail.parts[1] }
+    let(:original_headers_part) { mail.parts[2] }
 
-    it "sends a delivery status notification" do
-      expect(mail.subject).to eq "Delivery Status Notification (Failure)"
+    let(:mail){ described_class.new(threadable).generate(:message_bounced_dsn, incoming_email) }
 
-      expect(mail.header['In-Reply-To'].to_s).to eq params['Message-Id']
-      expect(mail.header['References'].to_s).to  eq params['Message-Id']
+    context 'when the organization/group cannot be found' do
+      let(:recipient)    { 'not-there@localhost' }
+      let(:to)           { 'This is wrong <not-there@localhost>' }
 
-      expect(mail.to).to eq [params['X-Envelope-From']]
-      expect(mail.from).to eq ['no-reply-auto@localhost']
-      expect(mail.smtp_envelope_from).to eq "no-reply-auto@localhost"
+      it "sends a delivery status notification" do
+        expect(mail.subject).to eq "Delivery Status Notification (Failure)"
 
-      expect(mail.content_type).to include 'multipart/report'
-      expect(mail.content_type).to include 'report-type=delivery-status'
+        expect(mail.header['In-Reply-To'].to_s).to eq params['Message-Id']
+        expect(mail.header['References'].to_s).to  eq params['Message-Id']
 
-      text_part = mail.parts[0]
-      delivery_status_part = mail.parts[1]
-      original_headers_part = mail.parts[2]
+        expect(mail.to).to eq [params['X-Envelope-From']]
+        expect(mail.from).to eq ['no-reply-auto@localhost']
+        expect(mail.smtp_envelope_from).to eq "no-reply-auto@localhost"
 
-      expect(text_part.content_type).to eq 'text/plain'
-      expect(text_part.body).to include subject_line
+        expect(mail.content_type).to include 'multipart/report'
+        expect(mail.content_type).to include 'report-type=delivery-status'
 
-      expect(delivery_status_part.content_type).to eq 'message/delivery-status'
+        expect(text_part.content_type).to eq 'text/plain'
+        expect(text_part.body).to include subject_line
+        expect(text_part.body).to include 'The threadable organization/group you tried to reach does not exist.'
 
-      expect(delivery_status_part.body.to_s).to include "Final-Recipient: rfc822;not-there@localhost"
-      expect(delivery_status_part.body.to_s).to include "Original-Recipient: rfc822;not-there@localhost"
-      expect(delivery_status_part.body.to_s).to include "Action: failed"
-      expect(delivery_status_part.body.to_s).to include "Status: 5.1.1"
-      expect(delivery_status_part.body.to_s).to include "Remote-MTA: dns;mxa.127.0.0.1"
-      expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.1.1"
+        expect(delivery_status_part.content_type).to eq 'message/delivery-status'
 
-      expect(original_headers_part.content_type).to eq 'message/rfc822'
+        expect(delivery_status_part.body.to_s).to include "Final-Recipient: rfc822;not-there@localhost"
+        expect(delivery_status_part.body.to_s).to include "Original-Recipient: rfc822;not-there@localhost"
+        expect(delivery_status_part.body.to_s).to include "Action: failed"
+        expect(delivery_status_part.body.to_s).to include "Status: 5.1.1"
+        expect(delivery_status_part.body.to_s).to include "Remote-MTA: dns;mxa.127.0.0.1"
+        expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.1.1"
 
-      JSON.parse(incoming_email.params['message-headers']).each do |header_and_value|
-        (header, value) = header_and_value
-        header_object = Mail::Header.new
-        header_object.fields = ["#{header}: #{value}"]
-        expect(original_headers_part.body.to_s).to include header_object.to_s.gsub(/\r/, '')
+        expect(original_headers_part.content_type).to eq 'message/rfc822'
+
+        JSON.parse(incoming_email.params['message-headers']).each do |header_and_value|
+          (header, value) = header_and_value
+          header_object = Mail::Header.new
+          header_object.fields = ["#{header}: #{value}"]
+          expect(original_headers_part.body.to_s).to include header_object.to_s.gsub(/\r/, '')
+        end
+      end
+    end
+
+    context 'with a blank message' do
+      let(:subject_line) { '' }
+      let(:body_plain)   { '' }
+      let(:body_html)    { '' }
+
+      it 'bounces the message with a different error message' do
+        expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.6.0"
+        expect(delivery_status_part.body.to_s).to include "Status: 5.6.0"
+        expect(text_part.body).to include 'Threadable cannot deliver a blank message with no subject.'
+
       end
     end
   end

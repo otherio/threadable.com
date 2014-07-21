@@ -112,7 +112,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def bounceable?
-    organization.nil? || !subject_valid? || !(groups_valid? || reply?)
+    !! bounce_reason
   end
 
   def holdable?
@@ -149,6 +149,13 @@ class Threadable::IncomingEmail < Threadable::Model
       line =~ /^\s*&(done|undone|add|remove|mute|unmute)/
     end
     ! (lines.join('') =~ /\S/m)
+  end
+
+  def bounce_reason
+    return :missing_organization_or_group if organization.nil?
+    return :blank_message if !subject_valid?
+    return :missing_organization_or_group if !(groups_valid? || reply?)
+    nil
   end
 
   def subject

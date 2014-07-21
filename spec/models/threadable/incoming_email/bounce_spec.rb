@@ -8,13 +8,13 @@ describe Threadable::IncomingEmail::Bounce do
     )
   end
 
-  def call!
-    described_class.call(incoming_email)
-  end
+  delegate :call, to: described_class
 
-  it 'sends a held message notice and marks the incoming email as held' do
+  it 'marks the incoming email as bounced and sends a DSN' do
     expect(incoming_email).to receive(:bounced!)
-    call!
+    expect(threadable.emails).to receive(:send_email).with(:message_bounced_dsn, incoming_email)
+
+    call incoming_email
   end
 
 end

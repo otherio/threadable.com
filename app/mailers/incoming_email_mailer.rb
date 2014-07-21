@@ -54,8 +54,9 @@ class IncomingEmailMailer < Threadable::Mailer
     message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
   end
 
-  def message_bounced_notice incoming_email
+  def message_bounced_dsn incoming_email
     @incoming_email = incoming_email
+    @bounce_error = bounce_error incoming_email.bounce_reason
 
     message = mail({
       :css              => 'email',
@@ -74,9 +75,9 @@ class IncomingEmailMailer < Threadable::Mailer
       "Final-Recipient: rfc822;#{@incoming_email.recipient}",
       "Original-Recipient: rfc822;#{@incoming_email.recipient}",
       "Action: failed",
-      "Status: 5.1.1",
+      "Status: #{@bounce_error[:status_code]}",
       "Remote-MTA: dns;mxa.#{threadable.host}",
-      "Diagnostic-Code: smtp; 550-5.1.1 The threadable organization/group you tried to reach does not exist.",
+      "Diagnostic-Code: smtp; 550-#{@bounce_error[:status_code]} #{@bounce_error[:error_message]}",
     ]
 
     message.part content_type: 'message/delivery-status', body: status_headers.to_s
@@ -113,5 +114,20 @@ class IncomingEmailMailer < Threadable::Mailer
 
   def return_path
     @incoming_email.mail_message.return_path || @incoming_email.envelope_from
+  end
+
+  def bounce_error reason
+    codes = {
+      missing_organization_or_group: {
+        status_code:   '5.1.1',
+        error_message: 'The threadable organization/group you tried to reach does not exist.'
+      },
+      blank_message: {
+        status_code:   '5.6.0',
+        error_message: 'Threadable cannot deliver a blank message with no subject.'
+      },
+    }
+
+    codes[reason]
   end
 end

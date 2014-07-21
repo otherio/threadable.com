@@ -286,31 +286,15 @@ describe Threadable::IncomingEmail do
 
   describe 'bounceable?' do
     subject{ incoming_email.bounceable? }
-    context 'when organization is nil' do
-      before{ expect(incoming_email).to receive(:organization).and_return(nil) }
+
+    context 'when there is a bounce reason' do
+      before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
       it { should be_true }
     end
-    context 'when organization is not nil' do
-      before{ expect(incoming_email).to receive(:organization).and_return(organization) }
 
-      context 'when the subject is valid' do
-        before { expect(incoming_email).to receive(:subject_valid?).and_return(true) }
-
-        context 'when the groups are valid' do
-          before { expect(incoming_email).to receive(:groups_valid?).and_return(true) }
-          it { should be_false }
-        end
-
-        context 'when the groups are invalid' do
-          before { expect(incoming_email).to receive(:groups_valid?).and_return(false) }
-          it { should be_true }
-        end
-      end
-
-      context 'when the subject is invalid' do
-        before { expect(incoming_email).to receive(:subject_valid?).and_return(false) }
-        it { should be_true }
-      end
+    context 'when there is not a bounce reason' do
+      before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
+      it { should be_false }
     end
   end
 
@@ -437,6 +421,37 @@ describe Threadable::IncomingEmail do
       it { should be_false }
     end
   end
+
+  describe '#bounce_reason' do
+    subject{ incoming_email.bounce_reason }
+    context 'when organization is nil' do
+      before{ expect(incoming_email).to receive(:organization).and_return(nil) }
+      it { should eq :missing_organization_or_group }
+    end
+    context 'when organization is not nil' do
+      before{ expect(incoming_email).to receive(:organization).and_return(organization) }
+
+      context 'when the subject is valid' do
+        before { expect(incoming_email).to receive(:subject_valid?).and_return(true) }
+
+        context 'when the groups are valid' do
+          before { expect(incoming_email).to receive(:groups_valid?).and_return(true) }
+          it { should be_nil }
+        end
+
+        context 'when the groups are invalid' do
+          before { expect(incoming_email).to receive(:groups_valid?).and_return(false) }
+          it { should eq :missing_organization_or_group }
+        end
+      end
+
+      context 'when the subject is invalid' do
+        before { expect(incoming_email).to receive(:subject_valid?).and_return(false) }
+        it { should eq :blank_message }
+      end
+    end
+  end
+
 
   describe '#subject_valid?' do
     let(:subject_line) { '[task] i am a subject line' }
