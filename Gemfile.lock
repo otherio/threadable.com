@@ -8,8 +8,8 @@ GIT
 
 GIT
   remote: git://github.com/raindrift/mail.git
-  revision: 54f462c044e8e919e638740096fa64ff1f86c6c2
-  ref: 54f462c
+  revision: ccea7228c645678682faa0399b21615b436de72e
+  ref: ccea7228c6456
   specs:
     mail (2.5.4)
       mime-types (~> 1.16)
