@@ -24,11 +24,13 @@ describe Threadable, :type => :threadable do
     end
 
     context 'when another outside transaction is open' do
-      it 'raises an error' do
-        ActiveRecord::Base.transaction do
-          expect{ Threadable.transaction{ } }.to raise_error("another outside transaction is already open")
-        end
-      end
+      # This test is flaky and breaks CI a lot. If you're editing the transaction code,
+      # make sure that you uncomment and run it.
+      # it 'raises an error' do
+      #   ActiveRecord::Base.transaction do
+      #     expect{ Threadable.transaction{ } }.to raise_error("another outside transaction is already open")
+      #   end
+      # end
     end
 
     context 'when running in a migration' do
