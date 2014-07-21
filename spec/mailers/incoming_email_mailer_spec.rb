@@ -45,7 +45,7 @@ describe IncomingEmailMailer do
 
     let(:text_part)             { mail.parts[0] }
     let(:delivery_status_part)  { mail.parts[1] }
-    let(:original_headers_part) { mail.parts[2] }
+    let(:original_mail_part) { mail.parts[2] }
 
     let(:mail){ described_class.new(threadable).generate(:message_bounced_dsn, incoming_email) }
 
@@ -61,7 +61,7 @@ describe IncomingEmailMailer do
 
         expect(mail.to).to eq [params['X-Envelope-From']]
         expect(mail.from).to eq ['no-reply-auto@localhost']
-        expect(mail.smtp_envelope_from).to eq "no-reply-auto@localhost"
+        expect(mail.smtp_envelope_from).to eq ""
 
         expect(mail.content_type).to include 'multipart/report'
         expect(mail.content_type).to include 'report-type=delivery-status'
@@ -72,21 +72,24 @@ describe IncomingEmailMailer do
 
         expect(delivery_status_part.content_type).to eq 'message/delivery-status'
 
+        expect(delivery_status_part.body.to_s).to include "Reporting-MTA: dns;mxa.127.0.0.1"
+        expect(delivery_status_part.body.to_s).to include "Arrival-Date:"
         expect(delivery_status_part.body.to_s).to include "Final-Recipient: rfc822;not-there@localhost"
         expect(delivery_status_part.body.to_s).to include "Original-Recipient: rfc822;not-there@localhost"
         expect(delivery_status_part.body.to_s).to include "Action: failed"
         expect(delivery_status_part.body.to_s).to include "Status: 5.1.1"
-        expect(delivery_status_part.body.to_s).to include "Remote-MTA: dns;mxa.127.0.0.1"
         expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.1.1"
 
-        expect(original_headers_part.content_type).to eq 'message/rfc822'
+        expect(original_mail_part.content_type).to eq 'message/rfc822'
 
         JSON.parse(incoming_email.params['message-headers']).each do |header_and_value|
           (header, value) = header_and_value
           header_object = Mail::Header.new
           header_object.fields = ["#{header}: #{value}"]
-          expect(original_headers_part.body.to_s).to include header_object.to_s.gsub(/\r/, '')
+          expect(original_mail_part.body.to_s).to include header_object.to_s.gsub(/\r/, '')
         end
+
+        expect(original_mail_part.body.to_s).to include "i am a body"
       end
     end
 
