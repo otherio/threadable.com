@@ -7,7 +7,7 @@ GIT
       atomic (>= 1.1.7, < 2)
 
 GIT
-  remote: git@github.com:raindrift/mail.git
+  remote: git://github.com/raindrift/mail.git
   revision: 54f462c044e8e919e638740096fa64ff1f86c6c2
   ref: 54f462c
   specs:
