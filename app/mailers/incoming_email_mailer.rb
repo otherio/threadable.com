@@ -68,7 +68,7 @@ class IncomingEmailMailer < Threadable::Mailer
       :'subject'        => "Delivery Status Notification (Failure)",
     })
 
-    message.smtp_envelope_from = "<>"
+    message.smtp_envelope_from = ""
 
     reporting_mta_headers = Mail::Header.new
     reporting_mta_headers.fields = [
