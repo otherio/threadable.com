@@ -189,7 +189,7 @@ describe "processing incoming emails" do
         expect( bounced_dsn.header['References'].to_s     ).to eq incoming_email.message_id
         expect( bounced_dsn.header['Auto-Submitted'].to_s ).to eq 'auto-replied'
 
-        delivery_status_part = bounced_dsn.parts[1]
+        delivery_status_part = bounced_dsn.body.parts[1]
         expect(delivery_status_part.body.to_s).to include "Status: #{expected_bounce_status_code}"
       end
 
@@ -521,6 +521,7 @@ describe "processing incoming emails" do
         let(:expected_parent_message){ nil }
         let(:expected_conversation)  { nil }
         let(:expected_creator)       { nil }
+        let(:expected_bounce_status_code) { '5.6.0'}
         it 'bounces the incoming email' do
           validate! :bounced
         end
@@ -535,6 +536,7 @@ describe "processing incoming emails" do
         let(:expected_parent_message){ nil }
         let(:expected_conversation)  { nil }
         let(:expected_creator)       { nil }
+        let(:expected_bounce_status_code) { '5.6.0'}
         it 'bounces the incoming email' do
           validate! :bounced
         end
