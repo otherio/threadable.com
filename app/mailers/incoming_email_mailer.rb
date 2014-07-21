@@ -61,26 +61,31 @@ class IncomingEmailMailer < Threadable::Mailer
     message = mail({
       :css              => 'email',
       :'auto-submitted' => 'auto-replied',
-      :'to'             => return_path,
+      :'to'             => @incoming_email.envelope_from,
       :'from'           => "Threadable Mail Error <no-reply-auto@#{threadable.email_host}>",
       :'In-Reply-To'    => @incoming_email.message_id,
       :'References'     => [@incoming_email.message_id],
       :'subject'        => "Delivery Status Notification (Failure)",
     })
 
-    message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
+    message.smtp_envelope_from = "<>"
 
-    status_headers = Mail::Header.new
-    status_headers.fields = [
+    reporting_mta_headers = Mail::Header.new
+    reporting_mta_headers.fields = [
+      "Reporting-MTA: dns;mxa.#{threadable.host}",
+      "Arrival-Date: #{Time.now.utc.rfc2822}",
+    ]
+
+    recipient_status_headers = Mail::Header.new
+    recipient_status_headers.fields = [
       "Final-Recipient: rfc822;#{@incoming_email.recipient}",
       "Original-Recipient: rfc822;#{@incoming_email.recipient}",
       "Action: failed",
       "Status: #{@bounce_error[:status_code]}",
-      "Remote-MTA: dns;mxa.#{threadable.host}",
       "Diagnostic-Code: smtp; 550-#{@bounce_error[:status_code]} #{@bounce_error[:error_message]}",
     ]
 
-    message.part content_type: 'message/delivery-status', body: status_headers.to_s
+    message.part content_type: 'message/delivery-status', body: "#{reporting_mta_headers.to_s}\n#{recipient_status_headers.to_s}"
 
     message_headers = Mail::Header.new
 
@@ -89,7 +94,7 @@ class IncomingEmailMailer < Threadable::Mailer
       "#{header}: #{value}"
     end
 
-    message.part content_type: 'message/rfc822', body: message_headers.to_s
+    message.part content_type: 'message/rfc822', body: "#{message_headers.to_s}\n#{incoming_email.body_plain}"
 
     message.content_type = "multipart/report; report-type=delivery-status; boundary=#{message.boundary}"
   end
