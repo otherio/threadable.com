@@ -59,13 +59,15 @@ class IncomingEmailMailer < Threadable::Mailer
     @bounce_error = bounce_error incoming_email.bounce_reason
 
     message = mail({
-      :css              => 'email',
-      :'auto-submitted' => 'auto-replied',
-      :'to'             => @incoming_email.envelope_from,
-      :'from'           => "Threadable Mail Error <no-reply-auto@#{threadable.email_host}>",
-      :'In-Reply-To'    => @incoming_email.message_id,
-      :'References'     => [@incoming_email.message_id],
-      :'subject'        => "Delivery Status Notification (Failure)",
+      :css                     => 'email',
+      :'auto-submitted'        => 'auto-replied',
+      :'to'                    => @incoming_email.envelope_from,
+      :'from'                  => "Threadable Mail Error <no-reply-auto@#{threadable.email_host}>",
+      :'In-Reply-To'           => @incoming_email.message_id,
+      :'References'            => [@incoming_email.message_id],
+      :'subject'               => "Delivery Status Notification (Failure)",
+      :'X-Mailgun-Track'       => 'no',
+      :'X-Mailgun-Native-Send' => 'true',
     })
 
     message.smtp_envelope_from = ""

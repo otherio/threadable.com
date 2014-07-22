@@ -59,6 +59,9 @@ describe IncomingEmailMailer do
         expect(mail.header['In-Reply-To'].to_s).to eq params['Message-Id']
         expect(mail.header['References'].to_s).to  eq params['Message-Id']
 
+        expect(mail.header['X-Mailgun-Track'].to_s).to       eq 'no'
+        expect(mail.header['X-Mailgun-Native-Send'].to_s).to eq 'true'
+
         expect(mail.to).to eq [params['X-Envelope-From']]
         expect(mail.from).to eq ['no-reply-auto@localhost']
         expect(mail.smtp_envelope_from).to eq ""
