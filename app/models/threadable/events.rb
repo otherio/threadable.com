@@ -7,10 +7,12 @@ class Threadable::Events < Threadable::Collection
   def latest
     event_for (scope.last or return)
   end
+  alias_method :last, :latest
 
   def oldest
     event_for (scope.first or return)
   end
+  alias_method :first, :oldest
 
   def create event_type, attributes={}
     Create.call(self, event_type, attributes)

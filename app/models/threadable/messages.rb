@@ -16,10 +16,12 @@ class Threadable::Messages < Threadable::Collection
   def latest
     message_for (scope.last or return)
   end
+  alias_method :last, :latest
 
   def oldest
     message_for (scope.first or return)
   end
+  alias_method :first, :oldest
 
   def find_by_id id
     message_for (scope.find(id) or return)

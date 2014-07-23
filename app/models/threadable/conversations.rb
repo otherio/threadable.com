@@ -52,10 +52,12 @@ class Threadable::Conversations < Threadable::Collection
   def latest
     conversation_for (scope.first or return)
   end
+  alias_method :last, :latest
 
   def oldest
     conversation_for (scope.last or return)
   end
+  alias_method :first, :oldest
 
   def create attributes={}
     Create.call(self, attributes)

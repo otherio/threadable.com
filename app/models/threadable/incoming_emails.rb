@@ -26,6 +26,7 @@ class Threadable::IncomingEmails < Threadable::Collection
   def latest
     incoming_email_for (scope.last or return)
   end
+  alias_method :last, :latest
 
   def create! mailgun_params
     Create.call(self, mailgun_params)
