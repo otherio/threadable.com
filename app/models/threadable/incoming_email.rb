@@ -243,18 +243,8 @@ class Threadable::IncomingEmail < Threadable::Model
     ExtractEmailAddresses.call(from, envelope_from, sender).uniq
   end
 
-  SPECIAL_EMAIL_ADDRESS_TAGS = %w{ task }.freeze
   def email_address_tags
-    @email_address_tags ||= begin
-      local, host = recipient.strip_non_ascii.downcase.split('@')
-      local_components = local.split(/(?:\+|--)/) - SPECIAL_EMAIL_ADDRESS_TAGS
-      if threadable.email_hosts.include?(host)
-        local_components[1..-1]
-      else
-        # the whole local part
-        [local_components[0]]
-      end
-    end
+    @email_address_tags ||= organization.email_address_tags recipient
   end
 
   def find_organization!
@@ -265,10 +255,11 @@ class Threadable::IncomingEmail < Threadable::Model
 
   def find_groups!
     return self if groups.present? || organization.nil?
-    if email_address_tags.present?
-      self.groups = organization.groups.find_by_email_address_tags(email_address_tags)
-    else
+    if email_address_tags.length == 1 && email_address_tags.first == organization.email_address_username
+      # this is an optimization.
       self.groups = [organization.groups.primary]
+    else
+      self.groups = organization.groups.find_by_email_address_tags(email_address_tags)
     end
     return self
   end

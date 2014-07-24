@@ -893,10 +893,10 @@ describe "processing incoming emails" do
         end
 
         context "and the group is identified using a subdomain" do
-          let(:recipient)              { 'electronics@raceteam.test.host' }
-          let(:to)                     { '"UCSD Electric Racing: Electronics" <electronics@raceteam.test.host>' }
+          let(:recipient)              { 'electronics@raceteam.localhost' }
+          let(:to)                     { '"UCSD Electric Racing: Electronics" <electronics@raceteam.localhost>' }
           # TODO: when we start sending with these addresses, fix this test.
-          let(:expected_sent_email_to) { ["electronics@raceteam.test.host"] }
+          let(:expected_sent_email_to) { ["electronics@raceteam.localhost"] }
 
           it "delivers the message to only those groups' members" do
             validate! :delivered
@@ -949,18 +949,63 @@ describe "processing incoming emails" do
           it 'adds the new groups to the conversation' do
             validate! :delivered
           end
+
+          context 'and the to/cc headers specify changes in the groups' do
+            let(:parent_message_to) { 'electronics@raceteam.localhost' }
+
+            before do
+              expected_parent_message.update(to_header: parent_message_to)
+            end
+
+            context 'removing a group, and adding one that is not an envelope recipient' do
+              let(:to)                { 'fundraising@raceteam.localhost' }
+              let(:cc)                { 'graphic-design@raceteam.localhost' }
+              let(:recipient)         { 'fundraising@raceteam.localhost' }
+
+
+              let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Graphic Design" <graphic-design@raceteam.localhost>, "UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
+              let(:expected_email_recipients){ ["bethany@ucsd.example.com", "bob@ucsd.example.com", "cal.naughton@ucsd.example.com", "lilith@sfhealth.example.com", "nadya@ucsd.example.com", "ricky.bobby@ucsd.example.com", "tom@ucsd.example.com", "yan@ucsd.example.com"] }
+              let(:expected_groups)   { ['Fundraising', 'Graphic Design'] }
+              let(:expected_sent_email_to)   { ["fundraising@raceteam.localhost"] }
+              let(:expected_sent_email_cc)   { '"UCSD Electric Racing: Graphic Design" <graphic-design@raceteam.localhost>' }
+
+              it "changes the group membership of the conversation" do
+                validate! :delivered
+              end
+            end
+
+            context 'adding a group and removing a group' do
+              let(:to)              { 'fundraising@raceteam.localhost' }
+              let(:recipient)       { 'fundraising@raceteam.localhost' }
+
+              let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
+              let(:expected_sent_email_to)   { ["fundraising@raceteam.localhost"] }
+              let(:expected_email_recipients){ ["nadya@ucsd.example.com"] }
+              let(:expected_groups) { ['Fundraising'] }
+
+              it "changes the group membership of the conversation" do
+                validate! :delivered
+              end
+            end
+          end
         end
 
-        context 'and the conversation was previously removed from one of those groups' do
+        context 'and the conversation was previously removed from one of those groups, but the headers have not changed' do
           let(:to) { '"UCSD Electric Racing: Electronics" <raceteam+electronics@localhost>, "UCSD Electric Racing: Fundraising" <raceteam+fundraising@localhost>' }
-          let(:expected_sent_email_to) { ['fundraising@raceteam.localhost'] }
+          let(:parent_message_to) { to }
 
+          let(:expected_sent_email_to) { ['fundraising@raceteam.localhost'] }
           let(:expected_conversation)                  { expected_organization.conversations.find_by_slug('how-are-we-paying-for-the-motor-controller') }
           let(:expected_groups)                        { ['Fundraising'] }
           let(:expected_email_recipients)              { ['nadya@ucsd.example.com'] }
           let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
           let(:expected_sent_email_smtp_envelope_from) { 'fundraising@raceteam.localhost' }
           let(:expected_sent_email_subject) { "Re: [RaceTeam+Fundraising] OMG guys I love threadable!" }
+          let(:expected_parent_message)     { expected_conversation.messages.first }
+
+          before do
+            expected_parent_message.update(to_header: parent_message_to)
+          end
 
           it 'does not add the previously-used groups to the conversation' do
             validate! :delivered

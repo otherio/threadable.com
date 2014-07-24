@@ -281,4 +281,26 @@ describe Threadable::Organization do
     end
   end
 
+  describe '#email_address_tags' do
+    examples = {
+      ['foo@raceteam.localhost', 'raceteam+bar@threadable.com'] => ['foo', 'bar'],
+      ['foo@raceteam.com', 'raceteam+bar@threadable.com'] => ['foo', 'bar'],
+      ['raceteam+foo@covered.io', 'mom+bar@threadable.com'] => ['foo'],
+      ['ian@mail.sonic.net'] => [],
+      ['raceteam+bar+baz@threadable.com'] => ['bar', 'baz'],
+      ['raceteam+bar+task@threadable.com'] => ['bar'],
+      ['raceteam@localhost'] => ['raceteam'],
+    }
+
+    # this checks that the domain belongs to the specified organization,
+    # but does not check to make sure the email address tag is a valid group.
+
+    examples.each do |email_addresses, expected_result|
+      context "when given #{email_addresses.inspect}" do
+        subject{ organization.email_address_tags(email_addresses) }
+        it { should == expected_result }
+      end
+    end
+  end
+
 end

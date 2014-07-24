@@ -1,5 +1,7 @@
 class Threadable::Organization < Threadable::Model
 
+  SPECIAL_EMAIL_ADDRESS_TAGS = %w{ task }.freeze
+
   def self.model_name
     ::Organization.model_name
   end
@@ -123,6 +125,32 @@ class Threadable::Organization < Threadable::Model
     end
     @all_email_addresses << [email_address, task_email_address, no_subdomain_email_address]
     @all_email_addresses.flatten!
+  end
+
+  def email_address_tags email_addresses
+    email_addresses = [email_addresses] unless email_addresses.kind_of?(Array)
+
+    domains = email_domains.all.map(&:domain)
+    domains << internal_email_host
+
+    tags = email_addresses.map do |email_address|
+      local, host = email_address.strip_non_ascii.downcase.split('@')
+      local_components = local.split(/(?:\+|--)/) - SPECIAL_EMAIL_ADDRESS_TAGS
+      no_subdomain_addresses = threadable.email_hosts.map{ |host| "#{email_address_username}@#{host}"}
+
+      if threadable.email_hosts.include?(host)
+        if local == email_address_username
+          groups.primary.email_address_tag
+        elsif local_components[0] == email_address_username
+          local_components[1..-1]
+        end
+      elsif domains.include?(host)
+        # the whole local part
+        local_components[0]
+      end
+    end.flatten
+
+    tags.compact.uniq
   end
 
   def google_user
