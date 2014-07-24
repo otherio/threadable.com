@@ -83,7 +83,7 @@ class Threadable::Messages::Create < MethodObject
   end
 
   let :to_header do
-    @options.to_header
+    @options.to_header || @conversation.formatted_email_addresses.join(',')
   end
 
   let :cc_header do
