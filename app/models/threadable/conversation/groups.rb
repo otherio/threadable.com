@@ -61,9 +61,18 @@ class Threadable::Conversation::Groups < Threadable::Groups
       groups.first == conversation.organization.groups.primary
 
     Threadable.transaction do
-      conversation_record.conversation_groups.where(group_id: group_ids).update_all(active: false)
+      updated_ids = group_ids.map do |group_id|
+        conversation_group_record = conversation_record.conversation_groups.where(group_id: group_id).first
+        next unless conversation_group_record.present?
 
-      group_ids.each do |group_id|
+        conversation_group_record.active = false
+        next unless conversation_group_record.changed.present?
+
+        conversation_group_record.save
+        group_id
+      end.compact
+
+      updated_ids.each do |group_id|
         conversation.events.create!(:conversation_removed_group,
           user_id: threadable.current_user_id,
           group_id: group_id,

@@ -157,6 +157,18 @@ describe Threadable::Conversation::Groups do
       end
     end
 
+    context 'when the conversation is not in the group' do
+      it 'does not create any conversation events' do
+        expect(conversation.groups.all).to eq [electronics]
+        events_count = conversation.events.all.length
+
+        conversation.groups.remove(fundraising)
+        expect(conversation.groups.all).to eq [electronics]
+
+        expect(conversation.events.all.length).to eq events_count
+      end
+    end
+
     context 'when there is one group and it is primary' do
       let(:conversation){ organization.conversations.find_by_slug('layup-body-carbon') }
 
