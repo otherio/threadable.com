@@ -978,10 +978,14 @@ describe "processing incoming emails" do
               let(:to)              { 'fundraising@raceteam.localhost' }
               let(:recipient)       { 'fundraising@raceteam.localhost' }
 
-              let(:expected_sent_email_reply_to) { '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
-              let(:expected_sent_email_to)   { ["fundraising@raceteam.localhost"] }
-              let(:expected_email_recipients){ ["nadya@ucsd.example.com"] }
-              let(:expected_groups) { ['Fundraising'] }
+              let(:expected_sent_email_reply_to)           { '"UCSD Electric Racing: Fundraising" <fundraising@raceteam.localhost>' }
+              let(:expected_sent_email_to)                 { ["fundraising@raceteam.localhost"] }
+              let(:expected_email_recipients)              { ["nadya@ucsd.example.com"] }
+              let(:expected_sent_email_smtp_envelope_from) { "fundraising@raceteam.localhost"}
+              let(:expected_groups)                        { ['Fundraising'] }
+              let(:expected_sent_email_subject)            { "Re: [RaceTeam+Fundraising] OMG guys I love threadable!" }
+              let(:expected_sent_email_list_id)            { '"UCSD Electric Racing: Fundraising" <fundraising.raceteam.localhost>' }
+              let(:expected_sent_email_list_post)          { "<mailto:#{expected_conversation.list_post_email_address}>, <#{compose_conversation_url(expected_organization, 'my')}>" }
 
               it "changes the group membership of the conversation" do
                 validate! :delivered
