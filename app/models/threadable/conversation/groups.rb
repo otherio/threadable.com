@@ -68,7 +68,7 @@ class Threadable::Conversation::Groups < Threadable::Groups
         conversation_group_record.active = false
         next unless conversation_group_record.changed.present?
 
-        conversation_group_record.save
+        conversation_group_record.save!
         group_id
       end.compact
 
