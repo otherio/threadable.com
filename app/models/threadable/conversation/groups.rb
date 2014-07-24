@@ -15,7 +15,6 @@ class Threadable::Conversation::Groups < Threadable::Groups
 
   def add *groups
     groups = groups.flatten.compact
-    group_ids = groups.map(&:id)
     Threadable.transaction do
       conversation_group_records = conversation_group_records_for(groups)
 
@@ -96,7 +95,7 @@ class Threadable::Conversation::Groups < Threadable::Groups
   end
 
   def conversation_group_records_for groups
-    conversation_group_records = conversation_record.conversation_groups.to_a
+    conversation_group_records = conversation_record.conversation_groups.reload.to_a
     groups.map do |group|
       next if conversation_group_record_for(group, conversation_group_records)
       conversation_group_records << conversation_record.conversation_groups.new(group_id: group.id)

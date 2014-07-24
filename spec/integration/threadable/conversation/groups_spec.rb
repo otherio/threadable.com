@@ -8,6 +8,7 @@ describe Threadable::Conversation::Groups do
   let(:primary_group){ organization.groups.primary }
   let(:electronics) { organization.groups.find_by_email_address_tag('electronics') }
   let(:fundraising) { organization.groups.find_by_email_address_tag('fundraising') }
+  let(:graphic_design) { organization.groups.find_by_email_address_tag('graphic-design') }
 
 
   subject{ groups }
@@ -125,18 +126,22 @@ describe Threadable::Conversation::Groups do
     context 'with more than one group' do
       before do
         conversation.groups.add fundraising
+        conversation.groups.add graphic_design
       end
 
       it 'should remove the given groups from the conversation' do
-        expect(conversation.groups.all).to match_array [electronics, fundraising]
+        expect(conversation.groups.all).to match_array [electronics, fundraising, graphic_design]
 
-        conversation.groups.remove(electronics)
+        conversation.groups.remove(electronics, graphic_design)
         expect(conversation.groups.all).to eq [fundraising]
         expect(conversation.groups.count).to eq 1
         expect(conversation.group_ids).to eq [fundraising.id]
 
-        events = conversation.events.all.last(1).map{|e| [e.event_type, e.group_id]}
-        expect(events).to eq [[:conversation_removed_group, electronics.id]]
+        events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
+        expect(events).to match_array [
+          [:conversation_removed_group, electronics.id],
+          [:conversation_removed_group, graphic_design.id]
+        ]
       end
     end
 
@@ -147,6 +152,7 @@ describe Threadable::Conversation::Groups do
         conversation.groups.remove(electronics)
         expect(conversation.groups.all).to eq [primary_group]
         expect(conversation.groups.count).to eq 1
+        expect(conversation.conversation_record.group_ids_cache.length).to eq 1
         expect(conversation.group_ids).to eq [primary_group.id]
 
         events = conversation.events.all.last(2).map{|e| [e.event_type, e.group_id]}
@@ -164,6 +170,8 @@ describe Threadable::Conversation::Groups do
 
         conversation.groups.remove(fundraising)
         expect(conversation.groups.all).to eq [electronics]
+        expect(conversation.groups.count).to eq 1
+        expect(conversation.group_ids).to eq [electronics.id]
 
         expect(conversation.events.all.length).to eq events_count
       end
@@ -178,6 +186,7 @@ describe Threadable::Conversation::Groups do
         conversation.groups.remove(primary_group)
         expect(conversation.groups.all).to eq [primary_group]
         expect(conversation.groups.count).to eq 1
+        expect(conversation.conversation_record.group_ids_cache.length).to eq 1
         expect(conversation.group_ids).to eq [primary_group.id]
 
         events = conversation.events.all.last(1).map{|e| e.event_type}

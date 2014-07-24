@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Threadable::IncomingEmail::Deliver do
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
+  let(:fundraising) { organization.groups.find_by_slug! 'fundraising' }
 
   let :params do
     create_incoming_email_params(
@@ -47,6 +48,8 @@ describe Threadable::IncomingEmail::Deliver do
         call incoming_email
         conversation.conversation_record.reload
         expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising']
+        expect(conversation.group_ids).to match_array [fundraising.id]
+        expect(conversation.groups.count).to eq 1
       end
 
       context 'when the primary group has been renamed' do
