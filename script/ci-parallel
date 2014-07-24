@@ -37,5 +37,5 @@ puts COMMAND
 system COMMAND
 exit_status = $?.exitstatus
 puts "Copying postgres logs to #{CIRCLE_ARTIFACTS}"
-system "cp -r /var/log/postgres #{CIRCLE_ARTIFACTS}"
+system "cp -r /var/log/postgresql #{CIRCLE_ARTIFACTS}"
 exit exit_status
