@@ -27,11 +27,12 @@ COMMAND = %(
   --backtrace
   --require ./spec/support/list_failures_formatter.rb
   --format ListFailuresFormatter
-  --out #{File.join(CIRCLE_ARTIFACTS, 'rspec-failures.txt', '/var/log/postgresql').inspect}
+  --out #{File.join(CIRCLE_ARTIFACTS, 'rspec-failures.txt').inspect}
   --require ./spec/support/documentation_instafail_formatter.rb
   --format DocumentationInstafail
   #{MY_SPECS.map(&:inspect).join(' ')}
 ).gsub(/\s*\n\s*/, ' ')
 puts
 puts COMMAND
-exec COMMAND
+system COMMAND
+system "cp -r /var/log/postgres #{CIRCLE_ARTIFACTS}"
