@@ -35,4 +35,5 @@ COMMAND = %(
 puts
 puts COMMAND
 system COMMAND
+puts "Copying postgres logs to #{CIRCLE_ARTIFACTS}"
 system "cp -r /var/log/postgres #{CIRCLE_ARTIFACTS}"

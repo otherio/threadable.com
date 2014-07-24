@@ -38,6 +38,7 @@ describe Threadable::Messages::Create do
       subject: 'I like your face',
       task?: false,
       id: 1234,
+      formatted_email_addresses: ['Foo Thing <foo@thing.com>'],
     )
   end
 
@@ -52,7 +53,7 @@ describe Threadable::Messages::Create do
   let(:expected_message_id_header)  { "<529695e5b8b3a_13b723fe73985e6d876688@localhost>" }
   let(:expected_references_header)  { nil }
   let(:expected_date_header)        { "Sat, 26 Oct 1985 08:22:00 -0000" }
-  let(:expected_to_header)          { nil }
+  let(:expected_to_header)          { "Foo Thing <foo@thing.com>" }
   let(:expected_cc_header)          { nil }
 
   let(:message_record) { double :message_record, created_at: Time.now }
