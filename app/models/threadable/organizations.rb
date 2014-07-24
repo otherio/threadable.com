@@ -29,6 +29,7 @@ class Threadable::Organizations < Threadable::Collection
       if email_address_username =~ /^(.+?)(\+|--)/
         email_address_username = $1
       end
+      email_address_username = email_address_username.gsub(/\./, '-')
     else
       email_address_username = host.split('.')[0]
     end

@@ -48,6 +48,15 @@ describe Threadable::Organizations do
       organization_record = subject.find_by_email_address('★foo★@localhost')
       expect(organization_record.id).to eq organization.id
     end
+
+    context 'when the org name contains a dot' do
+      let!(:organization) { FactoryGirl.create(:organization, name: 'foo-bar') }
+
+      it 'converts the dot to a dash and finds the organization' do
+        organization_record = subject.find_by_email_address('foo.bar@localhost')
+        expect(organization_record.id).to eq organization.id
+      end
+    end
   end
 
 end
