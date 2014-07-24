@@ -81,6 +81,7 @@ class Threadable::IncomingEmail::Deliver < MethodObject
     parent_addresses = [parent_message.to_header, parent_message.cc_header].map do |header|
       ExtractEmailAddresses.call(header)
     end.flatten
+    return unless parent_addresses.present?
 
     parent_tags = organization.email_address_tags(parent_addresses)
 

@@ -26,42 +26,63 @@ describe Threadable::IncomingEmail::Deliver do
 
   delegate :call, to: described_class
 
-  before do
-    sign_in_as 'alice@ucsd.example.com'
-
-    parent_message_record = conversation.messages.last.message_record
-    parent_message_record.update_attribute :to_header, "UCSD Electric Racing <raceteam@localhost>"
-
-    incoming_email.find_organization!
-    incoming_email.find_parent_message!
-    incoming_email.find_groups!
-    incoming_email.find_message!
-    incoming_email.find_creator!
-    incoming_email.find_conversation!
-  end
-
   describe "sync_groups_from_headers!" do
     let(:parent_message) { conversation.messages.last }
     let(:in_reply_to)    { parent_message.message_id_header }
     let(:to)             { 'fundraising@raceteam.localhost' }
 
-    it 'adds groups found in the to and cc headers' do
-      call incoming_email
-      conversation.conversation_record.reload
-      expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising']
-    end
-
-    context 'when the primary group has been renamed' do
-      let(:to) { 'fundraising@raceteam.localhost, raceteam@localhost' }
-
+    context 'with email headers on the parent message' do
       before do
-        organization.groups.primary.update(name: 'Main', email_address_tag: 'main')
+        sign_in_as 'alice@ucsd.example.com'
+
+        incoming_email.find_organization!
+        incoming_email.find_parent_message!
+        incoming_email.find_groups!
+        incoming_email.find_message!
+        incoming_email.find_creator!
+        incoming_email.find_conversation!
       end
 
-      it 'retains the primary group' do
+      it 'adds groups found in the to and cc headers' do
         call incoming_email
         conversation.conversation_record.reload
-        expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising', 'main']
+        expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising']
+      end
+
+      context 'when the primary group has been renamed' do
+        let(:to) { 'fundraising@raceteam.localhost, raceteam@localhost' }
+
+        before do
+          organization.groups.primary.update(name: 'Main', email_address_tag: 'main')
+        end
+
+        it 'retains the primary group' do
+          call incoming_email
+          conversation.conversation_record.reload
+          expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising', 'main']
+        end
+      end
+    end
+
+    context 'when there are no mail headers on the parent message' do
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+
+        parent_message_record = conversation.messages.last.message_record
+        parent_message_record.update_attribute :to_header, ""
+
+        incoming_email.find_organization!
+        incoming_email.find_parent_message!
+        incoming_email.find_groups!
+        incoming_email.find_message!
+        incoming_email.find_creator!
+        incoming_email.find_conversation!
+      end
+
+      it 'does nothing' do
+        call incoming_email
+        conversation.conversation_record.reload
+        expect(conversation.groups.all.map(&:slug)).to match_array ['raceteam']
       end
     end
   end
