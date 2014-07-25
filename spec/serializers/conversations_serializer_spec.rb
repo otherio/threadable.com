@@ -35,6 +35,8 @@ describe ConversationsSerializer do
           done:               true,
           position:           layup_body_carbon.position,
           muted:              false,
+          trashed_at:         nil,
+          trashed:            false,
         }.merge(serialize(:doers, layup_body_carbon.doers.all))
       )
     end
@@ -64,6 +66,8 @@ describe ConversationsSerializer do
           done:               nil,
           position:           -1,
           muted:              false,
+          trashed_at:         nil,
+          trashed:            false,
         },{
           id:                 layup_body_carbon.id,
           slug:               "layup-body-carbon",
@@ -83,6 +87,8 @@ describe ConversationsSerializer do
           done_at:            layup_body_carbon.done_at,
           position:           layup_body_carbon.position,
           muted:              false,
+          trashed_at:         nil,
+          trashed:            false,
         }
       ]
     end

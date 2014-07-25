@@ -95,7 +95,7 @@ class Threadable::Conversation < Threadable::Model
   alias_method :muted_by, :muted_by?
 
   def trash!
-    update(trashed_at: Time.now.utc)
+    update(trashed_at: Time.now.utc) unless trashed?
   end
 
   def untrash!

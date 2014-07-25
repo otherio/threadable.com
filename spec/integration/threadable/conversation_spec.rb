@@ -319,5 +319,17 @@ describe Threadable::Conversation do
       conversation.untrash!
       expect(conversation.trashed?).to be_false
     end
+
+    context 'when given a conversation that is already trashed' do
+      let(:trashed_date) { Time.now.utc - 1.day }
+      before do
+        conversation.update(trashed_at: trashed_date)
+      end
+
+      it 'does not change the trashed at date' do
+        conversation.trash!
+        expect(conversation.trashed_at).to eq trashed_date
+      end
+    end
   end
 end
