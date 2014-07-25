@@ -67,6 +67,11 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
       conversation.set('muted', !conversation.get('muted'));
       conversation.saveRecord();
     },
+    toggleTrashed: function() {
+      var conversation = this.get('content');
+      conversation.set('trashed', !conversation.get('trashed'));
+      conversation.saveRecord();
+    },
     removeGroup: function(group) {
       this.confirm({
         message: (
