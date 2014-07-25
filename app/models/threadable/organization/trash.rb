@@ -11,11 +11,11 @@ class Threadable::Organization::Trash
   private
 
   def conversations_scope
-    organization_record.conversations.in_trash.grouped
+    organization_record.conversations.trashed.grouped
   end
 
   def tasks_scope
-    organization_record.tasks.in_trash.grouped
+    organization_record.tasks.trashed.grouped
   end
 
 end
