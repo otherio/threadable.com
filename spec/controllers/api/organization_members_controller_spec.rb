@@ -55,6 +55,13 @@ describe Api::OrganizationMembersController do
           expect(raceteam.members.all.length).to eq member_count + 1
         end
       end
+      context "when given no email address" do
+        it 'renders not acceptable' do
+          xhr :post, :create, format: :json, organization_id: raceteam.slug, organization_member: { name: "John Varvatos", email_address: "", personal_message: "Hi!" }
+          expect(response.body).to eq '{"error":"unable to create user"}'
+          expect(response.status).to eq 422
+        end
+      end
       context "when given an organization id of an organization that does not exist" do
         it 'renders not found' do
           xhr :post, :create, format: :json, organization_id: 'foobar', organization_member: { name: "John Varvatos", email_address: "john@varvatos.com", personal_message: "Hi!" }
