@@ -8,7 +8,8 @@ class Threadable::Organization::Tasks < Threadable::Tasks
   end
   attr_reader :organization
 
-  let(:my)       { Threadable::Organization::Tasks::My       .new(organization) }
+  let(:my)    { Threadable::Organization::Tasks::My   .new(organization) }
+  let(:trash) { Threadable::Organization::Tasks::Trash.new(organization) }
 
   def doing
     return [] if threadable.current_user_id.nil?

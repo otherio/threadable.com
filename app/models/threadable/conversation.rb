@@ -32,10 +32,11 @@ class Threadable::Conversation < Threadable::Model
     creator_id
     created_at
     updated_at
+    trashed_at
     persisted?
     new_record?
-    errors
     last_message_at
+    errors
   }, to: :conversation_record
 
   attr_writer :organization
@@ -92,6 +93,18 @@ class Threadable::Conversation < Threadable::Model
     muter_ids.include?(user.user_id)
   end
   alias_method :muted_by, :muted_by?
+
+  def trash!
+    update(trashed_at: Time.now.utc)
+  end
+
+  def untrash!
+    update(trashed_at: nil)
+  end
+
+  def in_trash?
+    ! trashed_at.nil?
+  end
 
   def update attributes
     !!conversation_record.update_attributes(attributes)

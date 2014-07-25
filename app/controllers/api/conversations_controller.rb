@@ -11,6 +11,7 @@ class Api::ConversationsController < ApiController
 
     group = case group_slug
     when 'my';        organization.my
+    when 'trash';     organization.trash
     else; organization.groups.find_by_slug!(group_slug)
     end
 

@@ -146,6 +146,11 @@ class FixtureBuilder
     conversation.mute!
   end
 
+  def trash_conversation conversation
+    conversation = conversation.conversation if conversation.respond_to?(:conversation)
+    conversation.trash!
+  end
+
   def create_task subject, groups = nil
     organization.tasks.create!(subject: subject, creator: current_user, groups: groups)
   end

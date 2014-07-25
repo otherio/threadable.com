@@ -20,6 +20,7 @@ class Conversation < ActiveRecord::Base
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
   scope :task, ->{ where(type: 'Task') }
   scope :not_task, ->{ where(type: nil) }
+  scope :in_trash, ->{ unscoped.where('trashed_at IS NOT NULL') }
 
   scope :muted_by, ->(user_id){
     joins('LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id').where('m.user_id = ?', user_id)
@@ -60,6 +61,10 @@ class Conversation < ActiveRecord::Base
   validates :subject,         presence: true
   validates :slug,            presence: true
   validate :validate_slug_does_not_collide_with_existing_route
+
+  def default_scope
+    where('trashed_at IS NULL')
+  end
 
   def type
     read_attribute(:type) || 'Conversation'

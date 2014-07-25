@@ -308,4 +308,16 @@ describe Threadable::Conversation do
       expect(conversation.groups.all.map(&:email_address_tag)).to eq ['raceteam']
     end
   end
+
+  describe 'in_trash?, trash!, untrash!' do
+    let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
+
+    it 'checks and sets the trashed state' do
+      expect(conversation.in_trash?).to be_false
+      conversation.trash!
+      expect(conversation.in_trash?).to be_true
+      conversation.untrash!
+      expect(conversation.in_trash?).to be_false
+    end
+  end
 end
