@@ -77,9 +77,9 @@ class Api::ConversationsController < ApiController
   # patch /api/conversations/:id
   def update
     conversation_params = if conversation.task?
-      params.require(:conversation).permit(:task, :muted, :position, :done, doers:[:id])
+      params.require(:conversation).permit(:task, :muted, :trashed, :position, :done, doers:[:id])
     else
-      params.require(:conversation).permit(:task, :muted)
+      params.require(:conversation).permit(:task, :muted, :trashed)
     end
 
     # this is way to much code for an action. We should move this into conversation update at some point - Jared
@@ -95,6 +95,10 @@ class Api::ConversationsController < ApiController
 
       if conversation_params.key?(:muted)
         conversation_params.delete(:muted) ? conversation.mute! : conversation.unmute!
+      end
+
+      if conversation_params.key?(:trashed)
+        conversation_params.delete(:trashed) ? conversation.trash! : conversation.untrash!
       end
 
       if params[:conversation].key?(:group_ids)
