@@ -16,7 +16,7 @@ class Api::OrganizationMembersController < ApiController
     member = organization.members.add(member_params)
     render json: serialize(:organization_members, member), status: 201
 
-  rescue Threadable::RecordInvalid
+  rescue Threadable::RecordInvalid, ArgumentError
     render json: {error: "unable to create user"}, status: :unprocessable_entity
   end
 

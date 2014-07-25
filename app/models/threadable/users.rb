@@ -14,6 +14,7 @@ class Threadable::Users < Threadable::Collection
   end
 
   def find_by_email_address email_address
+    email_address ||= ''
     user_for (scope.find_by_email_address(email_address.strip_non_ascii) or return)
   end
 
