@@ -170,6 +170,18 @@ FixtureBuilder.build do
         attachment('some.txt', 'text/plain', false),
       ],
     )
+
+    @omg_i_am_so_drunk = create_conversation(
+      subject: 'OMG I am so drunk!',
+      text:    %(Hey guys. This party is awesome! Woo!),
+      groups:  [@electronics_group],
+    )
+
+    reply_to(@omg_i_am_so_drunk,
+      body_plain:     "Oops. Sorry about that. Deleting this one now.",
+      stripped_plain: "Oops. Sorry about that. Deleting this one now.",
+    )
+    trash_conversation(@omg_i_am_so_drunk)
   end
 
   as 'alice@ucsd.example.com' do

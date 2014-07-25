@@ -25,6 +25,10 @@ class Threadable::Conversations < Threadable::Collection
       map {|conversation_record| conversation_for(conversation_record) }
   end
 
+  def in_trash
+    conversations_for scope.in_trash
+  end
+
   def find_by_id id
     conversation_for (scope.where(id: id).first or return)
   end

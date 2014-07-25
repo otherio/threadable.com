@@ -164,6 +164,51 @@ describe Api::ConversationsController do
           end
         end
 
+        context 'and the group "trash"' do
+          let(:group){ 'trash' }
+
+          let(:trash_double){ double :trash }
+          before do
+            expect(current_user.organizations).to receive(:find_by_slug!).with(organization).and_return(organization_double)
+            expect(organization_double).to receive(:trash).and_return(trash_double)
+            expect(trash_double).to receive(scope.to_sym).with(page).and_return(conversations_double)
+            expect(controller).to receive(:serialize).with(:conversations, conversations_double).and_return({conversations: []})
+            request!
+            expect(response.status).to eq 200
+          end
+
+          context 'and the scope "muted_conversations"' do
+            let(:scope){ 'muted_conversations' }
+            it 'calls organization.muted_conversations' do
+            end
+          end
+          context 'and the scope "not_muted_conversations"' do
+            let(:scope){ 'not_muted_conversations' }
+            it 'calls organization.not_muted_conversations' do
+            end
+          end
+          context 'and the scope "done_tasks"' do
+            let(:scope){ 'done_tasks' }
+            it 'calls organization.done_tasks' do
+            end
+          end
+          context 'and the scope "not_done_tasks"' do
+            let(:scope){ 'not_done_tasks' }
+            it 'calls organization.not_done_tasks' do
+            end
+          end
+          context 'and the scope "done_doing_tasks"' do
+            let(:scope){ 'done_doing_tasks' }
+            it 'calls organization.done_doing_tasks' do
+            end
+          end
+          context 'and the scope "not_done_doing_tasks"' do
+            let(:scope){ 'not_done_doing_tasks' }
+            it 'calls organization.not_done_doing_tasks' do
+            end
+          end
+        end
+
         context 'and the group is a group name' do
           let(:group){ 'electronics' }
 

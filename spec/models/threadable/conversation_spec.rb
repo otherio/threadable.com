@@ -28,6 +28,7 @@ describe Threadable::Conversation do
   it { should delegate(:new_record?     ).to(:conversation_record) }
   it { should delegate(:errors          ).to(:conversation_record) }
   it { should delegate(:last_message_at ).to(:conversation_record) }
+  it { should delegate(:trashed_at      ).to(:conversation_record) }
 
   its(:creator     ){ should be_a Threadable::Conversation::Creator      }
   its(:events      ){ should be_a Threadable::Conversation::Events       }

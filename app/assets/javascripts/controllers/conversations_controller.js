@@ -38,7 +38,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
     this.set('loading', true);
     this.set('loadFailed', false);
 
-    if (groupSlug !== 'my' && !organization.get('groups').findBy('slug', groupSlug)){
+    if (groupSlug !== 'my' && groupSlug !== 'trash' && !organization.get('groups').findBy('slug', groupSlug)){
       this.transitionToRoute('conversations','my');
       return;
     }

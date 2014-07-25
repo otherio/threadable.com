@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724221059) do
+ActiveRecord::Schema.define(version: 20140725213233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,11 +73,13 @@ ActiveRecord::Schema.define(version: 20140724221059) do
     t.text     "muter_ids_cache"
     t.datetime "last_message_at",         default: "now()"
     t.integer  "groups_count",            default: 0
+    t.datetime "trashed_at"
   end
 
   add_index "conversations", ["organization_id", "slug"], name: "index_conversations_on_organization_id_and_slug", unique: true, using: :btree
   add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
   add_index "conversations", ["slug"], name: "index_conversations_on_slug", using: :btree
+  add_index "conversations", ["trashed_at"], name: "index_conversations_on_trashed_at", using: :btree
 
   create_table "conversations_muters", id: false, force: true do |t|
     t.integer "conversation_id"

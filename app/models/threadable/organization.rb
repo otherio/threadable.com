@@ -99,7 +99,8 @@ class Threadable::Organization < Threadable::Model
     organization_record.tasks
   end
   public
-  let(:my)       { Threadable::Organization::My       .new(self) }
+  let(:my)       { Threadable::Organization::My   .new(self) }
+  let(:trash)    { Threadable::Organization::Trash.new(self) }
 
   def has_email_address? email_address
     email_address = email_address.address if email_address.is_a? Mail::Address

@@ -13,6 +13,12 @@ describe Threadable::Conversations do
     end
   end
 
+  describe 'in_trash' do
+    it 'returns all the conversations that are in the trash' do
+      expect(conversations.in_trash.map(&:slug)).to eq ['omg-i-am-so-drunk']
+    end
+  end
+
   describe 'all_with_participants' do
     it 'returns all the conversations with participants loaded' do
       expect(conversations.all_with_participants).to eq ::Conversation.order('conversations.updated_at DESC').map{|conversation_record|
