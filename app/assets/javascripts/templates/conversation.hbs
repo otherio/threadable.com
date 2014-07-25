@@ -58,17 +58,24 @@
     <div class="task-controls hidden-on-small-screens">
       {{#if task}}
         {{#if done}}
-          <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i>mark as not done</a>
+          <a class="uk-float-right" href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i> mark as not done</a>
         {{else}}
-          <a href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i>mark as done</a>
+          <a class="uk-float-right" href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i> mark as done</a>
         {{/if}}
       {{/if}}
 
-      <a class="uk-float-right" href="" {{action 'toggleMuted'}}>
+      <a href="" {{action 'toggleMuted'}}>
         {{#if isMuted}}
-          <i class="uk-icon-volume-up"></i>unmute conversation
+          <i class="uk-icon-volume-up"></i> unmute
         {{else}}
-          <i class="uk-icon-volume-down"></i>mute conversation
+          <i class="uk-icon-volume-down"></i> mute
+        {{/if}}
+      </a>
+      <a href="" {{action 'toggleTrashed'}}>
+        {{#if isTrashed}}
+          <i class="uk-icon-exclamation-triangle"></i> undelete
+        {{else}}
+          <i class="uk-icon-trash-o"></i> delete
         {{/if}}
       </a>
     </div>

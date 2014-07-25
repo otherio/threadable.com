@@ -16,11 +16,13 @@ Threadable.Conversation = RL.Model.extend({
   doers:             RL.hasMany('Threadable.OrganizationMember'),
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
+  trashed:           RL.attr('boolean'),
   position:          RL.attr('number'),
 
-  isTask:  Ember.computed.alias('task'),
-  isDone:  Ember.computed.alias('done'),
-  isMuted: Ember.computed.alias('muted'),
+  isTask:    Ember.computed.alias('task'),
+  isDone:    Ember.computed.alias('done'),
+  isMuted:   Ember.computed.alias('muted'),
+  isTrashed: Ember.computed.alias('trashed'),
 
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;
