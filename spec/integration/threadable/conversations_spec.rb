@@ -13,9 +13,9 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'in_trash' do
+  describe 'trashed' do
     it 'returns all the conversations that are in the trash' do
-      expect(conversations.in_trash.map(&:slug)).to eq ['omg-i-am-so-drunk']
+      expect(conversations.trashed.map(&:slug)).to eq ['omg-i-am-so-drunk']
     end
   end
 

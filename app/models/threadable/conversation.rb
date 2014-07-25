@@ -102,7 +102,7 @@ class Threadable::Conversation < Threadable::Model
     update(trashed_at: nil)
   end
 
-  def in_trash?
+  def trashed?
     ! trashed_at.nil?
   end
 

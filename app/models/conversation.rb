@@ -18,9 +18,9 @@ class Conversation < ActiveRecord::Base
   default_scope { order('conversations.updated_at DESC') }
 
   scope :with_slug, ->(slug){ where(slug: slug).limit(1) }
-  scope :task, ->{ where(type: 'Task') }
-  scope :not_task, ->{ where(type: nil) }
-  scope :in_trash, ->{ unscoped.where('trashed_at IS NOT NULL') }
+  scope :task,      ->{ where(type: 'Task') }
+  scope :not_task,  ->{ where(type: nil) }
+  scope :trashed,   ->{ unscoped.where('trashed_at IS NOT NULL') }
 
   scope :muted_by, ->(user_id){
     joins('LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id').where('m.user_id = ?', user_id)
