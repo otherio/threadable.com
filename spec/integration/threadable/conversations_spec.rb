@@ -38,6 +38,7 @@ describe Threadable::Conversations do
 
     it 'returns all the conversations updated on a particular day' do
       expect(conversations.all_with_last_message_at(date)).to match_array ::Conversation.
+        untrashed.
         where('last_message_at between ? and ?', date, date + 1.day).
         to_a.map{ |conversation_record| Threadable::Conversation.new(threadable, conversation_record) }
     end
