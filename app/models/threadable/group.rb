@@ -44,10 +44,10 @@ class Threadable::Group < Threadable::Model
   include Threadable::Conversation::Scopes
   private
   def conversations_scope
-    group_record.conversations
+    group_record.conversations.untrashed
   end
   def tasks_scope
-    group_record.tasks
+    group_record.tasks.untrashed
   end
   public
 
