@@ -53,7 +53,7 @@ class Threadable::Organization::Conversations < Threadable::Conversations
   private
 
   def scope
-    organization.organization_record.conversations.unload
+    organization.organization_record.conversations.unload.untrashed
   end
 
   def muted_scope

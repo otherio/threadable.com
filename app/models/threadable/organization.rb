@@ -93,10 +93,10 @@ class Threadable::Organization < Threadable::Model
   include Threadable::Conversation::Scopes
   private
   def conversations_scope
-    organization_record.conversations
+    organization_record.conversations.untrashed
   end
   def tasks_scope
-    organization_record.tasks
+    organization_record.tasks.untrashed
   end
   public
   let(:my)       { Threadable::Organization::My   .new(self) }

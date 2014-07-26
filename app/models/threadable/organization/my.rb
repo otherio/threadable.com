@@ -11,11 +11,11 @@ class Threadable::Organization::My
   private
 
   def conversations_scope
-    organization_record.conversations.for_user(threadable.current_user.id).grouped
+    organization_record.conversations.untrashed.for_user(threadable.current_user.id).grouped
   end
 
   def tasks_scope
-    organization_record.tasks.for_user(threadable.current_user.id).grouped
+    organization_record.tasks.untrashed.for_user(threadable.current_user.id).grouped
   end
 
 end

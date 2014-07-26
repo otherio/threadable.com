@@ -20,8 +20,8 @@ describe Threadable::Conversation::Scopes do
   when_signed_in_as 'bethany@ucsd.example.com' do
     context 'and scope is the raceteam organization' do
 
-      let(:conversations_scope){ raceteam.organization_record.conversations }
-      let(:tasks_scope)        { raceteam.organization_record.tasks         }
+      let(:conversations_scope){ raceteam.organization_record.conversations.untrashed }
+      let(:tasks_scope)        { raceteam.organization_record.tasks.untrashed         }
 
       it "returns the expected conversations and tasks" do
         @muted_conversations      = object.muted_conversations(0)
@@ -80,6 +80,30 @@ describe Threadable::Conversation::Scopes do
         expect( slugs_for @not_done_doing_tasks ).to match_array [
           "get-a-new-soldering-iron",
         ]
+      end
+
+      context 'scoped to the trash' do
+        let(:conversations_scope){ raceteam.organization_record.conversations.trashed }
+        let(:tasks_scope)        { raceteam.organization_record.tasks.trashed         }
+
+        it "finds only trashed conversations and tasks" do
+          @muted_conversations      = object.muted_conversations(0)
+          @not_muted_conversations  = object.not_muted_conversations(0)
+          @done_tasks               = object.done_tasks(0)
+          @not_done_tasks           = object.not_done_tasks(0)
+          @done_doing_tasks         = object.done_doing_tasks(0)
+          @not_done_doing_tasks     = object.not_done_doing_tasks(0)
+
+          expect( slugs_for @not_muted_conversations ).to match_array [
+            "omg-i-am-so-drunk",
+          ]
+
+          expect( slugs_for @muted_conversations ).to match_array []
+          expect( slugs_for @done_tasks ).to match_array []
+          expect( slugs_for @not_done_tasks ).to match_array []
+          expect( slugs_for @done_doing_tasks ).to match_array []
+          expect( slugs_for @not_done_doing_tasks ).to match_array []
+        end
       end
 
       context 'scoped to conversations the current user is subscribed to' do
