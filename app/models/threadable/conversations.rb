@@ -13,7 +13,7 @@ class Threadable::Conversations < Threadable::Collection
   end
 
   def all_with_last_message_at time
-    scope.with_last_message_at(time).map {|conversation_record| conversation_for(conversation_record) }
+    scope.untrashed.with_last_message_at(time).map {|conversation_record| conversation_for(conversation_record) }
   end
 
   def to_be_deleted
