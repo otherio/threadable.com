@@ -5,7 +5,7 @@ describe Threadable::Conversations do
   let(:conversations){ described_class.new(threadable) }
   subject{ conversations }
 
-  describe 'all' do
+  describe '#all' do
     it 'returns all the conversations' do
       expect(conversations.all).to eq ::Conversation.order('conversations.updated_at DESC').to_a.map{|conversation_record|
         Threadable::Conversation.new(threadable, conversation_record)
@@ -13,13 +13,13 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'trashed' do
+  describe '#trashed' do
     it 'returns all the conversations that are in the trash' do
       expect(conversations.trashed.map(&:slug)).to eq ['omg-i-am-so-drunk']
     end
   end
 
-  describe 'all_with_participants' do
+  describe '#all_with_participants' do
     it 'returns all the conversations with participants loaded' do
       expect(conversations.all_with_participants).to eq ::Conversation.order('conversations.updated_at DESC').map{|conversation_record|
         Threadable::Conversation.new(threadable, conversation_record)
@@ -30,7 +30,7 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'all_with_last_message_at' do
+  describe '#all_with_last_message_at' do
     let(:date) { Time.zone.local(2014,2,2).utc }
     before do
       Time.zone = 'US/Pacific'
@@ -40,6 +40,21 @@ describe Threadable::Conversations do
       expect(conversations.all_with_last_message_at(date)).to match_array ::Conversation.
         where('last_message_at between ? and ?', date, date + 1.day).
         to_a.map{ |conversation_record| Threadable::Conversation.new(threadable, conversation_record) }
+    end
+  end
+
+  describe '#to_be_deleted' do
+    let(:date) { Time.zone.local(2014,2,2).utc }
+
+    let(:conversation) { conversations.find_by_slug('layup-body-carbon') }
+
+    before do
+      Time.zone = 'US/Pacific'
+      conversation.conversation_record.update(trashed_at: Time.now.utc - 31.days)
+    end
+
+    it 'returns all the conversations updated on a particular day' do
+      expect(conversations.to_be_deleted.map(&:slug)).to match_array ['layup-body-carbon', 'omg-i-am-so-drunk']
     end
   end
 
@@ -54,7 +69,7 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'find_by_id' do
+  describe '#find_by_id' do
     context 'when given a valid id' do
       it "returns a conversation with a given id" do
         conversation_record = ::Conversation.first
@@ -68,7 +83,7 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'find_by_id!' do
+  describe '#find_by_id!' do
     context 'when given a valid id' do
       it "returns a conversation with a given id" do
         conversation_record = ::Conversation.first
@@ -82,7 +97,7 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'find_by_slug' do
+  describe '#find_by_slug' do
     context 'when given a valid slug' do
       it "returns a conversation with a given slug" do
         conversation_record = ::Conversation.first
@@ -96,7 +111,7 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'find_by_slug!' do
+  describe '#find_by_slug!' do
     context 'when given a valid slug' do
       it "returns a conversation with a given slug" do
         conversation_record = ::Conversation.first
@@ -110,19 +125,19 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'latest' do
+  describe '#latest' do
     it 'returns the latest conversation' do
       expect(conversations.latest).to eq Threadable::Conversation.new(threadable, ::Conversation.order('conversations.updated_at DESC').first!)
     end
   end
 
-  describe 'oldest' do
+  describe '#oldest' do
     it 'returns the oldest conversation' do
       expect(conversations.oldest).to eq Threadable::Conversation.new(threadable, ::Conversation.order('conversations.updated_at DESC').last!)
     end
   end
 
-  describe 'create' do
+  describe '#create' do
     it 'calls Threadable::Conversations::Create.call with the given attributes' do
       attributes = double(:attributes)
       conversation = double(:conversation)
@@ -131,7 +146,7 @@ describe Threadable::Conversations do
     end
   end
 
-  describe 'create!' do
+  describe '#create!' do
     let(:attributes){ double(:attributes) }
     before{ expect(conversations).to receive(:create).with(attributes).and_return(conversation) }
     context 'when create returns a persisted conversation' do
