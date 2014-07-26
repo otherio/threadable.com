@@ -498,6 +498,20 @@ describe "processing incoming emails" do
       end
     end
 
+    context 'and the group exists, but the parent message is in a deleted conversation' do
+      let(:in_reply_to){ expected_parent_message.message_id_header }
+      let(:references) { '' }
+
+      let(:expected_conversation)       { expected_organization.conversations.find_by_slug('omg-i-am-so-drunk') }
+      let(:expected_parent_message)     { expected_conversation.messages.latest }
+      let(:expected_creator)            { nil }
+      let(:expected_bounce_status_code) { '5.6.0'}
+
+      it 'bounces the incoming email' do
+        validate! :bounced
+      end
+    end
+
 
     context 'the subject contains only stuff that is stripped and spaces' do
       let(:subject) { '[RaceTeam] ' }

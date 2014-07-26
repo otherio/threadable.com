@@ -140,6 +140,10 @@ class Threadable::IncomingEmail < Threadable::Model
     groups.present? && (groups.map(&:email_address_tag).to_set.subset? email_address_tags.push(organization.groups.primary.email_address_tag).to_set)
   end
 
+  def conversation_valid?
+    conversation.present? ? ! conversation.trashed? : true
+  end
+
   def command_only_message?
     body = stripped_plain[0..1024]
     lines = body.split(/\n/)
@@ -155,6 +159,7 @@ class Threadable::IncomingEmail < Threadable::Model
     return :missing_organization_or_group if organization.nil?
     return :blank_message if !subject_valid?
     return :missing_organization_or_group if !(groups_valid? || reply?)
+    return :trashed_conversation if !conversation_valid?
     nil
   end
 

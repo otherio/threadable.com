@@ -436,7 +436,16 @@ describe Threadable::IncomingEmail do
 
         context 'when the groups are valid' do
           before { expect(incoming_email).to receive(:groups_valid?).and_return(true) }
-          it { should be_nil }
+
+          context 'when the conversation is valid' do
+            before { expect(incoming_email).to receive(:conversation_valid?).and_return(true) }
+            it { should be_nil }
+          end
+
+          context 'when the conversation is not valid' do
+            before { expect(incoming_email).to receive(:conversation_valid?).and_return(false) }
+            it { should eq :trashed_conversation }
+          end
         end
 
         context 'when the groups are invalid' do
@@ -514,6 +523,15 @@ describe Threadable::IncomingEmail do
     context 'missing an email address tag' do
       let(:email_address_tags) { ['group1'] }
       it {should be_false}
+    end
+  end
+
+  describe '#conversation_valid' do
+    context 'with a conversation' do
+      it 'checks whether the conversation is in the trash' do
+        incoming_email.stub_chain(:conversation, :trashed?).and_return(true)
+        expect(incoming_email.conversation_valid?).to be_false
+      end
     end
   end
 

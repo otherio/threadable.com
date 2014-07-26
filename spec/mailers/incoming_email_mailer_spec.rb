@@ -15,6 +15,7 @@ describe IncomingEmailMailer do
       recipient:     recipient,
       body_html:     body_html,
       body_plain:    body_plain,
+      in_reply_to:   in_reply_to,
     )
   end
   let(:incoming_email){ threadable.incoming_emails.create!(params).first }
@@ -24,10 +25,12 @@ describe IncomingEmailMailer do
   let(:body_html)    { '<body>i am a <strong>body</strong>, watch me bod.</body>' }
   let(:recipient)    { 'raceteam@localhost' }
   let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
+  let(:in_reply_to)  { nil }
 
   before do
     incoming_email.find_organization!
     incoming_email.find_groups!
+    incoming_email.find_conversation!
   end
 
   describe "#message_held_notice" do
@@ -42,7 +45,6 @@ describe IncomingEmailMailer do
   end
 
   describe "#message_bounced_dsn" do
-
     let(:text_part)             { mail.parts[0] }
     let(:delivery_status_part)  { mail.parts[1] }
     let(:original_mail_part) { mail.parts[2] }
@@ -101,11 +103,21 @@ describe IncomingEmailMailer do
       let(:body_plain)   { '' }
       let(:body_html)    { '' }
 
-      it 'bounces the message with a different error message' do
+      it 'bounces the message with an error about how the message is blank' do
         expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.6.0"
         expect(delivery_status_part.body.to_s).to include "Status: 5.6.0"
         expect(text_part.body).to include 'Threadable cannot deliver a blank message with no subject.'
+      end
+    end
 
+    context 'with a message that is to a conversation that is in the trash' do
+      let(:conversation) { organization.conversations.find_by_slug!('omg-i-am-so-drunk') }
+      let(:in_reply_to)  { conversation.messages.last.message_id_header }
+
+      it 'bounces the message with an error about how the conversation is deleted' do
+        expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.6.0"
+        expect(delivery_status_part.body.to_s).to include "Status: 5.6.0"
+        expect(text_part.body).to include 'You attempted to reply to a deleted conversation.'
       end
     end
   end
