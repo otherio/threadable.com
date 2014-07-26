@@ -53,15 +53,15 @@ class Threadable::Organization::Conversations < Threadable::Conversations
   private
 
   def scope
-    organization.organization_record.conversations.unload.untrashed
+    organization.organization_record.conversations.unload
   end
 
   def muted_scope
-    scope.muted_by(threadable.current_user_id)
+    scope.untrashed.muted_by(threadable.current_user_id)
   end
 
   def not_muted_scope
-    scope.not_muted_by(threadable.current_user_id)
+    scope.untrashed.not_muted_by(threadable.current_user_id)
   end
 
   def conversation_for conversation_record

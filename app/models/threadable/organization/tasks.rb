@@ -13,12 +13,12 @@ class Threadable::Organization::Tasks < Threadable::Tasks
 
   def doing
     return [] if threadable.current_user_id.nil?
-    conversations_for scope.doing_by(threadable.current_user_id)
+    conversations_for scope.untrashed.doing_by(threadable.current_user_id)
   end
 
   def not_doing
     return [] if threadable.current_user_id.nil?
-    conversations_for scope.not_doing_by(threadable.current_user_id)
+    conversations_for scope.untrashed.not_doing_by(threadable.current_user_id)
   end
 
 
