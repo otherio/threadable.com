@@ -10,7 +10,6 @@ class Conversation < ActiveRecord::Base
   has_many :groups, ->{ where(conversation_groups: {active: true}) }, through: :conversation_groups, counter_cache: false
   has_many :groups_with_inactive, through: :conversation_groups, source: :group
 
-
   serialize :participant_names_cache, Array
   serialize :group_ids_cache, Array
   serialize :muter_ids_cache, Array

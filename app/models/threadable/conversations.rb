@@ -16,6 +16,10 @@ class Threadable::Conversations < Threadable::Collection
     scope.with_last_message_at(time).map {|conversation_record| conversation_for(conversation_record) }
   end
 
+  def to_be_deleted
+    scope.where('trashed_at < ?', Time.now.utc - 30.days).map {|conversation_record| conversation_for(conversation_record) }
+  end
+
   def all_with_multiple_groups
     scope.
       joins(:conversation_groups).
