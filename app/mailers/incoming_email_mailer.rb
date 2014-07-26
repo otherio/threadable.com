@@ -133,6 +133,10 @@ class IncomingEmailMailer < Threadable::Mailer
         status_code:   '5.6.0',
         error_message: 'Threadable cannot deliver a blank message with no subject.'
       },
+      trashed_conversation: {
+        status_code:   '5.6.0',
+        error_message: 'You attempted to reply to a deleted conversation. Please remove the conversation from the trash on Threadable before responding.'
+      },
     }
 
     codes[reason]
