@@ -29,7 +29,7 @@ class Threadable::Organization::Conversations < Threadable::Conversations
   end
 
   def with_last_message_at time
-    conversations_for scope.with_last_message_at(time)
+    conversations_for scope.untrashed.with_last_message_at(time)
   end
 
   def build attributes={}
