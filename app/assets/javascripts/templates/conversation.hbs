@@ -71,13 +71,17 @@
           <i class="uk-icon-volume-down"></i> mute
         {{/if}}
       </a>
-      <a href="" {{action 'toggleTrashed'}}>
-        {{#if isTrashed}}
+      {{#if isTrashed}}
+        <a href="" {{action 'toggleTrashed'}}>
           <i class="uk-icon-exclamation-triangle"></i> undelete
-        {{else}}
+        </a>
+        (deleted {{date trashedAt}})
+      {{else}}
+        <a href="" {{action 'toggleTrashed'}}>
           <i class="uk-icon-trash-o"></i> delete
-        {{/if}}
-      </a>
+        </a>
+      {{/if}}
+
     </div>
 
     {{#if events}}

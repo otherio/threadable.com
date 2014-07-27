@@ -1,7 +1,16 @@
 <div class="conversations-list">
-  <div class="scrollable">
+  <div {{bind-attr class=":scrollable isTrash:trash:"}}>
     <ol class="uk-list">
-      {{#each conversation in controller}}
+      {{#if isTrash}}
+        <li class="warning">
+          <i class="uk-icon-warning"></i>
+          <div>
+            Items in the trash will be removed permanently after 30 days.
+          </div>
+        </li>
+      {{/if}}
+
+      {{#each conversation in filteredContent}}
         {{partial 'conversations/list/member'}}
       {{else}}
         {{#unless loading}}
@@ -17,5 +26,9 @@
       {{/unless}}
     {{/if}}
   </div>
-  {{partial 'conversations/list/controls'}}
+
+  {{#if isTrash}}
+  {{else}}
+    {{partial 'conversations/list/controls'}}
+  {{/if}}
 </div>

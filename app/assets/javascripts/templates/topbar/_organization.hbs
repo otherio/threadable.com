@@ -19,12 +19,15 @@
 </div>
 
 <div class="right-nav">
-  <a href="" class="toggle-conversations-controls" {{action toggleConversationsListControls}}>
-    {{#if showingConversationsListControls}}
-      <i class="uk-icon-caret-up"><span class="sr-only">Hide Controls</span></i>
-    {{else}}
-      <i class="uk-icon-caret-down"><span class="sr-only">Show Controls</span></i>
-    {{/if}}
-  </a>
+  {{#if conversations.isTrash}}
+  {{else}}
+    <a href="" class="toggle-conversations-controls" {{action toggleConversationsListControls}}>
+      {{#if showingConversationsListControls}}
+        <i class="uk-icon-caret-up"><span class="sr-only">Hide Controls</span></i>
+      {{else}}
+        <i class="uk-icon-caret-down"><span class="sr-only">Show Controls</span></i>
+      {{/if}}
+    </a>
+  {{/if}}
   {{#link-to composeRoute}}<i class="uk-icon-edit"><span class="sr-only">Compose</span></i>{{/link-to}}
 </div>

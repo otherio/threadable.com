@@ -56,6 +56,9 @@ Threadable.TopbarController = Ember.Controller.extend(Threadable.CurrentUserMixi
     toggleMuted: function() {
       this.get('conversation').send('toggleMuted');
     },
+    toggleTrashed: function() {
+      this.get('conversation').send('toggleTrashed');
+    },
     toggleDoerSelector: function() {
       this.get('controllers.conversation').send('toggleDoerSelector');
     },
