@@ -19,5 +19,10 @@
     {{else}}
       <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-down"><span class="sr-only">Mute</span></i></a>
     {{/if}}
+    {{#if conversation.isTrashed}}
+      <a href="" {{action 'toggleTrashed'}}><i class="uk-icon-undo"><span class="sr-only">Undelete</span></i></a>
+    {{else}}
+      <a href="" {{action 'toggleTrashed'}}><i class="uk-icon-trash-o"><span class="sr-only">Delete</span></i></a>
+    {{/if}}
   {{/if}}
 </div>

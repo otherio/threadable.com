@@ -28,6 +28,14 @@ Threadable.DoneTasksController = Ember.ArrayController.extend(Threadable.RoutesM
     this.loadTasks();
   },
 
+  filteredContent: function() {
+    var showTrashed = (this.get('groupSlug') == 'trash');
+
+    return this.get('model').filter(function(item) {
+      return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
+    });
+  }.property('model.@each.isTrashed'),
+
   loadTasks: function() {
     if (!this.get('visible') || this.get('loading') || this.get('fullyLoaded')) return;
 

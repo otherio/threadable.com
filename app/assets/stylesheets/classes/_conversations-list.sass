@@ -11,10 +11,29 @@
     +medium-to-large-screens
       top: 55px
 
+    &.trash
+      +medium-to-large-screens
+        top: 0
+
     > ol
       &, li
         margin: 0
         padding: 0
+
+      > li.warning
+        color: black
+        background-color: $faint-yellow-color
+        padding: 10px
+        min-height: 30px
+
+        div
+          margin-left: 40px
+          margin-right: 10px
+
+        i
+          color: $bright-red-color
+          font-size: $huge-font-size
+          float: left
 
       > li.conversation
         $padding: 5px

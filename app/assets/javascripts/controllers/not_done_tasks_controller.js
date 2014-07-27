@@ -27,6 +27,14 @@ Threadable.NotDoneTasksController = Ember.ArrayController.extend(Threadable.Rout
     this.loadTasks();
   },
 
+  filteredContent: function() {
+    var showTrashed = (this.get('groupSlug') == 'trash');
+
+    return this.get('model').filter(function(item) {
+      return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
+    });
+  }.property('model.@each.isTrashed'),
+
   loadTasks: function() {
     if (this.get('loading') || this.get('fullyLoaded')) return;
 

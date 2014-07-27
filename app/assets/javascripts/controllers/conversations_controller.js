@@ -3,7 +3,6 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
   organization: Ember.computed.alias('controllers.organization').readOnly(),
   itemController: 'conversations_item',
   showingConversationsListControls: Ember.computed.alias('controllers.topbar.showingConversationsListControls'),
-  sortProperties: ['lastMessageAt'],
   sortAscending: false,
 
   groupSlug: null,
@@ -14,6 +13,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
   currentPage: 0,
   fullyLoaded: false,
   loadFailed: false,
+  isTrash: false,
 
   setup: function(groupSlug, conversationsScope) {
     this.set('content', Ember.ArrayProxy.create({content:[]}));
@@ -23,7 +23,23 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
     this.set('fullyLoaded', false);
     this.set('loading', false);
     this.loadConversations();
+
+    if(groupSlug == 'trash') {
+      this.set('isTrash', true);
+      this.set('sortProperties', ['trashedAt']);
+    } else {
+      this.set('isTrash', false);
+      this.set('sortProperties', ['lastMessageAt']);
+    }
   },
+
+  filteredContent: function() {
+    var showTrashed = (this.get('groupSlug') == 'trash');
+
+    return this.get('model').filter(function(item) {
+      return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
+    });
+  }.property('model.@each.isTrashed'),
 
   loadConversations: function() {
     if (this.get('loading') || this.get('fullyLoaded')) return;

@@ -17,6 +17,7 @@ Threadable.Conversation = RL.Model.extend({
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
   trashed:           RL.attr('boolean'),
+  trashedAt:         RL.attr('date'),
   position:          RL.attr('number'),
 
   isTask:    Ember.computed.alias('task'),
