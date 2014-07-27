@@ -315,9 +315,18 @@ describe Threadable::Conversation do
     it 'checks and sets the trashed state' do
       expect(conversation.trashed?).to be_false
       conversation.trash!
+
       expect(conversation.trashed?).to be_true
+      event = conversation.events.last
+      expect(event.event_type).to eq :conversation_trashed
+      expect(event.conversation_id).to eq conversation.id
+
       conversation.untrash!
+
       expect(conversation.trashed?).to be_false
+      event = conversation.events.last
+      expect(event.event_type).to eq :conversation_untrashed
+      expect(event.conversation_id).to eq conversation.id
     end
 
     context 'when given a conversation that is already trashed' do

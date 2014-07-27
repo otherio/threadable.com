@@ -9,6 +9,10 @@ Threadable.EventView = Ember.View.extend({
     switch(event.get('eventType')) {
       case "conversation_created":
         return '<span class="person">' + event.get('actor') + '</span> started this conversation';
+      case "conversation_trashed":
+        return '<span class="person">' + event.get('actor') + '</span> moved this conversation to the trash';
+      case "conversation_untrashed":
+        return '<span class="person">' + event.get('actor') + '</span> removed this conversation from the trash';
       case "task_created":
         return '<span class="person">' + event.get('actor') + '</span> created this task';
       case "task_done":

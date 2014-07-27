@@ -29,6 +29,7 @@ describe Threadable::Class do
     events = threadable.events.all.group_by(&:class)
     expect( events.keys.to_set ).to eq Set[
       Threadable::Events::ConversationCreated,
+      Threadable::Events::ConversationTrashed,
       Threadable::Events::TaskCreated,
       Threadable::Events::TaskAddedDoer,
       Threadable::Events::ConversationAddedGroup,
@@ -36,6 +37,7 @@ describe Threadable::Class do
       Threadable::Events::ConversationRemovedGroup,
     ]
     expect( events[Threadable::Events::ConversationCreated].count ).to eq 18
+    expect( events[Threadable::Events::ConversationTrashed].count ).to eq 1
     expect( events[Threadable::Events::TaskCreated        ].count ).to eq 34
     expect( events[Threadable::Events::TaskAddedDoer      ].count ).to eq 11
     expect( events[Threadable::Events::TaskDone           ].count ).to eq 11
