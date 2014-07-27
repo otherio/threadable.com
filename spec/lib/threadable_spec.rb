@@ -192,6 +192,8 @@ describe Threadable, :type => :threadable do
       Threadable::Event
       Threadable::Events
       Threadable::Events::ConversationCreated
+      Threadable::Events::ConversationTrashed
+      Threadable::Events::ConversationUntrashed
       Threadable::Events::Create
       Threadable::Events::TaskAddedDoer
       Threadable::Events::TaskCreated

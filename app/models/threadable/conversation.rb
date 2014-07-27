@@ -95,11 +95,19 @@ class Threadable::Conversation < Threadable::Model
   alias_method :muted_by, :muted_by?
 
   def trash!
-    update(trashed_at: Time.now.utc) unless trashed?
+    return if trashed?
+    Threadable.transaction do
+      update(trashed_at: Time.now.utc)
+      events.create! :conversation_trashed
+    end
   end
 
   def untrash!
-    update(trashed_at: nil)
+    return unless trashed?
+    Threadable.transaction do
+      update(trashed_at: nil)
+      events.create! :conversation_untrashed
+    end
   end
 
   def trashed?

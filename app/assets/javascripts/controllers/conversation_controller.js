@@ -81,7 +81,9 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
         approved: function() {
           var conversation = this.get('content');
           conversation.set('trashed', true);
-          conversation.saveRecord();
+          conversation.saveRecord().then(function() {
+            conversation.loadEvents(true);
+          }.bind(this));
         }.bind(this)
       });
 
@@ -89,7 +91,9 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
     unTrash: function() {
       var conversation = this.get('content');
       conversation.set('trashed', false);
-      conversation.saveRecord();
+      conversation.saveRecord().then(function() {
+        conversation.loadEvents(true);
+      }.bind(this));
     },
     removeGroup: function(group) {
       this.confirm({

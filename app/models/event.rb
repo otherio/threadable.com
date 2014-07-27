@@ -2,6 +2,8 @@ class Event < ActiveRecord::Base
 
   TYPES = Set[
     :conversation_created,
+    :conversation_trashed,
+    :conversation_untrashed,
     :task_created,
     :task_done,
     :task_added_doer,
