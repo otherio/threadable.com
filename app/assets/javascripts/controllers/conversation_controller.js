@@ -67,9 +67,28 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
       conversation.set('muted', !conversation.get('muted'));
       conversation.saveRecord();
     },
-    toggleTrashed: function() {
+    trash: function() {
+      var type = this.get('task') ? 'task' : 'conversation';
+      this.confirm({
+        message: (
+          "Are you sure you want to delete this " +
+          type + '? ' +
+          'This will affect all users. ' +
+          'If you\'d prefer to stop receiving email for this ' + type + ', use Mute instead.'
+        ),
+        approveText: 'move to trash',
+        declineText: 'cancel',
+        approved: function() {
+          var conversation = this.get('content');
+          conversation.set('trashed', true);
+          conversation.saveRecord();
+        }.bind(this)
+      });
+
+    },
+    unTrash: function() {
       var conversation = this.get('content');
-      conversation.set('trashed', !conversation.get('trashed'));
+      conversation.set('trashed', false);
       conversation.saveRecord();
     },
     removeGroup: function(group) {
