@@ -72,12 +72,12 @@
         {{/if}}
       </a>
       {{#if isTrashed}}
-        <a href="" {{action 'toggleTrashed'}}>
+        <a href="" {{action 'unTrash'}}>
           <i class="uk-icon-exclamation-triangle"></i> undelete
         </a>
         (deleted {{date trashedAt}})
       {{else}}
-        <a href="" {{action 'toggleTrashed'}}>
+        <a href="" {{action 'trash'}}>
           <i class="uk-icon-trash-o"></i> delete
         </a>
       {{/if}}
