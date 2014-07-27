@@ -5,5 +5,9 @@ Threadable.OrganizationMembersController = Ember.ArrayController.extend(Threadab
 
   currentMember: function() {
     return this.findBy('userId', this.get('currentUser.userId'));
-  }.property('currentUser', 'content')
+  }.property('currentUser', 'content'),
+
+  subscriberCount: function() {
+    return this.get('content').filterBy('subscribed', true).length;
+  }.property('content.@each.subscribed')
 });

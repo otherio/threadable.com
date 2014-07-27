@@ -19,6 +19,10 @@ Threadable.OrganizationMember = Threadable.User.extend({
     return !this.get('confirmed');
   }.property('confirmed'),
 
+  isUnsubscribed: function() {
+    return !this.get('subscribed');
+  }.property('subscribed'),
+
 });
 
 Threadable.OrganizationMember.reopen(Threadable.AddOrganizationIdToRequestsMixin);

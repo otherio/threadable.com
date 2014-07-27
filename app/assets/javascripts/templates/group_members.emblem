@@ -1,5 +1,10 @@
 .group-members-list.scrollable
   ul.members-list
+    li.stats
+      i.uk-icon-users.uk-float-left
+      div
+        | {{group.members.length}} members, {{summaryCount}} receive summaries
+
     each member in controller
       li
         if member.isMember

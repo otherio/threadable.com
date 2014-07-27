@@ -1,9 +1,15 @@
 .organization-members.scrollable
   ul.members-list
+    li.stats
+      i.uk-icon-users.uk-float-left
+      div
+        | {{content.length}} members, {{subscriberCount}} subscribed
+
     li.add-button
       link-to "add_organization_member" organization class="not-link"
         i.uk-icon-plus.uk-float-left
         div Add member
+
     each member in controller
       li
         link-to "organization_member" member.slug class="not-link"
@@ -12,6 +18,11 @@
           .name= member.name
           .email-address
             = member.emailAddress
+
             if member.isUnconfirmed
               span.unconfirmed
                 | not yet confirmed
+
+            if member.isUnsubscribed
+              span.unconfirmed
+                | unsubscribed

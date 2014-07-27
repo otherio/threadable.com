@@ -6,6 +6,10 @@ Threadable.GroupMembersController = Ember.ArrayController.extend({
   organization: Ember.computed.alias('controllers.organization').readOnly(),
 
   group: null,
-  content: Ember.computed.alias('organization.members').readOnly()
+  content: Ember.computed.alias('organization.members').readOnly(),
+
+  summaryCount: function() {
+    return this.get('group.members').filterBy('getsInSummary', true).length;
+  }.property('group.members.@each.getsInSummary')
 
 });
