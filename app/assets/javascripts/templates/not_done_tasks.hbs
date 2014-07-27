@@ -1,5 +1,5 @@
 <ul class="uk-list">
-  {{#each task in filteredContent}}
+  {{#each task in filteredContent itemController='not_done_tasks_item'}}
     {{partial 'tasks/list/member'}}
   {{else}}
     {{#unless loading}}

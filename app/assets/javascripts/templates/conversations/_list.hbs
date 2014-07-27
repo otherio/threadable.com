@@ -10,7 +10,7 @@
         </li>
       {{/if}}
 
-      {{#each conversation in filteredContent}}
+      {{#each conversation in filteredContent itemController="conversations_item"}}
         {{partial 'conversations/list/member'}}
       {{else}}
         {{#unless loading}}
