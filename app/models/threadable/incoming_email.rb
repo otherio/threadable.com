@@ -211,6 +211,10 @@ class Threadable::IncomingEmail < Threadable::Model
     params['References']
   end
 
+  def auto_submitted
+    message_headers_as_hash['Auto-Submitted']
+  end
+
   def message_headers
     @message_headers ||= JSON.parse(params['message-headers'])
   end

@@ -8,23 +8,36 @@ describe Threadable::Emails do
     let(:envelope_to) { 'other@guy.com' }
     let(:email_double) { double(:email, smtp_envelope_from: 'some@guy.com', smtp_envelope_to: envelope_to) }
 
-    before do
-      expect(Threadable::Emails::Validate).to receive(:call).with(email_double).and_return(true)
-    end
-
-    it 'calls generate and deliver' do
-      expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
-      expect(email_double).to receive(:deliver)
-      subject.send_email(:foo, 1,2,3)
-    end
-
-    context "if the recipient is at example.com" do
-      let(:envelope_to) { 'other@foo.example.com' }
+    context 'with a null mailer' do
+      let(:null_mailer) { ActionMailer::Base::NullMail.new }
 
       it "skips the message" do
-        expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
+        expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(null_mailer)
+        expect(Threadable::Emails::Validate).to_not receive(:call)
         expect(email_double).to_not receive(:deliver)
         subject.send_email(:foo, 1,2,3)
+      end
+    end
+
+    context 'with a valid mailer' do
+      before do
+        expect(Threadable::Emails::Validate).to receive(:call).with(email_double).and_return(true)
+      end
+
+      it 'calls generate and deliver' do
+        expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
+        expect(email_double).to receive(:deliver)
+        subject.send_email(:foo, 1,2,3)
+      end
+
+      context "if the recipient is at example.com" do
+        let(:envelope_to) { 'other@foo.example.com' }
+
+        it "skips the message" do
+          expect(subject).to receive(:generate).with(:foo, 1,2,3).and_return(email_double)
+          expect(email_double).to_not receive(:deliver)
+          subject.send_email(:foo, 1,2,3)
+        end
       end
     end
   end

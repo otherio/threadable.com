@@ -14,6 +14,7 @@ class Threadable::Emails
       smtp_envelope_from: email.smtp_envelope_from,
       smtp_envelope_to: email.smtp_envelope_to,
     })
+    return if email.is_a? ActionMailer::Base::NullMail
     Threadable::Emails::Validate.call(email)
     return if email.smtp_envelope_to =~ /(@|\.)example\.com$/
     failures = 0

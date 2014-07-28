@@ -11,21 +11,23 @@ describe IncomingEmailMailer do
 
   let :params do
     create_incoming_email_params(
-      subject:       subject_line,
-      recipient:     recipient,
-      body_html:     body_html,
-      body_plain:    body_plain,
-      in_reply_to:   in_reply_to,
+      subject:        subject_line,
+      recipient:      recipient,
+      body_html:      body_html,
+      body_plain:     body_plain,
+      in_reply_to:    in_reply_to,
+      auto_submitted: auto_submitted,
     )
   end
   let(:incoming_email){ threadable.incoming_emails.create!(params).first }
 
-  let(:subject_line) { 'i am a subject line, see me subject' }
-  let(:body_plain)   { 'i am a body, watch me bod.' }
-  let(:body_html)    { '<body>i am a <strong>body</strong>, watch me bod.</body>' }
-  let(:recipient)    { 'raceteam@localhost' }
-  let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
-  let(:in_reply_to)  { nil }
+  let(:subject_line)   { 'i am a subject line, see me subject' }
+  let(:body_plain)     { 'i am a body, watch me bod.' }
+  let(:body_html)      { '<body>i am a <strong>body</strong>, watch me bod.</body>' }
+  let(:recipient)      { 'raceteam@localhost' }
+  let(:to)             { 'UCSD Electric Racing <raceteam@localhost>' }
+  let(:in_reply_to)    { nil }
+  let(:auto_submitted) { nil }
 
   before do
     incoming_email.find_organization!
@@ -41,6 +43,22 @@ describe IncomingEmailMailer do
       expect(mail.to     ).to eq [incoming_email.envelope_from]
 
       expect(mail.smtp_envelope_from).to eq "no-reply-auto@localhost"
+    end
+
+    context 'for an auto-response' do
+      let(:auto_submitted) { 'auto-replied' }
+
+      it 'does nothing' do
+        expect(mail).to be_a ActionMailer::Base::NullMail
+      end
+    end
+
+    context 'for a message with a null envelope sender' do
+      let(:sender) { nil }
+
+      it 'does nothing' do
+        expect(mail).to be_a ActionMailer::Base::NullMail
+      end
     end
   end
 
@@ -64,7 +82,7 @@ describe IncomingEmailMailer do
         expect(mail.header['X-Mailgun-Track'].to_s).to       eq 'no'
         expect(mail.header['X-Mailgun-Native-Send'].to_s).to eq 'true'
 
-        expect(mail.to).to eq [params['X-Envelope-From']]
+        expect(mail.to).to eq [params['sender']]
         expect(mail.from).to eq ['no-reply-auto@localhost']
         expect(mail.smtp_envelope_from).to eq ""
 
@@ -118,6 +136,22 @@ describe IncomingEmailMailer do
         expect(delivery_status_part.body.to_s).to include "Diagnostic-Code: smtp; 550-5.6.0"
         expect(delivery_status_part.body.to_s).to include "Status: 5.6.0"
         expect(text_part.body).to include 'You attempted to reply to a deleted conversation.'
+      end
+    end
+
+    context 'for an auto-response' do
+      let(:auto_submitted) { 'auto-replied' }
+
+      it 'does nothing' do
+        expect(mail).to be_a ActionMailer::Base::NullMail
+      end
+    end
+
+    context 'for a message with a null envelope sender' do
+      let(:sender) { nil }
+
+      it 'does nothing' do
+        expect(mail).to be_a ActionMailer::Base::NullMail
       end
     end
   end

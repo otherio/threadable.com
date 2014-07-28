@@ -3,6 +3,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_held_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
+    return if incoming_auto_reply
 
     auto_response_mail(
       :'from'     => "Threadable message held <#{threadable.support_email_address('message-held')}>",
@@ -14,6 +15,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_rejected_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
+    return if incoming_auto_reply
 
     auto_response_mail(
       :'from'     => "Threadable message rejected <#{threadable.support_email_address('message-rejected')}>",
@@ -25,6 +27,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_accepted_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
+    return if incoming_auto_reply
 
     auto_response_mail(
       :'from'     => "Threadable message accepted <#{threadable.support_email_address('message-accepted')}>",
@@ -36,6 +39,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_held_owner_notice incoming_email, owner
     @incoming_email = incoming_email
     @organization = incoming_email.organization
+    return if incoming_auto_reply
 
     message = mail({
       :css              => 'email',
@@ -52,16 +56,18 @@ class IncomingEmailMailer < Threadable::Mailer
     })
 
     message.smtp_envelope_from = "no-reply-auto@#{threadable.email_host}"
+    message
   end
 
   def message_bounced_dsn incoming_email
     @incoming_email = incoming_email
     @bounce_error = bounce_error incoming_email.bounce_reason
+    return nil if incoming_auto_reply
 
     message = mail({
       :css                     => 'email',
       :'auto-submitted'        => 'auto-replied',
-      :'to'                    => @incoming_email.envelope_from,
+      :'to'                    => @incoming_email.sender,
       :'from'                  => "Threadable Mail Error <no-reply-auto@#{threadable.email_host}>",
       :'In-Reply-To'           => @incoming_email.message_id,
       :'References'            => [@incoming_email.message_id],
@@ -99,6 +105,7 @@ class IncomingEmailMailer < Threadable::Mailer
     message.part content_type: 'message/rfc822', body: "#{message_headers.to_s}\n#{incoming_email.body_plain}"
 
     message.content_type = "multipart/report; report-type=delivery-status; boundary=#{message.boundary}"
+    message
   end
 
   private
@@ -120,7 +127,7 @@ class IncomingEmailMailer < Threadable::Mailer
   end
 
   def return_path
-    @incoming_email.mail_message.return_path || @incoming_email.envelope_from
+    @incoming_email.mail_message.return_path || @incoming_email.sender
   end
 
   def bounce_error reason
@@ -140,5 +147,10 @@ class IncomingEmailMailer < Threadable::Mailer
     }
 
     codes[reason]
+  end
+
+  def incoming_auto_reply
+    sender = @incoming_email.sender
+    @incoming_email.auto_submitted == 'auto-replied' || sender.nil? || sender == '<>'
   end
 end

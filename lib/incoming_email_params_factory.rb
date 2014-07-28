@@ -46,6 +46,9 @@ class IncomingEmailParamsFactory < MethodObject
     @options[:stripped_text] ||= Sanitize.clean(@options[:body_plain])
     @options[:attachments]   ||= []
 
+    # auto response control
+    @options[:auto_submitted] ||= nil
+
     # headers
     @options[:message_headers] ||= [
       ["X-Envelope-From", @options[:envelope_from]],
@@ -61,6 +64,7 @@ class IncomingEmailParamsFactory < MethodObject
       ["Content-Type",    @options[:content_type]],
       ["Thread-Index",    @options[:thread_index]],
       ["Thread-Topic",    @options[:thread_topic]],
+      ["Auto-Submitted",  @options[:auto_submitted]],
     ]
   end
 
