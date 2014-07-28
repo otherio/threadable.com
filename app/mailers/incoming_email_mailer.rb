@@ -3,7 +3,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_held_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
-    return if incoming_auto_reply
+    return nil if incoming_auto_reply
 
     auto_response_mail(
       :'from'     => "Threadable message held <#{threadable.support_email_address('message-held')}>",
@@ -15,7 +15,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_rejected_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
-    return if incoming_auto_reply
+    return nil if incoming_auto_reply
 
     auto_response_mail(
       :'from'     => "Threadable message rejected <#{threadable.support_email_address('message-rejected')}>",
@@ -27,7 +27,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_accepted_notice incoming_email
     @incoming_email = incoming_email
     @organization = incoming_email.organization
-    return if incoming_auto_reply
+    return nil if incoming_auto_reply
 
     auto_response_mail(
       :'from'     => "Threadable message accepted <#{threadable.support_email_address('message-accepted')}>",
@@ -39,7 +39,7 @@ class IncomingEmailMailer < Threadable::Mailer
   def message_held_owner_notice incoming_email, owner
     @incoming_email = incoming_email
     @organization = incoming_email.organization
-    return if incoming_auto_reply
+    return nil if incoming_auto_reply
 
     message = mail({
       :css              => 'email',
@@ -151,6 +151,6 @@ class IncomingEmailMailer < Threadable::Mailer
 
   def incoming_auto_reply
     sender = @incoming_email.sender
-    @incoming_email.auto_submitted == 'auto-replied' || sender.nil? || sender == '<>'
+    @incoming_email.auto_submitted == 'auto-replied' || !sender.present? || sender == '<>'
   end
 end

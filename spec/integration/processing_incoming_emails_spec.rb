@@ -8,31 +8,32 @@ describe "processing incoming emails" do
 
   let :params do
     create_incoming_email_params(
-      subject:       subject,
-      message_id:    message_id,
+      subject:        subject,
+      message_id:     message_id,
 
-      from:          from,
-      envelope_from: envelope_from,
-      sender:        sender,
+      from:           from,
+      envelope_from:  envelope_from,
+      sender:         sender,
 
-      recipient:     recipient,
-      to:            to,
-      cc:            cc,
+      recipient:      recipient,
+      to:             to,
+      cc:             cc,
 
-      content_type:  content_type,
-      date:          date,
+      content_type:   content_type,
+      date:           date,
 
-      in_reply_to:   in_reply_to,
-      references:    references,
+      in_reply_to:    in_reply_to,
+      references:     references,
 
-      body_html:     body_html,
-      body_plain:    body_plain,
-      stripped_html: stripped_html,
-      stripped_text: stripped_text,
-      attachments:   attachments,
+      body_html:      body_html,
+      body_plain:     body_plain,
+      stripped_html:  stripped_html,
+      stripped_text:  stripped_text,
+      attachments:    attachments,
 
-      thread_index:  thread_index,
-      thread_topic:  thread_topic,
+      thread_index:   thread_index,
+      thread_topic:   thread_topic,
+      auto_submitted: auto_submitted,
     )
   end
 
@@ -100,6 +101,7 @@ describe "processing incoming emails" do
       ["Content-Type",    content_type],
       ["Thread-Index",    thread_index],
       ["Thread-Topic",    thread_topic],
+      ["Auto-Submitted",  auto_submitted],
     ]
     expect( incoming_email.body_html      ).to eq(body_html)
     expect( incoming_email.body_plain     ).to eq(body_plain)
@@ -329,24 +331,26 @@ describe "processing incoming emails" do
 
   # default incoming email params
 
-  let(:subject)      { 'OMG guys I love threadable!' }
-  let(:message_id)   { '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>' }
+  let(:subject)        { 'OMG guys I love threadable!' }
+  let(:message_id)     { '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>' }
 
-  let(:from)         { 'Yan Hzu <yan@ucsd.example.com>' }
-  let(:envelope_from){ '<yan@ucsd.example.com>' }
-  let(:sender)       { 'yan@ucsd.example.com' }
+  let(:from)           { 'Yan Hzu <yan@ucsd.example.com>' }
+  let(:envelope_from)  { '<yan@ucsd.example.com>' }
+  let(:sender)         { 'yan@ucsd.example.com' }
 
-  let(:recipient)    { 'raceteam@raceteam.localhost' }
-  let(:to)           { 'UCSD Electric Racing <raceteam@raceteam.localhost>' }
-  let(:cc)           { '' }
+  let(:recipient)      { 'raceteam@raceteam.localhost' }
+  let(:to)             { 'UCSD Electric Racing <raceteam@raceteam.localhost>' }
+  let(:cc)             { '' }
 
-  let(:content_type) { 'multipart/alternative; boundary="089e0158ba9ec5cbb704eb3fc74e"' }
-  let(:date)         { Time.parse(14.days.ago.to_s).in_time_zone } # round off milliseconds
+  let(:content_type)   { 'multipart/alternative; boundary="089e0158ba9ec5cbb704eb3fc74e"' }
+  let(:date)           { Time.parse(14.days.ago.to_s).in_time_zone } # round off milliseconds
 
-  let(:in_reply_to)  { '' }
-  let(:references)   { '' }
-  let(:thread_index) { '' }
-  let(:thread_topic) { '' }
+  let(:in_reply_to)    { '' }
+  let(:references)     { '' }
+  let(:thread_index)   { '' }
+  let(:thread_topic)   { '' }
+
+  let(:auto_submitted) { '' }
 
   let(:body_html){
     %(<p>I think we should build it out of fiberglass and duck tape.\n</p>\n)+

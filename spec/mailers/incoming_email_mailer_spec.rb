@@ -17,6 +17,7 @@ describe IncomingEmailMailer do
       body_plain:     body_plain,
       in_reply_to:    in_reply_to,
       auto_submitted: auto_submitted,
+      envelope_from:  envelope_from,
     )
   end
   let(:incoming_email){ threadable.incoming_emails.create!(params).first }
@@ -28,6 +29,7 @@ describe IncomingEmailMailer do
   let(:to)             { 'UCSD Electric Racing <raceteam@localhost>' }
   let(:in_reply_to)    { nil }
   let(:auto_submitted) { nil }
+  let(:envelope_from)  { "alice@ucsd.example.com" }
 
   before do
     incoming_email.find_organization!
@@ -54,7 +56,7 @@ describe IncomingEmailMailer do
     end
 
     context 'for a message with a null envelope sender' do
-      let(:sender) { nil }
+      let(:envelope_from) { '<>' }
 
       it 'does nothing' do
         expect(mail).to be_a ActionMailer::Base::NullMail
@@ -82,7 +84,7 @@ describe IncomingEmailMailer do
         expect(mail.header['X-Mailgun-Track'].to_s).to       eq 'no'
         expect(mail.header['X-Mailgun-Native-Send'].to_s).to eq 'true'
 
-        expect(mail.to).to eq [params['sender']]
+        expect(mail.to).to eq [envelope_from]
         expect(mail.from).to eq ['no-reply-auto@localhost']
         expect(mail.smtp_envelope_from).to eq ""
 
@@ -148,7 +150,7 @@ describe IncomingEmailMailer do
     end
 
     context 'for a message with a null envelope sender' do
-      let(:sender) { nil }
+      let(:envelope_from) { '<>' }
 
       it 'does nothing' do
         expect(mail).to be_a ActionMailer::Base::NullMail
