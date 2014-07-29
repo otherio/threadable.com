@@ -2,6 +2,7 @@
   needs: ['conversation', 'organization', 'doerSelector', 'conversations', 'tasks'],
 
   message: Ember.computed.alias('model'),
+  conversation: Ember.computed.alias('controllers.conversation'),
   doerSelector: Ember.computed.alias('controllers.doerSelector'),
   sending: false,
 

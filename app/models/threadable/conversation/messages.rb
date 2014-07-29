@@ -13,6 +13,10 @@ class Threadable::Conversation::Messages < Threadable::Messages
   end
 
   def create attributes
+    if conversation.trashed?
+      raise Threadable::AuthorizationError, 'This conversation has been deleted. Remove it from the trash before replying.'
+    end
+
     super attributes.merge(conversation: conversation)
   end
 
