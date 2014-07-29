@@ -86,7 +86,7 @@ describe IncomingEmailMailer do
 
         expect(mail.to).to eq [envelope_from]
         expect(mail.from).to eq ['no-reply-auto@localhost']
-        expect(mail.smtp_envelope_from).to eq ""
+        expect(mail.smtp_envelope_from).to eq '<>'
 
         expect(mail.content_type).to include 'multipart/report'
         expect(mail.content_type).to include 'report-type=delivery-status'
