@@ -183,7 +183,7 @@ describe "processing incoming emails" do
       elsif result == :bounced
         expect(sent_emails.size).to eq 1
         bounced_dsn = sent_emails.with_subject("Delivery Status Notification (Failure)").first
-        expect( bounced_dsn.smtp_envelope_from ).to eq ""
+        expect( bounced_dsn.smtp_envelope_from ).to eq "<>"
         expect( bounced_dsn.to                 ).to eq [envelope_from.gsub(/[<>]/, '')]
         expect( bounced_dsn.from               ).to eq ["no-reply-auto@#{threadable.email_host}"]
 
