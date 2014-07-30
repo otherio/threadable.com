@@ -44,7 +44,7 @@ gem 'emblem-rails'
 gem 'ember-source'
 gem 'uglifier'
 gem 'animate-sass'
-gem 'roadie'
+gem 'roadie-rails'
 gem 'mixpanel-ruby'
 
 gem 'newrelic_rpm'

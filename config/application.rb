@@ -54,9 +54,6 @@ module Threadable
 
     config.filepicker_rails.api_key = ENV.fetch('THREADABLE_FILEPICKER_API_KEY')
 
-    config.roadie.enabled = true
-    config.roadie.provider = RoadieNoExternalAssetProvider.new
-
     config.force_ssl = false
 
     config.track_in_memory = false
