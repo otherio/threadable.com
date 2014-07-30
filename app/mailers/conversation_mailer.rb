@@ -29,22 +29,11 @@ class ConversationMailer < Threadable::Mailer
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
 
-    @message.attachments.all.each do |attachment|
-      filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
+    @message.attachments.not_inline.each do |attachment|
+      params = attachment_params attachment
+      filename = params.delete :filename
 
-      if attachment.mimetype == 'message/rfc822'
-        # for some reason just attaching these doesn't work
-        filename = "#{filename}.eml" unless filename =~ /\.eml\Z/
-        attachments[filename] = {
-          :content    => attachment.content,
-        }
-      else
-        attachments[filename] = {
-          :content    => attachment.content,
-          :encoding   => 'binary',
-          :mime_type  => attachment.mimetype,
-        }
-      end
+      attachments[filename] = params
 
       if attachment.content_id
         attachments[filename][:content_id] = attachment.content_id
@@ -136,7 +125,24 @@ class ConversationMailer < Threadable::Mailer
       :'X-Mailgun-Variables' => {'organization' => organization.slug, 'recipient-id' => @recipient.id}.to_json,
     }.delete_if { |k, v| !v.present? }
 
-    email = mail(email_params)
+    email = prepare_message email_params
+
+    email.alternative_content_types_with_attachment(
+      :text => render_to_string(:template => "conversation_mailer/conversation_message.text"),
+      :html => render_to_string(:template => "conversation_mailer/conversation_message.html")
+    ) do |inline_attachments|
+      @message.attachments.inline.each do |attachment|
+        params = attachment_params attachment
+        filename = params.delete :filename
+
+        inline_attachments[filename] = params
+
+        if attachment.content_id
+          inline_attachments[filename][:content_id] = attachment.content_id
+          inline_attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
+        end
+      end
+    end
 
     email.smtp_envelope_from = @conversation.internal_email_address
     email.smtp_envelope_to = @recipient.email_address.to_s
@@ -145,6 +151,49 @@ class ConversationMailer < Threadable::Mailer
   end
 
   private
+
+  def attach_file attachment, message_attachments
+    filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
+
+    if attachment.mimetype == 'message/rfc822'
+      # for some reason just attaching these doesn't work
+      filename = "#{filename}.eml" unless filename =~ /\.eml\Z/
+      message_attachments[filename] = {
+        :content    => attachment.content,
+      }
+    else
+      message_attachments[filename] = {
+        :content    => attachment.content,
+        :encoding   => 'binary',
+        :mime_type  => attachment.mimetype,
+      }
+    end
+
+    if attachment.content_id
+      message_attachments[filename][:content_id] = attachment.content_id
+      message_attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
+    end
+  end
+
+  def attachment_params attachment
+    filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
+
+    if attachment.mimetype == 'message/rfc822'
+      # for some reason just attaching these doesn't work
+      filename = "#{filename}.eml" unless filename =~ /\.eml\Z/
+      {
+        content:  attachment.content,
+        filename: filename,
+      }
+    else
+      {
+        content:   attachment.content,
+        encoding:  'binary',
+        mime_type: attachment.mimetype,
+        filename:  filename,
+      }
+    end
+  end
 
   def reply_to_address
     return @conversation.formatted_email_addresses if @recipient.munge_reply_to?

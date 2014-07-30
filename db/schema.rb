@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140725213233) do
+ActiveRecord::Schema.define(version: 20140730002841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,10 +30,13 @@ ActiveRecord::Schema.define(version: 20140725213233) do
     t.string   "mimetype"
     t.integer  "size"
     t.boolean  "writeable"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.string   "content_id"
+    t.boolean  "inline",     default: false, null: false
   end
+
+  add_index "attachments", ["inline"], name: "index_attachments_on_inline", using: :btree
 
   create_table "attachments_incoming_emails", id: false, force: true do |t|
     t.integer "incoming_email_id"

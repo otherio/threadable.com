@@ -12,6 +12,7 @@ class Threadable::Attachment < Threadable::Model
     mimetype
     size
     content
+    inline?
     writeable?
     created_at
     updated_at

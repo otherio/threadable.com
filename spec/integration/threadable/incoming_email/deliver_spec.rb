@@ -13,6 +13,7 @@ describe Threadable::IncomingEmail::Deliver do
       body_plain:    body_plain,
       in_reply_to:   in_reply_to,
       to:            to,
+      attachments:   attachments,
     )
   end
   let(:incoming_email){ threadable.incoming_emails.create!(params).first }
@@ -23,9 +24,37 @@ describe Threadable::IncomingEmail::Deliver do
   let(:body_html)    { '<body>i am a <strong>body</strong>, watch me bod.</body>' }
   let(:recipient)    { 'raceteam@localhost' }
   let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
-
+  let(:attachments)  { [] }
 
   delegate :call, to: described_class
+
+  describe 'save_off_attachments!' do
+    let :attachments do
+      [
+        RSpec::Support::Attachments.uploaded_file("some.gif", 'image/gif',  true),
+      ]
+    end
+
+    let(:body_html) { '<img cid="<somegifcontentid>">' }
+
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+
+      incoming_email.find_organization!
+      incoming_email.find_parent_message!
+      incoming_email.find_groups!
+      incoming_email.find_message!
+      incoming_email.find_creator!
+      incoming_email.find_conversation!
+    end
+
+    it 'turns on the inline flag for images that are inline' do
+      call incoming_email
+      conversation.conversation_record.reload
+      expect(incoming_email.attachments.all.first.inline?).to be_true
+    end
+
+  end
 
   describe "sync_groups_from_headers!" do
     let(:parent_message) { conversation.messages.last }
