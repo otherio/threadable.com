@@ -128,8 +128,8 @@ class ConversationMailer < Threadable::Mailer
     email = prepare_message email_params
 
     email.alternative_content_types_with_attachment(
-      :text => render_to_string(:template => "conversation_mailer/conversation_message.text"),
-      :html => render_to_string(:template => "conversation_mailer/conversation_message.html")
+      text: render_to_string(:template => "conversation_mailer/conversation_message.text"),
+      html: render_with_css("conversation_mailer/conversation_message.html"),
     ) do |inline_attachments|
       @message.attachments.inline.each do |attachment|
         params = attachment_params attachment
@@ -152,27 +152,11 @@ class ConversationMailer < Threadable::Mailer
 
   private
 
-  def attach_file attachment, message_attachments
-    filename = attachment.filename.gsub(/"/, '') # quotes break everything. actionmailer should deal with this better.
-
-    if attachment.mimetype == 'message/rfc822'
-      # for some reason just attaching these doesn't work
-      filename = "#{filename}.eml" unless filename =~ /\.eml\Z/
-      message_attachments[filename] = {
-        :content    => attachment.content,
-      }
-    else
-      message_attachments[filename] = {
-        :content    => attachment.content,
-        :encoding   => 'binary',
-        :mime_type  => attachment.mimetype,
-      }
-    end
-
-    if attachment.content_id
-      message_attachments[filename][:content_id] = attachment.content_id
-      message_attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
-    end
+  def render_with_css template_path
+    html = render_to_string(:template => template_path)
+    document = Roadie::Document.new html
+    document.asset_providers = [ Roadie::NullProvider.new ]
+    document.transform
   end
 
   def attachment_params attachment
