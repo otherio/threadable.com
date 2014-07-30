@@ -4,6 +4,14 @@ class Threadable::Attachments < Threadable::Collection
     attachments_for scope
   end
 
+  def inline
+    attachments_for scope.where(inline: true)
+  end
+
+  def not_inline
+    attachments_for scope.where(inline: false)
+  end
+
   # create(filename: 'cat.jpg', mimetype: 'image/jpg', content: "CONTENT", content_id: '<somecontentid>')
   def create attributes
     Create.call(self, attributes)

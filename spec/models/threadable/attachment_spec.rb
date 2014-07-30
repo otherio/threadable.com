@@ -22,6 +22,7 @@ describe Threadable::Attachment do
   it{ should delegate(:created_at).to(:attachment_record) }
   it{ should delegate(:updated_at).to(:attachment_record) }
   it{ should delegate(:content_id).to(:attachment_record) }
+  it{ should delegate(:inline?   ).to(:attachment_record) }
 
   its(:threadable){ should eq threadable }
 

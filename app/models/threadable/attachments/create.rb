@@ -15,6 +15,7 @@ class Threadable::Attachments::Create < MethodObject
       store_file!
     end
     @content_id = attributes[:content_id]
+    @inline = !! attributes[:inline]
     create_attachment_record!
     Threadable::Attachment.new(@threadable, @attachment_record)
   end
@@ -35,6 +36,7 @@ class Threadable::Attachments::Create < MethodObject
       size:       @size,
       writeable:  "true",
       content_id: @content_id,
+      inline:     @inline,
     )
   end
 

@@ -54,8 +54,8 @@ describe ConversationMailer do
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
 
-      expect(email.link('feedback')).to be_present
-      expect(email.link('feedback')[:href]).to eq "mailto:support@localhost"
+      expect(email.html_part.body).to match /feedback/
+      expect(email.html_part.body).to match /mailto:support@localhost/
 
       conversation.groups.all.each do |group|
         expect(text_part).to include group.email_address
@@ -204,8 +204,8 @@ describe ConversationMailer do
     describe "mail buttons" do
       context "with mail buttons enabled" do
         it "has the buttons in the mail" do
-          mail.html_part.body.to_s.should include 'class="threadable-button"'
-          mail.html_part.body.to_s.should_not include 'class="threadable-conversation"'
+          mail.html_part.body.to_s.should include "class='threadable-button'"
+          mail.html_part.body.to_s.should_not include "class='threadable-conversation'"
         end
       end
       context "with mail buttons disabled" do
@@ -213,8 +213,8 @@ describe ConversationMailer do
           recipient.update(show_mail_buttons: false)
         end
         it "doesn't have buttons in the mail" do
-          mail.html_part.body.to_s.should_not include 'class="threadable-button"'
-          mail.html_part.body.to_s.should include 'class="threadable-conversation"'
+          mail.html_part.body.to_s.should_not include "class='threadable-button'"
+          mail.html_part.body.to_s.should include "class='threadable-conversation'"
         end
       end
     end
