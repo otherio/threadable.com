@@ -54,8 +54,10 @@ describe ConversationMailer do
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
 
-      expect(email.html_part.body).to include 'feedback'
-      expect(email.html_part.body).to include 'mailto:support@localhost'
+      expect(email.html_part.to_s).to include 'DOCTYPE'
+
+      expect(email.link('feedback')).to be_present
+      expect(email.link('feedback')[:href]).to eq "mailto:support@localhost"
 
       # check to make sure roadie inlined styles
       expect(email.html_part.body).to include 'style="font-family:sans-serif;text-decoration:none;font-size:11px;font-weight:300;"'
