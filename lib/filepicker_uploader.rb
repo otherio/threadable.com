@@ -37,6 +37,8 @@ module FilepickerUploader
   UploadError = Class.new(StandardError)
 
   def self.upload(file)
+    raise UploadError, "Attempted to upload zero-length file: #{file.original_filename}" if file.io.length == 0
+
     response = Uploader.post("#{uri.path}?#{uri.query}", query: {fileUpload: file})
     raise UploadError, response if response.is_a? String
 
