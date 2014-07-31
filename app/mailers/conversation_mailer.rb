@@ -123,7 +123,7 @@ class ConversationMailer < Threadable::Mailer
     ) do |inline_attachments|
       @message.attachments.inline.each do |attachment|
         params = attachment_params attachment
-        filename = params.delete :filename
+        filename = params[:filename]
 
         if attachment.content_id
           params[:content_id] = attachment.content_id
@@ -138,7 +138,7 @@ class ConversationMailer < Threadable::Mailer
 
     @message.attachments.not_inline.each do |attachment|
       params = attachment_params attachment
-      filename = params.delete :filename
+      filename = params[:filename]
 
       attachments[filename] = params
 
