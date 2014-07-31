@@ -13,6 +13,7 @@ describe Threadable::Messages::Create do
       size:       '733',
       writeable:  'true',
       content_id: 'contentid',
+      inline:     true,
     }
   end
   let :attachment2 do
@@ -23,6 +24,7 @@ describe Threadable::Messages::Create do
       size:       '7611',
       writeable:  'true',
       content_id: 'contentid',
+      inline:     false,
     }
   end
   let(:attachment_record1){ double :attachment_record1 }
