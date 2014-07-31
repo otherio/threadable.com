@@ -236,6 +236,23 @@ describe ConversationMailer do
         expect(attachment.header['X-Attachment-Id'].value).to eq 'somejpgcontentid'
       end
 
+      context 'with an inline image' do
+        before do
+          message.attachments.all.first.attachment_record.update_attribute(:inline, true)
+        end
+
+        it 'inlines the image' do
+          expect(mail.attachments.length).to eq 3
+          attachment = mail.attachments.find { |attachment| attachment.filename == 'some.gif' }
+
+          expect(attachment.mime_type).to eq 'image/gif'
+          expect(attachment.content_id).to eq '<somegifcontentid>'
+          expect(attachment.header['X-Attachment-Id'].value).to eq 'somegifcontentid'
+          expect(attachment.content_disposition).to include 'inline'
+          expect(attachment.content_disposition).to include 'some.gif'
+        end
+      end
+
       context 'with different mime types' do
         before do
           message.attachments.all.

@@ -30,18 +30,6 @@ class ConversationMailer < Threadable::Mailer
     unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
 
-    @message.attachments.not_inline.each do |attachment|
-      params = attachment_params attachment
-      filename = params.delete :filename
-
-      attachments[filename] = params
-
-      if attachment.content_id
-        attachments[filename][:content_id] = attachment.content_id
-        attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
-      end
-    end
-
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
 
     if has_many_groups
@@ -137,12 +125,26 @@ class ConversationMailer < Threadable::Mailer
         params = attachment_params attachment
         filename = params.delete :filename
 
-        inline_attachments[filename] = params
-
         if attachment.content_id
-          inline_attachments[filename][:content_id] = attachment.content_id
-          inline_attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
+          params[:content_id] = attachment.content_id
+          params[:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
         end
+
+        params[:content_disposition] = "inline; filename=#{filename}"
+
+        inline_attachments.inline[filename] = params
+      end
+    end
+
+    @message.attachments.not_inline.each do |attachment|
+      params = attachment_params attachment
+      filename = params.delete :filename
+
+      attachments[filename] = params
+
+      if attachment.content_id
+        attachments[filename][:content_id] = attachment.content_id
+        attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
       end
     end
 
