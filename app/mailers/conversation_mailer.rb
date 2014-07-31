@@ -5,6 +5,7 @@ require 'verify_dmarc'
 class ConversationMailer < Threadable::Mailer
 
   add_template_helper EmailHelper
+  layout false
 
   def conversation_message(organization, message, recipient)
     @organization, @message, @recipient = organization, message, recipient
@@ -123,6 +124,7 @@ class ConversationMailer < Threadable::Mailer
       :'List-Unsubscribe'    => "<#{@unsubscribe_url}>",
       :'List-Post'           => "<mailto:#{@conversation.list_post_email_address}>, <#{compose_conversation_url(@organization, 'my')}>",
       :'X-Mailgun-Variables' => {'organization' => organization.slug, 'recipient-id' => @recipient.id}.to_json,
+      :content_type          => "multipart/mixed",
     }.delete_if { |k, v| !v.present? }
 
     email = prepare_message email_params

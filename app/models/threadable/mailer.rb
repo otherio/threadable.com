@@ -4,6 +4,8 @@ class Threadable::Mailer < ActionMailer::Base
     public :new
   end
 
+  layout 'email'
+
   def initialize(threadable)
     super()
     @threadable = threadable
@@ -12,7 +14,9 @@ class Threadable::Mailer < ActionMailer::Base
   attr_reader :threadable
 
   def generate method_name, *args
+    Haml::Template.options[:format] = :html4
     process(method_name, *args)
+    Haml::Template.options[:format] = :html5
     message
   end
 
