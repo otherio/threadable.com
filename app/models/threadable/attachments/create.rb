@@ -2,7 +2,7 @@ class Threadable::Attachments::Create < MethodObject
 
   def call attachments, attributes
     @attachments = attachments
-    @threadable     = attachments.threadable
+    @threadable  = attachments.threadable
     @attributes  = attributes
 
     @filename = @attributes.fetch(:filename)
