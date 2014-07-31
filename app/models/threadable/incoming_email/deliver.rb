@@ -32,7 +32,7 @@ class Threadable::IncomingEmail::Deliver < MethodObject
 
     1.upto(incoming_email.params.delete('attachment-count').to_i).map do |n|
       file = incoming_email.params.delete("attachment-#{n}")
-      content_id = content_ids["attachment-#{n}"]
+      content_id = content_ids["attachment-#{n}"].gsub(/[<>]/, '')
       incoming_email.attachments.create!(
         filename:   file.filename,
         mimetype:   file.mimetype,

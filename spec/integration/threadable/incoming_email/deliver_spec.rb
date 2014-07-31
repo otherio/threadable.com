@@ -35,7 +35,7 @@ describe Threadable::IncomingEmail::Deliver do
       ]
     end
 
-    let(:body_html) { '<img cid="<somegifcontentid>">' }
+    let(:body_html) { '<img src="cid:somegifcontentid">' }
 
     before do
       sign_in_as 'alice@ucsd.example.com'
