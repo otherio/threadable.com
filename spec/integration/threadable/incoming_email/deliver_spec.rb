@@ -14,6 +14,7 @@ describe Threadable::IncomingEmail::Deliver do
       in_reply_to:   in_reply_to,
       to:            to,
       attachments:   attachments,
+      message_id:    message_id,
     )
   end
   let(:incoming_email){ threadable.incoming_emails.create!(params).first }
@@ -25,6 +26,7 @@ describe Threadable::IncomingEmail::Deliver do
   let(:recipient)    { 'raceteam@localhost' }
   let(:to)           { 'UCSD Electric Racing <raceteam@localhost>' }
   let(:attachments)  { [] }
+  let(:message_id)   { nil }
 
   delegate :call, to: described_class
 
@@ -52,6 +54,16 @@ describe Threadable::IncomingEmail::Deliver do
       call incoming_email
       conversation.conversation_record.reload
       expect(incoming_email.attachments.all.first.inline?).to be_true
+    end
+
+    describe 'when receiving the message for the second time' do
+      let(:message_id) { conversation.messages.latest.message_id_header }
+
+      it 'does not save attachments' do
+        call incoming_email
+        conversation.conversation_record.reload
+        expect(incoming_email.attachments.all.length).to eq 0
+      end
     end
 
   end
