@@ -41,7 +41,7 @@ module FilepickerUploader
     raise UploadError, response if response.is_a? String
 
     head_response = HTTParty.head(response['url'])
-    upload_length = head_response.headers['content-length']
+    upload_length = head_response.headers['content-length'].to_i
     if upload_length != file.io.length
       raise UploadError, "Uploaded file #{response['url']} has content-length #{upload_length}, but original file was #{file.io.length} bytes"
     end
