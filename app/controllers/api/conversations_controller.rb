@@ -74,6 +74,11 @@ class Api::ConversationsController < ApiController
     render json: serialize(:conversations, conversation)
   end
 
+  def sync
+    conversation.sync_to_user organization.members.current_member
+    render json: serialize(:conversations, conversation)
+  end
+
   # patch /api/conversations/:id
   def update
     conversation_params = if conversation.task?

@@ -45,6 +45,12 @@ class Message < ActiveRecord::Base
 
   scope :by_created_at, ->{ order('messages.created_at DESC') }
 
+  scope :not_sent_to, ->(user_id){
+    user_id = Message.sanitize(user_id)
+    joins("LEFT JOIN sent_emails ON messages.id = sent_emails.message_id AND sent_emails.user_id = #{user_id}").
+    where('sent_emails.id IS NULL')
+  }
+
   before_create :touch_conversation_update_at
 
   validates_presence_of :conversation_id, :date_header, :message_id_header

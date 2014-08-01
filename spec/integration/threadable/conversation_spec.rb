@@ -69,6 +69,43 @@ describe Threadable::Conversation do
     end
   end
 
+  describe '#sync_to_user' do
+    let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
+    let(:organization) { conversation.organization }
+    let(:recipient) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+    let(:group) { conversation.groups.all.first }
+
+    context 'for a user who is a recipient' do
+      before do
+        group.members.add(recipient)
+      end
+
+      it 'sends all the emails to a user that have not yet been sent' do
+        conversation.sync_to_user recipient
+        drain_background_jobs!
+        expect(sent_emails.length).to eq 1
+      end
+    end
+
+    context 'for a user who is not a recipient' do
+      it 'does nothing' do
+        conversation.sync_to_user recipient
+        drain_background_jobs!
+        expect(sent_emails.length).to eq 0
+      end
+    end
+
+    context 'for a user who who has already received the emails' do
+      let(:recipient) { organization.members.find_by_email_address('bethany@ucsd.example.com') }
+
+      it 'does nothing' do
+        conversation.sync_to_user recipient
+        drain_background_jobs!
+        expect(sent_emails.length).to eq 0
+      end
+    end
+  end
+
   describe 'email addresses' do
     describe '#formatted_email_addresses' do
       context 'when the conversation is not a task' do

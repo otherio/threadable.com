@@ -31,6 +31,7 @@ Threadable::Application.routes.draw do
     end
     resources :conversations do
       get :search, on: :collection
+      post :sync, on: :collection
     end
     resources :tasks
     resources :messages

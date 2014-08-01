@@ -324,6 +324,24 @@ describe Api::ConversationsController do
       # end
     end
 
+    describe 'sync' do
+      let(:electronics) { raceteam.groups.find_by_slug('electronics') }
+
+      before do
+        electronics.members.add(raceteam.members.current_member)
+      end
+
+      it "syncs the conversation to the current user's inbox" do
+        xhr :post, :sync, format: :json, organization_id: raceteam.slug, id: 'parts-for-the-motor-controller'
+
+        conversation = threadable.conversations.find_by_slug('parts-for-the-motor-controller')
+        expect(conversation.messages.latest.sent_to? current_user).to be_true
+        drain_background_jobs!
+        expect(sent_emails.length).to eq 1
+        expect(response.status).to eq 200
+      end
+    end
+
     # patch /api/:organization_id/:id
     describe 'update' do
 

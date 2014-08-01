@@ -94,6 +94,13 @@ class Threadable::Conversation < Threadable::Model
   end
   alias_method :muted_by, :muted_by?
 
+  def sync_to_user recipient
+    raise Threadable::AuthorizationError, "You must be a recipient of a conversation to sync it" unless recipients.include? recipient
+    messages.not_sent_to(recipient).each do |message|
+      message.send_email_for! recipient
+    end
+  end
+
   def trash!
     return if trashed?
     Threadable.transaction do
