@@ -61,8 +61,21 @@
         <span class="uk-float-right">
           <input type="submit" class="uk-button uk-button-primary" value="Add member & send welcome message"></input>
         </span>
-
       </fieldset>
     </form>
   </div>
+
+  <div class="well-when-not-small auto-add-groups">
+    <p class="title">
+      New members are added to these groups:
+    </p>
+    <p class="badges">
+      {{#each group in autoJoinGroups}}
+        <span class="badge" {{bind-attr style="group.badgeStyle"}}>
+          {{group.name}}
+        </span>
+      {{/each}}
+    </p>
+  </div>
+
 </div>

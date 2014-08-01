@@ -3,6 +3,10 @@ Threadable.AddOrganizationMemberController = Ember.ObjectController.extend(Threa
 
   organization: Ember.computed.alias('controllers.organization'),
 
+  autoJoinGroups: function() {
+    return this.get('organization.groups').filterBy('autoJoin', true);
+  }.property('organization.groups'),
+
   actions: {
     addMember: function() {
       var member = this.get('content');
