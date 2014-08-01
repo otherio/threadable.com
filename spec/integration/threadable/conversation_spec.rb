@@ -88,10 +88,8 @@ describe Threadable::Conversation do
     end
 
     context 'for a user who is not a recipient' do
-      it 'does nothing' do
-        conversation.sync_to_user recipient
-        drain_background_jobs!
-        expect(sent_emails.length).to eq 0
+      it 'raises an error' do
+        expect { conversation.sync_to_user recipient }.to raise_error Threadable::AuthorizationError, "You must be a recipient of a conversation to sync it"
       end
     end
 
