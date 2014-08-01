@@ -4,6 +4,13 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
 
   showDoerSelector: false,
 
+  totalMessages: 5,
+  sentMessages: 3,
+
+  messagesToSync: function() {
+    return this.get('totalMessages') != this.get('sentMessages');
+  }.property('totalMessages', 'sentMessages'),
+
   unselectedGroups: function() {
     var groups = Ember.ArrayProxy.create({content:[]});
     groups.addObjects(this.get('organization.groups'));
