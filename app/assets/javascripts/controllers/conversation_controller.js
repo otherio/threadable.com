@@ -4,8 +4,19 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
 
   showDoerSelector: false,
 
-  totalMessages: 5,
-  sentMessages: 3,
+  messages: function() {
+    return this.get('events').filter(function(event) {
+      return event.get('message');
+    }).mapBy('message');
+  }.property('events.@each'),
+
+  totalMessages: function() {
+    return this.get('messages').length;
+  }.property('messages.@each'),
+
+  sentMessages: function() {
+    return this.get('messages').filterBy('sentToYou', true).length;
+  }.property('messages.@each'),
 
   messagesToSync: function() {
     return this.get('totalMessages') != this.get('sentMessages');

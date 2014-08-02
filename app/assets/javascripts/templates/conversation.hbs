@@ -82,8 +82,16 @@
           <i class="uk-icon-trash-o"></i> delete
         </a>
       {{/if}}
-
     </div>
+
+    {{#if messagesToSync}}
+      <div class='sync-warning well-when-not-small'>
+        You've been sent {{sentMessages}} of {{totalMessages}} messages in this conversation.
+        <a href="" {{action syncToInbox}} class="uk-button"}}>
+          Sync to Inbox
+        </a>
+      </div>
+    {{/if}}
 
     {{#if events}}
       <ul class="messages">
