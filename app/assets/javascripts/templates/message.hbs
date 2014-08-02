@@ -5,6 +5,11 @@
   </div>
   <h2 class="sender_name">{{senderName}}</h2>
   <span class="date">{{date dateHeader}}</span>
+  {{#unless sentToYou}}
+    <span class="not-sent-to-you">
+      <i class="uk-icon-exclamation"><span class="sr-only">Not sent to you</span></i> <i class="uk-icon-envelope"></i>
+    </span>
+  {{/unless}}
 </div>
 
 <div {{bind-attr class=":body :stripped view.showQuotedText:uk-hidden html::text-only"}}>{{{bodyStrippedWithAttachmentsInline}}}</div>
