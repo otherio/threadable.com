@@ -5,10 +5,15 @@ describe EventsSerializer do
   let(:raceteam)      { threadable.organizations.find_by_slug!('raceteam') }
   let(:sfhealth)      { threadable.organizations.find_by_slug!('sfhealth') }
   let(:conversation)  { raceteam.conversations.find_by_slug!('get-a-new-soldering-iron') }
-  let(:message_event) { conversation.events.with_messages.find { |e| e.event_type == :created_message} }
+  let(:user)          { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
+  let(:message_event) { conversation.events.with_messages(user).find { |e| e.event_type == :created_message} }
   let(:message)       { message_event.message }
-  let(:event)         { conversation.events.with_messages.find { |e| e.event_type == :task_added_doer} }
-  let(:group_event)   { conversation.events.with_messages.find { |e| e.event_type == :conversation_added_group} }
+  let(:event)         { conversation.events.with_messages(user).find { |e| e.event_type == :task_added_doer} }
+  let(:group_event)   { conversation.events.with_messages(user).find { |e| e.event_type == :conversation_added_group} }
+
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
 
   context 'when given a single message record' do
     let(:payload){ message_event }

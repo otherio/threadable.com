@@ -20,6 +20,7 @@ Threadable.Message = RL.Model.extend({
   knowledge:        RL.attr('string'),
   createdAt:        RL.attr('date'),
   sentAt:           RL.attr('date'),
+  sentToYou:        RL.attr('boolean'),
   parentMessageId:  RL.attr('number'),
   avatarUrl:        RL.attr('string'),
   senderName:       RL.attr('string'),

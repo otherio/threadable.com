@@ -17,9 +17,9 @@ class Threadable::Conversation::Events < Threadable::Events
     super event_type, attributes
   end
 
-  def with_messages
+  def with_messages user
     events = all
-    messages = conversation.messages.all_with_creator_and_attachments
+    messages = conversation.messages.all_for_conversation_events(user)
 
     message_events = messages.map do |message|
       MessageEvent.new(message)

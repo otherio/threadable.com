@@ -20,6 +20,7 @@ class MessagesSerializer < Serializer
       knowledge:         message.knowledge?,
       created_at:        message.created_at,
       sent_at:           message.sent_at,
+      sent_to_you:       message.sent_to?(current_user),
 
       parent_message_id: message.parent_message_id,
 
