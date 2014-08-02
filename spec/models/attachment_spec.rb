@@ -31,7 +31,7 @@ describe Attachment, fixtures: false do
 
   describe "#content" do
     it "should call HTTParty.get(url)" do
-      expect(HTTParty).to receive(:get).once.with(attributes[:url]).and_return("FAKE CONTENT")
+      expect(HTTParty).to receive(:get).once.with(attributes[:url], parser: Attachment::FakeParser).and_return("FAKE CONTENT")
       expect(attachment.content).to eq "FAKE CONTENT"
       expect(attachment.content).to eq "FAKE CONTENT"
     end
