@@ -25,7 +25,7 @@ describe Api::EventsController do
           it "renders all the messages and events of the given conversation as json" do
             xhr :get, :index, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug
             expect(response).to be_ok
-            expect(response.body).to eq serialize(:events, conversation.events.with_messages).to_json
+            expect(response.body).to eq serialize(:events, conversation.events.with_messages(current_user)).to_json
           end
         end
         context 'of an organization that the current user is not in' do
