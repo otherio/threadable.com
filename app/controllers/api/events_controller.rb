@@ -2,7 +2,7 @@ class Api::EventsController < ApiController
 
   # get /api/events
   def index
-    render json: serialize(:events, conversation.events.with_messages)
+    render json: serialize(:events, conversation.events.with_messages(current_user))
   end
 
   private

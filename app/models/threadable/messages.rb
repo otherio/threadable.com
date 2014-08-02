@@ -4,8 +4,12 @@ class Threadable::Messages < Threadable::Collection
     messages_for scope.to_a
   end
 
-  def all_with_creator_and_attachments
-    messages_for scope.includes(:creator, :attachments).to_a
+  def all_for_conversation_events user
+    user_id = ::Message.sanitize(user.id)
+    messages_for scope.
+      eager_load(:creator, :attachments).
+      joins("LEFT OUTER JOIN sent_emails ON messages.id = sent_emails.message_id and sent_emails.user_id = #{user_id}").
+      to_a
   end
 
   def not_sent_to user
