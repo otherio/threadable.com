@@ -38,7 +38,7 @@ class Threadable::IncomingEmail::Deliver < MethodObject
         mimetype:   file.mimetype,
         content:    file.read,
         content_id: content_id,
-        inline:     content_id.present? && body_html.include?(content_id.gsub(/[<>]/, ''))
+        inline:     content_id.present? && body_html.present? && body_html.include?(content_id.gsub(/[<>]/, ''))
       )
     end
   end
