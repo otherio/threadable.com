@@ -145,6 +145,22 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
       conversation.saveRecord().then(function(response) {
         conversation.loadEvents(true);
       }.bind(this));
+    },
+    syncToInbox: function() {
+      this.set('error', null);
+      var conversation = this.get('content');
+
+      $.ajax({
+        type: "POST",
+        url: "/api/conversations/" + this.get('slug') + "/sync",
+        data: { organization_id: this.get('organization.slug')}
+      }).success(function(response) {
+        conversation.deserialize(response.conversation);
+        conversation.loadEvents(true);
+      }.bind(this)).error(function(response) {
+        var error = response && JSON.parse(response.responseText).error || 'an unknown error occurred';
+        this.set('error', error);
+      }.bind(this));
     }
   }
 });
