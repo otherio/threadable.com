@@ -6,8 +6,9 @@
   <h2 class="sender_name">{{senderName}}</h2>
   <span class="date">{{date dateHeader}}</span>
   {{#unless sentToYou}}
-    <span class="not-sent-to-you">
-      <i class="uk-icon-exclamation"><span class="sr-only">Not sent to you</span></i> <i class="uk-icon-envelope"></i>
+    <span class="not-sent-to-you" data-uk-tooltip title="Not sent to you">
+      <i class="uk-icon-exclamation"><span class="sr-only">Not sent to you</span></i>
+      <i class="uk-icon-envelope"></i>
     </span>
   {{/unless}}
 </div>
@@ -22,7 +23,7 @@
 
 {{#if attachments}}
 <ul class="attachments uk-clearfix">
-  {{#each attachment in attachments}}
+  {{#each attachment in nonInlineAttachments}}
     <a {{bind-attr href="attachment.url"}} target="_new">
     <li class="attachment">
       <i class="uk-icon-file file-thumbnail"></i>
