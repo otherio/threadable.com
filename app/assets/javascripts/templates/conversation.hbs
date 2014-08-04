@@ -15,10 +15,10 @@
 
     <div class="convert-type-control uk-float-right">
       <div class="uk-button-group">
-        <a href="" {{action convertToTask}} {{bind-attr class=":convert-to-task :uk-button isTask:uk-active"}}>
+        <a href="" {{action convertToTask}} {{bind-attr class=":convert-to-task :uk-button isTask:uk-active"}} data-uk-tooltip title="Convert to task">
           <i class="uk-icon-check"><span class="sr-only">Convert to Task</span></i>
         </a>
-        <a href="" {{action convertToConversation}} {{bind-attr class=":convert-to-conversation :uk-button isTask::uk-active"}}>
+        <a href="" {{action convertToConversation}} {{bind-attr class=":convert-to-conversation :uk-button isTask::uk-active"}} data-uk-tooltip title="Convert to conversation">
           <i class="uk-icon-comment-o"><span class="sr-only">Convert to Conversation</span></i>
         </a>
       </div>

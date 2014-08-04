@@ -47,6 +47,9 @@ Threadable.Message = RL.Model.extend({
     return Threadable.replaceAttachmentContentIdsWithAttachmentUrls(this.get('bodyStripped'), this.get('attachments'));
   }.property('attachments', 'bodyStripped'),
 
+  nonInlineAttachments: function() {
+    return this.get('attachments').filterBy('inline', false);
+  }.property('attachments')
 });
 
 Threadable.replaceAttachmentContentIdsWithAttachmentUrls = function(body, attachments) {
