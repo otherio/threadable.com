@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Threadable::Conversation do
 
-  let(:conversation){ threadable.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
+  let(:organization) { threadable.organizations.find_by_slug('raceteam') }
+  let(:conversation){ organization.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
   subject{ conversation }
 
   let(:primary_group_conversation  ) { 'welcome-to-our-threadable-organization' }
@@ -14,7 +15,7 @@ describe Threadable::Conversation do
 
   describe '#mute!' do
     context 'when signed in' do
-      before{ threadable.current_user_id = conversation.organization.members.who_get_email.first.id }
+      before{ threadable.current_user_id = organization.members.who_get_email.first.id }
       it 'adds the current user to the conversation muters' do
         expect(conversation.recipients).to include threadable.current_user
         expect(conversation.mute!).to eq conversation
@@ -31,7 +32,7 @@ describe Threadable::Conversation do
 
   describe '#unmute!' do
     context 'when signed in' do
-      before{ threadable.current_user_id = conversation.organization.members.who_get_email.first.id }
+      before{ threadable.current_user_id = organization.members.who_get_email.first.id }
       it 'removes the current user from the muters' do
         conversation.mute!
         expect(conversation.recipients).to_not include threadable.current_user
@@ -53,7 +54,7 @@ describe Threadable::Conversation do
 
   describe '#muted?' do
     context 'when signed in' do
-      before{ threadable.current_user_id = conversation.organization.members.who_get_email.first.id }
+      before{ threadable.current_user_id = organization.members.who_get_email.first.id }
       it 'checks the muted state of the conversation' do
         expect(conversation.muted?).to be_false
         conversation.mute!
@@ -69,9 +70,70 @@ describe Threadable::Conversation do
     end
   end
 
+  describe 'following a conversation' do
+    let(:conversation){ organization.conversations.find_by_slug!(single_group_conversation) }
+    let(:user) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+    describe '#follow!' do
+      context 'when signed in' do
+        before{ threadable.current_user_id = user.id }
+        it 'adds the current user to the conversation followrs' do
+          expect(conversation.recipients).to_not include threadable.current_user
+          expect(conversation.follow!).to eq conversation
+          expect(conversation.recipients).to include threadable.current_user
+        end
+      end
+      context 'when not signed in' do
+        before{ threadable.current_user_id = nil }
+        it 'raises an ArgumentError' do
+          expect{ conversation.follow! }.to raise_error ArgumentError
+        end
+      end
+    end
+
+    describe '#unfollow!' do
+      context 'when signed in' do
+        before{ threadable.current_user_id = user.id }
+        it 'removes the current user from the followrs' do
+          conversation.follow!
+          expect(conversation.recipients).to include threadable.current_user
+          expect(conversation.unfollow!).to eq conversation
+          expect(conversation.recipients).to_not include threadable.current_user
+        end
+        it 'still works when the conversation was not followed' do
+          expect(conversation.unfollow!).to eq conversation
+          expect(conversation.recipients).to_not include threadable.current_user
+        end
+      end
+      context 'when not signed in' do
+        before{ threadable.current_user_id = nil }
+        it 'raises an ArgumentError' do
+          expect{ conversation.follow! }.to raise_error ArgumentError
+        end
+      end
+    end
+
+    describe '#followed?' do
+      context 'when signed in' do
+        before{ threadable.current_user_id = user.id }
+        it 'checks the followed state of the conversation' do
+          expect(conversation.followed?).to be_false
+          conversation.follow!
+          expect(conversation.followed?).to be_true
+        end
+      end
+
+      context 'when not signed in' do
+        before{ threadable.current_user_id = nil }
+        it 'raises an ArgumentError' do
+          expect{ conversation.muted? }.to raise_error ArgumentError
+        end
+      end
+    end
+  end
+
   describe '#sync_to_user' do
     let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
-    let(:organization) { conversation.organization }
     let(:recipient) { organization.members.find_by_email_address('alice@ucsd.example.com') }
     let(:group) { conversation.groups.all.first }
 

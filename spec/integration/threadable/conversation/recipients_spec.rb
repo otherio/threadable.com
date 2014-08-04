@@ -29,6 +29,30 @@ describe Threadable::Conversation::Recipients do
 
     end
 
+    context 'when the conversation has a follower' do
+      let(:conversation) { threadable.conversations.find_by_slug!('parts-for-the-motor-controller') }
+      let(:user) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+      before do
+        conversation.follow_for user
+      end
+
+      it 'includes the follower' do
+        expected_recipients = ["alice-neilson", "tom-canver", "bethany-pattern"]
+        expect( recipients.all.map(&:slug) ).to match_array expected_recipients
+      end
+
+      context 'when the follower has unsubscribed' do
+        let(:user) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
+
+        it 'does not include the follower' do
+          expected_recipients = ["tom-canver", "bethany-pattern"]
+          expect( recipients.all.map(&:slug) ).to match_array expected_recipients
+        end
+      end
+
+    end
+
   end
 
 end

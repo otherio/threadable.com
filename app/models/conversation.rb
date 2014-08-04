@@ -6,6 +6,7 @@ class Conversation < ActiveRecord::Base
   has_many :events, -> { order "created_at" }, dependent: :destroy
   has_many :participants, ->{ uniq }, through: :messages, source: :creator
   has_and_belongs_to_many :muters, class_name: 'User', join_table: 'conversations_muters'
+  has_and_belongs_to_many :followers, class_name: 'User', join_table: 'conversations_followers'
   has_many :conversation_groups, dependent: :destroy
   has_many :groups, ->{ where(conversation_groups: {active: true}) }, through: :conversation_groups, counter_cache: false
   has_many :groups_with_inactive, through: :conversation_groups, source: :group
@@ -13,6 +14,7 @@ class Conversation < ActiveRecord::Base
   serialize :participant_names_cache, Array
   serialize :group_ids_cache, Array
   serialize :muter_ids_cache, Array
+  serialize :follower_ids_cache, Array
 
   default_scope { order('conversations.updated_at DESC') }
 
@@ -29,6 +31,15 @@ class Conversation < ActiveRecord::Base
   scope :not_muted_by, ->(user_id){
     user_id = Conversation.sanitize(user_id)
     joins("LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id AND m.user_id = #{user_id}").where('m.user_id IS NULL')
+  }
+
+  scope :followed_by, ->(user_id){
+    joins('LEFT JOIN conversations_followers f ON f.conversation_id = conversations.id').where('f.user_id = ?', user_id)
+  }
+
+  scope :not_followed_by, ->(user_id){
+    user_id = Conversation.sanitize(user_id)
+    joins("LEFT JOIN conversations_followers f ON f.conversation_id = conversations.id AND f.user_id = #{user_id}").where('f.user_id IS NULL')
   }
 
   scope :for_user, ->(user_id){

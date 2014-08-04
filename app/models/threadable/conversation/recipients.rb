@@ -42,7 +42,7 @@ class Threadable::Conversation::Recipients
 
     groups = conversation.groups.all
 
-    recipients = recipients.in_groups_without_summary(groups.map(&:id))
+    recipients = recipients.in_groups_without_summary_including_followers(conversation.id, groups.map(&:id))
 
     recipients
   end

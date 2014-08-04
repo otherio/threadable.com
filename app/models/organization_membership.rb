@@ -26,10 +26,13 @@ class OrganizationMembership < ActiveRecord::Base
     where('m.user_id IS NULL')
   }
 
-  scope :in_groups_without_summary, ->(group_ids){
+  scope :in_groups_without_summary_including_followers, ->(conversation_ids, group_ids){
     group_ids = Array(group_ids).map(&:to_i).join(',')
-    joins("INNER JOIN group_memberships ON group_memberships.group_id in (#{group_ids})").
-    where("group_memberships.user_id = organization_memberships.user_id AND group_memberships.summary = 'f'")
+    conversation_ids = Array(conversation_ids).map(&:to_i).join(',')
+
+    joins("LEFT JOIN group_memberships ON group_memberships.group_id in (#{group_ids})").
+    joins("LEFT JOIN conversations_followers f ON f.user_id = organization_memberships.user_id AND f.conversation_id in (#{conversation_ids})").
+    where("(group_memberships.user_id = organization_memberships.user_id AND group_memberships.summary = 'f') OR f.user_id IS NOT NULL")
   }
 
   ROLES.each do |role|

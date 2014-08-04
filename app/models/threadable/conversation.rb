@@ -52,47 +52,95 @@ class Threadable::Conversation < Threadable::Model
     conversation_record.muter_ids_cache
   end
 
+  def follower_ids
+    conversation_record.follower_ids_cache
+  end
+
   def mute_for user
-    if conversation_record.muters.exclude? user.user_record
+    unless muted_by? user
       Threadable.transaction do
         conversation_record.muters << user.user_record
-        update_muter_ids_cache!
+        unfollow_for user, false
+        update_muter_follower_caches!
       end
     end
     self
   end
 
-  def unmute_for user
-    if conversation_record.muters.include? user.user_record
+  def unmute_for user, update_caches = true
+    if muted_by? user
       Threadable.transaction do
         conversation_record.muters.delete user.user_record
-        update_muter_ids_cache!
+        update_muter_follower_caches! if update_caches
+      end
+    end
+    self
+  end
+
+  def follow_for user
+    unless followed_by? user
+      Threadable.transaction do
+        conversation_record.followers << user.user_record
+        unmute_for user, false
+        update_muter_follower_caches!
+      end
+    end
+    self
+  end
+
+  def unfollow_for user, update_caches = true
+    if followed_by? user
+      Threadable.transaction do
+        conversation_record.followers.delete user.user_record
+        update_muter_follower_caches! if update_caches
       end
     end
     self
   end
 
   def mute!
-    raise ArgumentError, "threadable.current_user is nil" if threadable.current_user.nil?
+    ensure_current_user
     mute_for threadable.current_user
     self
   end
 
   def unmute!
-    raise ArgumentError, "threadable.current_user is nil" if threadable.current_user.nil?
+    ensure_current_user
     unmute_for threadable.current_user
     self
   end
 
   def muted?
-    raise ArgumentError, "threadable.current_user is nil" if threadable.current_user.nil?
+    ensure_current_user
     muted_by? threadable.current_user
+  end
+
+  def follow!
+    ensure_current_user
+    follow_for threadable.current_user
+    self
+  end
+
+  def unfollow!
+    ensure_current_user
+    unfollow_for threadable.current_user
+    self
+  end
+
+  def followed?
+    ensure_current_user
+    followed_by? threadable.current_user
   end
 
   def muted_by? user
     muter_ids.include?(user.user_id)
   end
   alias_method :muted_by, :muted_by?
+
+  def followed_by? user
+    follower_ids.include?(user.user_id)
+  end
+  alias_method :followed_by, :followed_by?
 
   def sync_to_user recipient
     raise Threadable::AuthorizationError, "You must be a recipient of a conversation to sync it" unless recipients.include? recipient
@@ -229,8 +277,9 @@ class Threadable::Conversation < Threadable::Model
 
   # cache methods
 
-  def update_muter_ids_cache!
+  def update_muter_follower_caches!
     update(muter_ids_cache: conversation_record.muters.map(&:id))
+    update(follower_ids_cache: conversation_record.followers.map(&:id))
   end
 
   def update_group_caches! group_ids=nil
@@ -270,4 +319,9 @@ class Threadable::Conversation < Threadable::Model
     %(#<#{self.class} conversation_id: #{id.inspect}>)
   end
 
+  private
+
+  def ensure_current_user
+    raise ArgumentError, "threadable.current_user is nil" if threadable.current_user.nil?
+  end
 end

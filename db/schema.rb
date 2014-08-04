@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140804203536) do
+ActiveRecord::Schema.define(version: 20140804221600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,12 +77,21 @@ ActiveRecord::Schema.define(version: 20140804203536) do
     t.datetime "last_message_at",         default: "now()"
     t.integer  "groups_count",            default: 0
     t.datetime "trashed_at"
+    t.text     "follower_ids_cache"
   end
 
   add_index "conversations", ["organization_id", "slug"], name: "index_conversations_on_organization_id_and_slug", unique: true, using: :btree
   add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
   add_index "conversations", ["slug"], name: "index_conversations_on_slug", using: :btree
   add_index "conversations", ["trashed_at"], name: "index_conversations_on_trashed_at", using: :btree
+
+  create_table "conversations_followers", id: false, force: true do |t|
+    t.integer "conversation_id"
+    t.integer "user_id"
+  end
+
+  add_index "conversations_followers", ["conversation_id", "user_id"], name: "index_conversations_followers_on_conversation_id_and_user_id", unique: true, using: :btree
+  add_index "conversations_followers", ["conversation_id"], name: "index_conversations_followers_on_conversation_id", using: :btree
 
   create_table "conversations_muters", id: false, force: true do |t|
     t.integer "conversation_id"
