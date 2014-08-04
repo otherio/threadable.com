@@ -129,7 +129,7 @@ describe MessagesSerializer do
           knowledge:         false,
           created_at:        message2.created_at,
           sent_at:           message2.sent_at,
-          sent_to_you:       false,
+          sent_to_you:       true,
 
           avatar_url:        '/fixture_images/alice.jpg',
           sender_name:       'Alice Neilson',
