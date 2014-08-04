@@ -108,11 +108,14 @@ class Threadable::Message < Threadable::Model
     # we do not stick jobs in redis right away for transactions that later fail.
     #
     # We need the below code below to also run outside of a transaction so that `sent_to! recipient`
-    # (which reactes a row in the sent_emails table) throws an ActiveRecord::RecordNotUnique error
+    # (which creates a row in the sent_emails table) throws an ActiveRecord::RecordNotUnique error
     # preventing us from trying to send the same email twice.
     Threadable.after_transaction do
       recipients.all.each do |recipient|
-        next if !send_to_creator && recipient.same_user?(creator)
+        if !send_to_creator && recipient.same_user?(creator)
+          sent_to! recipient
+          next
+        end
         send_for_recipient recipient
       end
     end
@@ -134,10 +137,15 @@ class Threadable::Message < Threadable::Model
   end
 
   def sent_to! recipient
-    message_record.sent_emails.create!(
-      user_id: recipient.user_id,
-      email_address_id: recipient.email_addresses.primary.id,
-    )
+    begin
+      message_record.sent_emails.create!(
+        user_id: recipient.user_id,
+        email_address_id: recipient.email_addresses.primary.id,
+      )
+    rescue ActiveRecord::RecordNotUnique
+      return false
+    end
+    true
   end
 
   def not_sent_to! recipient
@@ -178,11 +186,7 @@ class Threadable::Message < Threadable::Model
   private
 
   def send_for_recipient recipient
-    begin
-      sent_to! recipient
-    rescue ActiveRecord::RecordNotUnique
-      return
-    end
+    return unless sent_to! recipient
     threadable.emails.send_email_async(:conversation_message, conversation.organization.id, id, recipient.id)
   end
 end

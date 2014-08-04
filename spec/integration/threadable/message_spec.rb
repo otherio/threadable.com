@@ -63,4 +63,17 @@ describe Threadable::Message do
     end
   end
 
+  describe '#send_emails!' do
+    it 'sends emails to everyone when send_to_creator is true' do
+      expect(message).to receive(:send_for_recipient).exactly(message.recipients.all.length).times
+      message.send_emails!(true)
+    end
+
+    it 'skips the creator when send_to_creator is false, but still makes the sent_emails record' do
+      expect(message).to receive(:send_for_recipient).exactly(message.recipients.all.length - 1).times
+      message.send_emails!(false)
+      expect(message.sent_to?(message.creator)).to be_true
+    end
+  end
+
 end
