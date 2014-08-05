@@ -32,6 +32,7 @@ Threadable::Application.routes.draw do
     resources :conversations do
       get :search, on: :collection
       member do
+        get  :details
         post :sync
       end
     end

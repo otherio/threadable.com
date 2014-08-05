@@ -13,7 +13,7 @@ Threadable.Event = RL.Model.extend({
 });
 
 Threadable.RESTAdapter.map("Threadable.Event", {
-  primaryKey: "slug"
+  primaryKey: "id"
 });
 
 Threadable.Event.reopen(Threadable.AddOrganizationIdToRequestsMixin);

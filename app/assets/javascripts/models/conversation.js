@@ -34,6 +34,13 @@ Threadable.Conversation = RL.Model.extend({
     });
   }),
 
+  loadDetails: RL.loadAssociationMethod('details', function(conversation){
+    return Threadable.ConversationDetails.fetch({
+      organization_id: conversation.get('organizationSlug'),
+      conversation_id: conversation.get('slug')
+    });
+  }),
+
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;
   }.property('numberOfMessages'),

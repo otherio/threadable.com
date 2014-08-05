@@ -308,20 +308,33 @@ describe Api::ConversationsController do
 
     # get /api/:organization_id/:id
     describe 'show' do
-      # context 'when given a valid organization id' do
-      #   it "should render the current users's organizations as json" do
-      #     xhr :get, :show, format: :json, id: raceteam.id
-      #     expect(response).to be_ok
-      #     expect(response.body).to eq Api::OrganizationsSerializer[raceteam].to_json
-      #   end
-      # end
-      # context 'when given an invalid organization id' do
-      #   it "should render the current users's organizations as json" do
-      #     xhr :get, :show, format: :json, id: 32843874832
-      #     expect(response.status).to eq 404
-      #     expect(response.body).to eq '{"error":"Unauthorized"}'
-      #   end
-      # end
+      let(:conversation) { raceteam.conversations.find_by_slug('layup-body-carbon')}
+
+      context 'when given a valid conversation id' do
+        it "should render the conversation as json" do
+          xhr :get, :show, format: :json, id: conversation.slug, organization_id: raceteam.slug
+          expect(response).to be_ok
+          expect(response.body).to eq serialize(:conversations, conversation).to_json
+        end
+      end
+      context 'when given an invalid conversation id' do
+        it "throws an error" do
+          xhr :get, :show, format: :json, id: 32843874832, organization_id: raceteam.slug
+          expect(response.status).to eq 404
+          expect(response.body).to eq '{"error":"unable to find Conversation with slug \"32843874832\""}'
+        end
+      end
+    end
+
+    # get /api/:organization_id/:id
+    describe 'details' do
+      let(:conversation) { raceteam.conversations.find_by_slug('layup-body-carbon')}
+
+      it "renders the conversation details as json" do
+        xhr :get, :details, format: :json, id: conversation.slug, organization_id: raceteam.slug
+        expect(response).to be_ok
+        expect(response.body).to eq serialize(:conversation_details, conversation).to_json
+      end
     end
 
     describe 'sync' do
