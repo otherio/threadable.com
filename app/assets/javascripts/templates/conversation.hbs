@@ -64,13 +64,23 @@
         {{/if}}
       {{/if}}
 
-      <a href="" {{action 'toggleMuted'}}>
-        {{#if isMuted}}
-          <i class="uk-icon-volume-up"></i> unmute
-        {{else}}
-          <i class="uk-icon-volume-down"></i> mute
-        {{/if}}
-      </a>
+      {{#if currentUserIsInGroups}}
+        <a href="" {{action 'toggleMuted'}}>
+          {{#if isMuted}}
+            <i class="uk-icon-volume-up"></i> unmute
+          {{else}}
+            <i class="uk-icon-volume-down"></i> mute
+          {{/if}}
+        </a>
+      {{else}}
+        <a href="" {{action 'toggleFollowed'}}>
+          {{#if isFollowed}}
+            <i class="uk-icon-envelope-o"></i> unfollow
+          {{else}}
+            <i class="uk-icon-envelope"></i> follow
+          {{/if}}
+        </a>
+      {{/if}}
 
       {{#if isTrashed}}
         <a href="" class="trash" {{action 'unTrash'}}>

@@ -441,6 +441,17 @@ describe Api::ConversationsController do
         end
       end
 
+      context 'when given follow/unfollow' do
+        it 'follows and unfollows the conversation' do
+          xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'parts-for-the-motor-controller', conversation: {
+            followed: true
+          }
+          expect(response.status).to eq 200
+          conversation = raceteam.conversations.find_by_slug('parts-for-the-motor-controller')
+          expect(conversation.followed?).to be_true
+        end
+      end
+
       context 'when given trashed/untrashed' do
         it 'trashes and untrashes the conversation' do
           xhr :put, :update, format: :json, organization_id: raceteam.slug, id: 'layup-body-carbon', conversation: {

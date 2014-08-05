@@ -19,8 +19,9 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
   }.property('messages.@each'),
 
   messagesToSync: function() {
+    if(! this.get('currentUserIsARecipient')) return false;
     return this.get('totalMessages') != this.get('sentMessages');
-  }.property('totalMessages', 'sentMessages'),
+  }.property('totalMessages', 'sentMessages', 'currentUserIsARecipient'),
 
   unselectedGroups: function() {
     var groups = Ember.ArrayProxy.create({content:[]});
@@ -83,6 +84,11 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
     toggleMuted: function() {
       var conversation = this.get('content');
       conversation.set('muted', !conversation.get('muted'));
+      conversation.saveRecord();
+    },
+    toggleFollowed: function() {
+      var conversation = this.get('content');
+      conversation.set('followed', !conversation.get('followed'));
       conversation.saveRecord();
     },
     trash: function() {

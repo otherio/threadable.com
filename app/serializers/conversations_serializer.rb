@@ -20,6 +20,7 @@ class ConversationsSerializer < Serializer
       done:               conversation.task? ? conversation.done? : nil,
       position:           conversation.task? ? conversation.position : -1,
       muted:              conversation.muted?,
+      followed:           conversation.followed?,
       trashed_at:         conversation.trashed_at,
       trashed:            conversation.trashed?,
     }

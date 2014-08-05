@@ -35,6 +35,7 @@ describe ConversationsSerializer do
           done:               true,
           position:           layup_body_carbon.position,
           muted:              false,
+          followed:           false,
           trashed_at:         nil,
           trashed:            false,
         }.merge(serialize(:doers, layup_body_carbon.doers.all))
@@ -66,6 +67,7 @@ describe ConversationsSerializer do
           done:               nil,
           position:           -1,
           muted:              false,
+          followed:           false,
           trashed_at:         nil,
           trashed:            false,
         },{
@@ -87,6 +89,7 @@ describe ConversationsSerializer do
           done_at:            layup_body_carbon.done_at,
           position:           layup_body_carbon.position,
           muted:              false,
+          followed:           false,
           trashed_at:         nil,
           trashed:            false,
         }

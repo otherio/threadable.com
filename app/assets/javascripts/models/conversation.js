@@ -16,18 +16,16 @@ Threadable.Conversation = RL.Model.extend({
   doers:             RL.hasMany('Threadable.OrganizationMember'),
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
+  followed:          RL.attr('boolean'),
   trashed:           RL.attr('boolean'),
   trashedAt:         RL.attr('date'),
   position:          RL.attr('number'),
 
-  isTask:    Ember.computed.alias('task'),
-  isDone:    Ember.computed.alias('done'),
-  isMuted:   Ember.computed.alias('muted'),
-  isTrashed: Ember.computed.alias('trashed'),
-
-  hasMessages: function() {
-    return this.get('numberOfMessages') > 0;
-  }.property('numberOfMessages'),
+  isTask:     Ember.computed.alias('task'),
+  isDone:     Ember.computed.alias('done'),
+  isMuted:    Ember.computed.alias('muted'),
+  isFollowed: Ember.computed.alias('followed'),
+  isTrashed:  Ember.computed.alias('trashed'),
 
   loadEvents: RL.loadAssociationMethod('events', function(conversation){
     return Threadable.Event.fetch({
@@ -35,6 +33,10 @@ Threadable.Conversation = RL.Model.extend({
       conversation_id: conversation.get('slug')
     });
   }),
+
+  hasMessages: function() {
+    return this.get('numberOfMessages') > 0;
+  }.property('numberOfMessages'),
 
   participantNamesString: function() {
     return this.get('participantNames').join(', ');
@@ -50,7 +52,6 @@ Threadable.Conversation = RL.Model.extend({
     }).sortBy('name');
   }.property('groupIds','organization.groups'),
 
-
   myTask: function() {
     if (!this.get('isTask')) return false;
     var userId = Threadable.currentUser.get('userId');
@@ -59,6 +60,16 @@ Threadable.Conversation = RL.Model.extend({
     var userIds = doers.mapBy('userId');
     return userIds.indexOf(userId) !== -1;
   }.property('isTask', 'doers'),
+
+  currentUserIsInGroups: function() {
+    return !! this.get('groups').findBy('currentUserIsAMember', true);
+  }.property('groupIds'),
+
+  currentUserIsARecipient: function() {
+    if(this.get('isFollowed')) return true;
+    if(this.get('isMuted')) return false;
+    if(this.get('currentUserIsInGroups')) return true;
+  }.property('currentUserIsInGroups', 'isFollowed', 'isMuted')
 
 });
 
