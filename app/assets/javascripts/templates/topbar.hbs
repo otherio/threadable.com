@@ -3,8 +3,9 @@
     {{partial "topbar/organization"}}
   </div>
   <div class="task-controls uk-visible-small">
-    {{#if showComposing   }} {{partial "topbar/compose"     }} {{/if}}
-    {{#if showConversation}} {{partial "topbar/conversation"}} {{/if}}
-    {{#if showOrganization}} {{partial "topbar/organization"}} {{/if}}
+    {{#if showComposing         }} {{partial "topbar/compose"            }} {{/if}}
+    {{#if showConversation      }} {{partial "topbar/conversation"       }} {{/if}}
+    {{#if showConversationDetail}} {{partial "topbar/conversation_detail"}} {{/if}}
+    {{#if showOrganization      }} {{partial "topbar/organization"       }} {{/if}}
   </div>
 </nav>

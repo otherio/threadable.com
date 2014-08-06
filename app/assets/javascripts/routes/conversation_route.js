@@ -44,7 +44,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
     willTransition: function(transition) {
       this.controllerFor('doerSelector').set('doers', []);
 
-      if (! transition.targetName.match(/_details$/)) {
+      if (! transition.targetName.match(/_detail$/)) {
         this.controllerFor('organization').set('focus', 'conversations');
       }
 

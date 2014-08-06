@@ -58,9 +58,9 @@
     <div class="task-controls hidden-on-small-screens">
       {{#if task}}
         {{#if done}}
-          <a class="uk-float-right" href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i> mark as not done</a>
+          <a class="uk-float-right complete" href="" {{action 'toggleComplete'}}><i class="uk-icon-check-square"></i> mark as not done</a>
         {{else}}
-          <a class="uk-float-right" href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i> mark as done</a>
+          <a class="uk-float-right complete" href="" {{action 'toggleComplete'}}><i class="uk-icon-check"></i> mark as done</a>
         {{/if}}
       {{/if}}
 
@@ -83,21 +83,19 @@
       {{/if}}
 
       {{#if isTrashed}}
-        <a href="" class="trash" {{action 'unTrash'}}>
+        <a href="" {{action 'unTrash'}}>
           <i class="uk-icon-exclamation-triangle"></i> undelete
         </a>
         (deleted {{date trashedAt}})
       {{else}}
-        <a href="" class="trash" {{action 'trash'}}>
+        <a href="" {{action 'trash'}}>
           <i class="uk-icon-trash-o"></i> delete
         </a>
       {{/if}}
 
-      <!--
-      {{#link-to conversationDetailsRoute organizationSlug groupSlug slug class="info"}}
+      {{#link-to conversationDetailRoute organizationSlug groupSlug slug}}
         <i class="uk-icon-info-circle"></i> more info
       {{/link-to}}
-      -->
     </div>
 
     {{#if messagesToSync}}

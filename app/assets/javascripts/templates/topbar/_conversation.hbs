@@ -13,12 +13,18 @@
     {{/if}}
     <a href="" {{action 'toggleDoerSelector'}}><i class="uk-icon-user"><span class="sr-only">Doers</span></i></a>
   {{/if}}
+
   {{#if conversation}}
+    {{#link-to conversationDetailRoute organizationSlug groupSlug conversation.slug}}
+      <i class="uk-icon-info-circle"><span class="sr-only">more info</span></i>
+    {{/link-to}}
+
     {{#if conversation.isMuted}}
       <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-up"><span class="sr-only">Unmute</span></i></a>
     {{else}}
       <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-down"><span class="sr-only">Mute</span></i></a>
     {{/if}}
+
     {{#if conversation.isTrashed}}
       <a href="" {{action 'unTrash'}}>
         <i class="uk-icon-undo"><span class="sr-only">Undelete</span></i>

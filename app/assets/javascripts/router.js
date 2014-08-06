@@ -41,9 +41,11 @@ Threadable.Router.map(function() {
   this.route("not_found", { path: "*path"});
 
   function conversationRoutes(scope, param) {
-    this.resource(scope, {path: '/:conversation'}, function() {
-      this.resource(scope+'_details', {path: '/details'});
+    this.resource(scope+'_details', {path: '/details'}, function(){
+      this.resource(scope+'_detail', {path: '/:conversation'});
     });
+
+    this.resource(scope, {path: '/:conversation'});
     this.resource('compose_'+scope, {path: '/compose'});
   }
 

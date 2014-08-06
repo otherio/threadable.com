@@ -1,5 +1,5 @@
 //= require ../conversation_details_route
 
-Threadable.DoingTaskDetailsRoute = Threadable.ComposeRoute.extend({
-
+Threadable.DoingTaskDetailRoute = Threadable.ConversationDetailRoute.extend({
+  modelType: 'task'
 });

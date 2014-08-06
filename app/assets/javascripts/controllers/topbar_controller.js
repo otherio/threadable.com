@@ -8,6 +8,7 @@ Threadable.TopbarController = Ember.Controller.extend(Threadable.CurrentUserMixi
 
   group: null,
   composing: false,
+  conversationDetail: false,
 
   showingConversationsListControls: false,
 
@@ -25,12 +26,16 @@ Threadable.TopbarController = Ember.Controller.extend(Threadable.CurrentUserMixi
   }.property('composing', 'focus'),
 
   showConversation: function() {
-    return !this.get('composing') && this.get('focus') == 'conversation';
-  }.property('composing', 'focus'),
+    return !this.get('composing') && !this.get('conversationDetail') && this.get('focus') == 'conversation';
+  }.property('composing', 'conversationDetail', 'focus'),
+
+  showConversationDetail: function() {
+    return !this.get('composing') && this.get('conversationDetail') && this.get('focus') == 'conversation';
+  }.property('composing', 'conversationDetail', 'focus'),
 
   showOrganization: function() {
-    return !this.get('showComposing') && !this.get('showConversation');
-  }.property('showComposing', 'showConversation'),
+    return !this.get('showComposing') && !this.get('showConversationDetail') && !this.get('showConversation');
+  }.property('showComposing', 'showConversationDetail', 'showConversation'),
 
   actions: {
     openSidebar: function() {
