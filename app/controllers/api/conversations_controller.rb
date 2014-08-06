@@ -74,11 +74,6 @@ class Api::ConversationsController < ApiController
     render json: serialize(:conversations, conversation)
   end
 
-  # get /api/conversations/:id/details
-  def details
-    render json: serialize(:conversation_details, conversation)
-  end
-
   # post /api/conversations/:id/sync
   def sync
     conversation.sync_to_user organization.members.current_member

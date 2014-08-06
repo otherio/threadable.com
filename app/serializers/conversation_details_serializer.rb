@@ -3,6 +3,7 @@ class ConversationDetailsSerializer < Serializer
     {
       id:                 conversation.id,
       slug:               conversation.slug,
+      organization_slug:  conversation.organization.slug,
       recipient_ids:      conversation.recipients.all.map(&:id),
       muter_ids:          conversation.muter_ids,
       follower_ids:       conversation.follower_ids,

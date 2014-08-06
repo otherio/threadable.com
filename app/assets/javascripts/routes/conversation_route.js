@@ -43,7 +43,11 @@ Threadable.ConversationRoute = Ember.Route.extend({
   actions: {
     willTransition: function(transition) {
       this.controllerFor('doerSelector').set('doers', []);
-      this.controllerFor('organization').set('focus', 'conversations');
+
+      if (! transition.targetName.match(/_details$/)) {
+        this.controllerFor('organization').set('focus', 'conversations');
+      }
+
       $("#inputWithFocus").blur();
     }
   }

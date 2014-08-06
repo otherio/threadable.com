@@ -40,6 +40,12 @@ Threadable.RoutesMixin = Ember.Mixin.create({
     return conversationsRoute && conversationsRoute.slice(0,-1);
   }.property('conversationsRoute'),
 
+  // returns: undefined | "conversation.details" | "muted_conversation.details" | "task.details" | "doing_task.details"
+  conversationDetailsRoute: function() {
+    var conversationRoute = this.get('conversationRoute');
+    return conversationRoute && conversationRoute+'_details';
+  }.property('conversationRoute'),
+
   composeRoute: function() {
     var conversationRoute = this.get('conversationRoute');
     return conversationRoute && 'compose_'+conversationRoute;

@@ -32,13 +32,13 @@ Threadable::Application.routes.draw do
     resources :conversations do
       get :search, on: :collection
       member do
-        get  :details
         post :sync
       end
     end
     resources :tasks
     resources :messages
     resources :events
+    resources :conversation_details, only: [:show]
     resources :organization_members, only: [:index, :create, :update, :destroy, :resend_invitation] do
       post :resend_invitation
     end

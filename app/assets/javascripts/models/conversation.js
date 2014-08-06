@@ -35,11 +35,11 @@ Threadable.Conversation = RL.Model.extend({
   }),
 
   loadDetails: RL.loadAssociationMethod('details', function(conversation){
-    return Threadable.ConversationDetails.fetch({
+    return Threadable.ConversationDetail.fetch({
       organization_id: conversation.get('organizationSlug'),
-      conversation_id: conversation.get('slug')
+      slug: conversation.get('slug')
     });
-  }),
+  }.bind(this)),
 
   hasMessages: function() {
     return this.get('numberOfMessages') > 0;

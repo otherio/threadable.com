@@ -1,4 +1,4 @@
-Threadable.ConversationController = Ember.ObjectController.extend(Threadable.ConfirmationMixin, {
+Threadable.ConversationController = Ember.ObjectController.extend(Threadable.ConfirmationMixin, Threadable.RoutesMixin, {
   needs: ['organization', 'doerSelector', 'group'],
   organization: Ember.computed.alias('controllers.organization'),
 

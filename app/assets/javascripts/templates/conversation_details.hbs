@@ -1,0 +1,78 @@
+<div class="conversation-show conversation-details scrollable">
+  <div class="padded">
+
+    <div class="conversation-groups">
+      {{#each group in groups}}
+        <span class="badge" {{bind-attr style="group.badgeStyle"}}>
+          {{group.name}}
+          {{#if canRemoveGroups}}
+            <a href="" {{action removeGroup group}}><i class="uk-icon-times"><span class="sr-only">Remove</span></i></a>
+          {{/if}}
+        </span>
+      {{/each}}
+      {{group-selector groups=unselectedGroups target=controller}}
+    </div>
+
+    <h2 class="subject">
+      <span class="hidden-on-small-screens">
+        {{#if task}}
+          <i class="uk-icon-check"><span class="sr-only">Task</span></i>
+        {{else}}
+          <i class="uk-icon-comment-o"><span class="sr-only">Conversation</span></i>
+        {{/if}}
+      </span>
+      {{subject}}
+    </h2>
+
+    {{#link-to conversationRoute organizationSlug groupSlug slug class="info"}}
+      <i class="uk-icon-caret-left"></i> back to conversation
+    {{/link-to}}
+
+    <div class="well-when-not-small">
+      <h3>Followers:</h3>
+      {{#each member in details.followers}}
+        <span class="avatar avatar-small" data-uk-tooltip {{bind-attr title="member.name"}}>
+          <img {{bind-attr src="member.avatarUrl"}} />
+        </span>
+      {{else}}
+        None. All recipients are in the conversation's groups.
+      {{/each}}
+
+      <h3>Muters:</h3>
+      {{#each member in details.muters}}
+        <span class="avatar avatar-small" data-uk-tooltip {{bind-attr title="member.name"}}>
+          <img {{bind-attr src="member.avatarUrl"}} />
+        </span>
+      {{else}}
+        Nobody has muted this conversation.
+      {{/each}}
+
+      <h3>
+        Group recipients:
+        <a href="" {{action toggleGroupRecipients}}>
+        {{#if showGroupRecipients}}
+          <i class="uk-icon-caret-down"></i> hide
+        {{else}}
+          <i class="uk-icon-caret-right"></i> show
+        {{/if}}
+        </a>
+      </h3>
+      {{#if showGroupRecipients}}
+        {{#each member in details.recipients}}
+          <span class="avatar avatar-small" data-uk-tooltip {{bind-attr title="member.name"}}>
+            <img {{bind-attr src="member.avatarUrl"}} />
+          </span>
+        {{else}}
+          Nobody receives this conversation via a group membership.
+        {{/each}}
+      {{/if}}
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+

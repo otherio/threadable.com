@@ -326,17 +326,6 @@ describe Api::ConversationsController do
       end
     end
 
-    # get /api/:organization_id/:id
-    describe 'details' do
-      let(:conversation) { raceteam.conversations.find_by_slug('layup-body-carbon')}
-
-      it "renders the conversation details as json" do
-        xhr :get, :details, format: :json, id: conversation.slug, organization_id: raceteam.slug
-        expect(response).to be_ok
-        expect(response.body).to eq serialize(:conversation_details, conversation).to_json
-      end
-    end
-
     describe 'sync' do
       let(:electronics) { raceteam.groups.find_by_slug('electronics') }
 
