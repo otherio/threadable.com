@@ -224,7 +224,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def body_html
-    params['body-html']
+    params['body-html'] || ''
   end
 
   def body_plain
