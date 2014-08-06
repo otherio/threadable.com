@@ -136,6 +136,7 @@ class Threadable::Organization < Threadable::Model
 
     tags = email_addresses.map do |email_address|
       local, host = email_address.strip_non_ascii.downcase.split('@')
+      local.gsub!(/\./, '-')
       local_components = local.split(/(?:\+|--)/) - SPECIAL_EMAIL_ADDRESS_TAGS
       no_subdomain_addresses = threadable.email_hosts.map{ |host| "#{email_address_username}@#{host}"}
 

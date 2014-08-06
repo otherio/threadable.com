@@ -301,6 +301,17 @@ describe Threadable::Organization do
         it { should == expected_result }
       end
     end
+
+    context 'when the address has a period in it' do
+      before do
+        threadable.organizations.find_by_slug!('raceteam').organization_record.update_attribute(:email_address_username, 'race-team')
+      end
+
+      it 'properly translates to a dash' do
+        expect(organization.email_address_tags('race.team@localhost')).to eq ['raceteam']
+        expect(organization.email_address_tags('race.team+things@localhost')).to eq ['things']
+      end
+    end
   end
 
 end
