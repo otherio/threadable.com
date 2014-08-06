@@ -4,7 +4,6 @@ Threadable.ConversationDetail = RL.Model.extend({
   recipientIds:      RL.attr('array'),
   muterIds:          RL.attr('array'),
   followerIds:       RL.attr('array'),
-  organizationSlug:  RL.attr('string'),
   organizationId:    RL.attr('string'),
 
   recipients: function() {
