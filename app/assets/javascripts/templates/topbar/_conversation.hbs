@@ -19,10 +19,22 @@
       <i class="uk-icon-info-circle"><span class="sr-only">more info</span></i>
     {{/link-to}}
 
-    {{#if conversation.isMuted}}
-      <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-up"><span class="sr-only">Unmute</span></i></a>
+    {{#if conversation.currentUserIsInGroups}}
+      <a href="" {{action 'toggleMuted'}}>
+        {{#if conversation.isMuted}}
+          <i class="uk-icon-volume-up"><span class="sr-only">Unmute</span></i>
+        {{else}}
+          <i class="uk-icon-volume-down"><span class="sr-only">Mute</span></i>
+        {{/if}}
+      </a>
     {{else}}
-      <a href="" {{action 'toggleMuted'}}><i class="uk-icon-volume-down"><span class="sr-only">Mute</span></i></a>
+      <a href="" {{action 'toggleFollowed'}}>
+        {{#if conversation.isFollowed}}
+          <i class="uk-icon-envelope-o"><span class="sr-only">Unfollow</span></i>
+        {{else}}
+          <i class="uk-icon-envelope"><span class="sr-only">Follow</span></i>
+        {{/if}}
+      </a>
     {{/if}}
 
     {{#if conversation.isTrashed}}
