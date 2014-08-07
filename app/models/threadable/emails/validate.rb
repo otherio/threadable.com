@@ -6,7 +6,7 @@ class Threadable::Emails::Validate < MethodObject
     @errors = []
 
     Array(email.smtp_envelope_from).each do |address|
-      (ValidateEmailAddress.call(address) || address == '<>') or invalid! "envelope from address: #{address.inspect}"
+      (ValidateEmailAddress.call(address) || address == '') or invalid! "envelope from address: #{address.inspect}"
     end
 
     Array(email.smtp_envelope_to).each do |address|

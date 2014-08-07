@@ -76,7 +76,7 @@ class IncomingEmailMailer < Threadable::Mailer
       :'X-Mailgun-Native-Send' => 'true',
     })
 
-    message.smtp_envelope_from = '<>'
+    message.smtp_envelope_from = ''
 
     reporting_mta_headers = Mail::Header.new
     reporting_mta_headers.fields = [
