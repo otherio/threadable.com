@@ -43,9 +43,11 @@ class Conversation < ActiveRecord::Base
   }
 
   scope :for_user, ->(user_id){
+    user_id = Conversation.sanitize(user_id)
     joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
     joins('LEFT JOIN group_memberships ON conversation_groups.group_id = group_memberships.group_id').
-    where('(group_memberships.user_id = ? and conversation_groups.active = \'t\') or conversation_groups.group_id is null', user_id)
+    joins("LEFT JOIN conversations_followers ON conversations_followers.conversation_id = conversations.id AND conversations_followers.user_id = #{user_id}").
+    where('((group_memberships.user_id = ? and conversation_groups.active = \'t\') or conversation_groups.group_id is null) or conversations_followers.user_id is not null', user_id)
   }
 
   scope :grouped, -> {
