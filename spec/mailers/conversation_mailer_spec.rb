@@ -21,6 +21,7 @@ describe ConversationMailer do
     let(:expected_envelope_from){ organization.task_email_address }
     let(:expected_html_part    ){ message.body_html.gsub(/\n/,'') }
     let(:expected_reply_to     ){ organization.formatted_task_email_address }
+    let(:expect_reply          ){ true }
 
     let(:mail_as_string){ mail.to_s }
     let(:text_part){ mail.text_part.body.to_s }
@@ -42,8 +43,16 @@ describe ConversationMailer do
       mail.smtp_envelope_to.should      == [expected_envelope_to]
       mail.smtp_envelope_from.should    == expected_envelope_from
 
-      mail_as_string.should =~ /In-Reply-To:/
-      mail_as_string.should =~ /References:/
+      if expect_reply
+        mail_as_string.should =~ /In-Reply-To:/
+        mail_as_string.should =~ /References:/
+        expect(mail.in_reply_to).to eq message.parent_message.message_id_header[1..-2]
+        expect(mail.references              ).to eq(
+          message.parent_message.references_header.scan(/<(.+?)>/).flatten +
+          [message.parent_message.message_id_header[1..-2]]
+        )
+      end
+
       mail_as_string.should =~ /Message-ID:/
 
       text_part.should include message.body_plain
@@ -70,12 +79,7 @@ describe ConversationMailer do
 
       expect(mail.header[:'List-ID'].to_s ).to eq conversation.list_id
       expect(mail.header[:'Cc'].to_s      ).to eq expected_cc
-      expect(mail.in_reply_to             ).to eq message.parent_message.message_id_header[1..-2]
       expect(mail.message_id              ).to eq message.message_id_header[1..-2]
-      expect(mail.references              ).to eq(
-        message.parent_message.references_header.scan(/<(.+?)>/).flatten +
-        [message.parent_message.message_id_header[1..-2]]
-      )
     end
 
     it "returns a mail message as expected" do
@@ -179,6 +183,30 @@ describe ConversationMailer do
 
         it "rewrites from, adds from to reply-to" do
           validate_mail!
+        end
+      end
+    end
+
+    context 'follow and mute' do
+      let(:html) { mail.html_part.body.to_s }
+      before do
+        validate_mail!
+      end
+
+      context 'with no followers or muters' do
+        let(:conversation){ organization.conversations.find_by_slug! 'inventory-led-supplies' }
+        let(:expected_to) { ["electronics+task@raceteam.localhost", "fundraising+task@raceteam.localhost", "graphic-design+task@raceteam.localhost", "raceteam+task@raceteam.localhost"] }
+        let(:expected_reply_to) { '"UCSD Electric Racing: Electronics Tasks" <electronics+task@raceteam.localhost>, "UCSD Electric Racing: Fundraising Tasks" <fundraising+task@raceteam.localhost>, "UCSD Electric Racing: Graphic Design Tasks" <graphic-design+task@raceteam.localhost>, UCSD Electric Racing Tasks <raceteam+task@raceteam.localhost>' }
+        let(:expect_reply) { false }
+
+        it 'does not include follow and mute counts' do
+          expect(html).to_not include 'muted'
+        end
+      end
+
+      context 'with muters or followers' do
+        it 'displays the count' do
+          expect(html).to include '0 followers, 1 muted'
         end
       end
     end

@@ -12,6 +12,9 @@ class ConversationMailer < Threadable::Mailer
     @conversation = @message.conversation
     @task = @conversation if @conversation.task?
 
+    @follower_count = @conversation.follower_ids.length
+    @muter_count = @conversation.muter_ids.length
+
     @header_separator_url = "https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-headerable.png"
     @footer_separator_url = "https://s3.amazonaws.com/multify-production/superable-specialable-threadable-dividerable-footerable.png"
 

@@ -66,12 +66,15 @@
                   = link_to 'Leave', email_action_link(group, @recipient, "leave")
                 - else
                   = link_to 'Join', email_action_link(group, @recipient, "join")
+          - if @follower_count > 0 || @muter_count > 0
+            .threadable-participants{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
+              = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_details_url(@organization, 'my', @conversation)).html_safe
           - unless @show_mail_buttons
             .threadable-conversation{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
               = link_to 'Web View', conversation_url(@organization, 'my', @conversation)
               |
               = link_to 'Mute', email_action_link(@conversation, @recipient, "mute")
-          .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px"}
+          .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px;margin-top: 3px"}
             = link_to @organization.name, organization_url(@organization)
             |
             = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
