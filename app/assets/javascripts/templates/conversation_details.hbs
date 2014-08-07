@@ -35,13 +35,7 @@
 
       <h3>Muters:</h3>
       <ul class="uk-list member-list">
-        {{#each member in details.muters}}
-          {{partial 'conversation_details/member'}}
-        {{else}}
-          <li>
-            Nobody has muted this conversation.
-          </li>
-        {{/each}}
+        {{details.muterCount}} member(s) have muted this conversation.
       </ul>
 
       <h3>

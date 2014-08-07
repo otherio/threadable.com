@@ -4,7 +4,7 @@ class ConversationDetailsSerializer < Serializer
       id:                 conversation.id,
       slug:               conversation.slug,
       recipient_ids:      conversation.recipients.all.map(&:id),
-      muter_ids:          conversation.muter_ids,
+      muter_count:        conversation.muter_ids.length,
       follower_ids:       conversation.follower_ids,
     }
   end

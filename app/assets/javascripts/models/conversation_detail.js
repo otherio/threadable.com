@@ -2,17 +2,13 @@ Threadable.ConversationDetail = RL.Model.extend({
   id:                RL.attr('number'),
   slug:              RL.attr('string'),
   recipientIds:      RL.attr('array'),
-  muterIds:          RL.attr('array'),
+  muterCount:        RL.attr('number'),
   followerIds:       RL.attr('array'),
   organizationId:    RL.attr('string'),
 
   recipients: function() {
     return this.findMembers(this.get('recipientIds'));
   }.property('recipientIds','organization.members'),
-
-  muters: function() {
-    return this.findMembers(this.get('muterIds'));
-  }.property('muterIds','organization.members'),
 
   followers: function() {
     return this.findMembers(this.get('followerIds'));
