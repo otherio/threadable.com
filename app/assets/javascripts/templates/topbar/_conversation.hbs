@@ -16,7 +16,7 @@
 
   {{#if conversation}}
     {{#link-to conversationDetailRoute organizationSlug groupSlug conversation.slug}}
-      <i class="uk-icon-info-circle"><span class="sr-only">more info</span></i>
+      <i class="uk-icon-info-circle"><span class="sr-only">Recipients</span></i>
     {{/link-to}}
 
     {{#if conversation.currentUserIsInGroups}}
@@ -30,9 +30,9 @@
     {{else}}
       <a href="" {{action 'toggleFollowed'}}>
         {{#if conversation.isFollowed}}
-          <i class="uk-icon-envelope-o"><span class="sr-only">Unfollow</span></i>
+          <i class="uk-icon-minus-square-o"><span class="sr-only">Unfollow</span></i>
         {{else}}
-          <i class="uk-icon-envelope"><span class="sr-only">Follow</span></i>
+          <i class="uk-icon-plus-square-o"><span class="sr-only">Follow</span></i>
         {{/if}}
       </a>
     {{/if}}

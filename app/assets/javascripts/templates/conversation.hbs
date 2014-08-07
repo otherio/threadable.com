@@ -75,9 +75,9 @@
       {{else}}
         <a href="" {{action 'toggleFollowed'}}>
           {{#if isFollowed}}
-            <i class="uk-icon-envelope-o"></i> unfollow
+            <i class="uk-icon-minus-square-o"></i> unfollow
           {{else}}
-            <i class="uk-icon-envelope"></i> follow
+            <i class="uk-icon-plus-square-o"></i> follow
           {{/if}}
         </a>
       {{/if}}
@@ -94,7 +94,7 @@
       {{/if}}
 
       {{#link-to conversationDetailRoute organizationSlug groupSlug slug}}
-        <i class="uk-icon-info-circle"></i> more info
+        <i class="uk-icon-info-circle"></i> recipients
       {{/link-to}}
     </div>
 
