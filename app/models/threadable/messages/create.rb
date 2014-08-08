@@ -12,6 +12,7 @@ class Threadable::Messages::Create < MethodObject
     optional :to_header, :cc_header
     optional :thread_index_header, :thread_topic_header
     optional :sent_via_web, default: false
+    optional :follow_for_creator, default: true
   end
 
   def call messages, options
@@ -24,6 +25,7 @@ class Threadable::Messages::Create < MethodObject
     if @message.persisted?
       track!
       create_attachments!
+      follow_for_creator!
       @message.send_emails! @options.sent_via_web
     end
     return @message
@@ -133,6 +135,13 @@ class Threadable::Messages::Create < MethodObject
       when Hash
         @threadable.attachments.create(attachment).attachment_record
       end
+    end
+  end
+
+  def follow_for_creator!
+    return unless @options.follow_for_creator
+    if creator && !@conversation.recipients.include?(creator)
+      @conversation.follow_for creator
     end
   end
 

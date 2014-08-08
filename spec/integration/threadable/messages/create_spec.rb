@@ -40,6 +40,16 @@ describe Threadable::Messages::Create do
         ]
       end
     end
+
+    context 'when the member is not a conversation participant' do
+      let(:conversation) { organization.conversations.find_by_slug('get-a-new-soldering-iron') }
+
+      it 'adds the member as a follower' do
+        expect(conversation.followed_by?(alice)).to be_false
+        message = call(conversation.messages, message_options)
+        expect(conversation.followed_by?(alice)).to be_true
+      end
+    end
   end
 
   context 'with a to header' do

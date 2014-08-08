@@ -122,7 +122,7 @@ class FixtureBuilder
   end
 
   def create_message conversation, options
-    conversation.messages.create!(options.merge(creator: current_user))
+    conversation.messages.create!(options.merge(creator: current_user, follow_for_creator: false))
   end
 
   def attachment path, content_type, binary=true
@@ -138,7 +138,7 @@ class FixtureBuilder
   end
 
   def reply_to message, options
-    message.conversation.messages.create!(options.merge(parent_message: message, creator: current_user))
+    message.conversation.messages.create!(options.merge(parent_message: message, creator: current_user, follow_for_creator: false))
   end
 
   def mute_conversation conversation
