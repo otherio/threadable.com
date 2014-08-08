@@ -27,6 +27,10 @@
               Unmute #{@email_action.record.subject.inspect}
             - when 'unmute'
               Mute #{@email_action.record.subject.inspect}
+            - when 'follow'
+              Unfollow #{@email_action.record.subject.inspect}
+            - when 'unfollow'
+              Follow #{@email_action.record.subject.inspect}
             - when 'add'
               Remove yourself as a doer of #{@email_action.record.subject.inspect}
             - when 'remove'

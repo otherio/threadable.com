@@ -8,6 +8,8 @@ class EmailAction
     undone
     mute
     unmute
+    follow
+    unfollow
     add
     remove
     join
@@ -29,27 +31,31 @@ class EmailAction
     return @record if @record
     thing = user || threadable
     @record = case @type
-    when 'done';   thing.tasks.find_by_id(@record_id)
-    when 'undone'; thing.tasks.find_by_id(@record_id)
-    when 'mute';   thing.conversations.find_by_id(@record_id)
-    when 'unmute'; thing.conversations.find_by_id(@record_id)
-    when 'add';    thing.tasks.find_by_id(@record_id)
-    when 'remove'; thing.tasks.find_by_id(@record_id)
-    when 'join';   thing.groups.find_by_id(@record_id)
-    when 'leave';  thing.groups.find_by_id(@record_id)
+    when 'done';     thing.tasks.find_by_id(@record_id)
+    when 'undone';   thing.tasks.find_by_id(@record_id)
+    when 'mute';     thing.conversations.find_by_id(@record_id)
+    when 'unmute';   thing.conversations.find_by_id(@record_id)
+    when 'follow';   thing.conversations.find_by_id(@record_id)
+    when 'unfollow'; thing.conversations.find_by_id(@record_id)
+    when 'add';      thing.tasks.find_by_id(@record_id)
+    when 'remove';   thing.tasks.find_by_id(@record_id)
+    when 'join';     thing.groups.find_by_id(@record_id)
+    when 'leave';    thing.groups.find_by_id(@record_id)
     end
   end
 
   def requires_user_to_be_signed_in?
     case @type
-    when 'done';   true
-    when 'undone'; true
-    when 'mute';   true
-    when 'unmute'; true
-    when 'add';    true
-    when 'remove'; true
-    when 'join';   false
-    when 'leave';  false
+    when 'done';     true
+    when 'undone';   true
+    when 'mute';     true
+    when 'unmute';   true
+    when 'follow';   true
+    when 'unfollow'; true
+    when 'add';      true
+    when 'remove';   true
+    when 'join';     false
+    when 'leave';    false
     end
   end
 
@@ -59,6 +65,8 @@ class EmailAction
     when 'undone'; 'done'
     when 'mute';   'unmute'
     when 'unmute'; 'mute'
+    when 'follow';   'unfollow'
+    when 'unfollow'; 'follow'
     when 'add';    'remove'
     when 'remove'; 'add'
     when 'join';   'leave'
@@ -81,6 +89,10 @@ class EmailAction
       record.mute_for(user)
     when 'unmute'
       record.unmute_for(user)
+    when 'follow'
+      record.follow_for(user)
+    when 'unfollow'
+      record.unfollow_for(user)
     when 'add'
       record.doers.add(user)
     when 'remove'
@@ -107,6 +119,10 @@ class EmailAction
       "mute #{record.subject.inspect}"
     when 'unmute'
       "un-mute #{record.subject.inspect}"
+    when 'follow'
+      "follow #{record.subject.inspect}"
+    when 'unfollow'
+      "unfollow #{record.subject.inspect}"
     when 'add'
       "add yourself as a doer of #{record.subject.inspect}"
     when 'remove'
@@ -128,6 +144,10 @@ class EmailAction
       "You muted #{record.subject.inspect}"
     when 'unmute'
       "You un-muted #{record.subject.inspect}"
+    when 'follow'
+      "You followed #{record.subject.inspect}"
+    when 'unfollow'
+      "You unfollowed #{record.subject.inspect}"
     when 'add'
       "You're added as a doer of #{record.subject.inspect}"
     when 'remove'
@@ -148,6 +168,10 @@ class EmailAction
     when 'mute'
       routes.conversation_url(record.organization, 'my', record, success: success_description)
     when 'unmute'
+      routes.conversation_url(record.organization, 'my', record, success: success_description)
+    when 'follow'
+      routes.conversation_url(record.organization, 'my', record, success: success_description)
+    when 'unfollow'
       routes.conversation_url(record.organization, 'my', record, success: success_description)
     when 'add'
       routes.task_url(record.organization, 'my', record, success: success_description)

@@ -74,6 +74,42 @@ describe "Email actions" do
         end
       end
 
+      describe "follow" do
+        let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+        let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'follow') }
+        it "should ask me to sign in" do
+          visit url
+          expect(page).to have_text 'Hey Bethany Pattern'
+          expect(page).to have_text "Please sign in to follow #{conversation.subject.inspect}"
+          fill_in 'Password', with: 'password'
+          click_on 'Sign in &follow'
+          expect(page).to be_at_url conversation_url(organization, 'my', conversation)
+          conversation.reload
+          expect(conversation).to be_followed_by user
+          expect(page).to have_text "You followed #{conversation.subject.inspect}"
+          expect_to_be_signed_in_as! 'Bethany Pattern'
+          assert_tracked(user.id, tracked_event_name, type: "follow", record_id: conversation.id)
+        end
+      end
+
+      describe "unfollow" do
+        let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+        let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'unfollow') }
+        it "should ask me to sign in" do
+          visit url
+          expect(page).to have_text 'Hey Bethany Pattern'
+          expect(page).to have_text "Please sign in to unfollow #{conversation.subject.inspect}"
+          fill_in 'Password', with: 'password'
+          click_on 'Sign in &unfollow'
+          expect(page).to be_at_url conversation_url(organization, 'my', conversation)
+          conversation.reload
+          expect(conversation).to_not be_followed_by user
+          expect(page).to have_text "You unfollowed #{conversation.subject.inspect}"
+          expect_to_be_signed_in_as! 'Bethany Pattern'
+          assert_tracked(user.id, tracked_event_name, type: "unfollow", record_id: conversation.id)
+        end
+      end
+
       describe "add" do
         let(:task){ organization.tasks.find_by_slug!('install-mirrors') }
         let(:token){ EmailActionToken.encrypt(task.id, user.id, 'add') }
@@ -164,6 +200,48 @@ describe "Email actions" do
           conversation.reload
           expect(conversation).to be_muted_by user
           assert_tracked(user.id, tracked_event_name, type: "mute", record_id: conversation.id)
+
+          click_on "Unmute #{conversation.subject.inspect}"
+          expect(page).to have_text " You un-muted #{conversation.subject.inspect}"
+          conversation.reload
+          expect(conversation).to_not be_muted_by user
+          assert_tracked(user.id, tracked_event_name, type: "unmute", record_id: conversation.id)
+        end
+      end
+
+      describe "follow" do
+        let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+        let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'follow') }
+        it "should immediately follow the conversation" do
+          visit url
+          expect(page).to have_text "You followed #{conversation.subject.inspect}"
+          conversation.reload
+          expect(conversation).to be_followed_by user
+          assert_tracked(user.id, tracked_event_name, type: "follow", record_id: conversation.id)
+
+          click_on "Unfollow #{conversation.subject.inspect}"
+          expect(page).to have_text " You unfollowed #{conversation.subject.inspect}"
+          conversation.reload
+          expect(conversation).to_not be_followed_by user
+          assert_tracked(user.id, tracked_event_name, type: "unfollow", record_id: conversation.id)
+        end
+      end
+
+      describe "unfollow" do
+        let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+        let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'unfollow') }
+        it "should immediately unfollow the conversation" do
+          visit url
+          expect(page).to have_text "You unfollowed #{conversation.subject.inspect}"
+          conversation.reload
+          expect(conversation).to_not be_followed_by user
+          assert_tracked(user.id, tracked_event_name, type: "unfollow", record_id: conversation.id)
+
+          click_on "Follow #{conversation.subject.inspect}"
+          expect(page).to have_text " You followed #{conversation.subject.inspect}"
+          conversation.reload
+          expect(conversation).to be_followed_by user
+          assert_tracked(user.id, tracked_event_name, type: "unfollow", record_id: conversation.id)
         end
       end
 
@@ -301,6 +379,33 @@ describe "Email actions" do
       end
     end
 
+    describe "follow" do
+      let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+      let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'follow') }
+      it "should work immediately" do
+        visit url
+        expect(page).to be_at_url conversation_url(organization, 'my', conversation)
+        conversation.reload
+        expect(conversation).to be_followed_by user
+        expect(page).to have_text "You followed #{conversation.subject.inspect}"
+        expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "follow", record_id: conversation.id)
+      end
+    end
+
+    describe "unfollow" do
+      let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+      let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'unfollow') }
+      it "should work immediately" do
+        visit url
+        expect(page).to be_at_url conversation_url(organization, 'my', conversation)
+        conversation.reload
+        expect(conversation).to_not be_followed_by user
+        expect(page).to have_text "You unfollowed #{conversation.subject.inspect}"
+        expect_to_be_signed_in_as! 'Bethany Pattern'
+        assert_tracked(threadable.current_user.id, tracked_event_name, type: "unfollow", record_id: conversation.id)
+      end
+    end
     describe "add" do
       let(:task){ organization.tasks.find_by_slug!('install-mirrors') }
       let(:token){ EmailActionToken.encrypt(task.id, user.id, 'add') }
@@ -400,6 +505,26 @@ describe "Email actions" do
     describe "mute" do
       let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
       let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'mute') }
+      it "tells me I am not authorized to do that" do
+        visit url
+        expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
+      end
+    end
+
+    describe "follow" do
+      let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+      let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'follow') }
+      it "tells me I am not authorized to do that" do
+        visit url
+        expect(page).to have_text 'You are not authorized to take that action'
+        expect_no_email_action_taken_tracking!
+      end
+    end
+
+    describe "unfollow" do
+      let(:conversation){ organization.conversations.find_by_slug!('drive-trains-are-expensive') }
+      let(:token){ EmailActionToken.encrypt(conversation.id, user.id, 'unfollow') }
       it "tells me I am not authorized to do that" do
         visit url
         expect(page).to have_text 'You are not authorized to take that action'
