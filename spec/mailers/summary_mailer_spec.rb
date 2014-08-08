@@ -17,7 +17,7 @@ describe SummaryMailer do
 
     let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
     let(:today) { Time.now.in_time_zone('US/Pacific') }
-    let(:conversations){ organization.conversations.all_with_last_message_at today }
+    let(:conversations){ organization.conversations.for_message_summary recipient, today }
     let(:recipient){ organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
     let(:mail){ SummaryMailer.new(threadable).generate(:message_summary, organization, recipient, conversations, today) }

@@ -43,7 +43,7 @@ class Threadable::Organization::Member < Threadable::User
     conversations = []
 
     groups.with_summary.each do |group|
-      conversations += group.conversations.with_last_message_at time
+      conversations += group.conversations.for_message_summary(self, time)
     end
 
     conversations

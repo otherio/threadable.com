@@ -98,6 +98,23 @@ describe Threadable::Organization::Member do
       end
     end
 
+    context 'with a followed conversation' do
+      let(:member) { organization.members.find_by_email_address('bob@ucsd.example.com')}
+      let(:conversation) { organization.conversations.find_by_slug('drive-trains-are-expensive') }
+
+      before do
+        conversation.follow_for member
+      end
+
+      it 'excludes the followed conversation from the summary' do
+        conversations = member.summarized_conversations(time)
+        expect(conversations.map(&:slug)).to match_array [
+          "how-are-we-paying-for-the-motor-controller",
+          "inventory-led-supplies",
+        ]
+      end
+    end
+
     context 'with groups that should be summarized, and the member is part of multiple organizations' do
       let(:nurseteam) { threadable.organizations.find_by_slug('sfhealth') }
       let(:triage) { nurseteam.groups.find_by_slug('triage') }

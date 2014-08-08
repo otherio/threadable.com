@@ -30,17 +30,30 @@ describe Threadable::Conversations do
     end
   end
 
-  describe '#all_with_last_message_at' do
+  describe '#for_message_summary' do
+    # get a user and stuff here, and then make this test work
     let(:date) { Time.zone.local(2014,2,2).utc }
+    let(:user) { threadable.users.find_by_email_address('alice@ucsd.example.com') }
+    let(:followed_conversation) { threadable.conversations.find_by_slug('get-a-new-soldering-iron') }
+
     before do
       Time.zone = 'US/Pacific'
+      followed_conversation.follow_for user
     end
 
-    it 'returns all the conversations updated on a particular day' do
-      expect(conversations.all_with_last_message_at(date)).to match_array ::Conversation.
-        untrashed.
-        where('last_message_at between ? and ?', date, date + 1.day).
-        to_a.map{ |conversation_record| Threadable::Conversation.new(threadable, conversation_record) }
+    it 'returns all the conversations updated on a particular day that the user does not follow' do
+      expect(conversations.for_message_summary(user, date).map(&:slug)).to match_array [
+        "drive-trains-are-expensive",
+        "how-are-we-going-to-build-the-body",
+        "how-are-we-paying-for-the-motor-controller",
+        "inventory-led-supplies",
+        "layup-body-carbon",
+        "parts-for-the-drive-train",
+        "parts-for-the-motor-controller",
+        "who-wants-to-pick-up-breakfast",
+        "who-wants-to-pick-up-dinner",
+        "who-wants-to-pick-up-lunch"
+      ]
     end
   end
 

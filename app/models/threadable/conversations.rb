@@ -12,8 +12,8 @@ class Threadable::Conversations < Threadable::Collection
     conversations_for scope.includes(:participants).includes(:messages)
   end
 
-  def all_with_last_message_at time
-    scope.untrashed.with_last_message_at(time).map {|conversation_record| conversation_for(conversation_record) }
+  def for_message_summary user, time
+    scope.untrashed.with_last_message_at(time).not_followed_by(user.id).map {|conversation_record| conversation_for(conversation_record) }
   end
 
   def to_be_deleted
