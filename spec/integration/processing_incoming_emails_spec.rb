@@ -88,20 +88,21 @@ describe "processing incoming emails" do
     expect( incoming_email.in_reply_to            ).to eq(in_reply_to)
     expect( incoming_email.references             ).to eq(references)
     expect( incoming_email.message_headers.to_set ).to eq Set[
-      ["X-Envelope-From", envelope_from],
-      ["Sender",          sender],
-      ["In-Reply-To",     in_reply_to],
-      ["References",      references],
-      ["From",            from],
-      ["Date",            date.rfc2822],
-      ["Message-Id",      message_id],
-      ["Subject",         subject],
-      ["To",              to],
-      ["Cc",              cc],
-      ["Content-Type",    content_type],
-      ["Thread-Index",    thread_index],
-      ["Thread-Topic",    thread_topic],
-      ["Auto-Submitted",  auto_submitted],
+      ["X-Envelope-From",  envelope_from],
+      ["Sender",           sender],
+      ["In-Reply-To",      in_reply_to],
+      ["References",       references],
+      ["From",             from],
+      ["Date",             date.rfc2822],
+      ["Message-Id",       message_id],
+      ["Subject",          subject],
+      ["To",               to],
+      ["Cc",               cc],
+      ["Content-Type",     content_type],
+      ["Thread-Index",     thread_index],
+      ["Thread-Topic",     thread_topic],
+      ["Auto-Submitted",   auto_submitted],
+      ["X-Mailgun-Sscore", 0],
     ]
     expect( incoming_email.body_html      ).to eq(body_html)
     expect( incoming_email.body_plain     ).to eq(body_plain)
