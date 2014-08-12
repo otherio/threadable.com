@@ -116,7 +116,6 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def holdable?
-    return false if spam?
     (organization.hold_all_messages? && !creator_is_an_owner? && !reply?) ||
     (groups.all?(&:hold_messages?) && !bounce_reason && (!reply? && !creator_is_an_organization_member?))
   end
