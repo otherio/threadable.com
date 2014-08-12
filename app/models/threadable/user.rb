@@ -37,6 +37,7 @@ class Threadable::User < Threadable::Model
   let(:conversations)           { Threadable::User::Conversations         .new(self) }
   let(:tasks)                   { Threadable::User::Tasks                 .new(self) }
   let(:groups)                  { Threadable::User::Groups                .new(self) }
+  let(:accessible_groups)       { Threadable::User::AccessibleGroups      .new(self) }
   let(:messages)                { Threadable::User::Messages              .new(self) }
   let(:group_memberships)       { Threadable::User::GroupMemberships      .new(self) }
 

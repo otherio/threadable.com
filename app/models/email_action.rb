@@ -39,7 +39,7 @@ class EmailAction
     when 'unfollow'; thing.conversations.find_by_id(@record_id)
     when 'add';      thing.tasks.find_by_id(@record_id)
     when 'remove';   thing.tasks.find_by_id(@record_id)
-    when 'join';     thing.groups.find_by_id(@record_id)
+    when 'join';     thing.accessible_groups.find_by_id(@record_id)
     when 'leave';    thing.groups.find_by_id(@record_id)
     end
   end
