@@ -40,6 +40,7 @@ describe Threadable::IncomingEmail::Process do
       expect(incoming_email).to receive(:find_organization!)
       expect(incoming_email).to receive(:find_parent_message!)
       expect(incoming_email).to receive(:find_groups!)
+      expect(incoming_email).to receive(:find_creator!)
     end
     context 'and the organization or groups are not found' do
       before do
@@ -55,7 +56,6 @@ describe Threadable::IncomingEmail::Process do
       before do
         expect(incoming_email).to receive(:bounceable?).twice.and_return(false)
         expect(incoming_email).to receive(:find_message!)
-        expect(incoming_email).to receive(:find_creator!)
         expect(incoming_email).to receive(:find_conversation!)
         expect(incoming_email).to receive(:held?).and_return(false)
         expect(incoming_email).to receive(:bounced?).and_return(false)

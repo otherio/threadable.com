@@ -112,16 +112,22 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def bounceable?
-    !! bounce_reason
+    !spam? && !!bounce_reason
   end
 
   def holdable?
+    return false if spam?
     (organization.hold_all_messages? && !creator_is_an_owner? && !reply?) ||
-    (groups.all?(&:hold_messages?) && !bounceable? && (!reply? && !creator_is_an_organization_member?))
+    (groups.all?(&:hold_messages?) && !bounce_reason && (!reply? && !creator_is_an_organization_member?))
   end
 
   def reply?
     parent_message.present?
+  end
+
+  def spam?
+    return false if creator.present?
+    spam_score >= 5
   end
 
   def deliverable?
@@ -129,7 +135,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def droppable?
-    !parent_message.nil? && command_only_message?
+    (!parent_message.nil? && command_only_message?) || spam?
   end
 
   def subject_valid?
@@ -247,6 +253,9 @@ class Threadable::IncomingEmail < Threadable::Model
     message_headers_as_hash['Thread-Index']
   end
 
+  def spam_score
+    message_headers_as_hash['X-Mailgun-Sscore']
+  end
 
   def from_email_addresses
     ExtractEmailAddresses.call(from, envelope_from, sender).uniq

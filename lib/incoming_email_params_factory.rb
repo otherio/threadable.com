@@ -51,20 +51,21 @@ class IncomingEmailParamsFactory < MethodObject
 
     # headers
     @options[:message_headers] ||= [
-      ["X-Envelope-From", @options[:envelope_from]],
-      ["Sender",          @options[:sender]],
-      ["In-Reply-To",     @options[:in_reply_to]],
-      ["References",      @options[:references]],
-      ["From",            @options[:from]],
-      ["Date",            @options[:date].rfc2822],
-      ["Message-Id",      @options[:message_id]],
-      ["Subject",         @options[:subject]],
-      ["To",              @options[:to]],
-      ["Cc",              @options[:cc]],
-      ["Content-Type",    @options[:content_type]],
-      ["Thread-Index",    @options[:thread_index]],
-      ["Thread-Topic",    @options[:thread_topic]],
-      ["Auto-Submitted",  @options[:auto_submitted]],
+      ["X-Envelope-From",  @options[:envelope_from]],
+      ["Sender",           @options[:sender]],
+      ["In-Reply-To",      @options[:in_reply_to]],
+      ["References",       @options[:references]],
+      ["From",             @options[:from]],
+      ["Date",             @options[:date].rfc2822],
+      ["Message-Id",       @options[:message_id]],
+      ["Subject",          @options[:subject]],
+      ["To",               @options[:to]],
+      ["Cc",               @options[:cc]],
+      ["Content-Type",     @options[:content_type]],
+      ["Thread-Index",     @options[:thread_index]],
+      ["Thread-Topic",     @options[:thread_topic]],
+      ["Auto-Submitted",   @options[:auto_submitted]],
+      ["X-Mailgun-Sscore", @options[:spam_score] || 0],
     ]
   end
 

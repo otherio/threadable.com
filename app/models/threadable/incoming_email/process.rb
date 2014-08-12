@@ -10,12 +10,12 @@ class Threadable::IncomingEmail::Process < MethodObject
       @incoming_email.find_organization!
       @incoming_email.find_parent_message!
       @incoming_email.find_groups!
+      @incoming_email.find_creator!
       if @incoming_email.bounceable?
         bounce!
         return processed!
       end
       @incoming_email.find_message!
-      @incoming_email.find_creator!
       @incoming_email.find_conversation!
 
       sign_in_as_creator!

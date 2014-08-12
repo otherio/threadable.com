@@ -201,6 +201,29 @@ describe Threadable::IncomingEmail do
     end
   end
 
+  describe 'spam?' do
+    subject{ incoming_email.spam? }
+
+    context 'when the creator is a threadable member' do
+      before{ incoming_email.stub_chain(:creator, :present?).and_return(true) }
+      it { should be_false }
+    end
+
+    context 'when the creator is not a threadable member' do
+      before{ incoming_email.stub_chain(:creator, :present?).and_return(false) }
+
+      context 'when the spam score is > 5' do
+        before{ expect(incoming_email).to receive(:spam_score).and_return(10) }
+        it { should be_true }
+      end
+
+      context 'when the spam score is < 5' do
+        before{ expect(incoming_email).to receive(:spam_score).and_return(-0.75) }
+        it { should be_false }
+      end
+    end
+  end
+
   describe 'delivered?' do
     subject{ incoming_email.delivered? }
 
@@ -287,14 +310,23 @@ describe Threadable::IncomingEmail do
   describe 'bounceable?' do
     subject{ incoming_email.bounceable? }
 
-    context 'when there is a bounce reason' do
-      before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
-      it { should be_true }
+    context 'when the message is spam' do
+      before{ expect(incoming_email).to receive(:spam?).and_return(true) }
+      it { should be_false }
     end
 
-    context 'when there is not a bounce reason' do
-      before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
-      it { should be_false }
+    context 'when the message is not spam' do
+      before{ expect(incoming_email).to receive(:spam?).and_return(false) }
+
+      context 'when there is a bounce reason' do
+        before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
+        it { should be_true }
+      end
+
+      context 'when there is not a bounce reason' do
+        before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
+        it { should be_false }
+      end
     end
   end
 
@@ -303,71 +335,76 @@ describe Threadable::IncomingEmail do
 
     before{ incoming_email.stub(:organization).and_return(organization) }
 
-    context 'when the organization holds all messages' do
-      before do
-        organization.stub :hold_all_messages? => true
-        expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
-      end
-
-      context 'when a parent message is not present' do
-        before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
-
-        it { should be_true }
-      end
-
-      context 'when a parent message is present' do
-        let(:group){ double :group, :hold_messages? => false }
-
-        before do
-          expect(incoming_email).to receive(:parent_message).and_return(5235)
-          expect(incoming_email).to receive(:groups).and_return([group])
-        end
-
-        it { should be_false }
-      end
+    context 'when the message is spam' do
+      before{ expect(incoming_email).to receive(:spam?).and_return(true) }
+      it { should be_false }
     end
 
-    context 'when the organization does not hold all messages' do
-      before{ organization.stub :hold_all_messages? => false }
+    context 'when the message is not spam' do
+      before{ expect(incoming_email).to receive(:spam?).and_return(false) }
 
-      context 'when is at least one group that does not hold messages' do
-        let(:group){ double :group, :hold_messages? => false }
-        before{ expect(incoming_email).to receive(:groups).and_return([group]) }
-        it { should be_false }
+      context 'when the organization holds all messages' do
+        before do
+          organization.stub :hold_all_messages? => true
+          expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
+        end
+
+        context 'when a parent message is not present' do
+          before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+
+          it { should be_true }
+        end
+
+        context 'when a parent message is present' do
+          let(:group){ double :group, :hold_messages? => false }
+
+          before do
+            expect(incoming_email).to receive(:parent_message).and_return(5235)
+            expect(incoming_email).to receive(:groups).and_return([group])
+          end
+
+          it { should be_false }
+        end
       end
 
-      context 'when there are no groups that do not hold messages' do
-        before{ expect(incoming_email).to receive(:groups).and_return([]) }
+      context 'when the organization does not hold all messages' do
+        before{ organization.stub :hold_all_messages? => false }
 
-        context 'when bounceable? is true' do
-          before{ expect(incoming_email).to receive(:bounceable?).and_return(true) }
+        context 'when is at least one group that does not hold messages' do
+          let(:group){ double :group, :hold_messages? => false }
+          before{ expect(incoming_email).to receive(:groups).and_return([group]) }
           it { should be_false }
         end
 
-        context 'when bounceable? is false' do
-          before{ expect(incoming_email).to receive(:bounceable?).and_return(false) }
+        context 'when there are no groups that do not hold messages' do
+          before{ expect(incoming_email).to receive(:groups).and_return([]) }
 
-          context 'when parent_message is present' do
-            before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+          context 'when there is a bounce reason' do
+            before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
             it { should be_false }
           end
 
-          context 'when parent_message is nil' do
-            before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+          context 'when there is no bounce reason is false' do
+            before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
 
-            context 'when creator is not a member of the organization' do
-              before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
-              it { should be_true }
+            context 'when parent_message is present' do
+              before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+              it { should be_false }
             end
 
+            context 'when parent_message is nil' do
+              before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+
+              context 'when creator is not a member of the organization' do
+                before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
+                it { should be_true }
+              end
+
+            end
           end
-
         end
-
       end
-
     end
-
   end
 
   describe 'deliverable?' do
@@ -411,14 +448,31 @@ describe Threadable::IncomingEmail do
       context 'and it has non-command content' do
         before { expect(incoming_email).to receive(:command_only_message?).and_return(false) }
 
-        it { should be_false }
+        context 'when the message is not spam' do
+          before{ expect(incoming_email).to receive(:spam?).and_return(false) }
+          it { should be_false }
+        end
+
+        context 'when the message is spam' do
+          before{ expect(incoming_email).to receive(:spam?).and_return(true) }
+          it { should be_true }
+        end
       end
     end
 
     context 'when there is no parent message' do
       before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
 
-      it { should be_false }
+      context 'when the message is not spam' do
+        before{ expect(incoming_email).to receive(:spam?).and_return(false) }
+        it { should be_false }
+      end
+
+      context 'when the message is spam' do
+        before{ expect(incoming_email).to receive(:spam?).and_return(true) }
+        it { should be_true }
+      end
+
     end
   end
 
@@ -460,7 +514,6 @@ describe Threadable::IncomingEmail do
       end
     end
   end
-
 
   describe '#subject_valid?' do
     let(:subject_line) { '[task] i am a subject line' }
