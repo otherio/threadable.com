@@ -25,7 +25,7 @@
             - else
               = image_tag @bubble_url, width: '100%'
 
-          %td
+          %td{colspan: 2}
             %span.subject
               = link_to conversation.subject, conversation_url(@organization, 'my', conversation)
             %br
@@ -39,6 +39,12 @@
             %span.total-count
               = conversation.messages_count
               total
+          %td
+            .buttons
+              %table.threadable-button-table
+                %tr
+                  = email_button "Follow", email_action_link(conversation, @recipient, "follow"), class: 'follow-button'
+
 
       - if conversation.groups.count > 0
         %table.groups{border: 0, cellpadding: 0, cellspacing: 0}
