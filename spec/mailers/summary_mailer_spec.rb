@@ -74,6 +74,9 @@ describe SummaryMailer do
         expect(html_part).to include conversation.subject
         expect(html_part).to include conversation_url(organization, 'my', conversation)
 
+        # styles inlined?
+        expect(html_part).to include 'clear:both'
+
         conversation.groups.all.each do |group|
           expect(html_part).to include group.name
           expect(html_part).to include conversations_url(organization, group)

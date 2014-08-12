@@ -2,7 +2,7 @@
 require 'prepare_email_subject'
 
 class SummaryMailer < Threadable::Mailer
-
+  include Roadie::Rails::Mailer
   include ActionView::Helpers::TextHelper
 
   add_template_helper ConversationMailerHelper
@@ -30,7 +30,6 @@ class SummaryMailer < Threadable::Mailer
     @unsubscribe_url = organization_unsubscribe_url(@organization.slug, unsubscribe_token)
 
     email = mail(
-      :css                 => 'message_summary',
       :'from'              => organization.formatted_email_address,
       :'to'                => recipient.formatted_email_address,
       :'subject'           => subject,
@@ -44,7 +43,5 @@ class SummaryMailer < Threadable::Mailer
     email.smtp_envelope_to = @recipient.email_address.to_s
 
     email
-
-
   end
 end

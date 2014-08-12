@@ -3,83 +3,81 @@
   %head
     %style{data: {immutable: true}}=Rails.application.assets['email.css']
     %style{data: {immutable: true}}=Rails.application.assets['email_mobile.css']
-  - button_defaults = { border: '#cccccc', background: '#fcfcfc', text: '#1abc9c'}
-  - if @show_mail_buttons
-    %div.threadable-content
-      = image_tag @header_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-headerable'
-      %div{:style => "display:none; display:none !important;"}
-        = @message_summary
-      %table.threadable-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "100%"}
-        %tr
-          %td
-            %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0"}
-              %tr
-                - if @is_group_member
-                  = email_button "Web view", @message_url, class: 'view-button'
-                  = email_button "Mute", email_action_link(@conversation, @recipient, "mute"), class: 'mute-button'
-                - else
-                  = email_button "Web", @message_url, class: 'view-button'
-                  = email_button "Unfollow", email_action_link(@conversation, @recipient, "unfollow"), class: 'mute-button'
-                - if @task
-                  - if @task.doers.include? @recipient
-                    = email_button "Remove me", email_action_link(@conversation, @recipient, "remove")
+  %body
+    - button_defaults = { border: '#cccccc', background: '#fcfcfc', text: '#1abc9c'}
+    - if @show_mail_buttons
+      %div.threadable-content
+        = image_tag @header_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-headerable'
+        %div{:style => "display:none; display:none !important;"}
+          = @message_summary
+        %table.threadable-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "100%"}
+          %tr
+            %td
+              %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0"}
+                %tr
+                  - if @is_group_member
+                    = email_button "Web view", @message_url, class: 'view-button'
+                    = email_button "Mute", email_action_link(@conversation, @recipient, "mute"), class: 'mute-button'
                   - else
-                    = email_button "I'll do it!", email_action_link(@conversation, @recipient, "add")
-                  - if @task.done?
-                    = email_button "Task undone", email_action_link(@conversation, @recipient, "undone")
+                    = email_button "Web", @message_url, class: 'view-button'
+                    = email_button "Unfollow", email_action_link(@conversation, @recipient, "unfollow"), class: 'mute-button'
+                  - if @task
+                    - if @task.doers.include? @recipient
+                      = email_button "Remove me", email_action_link(@conversation, @recipient, "remove")
+                    - else
+                      = email_button "I'll do it!", email_action_link(@conversation, @recipient, "add")
+                    - if @task.done?
+                      = email_button "Task undone", email_action_link(@conversation, @recipient, "undone")
                   - else
-                    = email_button "Task done", email_action_link(@conversation, @recipient, "done")
-                - else
+                    %td
+                    %td
+              %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0"}
+                %tr
                   %td
-                  %td
+                    %table.threadable-group-indicator{border: 0, cellpadding: 0, cellspacing: 3, class: @group_indicator_options[:class], style: "background-color: #{@group_indicator_options[:color]} !important;"}
+                      %tr
+                        = email_button "New conversation", @new_conversation_url,  class: 'compose-button'
+                        = email_button "New task",         @new_task_url,          class: 'compose-button'
+                      %tr
+                        %td.group-name{colspan: 2}
+                          = @group_indicator_options[:name]
+        = image_tag @header_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-headerable'
+      %br
 
-            %table.threadable-button-table{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0"}
-              %tr
-                %td
-                  %table.threadable-group-indicator{border: 0, cellpadding: 0, cellspacing: 3, class: @group_indicator_options[:class], style: "background-color: #{@group_indicator_options[:color]} !important;"}
-                    %tr
-                      = email_button "New conversation", @new_conversation_url,  class: 'compose-button'
-                      = email_button "New task",         @new_task_url,          class: 'compose-button'
-                    %tr
-                      %td.group-name{colspan: 2}
-                        = @group_indicator_options[:name]
-      = image_tag @header_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-headerable'
+    - if @message.body.html?
+      = @message.body
+    - else
+      .plain-text= @message.body
+
     %br
 
-  - if @message.body.html?
-    = @message.body
-  - else
-    .plain-text= @message.body
-
-  %br
-
-  %div.threadable-content
-    = image_tag @footer_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-footerable'
-    %table.threadable-details{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-      %tr
-        %td.threadable-details-inner{:style => "color: #95A5A6; text-align: left;"}
-          .threadable-groups
-            - @conversation.groups.all.each do |group|
-              .threadable-group
-                = link_to "#{group.name}", conversations_url(@organization, group)
+    %div.threadable-content
+      = image_tag @footer_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-footerable'
+      %table.threadable-details{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+        %tr
+          %td.threadable-details-inner{:style => "color: #95A5A6; text-align: left;"}
+            .threadable-groups
+              - @conversation.groups.all.each do |group|
+                .threadable-group
+                  = link_to "#{group.name}", conversations_url(@organization, group)
+                  |
+                  = mail_to group.email_address, group.email_address
+                  = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
+                  |
+                  - if group.members.include? @recipient
+                    = link_to 'Leave', email_action_link(group, @recipient, "leave")
+                  - else
+                    = link_to 'Join', email_action_link(group, @recipient, "join")
+            - if @follower_count > 0 || @muter_count > 0
+              .threadable-participants{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
+                = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_details_url(@organization, 'my', @conversation)).html_safe
+            - unless @show_mail_buttons
+              .threadable-conversation{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
+                = link_to 'Web View', conversation_url(@organization, 'my', @conversation)
                 |
-                = mail_to group.email_address, group.email_address
-                = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
-                |
-                - if group.members.include? @recipient
-                  = link_to 'Leave', email_action_link(group, @recipient, "leave")
-                - else
-                  = link_to 'Join', email_action_link(group, @recipient, "join")
-          - if @follower_count > 0 || @muter_count > 0
-            .threadable-participants{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
-              = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_details_url(@organization, 'my', @conversation)).html_safe
-          - unless @show_mail_buttons
-            .threadable-conversation{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
-              = link_to 'Web View', conversation_url(@organization, 'my', @conversation)
+                = link_to 'Mute', email_action_link(@conversation, @recipient, "mute")
+            .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px;margin-top: 3px"}
+              = link_to @organization.name, organization_url(@organization)
               |
-              = link_to 'Mute', email_action_link(@conversation, @recipient, "mute")
-          .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px;margin-top: 3px"}
-            = link_to @organization.name, organization_url(@organization)
-            |
-            = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
-    = image_tag @footer_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-footerable'
+              = "#{link_to 'unsubscribe', @unsubscribe_url} | #{mail_to @threadable.support_email_address, 'feedback' }".html_safe
+      = image_tag @footer_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-footerable'

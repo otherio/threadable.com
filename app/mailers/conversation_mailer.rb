@@ -102,7 +102,6 @@ class ConversationMailer < Threadable::Mailer
     end
 
     email_params = {
-      :css                   => 'email',
       :'from'                => from,
       :'to'                  => to,
       :'cc'                  => cc,

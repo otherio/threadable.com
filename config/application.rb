@@ -11,7 +11,6 @@ Bundler.require(*Rails.groups(:assets => %w(development test)))
 $:.unshift Bundler.root.join('lib')
 require 'rails/console_methods'
 require 'threadable'
-require 'roadie_no_external_asset_provider'
 
 module Threadable
   class Application < Rails::Application
