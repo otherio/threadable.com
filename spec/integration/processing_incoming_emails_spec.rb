@@ -457,7 +457,6 @@ describe "processing incoming emails" do
     let(:expected_organization)  { nil }
     let(:expected_parent_message){ nil }
     let(:expected_conversation)  { nil }
-    let(:expected_creator)       { nil }
     it 'bounces the incoming email' do
       validate! :bounced
     end
@@ -481,8 +480,7 @@ describe "processing incoming emails" do
       context 'with no parent message' do
         let(:expected_parent_message){ nil }
         let(:expected_conversation)  { nil }
-        let(:expected_creator)       { nil }
-        it 'bounces the incoming email' do
+            it 'bounces the incoming email' do
           validate! :bounced
         end
       end
@@ -509,7 +507,6 @@ describe "processing incoming emails" do
 
       let(:expected_conversation)       { expected_organization.conversations.find_by_slug('omg-i-am-so-drunk') }
       let(:expected_parent_message)     { expected_conversation.messages.latest }
-      let(:expected_creator)            { nil }
       let(:expected_bounce_status_code) { '5.6.0'}
 
       it 'bounces the incoming email' do
@@ -539,8 +536,7 @@ describe "processing incoming emails" do
 
         let(:expected_parent_message){ nil }
         let(:expected_conversation)  { nil }
-        let(:expected_creator)       { nil }
-        let(:expected_bounce_status_code) { '5.6.0'}
+            let(:expected_bounce_status_code) { '5.6.0'}
         it 'bounces the incoming email' do
           validate! :bounced
         end
@@ -554,8 +550,7 @@ describe "processing incoming emails" do
 
         let(:expected_parent_message){ nil }
         let(:expected_conversation)  { nil }
-        let(:expected_creator)       { nil }
-        let(:expected_bounce_status_code) { '5.6.0'}
+            let(:expected_bounce_status_code) { '5.6.0'}
         it 'bounces the incoming email' do
           validate! :bounced
         end
@@ -852,7 +847,6 @@ describe "processing incoming emails" do
       let(:expected_conversation)  { nil }
       let(:expected_sent_email_to) { nil }
       let(:expected_parent_message){ nil }
-      let(:expected_creator)       { nil }
 
       it 'bounces the message' do
         validate! :bounced
