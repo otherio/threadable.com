@@ -117,6 +117,12 @@ class Threadable::User < Threadable::Model
   end
   alias_method :the_same_user_as?, :same_user?
 
+  def receives_email_for_groups? groups
+    group_ids = groups.map(&:id)
+    user_record.groups.
+      where(id: group_ids, group_memberships: {summary: false}).present?
+  end
+
   def == other
     (self.class === other || other.class === self) && self.user_id == other.user_id
   end

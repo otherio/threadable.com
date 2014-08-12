@@ -9,8 +9,13 @@ _____
 Web view:
 <%= @message_url %>
 
+<% if @is_group_member %>
 Mute:
 <%= email_action_link(@conversation, @recipient, "mute") %>
+<% else %>
+Unfollow:
+<%= email_action_link(@conversation, @recipient, "unfollow") %>
+<% end %>
 
 Unsubscribe:
 <%= @unsubscribe_url %>

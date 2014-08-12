@@ -26,6 +26,8 @@ class ConversationMailer < Threadable::Mailer
 
     @show_mail_buttons = recipient.show_mail_buttons?
 
+    @is_group_member = @recipient.receives_email_for_groups? @conversation.groups.all
+
     @subject = PrepareEmailSubject.call(@organization, @message)
     @subject.sub!(/^\s*(re:\s?)*/i, "\\1#{@conversation.subject_tag} ")
     @subject = "Re: #{@subject}" if @subject !~ /re:/i && @message.parent_message.present?

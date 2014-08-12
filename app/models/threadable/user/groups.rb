@@ -20,7 +20,7 @@ class Threadable::User::Groups < Threadable::Groups
   private
 
   def scope
-    ::Group.joins(organization: :organization_memberships).where(organization_memberships: {user_id: user.user_id})
+    ::Group.joins(:memberships).where(group_memberships: {user_id: user.user_id})
   end
 
 end

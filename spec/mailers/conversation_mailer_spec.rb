@@ -9,7 +9,7 @@ describe ConversationMailer do
     let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
     let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
     let(:message){ conversation.messages.latest }
-    let(:recipient){ organization.members.all.last }
+    let(:recipient){ organization.members.find_by_email_address('nadya@ucsd.example.com') }
 
     let(:mail){ ConversationMailer.new(threadable).generate(:conversation_message, organization, message, recipient) }
     let(:email){ RSpec::Support::SentEmail::Email.new(mail) }
@@ -239,7 +239,30 @@ describe ConversationMailer do
           mail.html_part.body.to_s.should include 'class="threadable-button"'
           mail.html_part.body.to_s.should_not include 'class="threadable-conversation"'
         end
+
+        context "as a group member" do
+          it "has a mute button" do
+            mail.html_part.body.to_s.should include 'Mute'
+            mail.html_part.body.to_s.should_not include 'Unfollow'
+            mail.text_part.body.to_s.should include 'Mute'
+            mail.text_part.body.to_s.should_not include 'Unfollow'
+          end
+        end
+
+        context "as a follower" do
+          let(:conversation){ organization.conversations.find_by_slug! 'get-a-new-soldering-iron' }
+          let(:expected_to) { ["electronics+task@raceteam.localhost"] }
+          let(:expected_reply_to) { '"UCSD Electric Racing: Electronics Tasks" <electronics+task@raceteam.localhost>'}
+
+          it "has an unfollow button" do
+            mail.html_part.body.to_s.should include 'Unfollow'
+            mail.html_part.body.to_s.should_not include 'Mute'
+            mail.text_part.body.to_s.should include 'Unfollow'
+            mail.text_part.body.to_s.should_not include 'Mute'
+          end
+        end
       end
+
       context "with mail buttons disabled" do
         before do
           recipient.update(show_mail_buttons: false)

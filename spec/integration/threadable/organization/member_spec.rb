@@ -185,5 +185,4 @@ describe Threadable::Organization::Member do
     end
   end
 
-
 end
