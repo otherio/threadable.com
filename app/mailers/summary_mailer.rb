@@ -2,7 +2,7 @@
 require 'prepare_email_subject'
 
 class SummaryMailer < Threadable::Mailer
-  include Roadie::Rails::Mailer
+  include Roadie::Rails::Automatic
   include ActionView::Helpers::TextHelper
 
   add_template_helper ConversationMailerHelper
