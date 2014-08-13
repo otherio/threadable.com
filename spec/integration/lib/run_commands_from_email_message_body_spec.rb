@@ -60,6 +60,29 @@ describe RunCommandsFromEmailMessageBody do
     end
   end
 
+  context "with &follow in the body" do
+    let(:body) { "&follow \nTime to follow this craziness." }
+
+    it "marks the task as followed" do
+      expect(task.followed?).to be_false
+      call!
+      expect(task.followed?).to be_true
+    end
+  end
+
+  context "with &unfollow in the body" do
+    let(:body) { "&unfollow \nI am so tired of hearing this conversation. Unfollowed." }
+    before do |variable|
+      task.follow!
+    end
+
+    it "marks the task as unfollowed" do
+      expect(task.followed?).to be_true
+      call!
+      expect(task.followed?).to be_false
+    end
+  end
+
   context "with &add My Name in the body" do
     let(:body) { "&add Alice Neilson \nI got this. I'm so ready to trim body panels." }
 

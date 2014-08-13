@@ -30,6 +30,10 @@ class RunCommandsFromEmailMessageBody < MethodObject
       @conversation.mute!
     when /^&unmute/i
       @conversation.unmute!
+    when /^&follow/i
+      @conversation.follow!
+    when /^&unfollow/i
+      @conversation.unfollow!
     when /^&add(.*)/i
       return unless @conversation.task?
       doer = @conversation.organization.members.fuzzy_find($1)
