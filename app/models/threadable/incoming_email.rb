@@ -253,7 +253,7 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def spam_score
-    message_headers_as_hash['X-Mailgun-Sscore']
+    message_headers_as_hash['X-Mailgun-Sscore'] || 0
   end
 
   def from_email_addresses
