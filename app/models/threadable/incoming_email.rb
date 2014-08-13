@@ -153,9 +153,9 @@ class Threadable::IncomingEmail < Threadable::Model
     body = stripped_plain[0..1024]
     lines = body.split(/\n/)
 
-    return false unless body =~ /^\s*&(done|undone|add|remove|mute|unmute)/m
+    return false unless body =~ /^\s*&(done|undone|add|remove|mute|unmute|follow|unfollow)/m
     lines.reject! do |line|
-      line =~ /^\s*&(done|undone|add|remove|mute|unmute)/
+      line =~ /^\s*&(done|undone|add|remove|mute|unmute|follow|unfollow)/
     end
     ! (lines.join('') =~ /\S/m)
   end
