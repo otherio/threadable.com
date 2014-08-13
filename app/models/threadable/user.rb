@@ -45,6 +45,10 @@ class Threadable::User < Threadable::Model
     group_memberships.all.map(&:group_id)
   end
 
+  def limited_group_ids
+    group_memberships.limited.map(&:group_id)
+  end
+
   def web_enabled?
     user_record.encrypted_password.present?
   end

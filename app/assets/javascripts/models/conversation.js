@@ -69,7 +69,9 @@ Threadable.Conversation = RL.Model.extend({
   }.property('isTask', 'doers'),
 
   currentUserIsInGroups: function() {
-    return !! this.get('groups').findBy('currentUserIsAMember', true);
+    return !! this.get('groups').find(function(group) {
+      return group.get('currentUserIsAMember') && !group.get('currentUserIsALimitedMember');
+    });
   }.property('groupIds'),
 
   currentUserIsARecipient: function() {

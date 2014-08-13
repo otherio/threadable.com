@@ -12,6 +12,10 @@ class Threadable::User::GroupMemberships < Threadable::Collection
     group_memberships_for scope
   end
 
+  def limited
+    group_memberships_for scope.who_get_summaries
+  end
+
   # def for_organization organization
   #   group_memberships_for scope.for_organization(organization.id)
   # end

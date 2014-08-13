@@ -39,6 +39,7 @@ describe GroupsSerializer do
         organization_slug:            electronics.organization.slug,
 
         current_user_is_a_member: false,
+        current_user_is_a_limited_member: false,
         can_set_google_sync:      true,
       )
     end
@@ -76,6 +77,7 @@ describe GroupsSerializer do
           organization_slug:            electronics.organization.slug,
 
           current_user_is_a_member: false,
+          current_user_is_a_limited_member: false,
           can_set_google_sync:      true,
         },{
           id:                  fundraising.id,
@@ -104,6 +106,7 @@ describe GroupsSerializer do
           organization_slug:            fundraising.organization.slug,
 
           current_user_is_a_member: true,
+          current_user_is_a_limited_member: false,
           can_set_google_sync:      true,
         },
       ]
