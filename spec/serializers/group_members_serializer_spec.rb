@@ -12,14 +12,14 @@ describe GroupMembersSerializer do
     let(:expected_key){ :group_member }
     it do
       should eq(
-        id:            alice.id,
-        user_id:       alice.user_id,
-        param:         "alice-neilson",
-        name:          "Alice Neilson",
-        email_address: "alice@ucsd.example.com",
-        slug:          "alice-neilson",
-        avatar_url:    "/fixture_images/alice.jpg",
-        gets_in_summary: false,
+        id:              alice.id,
+        user_id:         alice.user_id,
+        param:           "alice-neilson",
+        name:            "Alice Neilson",
+        email_address:   "alice@ucsd.example.com",
+        slug:            "alice-neilson",
+        avatar_url:      "/fixture_images/alice.jpg",
+        delivery_method: "gets_each_message",
       )
     end
   end
@@ -30,23 +30,23 @@ describe GroupMembersSerializer do
     it do
       should eq [
         {
-          id:            alice.id,
-          user_id:       alice.user_id,
-          param:         "alice-neilson",
-          name:          "Alice Neilson",
-          email_address: "alice@ucsd.example.com",
-          slug:          "alice-neilson",
-          avatar_url:    "/fixture_images/alice.jpg",
-          gets_in_summary: false,
+          id:              alice.id,
+          user_id:         alice.user_id,
+          param:           "alice-neilson",
+          name:            "Alice Neilson",
+          email_address:   "alice@ucsd.example.com",
+          slug:            "alice-neilson",
+          avatar_url:      "/fixture_images/alice.jpg",
+          delivery_method: "gets_each_message",
         },{
-          id:            bob.id,
-          user_id:       bob.user_id,
-          param:         "bob-cauchois",
-          name:          "Bob Cauchois",
-          email_address: "bob@ucsd.example.com",
-          slug:          "bob-cauchois",
-          avatar_url:    "/fixture_images/bob.jpg",
-          gets_in_summary: true,
+          id:              bob.id,
+          user_id:         bob.user_id,
+          param:           "bob-cauchois",
+          name:            "Bob Cauchois",
+          email_address:   "bob@ucsd.example.com",
+          slug:            "bob-cauchois",
+          avatar_url:      "/fixture_images/bob.jpg",
+          delivery_method: "gets_in_summary",
         }
       ]
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140804221600) do
+ActiveRecord::Schema.define(version: 20140813212918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,10 +153,11 @@ ActiveRecord::Schema.define(version: 20140804221600) do
   create_table "group_memberships", force: true do |t|
     t.integer "group_id"
     t.integer "user_id"
-    t.boolean "summary",  default: false, null: false
-    t.integer "role",     default: 0
+    t.integer "role",            default: 0
+    t.integer "delivery_method", default: 0, null: false
   end
 
+  add_index "group_memberships", ["delivery_method", "user_id"], name: "index_group_memberships_on_delivery_method_and_user_id", using: :btree
   add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
   add_index "group_memberships", ["user_id", "group_id"], name: "index_group_memberships_on_user_id_and_group_id", unique: true, using: :btree
 

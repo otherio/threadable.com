@@ -7,7 +7,7 @@ class Threadable::User::Groups < Threadable::Groups
   end
 
   def with_summary
-    groups_for scope.joins(:memberships).where(group_memberships: {summary: true, user_id: user.user_id})
+    groups_for scope.joins(:memberships).where(group_memberships: {delivery_method: 1, user_id: user.user_id})
   end
 
   attr_reader :user

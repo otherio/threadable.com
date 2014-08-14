@@ -125,7 +125,7 @@ class Threadable::User < Threadable::Model
   def receives_email_for_groups? groups
     group_ids = groups.map(&:id)
     user_record.groups.
-      where(id: group_ids, group_memberships: {summary: false}).present?
+      where(id: group_ids, group_memberships: {delivery_method: 0}).present?
   end
 
   def == other

@@ -11,22 +11,15 @@
     .member-settings
       .setting
         h4.label
-          | Daily Summary:
-        .control
-          a.summary.input-switch href="" class={ getsInSummary:input-switch-on:input-switch-off saving:disabled} click="toggleGetsInSummary"
-            .input-switch-wrapper
-              .slider
-                .on
-                  i.uk-icon-check
-                  span.sr-only
-                    | On
-                .off
-                  i.uk-icon-times
-                  span.sr-only
-                    | Off
-                .switch
+          | Delivery Method:
+        form.uk-form
+          .control
+            | {{view Ember.Select content=deliveryMethods optionLabelPath="content.prettyName" optionValuePath="content.method" value=deliveryMethod}}
         br
         p.subtitle
-          | When enabled, #{name} will receive a single email each day with a summary of this group's messages.
-          br
-          | When disabled, #{name} will receive each message immediately.
+          if getsEachMessage
+            | #{name} will receive each message via email immediately.
+          if getsInSummary
+            | #{name} will receive a single email each day with a summary of this group's messages, and can follow the conversations of interest.
+          if getsFirstMessage
+            | #{name} will receive the first message of each conversation, and can follow that conversation to receive subsequent messages.
