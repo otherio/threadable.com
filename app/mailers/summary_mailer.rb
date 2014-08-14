@@ -14,8 +14,13 @@ class SummaryMailer < Threadable::Mailer
     @formatted_date = time.strftime('%a, %b %-d')
 
     @new_count = {}
-    conversations.sort{|a,b| b.last_message_at <=> a.last_message_at}.each do |conversation|
+    conversations.each do |conversation|
       @new_count[conversation.id] = conversation.messages.count_for_date(time)
+    end
+
+    @not_sent_count = {}
+    conversations.each do |conversation|
+      @not_sent_count[conversation.id] = conversation.messages.not_sent_to(recipient).length
     end
 
     @check_url = "https://s3.amazonaws.com/multify-production/check%402x.png"

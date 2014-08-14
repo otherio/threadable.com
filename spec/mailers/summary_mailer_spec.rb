@@ -67,15 +67,17 @@ describe SummaryMailer do
       expect(html_part).to include "mailto:#{organization.email_address}"
       expect(html_part).to include "mailto:#{organization.task_email_address}"
 
+      # styles inlined?
+      expect(html_part).to include 'clear:both'
+
       conversations.each do |conversation|
         expect(text_part).to include conversation.subject
         expect(text_part).to include conversation_url(organization, 'my', conversation)
+        expect(text_part).to include "#{conversation.messages.not_sent_to(recipient).length} messages"
 
         expect(html_part).to include conversation.subject
         expect(html_part).to include conversation_url(organization, 'my', conversation)
-
-        # styles inlined?
-        expect(html_part).to include 'clear:both'
+        expect(html_part).to include "#{conversation.messages.not_sent_to(recipient).length} messages"
 
         conversation.groups.all.each do |group|
           expect(html_part).to include group.name

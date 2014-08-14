@@ -65,6 +65,7 @@ describe RunCommandsFromEmailMessageBody do
 
     it "marks the task as followed" do
       expect(task.followed?).to be_false
+      expect(task).to receive :sync_to_user
       call!
       expect(task.followed?).to be_true
     end

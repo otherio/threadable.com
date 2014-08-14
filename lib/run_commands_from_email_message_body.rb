@@ -32,6 +32,7 @@ class RunCommandsFromEmailMessageBody < MethodObject
       @conversation.unmute!
     when /^&follow/i
       @conversation.follow!
+      @conversation.sync_to_user @conversation.threadable.current_user
     when /^&unfollow/i
       @conversation.unfollow!
     when /^&add(.*)/i

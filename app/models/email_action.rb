@@ -91,6 +91,7 @@ class EmailAction
       record.unmute_for(user)
     when 'follow'
       record.follow_for(user)
+      record.sync_to_user user
     when 'unfollow'
       record.unfollow_for(user)
     when 'add'
@@ -120,7 +121,7 @@ class EmailAction
     when 'unmute'
       "un-mute #{record.subject.inspect}"
     when 'follow'
-      "follow #{record.subject.inspect}"
+      "follow #{record.subject.inspect} and send its messages"
     when 'unfollow'
       "unfollow #{record.subject.inspect}"
     when 'add'
@@ -145,7 +146,7 @@ class EmailAction
     when 'unmute'
       "You un-muted #{record.subject.inspect}"
     when 'follow'
-      "You followed #{record.subject.inspect}"
+      "You followed #{record.subject.inspect} and sent its messages to your inbox"
     when 'unfollow'
       "You unfollowed #{record.subject.inspect}"
     when 'add'
