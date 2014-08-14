@@ -1,5 +1,8 @@
 class GroupMembership < ActiveRecord::Base
 
+  # you can add to the end of this, but do not reorder it.
+  enum delivery_method: [:gets_each_message, :gets_in_summary, :gets_first_message]
+
   belongs_to :group
   belongs_to :user
   has_one :organization, through: :group
@@ -8,10 +11,6 @@ class GroupMembership < ActiveRecord::Base
 
   scope :for_organization, -> organization_id {
     joins(:organization).where(groups:{ organization_id: organization_id })
-  }
-
-  scope :who_get_summaries, -> {
-    where(summary: true)
   }
 
 end

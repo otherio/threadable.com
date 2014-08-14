@@ -4,9 +4,20 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
 
   updateInProgress: false,
 
+  deliveryMethods: [
+    {prettyName: 'Send each message',                  method: 'gets_each_message'},
+    {prettyName: 'Daily summary',                      method: 'gets_in_summary'},
+    {prettyName: 'First message of each conversation', method: 'gets_first_message'}
+  ],
+
   isMember: function() {
     return !!this.get('group.members').findBy('userId', this.get('userId'));
   }.property('group.members.@each'),
+
+  autoSave: function() {
+    if (this.get('saving')) return;
+    this.save();
+  }.observes('deliveryMethod'),
 
   actions: {
     addMember: function(organizationMember) {
@@ -50,12 +61,6 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
           }.bind(this));
         }.bind(this)
       });
-    },
-
-    toggleGetsInSummary: function() {
-      if (this.get('saving')) return;
-      this.toggleProperty('getsInSummary');
-      this.save();
     },
   },
 

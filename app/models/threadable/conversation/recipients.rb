@@ -32,19 +32,18 @@ class Threadable::Conversation::Recipients
     end
   end
 
-  def scope
-    recipients = OrganizationMembership.
+  def scope_without_groups
+    OrganizationMembership.
       includes(:user).
       distinct.
       who_get_email.
       for_organization(conversation.organization_id).
       who_have_not_muted(conversation.id)
+  end
 
+  def scope
     groups = conversation.groups.all
-
-    recipients = recipients.in_groups_without_summary_including_followers(conversation.id, groups.map(&:id))
-
-    recipients
+    scope_without_groups.in_groups_with_each_message_including_followers(conversation.id, groups.map(&:id), false)
   end
 
 end

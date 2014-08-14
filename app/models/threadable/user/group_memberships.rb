@@ -13,7 +13,7 @@ class Threadable::User::GroupMemberships < Threadable::Collection
   end
 
   def limited
-    group_memberships_for scope.who_get_summaries
+    group_memberships_for scope.gets_in_summary
   end
 
   # def for_organization organization

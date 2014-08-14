@@ -20,9 +20,15 @@ class Threadable::Group::Member < Threadable::User
     to_param
   }, to: :user_record
 
-  # delegate *%w{
-
-  # }, to: :group_membership_record
+  delegate *%w{
+    gets_in_summary?
+    gets_in_summary!
+    gets_each_message?
+    gets_each_message!
+    gets_first_message?
+    gets_first_message!
+    delivery_method
+  }, to: :group_membership_record
 
   def group_membership_id
     group_membership_record.id
@@ -32,27 +38,13 @@ class Threadable::Group::Member < Threadable::User
     @user ||= Threadable::User.new(threadable, user_record)
   end
 
+  def delivery_method= delivery_method
+    group_membership_record.update_attribute(:delivery_method, delivery_method)
+  end
+
   def reload
     group_membership_record.reload
     self
-  end
-
-  def gets_in_summary?
-    !!group_membership_record.summary
-  end
-
-  def gets_every_message?
-    !gets_in_summary?
-  end
-
-  def gets_in_summary!
-    return if gets_in_summary?
-    group_membership_record.update_attribute(:summary, true)
-  end
-
-  def gets_every_message!
-    return if !gets_in_summary?
-    group_membership_record.update_attribute(:summary, false)
   end
 
   def == other

@@ -2,7 +2,7 @@ class GroupMembersSerializer < UsersSerializer
 
   def serialize_record member
     super.merge(
-      gets_in_summary: member.gets_in_summary?,
+      delivery_method: member.delivery_method,
     )
   end
 

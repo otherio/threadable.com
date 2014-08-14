@@ -3,8 +3,19 @@
 Threadable.GroupMember = Threadable.User.extend({
   organizationSlug: RL.attr('string'),
   personalMessage:  RL.attr('string'),
-  getsInSummary:    RL.attr('boolean'),
-  getsEveryMessage: RL.attr('boolean'),
+  deliveryMethod:   RL.attr('string'),
+
+  getsEachMessage: function() {
+    return this.get('deliveryMethod') == 'gets_each_message';
+  }.property('deliveryMethod'),
+
+  getsInSummary: function() {
+    return this.get('deliveryMethod') == 'gets_in_summary';
+  }.property('deliveryMethod'),
+
+  getsFirstMessage: function() {
+    return this.get('deliveryMethod') == 'gets_first_message';
+  }.property('deliveryMethod')
 });
 
 Threadable.GroupMember.reopen(Threadable.AddOrganizationIdToRequestsMixin);

@@ -95,13 +95,11 @@ class Threadable::Message < Threadable::Model
   end
 
   let(:attachments){ Attachments.new(self) }
+  let(:recipients) { Recipients.new(self) }
 
   def update attributes
     message_record.update_attributes!(attributes)
   end
-
-
-  delegate :recipients, to: :conversation
 
   def send_emails! send_to_creator=false
     # Scheduling background jobs need to happen outside of a Threadable.transaction so that

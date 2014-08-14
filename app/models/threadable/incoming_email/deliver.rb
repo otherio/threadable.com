@@ -133,11 +133,4 @@ class Threadable::IncomingEmail::Deliver < MethodObject
     StripThreadableContentFromEmailMessageBody.call(body) unless body.nil?
   end
 
-  def send_emails!
-    @message.recipients.all.each do |recipient|
-      next if recipient.same_user?(creator)
-      @threadable.emails.send_email_async(:conversation_message, @conversation.organization.id, @message.id, recipient.id)
-    end
-  end
-
 end
