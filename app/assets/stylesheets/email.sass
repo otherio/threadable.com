@@ -3,50 +3,54 @@
 @import constants
 @import threadable-button
 
+td, h1, h2, h3
+  font-family: Helvetica, Arial, sans-serif
+
 .threadable-content
   margin-top: 0 !important
-  font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important
 
   .threadable-details a
-    text-decoration: none !important
-    color: $email-link-color !important
+    text-decoration: none
+    color: $email-link-color
 
   .threadable-groups
-    font-size: 12px !important
+    font-size: 12px
     margin-bottom: 5px !important
 
   .threadable-controls
-    font-weight: 300 !important
+    text-decoration: none
+    font-weight: 300
     max-width: 480px !important
 
   a.threadable-button
+    text-decoration: none
     border: none
     &:not(.compose-button)
       border: #cccccc 1px solid !important
 
   a.task-button
-    color: #1abc9c !important
+    color: #1abc9c
 
   a.compose-button
-    color: #364041 !important
+    color: #364041
 
   a.view-button
-    color: #364041 !important
+    color: #364041
 
   a.mute-button
-    color: #2980b9 !important
+    color: #2980b9
 
   .threadable-group-indicator
-    font-size: 11px !important
-    font-weight: bold !important
-    +border-radius(3px !important)
+    font-size: 11px
+    font-weight: bold
+    +border-radius(3px)
 
     &.grouped
-      color: white !important
+      color: white
       padding-top: 1px !important
 
     &.many
-      color: white !important
+      color: white
       padding-top: 1px !important
 
     td.threadable-button
