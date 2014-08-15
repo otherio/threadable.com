@@ -30,7 +30,7 @@ class ConversationMailer < Threadable::Mailer
     @is_first_message_member = @recipient.receives_first_message_for_groups? @conversation.groups.all
 
     if !@is_group_member && @is_first_message_member
-      @flash = "You'll only receive the first message of this conversation. Follow or reply to get the rest."
+      @flash = "You'll only receive the first message of this conversation.\nFollow or reply to get the rest."
     end
 
     @subject = PrepareEmailSubject.call(@organization, @message)
