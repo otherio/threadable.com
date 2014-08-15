@@ -2,7 +2,9 @@
 
 
 _____
-<% @conversation.groups.all.each do |group| %>
+<% if @flash.present? %>
+<%= @flash %>
+<% end %><% @conversation.groups.all.each do |group| %>
 <%= group.name %>: <%= group.email_address %>
 <% end %>
 
@@ -12,6 +14,9 @@ Web view:
 <% if @is_group_member %>
 Mute:
 <%= email_action_link(@conversation, @recipient, "mute") %>
+<% elsif @is_first_message_member %>
+Follow:
+<%= email_action_link(@conversation, @recipient, "follow") %>
 <% else %>
 Unfollow:
 <%= email_action_link(@conversation, @recipient, "unfollow") %>

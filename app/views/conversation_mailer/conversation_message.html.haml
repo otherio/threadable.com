@@ -10,6 +10,9 @@
         = image_tag @header_separator_url, width: "1px", height: "1px", alt: '', class: 'superable-specialable-threadable-dividerable-headerable'
         %div{:style => "display:none; display:none !important;"}
           = @message_summary
+        - if @flash.present?
+          %div.flash
+            = @flash
         %table.threadable-controls{:border => "0", :cellpadding => "0", :color => "dark grey", :width => "100%"}
           %tr
             %td
@@ -18,6 +21,9 @@
                   - if @is_group_member
                     = email_button "Web view", @message_url, class: 'view-button'
                     = email_button "Mute", email_action_link(@conversation, @recipient, "mute"), class: 'mute-button'
+                  - elsif @is_first_message_member
+                    = email_button "Web", @message_url, class: 'view-button'
+                    = email_button "Follow", email_action_link(@conversation, @recipient, "follow"), class: 'mute-button'
                   - else
                     = email_button "Web", @message_url, class: 'view-button'
                     = email_button "Unfollow", email_action_link(@conversation, @recipient, "unfollow"), class: 'mute-button'
@@ -70,16 +76,20 @@
                     = link_to 'join', email_action_link(group, @recipient, "join")
             - if @follower_count > 0 || @muter_count > 0
               .threadable-participants{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
+                - if @flash.present? && !@show_mail_buttons
+                  %div.footer-flash
+                    = @flash
+
                 = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_details_url(@organization, 'my', @conversation)).html_safe
                 - unless @show_mail_buttons
                   |
+                  = link_to 'web view', conversation_url(@organization, 'my', @conversation)
+                  |
                   - if @is_group_member
-                    = link_to 'web view', conversation_url(@organization, 'my', @conversation)
-                    |
                     = link_to 'mute', email_action_link(@conversation, @recipient, "mute")
+                  - elsif @is_first_message_member
+                    = link_to 'follow', email_action_link(@conversation, @recipient, "follow")
                   - else
-                    = link_to 'web view', conversation_url(@organization, 'my', @conversation)
-                    |
                     = link_to 'unfollow', email_action_link(@conversation, @recipient, "unfollow")
             .threadable-unsubscribe{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 10px;margin-top: 3px"}
               = link_to @organization.name, organization_url(@organization)
