@@ -43,7 +43,7 @@
             .buttons
               %table.threadable-button-table
                 %tr
-                  = email_button "Follow and send #{@not_sent_count[conversation.id]} messages", email_action_link(conversation, @recipient, "follow"), class: 'follow-button'
+                  = email_button "Follow and send #{pluralize(@not_sent_count[conversation.id], 'message')}", email_action_link(conversation, @recipient, "follow"), class: 'follow-button'
 
       - if conversation.groups.count > 0
         %table.groups{border: 0, cellpadding: 0, cellspacing: 0}

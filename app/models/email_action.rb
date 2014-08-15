@@ -27,6 +27,10 @@ class EmailAction
     @user ||= threadable.current_user || threadable.users.find_by_id(@user_id)
   end
 
+  def member
+    @member ||= organization.members.find_by_user_id(user.id)
+  end
+
   def record
     return @record if @record
     thing = user || threadable
@@ -86,22 +90,22 @@ class EmailAction
     when 'undone'
       record.undone!
     when 'mute'
-      record.mute_for(user)
+      record.mute_for(member)
     when 'unmute'
-      record.unmute_for(user)
+      record.unmute_for(member)
     when 'follow'
-      record.follow_for(user)
-      record.sync_to_user user
+      record.follow_for(member)
+      record.sync_to_user member
     when 'unfollow'
-      record.unfollow_for(user)
+      record.unfollow_for(member)
     when 'add'
-      record.doers.add(user)
+      record.doers.add(member)
     when 'remove'
-      record.doers.remove(user)
+      record.doers.remove(member)
     when 'join'
-      record.members.add(user)
+      record.members.add(member)
     when 'leave'
-      record.members.remove(user)
+      record.members.remove(member)
     end
     @executed = true
     threadable.track_for_user(@user_id, 'Email action taken',
@@ -163,26 +167,30 @@ class EmailAction
   def redirect_url routes
     case type
     when 'done'
-      routes.task_url(record.organization, 'my', record, success: success_description)
+      routes.task_url(organization, 'my', record, success: success_description)
     when 'undone'
-      routes.task_url(record.organization, 'my', record, success: success_description)
+      routes.task_url(organization, 'my', record, success: success_description)
     when 'mute'
-      routes.conversation_url(record.organization, 'my', record, success: success_description)
+      routes.conversation_url(organization, 'my', record, success: success_description)
     when 'unmute'
-      routes.conversation_url(record.organization, 'my', record, success: success_description)
+      routes.conversation_url(organization, 'my', record, success: success_description)
     when 'follow'
-      routes.conversation_url(record.organization, 'my', record, success: success_description)
+      routes.conversation_url(organization, 'my', record, success: success_description)
     when 'unfollow'
-      routes.conversation_url(record.organization, 'my', record, success: success_description)
+      routes.conversation_url(organization, 'my', record, success: success_description)
     when 'add'
-      routes.task_url(record.organization, 'my', record, success: success_description)
+      routes.task_url(organization, 'my', record, success: success_description)
     when 'remove'
-      routes.task_url(record.organization, 'my', record, success: success_description)
+      routes.task_url(organization, 'my', record, success: success_description)
     when 'join'
-      routes.conversations_url(record.organization, record, success: success_description)
+      routes.conversations_url(organization, record, success: success_description)
     when 'leave'
-      routes.conversations_url(record.organization, record, success: success_description)
+      routes.conversations_url(organization, record, success: success_description)
     end
+  end
+
+  def organization
+    @organization ||= record.organization
   end
 
   def example_command

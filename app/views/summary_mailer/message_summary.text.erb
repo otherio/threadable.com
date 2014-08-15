@@ -5,7 +5,7 @@
 <%=conversation.subject %>
   <%=pluralize(@new_count[conversation.id], 'new message')%>, <%=conversation.messages_count%> total
   View: <%=conversation_url(@organization, 'my', conversation)%>
-  Follow and send <%="#{@not_sent_count[conversation.id]}"%> messages, <%=email_action_url(conversation, @recipient, "follow")%>
+  Follow and send <%="#{pluralize(@not_sent_count[conversation.id], 'message')}: #{email_action_link(conversation, @recipient, "follow")}" %>
 
 <%- end %>
 _____
