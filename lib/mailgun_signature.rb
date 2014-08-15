@@ -5,7 +5,7 @@ module MailgunSignature
   end
 
   def self.encode(timestamp, token)
-    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA256'), api_key, [timestamp, token].join)
+    OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('SHA256'), api_key, [timestamp, token].join)
   end
 
 end
