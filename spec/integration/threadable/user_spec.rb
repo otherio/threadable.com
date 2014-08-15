@@ -10,10 +10,37 @@ describe Threadable::User do
 
 
   describe "#receives_email_for_groups?" do
-
     context "when the current user is a group member of one or more supplied groups" do
       it 'returns true' do
         expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_true
+      end
+    end
+
+    context "when the current user is a group member subscribed to only summaries" do
+      before do
+        user.groups.all.each do |group|
+          membership = group.members.find_by_user_id!(user.id)
+          membership.gets_in_summary!
+        end
+      end
+
+      it 'returns false' do
+        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_false
+      end
+    end
+  end
+
+  describe "#receives_first_message_for_groups?" do
+    context "when the current user has a first-message subscription to one or more supplied groups" do
+      before do
+        user.groups.all.each do |group|
+          membership = group.members.find_by_user_id!(user.id)
+          membership.gets_first_message!
+        end
+      end
+
+      it 'returns true' do
+        expect(user.receives_first_message_for_groups? [electronics, fundraising] ).to be_true
       end
     end
 
@@ -37,6 +64,19 @@ describe Threadable::User do
         user.groups.all.each do |group|
           membership = group.members.find_by_user_id!(user.id)
           membership.gets_in_summary!
+        end
+      end
+
+      it 'returns the ids of those groups' do
+        expect(user.limited_group_ids).to include( electronics.id )
+      end
+    end
+
+    context "when the current user is subscribed to one or more groups with first-message" do
+      before do
+        user.groups.all.each do |group|
+          membership = group.members.find_by_user_id!(user.id)
+          membership.gets_first_message!
         end
       end
 

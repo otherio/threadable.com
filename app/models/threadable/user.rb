@@ -123,9 +123,17 @@ class Threadable::User < Threadable::Model
   alias_method :the_same_user_as?, :same_user?
 
   def receives_email_for_groups? groups
+    receives_email_for_groups_with_method? groups, :gets_each_message
+  end
+
+  def receives_first_message_for_groups? groups
+    receives_email_for_groups_with_method? groups, :gets_first_message
+  end
+
+  def receives_email_for_groups_with_method? groups, delivery_method
     group_ids = groups.map(&:id)
     user_record.groups.
-      where(id: group_ids, group_memberships: {delivery_method: 0}).present?
+      where(id: group_ids, group_memberships: {delivery_method: ::GroupMembership.delivery_methods[delivery_method]}).present?
   end
 
   def == other

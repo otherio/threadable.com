@@ -274,6 +274,33 @@ describe ConversationMailer do
       end
     end
 
+    context 'for first-message recipients' do
+      context 'when the recipient has a first-message subscription' do
+        let(:group) { conversation.groups.all.first}
+        let(:member) { group.members.all.find{|g| g.slug == recipient.slug } }
+
+        before do
+          member.gets_first_message!
+        end
+
+        it 'has a follow button and a flash' do
+          mail.html_part.body.to_s.should include 'Follow'
+          mail.html_part.body.to_s.should_not include 'Unfollow'
+          mail.html_part.body.to_s.should_not include 'Mute'
+          mail.html_part.body.to_s.should include "You'll only receive the first message of this conversation"
+          mail.text_part.body.to_s.should include "You'll only receive the first message of this conversation"
+        end
+      end
+
+      context 'when the recipient has an each-message and a first-message subscription' do
+        it 'does not have a follow button or a flash' do
+          mail.html_part.body.to_s.should_not include 'Follow'
+          mail.html_part.body.to_s.should_not include "You'll only receive the first message of this conversation"
+          mail.text_part.body.to_s.should_not include "You'll only receive the first message of this conversation"
+        end
+      end
+    end
+
     context 'with attachments' do
       let(:conversation) { organization.conversations.find_by_slug! 'how-are-we-paying-for-the-motor-controller' }
 

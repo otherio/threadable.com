@@ -27,6 +27,11 @@ class ConversationMailer < Threadable::Mailer
     @show_mail_buttons = recipient.show_mail_buttons?
 
     @is_group_member = @recipient.receives_email_for_groups? @conversation.groups.all
+    @is_first_message_member = @recipient.receives_first_message_for_groups? @conversation.groups.all
+
+    if !@is_group_member && @is_first_message_member
+      @flash = "You'll only receive the first message of this conversation. Follow or reply to get the rest."
+    end
 
     @subject = PrepareEmailSubject.call(@organization, @message)
     @subject.sub!(/^\s*(re:\s?)*/i, "\\1#{@conversation.subject_tag} ")
@@ -37,19 +42,18 @@ class ConversationMailer < Threadable::Mailer
 
     @message_url = conversation_url(@organization, 'my', @conversation, anchor: "message-#{@message.id}")
 
+    groups = @conversation.groups.all
+    @new_task_url = "mailto:#{groups.map(&:task_email_address).join(',')}"
+    @new_conversation_url = "mailto:#{groups.map(&:email_address).join(',')}"
+
     if has_many_groups
-      groups = @conversation.groups.all
-      @new_task_url = "mailto:#{groups.map(&:task_email_address).join(',')}"
-      @new_conversation_url = "mailto:#{groups.map(&:email_address).join(',')}"
       @group_indicator_options = {
         name: 'Many Groups',
         class: 'many',
         color: '#95a5a6',
       }
     else
-      group = @conversation.groups.all.first
-      @new_task_url = "mailto:#{URI::encode(group.task_email_address)}"
-      @new_conversation_url = "mailto:#{URI::encode(group.email_address)}"
+      group = groups.first
       @group_indicator_options = {
         name: "#{truncate_with_ellipsis(group.name)}",
         class: 'grouped',

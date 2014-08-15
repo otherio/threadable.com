@@ -13,7 +13,7 @@ class Threadable::User::GroupMemberships < Threadable::Collection
   end
 
   def limited
-    group_memberships_for scope.gets_in_summary
+    group_memberships_for scope.where(delivery_method: [::GroupMembership.delivery_methods[:gets_in_summary], ::GroupMembership.delivery_methods[:gets_first_message]] )
   end
 
   # def for_organization organization
