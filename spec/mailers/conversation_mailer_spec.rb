@@ -269,7 +269,6 @@ describe ConversationMailer do
         end
         it "doesn't have buttons in the mail" do
           mail.html_part.body.to_s.should_not include 'class="threadable-button"'
-          mail.html_part.body.to_s.should include 'class="threadable-conversation"'
         end
       end
     end
