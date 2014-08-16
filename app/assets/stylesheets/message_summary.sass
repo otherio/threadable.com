@@ -5,45 +5,51 @@
 @import classes/badge
 @import threadable-button
 
+td, h1, h2, h3
+  font-family: Helvetica, Arial, sans-serif
+
 .message-summary
+  font-family: Helvetica, Arial, sans-serif
   margin-top: 0.5em !important
   width: 100% !important
-  font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important
 
   .message-list
     clear: both !important
 
     a.follow-button
-      color: #2980b9 !important
+      color: #2980b9
 
   a.compose-button
-    color: #364041 !important
+    color: #364041
 
   .conversations
     width: 100% !important
 
+  a.threadable-button
+    text-decoration: none
+
   .messages
-    font-size: 14px !important
-    font-weight: 300 !important
+    font-size: 14px
+    font-weight: 300
     padding-top: 10px !important
 
   .heading
-    font-weight: bold !important
-    font-size: 14px !important
+    font-weight: bold
+    font-size: 14px
 
     .message-count-summary
-      font-weight: 300 !important
+      font-weight: 300
 
   .summary
-    color: $grey-text-color !important
-    font-size: 13px !important
+    color: $grey-text-color
+    font-size: 13px
     white-space: nowrap !important
     overflow: hidden !important
 
   .summary, .subject
 
   .new-count
-    font-weight: normal !important
+    font-weight: normal
 
   .total-count
     color: $grey-text-color
@@ -65,5 +71,5 @@
       display: block
 
   .subject a, .footer a
-    text-decoration: none !important
-    color: $email-link-color !important
+    text-decoration: none
+    color: $email-link-color

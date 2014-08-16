@@ -1,4 +1,5 @@
 %style{data: {immutable: true}}=Rails.application.assets['message_summary.css']
+%style{data: {immutable: true, :"roadie-ignore" => true}}=Rails.application.assets['message_summary_not_outlook.css']
 .message-summary
   %div.heading
     %div.message-count-summary
@@ -14,6 +15,8 @@
         = email_button "New task",         mail_to_href(@organization.task_email_address), class: 'compose-button'
 
   %br
+  /[if mso]
+    %br
 
   .message-list
     - @conversations.each do |conversation|
