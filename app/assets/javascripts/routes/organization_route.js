@@ -1,15 +1,13 @@
 Threadable.OrganizationRoute = Ember.Route.extend({
 
   model: function(params){
-    return Threadable.CurrentUser.fetch().then(function(currentUser) {
-      var organization = currentUser.get('organizations').findBy('slug', params.organization);
-      if (organization){
-        organization.loadMembers();
-        Threadable.setupUserVoice(currentUser, organization);
-        currentUser.set('currentOrganizationId', organization.get('id'));
-      }
+    return Threadable.Organization.fetch(params.organization).then(function(organization) {
+      var currentUser = Threadable.currentUser;
+      organization.loadMembers();
+      Threadable.setupUserVoice(currentUser, organization);
+      currentUser.set('currentOrganizationId', organization.get('id'));
       return organization;
-    })
+    });
   },
 
   setupController: function(controller, organization) {
@@ -20,12 +18,12 @@ Threadable.OrganizationRoute = Ember.Route.extend({
   renderTemplate: function(controller, organization) {
     if (organization){
       this.render('organization', {into: 'application'});
-      var organization = this.controllerFor('organization');
-      if (organization.get('hasHeldMessages')) Threadable.notify('warning',
+      var organizationController = this.controllerFor('organization');
+      if (organizationController.get('hasHeldMessages')) Threadable.notify('warning',
         '<i class="uk-icon-envelope-o"></i> You\'ve got <a href="/' +
-        organization.get('slug') +
+        organizationController.get('slug') +
         '/held_messages">held messages</a>'
-      )
+      );
     }else{
       this.render('not_found', {into: 'application'});
     }

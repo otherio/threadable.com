@@ -14,7 +14,7 @@ class CurrentUserSerializer < Serializer
       avatar_url:              current_user.avatar_url,
       external_authorizations: serialize(:external_authorizations, current_user.external_authorizations.all),
       current_organization_id: current_user.current_organization_id,
-      organizations:           serialize(:organizations, current_user.organizations.all),
+      organizations:           serialize(:light_organizations, current_user.organizations.all),
       dismissed_welcome_modal: current_user.dismissed_welcome_modal?,
     }
   end
