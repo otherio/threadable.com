@@ -27,6 +27,7 @@ gem 'acts_as_list'
 gem 'simple_form'
 gem 'virtus'
 gem 'cancan'
+gem 'rack-zippy'
 
 gem 'filepicker-rails'
 gem 'sanitize'
