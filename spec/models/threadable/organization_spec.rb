@@ -72,10 +72,37 @@ describe Threadable::Organization do
   its(:inspect){ should eq %(#<Threadable::Organization organization_id: 5479, name: "C02 Cleaners">) }
 
   describe 'update' do
+    let(:current_member) { double(:current_member) }
     it 'calls Threadable::Organization::Update' do
       attributes = {some:'updates'}
+      expect(organization.members).to receive(:current_member).and_return current_member
+      expect(current_member).to receive(:can?).with(:change_settings_for, organization).and_return true
       expect(Threadable::Organization::Update).to receive(:call).with(organization, attributes).and_return(45)
       expect(organization.update(attributes)).to eq 45
+    end
+
+    it 'fails when the member does not have permission' do
+      attributes = {some:'updates'}
+      expect(organization.members).to receive(:current_member).and_return current_member
+      expect(current_member).to receive(:can?).with(:change_settings_for, organization).and_return false
+      expect(Threadable::Organization::Update).to_not receive(:call)
+      expect {organization.update(attributes)}.to raise_error(Threadable::AuthorizationError)
+    end
+  end
+
+  describe 'admin_update' do
+    it 'calls Threadable::Organization::Update' do
+      attributes = {some:'updates'}
+      expect(threadable.current_user).to receive(:admin?).and_return true
+      expect(Threadable::Organization::Update).to receive(:call).with(organization, attributes).and_return(45)
+      expect(organization.admin_update(attributes)).to eq 45
+    end
+
+    it 'fails when the user is not an admin' do
+      attributes = {some:'updates'}
+      expect(threadable.current_user).to receive(:admin?).and_return false
+      expect(Threadable::Organization::Update).to_not receive(:call)
+      expect {organization.admin_update(attributes)}.to raise_error(Threadable::AuthorizationError)
     end
   end
 
