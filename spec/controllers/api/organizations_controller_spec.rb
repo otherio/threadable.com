@@ -21,12 +21,12 @@ describe Api::OrganizationsController do
     #     expect(response.status).to eq 401
     #   end
     # end
-    # describe 'update' do
-    #   it 'renders unauthorized' do
-    #     xhr :patch, :update, format: :json, id: 1
-    #     expect(response.status).to eq 401
-    #   end
-    # end
+    describe 'update' do
+      it 'renders unauthorized' do
+        xhr :patch, :update, format: :json, id: 1
+        expect(response.status).to eq 401
+      end
+    end
     # describe 'destroy' do
     #   it 'renders unauthorized' do
     #     xhr :delete, :destroy, format: :json, id: 1
@@ -73,7 +73,27 @@ describe Api::OrganizationsController do
 
     # patch /api/organizations/:id
     describe 'update' do
+      context 'when the user is an owner' do
+        when_signed_in_as 'alice@ucsd.example.com' do
+          let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
 
+          it 'sets the google auth user to the current user and returns the updated organization' do
+            xhr :patch, :update, format: :json, id: raceteam.slug, organization: { description: 'foo', public_signup: false }
+            expect(response.status).to eq 200
+            updated_organization = threadable.organizations.find_by_slug!('raceteam')
+            expect(updated_organization.description).to eq 'foo'
+            expect(updated_organization.public_signup?).to be_false
+            expect(response.body).to eq serialize(:organizations, updated_organization).to_json
+          end
+        end
+      end
+
+      context 'when the user does not have the correct permissions' do
+        it 'fails authorization' do
+          xhr :patch, :update, format: :json, id: raceteam.slug, organization: { description: 'foo', public_signup: false }
+          expect(response.status).to eq 401
+        end
+      end
     end
 
     # delete /api/organizations/:id

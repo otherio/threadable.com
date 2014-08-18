@@ -12,13 +12,18 @@ class Api::OrganizationsController < ApiController
 
   # get /api/organizations/:id
   def show
-    organization = current_user.organizations.find_by_slug!(params[:id])
     render json: serialize(:organizations, organization)
   end
 
   # patch /api/organizations/:id
   def update
+    organization_params = params.require(:organization).permit(
+      :description,
+      :public_signup,
+    )
 
+    organization.update(organization_params)
+    render json: serialize(:organizations, organization), status: 200
   end
 
   # delete /api/organizations/:id
@@ -30,6 +35,12 @@ class Api::OrganizationsController < ApiController
     organization = current_user.organizations.find_by_slug!(params[:organization_id])
     organization.google_user = organization.members.current_member
     render json: serialize(:organizations, organization)
+  end
+
+  private
+
+  def organization
+    @organization ||= current_user.organizations.find_by_slug!(params[:id]) if params.key?(:id)
   end
 
 end

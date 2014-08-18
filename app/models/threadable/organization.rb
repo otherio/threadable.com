@@ -26,6 +26,7 @@ class Threadable::Organization < Threadable::Model
     hold_all_messages?
     trusted?
     plan
+    public_signup?
   }, to: :organization_record
 
   ::Organization::PLANS.each do |plan|
@@ -184,6 +185,7 @@ class Threadable::Organization < Threadable::Model
   end
 
   def update attributes
+    members.current_member.can?(:change_settings_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this organization'
     Update.call(self, attributes)
   end
 

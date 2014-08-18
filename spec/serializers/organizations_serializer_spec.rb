@@ -39,6 +39,7 @@ describe OrganizationsSerializer do
         has_held_messages: false,
         trusted:           true,
         plan:              :paid,
+        public_signup:     true,
 
         email_address_username:       raceteam.email_address_username,
         email_address:                raceteam.email_address,
@@ -79,6 +80,7 @@ describe OrganizationsSerializer do
           has_held_messages: false,
           trusted:           true,
           plan:              :paid,
+          public_signup:     true,
 
           email_address_username:       raceteam.email_address_username,
           email_address:                raceteam.email_address,
@@ -104,6 +106,7 @@ describe OrganizationsSerializer do
           has_held_messages: false,
           trusted:           false,
           plan:              :free,
+          public_signup:     false,
 
           email_address_username:       sfhealth.email_address_username,
           email_address:                sfhealth.email_address,
