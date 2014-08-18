@@ -10,7 +10,25 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
   sortedDomains: Ember.computed.sort('emailDomains', 'domainSortProperties'),
   updateInProgress: false,
 
+  signupMethods: [
+    {prettyName: 'By invitation only',          method: false},
+    {prettyName: 'Anyone can join via the web', method: true}
+  ],
+
   editableOrganization: function() { return this.get('model').copy(); }.property('model'),
+
+  descriptionLengthRemaining: function() {
+    var description = this.get('editableOrganization.description');
+    if(description) {
+      return 140 - this.get('editableOrganization.description').replace(/\n/g, "\r\n").length;
+    } else {
+      return 140;
+    }
+  }.property('editableOrganization.description'),
+
+  joinLink: function() {
+    return "/" + this.get('slug') + '?view=true';
+  }.property('slug'),
 
   hasGoogleAuth: function() {
     var authorization = this.get('currentUser').authorizationFor('google_oauth2');
@@ -27,36 +45,30 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
   }.property('emailDomains'),
 
   actions: {
-    // updateOrganization: function() {
-    //   this.set('error', null);
-    //   this.set('updateInProgress', true);
+    updateOrganization: function() {
+      this.set('error', null);
+      this.set('updateInProgress', true);
 
-    //   var organization = this.get('content');
-    //   // organization.setProperties({
-    //   //   description:       this.get('editableOrganization.description'),
-    //   //   subjectTag:        this.get('editableOrganization.subjectTag'),
-    //   //   color:             this.get('editableOrganization.color'),
-    //   //   autoJoin:          this.get('editableOrganization.autoJoin'),
-    //   //   holdMessages:      this.get('editableOrganization.holdMessages'),
-    //   //   aliasEmailAddress: this.get('editableOrganization.aliasEmailAddress'),
-    //   //   webhookUrl:        this.get('editableOrganization.webhookUrl'),
-    //   //   googleSync:        this.get('editableOrganization.googleSync'),
-    //   // });
+      var organization = this.get('content');
+      organization.setProperties({
+        name:         this.get('editableOrganization.name'),
+        description:  this.get('editableOrganization.description'),
+        publicSignup: this.get('editableOrganization.publicSignup'),
+      });
 
-    //   organization.saveRecord().then(organizationSaved.bind(this), error.bind(this));
+      organization.saveRecord().then(organizationSaved.bind(this), error.bind(this));
 
-    //   function organizationSaved(response) {
-    //     organization.deserialize(response.organization);
-    //     this.send('transitionToOrganization', organization);
-    //     this.set('updateInProgress', false);
-    //   }
+      function organizationSaved(response) {
+        organization.deserialize(response.organization);
+        this.set('updateInProgress', false);
+      }
 
-    //   function error(response) {
-    //     var error = response && response.error || 'an unknown error occurred';
-    //     this.set('error', error);
-    //     this.set('updateInProgress', false);
-    //   }
-    // },
+      function error(response) {
+        var error = response && response.error || 'an unknown error occurred';
+        this.set('error', error);
+        this.set('updateInProgress', false);
+      }
+    },
 
     claimGoogleAccount: function() {
       this.set('error', null);

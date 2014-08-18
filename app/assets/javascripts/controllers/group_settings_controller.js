@@ -10,6 +10,15 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
 
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
+  descriptionLengthRemaining: function() {
+    var description = this.get('editableGroup.description');
+    if(description) {
+      return 50 - this.get('editableGroup.description').replace(/\n/g, "\r\n").length;
+    } else {
+      return 50;
+    }
+  }.property('editableGroup.description'),
+
   canDelete: function() {
     if(this.get('primary')) {
       return false;

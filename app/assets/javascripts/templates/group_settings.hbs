@@ -34,7 +34,10 @@
             Description:
           </label>
           <div class="uk-form-controls input-field">
-            {{input value=editableGroup.description name="description"}}
+            {{textarea rows=1 maxlength=50 value=editableGroup.description name="description"}}
+          </div>
+          <div class="textarea-remaining">
+            {{descriptionLengthRemaining}}
           </div>
         </div>
 

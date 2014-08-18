@@ -78,11 +78,12 @@ describe Api::OrganizationsController do
           let(:alice) { raceteam.members.find_by_email_address('alice@ucsd.example.com') }
 
           it 'sets the google auth user to the current user and returns the updated organization' do
-            xhr :patch, :update, format: :json, id: raceteam.slug, organization: { description: 'foo', public_signup: false }
+            xhr :patch, :update, format: :json, id: raceteam.slug, organization: { name: 'Racy Team', description: 'foo', public_signup: false }
             expect(response.status).to eq 200
             updated_organization = threadable.organizations.find_by_slug!('raceteam')
             expect(updated_organization.description).to eq 'foo'
             expect(updated_organization.public_signup?).to be_false
+            expect(updated_organization.name).to eq 'Racy Team'
             expect(response.body).to eq serialize(:organizations, updated_organization).to_json
           end
         end
