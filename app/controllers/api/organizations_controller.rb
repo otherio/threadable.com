@@ -20,6 +20,7 @@ class Api::OrganizationsController < ApiController
     organization_params = params.require(:organization).permit(
       :description,
       :public_signup,
+      :name,
     )
 
     organization.update(organization_params)
