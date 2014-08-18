@@ -189,6 +189,11 @@ class Threadable::Organization < Threadable::Model
     Update.call(self, attributes)
   end
 
+  def admin_update attributes
+    threadable.current_user.admin? or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this organization'
+    Update.call(self, attributes)
+  end
+
   def hold_all_messages!
     organization_record.update!(hold_all_messages: true)
     self

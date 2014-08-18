@@ -63,6 +63,7 @@ describe Threadable::Group::Members do
       let(:new_member) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
       before do
+        sign_in_as('alice@ucsd.example.com')
         group.group_record.update_attributes(
           google_sync: true
         )
@@ -123,6 +124,7 @@ describe Threadable::Group::Members do
       let(:member_to_remove) { organization.members.find_by_email_address('jonathan@ucsd.example.com') }
 
       before do
+        sign_in_as('alice@ucsd.example.com')
         group.group_record.update_attributes(
           google_sync: true,
         )

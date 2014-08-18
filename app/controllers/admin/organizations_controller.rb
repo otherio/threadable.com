@@ -34,7 +34,7 @@ class Admin::OrganizationsController < ApplicationController
 
   # PATCH /admin/organizations/1
   def update
-    if organization.update(organization_params)
+    if organization.admin_update(organization_params)
       redirect_to admin_edit_organization_path(organization), notice: 'Organization was successfully updated.'
     else
       render action: 'edit'
