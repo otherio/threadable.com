@@ -7,11 +7,7 @@ class MembershipMailer < Threadable::Mailer
     @organization, @recipient, @personal_message = organization, recipient, personal_message
 
     @subject                  = "You've been added to #{@organization.name}"
-    @organization_url         = organization_url(@organization)
-    user_setup_token          = UserSetupToken.encrypt(@recipient.id, @organization.id)
-    @recipient_setup_url      = setup_users_url(user_setup_token)
-    organization_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
-    @organization_unsubscribe_url  = organization_unsubscribe_url(@organization, organization_unsubscribe_token)
+    setup_join_notice
 
     mail_params = {
       to:      @recipient.formatted_email_address,
@@ -23,16 +19,48 @@ class MembershipMailer < Threadable::Mailer
     email
   end
 
+  def self_join_notice organization, recipient
+    @organization, @recipient = organization, recipient
+
+    @subject                  = "You've added yourself to #{@organization.name}"
+    setup_join_notice
+
+    mail_params = {
+      to:       @recipient.formatted_email_address,
+      subject:  @subject,
+      from:     @organization.formatted_email_address,
+      reply_to: "Threadable <#{threadable.support_email_address('join')}>",
+    }
+
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
+  end
+
+  def self_join_notice_confirm organization, recipient
+    @organization, @recipient = organization, recipient
+
+    @subject                  = "Confirm your membership in #{@organization.name}"
+    setup_join_notice
+
+    mail_params = {
+      to:       @recipient.formatted_email_address,
+      subject:  @subject,
+      from:     @organization.formatted_email_address,
+      reply_to: "Threadable <#{threadable.support_email_address('join')}>",
+    }
+
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
+  end
+
   def invitation organization, recipient
     @adder = threadable.current_user
     @organization, @recipient, @personal_message = organization, recipient
 
     @subject                  = "You've been invited to #{@organization.name}"
-    @organization_url         = organization_url(@organization)
-    user_setup_token          = UserSetupToken.encrypt(@recipient.id, @organization.id)
-    @recipient_setup_url      = setup_users_url(user_setup_token)
-    organization_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
-    @organization_unsubscribe_url  = organization_unsubscribe_url(@organization, organization_unsubscribe_token)
+    setup_join_notice
 
     mail_params = {
       to:      @recipient.formatted_email_address,
@@ -98,6 +126,14 @@ class MembershipMailer < Threadable::Mailer
       :from       => "#{address.name || address.local} via Threadable <placeholder@#{threadable.email_host}>",
       :'Reply-To' => email_address
     }
+  end
+
+  def setup_join_notice
+    @organization_url         = organization_url(@organization)
+    user_setup_token          = UserSetupToken.encrypt(@recipient.id, @organization.id)
+    @recipient_setup_url      = setup_users_url(user_setup_token)
+    organization_unsubscribe_token = OrganizationUnsubscribeToken.encrypt(@organization.id, @recipient.id)
+    @organization_unsubscribe_url  = organization_unsubscribe_url(@organization, organization_unsubscribe_token)
   end
 
 end

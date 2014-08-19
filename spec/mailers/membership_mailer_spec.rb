@@ -66,6 +66,61 @@ describe MembershipMailer do
 
   end
 
+  describe "self_join_notice" do
+    let(:mail){ MembershipMailer.new(threadable).generate(:self_join_notice, organization, recipient) }
+
+    before do
+      expect(mail.subject).to eq "You've added yourself to #{organization.name}"
+      expect(mail.to     ).to eq [recipient.email_address.to_s]
+      expect(mail.from   ).to eq [organization.email_address]
+      expect(text_part   ).to include organization_url(organization)
+
+      expect(mail.smtp_envelope_to  ).to eq [recipient.email_address.to_s]
+      expect(mail.smtp_envelope_from).to eq organization.email_address
+
+      organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
+      expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
+    end
+
+    context "when the recipient is a web enabled user" do
+      let(:recipient){ organization.members.all.find(&:web_enabled?) }
+
+      it "should not have a user setup link" do
+        user_setup_token = extract_user_setup_token(text_part)
+        expect( user_setup_token ).to be_nil
+      end
+    end
+
+    context "when the recipient is not a web enabled user" do
+      let(:recipient){ organization.members.all.reject(&:web_enabled?).first }
+
+      it "should have a user setup link" do
+        user_setup_token = extract_user_setup_token(text_part)
+        expect(UserSetupToken.decrypt(user_setup_token)).to eq [recipient.id, organization.id]
+      end
+    end
+  end
+
+  describe "self_join_notice_confirm" do
+    let(:mail){ MembershipMailer.new(threadable).generate(:self_join_notice_confirm, organization, recipient) }
+    let(:recipient){ organization.members.find_by_email_address('tom@ucsd.example.com') }
+
+    before do
+      expect(mail.subject).to eq "Confirm your membership in #{organization.name}"
+      expect(mail.to     ).to eq [recipient.email_address.to_s]
+      expect(mail.from   ).to eq [organization.email_address]
+      expect(text_part   ).to include organization_url(organization)
+
+      expect(mail.smtp_envelope_to  ).to eq [recipient.email_address.to_s]
+      expect(mail.smtp_envelope_from).to eq organization.email_address
+    end
+
+    it "should have a user setup link" do
+      user_setup_token = extract_user_setup_token(text_part)
+      expect(UserSetupToken.decrypt(user_setup_token)).to eq [recipient.id, organization.id]
+    end
+  end
+
   describe "unsubscribe_notice" do
     let(:member){ organization.members.find_by_user_id!(threadable.current_user.id) }
     let(:mail){ MembershipMailer.new(threadable).generate(:unsubscribe_notice, organization, member) }

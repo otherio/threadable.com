@@ -20,6 +20,7 @@ class Threadable::User < Threadable::Model
     persisted?
     avatar_url
     current_organization_id
+    current_organization
     created_at
     munge_reply_to?
     email_addresses_as_string

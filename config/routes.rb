@@ -136,8 +136,12 @@ Threadable::Application.routes.draw do
 
   # OLD ROUTES END
 
-  get '/frontpage' => 'homepage#show'
-  get '/*path' => 'client_app#show'
+  # load the ember app, handle requests to /organization_slug
+  get  '/frontpage'                => 'homepage#show'
+  get  '/:organization_id'         => 'sign_up#show'
+  post '/sign_up/:organization_id' => 'sign_up#create'
+  get  '/*path'                    => 'client_app#show'
+
   root to: 'homepage#show'
 
 end
