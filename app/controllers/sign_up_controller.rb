@@ -1,6 +1,7 @@
 class SignUpController < ApplicationController
 
   skip_before_filter :require_user_be_signed_in!
+  before_filter :ensure_current_user_is_not_a_member, only: [:show, :create]
 
   def sign_up
     sign_up_params = params.require(:sign_up).permit(:organization_name, :email_address)
@@ -28,6 +29,27 @@ class SignUpController < ApplicationController
     end
   end
 
+  def show
+    if @organization.public_signup?
+      render :show
+    else
+      raise Threadable::RecordNotFound
+    end
+  end
+
+  def create
+    if current_user.present?
+      @organization.members.add user: current_user, confirmed: true
+      return redirect_to conversations_path(@organization.slug, 'my')
+    else
+      user_params = params.require(:sign_up)
+      name = user_params.require(:name)
+      email_address = user_params.require(:email_address)
+      @organization.members.add name: name, email_address: email_address, confirmed: false
+      render :thank_you, status: :created
+    end
+  end
+
   include ForwardGetRequestsAsPostsConcern
   before_action :forward_get_requests_as_posts!, only: :confirmation
   def confirmation
@@ -41,6 +63,16 @@ class SignUpController < ApplicationController
       threadable.email_addresses.find_or_create_by_address!(email_address).confirm!
     end
     redirect_to new_organization_url(token: params[:token])
+  end
+
+  private
+
+  def ensure_current_user_is_not_a_member
+    @organization = threadable.organizations.find_by_slug!(params[:organization_id])
+
+    if current_user.present? && @organization.members.include?(current_user)
+      return redirect_to conversations_path(@organization.slug, 'my')
+    end
   end
 
 end

@@ -1,0 +1,13 @@
+You've added yourself to the <%= @organization.name.html_safe %> organization on Threadable!
+
+<% if @recipient.web_enabled? %>
+You can view this organization on threadable.com here:
+<%= @organization_url.html_safe %>
+<% else %>
+It looks like you don't have a Threadable password yet. Click here to set one up!
+<%= @recipient_setup_url.html_safe %>
+<% end %>
+
+If you change your mind, don't worry! Threadable will stop sending you
+mail the moment you ask. Just click:
+<%= @organization_unsubscribe_url.html_safe %>

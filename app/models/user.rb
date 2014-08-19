@@ -35,6 +35,8 @@ class User < ActiveRecord::Base
   has_many :task_doers
   has_and_belongs_to_many :tasks, join_table: 'task_doers'
 
+  belongs_to :current_organization, class_name: 'Organization'
+
   accepts_nested_attributes_for :email_addresses
 
   validates :name, presence: true

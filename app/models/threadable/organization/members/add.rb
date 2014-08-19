@@ -11,7 +11,9 @@ class Threadable::Organization::Members::Add < MethodObject
     @options          = options
     @send_join_notice = @options.fetch(:send_join_notice){ true }
 
-    @threadable.current_user.present? or raise Threadable::AuthenticationError, "you must be signed in to add a member to an organization"
+    unless @organization.public_signup?
+      @threadable.current_user.present? or raise Threadable::AuthorizationError, "you must be signed in to add a member to an organization"
+    end
 
     Threadable.transaction do
       return existing_member if existing_user && existing_member
@@ -81,10 +83,17 @@ class Threadable::Organization::Members::Add < MethodObject
   end
 
   def send_join_notice!
-    if @organization.trusted?
-      @threadable.emails.send_email_async(:join_notice, @organization.id, @user.id, @options[:personal_message])
-    else
-      @threadable.emails.send_email_async(:invitation, @organization.id, @user.id)
+    case @options[:join_notice]
+    when :self_join_notice
+      @threadable.emails.send_email_async(:self_join_notice, @organization.id, @user.id)
+    when :self_join_notice_confirm
+      @threadable.emails.send_email_async(:self_join_notice_confirm, @organization.id, @user.id)
+    when nil
+      if @new_member.confirmed?
+        @threadable.emails.send_email_async(:join_notice, @organization.id, @user.id, @options[:personal_message])
+      else
+        @threadable.emails.send_email_async(:invitation, @organization.id, @user.id)
+      end
     end
   end
 
