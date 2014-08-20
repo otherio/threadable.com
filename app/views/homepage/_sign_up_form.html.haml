@@ -1,9 +1,9 @@
 .sign-up-form
-  = form_for @sign_up, url: sign_up_path, html: {class: 'uk-form uk-form-stacked'}, remote: true do |f|
+  = form_for @sign_up, url: sign_up_path, html: {class: ''}, remote: true do |f|
     .fields
       .field.email_address
         .errors
-        = f.text_field :email_address,     type: 'email',  placeholder: 'Your email address',     class: 'text-input wide-text-input'
+        = f.text_field :email_address,     type: 'email',  placeholder: 'Your email address', class: 'text-input wide-text-input'
       &nbsp;
       .field.organization_name
         .errors

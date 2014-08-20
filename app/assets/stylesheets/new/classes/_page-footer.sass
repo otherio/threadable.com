@@ -1,4 +1,13 @@
 .page-footer
+  position: absolute
+  bottom: 0
+  width: 100%
+  height: $footer-height
+
+  +small-screens
+    height: $stacked-footer-height
+
+
   > .content
     padding: 20px
     background-color: $grey-color
@@ -29,3 +38,7 @@
   .fa-facebook
     background: #2d4386
     border: 10px solid #2d4386
+
+  .mixpanel-button
+    img
+      margin-bottom: 6px
