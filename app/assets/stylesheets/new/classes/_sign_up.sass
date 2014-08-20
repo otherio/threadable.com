@@ -1,0 +1,50 @@
+.banner
+  background-color: $teal_color
+  color: $white_color
+  font-size: 30px
+  height: 120px
+  line-height: 120px
+
+  .name
+    margin-left: 20px
+    display: inline-block
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+    max-width: 300px
+
+  +medium-to-large-screens
+    background-image: image-url("homepage/hexagon.svg"), none
+    background-repeat: no-repeat
+    background-size: 300px
+    height: 250px
+    line-height: 250px
+
+    .name
+      font-size: 40px
+
+  +medium-screens
+    background-position: 160px center
+
+    .name
+      margin-left: 290px
+      max-width: 478px
+
+  +large-screens
+    background-position: 300px center
+
+    .name
+      margin-left: 430px
+      max-width: 790px
+
+.sign-up-form
+  margin-top: 30px
+
+  +small-screens
+    padding: 10px
+
+    .uk-form
+      margin-top: 20px
+
+.thank-you
+  margin-top: 4em

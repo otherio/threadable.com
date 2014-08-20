@@ -1,20 +1,24 @@
+.sign-up
+  .banner.uk-grid.uk-container-center
+    .name
+      = @organization.name
+
 .sign-up-form.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2
-  .uk-grid.uk-grid-divider.uk-container-center
+  .uk-grid.uk-grid-divider.uk-container-center{'data-uk-grid-match' => true}
+
     .uk-width-medium-1-2.uk-width-large-1-2.uk-width-small-2-3
-      %h2
-        = @organization.name
       .description
         = @organization.description
+
     .uk-width-medium-1-2.uk-width-large-1-2.uk-width-small-2-3
       = form_tag organization_join_path, class: 'uk-form uk-form-stacked' do
-        %fieldset
-          - if current_user
-            .uk-form-row
-              = submit_tag 'Join', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
-          - else
-            .uk-form-row
-              = text_field_tag 'sign_up[name]', '', label: 'Your name', placeholder: 'Jessie Smith', required: true
-            .uk-form-row
-              = text_field_tag 'sign_up[email_address]', '', label: 'Email address', placeholder: 'jessie@example.com', type: 'email', required: true
-            .uk-form-row
-              = submit_tag 'Sign up', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+        - if current_user
+          .uk-form-row
+            = submit_tag 'Join', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+        - else
+          .uk-form-row
+            = text_field_tag 'sign_up[name]', '', label: 'Your name', placeholder: 'Jessie Smith', required: true
+          .uk-form-row
+            = text_field_tag 'sign_up[email_address]', '', label: 'Email address', placeholder: 'jessie@example.com', type: 'email', required: true
+          .uk-form-row
+            = submit_tag 'Sign up', class: 'uk-button uk-button-primary uk-button-large sign-in-button'

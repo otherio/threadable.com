@@ -6,5 +6,8 @@
     .right-nav
 
       %a.button{href: "http://blog.threadable.com"} Blog
-      %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} Features
+      - if @on_homepage
+        %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} Features
+      - else
+        %a.button{href: "/#quit-learning-new-tools"} Features
       %a.button.blue-button.sign-in-button{href: sign_in_url} SIGN IN

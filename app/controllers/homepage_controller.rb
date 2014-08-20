@@ -5,6 +5,7 @@ class HomepageController < ApplicationController
 
   def show
     @sign_up = SignUp.new(params)
+    @on_homepage = true
     render 'homepage/show', layout: 'new'
   end
 
