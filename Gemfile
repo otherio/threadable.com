@@ -79,7 +79,7 @@ end
 group :development, :test do
   gem 'pry-byebug'
   gem 'dotenv-rails'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '2.99'
   gem 'activerecord-fixture_builder'
   gem 'binding_of_caller'
   gem "mail_view"
