@@ -113,7 +113,7 @@ describe Admin::OrganizationsController do
       let(:organization_params){ {slug: 'lowrider'} }
       before do
         expect(threadable.organizations).to receive(:find_by_slug!).with('low-rider').and_return(organization)
-        expect(organization).to receive(:update).with(organization_params).and_return(update_successful)
+        expect(organization).to receive(:admin_update).with(organization_params).and_return(update_successful)
         put :update, id: 'low-rider', organization: organization_params
       end
       context 'when the organization is successfully updated' do
