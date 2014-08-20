@@ -1,12 +1,23 @@
-html
+html, body
   color: $default-font-color
   font-size: $default-font-size
   font-family: $default-font-family
   font-weight: $default-font-weight
   line-height: $default-line-height
-
-body
   background-color: $grey-color
+  height: 100%
+
+.page
+  min-height: 100%
+  position: relative
+
+  .page-content
+    padding-top: $nav-height
+    padding-bottom: $footer-height
+
+    +small-screens
+      padding-bottom: $stacked-footer-height
+
 
   // &:before
   //   position: fixed

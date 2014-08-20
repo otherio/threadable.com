@@ -31,7 +31,7 @@ class SignUpController < ApplicationController
 
   def show
     if @organization.public_signup?
-      render :show
+      render :show, layout: 'new'
     else
       raise Threadable::RecordNotFound
     end

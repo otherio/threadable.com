@@ -20,9 +20,9 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
   descriptionLengthRemaining: function() {
     var description = this.get('editableOrganization.description');
     if(description) {
-      return 140 - this.get('editableOrganization.description').replace(/\n/g, "\r\n").length;
+      return 250 - this.get('editableOrganization.description').replace(/\n/g, "\r\n").length;
     } else {
-      return 140;
+      return 250;
     }
   }.property('editableOrganization.description'),
 
