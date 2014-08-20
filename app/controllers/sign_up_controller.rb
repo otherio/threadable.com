@@ -3,6 +3,8 @@ class SignUpController < ApplicationController
   skip_before_filter :require_user_be_signed_in!
   before_filter :ensure_current_user_is_not_a_member, only: [:show, :create]
 
+  layout 'new'
+
   def sign_up
     sign_up_params = params.require(:sign_up).permit(:organization_name, :email_address)
     sign_up = SignUp.new(threadable, sign_up_params)
@@ -46,7 +48,7 @@ class SignUpController < ApplicationController
       name = user_params.require(:name)
       email_address = user_params.require(:email_address)
       @organization.members.add name: name, email_address: email_address, confirmed: false
-      render :thank_you, status: :created
+      render :thank_you, status: :created, layout: 'new'
     end
   end
 
