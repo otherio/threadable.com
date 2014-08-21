@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization::Member do
+describe Threadable::Organization::Member, :type => :request do
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:member){ organization.members.find_by_email_address('bethany@ucsd.example.com') }
   subject{ member }
@@ -16,7 +16,7 @@ describe Threadable::Organization::Member do
           role: :member,
           name: 'Bethany the great',
         )
-        expect(member.subscribed?).to be_false
+        expect(member.subscribed?).to be_falsey
         expect(member.role).to eq :member
         expect(member.name).to eq 'Bethany the great'
 
@@ -165,7 +165,7 @@ describe Threadable::Organization::Member do
 
       it 'sets the member to inactive, removes them from groups, and makes them no longer a doer of any tasks' do
         member.remove
-        expect(member.organization_membership_record.active).to be_false
+        expect(member.organization_membership_record.active).to be_falsey
         expect(organization.members.find_by_email_address('bethany@ucsd.example.com')).to be_nil
 
         expect(joined_group.members.all.map(&:id)).to_not include member.id

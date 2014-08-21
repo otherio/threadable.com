@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail::Bounce do
+describe Threadable::IncomingEmail::Bounce, :type => :model do
 
   let(:incoming_email) do
     double(:incoming_email,

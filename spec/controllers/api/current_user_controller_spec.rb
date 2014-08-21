@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::CurrentUserController do
+describe Api::CurrentUserController, :type => :controller do
 
    when_not_signed_in do
 

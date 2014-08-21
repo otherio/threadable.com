@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Threadable::Events do
+describe Threadable::Events, :type => :model do
 
   let(:events){ described_class.new(threadable) }
   subject{ events }
 
-  it { should have_constant :Create }
+  it { is_expected.to have_constant :Create }
 
   let(:event_record){ double(:event_record) }
   let(:event){ double(:event) }

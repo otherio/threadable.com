@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ExternalAuthController do
+describe ExternalAuthController, :type => :controller do
 
   describe "POST create" do
     when_signed_in_as 'yan@ucsd.example.com' do

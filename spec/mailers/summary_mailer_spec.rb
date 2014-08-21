@@ -1,7 +1,7 @@
 # encoding: utf-8
 require "spec_helper"
 
-describe SummaryMailer do
+describe SummaryMailer, :type => :mailer do
   before do
     # midnight, Feb 2, 2014. starting date for this report.
     Time.zone = 'US/Pacific'
@@ -35,16 +35,16 @@ describe SummaryMailer do
     let(:html_part){ mail.html_part.body.to_s }
 
     def validate_mail!
-      mail.subject.should include "[RaceTeam]"
-      mail.subject.should include "Summary for"
-      mail.subject.should include today.strftime('%a, %b %-d')
-      mail.subject.should include '19 new messages in 11 conversations'
-      mail.subject.scan('RaceTeam').size.should == 1
+      expect(mail.subject).to include "[RaceTeam]"
+      expect(mail.subject).to include "Summary for"
+      expect(mail.subject).to include today.strftime('%a, %b %-d')
+      expect(mail.subject).to include '19 new messages in 11 conversations'
+      expect(mail.subject.scan('RaceTeam').size).to eq(1)
 
-      mail.to.should                    == [expected_to]
-      mail.header['From'].to_s.should   == expected_from
-      mail.smtp_envelope_to.should      == [expected_envelope_to]
-      mail.smtp_envelope_from.should    == expected_envelope_from
+      expect(mail.to).to                    eq([expected_to])
+      expect(mail.header['From'].to_s).to   eq(expected_from)
+      expect(mail.smtp_envelope_to).to      eq([expected_envelope_to])
+      expect(mail.smtp_envelope_from).to    eq(expected_envelope_from)
 
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]

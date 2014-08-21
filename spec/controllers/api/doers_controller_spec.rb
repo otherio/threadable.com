@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::DoersController do
+describe Api::DoersController, :type => :controller do
 
   # when_not_signed_in do
   #   describe 'index' do

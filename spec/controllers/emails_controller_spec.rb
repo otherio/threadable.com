@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EmailsController, fixtures: false do
+describe EmailsController, type: :controller, fixtures: false do
 
   let(:timestamp){ Time.now.to_i.to_s }
   let(:token    ){ SecureRandom.uuid }

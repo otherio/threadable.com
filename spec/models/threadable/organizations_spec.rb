@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organizations do
+describe Threadable::Organizations, :type => :model do
 
   subject{ threadable.organizations }
 
@@ -8,7 +8,7 @@ describe Threadable::Organizations do
     Create
   }.each do |constant|
     describe "::#{constant}" do
-      specify{ "#{described_class}::#{constant}".constantize.name.should == "#{described_class}::#{constant}" }
+      specify{ expect("#{described_class}::#{constant}".constantize.name).to eq("#{described_class}::#{constant}") }
     end
   end
 

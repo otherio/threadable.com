@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Threadable::User::Organizations do
+describe Threadable::User::Organizations, :type => :model do
 
 end

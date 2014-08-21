@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Events::ConversationAddedGroup do
+describe Threadable::Events::ConversationAddedGroup, :type => :request do
 
   let(:events){ Threadable::Events.new(threadable) }
 

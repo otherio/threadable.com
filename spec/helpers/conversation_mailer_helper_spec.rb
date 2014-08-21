@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ConversationMailerHelper do
+describe ConversationMailerHelper, :type => :helper do
 
   let(:conversation){ double(:conversation, id: 993) }
   let(:recipient)   { double(:recipient, id: 84) }

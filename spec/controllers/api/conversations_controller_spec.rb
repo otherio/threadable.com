@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::ConversationsController do
+describe Api::ConversationsController, :type => :controller do
 
   when_not_signed_in do
     describe 'index' do
@@ -337,7 +337,7 @@ describe Api::ConversationsController do
         xhr :post, :sync, format: :json, organization_id: raceteam.slug, id: 'parts-for-the-motor-controller'
 
         conversation = threadable.conversations.find_by_slug('parts-for-the-motor-controller')
-        expect(conversation.messages.latest.sent_to? current_user).to be_true
+        expect(conversation.messages.latest.sent_to? current_user).to be_truthy
         drain_background_jobs!
         expect(sent_emails.length).to eq 1
         expect(response.status).to eq 200
@@ -439,7 +439,7 @@ describe Api::ConversationsController do
           }
           expect(response.status).to eq 200
           conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
-          expect(conversation.muted?).to be_true
+          expect(conversation.muted?).to be_truthy
         end
       end
 
@@ -450,7 +450,7 @@ describe Api::ConversationsController do
           }
           expect(response.status).to eq 200
           conversation = raceteam.conversations.find_by_slug('parts-for-the-motor-controller')
-          expect(conversation.followed?).to be_true
+          expect(conversation.followed?).to be_truthy
         end
       end
 
@@ -461,7 +461,7 @@ describe Api::ConversationsController do
           }
           expect(response.status).to eq 200
           conversation = raceteam.conversations.find_by_slug('layup-body-carbon')
-          expect(conversation.trashed?).to be_true
+          expect(conversation.trashed?).to be_truthy
         end
       end
 

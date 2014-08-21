@@ -21,7 +21,7 @@ describe ExternalAuthorizationsSerializer do
     let(:expected_key){ :external_authorization }
 
     it do
-      should eq(
+      is_expected.to eq(
         provider: 'trello',
         name: 'Alice Neilson',
         email_address: 'alice@foo.com',

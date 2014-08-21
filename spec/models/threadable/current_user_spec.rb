@@ -1,28 +1,59 @@
 require 'spec_helper'
 
-describe Threadable::CurrentUser do
+describe Threadable::CurrentUser, :type => :model do
 
   let(:user_record){ Factories.create(:user) }
   let(:current_user){ described_class.new(threadable, user_record.id) }
   subject{ current_user }
 
-  its(:to_param     ){ should eq user_record.to_param     }
-  its(:name         ){ should eq user_record.name         }
-  its(:slug         ){ should eq user_record.slug         }
-  its(:new_record?  ){ should eq user_record.new_record?  }
-  its(:persisted?   ){ should eq user_record.persisted?   }
-  its(:avatar_url   ){ should eq user_record.avatar_url   }
+  describe '#to_param' do
+    subject { super().to_param }
+    it { is_expected.to eq user_record.to_param     }
+  end
 
-  its(:inspect){
-    should eq(
+  describe '#name' do
+    subject { super().name }
+    it { is_expected.to eq user_record.name         }
+  end
+
+  describe '#slug' do
+    subject { super().slug }
+    it { is_expected.to eq user_record.slug         }
+  end
+
+  describe '#new_record?' do
+    subject { super().new_record? }
+    it { is_expected.to eq user_record.new_record?  }
+  end
+
+  describe '#persisted?' do
+    subject { super().persisted? }
+    it { is_expected.to eq user_record.persisted?   }
+  end
+
+  describe '#avatar_url' do
+    subject { super().avatar_url }
+    it { is_expected.to eq user_record.avatar_url   }
+  end
+
+  describe '#inspect' do
+    subject { super().inspect }
+    it {
+    is_expected.to eq(
       %(#<Threadable::CurrentUser id: #{user_record.id}, email_address: #{user_record.email_address.to_s.inspect}, slug: #{user_record.slug.inspect}>)
     )
   }
+  end
 
-  its(:errors){ should be_a user_record.errors.class }
+  describe '#errors' do
+    subject { super().errors }
+    it { is_expected.to be_a user_record.errors.class }
+  end
 
-  its(:as_json){
-    should eq(
+  describe '#as_json' do
+    subject { super().as_json }
+    it {
+    is_expected.to eq(
       id:            current_user.id,
       param:         current_user.to_param,
       name:          current_user.name,
@@ -31,8 +62,12 @@ describe Threadable::CurrentUser do
       avatar_url:    current_user.avatar_url,
     )
   }
+  end
 
-  its(:organizations){ should be_a Threadable::User::Organizations }
+  describe '#organizations' do
+    subject { super().organizations }
+    it { is_expected.to be_a Threadable::User::Organizations }
+  end
 
   describe "==" do
     it "should match on user_id" do
@@ -42,7 +77,7 @@ describe Threadable::CurrentUser do
 
   describe '#update' do
     it "should update the user record" do
-      expect(current_user.update(name: 'Steve Busheby')).to be_true
+      expect(current_user.update(name: 'Steve Busheby')).to be_truthy
       user_record.reload
       expect(user_record.name).to eq 'Steve Busheby'
     end

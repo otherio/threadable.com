@@ -45,12 +45,12 @@ describe MessagesSerializer do
       }
     end
     it do
-      should eq expected_return_value
+      is_expected.to eq expected_return_value
     end
     context 'when given the option include: :conversation' do
       let(:options){ {include: :conversation} }
       it do
-        should eq expected_return_value.merge serialize(:conversations, message.conversation)
+        is_expected.to eq expected_return_value.merge serialize(:conversations, message.conversation)
       end
     end
   end
@@ -83,7 +83,7 @@ describe MessagesSerializer do
     let(:payload){ [message,message2] }
     let(:expected_key){ :messages }
     it 'returns an array of serialized records' do
-      should eq [
+      is_expected.to eq [
         {
           id:                message.id,
           unique_id:         message.unique_id,

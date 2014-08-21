@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::EmailDomainsController do
+describe Api::EmailDomainsController, :type => :controller do
   let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
 
@@ -63,7 +63,7 @@ describe Api::EmailDomainsController do
           expect(response.status).to eq 200
           found_domain = raceteam.email_domains.find_by_domain('raceteam.com')
           expect(found_domain).to be_present
-          expect(found_domain.outgoing?).to be_true
+          expect(found_domain.outgoing?).to be_truthy
 
           expect(response.body).to eq serialize(:email_domains, found_domain).to_json
         end

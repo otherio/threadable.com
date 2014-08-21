@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "actual broken incoming emails" do
+describe "actual broken incoming emails", :type => :request do
 
 
   def validate! result

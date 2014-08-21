@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe Threadable::Messages do
+describe Threadable::Messages, :type => :model do
 
   let(:messages){ described_class.new(threadable) }
   subject{ messages }
 
   let(:scope){ double :scope }
   before do
-    Message.stub(:all).and_return(scope)
+    allow(Message).to receive(:all).and_return(scope)
   end
 
-  it { should have_constant :Create }
-  it { should have_constant :FindByChildHeader }
+  it { is_expected.to have_constant :Create }
+  it { is_expected.to have_constant :FindByChildHeader }
 
   let(:message_record){ double(:message_record) }
   let(:message){ double(:message) }

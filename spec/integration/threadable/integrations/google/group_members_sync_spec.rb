@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Integrations::Google::GroupMembersSync do
+describe Threadable::Integrations::Google::GroupMembersSync, :type => :request do
 
   delegate :call, to: described_class
 
@@ -49,7 +49,7 @@ describe Threadable::Integrations::Google::GroupMembersSync do
 
     alice_as_user = Threadable::User.new(threadable, alice.user_record)
     expect_any_instance_of(described_class).to receive(:client_for).with(alice_as_user).and_return(google_client)
-    described_class.any_instance.stub(:directory_api).and_return(google_directory_api)
+    allow_any_instance_of(described_class).to receive(:directory_api).and_return(google_directory_api)
 
     group.update(alias_email_address: '"Electronics for Jesus" <electronics@foo.com>')
     group.group_record.update_attributes(google_sync: true)

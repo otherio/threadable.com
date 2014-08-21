@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Threadable::Collection do
+describe Threadable::Collection, :type => :model do
   subject{ described_class }
 
-  it{ should include Let }
+  it{ is_expected.to include Let }
 
 end

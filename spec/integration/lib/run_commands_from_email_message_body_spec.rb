@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RunCommandsFromEmailMessageBody do
+describe RunCommandsFromEmailMessageBody, :type => :request do
 
   delegate :call, to: :described_class
 
@@ -20,9 +20,9 @@ describe RunCommandsFromEmailMessageBody do
     let(:body) { "&done \nyo mama got this done last night." }
 
     it "marks the task as done" do
-      expect(task.done?).to be_false
+      expect(task.done?).to be_falsey
       call!
-      expect(task.done?).to be_true
+      expect(task.done?).to be_truthy
     end
   end
 
@@ -31,9 +31,9 @@ describe RunCommandsFromEmailMessageBody do
     let(:body) { "&undone \nguys this is terrible. try again." }
 
     it "marks the task as undone" do
-      expect(task.done?).to be_true
+      expect(task.done?).to be_truthy
       call!
-      expect(task.done?).to be_false
+      expect(task.done?).to be_falsey
     end
   end
 
@@ -41,9 +41,9 @@ describe RunCommandsFromEmailMessageBody do
     let(:body) { "&mute \nI am so tired of hearing this conversation. Muted." }
 
     it "marks the task as muted" do
-      expect(task.muted?).to be_false
+      expect(task.muted?).to be_falsey
       call!
-      expect(task.muted?).to be_true
+      expect(task.muted?).to be_truthy
     end
   end
 
@@ -54,9 +54,9 @@ describe RunCommandsFromEmailMessageBody do
     end
 
     it "marks the task as unmuted" do
-      expect(task.muted?).to be_true
+      expect(task.muted?).to be_truthy
       call!
-      expect(task.muted?).to be_false
+      expect(task.muted?).to be_falsey
     end
   end
 
@@ -64,10 +64,10 @@ describe RunCommandsFromEmailMessageBody do
     let(:body) { "&follow \nTime to follow this craziness." }
 
     it "marks the task as followed" do
-      expect(task.followed?).to be_false
+      expect(task.followed?).to be_falsey
       expect(task).to receive :sync_to_user
       call!
-      expect(task.followed?).to be_true
+      expect(task.followed?).to be_truthy
     end
   end
 
@@ -78,9 +78,9 @@ describe RunCommandsFromEmailMessageBody do
     end
 
     it "marks the task as unfollowed" do
-      expect(task.followed?).to be_true
+      expect(task.followed?).to be_truthy
       call!
-      expect(task.followed?).to be_false
+      expect(task.followed?).to be_falsey
     end
   end
 
@@ -111,9 +111,9 @@ describe RunCommandsFromEmailMessageBody do
     it "removes Tom as a doer, mutes the conversation" do
       tom = organization.members.find_by_email_address('tom@ucsd.example.com')
       expect(task.doers.all.map(&:id)).to include tom.id
-      expect(task.muted?).to be_false
+      expect(task.muted?).to be_falsey
       call!
-      expect(task.muted?).to be_true
+      expect(task.muted?).to be_truthy
       expect(task.doers.all.map(&:id)).to_not include tom.id
     end
   end
@@ -124,9 +124,9 @@ describe RunCommandsFromEmailMessageBody do
     it "removes Tom as a doer, but doesn't mute the conversation" do
       tom = organization.members.find_by_email_address('tom@ucsd.example.com')
       expect(task.doers.all.map(&:id)).to include tom.id
-      expect(task.muted?).to be_false
+      expect(task.muted?).to be_falsey
       call!
-      expect(task.muted?).to be_false
+      expect(task.muted?).to be_falsey
       expect(task.doers.all.map(&:id)).to_not include tom.id
     end
   end

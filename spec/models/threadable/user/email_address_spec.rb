@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User::EmailAddress do
+describe Threadable::User::EmailAddress, :type => :model do
 
   let(:now){ Time.now }
   before{ Time.stub now: now }
@@ -16,7 +16,7 @@ describe Threadable::User::EmailAddress do
       let(:primary  ){ true }
       let(:confirmed){ false }
       it 'returns false' do
-        expect(email_address.primary!).to be_false
+        expect(email_address.primary!).to be_falsey
       end
     end
 
@@ -24,7 +24,7 @@ describe Threadable::User::EmailAddress do
       let(:primary  ){ true }
       let(:confirmed){ true }
       it 'returns false' do
-        expect(email_address.primary!).to be_false
+        expect(email_address.primary!).to be_falsey
       end
     end
 
@@ -32,7 +32,7 @@ describe Threadable::User::EmailAddress do
       let(:primary  ){ false }
       let(:confirmed){ false }
       it 'returns false' do
-        expect(email_address.primary!).to be_false
+        expect(email_address.primary!).to be_falsey
       end
     end
 
@@ -50,7 +50,7 @@ describe Threadable::User::EmailAddress do
         expect(user.user_record    ).to receive(:email_addresses).and_return(email_addresses)
         expect(email_addresses     ).to receive(:reload)
         expect(user                ).to receive(:track_update!)
-        expect(email_address.primary!).to be_true
+        expect(email_address.primary!).to be_truthy
       end
     end
   end
@@ -60,14 +60,14 @@ describe Threadable::User::EmailAddress do
       let(:confirmed){ false }
       it 'confirmes the address' do
         expect(email_address_record).to receive(:update!).with(confirmed_at: now)
-        expect(email_address.confirm!).to be_true
+        expect(email_address.confirm!).to be_truthy
       end
     end
     context 'when the email address is confirmed' do
       let(:confirmed){ true }
       it 'does nothing' do
         expect(email_address_record).to_not receive(:update!)
-        expect(email_address.confirm!).to be_false
+        expect(email_address.confirm!).to be_falsey
       end
     end
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "/api/conversations" do
+describe "/api/conversations", :type => :request do
 
 
   when_signed_in_as 'bethany@ucsd.example.com' do
@@ -94,17 +94,17 @@ describe "/api/conversations" do
         expect(@done_tasks           & @not_done_tasks         ).to eq []
         expect(@done_doing_tasks     & @not_done_doing_tasks   ).to eq []
 
-            @muted_conversations.each{|conversation| expect(conversation['muted']).to be_true  }
-        @not_muted_conversations.each{|conversation| expect(conversation['muted']).to be_false }
+            @muted_conversations.each{|conversation| expect(conversation['muted']).to be_truthy  }
+        @not_muted_conversations.each{|conversation| expect(conversation['muted']).to be_falsey }
 
 
-            @done_tasks      .each{|task| expect(task['done']).to be_true  }
-        @not_done_tasks      .each{|task| expect(task['done']).to be_false }
-            @done_doing_tasks.each{|task| expect(task['done']).to be_true  }
-        @not_done_doing_tasks.each{|task| expect(task['done']).to be_false }
+            @done_tasks      .each{|task| expect(task['done']).to be_truthy  }
+        @not_done_tasks      .each{|task| expect(task['done']).to be_falsey }
+            @done_doing_tasks.each{|task| expect(task['done']).to be_truthy  }
+        @not_done_doing_tasks.each{|task| expect(task['done']).to be_falsey }
 
-            @done_doing_tasks.each{|task| expect(task['doing']).to be_true }
-        @not_done_doing_tasks.each{|task| expect(task['doing']).to be_true }
+            @done_doing_tasks.each{|task| expect(task['doing']).to be_truthy }
+        @not_done_doing_tasks.each{|task| expect(task['doing']).to be_truthy }
       end
 
       def all

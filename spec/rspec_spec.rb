@@ -3,21 +3,21 @@ require 'spec_helper'
 describe 'rspec configuration' do
 
   def transaction_should_not_be_open!
-    expect(ActiveRecord::Base.connection.transaction_open?).to be_false
+    expect(ActiveRecord::Base.connection.transaction_open?).to be_falsey
   end
 
   def transaction_should_be_open!
-    expect(ActiveRecord::Base.connection.transaction_open?).to be_true
+    expect(ActiveRecord::Base.connection.transaction_open?).to be_truthy
   end
 
   def fixtures_should_be_loaded!
-    User.count.should > 0
-    Organization.count.should > 0
+    expect(User.count).to be > 0
+    expect(Organization.count).to be > 0
   end
 
   def fixtures_should_not_be_loaded!
-    User.count.should == 0
-    Organization.count.should == 0
+    expect(User.count).to eq(0)
+    expect(Organization.count).to eq(0)
   end
 
   3.times do

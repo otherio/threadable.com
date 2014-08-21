@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Authentication" do
+describe "Authentication", :type => :request do
 
   describe "sign in/out" do
 

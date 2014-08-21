@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Api controllers" do
+describe "Api controllers", :type => :request do
 
   when_signed_in_as 'bethany@ucsd.example.com' do
 

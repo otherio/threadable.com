@@ -1,47 +1,66 @@
 require 'spec_helper'
 
-describe Threadable::Conversation do
+describe Threadable::Conversation, :type => :model do
 
   let(:conversation_record){ double(:conversation_record, id: 2323, task?: false, creator_id: 8993) }
   let(:conversation){ described_class.new(threadable, conversation_record) }
   subject{ conversation }
 
-  it { should have_constant :Creator      }
-  it { should have_constant :Events       }
-  it { should have_constant :Messages     }
-  it { should have_constant :Recipients   }
-  it { should have_constant :Participants }
-  it { should have_constant :Participant  }
+  it { is_expected.to have_constant :Creator      }
+  it { is_expected.to have_constant :Events       }
+  it { is_expected.to have_constant :Messages     }
+  it { is_expected.to have_constant :Recipients   }
+  it { is_expected.to have_constant :Participants }
+  it { is_expected.to have_constant :Participant  }
 
 
-  it { should delegate(:id              ).to(:conversation_record) }
-  it { should delegate(:to_param        ).to(:conversation_record) }
-  it { should delegate(:slug            ).to(:conversation_record) }
-  it { should delegate(:subject         ).to(:conversation_record) }
-  it { should delegate(:task?           ).to(:conversation_record) }
-  it { should delegate(:messages_count  ).to(:conversation_record) }
-  it { should delegate(:organization_id ).to(:conversation_record) }
-  it { should delegate(:creator_id      ).to(:conversation_record) }
-  it { should delegate(:created_at      ).to(:conversation_record) }
-  it { should delegate(:updated_at      ).to(:conversation_record) }
-  it { should delegate(:persisted?      ).to(:conversation_record) }
-  it { should delegate(:new_record?     ).to(:conversation_record) }
-  it { should delegate(:errors          ).to(:conversation_record) }
-  it { should delegate(:last_message_at ).to(:conversation_record) }
-  it { should delegate(:trashed_at      ).to(:conversation_record) }
+  it { is_expected.to delegate(:id              ).to(:conversation_record) }
+  it { is_expected.to delegate(:to_param        ).to(:conversation_record) }
+  it { is_expected.to delegate(:slug            ).to(:conversation_record) }
+  it { is_expected.to delegate(:subject         ).to(:conversation_record) }
+  it { is_expected.to delegate(:task?           ).to(:conversation_record) }
+  it { is_expected.to delegate(:messages_count  ).to(:conversation_record) }
+  it { is_expected.to delegate(:organization_id ).to(:conversation_record) }
+  it { is_expected.to delegate(:creator_id      ).to(:conversation_record) }
+  it { is_expected.to delegate(:created_at      ).to(:conversation_record) }
+  it { is_expected.to delegate(:updated_at      ).to(:conversation_record) }
+  it { is_expected.to delegate(:persisted?      ).to(:conversation_record) }
+  it { is_expected.to delegate(:new_record?     ).to(:conversation_record) }
+  it { is_expected.to delegate(:errors          ).to(:conversation_record) }
+  it { is_expected.to delegate(:last_message_at ).to(:conversation_record) }
+  it { is_expected.to delegate(:trashed_at      ).to(:conversation_record) }
 
-  its(:creator     ){ should be_a Threadable::Conversation::Creator      }
-  its(:events      ){ should be_a Threadable::Conversation::Events       }
-  its(:messages    ){ should be_a Threadable::Conversation::Messages     }
-  its(:recipients  ){ should be_a Threadable::Conversation::Recipients   }
-  its(:participants){ should be_a Threadable::Conversation::Participants }
+  describe '#creator' do
+    subject { super().creator }
+    it { is_expected.to be_a Threadable::Conversation::Creator      }
+  end
+
+  describe '#events' do
+    subject { super().events }
+    it { is_expected.to be_a Threadable::Conversation::Events       }
+  end
+
+  describe '#messages' do
+    subject { super().messages }
+    it { is_expected.to be_a Threadable::Conversation::Messages     }
+  end
+
+  describe '#recipients' do
+    subject { super().recipients }
+    it { is_expected.to be_a Threadable::Conversation::Recipients   }
+  end
+
+  describe '#participants' do
+    subject { super().participants }
+    it { is_expected.to be_a Threadable::Conversation::Participants }
+  end
 
 
   describe 'update' do
     it 'should call update_attributes on the conversation record' do
       attributes = double(:attributes)
       expect(conversation_record).to receive(:update_attributes).with(attributes).and_return(4)
-      expect(subject.update(attributes)).to be_true
+      expect(subject.update(attributes)).to be_truthy
     end
   end
 
@@ -50,7 +69,7 @@ describe Threadable::Conversation do
     context 'when the update is successful' do
       before{ expect(subject).to receive(:update).with(attributes).and_return(true) }
       it 'should return true' do
-        expect(subject.update!(attributes)).to be_true
+        expect(subject.update!(attributes)).to be_truthy
       end
     end
     context 'when the update is successful' do
@@ -92,5 +111,8 @@ describe Threadable::Conversation do
   #   end
   # end
 
-  its(:inspect){ should eq "#<Threadable::Conversation conversation_id: 2323>" }
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq "#<Threadable::Conversation conversation_id: 2323>" }
+  end
 end

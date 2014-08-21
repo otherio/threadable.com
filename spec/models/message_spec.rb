@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe Message do
+describe Message, :type => :model do
   let(:message){ Message.where(subject: 'layup body carbon').last! }
   subject{ message }
 
-  it { should belong_to(:parent_message) }
-  it { should belong_to(:conversation) }
+  it { is_expected.to belong_to(:parent_message) }
+  it { is_expected.to belong_to(:conversation) }
 
   it "has a message id with a predictable domain (not some heroku crap hostname)" do
-    subject.message_id_header.should =~ /^<.+\@localhost>$/
+    expect(subject.message_id_header).to match(/^<.+\@localhost>$/)
   end
 
   context "with a parent message" do
@@ -18,7 +18,7 @@ describe Message do
       message.save
       expect(parent_message.references_header).to be_present
       expect(parent_message.message_id_header).to be_present
-      message.references_header.should == [parent_message.references_header, parent_message.message_id_header].join(' ')
+      expect(message.references_header).to eq([parent_message.references_header, parent_message.message_id_header].join(' '))
     end
   end
 
@@ -26,7 +26,7 @@ describe Message do
     it "returns the message_id_header url safe base 64 encoded" do
       message = subject
       message.message_id_header = '<foo_bar_baz@example.com>'
-      message.unique_id.should == Base64.urlsafe_encode64(message.message_id_header)
+      expect(message.unique_id).to eq(Base64.urlsafe_encode64(message.message_id_header))
     end
   end
 
@@ -40,7 +40,7 @@ describe Message do
         let(:body_plain) { 'a' * 5120 }
         let(:body_html) { 'b' * 5120 }
         it 'returns the first 4.5k of the html' do
-          subject.body_html_for_search.length.should == 4608
+          expect(subject.body_html_for_search.length).to eq(4608)
         end
       end
 
@@ -49,7 +49,7 @@ describe Message do
         let(:body_html) { 'b' * 5120 }
 
         it 'returns an empty string' do
-          subject.body_html_for_search.length.should == 0
+          expect(subject.body_html_for_search.length).to eq(0)
         end
       end
 
@@ -58,7 +58,7 @@ describe Message do
         let(:body_html) { 'b' * 10240 }
 
         it 'returns the first 9.5k of the body_html' do
-          subject.body_html_for_search.length.should == 9728
+          expect(subject.body_html_for_search.length).to eq(9728)
         end
       end
 
@@ -67,7 +67,7 @@ describe Message do
         let(:body_html) { '<b>hi</b>' }
 
         it 'returns the body html as plaintext' do
-          subject.body_html_for_search.should == "hi"
+          expect(subject.body_html_for_search).to eq("hi")
         end
       end
 
@@ -78,7 +78,7 @@ describe Message do
       let(:body_html) { '' }
 
       it 'returns the first 9.5k of body_plain' do
-        subject.body_plain_for_search.length.should == 9728
+        expect(subject.body_plain_for_search.length).to eq(9728)
       end
     end
   end

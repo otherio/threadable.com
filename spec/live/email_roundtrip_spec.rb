@@ -16,12 +16,12 @@ feature 'email roundtrip' do
           .html('Lorem testing batman asdf')
       ))
       click_on 'Send'
-      page.should have_content subject_line
+      expect(page).to have_content subject_line
 
       sleep 10  # we are bad people.
       visit 'http://mailinator.com/inbox.jsp?to=threadable-auto-deploy'
       Capybara.using_wait_time(20) do
-        page.should have_content subject_line
+        expect(page).to have_content subject_line
       end
     end
   end
@@ -34,7 +34,7 @@ feature 'email roundtrip' do
     sleep 10  # we'll burn in hell for this
     visit 'http://mailinator.com/inbox.jsp?to=threadable-auto-deploy'
     Capybara.using_wait_time(20) do
-      page.should have_content subject_line
+      expect(page).to have_content subject_line
     end
   end
 end

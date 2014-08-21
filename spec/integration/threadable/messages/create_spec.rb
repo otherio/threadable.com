@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Messages::Create do
+describe Threadable::Messages::Create, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:conversation) { organization.conversations.find_by_slug('layup-body-carbon') }
   let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
@@ -45,9 +45,9 @@ describe Threadable::Messages::Create do
       let(:conversation) { organization.conversations.find_by_slug('get-a-new-soldering-iron') }
 
       it 'adds the member as a follower' do
-        expect(conversation.followed_by?(alice)).to be_false
+        expect(conversation.followed_by?(alice)).to be_falsey
         message = call(conversation.messages, message_options)
-        expect(conversation.followed_by?(alice)).to be_true
+        expect(conversation.followed_by?(alice)).to be_truthy
       end
     end
   end

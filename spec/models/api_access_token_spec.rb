@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe ApiAccessToken, fixtures: false do
+describe ApiAccessToken, type: :model, fixtures: false do
 
-  it { should belong_to(:user) }
-  it { should validate_presence_of :user_id }
+  it { is_expected.to belong_to(:user) }
+  it { is_expected.to validate_presence_of :user_id }
 
   it 'auto generates a token' do
     expect(described_class.new.token).to be_present
@@ -12,7 +12,8 @@ describe ApiAccessToken, fixtures: false do
   it 'validates the uniqueness of token' do
     token1 = described_class.create(user_id: 1, token: 'a')
     token2 = described_class.new(user_id: 1, token: 'a')
-    expect(token2).to have(1).error_on :token
+    token2.save
+    expect(token2.errors[:token].size).to eq(1)
   end
 
 end

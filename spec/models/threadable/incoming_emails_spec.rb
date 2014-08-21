@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmails do
+describe Threadable::IncomingEmails, :type => :model do
 
   let(:incoming_emails){ described_class.new(threadable) }
   subject{ incoming_emails }
 
   let(:scope){ double :scope }
   before do
-    IncomingEmail.stub(:all).and_return(scope)
+    allow(IncomingEmail).to receive(:all).and_return(scope)
   end
 
-  it { should have_constant :Create }
+  it { is_expected.to have_constant :Create }
 
   let(:incoming_email_record){ double(:incoming_email_record) }
   let(:incoming_email){ double(:incoming_email) }
@@ -64,6 +64,9 @@ describe Threadable::IncomingEmails do
     end
   end
 
-  its(:inspect){ should == "#<Threadable::IncomingEmails>" }
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq("#<Threadable::IncomingEmails>") }
+  end
 
 end

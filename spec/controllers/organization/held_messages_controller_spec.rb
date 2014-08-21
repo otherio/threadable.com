@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Organization::HeldMessagesController do
+describe Organization::HeldMessagesController, :type => :controller do
 
 
   when_not_signed_in do

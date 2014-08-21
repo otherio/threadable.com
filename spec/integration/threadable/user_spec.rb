@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User do
+describe Threadable::User, :type => :request do
   let(:user){ threadable.users.find_by_email_address('bethany@ucsd.example.com') }
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:electronics) { organization.groups.find_by_email_address_tag('electronics') }
@@ -12,7 +12,7 @@ describe Threadable::User do
   describe "#receives_email_for_groups?" do
     context "when the current user is a group member of one or more supplied groups" do
       it 'returns true' do
-        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_true
+        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_truthy
       end
     end
 
@@ -25,7 +25,7 @@ describe Threadable::User do
       end
 
       it 'returns false' do
-        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_false
+        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_falsey
       end
     end
   end
@@ -40,7 +40,7 @@ describe Threadable::User do
       end
 
       it 'returns true' do
-        expect(user.receives_first_message_for_groups? [electronics, fundraising] ).to be_true
+        expect(user.receives_first_message_for_groups? [electronics, fundraising] ).to be_truthy
       end
     end
 
@@ -53,7 +53,7 @@ describe Threadable::User do
       end
 
       it 'returns false' do
-        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_false
+        expect(user.receives_email_for_groups? [electronics, fundraising] ).to be_falsey
       end
     end
   end

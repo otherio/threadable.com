@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization do
+describe Threadable::Organization, :type => :request do
 
   let(:organization_record){ find_organization_by_slug('raceteam') }
   let(:organization){ described_class.new(threadable, organization_record) }
@@ -43,7 +43,7 @@ describe Threadable::Organization do
     examples.each do |email_address, expected_result|
       context "when given #{email_address.inspect}" do
         subject{ organization.has_email_address?(Mail::Address.new(email_address)) }
-        it { should == expected_result }
+        it { is_expected.to eq(expected_result) }
       end
     end
   end
@@ -69,7 +69,7 @@ describe Threadable::Organization do
     examples.each do |email_address, expected_result|
       context "when given #{email_address.inspect}" do
         subject{ organization.matches_email_address?(Mail::Address.new(email_address)) }
-        it { should == expected_result }
+        it { is_expected.to eq(expected_result) }
       end
     end
   end
@@ -249,13 +249,13 @@ describe Threadable::Organization do
   describe 'plans' do
     describe '#free?' do
       it 'tells us whether the org is free' do
-        expect(organization.free?).to be_false
+        expect(organization.free?).to be_falsey
       end
     end
 
     describe '#paid?' do
       it 'tells us whether the org is paid' do
-        expect(organization.paid?).to be_true
+        expect(organization.paid?).to be_truthy
       end
     end
   end
@@ -298,7 +298,7 @@ describe Threadable::Organization do
     examples.each do |email_addresses, expected_result|
       context "when given #{email_addresses.inspect}" do
         subject{ organization.email_address_tags(email_addresses) }
-        it { should == expected_result }
+        it { is_expected.to eq(expected_result) }
       end
     end
 

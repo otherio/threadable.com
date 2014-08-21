@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'storage' do
+describe 'storage', :type => :request do
 
   it "should write a file that is readable" do
     gif = attachments_path.join('some.gif')

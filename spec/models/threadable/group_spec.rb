@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Group do
+describe Threadable::Group, :type => :model do
 
   let :organization_record do
     double(:organization_record,
@@ -25,53 +25,113 @@ describe Threadable::Group do
   subject{ group }
 
   before do
-    group.organization.stub(:email_domains).and_return(double(:email_domains, outgoing: nil))
+    allow(group.organization).to receive(:email_domains).and_return(double(:email_domains, outgoing: nil))
   end
 
-  it { should have_constant :Members }
-  it { should have_constant :Conversations }
-  it { should have_constant :Tasks }
+  it { is_expected.to have_constant :Members }
+  it { is_expected.to have_constant :Conversations }
+  it { is_expected.to have_constant :Tasks }
 
-  it { should delegate(:id                 ).to(:group_record) }
-  it { should delegate(:to_param           ).to(:group_record) }
-  it { should delegate(:name               ).to(:group_record) }
-  it { should delegate(:email_address_tag  ).to(:group_record) }
-  it { should delegate(:errors             ).to(:group_record) }
-  it { should delegate(:new_record?        ).to(:group_record) }
-  it { should delegate(:persisted?         ).to(:group_record) }
-  it { should delegate(:subject_tag        ).to(:group_record) }
-  it { should delegate(:auto_join?         ).to(:group_record) }
-  it { should delegate(:hold_messages?     ).to(:group_record) }
-  it { should delegate(:alias_email_address).to(:group_record) }
-  it { should delegate(:description        ).to(:group_record) }
-  it { should delegate(:google_sync?       ).to(:group_record) }
-  it { should delegate(:primary?           ).to(:group_record) }
+  it { is_expected.to delegate(:id                 ).to(:group_record) }
+  it { is_expected.to delegate(:to_param           ).to(:group_record) }
+  it { is_expected.to delegate(:name               ).to(:group_record) }
+  it { is_expected.to delegate(:email_address_tag  ).to(:group_record) }
+  it { is_expected.to delegate(:errors             ).to(:group_record) }
+  it { is_expected.to delegate(:new_record?        ).to(:group_record) }
+  it { is_expected.to delegate(:persisted?         ).to(:group_record) }
+  it { is_expected.to delegate(:subject_tag        ).to(:group_record) }
+  it { is_expected.to delegate(:auto_join?         ).to(:group_record) }
+  it { is_expected.to delegate(:hold_messages?     ).to(:group_record) }
+  it { is_expected.to delegate(:alias_email_address).to(:group_record) }
+  it { is_expected.to delegate(:description        ).to(:group_record) }
+  it { is_expected.to delegate(:google_sync?       ).to(:group_record) }
+  it { is_expected.to delegate(:primary?           ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }
-    its(:model_name){ should == ::Group.model_name }
+
+    describe '#model_name' do
+      subject { super().model_name }
+      it { is_expected.to eq(::Group.model_name) }
+    end
   end
 
-  its(:organization_record          ){ should eq organization_record }
-  its(:email_address                ){ should eq "thing-factory@my-project.localhost" }
-  its(:task_email_address           ){ should eq "thing-factory+task@my-project.localhost" }
-  its(:formatted_email_address      ){ should eq %("My Project: thing factory" <thing-factory@my-project.localhost>) }
-  its(:formatted_task_email_address ){ should eq %("My Project: thing factory Tasks" <thing-factory+task@my-project.localhost>) }
+  describe '#organization_record' do
+    subject { super().organization_record }
+    it { is_expected.to eq organization_record }
+  end
 
-  its(:members      ){ should be_a Threadable::Group::Members }
-  its(:conversations){ should be_a Threadable::Group::Conversations }
-  its(:tasks        ){ should be_a Threadable::Group::Tasks }
+  describe '#email_address' do
+    subject { super().email_address }
+    it { is_expected.to eq "thing-factory@my-project.localhost" }
+  end
 
-  its(:inspect){ should eq %(#<Threadable::Group group_id: 1234, name: "thing factory">) }
+  describe '#task_email_address' do
+    subject { super().task_email_address }
+    it { is_expected.to eq "thing-factory+task@my-project.localhost" }
+  end
+
+  describe '#formatted_email_address' do
+    subject { super().formatted_email_address }
+    it { is_expected.to eq %("My Project: thing factory" <thing-factory@my-project.localhost>) }
+  end
+
+  describe '#formatted_task_email_address' do
+    subject { super().formatted_task_email_address }
+    it { is_expected.to eq %("My Project: thing factory Tasks" <thing-factory+task@my-project.localhost>) }
+  end
+
+  describe '#members' do
+    subject { super().members }
+    it { is_expected.to be_a Threadable::Group::Members }
+  end
+
+  describe '#conversations' do
+    subject { super().conversations }
+    it { is_expected.to be_a Threadable::Group::Conversations }
+  end
+
+  describe '#tasks' do
+    subject { super().tasks }
+    it { is_expected.to be_a Threadable::Group::Tasks }
+  end
+
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq %(#<Threadable::Group group_id: 1234, name: "thing factory">) }
+  end
 
   context 'with an alias address defined' do
     let(:alias_email_address) { %("My Elsewhere" <elsewhere@foo.com>) }
 
-    its(:email_address                ){ should eq "elsewhere@foo.com" }
-    its(:task_email_address           ){ should eq "elsewhere-task@foo.com" }
-    its(:internal_email_address       ){ should eq "thing-factory@my-project.localhost" }
-    its(:internal_task_email_address  ){ should eq "thing-factory+task@my-project.localhost" }
-    its(:formatted_email_address      ){ should eq %(My Elsewhere <elsewhere@foo.com>) }
-    its(:formatted_task_email_address ){ should eq %(My Elsewhere Tasks <elsewhere-task@foo.com>) }
+    describe '#email_address' do
+      subject { super().email_address }
+      it { is_expected.to eq "elsewhere@foo.com" }
+    end
+
+    describe '#task_email_address' do
+      subject { super().task_email_address }
+      it { is_expected.to eq "elsewhere-task@foo.com" }
+    end
+
+    describe '#internal_email_address' do
+      subject { super().internal_email_address }
+      it { is_expected.to eq "thing-factory@my-project.localhost" }
+    end
+
+    describe '#internal_task_email_address' do
+      subject { super().internal_task_email_address }
+      it { is_expected.to eq "thing-factory+task@my-project.localhost" }
+    end
+
+    describe '#formatted_email_address' do
+      subject { super().formatted_email_address }
+      it { is_expected.to eq %(My Elsewhere <elsewhere@foo.com>) }
+    end
+
+    describe '#formatted_task_email_address' do
+      subject { super().formatted_task_email_address }
+      it { is_expected.to eq %(My Elsewhere Tasks <elsewhere-task@foo.com>) }
+    end
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Class do
+describe Threadable::Class, :type => :model do
 
   let(:user_record){ Factories.create(:user) }
   let(:host) { 'example.com' }
@@ -16,32 +16,89 @@ describe Threadable::Class do
     end
   end
 
-  its(:protocol        ){ should eq 'http'  }
-  its(:host            ){ should eq 'example.com'  }
-  its(:port            ){ should eq 3000           }
-  its(:current_user_id ){ should eq user_record.id }
+  describe '#protocol' do
+    subject { super().protocol }
+    it { is_expected.to eq 'http'  }
+  end
 
-  its(:emails          ){ should be_a Threadable::Emails         }
-  its(:users           ){ should be_a Threadable::Users          }
-  its(:organizations   ){ should be_a Threadable::Organizations  }
-  its(:conversations   ){ should be_a Threadable::Conversations  }
-  its(:tasks           ){ should be_a Threadable::Tasks          }
-  its(:messages        ){ should be_a Threadable::Messages       }
-  its(:attachments     ){ should be_a Threadable::Attachments    }
-  its(:incoming_emails ){ should be_a Threadable::IncomingEmails }
-  its(:events          ){ should be_a Threadable::Events         }
-  its(:groups          ){ should be_a Threadable::Groups         }
+  describe '#host' do
+    subject { super().host }
+    it { is_expected.to eq 'example.com'  }
+  end
+
+  describe '#port' do
+    subject { super().port }
+    it { is_expected.to eq 3000           }
+  end
+
+  describe '#current_user_id' do
+    subject { super().current_user_id }
+    it { is_expected.to eq user_record.id }
+  end
+
+  describe '#emails' do
+    subject { super().emails }
+    it { is_expected.to be_a Threadable::Emails         }
+  end
+
+  describe '#users' do
+    subject { super().users }
+    it { is_expected.to be_a Threadable::Users          }
+  end
+
+  describe '#organizations' do
+    subject { super().organizations }
+    it { is_expected.to be_a Threadable::Organizations  }
+  end
+
+  describe '#conversations' do
+    subject { super().conversations }
+    it { is_expected.to be_a Threadable::Conversations  }
+  end
+
+  describe '#tasks' do
+    subject { super().tasks }
+    it { is_expected.to be_a Threadable::Tasks          }
+  end
+
+  describe '#messages' do
+    subject { super().messages }
+    it { is_expected.to be_a Threadable::Messages       }
+  end
+
+  describe '#attachments' do
+    subject { super().attachments }
+    it { is_expected.to be_a Threadable::Attachments    }
+  end
+
+  describe '#incoming_emails' do
+    subject { super().incoming_emails }
+    it { is_expected.to be_a Threadable::IncomingEmails }
+  end
+
+  describe '#events' do
+    subject { super().events }
+    it { is_expected.to be_a Threadable::Events         }
+  end
+
+  describe '#groups' do
+    subject { super().groups }
+    it { is_expected.to be_a Threadable::Groups         }
+  end
 
 
-  its(:env             ){ should eq(
+  describe '#env' do
+    subject { super().env }
+    it { is_expected.to eq(
     "protocol" => 'http',
     "host" => 'example.com',
     "port" => 3000,
     "current_user_id" => user_record.id,
     "worker" => false,
   )}
+  end
 
-  it { should delegate(:track).to(:tracker) }
+  it { is_expected.to delegate(:track).to(:tracker) }
 
   describe "#==" do
     it "should be equal if the other object is an instance of Threadable and the env hashes are equal" do

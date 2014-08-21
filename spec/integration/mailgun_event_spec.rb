@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::MailgunEvent do
+describe Threadable::MailgunEvent, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:recipient)    { organization.members.find_by_email_address('alice@ucsd.example.com') }
   let(:conversation) { organization.conversations.find_by_slug('welcome-to-our-threadable-organization') }

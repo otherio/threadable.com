@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Conversation do
-  it { should belong_to(:organization) }
-  it { should have_many(:messages) }
+describe Conversation, :type => :model do
+  it { is_expected.to belong_to(:organization) }
+  it { is_expected.to have_many(:messages) }
 
   context "slug" do
     let :conversation do
@@ -10,7 +10,7 @@ describe Conversation do
     end
 
     it "has a correct slug" do
-      conversation.slug.should == 'foo-bar-baz'
+      expect(conversation.slug).to eq('foo-bar-baz')
     end
   end
 

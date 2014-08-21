@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe User do
+describe User, :type => :model do
 
   subject(:user){ described_class.new }
 
-  it { should have_many :email_addresses }
-  it { should have_many :organization_memberships }
-  it { should have_many :organizations }
-  it { should have_many :messages }
-  it { should have_many :conversations }
-  it { should have_many :api_access_tokens }
+  it { is_expected.to have_many :email_addresses }
+  it { is_expected.to have_many :organization_memberships }
+  it { is_expected.to have_many :organizations }
+  it { is_expected.to have_many :messages }
+  it { is_expected.to have_many :conversations }
+  it { is_expected.to have_many :api_access_tokens }
   # it { should have_many :tasks } # somehow this is broken now as well
 
-  it { should validate_presence_of :name }
+  it { is_expected.to validate_presence_of :name }
   # it { should validate_presence_of :email_addresses } # somehow this is broken now
 
   def build_user_with_password password
@@ -22,10 +22,10 @@ describe User do
   it "should ensure the user has a primary email address" do
     user = User.new
     user.valid?
-    expect(user).to have(1).errors_on(:email_address)
+    expect(user.errors[:email_address].size).to eq(1)
     user = User.new email_address: 'love@it.com'
     user.valid?
-    expect(user).to have(0).errors_on(:email_address)
+    expect(user.errors[:email_address].size).to eq(0)
   end
 
   describe "password validations" do
@@ -39,13 +39,13 @@ describe User do
 
     before{ user.valid? }
 
-    it { should be_empty }
+    it { is_expected.to be_empty }
 
     context "when password is too short" do
       def user_attributes
         { password: "123", password_confirmation: "123" }
       end
-      it { should eq ["is too short (minimum is 6 characters)"] }
+      it { is_expected.to eq ["is too short (minimum is 6 characters)"] }
     end
 
     context "when passwords do not match" do
@@ -53,7 +53,7 @@ describe User do
       def user_attributes
         { password: "asjkdhjksadhjksa", password_confirmation: "2348392489320890" }
       end
-      it { should eq ["doesn't match Password"] }
+      it { is_expected.to eq ["doesn't match Password"] }
     end
 
     context "when password is present but password_confirmation is blank" do
@@ -61,7 +61,7 @@ describe User do
       def user_attributes
         { password: "asjkdhjksadhjksa" }
       end
-      it { should eq ["doesn't match Password", "can't be blank"] }
+      it { is_expected.to eq ["doesn't match Password", "can't be blank"] }
     end
 
   end
@@ -106,19 +106,19 @@ describe User do
 
     describe "#email_address" do
       it "should return the primary email address" do
-        user.email_address.should == 'primary@important.net'
+        expect(user.email_address).to eq('primary@important.net')
       end
     end
 
     describe "#email_address=" do
       it "should update the address of the primary email address" do
         user.email_address = 'foo@bar.love'
-        user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net','foo@bar.love']
+        expect(user.email_addresses.map(&:address).to_set).to eq(Set['primary@important.net', 'other@stupid.net','foo@bar.love'])
       end
 
       it "downcases the address" do
         user.email_address = 'FoO@bar.love'
-        user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net','foo@bar.love']
+        expect(user.email_addresses.map(&:address).to_set).to eq(Set['primary@important.net', 'other@stupid.net','foo@bar.love'])
       end
 
       context 'when the address exists, but is not owned by any user' do
@@ -128,14 +128,14 @@ describe User do
 
         it "adopts it and sets it to primary" do
           user.email_address = 'foo@bar.love'
-          user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net', 'foo@bar.love']
-          user.email_address.should == 'foo@bar.love'
+          expect(user.email_addresses.map(&:address).to_set).to eq(Set['primary@important.net', 'other@stupid.net', 'foo@bar.love'])
+          expect(user.email_address).to eq('foo@bar.love')
         end
 
         it "adopts it even if the case does not match" do
           user.email_address = 'FoO@bar.love'
-          user.email_addresses.map(&:address).to_set.should == Set['primary@important.net', 'other@stupid.net', 'foo@bar.love']
-          user.email_address.should == 'foo@bar.love'
+          expect(user.email_addresses.map(&:address).to_set).to eq(Set['primary@important.net', 'other@stupid.net', 'foo@bar.love'])
+          expect(user.email_address).to eq('foo@bar.love')
         end
       end
     end

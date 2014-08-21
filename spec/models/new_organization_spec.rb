@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe NewOrganization, fixtures: false do
+describe NewOrganization, type: :model, fixtures: false do
 
   let(:threadable){ Threadable.new(host: 'threadable.com') }
 
@@ -137,12 +137,11 @@ describe NewOrganization, fixtures: false do
       it 'creates the user, then the org, then adds the members' do
 
         expect(controller).to receive(:sign_in!).
-          with{ threadable.users.find_by_email_address!(your_email_address) }.
-          and_return{|user| threadable.current_user = user; true }
+          with{ threadable.users.find_by_email_address!(your_email_address) }{|user| threadable.current_user = user; true }
 
         expect{
           expect{
-            expect(subject.create).to be_true
+            expect(subject.create).to be_truthy
           }.to change{ threadable.organizations.count }.by(1)
         }.to change{ threadable.users.count }.by(3)
 
@@ -153,10 +152,9 @@ describe NewOrganization, fixtures: false do
         let(:your_email_address) { 'ILoveUpperCase@gmail.com' }
         it 'finds the user using the lowercase email address' do
           expect(controller).to receive(:sign_in!).
-            with{ threadable.users.find_by_email_address!('iloveuppercase@gmail.com') }.
-            and_return{|user| threadable.current_user = user; true }
+            with{ threadable.users.find_by_email_address!('iloveuppercase@gmail.com') }{|user| threadable.current_user = user; true }
 
-          expect(subject.create).to be_true
+          expect(subject.create).to be_truthy
 
         end
       end
@@ -167,7 +165,7 @@ describe NewOrganization, fixtures: false do
       it 'creates the org, then adds the members' do
         expect{
           expect{
-            expect(subject.create).to be_true
+            expect(subject.create).to be_truthy
           }.to change{ threadable.organizations.count }.by(1)
         }.to change{ threadable.users.count }.by(2)
 
@@ -180,7 +178,7 @@ describe NewOrganization, fixtures: false do
       let(:organization_name){ '' }
       it 'does nothing and returns false' do
         expect{
-          expect(subject.create).to be_false
+          expect(subject.create).to be_falsey
         }.to_not change{ threadable.organizations.count }
       end
     end

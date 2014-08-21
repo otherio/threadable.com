@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversations do
+describe Threadable::Conversations, :type => :request do
 
   let(:conversations){ described_class.new(threadable) }
   subject{ conversations }

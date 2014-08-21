@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::UsersController do
+describe Admin::UsersController, :type => :controller do
 
   when_not_signed_in do
 

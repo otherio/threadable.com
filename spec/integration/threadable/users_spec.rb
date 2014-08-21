@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Users do
+describe Threadable::Users, :type => :request do
 
   let(:users){ described_class.new(threadable) }
 

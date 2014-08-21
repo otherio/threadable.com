@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Threadable::Conversation::Participants do
+describe Threadable::Conversation::Participants, :type => :model do
 
 end

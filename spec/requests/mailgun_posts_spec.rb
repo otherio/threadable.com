@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Mailgun posts", fixtures: false do
+describe "Mailgun posts", type: :request, fixtures: false do
 
   describe "POST /emails" do
     let(:params){

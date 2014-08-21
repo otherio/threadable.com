@@ -1,12 +1,19 @@
 require 'spec_helper'
 
-describe Threadable::Mailer do
+describe Threadable::Mailer, :type => :model do
 
   let(:mailer){ described_class.new threadable }
   subject{ mailer }
 
-  its(:threadable){ should eq threadable }
-  its(:default_url_options){ should eq(host: threadable.host, port: threadable.port, protocol: threadable.protocol) }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
+
+  describe '#default_url_options' do
+    subject { super().default_url_options }
+    it { is_expected.to eq(host: threadable.host, port: threadable.port, protocol: threadable.protocol) }
+  end
 
   describe 'generate' do
     it 'processes the given method name with the given args and returns the message' do

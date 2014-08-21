@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail::Deliver do
+describe Threadable::IncomingEmail::Deliver, :type => :model do
 
   let(:params)             { ::IncomingEmail.create(params: create_incoming_email_params).params }
   let(:conversation)       { double(:conversation, messages: double(:messages)) }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "api authentication" do
+describe "api authentication", :type => :request do
 
   context 'using a valid access token' do
     before do

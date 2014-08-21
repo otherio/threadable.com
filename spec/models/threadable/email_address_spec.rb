@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::EmailAddress do
+describe Threadable::EmailAddress, :type => :model do
 
   let :email_address_record do
     double(:email_address_record,
@@ -16,25 +16,46 @@ describe Threadable::EmailAddress do
   let(:email_address){ described_class.new(threadable, email_address_record) }
   subject{ email_address }
 
-  it { should delegate(:id        ).to(:email_address_record) }
-  it { should delegate(:primary?  ).to(:email_address_record) }
-  it { should delegate(:errors    ).to(:email_address_record) }
-  it { should delegate(:persisted?).to(:email_address_record) }
-  it { should delegate(:confirmed?).to(:email_address_record) }
+  it { is_expected.to delegate(:id        ).to(:email_address_record) }
+  it { is_expected.to delegate(:primary?  ).to(:email_address_record) }
+  it { is_expected.to delegate(:errors    ).to(:email_address_record) }
+  it { is_expected.to delegate(:persisted?).to(:email_address_record) }
+  it { is_expected.to delegate(:confirmed?).to(:email_address_record) }
 
-  its(:threadable             ){ should eq threadable }
-  its(:email_address_record){ should eq email_address_record }
-  its(:inspect             ){ should eq %(#<Threadable::EmailAddress address: "foo@bar.io", primary: true, confirmed: true>) }
-  its(:to_s                ){ should eq 'foo@bar.io' }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
-  its(:formatted_email_address) { should eq 'foo@bar.io'}
+  describe '#email_address_record' do
+    subject { super().email_address_record }
+    it { is_expected.to eq email_address_record }
+  end
+
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq %(#<Threadable::EmailAddress address: "foo@bar.io", primary: true, confirmed: true>) }
+  end
+
+  describe '#to_s' do
+    subject { super().to_s }
+    it { is_expected.to eq 'foo@bar.io' }
+  end
+
+  describe '#formatted_email_address' do
+    subject { super().formatted_email_address }
+    it { is_expected.to eq 'foo@bar.io'}
+  end
 
   describe '#formatted_email_address' do
     before do
-      email_address.stub(:user).and_return(double(:user, name: 'Foo Bar'))
-      email_address.stub(:address).and_return('foo@bar.io')
+      allow(email_address).to receive(:user).and_return(double(:user, name: 'Foo Bar'))
+      allow(email_address).to receive(:address).and_return('foo@bar.io')
     end
 
-    its(:formatted_email_address) { should eq 'Foo Bar <foo@bar.io>'}
+    describe '#formatted_email_address' do
+      subject { super().formatted_email_address }
+      it { is_expected.to eq 'Foo Bar <foo@bar.io>'}
+    end
   end
 end

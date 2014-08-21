@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Task doers" do
+describe "Task doers", :type => :request do
 
   it 'needs tests'
 

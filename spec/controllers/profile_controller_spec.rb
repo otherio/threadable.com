@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProfileController do
+describe ProfileController, :type => :controller do
 
   when_not_signed_in do
 
@@ -43,7 +43,7 @@ describe ProfileController do
         it 'should update the reply-to munging setting' do
           patch :update, user: { name: 'Yan!', munge_reply_to: false }
           expect(response).to redirect_to profile_path
-          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').munge_reply_to?).to be_false
+          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').munge_reply_to?).to be_falsey
           expect(flash[:notice]).to eq "We've updated your profile"
         end
       end
@@ -52,7 +52,7 @@ describe ProfileController do
         it 'should update the email button display setting' do
           patch :update, user: { name: 'Yan!', show_mail_buttons: false }
           expect(response).to redirect_to profile_path
-          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').show_mail_buttons?).to be_false
+          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').show_mail_buttons?).to be_falsey
           expect(flash[:notice]).to eq "We've updated your profile"
         end
       end
@@ -61,7 +61,7 @@ describe ProfileController do
         it 'should update the secure button preference' do
           patch :update, user: { name: 'Yan!', secure_mail_buttons: true }
           expect(response).to redirect_to profile_path
-          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').secure_mail_buttons?).to be_true
+          expect(threadable.users.find_by_email_address('yan@ucsd.example.com').secure_mail_buttons?).to be_truthy
           expect(flash[:notice]).to eq "We've updated your profile"
         end
       end

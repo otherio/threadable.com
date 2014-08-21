@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversation::Groups do
+describe Threadable::Conversation::Groups, :type => :request do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:conversation){ organization.conversations.find_by_slug('layup-body-carbon') }
@@ -13,7 +13,10 @@ describe Threadable::Conversation::Groups do
 
   subject{ groups }
 
-  its(:all){ should eq [primary_group] }
+  describe '#all' do
+    subject { super().all }
+    it { is_expected.to eq [primary_group] }
+  end
 
   describe '#add' do
 

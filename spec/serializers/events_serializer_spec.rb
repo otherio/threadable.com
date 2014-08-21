@@ -19,7 +19,7 @@ describe EventsSerializer do
     let(:payload){ message_event }
     let(:expected_key){ :event }
     it do
-      should eq(
+      is_expected.to eq(
         id:         message_event.id,
         event_type: :created_message,
         actor:      message.creator.name,
@@ -35,7 +35,7 @@ describe EventsSerializer do
     let(:payload){ event }
     let(:expected_key){ :event }
     it do
-      should eq(
+      is_expected.to eq(
         id:         event.id,
         event_type: :task_added_doer,
         actor:      event.actor.name,
@@ -51,7 +51,7 @@ describe EventsSerializer do
     let(:payload){ [message_event, event, group_event] }
     let(:expected_key){ :events }
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:         message_event.id,
           event_type: :created_message,

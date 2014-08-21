@@ -28,7 +28,7 @@ describe OrganizationsSerializer do
     end
 
     it do
-      should eq(
+      is_expected.to eq(
         id:                raceteam.id,
         param:             "raceteam",
         name:              "UCSD Electric Racing",
@@ -68,7 +68,7 @@ describe OrganizationsSerializer do
     end
 
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:                raceteam.id,
           param:             "raceteam",

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Message do
+describe Threadable::Message, :type => :request do
 
   let(:conversation) { threadable.conversations.find_by_slug('inventory-led-supplies')}
   let(:organization) { conversation.organization }
@@ -9,9 +9,9 @@ describe Threadable::Message do
   subject{ message }
 
   it "knows if it has been sent to a given recipient" do
-    expect( message.sent_to?(recipient) ).to be_false
+    expect( message.sent_to?(recipient) ).to be_falsey
     message.sent_to!(recipient)
-    expect( message.sent_to?(recipient) ).to be_true
+    expect( message.sent_to?(recipient) ).to be_truthy
   end
 
   describe '#avatar_url' do
@@ -41,14 +41,14 @@ describe Threadable::Message do
 
     it 'changes the sent_to param' do
       message.not_sent_to!(recipient)
-      expect(message.sent_to?(recipient)).to be_false
+      expect(message.sent_to?(recipient)).to be_falsey
     end
   end
 
   describe '#send_email_for!' do
     it 'sends email for a specific user' do
       message.send_email_for!(recipient)
-      expect(message.sent_to?(recipient)).to be_true
+      expect(message.sent_to?(recipient)).to be_truthy
       drain_background_jobs!
       expect(sent_emails.length).to eq 1
     end
@@ -57,7 +57,7 @@ describe Threadable::Message do
       recipient.organization_membership_record.update_attribute(:gets_email, false)
 
       message.send_email_for!(recipient)
-      expect(message.sent_to?(recipient)).to be_false
+      expect(message.sent_to?(recipient)).to be_falsey
       drain_background_jobs!
       expect(sent_emails.length).to eq 0
     end
@@ -72,7 +72,7 @@ describe Threadable::Message do
     it 'skips the creator when send_to_creator is false, but still makes the sent_emails record' do
       expect(message).to receive(:send_for_recipient).exactly(message.recipients.all.length - 1).times
       message.send_emails!(false)
-      expect(message.sent_to?(message.creator)).to be_true
+      expect(message.sent_to?(message.creator)).to be_truthy
     end
   end
 

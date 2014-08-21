@@ -13,7 +13,7 @@ describe EmailDomainsSerializer do
     let(:payload){ domain1 }
     let(:expected_key){ :email_domain }
     it do
-      should eq(
+      is_expected.to eq(
         id:                domain1.id,
         organization_slug: domain1.organization.slug,
         domain:            domain1.domain,
@@ -26,7 +26,7 @@ describe EmailDomainsSerializer do
     let(:payload){ [domain1, domain2] }
     let(:expected_key){ :email_domains }
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:                domain1.id,
           organization_slug: domain1.organization.slug,

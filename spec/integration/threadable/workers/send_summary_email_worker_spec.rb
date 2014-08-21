@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SendSummaryEmailWorker do
+describe SendSummaryEmailWorker, :type => :request do
   let(:last_time) { Time.zone.local(2014, 2, 3) - 1.day }
   let(:time) { Time.zone.local(2014, 2, 3) }
   subject{ described_class.new }

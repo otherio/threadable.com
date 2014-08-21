@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 require "spec_helper"
 
-describe MembershipMailer do
+describe MembershipMailer, :type => :mailer do
 
   signed_in_as 'bethany@ucsd.example.com'
 
@@ -15,7 +15,7 @@ describe MembershipMailer do
   let(:dmarc_verified) { true }
 
   before do
-    VerifyDmarc.stub(:call).and_return(dmarc_verified)
+    allow(VerifyDmarc).to receive(:call).and_return(dmarc_verified)
   end
 
   describe "join_notice" do

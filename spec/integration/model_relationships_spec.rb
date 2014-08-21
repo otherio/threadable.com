@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'model relationships' do
+describe 'model relationships', :type => :request do
 
   let!(:organization){ Organization.where(name: "UCSD Electric Racing").first! }
 

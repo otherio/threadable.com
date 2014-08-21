@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 require 'spec_helper'
 
-describe GoogleSyncWorker do
+describe GoogleSyncWorker, :type => :request do
   subject{ described_class.new }
 
   before do

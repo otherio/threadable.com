@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Group do
+describe Threadable::Group, :type => :request do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
 
@@ -133,10 +133,10 @@ describe Threadable::Group do
 
         organization.google_user = alice
         expect(group).to receive(:client_for).with(alice_as_user).and_return(google_client)
-        group.stub(:directory_api).and_return(google_directory_api)
-        group.stub(:groups_settings_api).and_return(google_groups_settings_api)
+        allow(group).to receive(:directory_api).and_return(google_directory_api)
+        allow(group).to receive(:groups_settings_api).and_return(google_groups_settings_api)
         expect(google_client).to receive(:execute).with(api_method: 'GET API DESCRIPTION', parameters: {'groupKey' => 'electronics@foo.com' }).and_return(api_response)
-        google_client.stub(:execute).with(
+        allow(google_client).to receive(:execute).with(
           api_method: 'SETTINGS UPDATE API DESCRIPTION',
           parameters: anything,
           body_object: anything,
@@ -166,7 +166,7 @@ describe Threadable::Group do
 
           group.google_sync = true
           drain_background_jobs!
-          expect(group.reload.google_sync?).to be_true
+          expect(group.reload.google_sync?).to be_truthy
         end
 
         it 'enables sync and sets the sync user when called via update' do
@@ -174,7 +174,7 @@ describe Threadable::Group do
 
           group.update(google_sync: true)
           drain_background_jobs!
-          expect(group.reload.google_sync?).to be_true
+          expect(group.reload.google_sync?).to be_truthy
         end
 
         context 'when disabling google sync' do
@@ -182,10 +182,10 @@ describe Threadable::Group do
             expect_any_instance_of(Threadable::Integrations::Google::GroupMembersSync).to receive(:call).with(anything, group)
             group.google_sync = true
             drain_background_jobs!
-            expect(group.reload.google_sync?).to be_true
+            expect(group.reload.google_sync?).to be_truthy
             group.google_sync = false
             drain_background_jobs!
-            expect(group.reload.google_sync?).to be_false
+            expect(group.reload.google_sync?).to be_falsey
           end
         end
       end
@@ -222,7 +222,7 @@ describe Threadable::Group do
 
           group.google_sync = true
           drain_background_jobs!
-          expect(group.reload.google_sync?).to be_true
+          expect(group.reload.google_sync?).to be_truthy
         end
 
         context 'when group creation fails' do

@@ -1,11 +1,14 @@
 require 'spec_helper'
 
-describe Threadable::EmailAddresses do
+describe Threadable::EmailAddresses, :type => :model do
 
   let(:email_addresses){ described_class.new(threadable) }
   subject{ email_addresses }
 
-  its(:threadable){ should eq threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
   let :all_email_address_records do
     3.times.map do |i|

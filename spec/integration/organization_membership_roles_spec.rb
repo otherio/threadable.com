@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "organization membership roles" do
+describe "organization membership roles", :type => :request do
 
   when_signed_in_as 'bethany@ucsd.example.com' do
     it 'the first member of an organization should be an owner' do

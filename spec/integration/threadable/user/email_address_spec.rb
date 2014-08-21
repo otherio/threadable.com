@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User::EmailAddress do
+describe Threadable::User::EmailAddress, :type => :request do
 
   let(:user_record          ){ email_address_record.user }
   let(:email_address_records){ user_record.email_addresses }
@@ -10,12 +10,35 @@ describe Threadable::User::EmailAddress do
 
   let(:email_address_record ){ find_email_address 'yan@ucsd.example.com' }
 
-  its(:id        ){ should eq email_address_record.id         }
-  its(:address   ){ should eq email_address_record.address    }
-  its(:primary?  ){ should eq email_address_record.primary?   }
-  its(:errors    ){ should eq email_address_record.errors     }
-  its(:persisted?){ should eq email_address_record.persisted? }
-  its(:to_s      ){ should eq email_address.address           }
+  describe '#id' do
+    subject { super().id }
+    it { is_expected.to eq email_address_record.id         }
+  end
+
+  describe '#address' do
+    subject { super().address }
+    it { is_expected.to eq email_address_record.address    }
+  end
+
+  describe '#primary?' do
+    subject { super().primary? }
+    it { is_expected.to eq email_address_record.primary?   }
+  end
+
+  describe '#errors' do
+    subject { super().errors }
+    it { is_expected.to eq email_address_record.errors     }
+  end
+
+  describe '#persisted?' do
+    subject { super().persisted? }
+    it { is_expected.to eq email_address_record.persisted? }
+  end
+
+  describe '#to_s' do
+    subject { super().to_s }
+    it { is_expected.to eq email_address.address           }
+  end
 
   describe 'primary!' do
 
@@ -24,7 +47,7 @@ describe Threadable::User::EmailAddress do
       it 'returns false' do
         expect(email_address_record).to be_primary
         expect(email_address_record.confirmed_at).to be_present
-        expect(email_address.primary!).to be_false
+        expect(email_address.primary!).to be_falsey
       end
     end
 
@@ -33,7 +56,7 @@ describe Threadable::User::EmailAddress do
       it 'returns false' do
         expect(email_address_record).to_not be_primary
         expect(email_address_record.confirmed_at).to be_nil
-        expect(email_address.primary!).to be_false
+        expect(email_address.primary!).to be_falsey
       end
     end
 
@@ -42,7 +65,7 @@ describe Threadable::User::EmailAddress do
       it 'returns true' do
         expect(email_address_record).to_not be_primary
         expect(email_address_record.confirmed_at).to be_present
-        expect(email_address.primary!).to be_true
+        expect(email_address.primary!).to be_truthy
       end
     end
   end
@@ -52,14 +75,14 @@ describe Threadable::User::EmailAddress do
       let(:email_address_record){ find_email_address 'bob.cauchois@example.com' }
       it 'confirmes the address' do
         expect(email_address_record.confirmed_at).to be_nil
-        expect(email_address.confirm!).to be_true
+        expect(email_address.confirm!).to be_truthy
       end
     end
     context 'when the email address is confirmed' do
       let(:email_address_record){ find_email_address 'yan@ucsd.example.com' }
       it 'does nothing' do
         expect(email_address_record.confirmed_at).to be_present
-        expect(email_address.confirm!).to be_false
+        expect(email_address.confirm!).to be_falsey
       end
     end
   end

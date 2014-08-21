@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OrganizationsController do
+describe OrganizationsController, :type => :controller do
 
   let(:creator){ double(:creator) }
   let(:new_organization){ double(:new_organization, creator: creator) }

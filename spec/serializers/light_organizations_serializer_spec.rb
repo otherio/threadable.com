@@ -28,7 +28,7 @@ describe LightOrganizationsSerializer do
     end
 
     it do
-      should eq(
+      is_expected.to eq(
         id:                raceteam.id,
         param:             "raceteam",
         name:              "UCSD Electric Racing",
@@ -47,7 +47,7 @@ describe LightOrganizationsSerializer do
     let(:expected_key){ :organizations }
 
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:                raceteam.id,
           param:             "raceteam",

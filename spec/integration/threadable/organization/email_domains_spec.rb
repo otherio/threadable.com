@@ -1,12 +1,15 @@
 require 'spec_helper'
 
-describe Threadable::Organization::EmailDomains do
+describe Threadable::Organization::EmailDomains, :type => :request do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:email_domains){ organization.email_domains }
   subject{ email_domains }
 
-  its(:threadable){ should eq threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
   describe '#outgoing' do
     before do

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'sending emails' do
+describe 'sending emails', :type => :request do
 
   def expect_job_to_be_enqueued! *args
     expect(sent_emails).to be_empty

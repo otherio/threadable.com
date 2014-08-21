@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::GroupsController do
+describe Api::GroupsController, :type => :controller do
 
   when_not_signed_in do
     describe 'index' do
@@ -125,7 +125,7 @@ describe Api::GroupsController do
           group = raceteam.groups.find_by_email_address_tag('electronics')
           expect(group.color).to eq '#964bf8'
           expect(group.subject_tag).to eq 'superheroes'
-          expect(group.auto_join?).to be_false
+          expect(group.auto_join?).to be_falsey
           expect(group.alias_email_address).to eq 'foo@bar.com'
           expect(group.description).to eq 'They are super'
           expect(response.body).to eq serialize(:groups, group).to_json

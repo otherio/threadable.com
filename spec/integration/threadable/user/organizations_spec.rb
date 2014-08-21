@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User::Organizations do
+describe Threadable::User::Organizations, :type => :request do
   let(:user) { threadable.users.find_by_email_address('lilith@sfhealth.example.com') }
 
   describe '#unconfirmed' do

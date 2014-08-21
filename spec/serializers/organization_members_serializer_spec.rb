@@ -10,7 +10,7 @@ describe OrganizationMembersSerializer do
     let(:payload){ alice }
     let(:expected_key){ :organization_member }
     it do
-      should eq(
+      is_expected.to eq(
         id:            alice.id,
         user_id:       alice.user_id,
         param:         "alice-neilson",
@@ -29,7 +29,7 @@ describe OrganizationMembersSerializer do
     let(:payload){ [alice,bob] }
     let(:expected_key){ :organization_members }
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:            alice.id,
           user_id:       alice.user_id,

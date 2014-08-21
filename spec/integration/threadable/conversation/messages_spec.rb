@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversation::Messages do
+describe Threadable::Conversation::Messages, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug!('raceteam') }
 
   describe '#not_sent_to' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Attachment, fixtures: false do
+describe Attachment, type: :model, fixtures: false do
 
   let(:mimetype){ "text/plain" }
 
@@ -20,11 +20,11 @@ describe Attachment, fixtures: false do
     subject { attachment.binary? }
     context "when the mimetype is 'text/plain'" do
       let(:mimetype){ "text/plain" }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
     context "when the mimetype is 'image/jpeg'" do
       let(:mimetype){ "image/jpeg" }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
 
   end

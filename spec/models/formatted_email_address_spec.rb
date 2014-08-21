@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FormattedEmailAddress do
+describe FormattedEmailAddress, :type => :model do
 
   let(:formatted_email_address){ described_class.new(options) }
   subject{ formatted_email_address }
@@ -12,7 +12,11 @@ describe FormattedEmailAddress do
         address: 'jared@other.io',
       }
     end
-    its(:to_s){ should eq 'jared@other.io' }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq 'jared@other.io' }
+    end
   end
 
 
@@ -23,7 +27,11 @@ describe FormattedEmailAddress do
         display_name: "Jared Grippe: A Person",
       }
     end
-    its(:to_s){ should eq %("Jared Grippe: A Person" <jared@other.io>) }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq %("Jared Grippe: A Person" <jared@other.io>) }
+    end
   end
 
   context "when given an address and a display name without special characters" do
@@ -33,7 +41,11 @@ describe FormattedEmailAddress do
         display_name: "Jared Grippe",
       }
     end
-    its(:to_s){ should eq %(Jared Grippe <jared@other.io>) }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq %(Jared Grippe <jared@other.io>) }
+    end
   end
 
   context "when given an address and a nil display name" do
@@ -43,7 +55,11 @@ describe FormattedEmailAddress do
         display_name: nil,
       }
     end
-    its(:to_s){ should eq %(jared@other.io) }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq %(jared@other.io) }
+    end
   end
 
   context "when given an address and a blank display name" do
@@ -53,7 +69,11 @@ describe FormattedEmailAddress do
         display_name: ' ',
       }
     end
-    its(:to_s){ should eq %(jared@other.io) }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq %(jared@other.io) }
+    end
   end
 
   context "when given a string with unicode charaters" do
@@ -63,7 +83,11 @@ describe FormattedEmailAddress do
         display_name: 'Järéd Grîppé',
       }
     end
-    its(:to_s){ should eq %(Jared Grippe <jared@other.io>) }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq %(Jared Grippe <jared@other.io>) }
+    end
   end
 
 
@@ -78,7 +102,11 @@ describe FormattedEmailAddress do
         display_name: ' ',
       }
     end
-    its(:to_s){ should eq %(jared@other.io) }
+
+    describe '#to_s' do
+      subject { super().to_s }
+      it { is_expected.to eq %(jared@other.io) }
+    end
   end
 
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Messages::FindByChildHeader do
+describe Threadable::Messages::FindByChildHeader, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
 

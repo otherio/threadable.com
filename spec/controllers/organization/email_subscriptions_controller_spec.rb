@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Organization::EmailSubscriptionsController do
+describe Organization::EmailSubscriptionsController, :type => :controller do
 
   before{ sign_in! find_user_by_email_address('bob@ucsd.example.com') }
 

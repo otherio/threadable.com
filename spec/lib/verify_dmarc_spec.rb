@@ -15,7 +15,7 @@ describe VerifyDmarc, fixtures: false do
   let(:policy) { 'quarantine' }
 
   before do
-    Dnsruby::Resolver.stub(:new).and_return(resolver)
+    allow(Dnsruby::Resolver).to receive(:new).and_return(resolver)
   end
 
   context 'when the address is not a cname' do
@@ -27,28 +27,28 @@ describe VerifyDmarc, fixtures: false do
     describe 'checking the dmarc policy' do
       context 'with a dmarc policy that allows unmatched domains' do
         it 'returns true' do
-          expect(call(address)).to be_true
+          expect(call(address)).to be_truthy
         end
       end
 
       context 'with a dmarc policy of none' do
         let(:policy) { 'none' }
         it 'returns true' do
-          expect(call(address)).to be_true
+          expect(call(address)).to be_truthy
         end
       end
 
       context 'with a dmarc policy that rejects unmatched domains' do
         let(:policy) { 'reject' }
         it 'returns false' do
-          expect(call(address)).to be_false
+          expect(call(address)).to be_falsey
         end
       end
 
       context 'with an incorrect or unsupported dmarc policy' do
         let(:policy) { 'delicious_brownies' }
         it 'returns true' do
-          expect(call(address)).to be_true
+          expect(call(address)).to be_truthy
         end
       end
 
@@ -57,7 +57,7 @@ describe VerifyDmarc, fixtures: false do
           expect(resolver).to receive(:query).and_raise(Dnsruby::NXDomain)
         end
         it 'returns true' do
-          expect(call(address)).to be_true
+          expect(call(address)).to be_truthy
         end
       end
     end
@@ -72,22 +72,22 @@ describe VerifyDmarc, fixtures: false do
     let(:dns_query2) { double(:dns_query, answer: answer2 ) }
 
     before do
-      resolver.stub(:query).with('_dmarc.bar.com', Types.TXT).and_return(dns_query)
-      resolver.stub(:query).with('_dmarc.fooalicious.com', Types.TXT).and_return(dns_query2)
+      allow(resolver).to receive(:query).with('_dmarc.bar.com', Types.TXT).and_return(dns_query)
+      allow(resolver).to receive(:query).with('_dmarc.fooalicious.com', Types.TXT).and_return(dns_query2)
     end
 
     context 'and the cname destination has a dmarc record' do
       context 'with a dmarc policy of none' do
         let(:policy) { 'none' }
         it 'returns true' do
-          expect(call(address)).to be_true
+          expect(call(address)).to be_truthy
         end
       end
 
       context 'with a dmarc policy that rejects unmatched domains' do
         let(:policy) { 'reject' }
         it 'returns false' do
-          expect(call(address)).to be_false
+          expect(call(address)).to be_falsey
         end
       end
     end
@@ -97,7 +97,7 @@ describe VerifyDmarc, fixtures: false do
       let(:answer2) { [ double(:dns_record1, type: 'CNAME', rdata: rdata2) ] }
 
       it 'does not get stuck in an infinite loop' do
-        expect(call(address)).to be_true
+        expect(call(address)).to be_truthy
       end
     end
   end

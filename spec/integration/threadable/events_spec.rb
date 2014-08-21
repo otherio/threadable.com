@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Events do
+describe Threadable::Events, :type => :request do
 
   let(:events){ described_class.new(threadable) }
   subject{ events }

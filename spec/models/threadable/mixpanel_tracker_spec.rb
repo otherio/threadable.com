@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::MixpanelTracker do
+describe Threadable::MixpanelTracker, :type => :model do
 
   let(:threadable_mixpanel_tracker){ described_class.new(threadable) }
   let(:mixpanel_tracker) { double(:mixpanel_tracker) }
@@ -25,7 +25,7 @@ describe Threadable::MixpanelTracker do
 
     context 'when running in a worker' do
       before do
-        threadable.stub(:worker).and_return(true)
+        allow(threadable).to receive(:worker).and_return(true)
       end
 
       it 'calls Mixpanel::Tracker#track' do
@@ -46,7 +46,7 @@ describe Threadable::MixpanelTracker do
 
     context 'when running in a worker' do
       before do
-        threadable.stub(:worker).and_return(true)
+        allow(threadable).to receive(:worker).and_return(true)
       end
 
       it 'calls Mixpanel::Tracker#track' do

@@ -14,7 +14,7 @@ describe CurrentUserSerializer do
       alice.external_authorizations.add_or_update!(provider: 'trello', token: 'foo', secret: 'bar', name: 'Alice', email_address: 'foo@bar.com')
     end
     it do
-      should eq(
+      is_expected.to eq(
         id:                      'current',
         user_id:                 alice.user_id,
         param:                   alice.to_param,
@@ -33,7 +33,7 @@ describe CurrentUserSerializer do
   context 'when signed in as marcus' do
     before { threadable.current_user = marcus }
     it do
-      should eq(
+      is_expected.to eq(
         id:                      'current',
         user_id:                 marcus.user_id,
         param:                   marcus.to_param,

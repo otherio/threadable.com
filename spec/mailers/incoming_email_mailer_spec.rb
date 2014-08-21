@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 require "spec_helper"
 
-describe IncomingEmailMailer do
+describe IncomingEmailMailer, :type => :mailer do
 
   signed_in_as 'bethany@ucsd.example.com'
 

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe GroupMembership do
+describe GroupMembership, :type => :model do
 
-  it { should belong_to :user }
-  it { should belong_to :group }
+  it { is_expected.to belong_to :user }
+  it { is_expected.to belong_to :group }
 
   it 'validates the uniqueness of group and user' do
     described_class.create!(group_id: 3945, user_id: 89343)

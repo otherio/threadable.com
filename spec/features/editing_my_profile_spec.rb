@@ -49,7 +49,7 @@ feature "Editing my profile" do
     click_on 'Change password'
     expect(page).to have_text %(We've changed your password)
 
-    expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').authenticate('supersecret')).to be_true
+    expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').authenticate('supersecret')).to be_truthy
   end
 
   scenario %(adding an email address) do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'merging users' do
+describe 'merging users', :type => :request do
 
   let(:user)                   { threadable.users.find_by_email_address!('bethany@ucsd.example.com') }
   let(:destination_user)       { threadable.users.find_by_email_address!('alice@ucsd.example.com') }

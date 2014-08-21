@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmails do
+describe Threadable::IncomingEmails, :type => :request do
 
   let(:incoming_emails){ described_class.new(threadable) }
   subject{ incoming_emails }

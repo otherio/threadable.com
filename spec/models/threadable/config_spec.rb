@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Config do
+describe Threadable::Config, :type => :model do
 
   it "loads the config of the given key" do
     expect(Threadable::Config[:database]).to be_a Hash

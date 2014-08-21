@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization::Conversations do
+describe Threadable::Organization::Conversations, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:conversations){ described_class.new(organization) }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Message do
+describe Threadable::Message, :type => :model do
   let(:body_html) { 'html body' }
   let(:body_plain) { 'text body' }
 
@@ -11,33 +11,44 @@ describe Threadable::Message do
   let(:message){ described_class.new(threadable, message_record) }
   subject{ message }
 
-  it { should delegate(:id                 ).to(:message_record) }
-  it { should delegate(:unique_id          ).to(:message_record) }
-  it { should delegate(:parent_message_id  ).to(:message_record) }
-  it { should delegate(:conversation_id    ).to(:message_record) }
-  it { should delegate(:to_param           ).to(:message_record) }
-  it { should delegate(:from               ).to(:message_record) }
-  it { should delegate(:subject            ).to(:message_record) }
-  it { should delegate(:message_id_header  ).to(:message_record) }
-  it { should delegate(:references_header  ).to(:message_record) }
-  it { should delegate(:to_header          ).to(:message_record) }
-  it { should delegate(:cc_header          ).to(:message_record) }
-  it { should delegate(:shareworthy?       ).to(:message_record) }
-  it { should delegate(:knowledge?         ).to(:message_record) }
-  it { should delegate(:body_html          ).to(:message_record) }
-  it { should delegate(:body_plain         ).to(:message_record) }
-  it { should delegate(:stripped_html      ).to(:message_record) }
-  it { should delegate(:stripped_plain     ).to(:message_record) }
-  it { should delegate(:created_at         ).to(:message_record) }
-  it { should delegate(:persisted?         ).to(:message_record) }
-  it { should delegate(:errors             ).to(:message_record) }
-  it { should delegate(:thread_index_header).to(:message_record) }
-  it { should delegate(:thread_topic_header).to(:message_record) }
+  it { is_expected.to delegate(:id                 ).to(:message_record) }
+  it { is_expected.to delegate(:unique_id          ).to(:message_record) }
+  it { is_expected.to delegate(:parent_message_id  ).to(:message_record) }
+  it { is_expected.to delegate(:conversation_id    ).to(:message_record) }
+  it { is_expected.to delegate(:to_param           ).to(:message_record) }
+  it { is_expected.to delegate(:from               ).to(:message_record) }
+  it { is_expected.to delegate(:subject            ).to(:message_record) }
+  it { is_expected.to delegate(:message_id_header  ).to(:message_record) }
+  it { is_expected.to delegate(:references_header  ).to(:message_record) }
+  it { is_expected.to delegate(:to_header          ).to(:message_record) }
+  it { is_expected.to delegate(:cc_header          ).to(:message_record) }
+  it { is_expected.to delegate(:shareworthy?       ).to(:message_record) }
+  it { is_expected.to delegate(:knowledge?         ).to(:message_record) }
+  it { is_expected.to delegate(:body_html          ).to(:message_record) }
+  it { is_expected.to delegate(:body_plain         ).to(:message_record) }
+  it { is_expected.to delegate(:stripped_html      ).to(:message_record) }
+  it { is_expected.to delegate(:stripped_plain     ).to(:message_record) }
+  it { is_expected.to delegate(:created_at         ).to(:message_record) }
+  it { is_expected.to delegate(:persisted?         ).to(:message_record) }
+  it { is_expected.to delegate(:errors             ).to(:message_record) }
+  it { is_expected.to delegate(:thread_index_header).to(:message_record) }
+  it { is_expected.to delegate(:thread_topic_header).to(:message_record) }
 
 
-  its(:threadable){ should eq threadable }
-  its(:message_record){ should eq message_record }
-  its(:inspect) { should eq %(#<#{message.class} message_id: #{message.id.inspect}>)}
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
+
+  describe '#message_record' do
+    subject { super().message_record }
+    it { is_expected.to eq message_record }
+  end
+
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq %(#<#{message.class} message_id: #{message.id.inspect}>)}
+  end
 
   describe '#date_header' do
     context 'when message_record.date_header is present' do

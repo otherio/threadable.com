@@ -29,13 +29,13 @@ describe ValidateEmailAddress do
 
   valid.each do |email_address|
     it "valid email: #{email_address.inspect}" do
-      expect( described_class.call(email_address) ).to be_true
+      expect( described_class.call(email_address) ).to be_truthy
     end
   end
 
   invalid.each do |email_address|
     it "invalid email: #{email_address.inspect}" do
-      expect( described_class.call(email_address) ).to be_false
+      expect( described_class.call(email_address) ).to be_falsey
     end
   end
 

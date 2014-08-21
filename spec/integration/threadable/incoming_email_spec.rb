@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail do
+describe Threadable::IncomingEmail, :type => :request do
 
   let(:raceteam      ){ threadable.organizations.find_by_slug!('raceteam') }
   let(:alice         ){ raceteam.members.find_by_email_address!('alice@ucsd.example.com') }

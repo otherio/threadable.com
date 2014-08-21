@@ -18,7 +18,7 @@ module RSpec::Support::LiveExampleGroup
     fill_in 'Email Address', with: email_address
     fill_in 'Password', with: password
     click_button 'Sign in'
-    page.should have_content 'Organizations'
+    expect(page).to have_content 'Organizations'
   end
 
   def as email_address, password

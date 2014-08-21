@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'deleting groups' do
+describe 'deleting groups', :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug!('raceteam') }
   let(:conversation){ threadable.organizations.find_by_slug!('raceteam') }

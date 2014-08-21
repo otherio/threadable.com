@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe IncomingEmail::Params do
+describe IncomingEmail::Params, :type => :model do
 
   let(:threadable){ Threadable.new(host:'example.com') }
   let(:params){ create_incoming_email_params }

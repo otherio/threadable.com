@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::SignUp, fixtures: false do
+describe Threadable::SignUp, type: :request, fixtures: false do
 
   let :attributes do
     {

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ConversationGroup do
-  it { should belong_to :conversation }
-  it { should belong_to :group }
+describe ConversationGroup, :type => :model do
+  it { is_expected.to belong_to :conversation }
+  it { is_expected.to belong_to :group }
 end

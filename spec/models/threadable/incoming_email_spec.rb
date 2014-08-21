@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail do
+describe Threadable::IncomingEmail, :type => :model do
 
   let :params do
     create_incoming_email_params(
@@ -20,20 +20,20 @@ describe Threadable::IncomingEmail do
 
   subject{ incoming_email }
 
-  it{ should have_constant :Attachments }
-  it{ should have_constant :Bounce }
-  it{ should have_constant :Deliver }
-  it{ should have_constant :Process }
+  it{ is_expected.to have_constant :Attachments }
+  it{ is_expected.to have_constant :Bounce }
+  it{ is_expected.to have_constant :Deliver }
+  it{ is_expected.to have_constant :Process }
 
-  it { should delegate(:id        ).to(:incoming_email_record) }
-  it { should delegate(:to_param  ).to(:incoming_email_record) }
-  it { should delegate(:params    ).to(:incoming_email_record) }
-  it { should delegate(:processed?).to(:incoming_email_record) }
-  it { should delegate(:bounced?  ).to(:incoming_email_record) }
-  it { should delegate(:held?     ).to(:incoming_email_record) }
-  it { should delegate(:created_at).to(:incoming_email_record) }
-  it { should delegate(:errors    ).to(:incoming_email_record) }
-  it { should delegate(:persisted?).to(:incoming_email_record) }
+  it { is_expected.to delegate(:id        ).to(:incoming_email_record) }
+  it { is_expected.to delegate(:to_param  ).to(:incoming_email_record) }
+  it { is_expected.to delegate(:params    ).to(:incoming_email_record) }
+  it { is_expected.to delegate(:processed?).to(:incoming_email_record) }
+  it { is_expected.to delegate(:bounced?  ).to(:incoming_email_record) }
+  it { is_expected.to delegate(:held?     ).to(:incoming_email_record) }
+  it { is_expected.to delegate(:created_at).to(:incoming_email_record) }
+  it { is_expected.to delegate(:errors    ).to(:incoming_email_record) }
+  it { is_expected.to delegate(:persisted?).to(:incoming_email_record) }
 
 
   describe 'initialize' do
@@ -177,25 +177,25 @@ describe Threadable::IncomingEmail do
     subject{ incoming_email.creator_is_an_organization_member? }
     context 'when organization is nil' do
       before{ expect(incoming_email).to receive(:organization).and_return(nil) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
     context 'when organization is not nil' do
       let(:organization){ double(:organization, members: double(:members)) }
       before{ expect(incoming_email).to receive(:organization).at_least(1).times.and_return(organization) }
       context 'when creator is nil' do
         before{ expect(incoming_email).to receive(:creator).and_return(nil) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
       context 'when creator is not nil' do
         let(:creator){ double(:creator) }
         before{ expect(incoming_email).to receive(:creator).at_least(1).times.and_return(creator) }
         context 'when organization.members.include?(creator) returns true' do
           before{ expect(organization.members).to receive(:include?).with(creator).and_return(true) }
-          it { should be_true }
+          it { is_expected.to be_truthy }
         end
         context 'when organization.members.include?(creator) returns false' do
           before{ expect(organization.members).to receive(:include?).with(creator).and_return(false) }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
       end
     end
@@ -206,7 +206,7 @@ describe Threadable::IncomingEmail do
 
     context 'when the creator is a threadable member' do
       before{ incoming_email.stub_chain(:creator, :present?).and_return(true) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when the creator is not a threadable member' do
@@ -214,12 +214,12 @@ describe Threadable::IncomingEmail do
 
       context 'when the spam score is > 5' do
         before{ expect(incoming_email).to receive(:spam_score).and_return(10) }
-        it { should be_true }
+        it { is_expected.to be_truthy }
       end
 
       context 'when the spam score is < 5' do
         before{ expect(incoming_email).to receive(:spam_score).and_return(-0.75) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
     end
   end
@@ -229,7 +229,7 @@ describe Threadable::IncomingEmail do
 
     context 'when processed? returns false' do
       before{ expect(incoming_email).to receive(:processed?).and_return(false) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when processed? returns true' do
@@ -237,7 +237,7 @@ describe Threadable::IncomingEmail do
 
       context 'when held? returns true' do
         before{ expect(incoming_email).to receive(:held?).and_return(true) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
 
       context 'when held? returns false' do
@@ -245,7 +245,7 @@ describe Threadable::IncomingEmail do
 
         context 'when bounced? returns true' do
           before{ expect(incoming_email).to receive(:bounced?).and_return(true) }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
 
         context 'when bounced? returns false' do
@@ -253,12 +253,12 @@ describe Threadable::IncomingEmail do
 
           context 'when a message is present' do
             before{ expect(incoming_email).to receive(:message).and_return(nil) }
-            it { should be_false }
+            it { is_expected.to be_falsey }
           end
 
           context 'when a message is not present' do
             before{ expect(incoming_email).to receive(:message).and_return('6') }
-            it { should be_true }
+            it { is_expected.to be_truthy }
           end
         end
       end
@@ -270,7 +270,7 @@ describe Threadable::IncomingEmail do
 
     context 'when processed? returns false' do
       before{ expect(incoming_email).to receive(:processed?).and_return(false) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when processed? returns true' do
@@ -278,7 +278,7 @@ describe Threadable::IncomingEmail do
 
       context 'when held? returns true' do
         before{ expect(incoming_email).to receive(:held?).and_return(true) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
 
       context 'when held? returns false' do
@@ -286,7 +286,7 @@ describe Threadable::IncomingEmail do
 
         context 'when bounced? returns true' do
           before{ expect(incoming_email).to receive(:bounced?).and_return(true) }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
 
         context 'when bounced? returns false' do
@@ -294,12 +294,12 @@ describe Threadable::IncomingEmail do
 
           context 'when a message is present' do
             before{ expect(incoming_email).to receive(:message).and_return(nil) }
-            it { should be_true }
+            it { is_expected.to be_truthy }
           end
 
           context 'when a message is not present' do
             before{ expect(incoming_email).to receive(:message).and_return('6') }
-            it { should be_false }
+            it { is_expected.to be_falsey }
           end
         end
       end
@@ -312,7 +312,7 @@ describe Threadable::IncomingEmail do
 
     context 'when the message is spam' do
       before{ expect(incoming_email).to receive(:spam?).and_return(true) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'when the message is not spam' do
@@ -320,12 +320,12 @@ describe Threadable::IncomingEmail do
 
       context 'when there is a bounce reason' do
         before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
-        it { should be_true }
+        it { is_expected.to be_truthy }
       end
 
       context 'when there is not a bounce reason' do
         before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
     end
   end
@@ -333,7 +333,7 @@ describe Threadable::IncomingEmail do
   describe 'holdable?' do
     subject{ incoming_email.holdable? }
 
-    before{ incoming_email.stub(:organization).and_return(organization) }
+    before{ allow(incoming_email).to receive(:organization).and_return(organization) }
 
     context 'when the organization holds all messages' do
       before do
@@ -344,7 +344,7 @@ describe Threadable::IncomingEmail do
       context 'when a parent message is not present' do
         before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
 
-        it { should be_true }
+        it { is_expected.to be_truthy }
       end
 
       context 'when a parent message is present' do
@@ -355,7 +355,7 @@ describe Threadable::IncomingEmail do
           expect(incoming_email).to receive(:groups).and_return([group])
         end
 
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
     end
 
@@ -365,7 +365,7 @@ describe Threadable::IncomingEmail do
       context 'when is at least one group that does not hold messages' do
         let(:group){ double :group, :hold_messages? => false }
         before{ expect(incoming_email).to receive(:groups).and_return([group]) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
 
       context 'when there are no groups that do not hold messages' do
@@ -373,7 +373,7 @@ describe Threadable::IncomingEmail do
 
         context 'when there is a bounce reason' do
           before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
 
         context 'when there is no bounce reason is false' do
@@ -381,7 +381,7 @@ describe Threadable::IncomingEmail do
 
           context 'when parent_message is present' do
             before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
-            it { should be_false }
+            it { is_expected.to be_falsey }
           end
 
           context 'when parent_message is nil' do
@@ -389,7 +389,7 @@ describe Threadable::IncomingEmail do
 
             context 'when creator is not a member of the organization' do
               before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
-              it { should be_true }
+              it { is_expected.to be_truthy }
             end
 
           end
@@ -402,23 +402,23 @@ describe Threadable::IncomingEmail do
     subject{ incoming_email.deliverable? }
     context 'when bounceable? is true' do
       before{ expect(incoming_email).to receive(:bounceable?).and_return(true) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
     context 'when bounceable? is false' do
       before{ expect(incoming_email).to receive(:bounceable?).and_return(false) }
       context 'when holdable? is true' do
         before{ expect(incoming_email).to receive(:holdable?).and_return(true) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
       context 'when holdable? is false' do
         before{ expect(incoming_email).to receive(:holdable?).and_return(false) }
         context 'when droppable? is false' do
           before{ expect(incoming_email).to receive(:droppable?).and_return(false) }
-          it { should be_true }
+          it { is_expected.to be_truthy }
         end
         context 'when droppable? is true' do
           before{ expect(incoming_email).to receive(:droppable?).and_return(true) }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
       end
     end
@@ -433,7 +433,7 @@ describe Threadable::IncomingEmail do
       context 'and it contains only commands and whitespace' do
         before { expect(incoming_email).to receive(:command_only_message?).and_return(true) }
 
-        it { should be_true }
+        it { is_expected.to be_truthy }
       end
 
       context 'and it has non-command content' do
@@ -441,12 +441,12 @@ describe Threadable::IncomingEmail do
 
         context 'when the message is not spam' do
           before{ expect(incoming_email).to receive(:spam?).and_return(false) }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
 
         context 'when the message is spam' do
           before{ expect(incoming_email).to receive(:spam?).and_return(true) }
-          it { should be_true }
+          it { is_expected.to be_truthy }
         end
       end
     end
@@ -456,12 +456,12 @@ describe Threadable::IncomingEmail do
 
       context 'when the message is not spam' do
         before{ expect(incoming_email).to receive(:spam?).and_return(false) }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
 
       context 'when the message is spam' do
         before{ expect(incoming_email).to receive(:spam?).and_return(true) }
-        it { should be_true }
+        it { is_expected.to be_truthy }
       end
 
     end
@@ -471,7 +471,7 @@ describe Threadable::IncomingEmail do
     subject{ incoming_email.bounce_reason }
     context 'when organization is nil' do
       before{ expect(incoming_email).to receive(:organization).and_return(nil) }
-      it { should eq :missing_organization_or_group }
+      it { is_expected.to eq :missing_organization_or_group }
     end
     context 'when organization is not nil' do
       before{ expect(incoming_email).to receive(:organization).and_return(organization) }
@@ -484,24 +484,24 @@ describe Threadable::IncomingEmail do
 
           context 'when the conversation is valid' do
             before { expect(incoming_email).to receive(:conversation_valid?).and_return(true) }
-            it { should be_nil }
+            it { is_expected.to be_nil }
           end
 
           context 'when the conversation is not valid' do
             before { expect(incoming_email).to receive(:conversation_valid?).and_return(false) }
-            it { should eq :trashed_conversation }
+            it { is_expected.to eq :trashed_conversation }
           end
         end
 
         context 'when the groups are invalid' do
           before { expect(incoming_email).to receive(:groups_valid?).and_return(false) }
-          it { should eq :missing_organization_or_group }
+          it { is_expected.to eq :missing_organization_or_group }
         end
       end
 
       context 'when the subject is invalid' do
         before { expect(incoming_email).to receive(:subject_valid?).and_return(false) }
-        it { should eq :blank_message }
+        it { is_expected.to eq :blank_message }
       end
     end
   end
@@ -513,23 +513,23 @@ describe Threadable::IncomingEmail do
     subject{ incoming_email.subject_valid? }
 
     before do
-      incoming_email.stub(:subject).and_return(subject_line)
-      incoming_email.stub(:stripped_plain).and_return(body)
-      incoming_email.stub(:organization).and_return(double(:organization, subject_tag: 'subject-tag', groups: double(:groups, all: [])))
+      allow(incoming_email).to receive(:subject).and_return(subject_line)
+      allow(incoming_email).to receive(:stripped_plain).and_return(body)
+      allow(incoming_email).to receive(:organization).and_return(double(:organization, subject_tag: 'subject-tag', groups: double(:groups, all: [])))
     end
 
-    it { should be_true }
+    it { is_expected.to be_truthy }
 
     context 'with a subject containing only things that are stripped' do
       let(:subject_line) { '[task][subject-tag] '}
       context 'with a plaintext body' do
         let(:body) { "I've got a lovely bunch of coconuts, here they are standing in a row" }
-        it { should be_true }
+        it { is_expected.to be_truthy }
       end
 
       context 'with a plaintext body containing no words' do
         let(:body) { ' ' }
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
     end
 
@@ -537,7 +537,7 @@ describe Threadable::IncomingEmail do
       let(:subject_line) { '' }
       let(:body) { '' }
 
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
   end
 
@@ -556,17 +556,17 @@ describe Threadable::IncomingEmail do
     end
 
     subject{ incoming_email.groups_valid? }
-    it {should be_true}
+    it {is_expected.to be_truthy}
 
     context 'with an extra email address tag' do
       let(:email_address_tags) { ['group1', 'group2', 'eeevil'] }
-      it {should be_true}
+      it {is_expected.to be_truthy}
     end
 
     # not sure how this would ever happen
     context 'missing an email address tag' do
       let(:email_address_tags) { ['group1'] }
-      it {should be_false}
+      it {is_expected.to be_falsey}
     end
   end
 
@@ -574,7 +574,7 @@ describe Threadable::IncomingEmail do
     context 'with a conversation' do
       it 'checks whether the conversation is in the trash' do
         incoming_email.stub_chain(:conversation, :trashed?).and_return(true)
-        expect(incoming_email.conversation_valid?).to be_false
+        expect(incoming_email.conversation_valid?).to be_falsey
       end
     end
   end
@@ -583,47 +583,121 @@ describe Threadable::IncomingEmail do
     subject{ incoming_email.command_only_message? }
 
     before do
-      incoming_email.stub(:stripped_plain).and_return(body)
+      allow(incoming_email).to receive(:stripped_plain).and_return(body)
     end
 
     context 'with a blank body' do
       let(:body) { '' }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'with a body that contains only commands and random whitespace' do
       let(:body) { '&add Maria Rivera\n\n \n' }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
 
     context 'with a body that contains commands and real live text' do
       let(:body){
         %(&done\n\n Hello Seattle, I am a mountaineer, in the hills and highlands. I fall asleep in hospital parking lots.)
       }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
   end
 
-  its(:subject)                { should eq params['subject'] }
-  its(:message_id)             { should eq params['Message-Id'] }
-  its(:from)                   { should eq params['from'] }
-  its(:envelope_from)          { should eq params['X-Envelope-From'] }
-  its(:sender)                 { should eq params['sender'] }
-  its(:recipient)              { should eq params['recipient'] }
-  its(:to)                     { should eq params['To'] }
-  its(:cc)                     { should eq params['Cc'] }
-  its(:content_type)           { should eq params['Content-Type'] }
-  its(:date)                   { should eq Time.parse(params['Date']).in_time_zone }
-  its(:in_reply_to)            { should eq params['In-Reply-To'] }
-  its(:references)             { should eq params['References'] }
-  its(:message_headers)        { should eq JSON.parse(params['message-headers']) }
-  its(:message_headers_as_hash){ should eq Hash[JSON.parse(params['message-headers'])] }
-  its(:body_html)              { should eq params['body-html'] }
-  its(:body_plain)             { should eq params['body-plain'] }
-  its(:stripped_html)          { should eq params['stripped-html'] }
-  its(:stripped_plain)         { should eq params['stripped-text'] }
+  describe '#subject' do
+    subject { super().subject }
+    it { is_expected.to eq params['subject'] }
+  end
 
-  its(:from_email_addresses){ should eq ['alice@ucsd.example.com', 'alice.neilson@gmail.com'] }
+  describe '#message_id' do
+    subject { super().message_id }
+    it { is_expected.to eq params['Message-Id'] }
+  end
+
+  describe '#from' do
+    subject { super().from }
+    it { is_expected.to eq params['from'] }
+  end
+
+  describe '#envelope_from' do
+    subject { super().envelope_from }
+    it { is_expected.to eq params['X-Envelope-From'] }
+  end
+
+  describe '#sender' do
+    subject { super().sender }
+    it { is_expected.to eq params['sender'] }
+  end
+
+  describe '#recipient' do
+    subject { super().recipient }
+    it { is_expected.to eq params['recipient'] }
+  end
+
+  describe '#to' do
+    subject { super().to }
+    it { is_expected.to eq params['To'] }
+  end
+
+  describe '#cc' do
+    subject { super().cc }
+    it { is_expected.to eq params['Cc'] }
+  end
+
+  describe '#content_type' do
+    subject { super().content_type }
+    it { is_expected.to eq params['Content-Type'] }
+  end
+
+  describe '#date' do
+    subject { super().date }
+    it { is_expected.to eq Time.parse(params['Date']).in_time_zone }
+  end
+
+  describe '#in_reply_to' do
+    subject { super().in_reply_to }
+    it { is_expected.to eq params['In-Reply-To'] }
+  end
+
+  describe '#references' do
+    subject { super().references }
+    it { is_expected.to eq params['References'] }
+  end
+
+  describe '#message_headers' do
+    subject { super().message_headers }
+    it { is_expected.to eq JSON.parse(params['message-headers']) }
+  end
+
+  describe '#message_headers_as_hash' do
+    subject { super().message_headers_as_hash }
+    it { is_expected.to eq Hash[JSON.parse(params['message-headers'])] }
+  end
+
+  describe '#body_html' do
+    subject { super().body_html }
+    it { is_expected.to eq params['body-html'] }
+  end
+
+  describe '#body_plain' do
+    subject { super().body_plain }
+    it { is_expected.to eq params['body-plain'] }
+  end
+
+  describe '#stripped_html' do
+    subject { super().stripped_html }
+    it { is_expected.to eq params['stripped-html'] }
+  end
+
+  describe '#stripped_plain' do
+    subject { super().stripped_plain }
+    it { is_expected.to eq params['stripped-text'] }
+  end
+
+  describe '#from_email_addresses' do
+    subject { super().from_email_addresses }
+    it { is_expected.to eq ['alice@ucsd.example.com', 'alice.neilson@gmail.com'] }
+  end
 
 
   describe 'find_organization!' do
@@ -650,7 +724,7 @@ describe Threadable::IncomingEmail do
 
   describe '#email_address_tags' do
     it 'refers the call to the organization' do
-      incoming_email.stub(:organization).and_return(organization)
+      allow(incoming_email).to receive(:organization).and_return(organization)
       expect(organization).to receive(:email_address_tags).with(params['recipient'])
       incoming_email.email_address_tags
     end
@@ -831,7 +905,7 @@ describe Threadable::IncomingEmail do
       context 'when the given parent message\'s conversation does not match the incoming email conversation' do
         let(:other_conversation){ double(:other_conversation) }
         before do
-          incoming_email.stub(:conversation).and_return(other_conversation)
+          allow(incoming_email).to receive(:conversation).and_return(other_conversation)
         end
         it 'raises and ArgumentError' do
           expect{ incoming_email.parent_message = parent_message }.to raise_error(ArgumentError, 'invalid parent message. Conversations are not the same')
@@ -905,8 +979,8 @@ describe Threadable::IncomingEmail do
     end
   end
 
-  it { should delegate(:header    ).to(:mail_message) }
-  it { should delegate(:multipart?).to(:mail_message) }
+  it { is_expected.to delegate(:header    ).to(:mail_message) }
+  it { is_expected.to delegate(:multipart?).to(:mail_message) }
 
   describe 'mail_message' do
     it 'returns a MailMessage' do
@@ -933,7 +1007,11 @@ describe Threadable::IncomingEmail do
       )
     end
     before{ expect(incoming_email).to receive(:delivered?).and_return(true) }
-    its(:inspect){ should eq %(#<Threadable::IncomingEmail id: 4589, processed: true, bounced: false, held: false, delivered: true, from: "alice@ucsd.example.com", creator_id: 12, organization_id: 13, conversation_id: 14, message_id: 15>) }
+
+    describe '#inspect' do
+      subject { super().inspect }
+      it { is_expected.to eq %(#<Threadable::IncomingEmail id: 4589, processed: true, bounced: false, held: false, delivered: true, from: "alice@ucsd.example.com", creator_id: 12, organization_id: 13, conversation_id: 14, message_id: 15>) }
+    end
   end
 
 end

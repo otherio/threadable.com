@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Email actions" do
+describe "Email actions", :type => :feature do
 
   let(:tracked_event_name){ 'Email action taken' }
 

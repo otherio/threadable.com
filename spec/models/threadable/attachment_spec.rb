@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Attachment do
+describe Threadable::Attachment, :type => :model do
 
   let :attachment_record do
     double(:attachment_record,
@@ -12,22 +12,31 @@ describe Threadable::Attachment do
   let(:attachment){ described_class.new(threadable, attachment_record) }
   subject{ attachment }
 
-  it{ should delegate(:id        ).to(:attachment_record) }
-  it{ should delegate(:url       ).to(:attachment_record) }
-  it{ should delegate(:filename  ).to(:attachment_record) }
-  it{ should delegate(:mimetype  ).to(:attachment_record) }
-  it{ should delegate(:size      ).to(:attachment_record) }
-  it{ should delegate(:content   ).to(:attachment_record) }
-  it{ should delegate(:writeable?).to(:attachment_record) }
-  it{ should delegate(:created_at).to(:attachment_record) }
-  it{ should delegate(:updated_at).to(:attachment_record) }
-  it{ should delegate(:content_id).to(:attachment_record) }
-  it{ should delegate(:inline?   ).to(:attachment_record) }
+  it{ is_expected.to delegate(:id        ).to(:attachment_record) }
+  it{ is_expected.to delegate(:url       ).to(:attachment_record) }
+  it{ is_expected.to delegate(:filename  ).to(:attachment_record) }
+  it{ is_expected.to delegate(:mimetype  ).to(:attachment_record) }
+  it{ is_expected.to delegate(:size      ).to(:attachment_record) }
+  it{ is_expected.to delegate(:content   ).to(:attachment_record) }
+  it{ is_expected.to delegate(:writeable?).to(:attachment_record) }
+  it{ is_expected.to delegate(:created_at).to(:attachment_record) }
+  it{ is_expected.to delegate(:updated_at).to(:attachment_record) }
+  it{ is_expected.to delegate(:content_id).to(:attachment_record) }
+  it{ is_expected.to delegate(:inline?   ).to(:attachment_record) }
 
-  its(:threadable){ should eq threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
-  its(:attachment_record){ should eq attachment_record }
+  describe '#attachment_record' do
+    subject { super().attachment_record }
+    it { is_expected.to eq attachment_record }
+  end
 
-  its(:inspect){ should eq %(#<Threadable::Attachment attachment_id: 4500 url: "http://aws.com/kittens.gif">) }
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq %(#<Threadable::Attachment attachment_id: 4500 url: "http://aws.com/kittens.gif">) }
+  end
 
 end

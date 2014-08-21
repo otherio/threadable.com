@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::MessagesController do
+describe Api::MessagesController, :type => :controller do
 
   when_not_signed_in do
     describe 'index' do

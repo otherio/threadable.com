@@ -1,17 +1,17 @@
 # encoding: UTF-8
 require 'spec_helper'
 
-describe EmailAddress, fixtures: false do
+describe EmailAddress, type: :model, fixtures: false do
 
-  it { should belong_to(:user) }
-  it { should validate_presence_of :address }
-  it { should validate_uniqueness_of :address }
+  it { is_expected.to belong_to(:user) }
+  it { is_expected.to validate_presence_of :address }
+  it { is_expected.to validate_uniqueness_of :address }
 
   it "should validate that there is only one primary email address for any one user" do
     user = User.create!(name: 'Poop Popsicle', email_address: 'poop@popsicle.io')
-    user.email_addresses.first.should be_primary
+    expect(user.email_addresses.first).to be_primary
     invalid_email = user.email_addresses.create(address: 'poop-popsicle@gmail.com', primary: true)
-    invalid_email.errors.messages.should == {base: ["there can be only one primary email address"] }
+    expect(invalid_email.errors.messages).to eq({base: ["there can be only one primary email address"] })
   end
 
   describe '#confirmed' do
@@ -28,7 +28,7 @@ describe EmailAddress, fixtures: false do
   describe 'address format validations' do
 
     def email_address address
-      described_class.new(address: address)
+      described_class.create(address: address)
     end
 
     def self.escape_unicode string
@@ -54,7 +54,7 @@ describe EmailAddress, fixtures: false do
     valid_addresses.each do |address|
       context "when given the address #{escape_unicode(address)}" do
         it "should be valid" do
-          expect(email_address(address)).to have(0).errors_on(:address)
+          expect(email_address(address).errors[:address].size).to eq(0)
         end
       end
     end
@@ -62,7 +62,7 @@ describe EmailAddress, fixtures: false do
     invalid_addresses.each do |address|
       context "when given the address #{escape_unicode(address)}" do
         it 'should be invalid' do
-          expect(email_address(address)).to have(1).errors_on(:address)
+          expect(email_address(address).errors[:address].size).to eq(1)
         end
       end
     end

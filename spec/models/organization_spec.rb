@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-describe Organization do
+describe Organization, :type => :model do
 
   it "should require a name" do
     organization = Organization.new
-    organization.save.should be_false
-    organization.errors[:name].should == ["can't be blank"]
+    expect(organization.save).to be_falsey
+    expect(organization.errors[:name]).to eq(["can't be blank"])
 
     organization.name = 'build a hyper cube'
-    organization.save.should be_true
-    organization.errors.should be_blank
+    expect(organization.save).to be_truthy
+    expect(organization.errors).to be_blank
   end
 
   context "when not given a slug" do
     it "should be created from the name if blank" do
       organization = Organization.create(name: 'Fall down a hole')
-      organization.slug.should == 'fall-down-a-hole'
+      expect(organization.slug).to eq('fall-down-a-hole')
     end
   end
 
@@ -28,15 +28,15 @@ describe Organization do
         let(:short_name){ nil }
         describe "#slug" do
           subject{ organization.slug }
-          it { should == 'langworth-barton-and-strosin'}
+          it { is_expected.to eq('langworth-barton-and-strosin')}
         end
         describe "#subject_tag" do
           subject{ organization.subject_tag }
-          it { should == 'Langworth Barton and Strosin'}
+          it { is_expected.to eq('Langworth Barton and Strosin')}
         end
         describe "#email_address_username" do
           subject{ organization.email_address_username }
-          it { should == 'langworth-barton-and-strosin'}
+          it { is_expected.to eq('langworth-barton-and-strosin')}
         end
       end
 
@@ -44,15 +44,15 @@ describe Organization do
         let(:short_name){ "LBS ™" }
         describe "#slug" do
           subject{ organization.slug }
-          it { should == 'lbs'}
+          it { is_expected.to eq('lbs')}
         end
         describe "#subject_tag" do
           subject{ organization.subject_tag }
-          it { should == 'LBS'}
+          it { is_expected.to eq('LBS')}
         end
         describe "#email_address_username" do
           subject{ organization.email_address_username }
-          it { should == 'lbs'}
+          it { is_expected.to eq('lbs')}
         end
       end
     end

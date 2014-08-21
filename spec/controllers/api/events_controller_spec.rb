@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::EventsController do
+describe Api::EventsController, :type => :controller do
 
   when_not_signed_in do
     describe 'index' do

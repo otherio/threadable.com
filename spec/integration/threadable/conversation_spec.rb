@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversation do
+describe Threadable::Conversation, :type => :request do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:conversation){ organization.conversations.find_by_slug!('welcome-to-our-threadable-organization') }
@@ -56,9 +56,9 @@ describe Threadable::Conversation do
     context 'when signed in' do
       before{ threadable.current_user_id = organization.members.who_get_email.first.id }
       it 'checks the muted state of the conversation' do
-        expect(conversation.muted?).to be_false
+        expect(conversation.muted?).to be_falsey
         conversation.mute!
-        expect(conversation.muted?).to be_true
+        expect(conversation.muted?).to be_truthy
       end
     end
 
@@ -117,9 +117,9 @@ describe Threadable::Conversation do
       context 'when signed in' do
         before{ threadable.current_user_id = user.id }
         it 'checks the followed state of the conversation' do
-          expect(conversation.followed?).to be_false
+          expect(conversation.followed?).to be_falsey
           conversation.follow!
-          expect(conversation.followed?).to be_true
+          expect(conversation.followed?).to be_truthy
         end
       end
 
@@ -379,7 +379,7 @@ describe Threadable::Conversation do
       let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
 
       it 'is true' do
-        expect(conversation.in_primary_group?).to be_true
+        expect(conversation.in_primary_group?).to be_truthy
       end
     end
 
@@ -387,7 +387,7 @@ describe Threadable::Conversation do
       let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
 
       it 'is false' do
-        expect(conversation.in_primary_group?).to be_false
+        expect(conversation.in_primary_group?).to be_falsey
       end
     end
   end
@@ -410,17 +410,17 @@ describe Threadable::Conversation do
     let(:conversation) { threadable.conversations.find_by_slug!(primary_group_conversation) }
 
     it 'checks and sets the trashed state' do
-      expect(conversation.trashed?).to be_false
+      expect(conversation.trashed?).to be_falsey
       conversation.trash!
 
-      expect(conversation.trashed?).to be_true
+      expect(conversation.trashed?).to be_truthy
       event = conversation.events.last
       expect(event.event_type).to eq :conversation_trashed
       expect(event.conversation_id).to eq conversation.id
 
       conversation.untrash!
 
-      expect(conversation.trashed?).to be_false
+      expect(conversation.trashed?).to be_falsey
       event = conversation.events.last
       expect(event.event_type).to eq :conversation_untrashed
       expect(event.conversation_id).to eq conversation.id

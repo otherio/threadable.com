@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EmailAddressesController do
+describe EmailAddressesController, :type => :controller do
 
   when_not_signed_in do
 

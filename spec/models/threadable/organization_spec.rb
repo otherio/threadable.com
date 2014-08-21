@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization do
+describe Threadable::Organization, :type => :model do
 
   let :organization_record do
     double(:organization_record,
@@ -13,28 +13,32 @@ describe Threadable::Organization do
   let(:organization){ described_class.new(threadable, organization_record) }
   subject{ organization }
 
-  it { should have_constant :Update }
-  it { should have_constant :Members }
-  it { should have_constant :Member }
-  it { should have_constant :Conversations }
-  it { should have_constant :Messages }
-  it { should have_constant :Tasks }
+  it { is_expected.to have_constant :Update }
+  it { is_expected.to have_constant :Members }
+  it { is_expected.to have_constant :Member }
+  it { is_expected.to have_constant :Conversations }
+  it { is_expected.to have_constant :Messages }
+  it { is_expected.to have_constant :Tasks }
 
-  it { should delegate(:id                    ).to(:organization_record) }
-  it { should delegate(:to_param              ).to(:organization_record) }
-  it { should delegate(:name                  ).to(:organization_record) }
-  it { should delegate(:short_name            ).to(:organization_record) }
-  it { should delegate(:slug                  ).to(:organization_record) }
-  it { should delegate(:email_address_username).to(:organization_record) }
-  it { should delegate(:subject_tag           ).to(:organization_record) }
-  it { should delegate(:description           ).to(:organization_record) }
-  it { should delegate(:errors                ).to(:organization_record) }
-  it { should delegate(:new_record?           ).to(:organization_record) }
-  it { should delegate(:persisted?            ).to(:organization_record) }
+  it { is_expected.to delegate(:id                    ).to(:organization_record) }
+  it { is_expected.to delegate(:to_param              ).to(:organization_record) }
+  it { is_expected.to delegate(:name                  ).to(:organization_record) }
+  it { is_expected.to delegate(:short_name            ).to(:organization_record) }
+  it { is_expected.to delegate(:slug                  ).to(:organization_record) }
+  it { is_expected.to delegate(:email_address_username).to(:organization_record) }
+  it { is_expected.to delegate(:subject_tag           ).to(:organization_record) }
+  it { is_expected.to delegate(:description           ).to(:organization_record) }
+  it { is_expected.to delegate(:errors                ).to(:organization_record) }
+  it { is_expected.to delegate(:new_record?           ).to(:organization_record) }
+  it { is_expected.to delegate(:persisted?            ).to(:organization_record) }
 
   describe 'model_name' do
     subject{ described_class }
-    its(:model_name){ should == ::Organization.model_name }
+
+    describe '#model_name' do
+      subject { super().model_name }
+      it { is_expected.to eq(::Organization.model_name) }
+    end
   end
 
   describe 'email addresses' do
@@ -51,25 +55,74 @@ describe Threadable::Organization do
     end
 
     before do
-      organization.stub(:groups).and_return(groups)
+      allow(organization).to receive(:groups).and_return(groups)
     end
 
-    its(:email_address                ){ should eq "C02-cleaners@localhost" }
-    its(:task_email_address           ){ should eq "C02-cleaners+task@localhost" }
-    its(:formatted_email_address      ){ should eq "C02 Cleaners <C02-cleaners@localhost>" }
-    its(:formatted_task_email_address ){ should eq "C02 Cleaners Tasks <C02-cleaners+task@localhost>" }
-    its(:list_id                      ){ should eq "C02 Cleaners <C02-cleaners.localhost>" }
+    describe '#email_address' do
+      subject { super().email_address }
+      it { is_expected.to eq "C02-cleaners@localhost" }
+    end
+
+    describe '#task_email_address' do
+      subject { super().task_email_address }
+      it { is_expected.to eq "C02-cleaners+task@localhost" }
+    end
+
+    describe '#formatted_email_address' do
+      subject { super().formatted_email_address }
+      it { is_expected.to eq "C02 Cleaners <C02-cleaners@localhost>" }
+    end
+
+    describe '#formatted_task_email_address' do
+      subject { super().formatted_task_email_address }
+      it { is_expected.to eq "C02 Cleaners Tasks <C02-cleaners+task@localhost>" }
+    end
+
+    describe '#list_id' do
+      subject { super().list_id }
+      it { is_expected.to eq "C02 Cleaners <C02-cleaners.localhost>" }
+    end
   end
 
-  its(:members)        { should be_a Threadable::Organization::Members        }
-  its(:conversations)  { should be_a Threadable::Organization::Conversations  }
-  its(:messages)       { should be_a Threadable::Organization::Messages       }
-  its(:tasks)          { should be_a Threadable::Organization::Tasks          }
-  its(:incoming_emails){ should be_a Threadable::Organization::IncomingEmails }
-  its(:held_messages)  { should be_a Threadable::Organization::HeldMessages   }
-  its(:groups)         { should be_a Threadable::Organization::Groups         }
+  describe '#members' do
+    subject { super().members }
+    it { is_expected.to be_a Threadable::Organization::Members        }
+  end
 
-  its(:inspect){ should eq %(#<Threadable::Organization organization_id: 5479, name: "C02 Cleaners">) }
+  describe '#conversations' do
+    subject { super().conversations }
+    it { is_expected.to be_a Threadable::Organization::Conversations  }
+  end
+
+  describe '#messages' do
+    subject { super().messages }
+    it { is_expected.to be_a Threadable::Organization::Messages       }
+  end
+
+  describe '#tasks' do
+    subject { super().tasks }
+    it { is_expected.to be_a Threadable::Organization::Tasks          }
+  end
+
+  describe '#incoming_emails' do
+    subject { super().incoming_emails }
+    it { is_expected.to be_a Threadable::Organization::IncomingEmails }
+  end
+
+  describe '#held_messages' do
+    subject { super().held_messages }
+    it { is_expected.to be_a Threadable::Organization::HeldMessages   }
+  end
+
+  describe '#groups' do
+    subject { super().groups }
+    it { is_expected.to be_a Threadable::Organization::Groups         }
+  end
+
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq %(#<Threadable::Organization organization_id: 5479, name: "C02 Cleaners">) }
+  end
 
   describe 'update' do
     let(:current_member) { double(:current_member) }

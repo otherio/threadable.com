@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Messages do
+describe Threadable::Messages, :type => :request do
 
   let(:date) { Time.zone.local(2014,2,1).utc }
   let(:messages){ described_class.new(threadable) }

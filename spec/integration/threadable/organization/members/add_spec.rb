@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization::Members::Add do
+describe Threadable::Organization::Members::Add, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
 

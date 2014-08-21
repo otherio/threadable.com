@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Worker do
+describe Threadable::Worker, :type => :model do
 
   let :worker do
     Class.new Threadable::Worker
@@ -21,9 +21,9 @@ describe Threadable::Worker do
     it 'sets the worker flag on the threadable object' do
       instance = worker.new
       instance.jid = '123456'
-      instance.stub(:perform!)
+      allow(instance).to receive(:perform!)
       instance.perform(threadable.env, :a)
-      expect(instance.threadable.worker).to be_true
+      expect(instance.threadable.worker).to be_truthy
     end
   end
 end

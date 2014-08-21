@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'getting conversations' do
+describe 'getting conversations', :type => :request do
 
   # organization.       my.    muted_conversations
   # organization.       my.not_muted_conversations

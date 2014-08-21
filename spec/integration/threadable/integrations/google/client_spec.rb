@@ -4,7 +4,7 @@ require 'google/api_client'
 require 'google/api_client/client_secrets'
 require 'google/api_client/auth/installed_app'
 
-describe Threadable::Integrations::Google::Client do
+describe Threadable::Integrations::Google::Client, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com')}
 

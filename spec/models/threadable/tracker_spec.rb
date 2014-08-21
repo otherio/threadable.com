@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Tracker do
+describe Threadable::Tracker, :type => :model do
 
   it 'needs tests'
 

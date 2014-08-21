@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Emails do
+describe Threadable::Emails, :type => :model do
 
   subject{ threadable.emails }
 

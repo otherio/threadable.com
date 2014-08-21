@@ -10,7 +10,7 @@ describe TasksSerializer do
     let(:payload){ layup_body_carbon }
     let(:expected_key){ :task }
     it do
-      should eq(
+      is_expected.to eq(
         id:         layup_body_carbon.id,
         param:      "layup-body-carbon",
         slug:       "layup-body-carbon",
@@ -28,7 +28,7 @@ describe TasksSerializer do
     let(:payload){ [trim_body_panels, layup_body_carbon] }
     let(:expected_key){ :tasks }
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:         trim_body_panels.id,
           param:      "trim-body-panels",

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Event do
+describe Threadable::Event, :type => :model do
   let(:threadable) { double(:threadable) }
   let(:event_record) { double(:event_record, threadable: threadable, event_type: event_type) }
   let(:event) { described_class.new(threadable, event_record) }

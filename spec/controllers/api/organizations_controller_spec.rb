@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::OrganizationsController do
+describe Api::OrganizationsController, :type => :controller do
 
   when_not_signed_in do
     describe 'index' do
@@ -82,7 +82,7 @@ describe Api::OrganizationsController do
             expect(response.status).to eq 200
             updated_organization = threadable.organizations.find_by_slug!('raceteam')
             expect(updated_organization.description).to eq 'foo'
-            expect(updated_organization.public_signup?).to be_false
+            expect(updated_organization.public_signup?).to be_falsey
             expect(updated_organization.name).to eq 'Racy Team'
             expect(response.body).to eq serialize(:organizations, updated_organization).to_json
           end

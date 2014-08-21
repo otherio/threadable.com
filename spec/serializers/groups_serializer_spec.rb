@@ -12,7 +12,7 @@ describe GroupsSerializer do
     let(:payload){ electronics }
     let(:expected_key){ :group }
     it do
-      should eq(
+      is_expected.to eq(
         id:                  electronics.id,
         slug:                "electronics",
         name:                "Electronics",
@@ -49,7 +49,7 @@ describe GroupsSerializer do
     let(:payload){ [electronics, fundraising] }
     let(:expected_key){ :groups }
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:                  electronics.id,
           slug:                "electronics",

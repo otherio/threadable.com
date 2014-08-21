@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Messages::FindByChildHeader do
+describe Threadable::Messages::FindByChildHeader, :type => :model do
 
   let(:organization_id){ 9331 }
 

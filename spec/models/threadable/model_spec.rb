@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Threadable::Model do
+describe Threadable::Model, :type => :model do
 
 end

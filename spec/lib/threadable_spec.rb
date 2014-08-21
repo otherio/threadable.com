@@ -9,18 +9,18 @@ describe Threadable, :type => :threadable do
       Threadable.transaction do
         Threadable.after_transaction{ callback1_called = true }
         Threadable.after_transaction{ callback2_called = true }
-        expect(callback1_called).to be_false
-        expect(callback2_called).to be_false
+        expect(callback1_called).to be_falsey
+        expect(callback2_called).to be_falsey
       end
-      expect(callback1_called).to be_true
-      expect(callback2_called).to be_true
+      expect(callback1_called).to be_truthy
+      expect(callback2_called).to be_truthy
     end
   end
 
   describe 'transactions', transaction: false do
     before do
       Threadable::Transactions.expect_test_transaction = false
-      expect(Threadable.transaction_open?).to be_false
+      expect(Threadable.transaction_open?).to be_falsey
     end
 
     context 'when another outside transaction is open' do
@@ -37,7 +37,7 @@ describe Threadable, :type => :threadable do
       before do
         Threadable::Transactions.expect_test_transaction = true
         Threadable::Transactions.in_migration = true
-        expect(Threadable.transaction_open?).to be_false
+        expect(Threadable.transaction_open?).to be_falsey
       end
 
       it 'does not raise an error' do
@@ -51,7 +51,7 @@ describe Threadable, :type => :threadable do
     it 'after_transaction runs the given callback immediately when outside of a transaction' do
       callback_called = false
       Threadable.after_transaction{ callback_called = true }
-      expect(callback_called).to be_true
+      expect(callback_called).to be_truthy
     end
 
     it 'single transaction' do
@@ -60,11 +60,11 @@ describe Threadable, :type => :threadable do
       Threadable.transaction do
         Threadable.after_transaction{ callback1_called = true }
         Threadable.after_transaction{ callback2_called = true }
-        expect(callback1_called).to be_false
-        expect(callback2_called).to be_false
+        expect(callback1_called).to be_falsey
+        expect(callback2_called).to be_falsey
       end
-      expect(callback1_called).to be_true
-      expect(callback2_called).to be_true
+      expect(callback1_called).to be_truthy
+      expect(callback2_called).to be_truthy
     end
 
     it 'nested transactions with nested callbacks' do
@@ -72,16 +72,16 @@ describe Threadable, :type => :threadable do
       callback2_called = false
       Threadable.transaction do
         Threadable.after_transaction{ callback1_called = true }
-        expect(callback1_called).to be_false
-        expect(callback2_called).to be_false
+        expect(callback1_called).to be_falsey
+        expect(callback2_called).to be_falsey
         Threadable.transaction do
           Threadable.after_transaction{ callback2_called = true }
-          expect(callback1_called).to be_false
-          expect(callback2_called).to be_false
+          expect(callback1_called).to be_falsey
+          expect(callback2_called).to be_falsey
         end
       end
-      expect(callback1_called).to be_true
-      expect(callback2_called).to be_true
+      expect(callback1_called).to be_truthy
+      expect(callback2_called).to be_truthy
     end
 
     it 'nested with inner failure' do
@@ -90,24 +90,24 @@ describe Threadable, :type => :threadable do
       callback3_called = false
       Threadable.transaction do
         Threadable.after_transaction{ callback1_called = true }
-        expect(callback1_called).to be_false
-        expect(callback2_called).to be_false
-        expect(callback3_called).to be_false
+        expect(callback1_called).to be_falsey
+        expect(callback2_called).to be_falsey
+        expect(callback3_called).to be_falsey
         begin
           Threadable.transaction do
             Threadable.after_transaction{ callback2_called = true }
             Threadable.after_transaction{ callback3_called = true }
-            expect(callback1_called).to be_false
-            expect(callback2_called).to be_false
-            expect(callback3_called).to be_false
+            expect(callback1_called).to be_falsey
+            expect(callback2_called).to be_falsey
+            expect(callback3_called).to be_falsey
             raise "FUUUCK"
           end
         rescue
         end
       end
-      expect(callback1_called).to be_true
-      expect(callback2_called).to be_false
-      expect(callback3_called).to be_false
+      expect(callback1_called).to be_truthy
+      expect(callback2_called).to be_falsey
+      expect(callback3_called).to be_falsey
     end
   end
 
@@ -120,7 +120,7 @@ describe Threadable, :type => :threadable do
         end
       end
     end
-    expect(callback1_called).to be_true
+    expect(callback1_called).to be_truthy
   end
 
   def first
@@ -140,8 +140,8 @@ describe Threadable, :type => :threadable do
 
   it 'when the transaction block as an explicit return' do
     expect(first).to eq 15
-    expect(@first_after_transaction_called).to be_true
-    expect(@second_after_transaction_called).to be_true
+    expect(@first_after_transaction_called).to be_truthy
+    expect(@second_after_transaction_called).to be_truthy
   end
 
   describe "autoloads" do

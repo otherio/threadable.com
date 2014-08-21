@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Group::Members do
+describe Threadable::Group::Members, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:group){ organization.groups.find_by_email_address_tag!('electronics') }

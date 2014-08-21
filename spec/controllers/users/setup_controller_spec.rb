@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Users::SetupController do
+describe Users::SetupController, :type => :controller do
   include EmberRouteUrlHelpers
 
 

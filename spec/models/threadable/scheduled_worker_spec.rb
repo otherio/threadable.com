@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::ScheduledWorker do
+describe Threadable::ScheduledWorker, :type => :model do
 
   let :worker do
     Class.new described_class
@@ -10,9 +10,9 @@ describe Threadable::ScheduledWorker do
     it 'sets the worker flag on the threadable object' do
       instance = worker.new
       instance.jid = '123456'
-      instance.stub(:perform!)
+      allow(instance).to receive(:perform!)
       instance.perform(50.10242, 100.348295)
-      expect(instance.threadable.worker).to be_true
+      expect(instance.threadable.worker).to be_truthy
     end
   end
 
@@ -20,9 +20,9 @@ describe Threadable::ScheduledWorker do
     it 'sets the worker flag on the threadable object, and uses the current day' do
       instance = worker.new
       instance.jid = '123456'
-      instance.stub(:perform!)
+      allow(instance).to receive(:perform!)
       instance.perform
-      expect(instance.threadable.worker).to be_true
+      expect(instance.threadable.worker).to be_truthy
     end
   end
 end

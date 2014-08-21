@@ -1,13 +1,16 @@
 require 'spec_helper'
 
-describe Threadable::Attachments do
+describe Threadable::Attachments, :type => :model do
 
   let(:attachments){ described_class.new(threadable) }
   subject{ attachments }
 
-  it{ should have_constant :Create }
+  it{ is_expected.to have_constant :Create }
 
-  its(:threadable){ should eq threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
   describe 'all' do
 
@@ -40,6 +43,9 @@ describe Threadable::Attachments do
     end
   end
 
-  its(:inspect){ should eq "#<Threadable::Attachments>" }
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq "#<Threadable::Attachments>" }
+  end
 
 end

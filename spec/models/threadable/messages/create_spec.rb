@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Messages::Create do
+describe Threadable::Messages::Create, :type => :model do
 
   let(:messages){ double :messages, threadable: threadable }
   let(:organization){ double :organization, id: 4855, name: 'Babys First Organization' }

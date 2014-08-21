@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Class do
+describe Threadable::Class, :type => :request do
 
   it "getting records" do
     expect( threadable.organizations   .count ).to eq ::Organization  .count

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::ConversationDetailsController do
+describe Api::ConversationDetailsController, :type => :controller do
 
   when_not_signed_in do
     describe 'show' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversation::Scopes do
+describe Threadable::Conversation::Scopes, :type => :request do
 
   let :object do
     Class.new{

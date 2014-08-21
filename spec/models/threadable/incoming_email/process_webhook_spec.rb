@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail::ProcessWebhook do
+describe Threadable::IncomingEmail::ProcessWebhook, :type => :model do
 
   subject{ described_class }
 

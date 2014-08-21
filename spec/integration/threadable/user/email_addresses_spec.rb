@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User::EmailAddresses do
+describe Threadable::User::EmailAddresses, :type => :request do
   describe '#for_domain' do
     let(:bob) { threadable.users.find_by_email_address('bob@ucsd.example.com') }
 

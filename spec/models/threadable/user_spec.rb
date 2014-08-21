@@ -1,56 +1,108 @@
 require 'spec_helper'
 
-describe Threadable::User do
+describe Threadable::User, :type => :model do
 
   let(:user_record){ Factories.create(:user) }
 
   let(:user){ described_class.new(threadable, user_record) }
   subject{ user }
 
-  it { should have_constant :EmailAddresses }
-  it { should have_constant :EmailAddress }
-  it { should have_constant :Organizations }
-  it { should have_constant :Organization }
-  it { should have_constant :Messages }
+  it { is_expected.to have_constant :EmailAddresses }
+  it { is_expected.to have_constant :EmailAddress }
+  it { is_expected.to have_constant :Organizations }
+  it { is_expected.to have_constant :Organization }
+  it { is_expected.to have_constant :Messages }
 
-  its(:threadable       ){ should eq threadable                   }
-  its(:user_record   ){ should eq user_record               }
-  its(:id            ){ should eq user_record.id            }
-  its(:user_id       ){ should eq user_record.id            }
-  its(:to_param      ){ should eq user_record.to_param      }
-  its(:name          ){ should eq user_record.name          }
-  its(:email_address ){ should eq user_record.primary_email_address.address }
-  its(:slug          ){ should eq user_record.slug          }
-  its(:errors        ){ should eq user_record.errors        }
-  its(:new_record?   ){ should eq user_record.new_record?   }
-  its(:persisted?    ){ should eq user_record.persisted?    }
-  its(:avatar_url    ){ should eq user_record.avatar_url    }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable                   }
+  end
 
-  its(:inspect       ){ should eq %(#<Threadable::User id: #{user_record.id}, email_address: #{user_record.email_address.inspect}, slug: #{user_record.slug.inspect}>) }
+  describe '#user_record' do
+    subject { super().user_record }
+    it { is_expected.to eq user_record               }
+  end
 
-  it { should delegate(:id           ).to(:user_record) }
-  it { should delegate(:to_param     ).to(:user_record) }
-  it { should delegate(:name         ).to(:user_record) }
-  it { should delegate(:slug         ).to(:user_record) }
-  it { should delegate(:errors       ).to(:user_record) }
-  it { should delegate(:new_record?  ).to(:user_record) }
-  it { should delegate(:persisted?   ).to(:user_record) }
-  it { should delegate(:avatar_url   ).to(:user_record) }
-  it { should delegate(:authenticate ).to(:user_record) }
-  it { should delegate(:created_at   ).to(:user_record) }
+  describe '#id' do
+    subject { super().id }
+    it { is_expected.to eq user_record.id            }
+  end
+
+  describe '#user_id' do
+    subject { super().user_id }
+    it { is_expected.to eq user_record.id            }
+  end
+
+  describe '#to_param' do
+    subject { super().to_param }
+    it { is_expected.to eq user_record.to_param      }
+  end
+
+  describe '#name' do
+    subject { super().name }
+    it { is_expected.to eq user_record.name          }
+  end
+
+  describe '#email_address' do
+    subject { super().email_address }
+    it { is_expected.to eq user_record.primary_email_address.address }
+  end
+
+  describe '#slug' do
+    subject { super().slug }
+    it { is_expected.to eq user_record.slug          }
+  end
+
+  describe '#errors' do
+    subject { super().errors }
+    it { is_expected.to eq user_record.errors        }
+  end
+
+  describe '#new_record?' do
+    subject { super().new_record? }
+    it { is_expected.to eq user_record.new_record?   }
+  end
+
+  describe '#persisted?' do
+    subject { super().persisted? }
+    it { is_expected.to eq user_record.persisted?    }
+  end
+
+  describe '#avatar_url' do
+    subject { super().avatar_url }
+    it { is_expected.to eq user_record.avatar_url    }
+  end
+
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq %(#<Threadable::User id: #{user_record.id}, email_address: #{user_record.email_address.inspect}, slug: #{user_record.slug.inspect}>) }
+  end
+
+  it { is_expected.to delegate(:id           ).to(:user_record) }
+  it { is_expected.to delegate(:to_param     ).to(:user_record) }
+  it { is_expected.to delegate(:name         ).to(:user_record) }
+  it { is_expected.to delegate(:slug         ).to(:user_record) }
+  it { is_expected.to delegate(:errors       ).to(:user_record) }
+  it { is_expected.to delegate(:new_record?  ).to(:user_record) }
+  it { is_expected.to delegate(:persisted?   ).to(:user_record) }
+  it { is_expected.to delegate(:avatar_url   ).to(:user_record) }
+  it { is_expected.to delegate(:authenticate ).to(:user_record) }
+  it { is_expected.to delegate(:created_at   ).to(:user_record) }
 
   describe "to_key" do
     subject{ user.to_key }
     context "when the user record's id is nil" do
       let(:user_record){ User.new }
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
     context "when the user record's id is not nil" do
-      it { should eq [user_record.id] }
+      it { is_expected.to eq [user_record.id] }
     end
   end
 
-  its(:as_json){ should eq(
+  describe '#as_json' do
+    subject { super().as_json }
+    it { is_expected.to eq(
     id:            user.id,
     param:         user.to_param,
     name:          user.name,
@@ -58,8 +110,9 @@ describe Threadable::User do
     slug:          user.slug,
     avatar_url:    user.avatar_url,
   )}
+  end
 
-  it { should eq described_class.new(threadable, user_record) }
+  it { is_expected.to eq described_class.new(threadable, user_record) }
 
   describe 'update' do
     it 'updates mixpanel' do
@@ -87,9 +140,9 @@ describe Threadable::User do
   describe 'requires_setup?' do
     it 'should return the the oposite of requires_setup?' do
       user.stub web_enabled?: false
-      expect(user.requires_setup?).to be_true
+      expect(user.requires_setup?).to be_truthy
       user.stub web_enabled?: true
-      expect(user.requires_setup?).to be_false
+      expect(user.requires_setup?).to be_falsey
     end
   end
 

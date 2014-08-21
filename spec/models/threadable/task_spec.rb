@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Threadable::Task do
+describe Threadable::Task, :type => :model do
 
 end

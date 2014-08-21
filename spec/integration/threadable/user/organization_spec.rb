@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User::Organization do
+describe Threadable::User::Organization, :type => :request do
   let(:user) { threadable.users.find_by_email_address('lilith@sfhealth.example.com') }
   let(:organization) { user.organizations.find_by_slug('sfhealth') }
 

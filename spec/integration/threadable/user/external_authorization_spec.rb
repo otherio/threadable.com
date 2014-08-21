@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::User::ExternalAuthorization do
+describe Threadable::User::ExternalAuthorization, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:user) { organization.members.find_by_email_address('alice@ucsd.example.com') }
   let(:external_authorization_record) { user.user_record.external_authorizations.create(provider: provider, token: 'foo', secret: 'bar') }

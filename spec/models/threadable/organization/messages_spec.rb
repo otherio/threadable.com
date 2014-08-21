@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization::Messages do
+describe Threadable::Organization::Messages, :type => :model do
 
 
   describe 'find_by_child_message_header' do

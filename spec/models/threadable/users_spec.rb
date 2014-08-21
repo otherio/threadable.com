@@ -1,11 +1,14 @@
 require 'spec_helper'
 
-describe Threadable::Users do
+describe Threadable::Users, :type => :model do
 
   let(:users){ described_class.new threadable }
   subject{ users }
 
-  its(:threadable){ should == threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq(threadable) }
+  end
 
 
   let(:users_scope){ double :users_scope }
@@ -21,13 +24,17 @@ describe Threadable::Users do
 
     context "when the user is found" do
       let(:return_value){ user_record }
-      it { should be_a Threadable::User }
-      its(:user_record){ should == user_record }
+      it { is_expected.to be_a Threadable::User }
+
+      describe '#user_record' do
+        subject { super().user_record }
+        it { is_expected.to eq(user_record) }
+      end
     end
 
     context "when the user is not found" do
       let(:return_value){ nil }
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
   end
 
@@ -47,7 +54,7 @@ describe Threadable::Users do
     context 'when find_by_email_address returns a user' do
       let(:return_value){ user }
       subject{ users.find_by_email_address!('bob@bob.com') }
-      it { should eq user }
+      it { is_expected.to eq user }
     end
   end
 
@@ -64,22 +71,34 @@ describe Threadable::Users do
 
     context "when the user is found" do
       let(:return_value){ user_record }
-      it { should be_a Threadable::User }
-      its(:user_record){ should == user_record }
+      it { is_expected.to be_a Threadable::User }
+
+      describe '#user_record' do
+        subject { super().user_record }
+        it { is_expected.to eq(user_record) }
+      end
     end
 
     context "when the user is not found" do
       let(:return_value){ nil }
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
   end
 
 
   describe '#new' do
     subject{ users.new(name: 'Steve', email_address: 'steve@me.com') }
-    it{ should be_a Threadable::User }
-    its(:name){ should == 'Steve' }
-    its(:user_record){ should_not be_persisted }
+    it{ is_expected.to be_a Threadable::User }
+
+    describe '#name' do
+      subject { super().name }
+      it { is_expected.to eq('Steve') }
+    end
+
+    describe '#user_record' do
+      subject { super().user_record }
+      it { is_expected.not_to be_persisted }
+    end
   end
 
   describe '#create' do
@@ -88,9 +107,17 @@ describe Threadable::Users do
     end
 
     subject{ users.create(name: 'Steve', email_address: 'steve@me.com') }
-    it{ should be_a Threadable::User }
-    its(:name){ should == 'Steve' }
-    its(:user_record){ should be_persisted }
+    it{ is_expected.to be_a Threadable::User }
+
+    describe '#name' do
+      subject { super().name }
+      it { is_expected.to eq('Steve') }
+    end
+
+    describe '#user_record' do
+      subject { super().user_record }
+      it { is_expected.to be_persisted }
+    end
   end
 
 end

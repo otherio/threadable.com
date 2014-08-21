@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Email actions" do
+describe "Email actions", :type => :request do
 
   it 'should have tests'
 

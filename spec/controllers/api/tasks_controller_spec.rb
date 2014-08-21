@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::TasksController do
+describe Api::TasksController, :type => :controller do
 
   when_not_signed_in do
     describe 'index' do

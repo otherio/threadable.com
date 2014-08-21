@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "threadable", fixtures: false do
+describe "threadable", type: :request, fixtures: false do
   # it "should work" do
   #   expect{ Threadable.new }.to raise_error ArgumentError, 'required options: :host'
 
@@ -182,7 +182,7 @@ describe "threadable", fixtures: false do
       )
       expect( fat_cops.class ).to eq Threadable::Conversation
       expect( fat_cops.slug  ).to eq "fat-cops-are-so-squishy"
-      expect( fat_cops.task? ).to be_false
+      expect( fat_cops.task? ).to be_falsey
 
       expect( fat_cops.creator.class      ).to eq Threadable::Conversation::Creator
       expect( fat_cops.events.class       ).to eq Threadable::Conversation::Events
@@ -202,9 +202,9 @@ describe "threadable", fixtures: false do
       expect( msg1.class             ).to eq Threadable::Message
       expect( msg1.subject           ).to eq fat_cops.subject
       expect( msg1.body              ).to eq "<p>OMG I love their belly fat</p>"
-      expect( msg1.root?             ).to be_true
-      expect( msg1.shareworthy?      ).to be_false
-      expect( msg1.knowledge?        ).to be_false
+      expect( msg1.root?             ).to be_truthy
+      expect( msg1.shareworthy?      ).to be_falsey
+      expect( msg1.knowledge?        ).to be_falsey
       expect( msg1.message_id_header ).to match /\<(.*?)@/
 
       assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "conversation_message", htp.id, msg1.id, aaron.id]
@@ -246,16 +246,16 @@ describe "threadable", fixtures: false do
       expect( msg2.parent_message    ).to eq msg1
       expect( msg2.from              ).to eq 'Arron Burrr <aaron@burrr.me>'
       expect( msg2.subject           ).to eq "RE: #{msg1.subject}"
-      expect( msg2.html?             ).to be_true
-      expect( msg2.root?             ).to be_false
+      expect( msg2.html?             ).to be_truthy
+      expect( msg2.root?             ).to be_falsey
 
       expect( msg2.body              ).to eq %(<p>I like to pinch their belly buttons</p>\n<blockquote><p>OMG I love their belly fat</p></blockquote>)
       expect( msg2.body_plain        ).to eq %(I like to pinch their belly buttons\n> OMG I love their belly fat)
       expect( msg2.body_html         ).to eq %(<p>I like to pinch their belly buttons</p>\n<blockquote><p>OMG I love their belly fat</p></blockquote>)
       expect( msg2.stripped_plain    ).to eq %(I like to pinch their belly buttons)
       expect( msg2.stripped_html     ).to eq %(<p>I like to pinch their belly buttons</p>)
-      expect( msg2.shareworthy?      ).to be_false
-      expect( msg2.knowledge?        ).to be_false
+      expect( msg2.shareworthy?      ).to be_falsey
+      expect( msg2.knowledge?        ).to be_falsey
       expect( msg2.message_id_header ).to eq '<CABQbZc9oj=-_0WwB2eZKq6xLwaM2-b_X2rdjuC5qt-NFi1gDHw@mail.gmail.com>'
       expect( msg2.references_header ).to eq msg1.message_id_header
       expect( msg2.date_header       ).to eq date_header

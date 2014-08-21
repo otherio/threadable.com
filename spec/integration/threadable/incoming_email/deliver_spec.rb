@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail::Deliver do
+describe Threadable::IncomingEmail::Deliver, :type => :request do
   let(:organization){ current_user.organizations.find_by_slug! 'raceteam' }
   let(:conversation){ organization.conversations.find_by_slug! 'layup-body-carbon' }
   let(:fundraising) { organization.groups.find_by_slug! 'fundraising' }
@@ -53,7 +53,7 @@ describe Threadable::IncomingEmail::Deliver do
     it 'turns on the inline flag for images that are inline' do
       call incoming_email
       conversation.conversation_record.reload
-      expect(incoming_email.attachments.all.first.inline?).to be_true
+      expect(incoming_email.attachments.all.first.inline?).to be_truthy
     end
 
     describe 'when receiving the message for the second time' do

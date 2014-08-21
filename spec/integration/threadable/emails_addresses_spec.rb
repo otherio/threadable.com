@@ -1,11 +1,14 @@
 require 'spec_helper'
 
-describe Threadable::EmailAddresses do
+describe Threadable::EmailAddresses, :type => :request do
 
   let(:email_addresses){ described_class.new(threadable) }
   subject{ email_addresses }
 
-  its(:threadable){ should eq threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
   let :email_address_strings do
     [

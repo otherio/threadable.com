@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::IncomingEmailsController do
+describe Admin::IncomingEmailsController, :type => :routing do
   describe "routing" do
 
     it "routes to #index" do

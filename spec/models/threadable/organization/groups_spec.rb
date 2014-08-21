@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Threadable::Organization::Groups do
+describe Threadable::Organization::Groups, :type => :model do
 
-  it { should have_constant :Create }
+  it { is_expected.to have_constant :Create }
 
   let(:organization_record){ double(:organization_record, id: 18) }
   let(:organization){ double(:organization,

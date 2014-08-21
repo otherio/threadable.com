@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EmptyTrashWorker do
+describe EmptyTrashWorker, :type => :request do
   let(:last_time) { Time.zone.local(2014, 2, 3) - 1.day }
   let(:time) { Time.zone.local(2014, 2, 3) }
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }

@@ -1,11 +1,14 @@
 require 'spec_helper'
 
-describe Threadable::EmailDomains do
+describe Threadable::EmailDomains, :type => :request do
 
   let(:email_domains){ described_class.new(threadable) }
   subject{ email_domains }
 
-  its(:threadable){ should eq threadable }
+  describe '#threadable' do
+    subject { super().threadable }
+    it { is_expected.to eq threadable }
+  end
 
   describe '#find_by_domain' do
     it 'returns the first matching email domain for the given domain' do
@@ -15,8 +18,8 @@ describe Threadable::EmailDomains do
 
   describe '#taken?' do
     it 'is true for a domain that is in use' do
-      expect(email_domains.taken?('raceteam.com')).to be_true
-      expect(email_domains.taken?('something.io')).to be_false
+      expect(email_domains.taken?('raceteam.com')).to be_truthy
+      expect(email_domains.taken?('something.io')).to be_falsey
     end
   end
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::OrganizationMembersController do
+describe Api::OrganizationMembersController, :type => :controller do
   let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
 

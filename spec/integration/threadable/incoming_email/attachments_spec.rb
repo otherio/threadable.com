@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail::Attachments do
+describe Threadable::IncomingEmail::Attachments, :type => :request do
 
   it 'should have tests'
 

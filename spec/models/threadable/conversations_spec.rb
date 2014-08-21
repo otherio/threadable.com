@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversations do
+describe Threadable::Conversations, :type => :model do
 
   let(:conversations){ described_class.new(threadable) }
   subject{ conversations }
@@ -12,10 +12,13 @@ describe Threadable::Conversations do
   end
 
   before do
-    Conversation.stub(:order).with('conversations.updated_at DESC').and_return(all_conversation_records)
+    allow(Conversation).to receive(:order).with('conversations.updated_at DESC').and_return(all_conversation_records)
   end
 
-  its(:inspect){ should eq "#<Threadable::Conversations>" }
+  describe '#inspect' do
+    subject { super().inspect }
+    it { is_expected.to eq "#<Threadable::Conversations>" }
+  end
 
   describe 'all' do
     it 'returns all the conversations' do

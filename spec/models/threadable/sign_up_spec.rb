@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::SignUp, fixtures: false do
+describe Threadable::SignUp, type: :model, fixtures: false do
 
   delegate :call, to: described_class
 

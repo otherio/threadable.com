@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organizations::Create do
+describe Threadable::Organizations::Create, :type => :request do
   describe '#call' do
     let :params do
       {
@@ -31,8 +31,8 @@ describe Threadable::Organizations::Create do
 
     it 'sets one of the starter groups to primary' do
       group = organization.groups.find_by_slug('notyourmom')
-      expect(group.primary?).to be_true
-      expect(group.auto_join?).to be_true
+      expect(group.primary?).to be_truthy
+      expect(group.auto_join?).to be_truthy
     end
   end
 end

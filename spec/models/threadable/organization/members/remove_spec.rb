@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization::Members::Remove do
+describe Threadable::Organization::Members::Remove, :type => :model do
 
   delegate :call, to: :described_class
 

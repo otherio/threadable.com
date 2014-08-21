@@ -14,7 +14,7 @@ describe ExtractNamesFromEmailAddresses, fixtures: false do
   examples.each do |email_addresses, expected_result|
     context "when given #{email_addresses.inspect}" do
       subject{ described_class.call(email_addresses) }
-      it { should == expected_result }
+      it { is_expected.to eq(expected_result) }
     end
   end
 end

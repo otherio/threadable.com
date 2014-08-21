@@ -1,7 +1,7 @@
 # encoding: utf-8
 require "spec_helper"
 
-describe ConversationMailer do
+describe ConversationMailer, :type => :mailer do
   describe "conversation_message" do
 
     signed_in_as 'bethany@ucsd.example.com'
@@ -30,22 +30,22 @@ describe ConversationMailer do
     let(:dmarc_verified) { true }
 
     before do
-      VerifyDmarc.stub(:call).and_return(dmarc_verified)
+      allow(VerifyDmarc).to receive(:call).and_return(dmarc_verified)
     end
 
     def validate_mail!
-      mail.subject.should include "[RaceTeam]"
-      mail.subject.should include conversation.subject
-      mail.subject.scan('RaceTeam').size.should == 1
+      expect(mail.subject).to include "[RaceTeam]"
+      expect(mail.subject).to include conversation.subject
+      expect(mail.subject.scan('RaceTeam').size).to eq(1)
 
-      mail.to.should                    match_array expected_to
-      mail.header['From'].to_s.should   == expected_from
-      mail.smtp_envelope_to.should      == [expected_envelope_to]
-      mail.smtp_envelope_from.should    == expected_envelope_from
+      expect(mail.to).to                    match_array expected_to
+      expect(mail.header['From'].to_s).to   eq(expected_from)
+      expect(mail.smtp_envelope_to).to      eq([expected_envelope_to])
+      expect(mail.smtp_envelope_from).to    eq(expected_envelope_from)
 
       if expect_reply
-        mail_as_string.should =~ /In-Reply-To:/
-        mail_as_string.should =~ /References:/
+        expect(mail_as_string).to match(/In-Reply-To:/)
+        expect(mail_as_string).to match(/References:/)
         expect(mail.in_reply_to).to eq message.parent_message.message_id_header[1..-2]
         expect(mail.references              ).to eq(
           message.parent_message.references_header.scan(/<(.+?)>/).flatten +
@@ -53,11 +53,11 @@ describe ConversationMailer do
         )
       end
 
-      mail_as_string.should =~ /Message-ID:/
+      expect(mail_as_string).to match(/Message-ID:/)
 
-      text_part.should include message.body_plain
-      html_part.gsub(/\n/,'').should include expected_html_part
-      text_part.should include "Web view:\n#{conversation_url(organization, 'my', conversation)}"
+      expect(text_part).to include message.body_plain
+      expect(html_part.gsub(/\n/,'')).to include expected_html_part
+      expect(text_part).to include "Web view:\n#{conversation_url(organization, 'my', conversation)}"
 
       organization_unsubscribe_token = extract_organization_unsubscribe_token(text_part)
       expect( OrganizationUnsubscribeToken.decrypt(organization_unsubscribe_token) ).to eq [organization.id, recipient.id]
@@ -113,7 +113,7 @@ describe ConversationMailer do
 
         it "should succeed, and remove the incorrect stylesheet tag" do
           validate_mail!
-          mail.html_part.body.to_s.should_not include 'zimbra/css/msgview.css'
+          expect(mail.html_part.body.to_s).not_to include 'zimbra/css/msgview.css'
         end
       end
     end
@@ -222,13 +222,13 @@ describe ConversationMailer do
         message.stub body_plain: body_double
       }
       it "returns the first bunch of characters of the summary" do
-        mail.html_part.body.to_s.should include "#{message.body.to_s[0,200]}"
+        expect(mail.html_part.body.to_s).to include "#{message.body.to_s[0,200]}"
       end
 
       context "with a short message" do
         let(:body){ "Everybody, please." }
         it "pads the remaining characters with spaces and then periods when the message is short" do
-          mail.html_part.body.to_s.should include "Everybody, please.#{' '*82}#{'_'*82}"
+          expect(mail.html_part.body.to_s).to include "Everybody, please.#{' '*82}#{'_'*82}"
         end
       end
     end
@@ -236,16 +236,16 @@ describe ConversationMailer do
     describe "mail buttons" do
       context "with mail buttons enabled" do
         it "has the buttons in the mail" do
-          mail.html_part.body.to_s.should include 'class="threadable-button"'
-          mail.html_part.body.to_s.should_not include 'class="threadable-conversation"'
+          expect(mail.html_part.body.to_s).to include 'class="threadable-button"'
+          expect(mail.html_part.body.to_s).not_to include 'class="threadable-conversation"'
         end
 
         context "as a group member" do
           it "has a mute button" do
-            mail.html_part.body.to_s.should include 'Mute'
-            mail.html_part.body.to_s.should_not include 'Unfollow'
-            mail.text_part.body.to_s.should include 'Mute'
-            mail.text_part.body.to_s.should_not include 'Unfollow'
+            expect(mail.html_part.body.to_s).to include 'Mute'
+            expect(mail.html_part.body.to_s).not_to include 'Unfollow'
+            expect(mail.text_part.body.to_s).to include 'Mute'
+            expect(mail.text_part.body.to_s).not_to include 'Unfollow'
           end
         end
 
@@ -255,10 +255,10 @@ describe ConversationMailer do
           let(:expected_reply_to) { '"UCSD Electric Racing: Electronics Tasks" <electronics+task@raceteam.localhost>'}
 
           it "has an unfollow button" do
-            mail.html_part.body.to_s.should include 'Unfollow'
-            mail.html_part.body.to_s.should_not include 'Mute'
-            mail.text_part.body.to_s.should include 'Unfollow'
-            mail.text_part.body.to_s.should_not include 'Mute'
+            expect(mail.html_part.body.to_s).to include 'Unfollow'
+            expect(mail.html_part.body.to_s).not_to include 'Mute'
+            expect(mail.text_part.body.to_s).to include 'Unfollow'
+            expect(mail.text_part.body.to_s).not_to include 'Mute'
           end
         end
       end
@@ -268,7 +268,7 @@ describe ConversationMailer do
           recipient.update(show_mail_buttons: false)
         end
         it "doesn't have buttons in the mail" do
-          mail.html_part.body.to_s.should_not include 'class="threadable-button"'
+          expect(mail.html_part.body.to_s).not_to include 'class="threadable-button"'
         end
       end
     end
@@ -283,19 +283,19 @@ describe ConversationMailer do
         end
 
         it 'has a follow button and a flash' do
-          mail.html_part.body.to_s.should include 'Follow'
-          mail.html_part.body.to_s.should_not include 'Unfollow'
-          mail.html_part.body.to_s.should_not include 'Mute'
-          mail.html_part.body.to_s.should include "You'll only receive the first message of this conversation"
-          mail.text_part.body.to_s.should include "You'll only receive the first message of this conversation"
+          expect(mail.html_part.body.to_s).to include 'Follow'
+          expect(mail.html_part.body.to_s).not_to include 'Unfollow'
+          expect(mail.html_part.body.to_s).not_to include 'Mute'
+          expect(mail.html_part.body.to_s).to include "You'll only receive the first message of this conversation"
+          expect(mail.text_part.body.to_s).to include "You'll only receive the first message of this conversation"
         end
       end
 
       context 'when the recipient has an each-message and a first-message subscription' do
         it 'does not have a follow button or a flash' do
-          mail.html_part.body.to_s.should_not include 'Follow'
-          mail.html_part.body.to_s.should_not include "You'll only receive the first message of this conversation"
-          mail.text_part.body.to_s.should_not include "You'll only receive the first message of this conversation"
+          expect(mail.html_part.body.to_s).not_to include 'Follow'
+          expect(mail.html_part.body.to_s).not_to include "You'll only receive the first message of this conversation"
+          expect(mail.text_part.body.to_s).not_to include "You'll only receive the first message of this conversation"
         end
       end
     end

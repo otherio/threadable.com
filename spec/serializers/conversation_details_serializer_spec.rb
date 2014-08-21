@@ -15,7 +15,7 @@ describe ConversationDetailsSerializer do
     let(:payload){ layup_body_carbon }
     let(:expected_key){ :conversation_detail }
     it do
-      should eq(
+      is_expected.to eq(
         {
           id:                 layup_body_carbon.id,
           slug:               "layup-body-carbon",
@@ -31,7 +31,7 @@ describe ConversationDetailsSerializer do
     let(:payload){ [welcome, layup_body_carbon] }
     let(:expected_key){ :conversation_details }
     it do
-      should eq [
+      is_expected.to eq [
         {
           id:                 welcome.id,
           slug:               "welcome-to-our-threadable-organization",

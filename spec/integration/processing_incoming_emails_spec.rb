@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "processing incoming emails" do
+describe "processing incoming emails", :type => :request do
 
   before do
-    VerifyDmarc.stub(:call).and_return(true)
+    allow(VerifyDmarc).to receive(:call).and_return(true)
   end
 
   let :params do
@@ -272,8 +272,8 @@ describe "processing incoming emails" do
     end
 
     recipients.each do |recipient|
-      expect(message.sent_to?(recipient)).to be_true
-      expect(message.sent_email(recipient).relayed?).to be_true
+      expect(message.sent_to?(recipient)).to be_truthy
+      expect(message.sent_email(recipient).relayed?).to be_truthy
     end
 
     recipient_email_addresses = recipients.map(&:email_address)

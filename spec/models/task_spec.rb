@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-describe Task do
-  it { should belong_to(:organization) }
-  it { should have_many(:messages) }
-  it { should have_and_belong_to_many(:doers) }
+describe Task, :type => :model do
+  it { is_expected.to belong_to(:organization) }
+  it { is_expected.to have_many(:messages) }
+  it { is_expected.to have_and_belong_to_many(:doers) }
 
   describe "#task?" do
     it "should return true" do
-      Task.new.should be_task
+      expect(Task.new).to be_task
     end
   end
 
   describe "#done?" do
     it "should return true if done_at is present" do
-      Task.new(done_at: Time.now).should be_done
-      Task.new(done_at: nil).should_not be_done
-      Task.new.should_not be_done
+      expect(Task.new(done_at: Time.now)).to be_done
+      expect(Task.new(done_at: nil)).not_to be_done
+      expect(Task.new).not_to be_done
     end
   end
 

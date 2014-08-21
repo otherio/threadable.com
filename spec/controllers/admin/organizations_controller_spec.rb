@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::OrganizationsController do
+describe Admin::OrganizationsController, :type => :controller do
 
   when_not_signed_in do
 

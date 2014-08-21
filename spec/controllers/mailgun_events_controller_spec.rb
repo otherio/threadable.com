@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe MailgunEventsController, fixtures: false do
+describe MailgunEventsController, type: :controller, fixtures: false do
 
   let(:timestamp){ Time.now.to_i.to_s }
   let(:token    ){ SecureRandom.uuid }

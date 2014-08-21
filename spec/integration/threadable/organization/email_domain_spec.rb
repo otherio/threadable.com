@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Organization::EmailDomain do
+describe Threadable::Organization::EmailDomain, :type => :request do
 
   let(:organization_record ){ email_domain_record.organization }
   let(:email_domain_records){ organization_record.email_domains }
@@ -10,12 +10,35 @@ describe Threadable::Organization::EmailDomain do
 
   let(:email_domain_record){ organization.email_domains.all.first.email_domain_record }
 
-  its(:id        ){ should eq email_domain_record.id         }
-  its(:domain    ){ should eq email_domain_record.domain    }
-  its(:outgoing? ){ should eq email_domain_record.outgoing?   }
-  its(:errors    ){ should eq email_domain_record.errors     }
-  its(:persisted?){ should eq email_domain_record.persisted? }
-  its(:to_s      ){ should eq email_domain.domain           }
+  describe '#id' do
+    subject { super().id }
+    it { is_expected.to eq email_domain_record.id         }
+  end
+
+  describe '#domain' do
+    subject { super().domain }
+    it { is_expected.to eq email_domain_record.domain    }
+  end
+
+  describe '#outgoing?' do
+    subject { super().outgoing? }
+    it { is_expected.to eq email_domain_record.outgoing?   }
+  end
+
+  describe '#errors' do
+    subject { super().errors }
+    it { is_expected.to eq email_domain_record.errors     }
+  end
+
+  describe '#persisted?' do
+    subject { super().persisted? }
+    it { is_expected.to eq email_domain_record.persisted? }
+  end
+
+  describe '#to_s' do
+    subject { super().to_s }
+    it { is_expected.to eq email_domain.domain           }
+  end
 
   describe '#outgoing!' do
     context 'when signed in as an owner' do
@@ -29,7 +52,7 @@ describe Threadable::Organization::EmailDomain do
           expect(organization.email_domains.find_by_domain('foo.com')).to be_outgoing
 
           expect(email_domain_record).to_not be_outgoing
-          expect(email_domain.outgoing!).to be_true
+          expect(email_domain.outgoing!).to be_truthy
           expect(email_domain_record.reload).to be_outgoing
           expect(organization.email_domains.find_by_domain('foo.com')).to_not be_outgoing
         end
@@ -67,7 +90,7 @@ describe Threadable::Organization::EmailDomain do
         it 'returns true and disables outgoing' do
           email_domain.outgoing!
           expect(email_domain_record).to be_outgoing
-          expect(email_domain.not_outgoing!).to be_true
+          expect(email_domain.not_outgoing!).to be_truthy
           expect(email_domain_record.reload).to_not be_outgoing
         end
       end

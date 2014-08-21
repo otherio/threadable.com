@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::Conversation::Recipients do
+describe Threadable::Conversation::Recipients, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:conversation){ organization.conversations.latest }

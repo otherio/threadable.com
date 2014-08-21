@@ -8,9 +8,9 @@ RSpec::Matchers.define :delegate do |method|
       raise "#{@delegator} does not respond to #{@to}!"
     end
     receiver = double(:receiver)
-    @delegator.stub(@to).and_return(receiver)
+    allow(@delegator).to receive(@to).and_return(receiver)
     called = false
-    receiver.stub(@method){ called = true }
+    allow(receiver).to receive(@method){ called = true }
     @delegator.send(@method, 1)
     called
   end

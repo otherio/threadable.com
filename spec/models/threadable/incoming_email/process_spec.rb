@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Threadable::IncomingEmail::Process do
+describe Threadable::IncomingEmail::Process, :type => :model do
 
   let(:deliverable) { false }
   let(:holdable)    { false }
