@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TrackingConcern, :type => :controller do
+describe "TrackingConcern", :type => :controller do
 
   describe TrackingConcern::MixpanelCookie do
     let(:cookie_name) { "mp_#{ENV.fetch('MIXPANEL_TOKEN')}_mixpanel" }

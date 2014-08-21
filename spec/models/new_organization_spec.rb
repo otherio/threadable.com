@@ -137,7 +137,10 @@ describe NewOrganization, type: :model, fixtures: false do
       it 'creates the user, then the org, then adds the members' do
 
         expect(controller).to receive(:sign_in!).
-          with{ threadable.users.find_by_email_address!(your_email_address) }{|user| threadable.current_user = user; true }
+          with(satisfy { threadable.users.find_by_email_address!(your_email_address) }) do |user|
+            threadable.current_user = user
+            true
+          end
 
         expect{
           expect{
@@ -152,8 +155,10 @@ describe NewOrganization, type: :model, fixtures: false do
         let(:your_email_address) { 'ILoveUpperCase@gmail.com' }
         it 'finds the user using the lowercase email address' do
           expect(controller).to receive(:sign_in!).
-            with{ threadable.users.find_by_email_address!('iloveuppercase@gmail.com') }{|user| threadable.current_user = user; true }
-
+            with(satisfy { threadable.users.find_by_email_address!('iloveuppercase@gmail.com') }) do |user|
+              threadable.current_user = user
+              true
+            end
           expect(subject.create).to be_truthy
 
         end

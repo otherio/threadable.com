@@ -59,11 +59,11 @@ describe Threadable::IncomingEmail::ProcessWebhook, :type => :model do
           "<h1>error</h1>"
         end
         it 'reports the error and does nothing to the params' do
-          expect(threadable).to receive(:report_exception!).with{|exception, context|
+          expect(threadable).to receive(:report_exception!) do |exception, context|
             expect(exception).to be_a described_class::InvalidResponse
             expect(exception.message).to eq %(invalid response from #{webhook_url}. code: 500, body: "<h1>error</h1>")
             expect(context).to eq(incoming_email_webhook_failed: true)
-          }
+          end
           call!
           expect_params_to_not_be_updated!
         end

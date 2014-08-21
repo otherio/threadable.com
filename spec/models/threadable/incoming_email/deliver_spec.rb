@@ -122,7 +122,7 @@ describe Threadable::IncomingEmail::Deliver, :type => :model do
       expect(incoming_email.organization.conversations).to_not receive(:create!)
       expect(incoming_email.organization.tasks).to_not receive(:create!)
       conversation_groups = double :conversation_groups, add: nil, remove: nil
-      expect(conversation).to receive(:groups).any_number_of_times.and_return(conversation_groups)
+      allow(conversation).to receive(:groups) { conversation_groups }
       expect(conversation_groups).to receive(:add_unless_removed).with(*incoming_email.groups)
     end
 
