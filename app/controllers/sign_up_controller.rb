@@ -53,7 +53,7 @@ class SignUpController < ApplicationController
     end
 
     if current_user.present?
-      @organization.members.add user: current_user, confirmed: true
+      @organization.members.add user: current_user, confirmed: true, join_notice: :self_join_notice
       return redirect_to conversations_path(@organization.slug, 'my')
     else
       user_params = params.require(:sign_up)
@@ -61,7 +61,7 @@ class SignUpController < ApplicationController
       email_address = user_params.require(:email_address)
 
       begin
-        @organization.members.add name: name, email_address: email_address, confirmed: false
+        @organization.members.add name: name, email_address: email_address, confirmed: false, join_notice: :self_join_notice_confirm
       rescue Threadable::RecordInvalid => e
         @error = 'Email address is invalid'
         return render :show
