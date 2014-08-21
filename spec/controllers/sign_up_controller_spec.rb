@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SignUpController, fixtures: true do
+describe SignUpController, type: :controller, fixtures: true do
   include EmberRouteUrlHelpers
 
   let(:email_address){ 'bob@yourmyface.net' }
@@ -171,7 +171,7 @@ describe SignUpController, fixtures: true do
           get :show, organization_id: 'raceteam', view: true
           expect(response).to be_success
           expect(response).to render_template('sign_up/show')
-          expect(assigns(:view_only)).to be_false
+          expect(assigns(:view_only)).to be_falsey
         end
       end
 
@@ -195,7 +195,7 @@ describe SignUpController, fixtures: true do
           get :show, organization_id: 'raceteam', view: true
           expect(response).to be_success
           expect(response).to render_template('sign_up/show')
-          expect(assigns(:view_only)).to be_true
+          expect(assigns(:view_only)).to be_truthy
         end
       end
 
@@ -221,7 +221,7 @@ describe SignUpController, fixtures: true do
 
             member = organization.members.find_by_email_address('foo@example.com')
             expect(member.name).to eq 'Foo Guy'
-            expect(member.confirmed?).to be_false
+            expect(member.confirmed?).to be_falsey
           end
         end
 
@@ -250,7 +250,7 @@ describe SignUpController, fixtures: true do
 
         member = organization.members.find_by_email_address('sfmedstudent@gmail.com')
         expect(member.name).to eq 'Sandeep Prakash'
-        expect(member.confirmed?).to be_true
+        expect(member.confirmed?).to be_truthy
       end
     end
 

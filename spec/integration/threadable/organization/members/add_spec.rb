@@ -99,17 +99,17 @@ describe Threadable::Organization::Members::Add, :type => :request do
           end
 
           it 'allows you to override the the organization trusted flag' do
-            expect(organization.trusted?).to be_false
+            expect(organization.trusted?).to be_falsey
             organization.members.add(user: user, confirmed: true)
-            expect(organization.members.find_by_email_address('amywong.phd@gmail.com').confirmed?).to be_true
+            expect(organization.members.find_by_email_address('amywong.phd@gmail.com').confirmed?).to be_truthy
           end
         end
 
         context 'when the org is trusted' do
           it 'allows you to override the the organization trusted flag' do
-            expect(organization.trusted?).to be_true
+            expect(organization.trusted?).to be_truthy
             organization.members.add(user: user, confirmed: false)
-            expect(organization.members.find_by_email_address('amywong.phd@gmail.com').confirmed?).to be_false
+            expect(organization.members.find_by_email_address('amywong.phd@gmail.com').confirmed?).to be_falsey
           end
         end
       end

@@ -19,12 +19,12 @@ describe MailPreview do
 
   describe "join_notice" do
     subject{ MailPreview.new.self_join_notice }
-    it { should be_a Mail::Message }
+    it { is_expected.to be_a Mail::Message }
   end
 
   describe "join_notice" do
     subject{ MailPreview.new.self_join_notice_confirm }
-    it { should be_a Mail::Message }
+    it { is_expected.to be_a Mail::Message }
   end
 
   describe "unsubscribe_notice" do
