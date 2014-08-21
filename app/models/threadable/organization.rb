@@ -64,9 +64,9 @@ class Threadable::Organization < Threadable::Model
   end
 
   def email_host
+    return @email_host if @email_host
     outgoing_domain = email_domains.outgoing
-    return outgoing_domain.domain if outgoing_domain.present?
-    internal_email_host
+    @email_host = outgoing_domain.present? ? @outgoing_domain.domain : internal_email_host
   end
 
   def internal_email_host
