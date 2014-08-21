@@ -12,9 +12,16 @@
 
     .uk-width-medium-1-2.uk-width-large-1-2.uk-width-small-2-3
       = form_tag organization_join_path, class: 'uk-form uk-form-stacked' do
-        - if current_user
+        - if current_user.present?
           .uk-form-row
-            = submit_tag 'Join', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+            = submit_tag 'Join this organization', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+
+          .footnote
+            You're signed in as
+            = current_user.email_address
+            %div
+              = link_to 'Sign in as a different user', sign_out_path(r: sign_in_path)
+
         - else
           .uk-form-row
             = text_field_tag 'sign_up[name]', '', label: 'Your name', placeholder: 'Jessie Smith', required: true
