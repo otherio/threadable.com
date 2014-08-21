@@ -197,14 +197,24 @@ describe SignUpController, fixtures: true do
     let(:organization) { threadable.organizations.find_by_slug('raceteam') }
     when_not_signed_in do
       context 'for a public organization' do
-        it 'creates an account and asks the user to confirm their email address' do
-          post :create, organization_id: 'raceteam', sign_up: { name: 'Foo Guy', email_address: 'foo@example.com' }
-          expect(response.status).to eq 201
-          expect(response).to render_template('sign_up/thank_you')
+        context 'with valid data' do
+          it 'creates an account and asks the user to confirm their email address' do
+            post :create, organization_id: 'raceteam', sign_up: { name: 'Foo Guy', email_address: 'foo@example.com' }
+            expect(response.status).to eq 201
+            expect(response).to render_template('sign_up/thank_you')
 
-          member = organization.members.find_by_email_address('foo@example.com')
-          expect(member.name).to eq 'Foo Guy'
-          expect(member.confirmed?).to be_false
+            member = organization.members.find_by_email_address('foo@example.com')
+            expect(member.name).to eq 'Foo Guy'
+            expect(member.confirmed?).to be_false
+          end
+        end
+
+        context 'with an invalid email address' do
+          it 'shows the form with errors' do
+            post :create, organization_id: 'raceteam', sign_up: { name: 'Foo Guy', email_address: 'foo@' }
+            expect(response.status).to eq 200
+            expect(response).to render_template('sign_up/show')
+          end
         end
       end
 

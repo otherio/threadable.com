@@ -33,7 +33,7 @@ class SignUpController < ApplicationController
 
   def show
     if @organization.public_signup?
-      render :show, layout: 'new'
+      render :show
     else
       raise Threadable::RecordNotFound
     end
@@ -47,8 +47,15 @@ class SignUpController < ApplicationController
       user_params = params.require(:sign_up)
       name = user_params.require(:name)
       email_address = user_params.require(:email_address)
-      @organization.members.add name: name, email_address: email_address, confirmed: false
-      render :thank_you, status: :created, layout: 'new'
+
+      begin
+        @organization.members.add name: name, email_address: email_address, confirmed: false
+      rescue Threadable::RecordInvalid => e
+        @error = 'Email address is invalid'
+        return render :show
+      end
+
+      render :thank_you, status: :created
     end
   end
 
