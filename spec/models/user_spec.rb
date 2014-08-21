@@ -15,8 +15,6 @@ describe User do
   it { should validate_presence_of :name }
   # it { should validate_presence_of :email_addresses } # somehow this is broken now
 
-  it { should belong_to :organization }
-
   def build_user_with_password password
     FactoryGirl.build(:user, password: password, password_confirmation: password)
   end

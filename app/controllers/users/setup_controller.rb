@@ -39,7 +39,7 @@ class Users::SetupController < ApplicationController
     @token = params[:token] or return
     @user_id, destination = UserSetupToken.decrypt(@token)
     if destination =~ /^\//
-      @organization = threadable.organizations.find_by_slug(Rails.application.routes.recognize_path(destination)[:path])
+      @organization = threadable.organizations.find_by_slug(Rails.application.routes.recognize_path(destination)[:organization_id])
     else
       @organization = threadable.organizations.find_by_id(destination)
     end
