@@ -10,4 +10,6 @@
         %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} Features
       - else
         %a.button{href: "/#quit-learning-new-tools"} Features
-      %a.button.blue-button.sign-in-button{href: sign_in_url} SIGN IN
+
+      - unless current_user.present?
+        %a.button.blue-button.sign-in-button{href: sign_in_url} SIGN IN
