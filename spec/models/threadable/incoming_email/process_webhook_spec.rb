@@ -33,7 +33,7 @@ describe Threadable::IncomingEmail::ProcessWebhook, :type => :model do
     context 'when the request returns a response' do
       before do
         expect(HTTParty).to receive(:post).with(webhook_url, body: params).and_return(response)
-        response.stub code: response_code
+        allow(response).to receive_messages code: response_code
       end
 
       context 'and response contains valid JSON' do

@@ -69,7 +69,7 @@ describe Threadable::IncomingEmail, :type => :request do
 
     context 'when Storage.local? is false' do
       before do
-        Storage.stub local?: false
+        allow(Storage).to receive_messages local?: false
 
         expect(FilepickerUploader).to receive(:upload){|file|
           expect( file.original_filename ).to eq 'some.gif'

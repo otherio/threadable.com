@@ -66,7 +66,7 @@ describe Api::MessagesController, :type => :controller do
             receive(:create!).with({subject: 'my message', body: 'hey', sent_via_web: true, creator: current_user}).
             and_return(message)
           expect(controller).to receive(:serialize).with(:messages, message, include: :conversation).and_return(some: 'json')
-          message.stub_chain(:conversation, :reload)
+          allow(message).to receive_message_chain(:conversation, :reload)
           xhr :post, :create, format: :json, organization_id: raceteam.slug, conversation_id: conversation.slug, message: { subject: 'my message', body: 'hey', conversation_id: conversation.slug }
           expect(response.status).to eq 201
           expect(response.body).to eq({some: 'json'}.to_json)

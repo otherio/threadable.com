@@ -116,11 +116,11 @@ describe Threadable::IncomingEmail, :type => :model do
     context 'when held? returns false' do
       before do
         expect(incoming_email).to receive(:held?).and_return(false)
-        incoming_email.stub_chain(:organization, :members, :who_are_owners).and_return [owner]
+        allow(incoming_email).to receive_message_chain(:organization, :members, :who_are_owners).and_return [owner]
       end
 
       it 'sends out the held message notice and marks its self as held' do
-        incoming_email.stub_chain(:organization, :hold_all_messages?).and_return false
+        allow(incoming_email).to receive_message_chain(:organization, :hold_all_messages?).and_return false
         expect(threadable.emails).to receive(:send_email).with(:message_held_notice, incoming_email)
         expect(threadable.emails).to receive(:send_email).with(:message_held_owner_notice, incoming_email, owner)
         expect(incoming_email).to receive(:held!)
@@ -128,7 +128,7 @@ describe Threadable::IncomingEmail, :type => :model do
       end
       context 'when the organization holds all messages' do
         it 'just marks its self as held' do
-          incoming_email.stub_chain(:organization, :hold_all_messages?).and_return true
+          allow(incoming_email).to receive_message_chain(:organization, :hold_all_messages?).and_return true
           expect(threadable.emails).to_not receive(:send_email).with(:message_held_notice, anything)
           expect(threadable.emails).to receive(:send_email).with(:message_held_owner_notice, incoming_email, owner)
           expect(incoming_email).to receive(:held!)
@@ -205,12 +205,12 @@ describe Threadable::IncomingEmail, :type => :model do
     subject{ incoming_email.spam? }
 
     context 'when the creator is a threadable member' do
-      before{ incoming_email.stub_chain(:creator, :present?).and_return(true) }
+      before{ allow(incoming_email).to receive_message_chain(:creator, :present?).and_return(true) }
       it { is_expected.to be_falsey }
     end
 
     context 'when the creator is not a threadable member' do
-      before{ incoming_email.stub_chain(:creator, :present?).and_return(false) }
+      before{ allow(incoming_email).to receive_message_chain(:creator, :present?).and_return(false) }
 
       context 'when the spam score is > 5' do
         before{ expect(incoming_email).to receive(:spam_score).and_return(10) }
@@ -337,7 +337,7 @@ describe Threadable::IncomingEmail, :type => :model do
 
     context 'when the organization holds all messages' do
       before do
-        organization.stub :hold_all_messages? => true
+        allow(organization).to receive_messages :hold_all_messages? => true
         expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
       end
 
@@ -360,7 +360,7 @@ describe Threadable::IncomingEmail, :type => :model do
     end
 
     context 'when the organization does not hold all messages' do
-      before{ organization.stub :hold_all_messages? => false }
+      before{ allow(organization).to receive_messages :hold_all_messages? => false }
 
       context 'when is at least one group that does not hold messages' do
         let(:group){ double :group, :hold_messages? => false }
@@ -551,8 +551,8 @@ describe Threadable::IncomingEmail, :type => :model do
     let(:email_address_tags) { ['group2', 'group1'] }
 
     before do
-      incoming_email.stub groups: groups, email_address_tags: email_address_tags
-      incoming_email.organization.stub_chain(:groups, :primary, :email_address_tag).and_return('primary_tag')
+      allow(incoming_email).to receive_messages groups: groups, email_address_tags: email_address_tags
+      allow(incoming_email.organization).to receive_message_chain(:groups, :primary, :email_address_tag).and_return('primary_tag')
     end
 
     subject{ incoming_email.groups_valid? }
@@ -573,7 +573,7 @@ describe Threadable::IncomingEmail, :type => :model do
   describe '#conversation_valid' do
     context 'with a conversation' do
       it 'checks whether the conversation is in the trash' do
-        incoming_email.stub_chain(:conversation, :trashed?).and_return(true)
+        allow(incoming_email).to receive_message_chain(:conversation, :trashed?).and_return(true)
         expect(incoming_email.conversation_valid?).to be_falsey
       end
     end
@@ -878,7 +878,7 @@ describe Threadable::IncomingEmail, :type => :model do
 
       context 'when incoming_email.conversation is nil' do
         before do
-          incoming_email.stub(conversation: nil)
+          allow(incoming_email).to receive_messages(conversation: nil)
         end
         it 'sets @parent_message to the given parent_message and sets incoming_email_record.parent_message to parent_message.message_record and sets self.conversation to parent_message.conversation' do
           expect(incoming_email_record).to receive(:parent_message=).with(message_record)
@@ -891,7 +891,7 @@ describe Threadable::IncomingEmail, :type => :model do
 
       context 'when the given parent message\'s conversation does match the incoming email conversation' do
         before do
-          incoming_email.stub(conversation: conversation)
+          allow(incoming_email).to receive_messages(conversation: conversation)
         end
         it 'sets @parent_message to the given parent_message and sets incoming_email_record.parent_message to parent_message.message_record' do
           expect(incoming_email_record).to receive(:parent_message=).with(message_record)

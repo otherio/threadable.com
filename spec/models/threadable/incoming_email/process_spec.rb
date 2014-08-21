@@ -27,7 +27,7 @@ describe Threadable::IncomingEmail::Process, :type => :model do
   end
 
   context 'when the incoming email has already been processed' do
-    before{ incoming_email.stub :processed? => true }
+    before{ allow(incoming_email).to receive_messages :processed? => true }
     it 'raises an ArgumentError' do
       expect{ call! }.to raise_error(ArgumentError, 'IncomingEmail 9931 has already been processed')
     end
@@ -35,7 +35,7 @@ describe Threadable::IncomingEmail::Process, :type => :model do
 
   context 'when the incoming email has not been processed' do
     before do
-      incoming_email.stub :processed? => false
+      allow(incoming_email).to receive_messages :processed? => false
       expect(Threadable).to receive(:transaction).and_yield
       expect(incoming_email).to receive(:find_organization!)
       expect(incoming_email).to receive(:find_parent_message!)

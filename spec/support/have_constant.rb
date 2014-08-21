@@ -15,13 +15,13 @@ RSpec::Matchers.define :have_constant do |constant|
     "have constant #{constant}"
   end
 
-  failure_message_for_should do |text|
+  failure_message do |text|
     @uninitialized_constant ?
       "expected #{@actual} to have constant #{constant}" :
       "expected #{@constant_name}.name to eq #{@constant_name}"
   end
 
-  failure_message_for_should_not do |text|
+  failure_message_when_negated do |text|
     "expected #{@actual} to not have constant #{constant}"
   end
 

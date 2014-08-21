@@ -101,7 +101,7 @@ describe ConversationMailer, :type => :mailer do
 
     context "when the subject is a reply" do
       it "should parse and construct the correct subject" do
-        message.stub(subject: "RE: Re: [RaceTeam] #{conversation.subject}")
+        allow(message).to receive_messages(subject: "RE: Re: [RaceTeam] #{conversation.subject}")
         validate_mail!
       end
 
@@ -152,7 +152,7 @@ describe ConversationMailer, :type => :mailer do
     context "when given a message without a user" do
       let(:expected_cc) { message.from }
       before do
-        message.stub(creator: nil)
+        allow(message).to receive_messages(creator: nil)
       end
 
       it "should set the from address to the incoming messages's from address" do
@@ -218,8 +218,8 @@ describe ConversationMailer, :type => :mailer do
       }
       let(:body_double){ double(:body, html?: false, html_safe?: false, to_s: body, length: body.length) }
       before{
-        message.stub body: body_double
-        message.stub body_plain: body_double
+        allow(message).to receive_messages body: body_double
+        allow(message).to receive_messages body_plain: body_double
       }
       it "returns the first bunch of characters of the summary" do
         expect(mail.html_part.body.to_s).to include "#{message.body.to_s[0,200]}"

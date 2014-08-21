@@ -130,18 +130,18 @@ describe Threadable::User, :type => :model do
 
   describe 'web_enabled?' do
     it 'should return the presense of a password' do
-      user_record.stub encrypted_password: 'FSDFDSFDSFDS'
+      allow(user_record).to receive_messages encrypted_password: 'FSDFDSFDSFDS'
       expect(user).to be_web_enabled
-      user_record.stub encrypted_password: nil
+      allow(user_record).to receive_messages encrypted_password: nil
       expect(user).to_not be_web_enabled
     end
   end
 
   describe 'requires_setup?' do
     it 'should return the the oposite of requires_setup?' do
-      user.stub web_enabled?: false
+      allow(user).to receive_messages web_enabled?: false
       expect(user.requires_setup?).to be_truthy
-      user.stub web_enabled?: true
+      allow(user).to receive_messages web_enabled?: true
       expect(user.requires_setup?).to be_falsey
     end
   end

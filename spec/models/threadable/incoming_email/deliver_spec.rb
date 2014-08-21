@@ -118,7 +118,7 @@ describe Threadable::IncomingEmail::Deliver, :type => :model do
 
   context 'when the incoming_email has a conversation' do
     before do
-      incoming_email.stub conversation: conversation
+      allow(incoming_email).to receive_messages conversation: conversation
       expect(incoming_email.organization.conversations).to_not receive(:create!)
       expect(incoming_email.organization.tasks).to_not receive(:create!)
       conversation_groups = double :conversation_groups, add: nil, remove: nil

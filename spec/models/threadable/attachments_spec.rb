@@ -21,7 +21,7 @@ describe Threadable::Attachments, :type => :model do
     end
 
     before do
-      ::Attachment.stub all: all_attachment_records
+      allow(::Attachment).to receive_messages all: all_attachment_records
     end
 
     it 'returns all the attachments as Threadable::Attachment instances' do
@@ -36,7 +36,7 @@ describe Threadable::Attachments, :type => :model do
 
   describe 'count' do
     before do
-      ::Attachment.stub_chain(:all, :count).and_return(45)
+      allow(::Attachment).to receive_message_chain(:all, :count).and_return(45)
     end
     it 'returns a count all the attachments' do
       expect(attachments.count).to eq 45

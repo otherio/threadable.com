@@ -18,7 +18,7 @@ describe Threadable::EmailAddresses, :type => :model do
 
   describe '#all' do
     before do
-      ::EmailAddress.stub_chain(:all, :to_a).and_return(all_email_address_records)
+      allow(::EmailAddress).to receive_message_chain(:all, :to_a).and_return(all_email_address_records)
     end
 
     it 'returns all the email addresses as Threadable::EmailAddress instances' do
@@ -33,7 +33,7 @@ describe Threadable::EmailAddresses, :type => :model do
 
   describe '#confirmed' do
     before do
-      ::EmailAddress.stub_chain(:confirmed, :to_a).and_return(all_email_address_records)
+      allow(::EmailAddress).to receive_message_chain(:confirmed, :to_a).and_return(all_email_address_records)
     end
 
     it 'returns all the email addresses as Threadable::EmailAddress instances' do
@@ -48,7 +48,7 @@ describe Threadable::EmailAddresses, :type => :model do
 
   describe '#unconfirmed' do
     before do
-      ::EmailAddress.stub_chain(:unconfirmed, :to_a).and_return(all_email_address_records)
+      allow(::EmailAddress).to receive_message_chain(:unconfirmed, :to_a).and_return(all_email_address_records)
     end
 
     it 'returns all the email addresses as Threadable::EmailAddress instances' do

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Threadable::User::EmailAddress, :type => :model do
 
   let(:now){ Time.now }
-  before{ Time.stub now: now }
+  before{ allow(Time).to receive_messages now: now }
 
   let(:user){ double(:user, id: 4432, threadable: threadable, user_record: double(:user_record)) }
   let(:email_address_record){ double(:email_address_record, primary?: primary, confirmed?: confirmed) }

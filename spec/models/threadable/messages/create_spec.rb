@@ -63,7 +63,7 @@ describe Threadable::Messages::Create, :type => :model do
   let(:latest_message) { nil }
 
   before do
-    Mail.stub random_tag: '529695e5b8b3a_13b723fe73985e6d876688'
+    allow(Mail).to receive_messages random_tag: '529695e5b8b3a_13b723fe73985e6d876688'
     Timecop.freeze Time.parse('October 26th 1985 1:22 AM PDT')
 
     expect(Threadable::Message).to receive(:new).
@@ -72,7 +72,7 @@ describe Threadable::Messages::Create, :type => :model do
     expect(::Attachment).to receive(:create).with(attachment1).and_return(attachment_record1)
     expect(::Attachment).to receive(:create).with(attachment2).and_return(attachment_record2)
 
-    conversation.stub_chain(:messages, :latest).and_return(latest_message)
+    allow(conversation).to receive_message_chain(:messages, :latest).and_return(latest_message)
 
     expect(message_record).to receive(:attachments=).with([attachment_record1, attachment_record2])
   end

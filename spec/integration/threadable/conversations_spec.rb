@@ -172,7 +172,7 @@ describe Threadable::Conversations, :type => :request do
     context 'when create returns a not persisted conversation' do
       let(:conversation){ double(:conversation, persisted?: false) }
       it 'raises a Threadable::RecordInvalid error' do
-        conversation.stub_chain(:errors, :full_messages, :to_sentence).and_return("ERRORS")
+        allow(conversation).to receive_message_chain(:errors, :full_messages, :to_sentence).and_return("ERRORS")
         expect{ conversations.create!(attributes) }.to raise_error(Threadable::RecordInvalid, "Conversation invalid: ERRORS")
       end
     end
