@@ -44,7 +44,7 @@ describe SignUpController, fixtures: true do
             post :sign_up, sign_up: { organization_name: organization_name, email_address: email_address }
             expect(response.status).to eq 201
             expect(response.body).to be_blank
-            threadable.track('Homepage sign up', email_address: email_address, organization_name: organization_name)
+            # threadable.track('Homepage sign up', email_address: email_address, organization_name: organization_name)
             assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "sign_up_confirmation", organization_name, email_address]
           end
         end
@@ -61,7 +61,7 @@ describe SignUpController, fixtures: true do
               notice: "You already have an account. Please sign in.",
             )
             expect(response.body).to eq({redirect_to: url}.to_json)
-            threadable.track('Homepage sign up', email_address: email_address, organization_name: organization_name)
+            # threadable.track('Homepage sign up', email_address: email_address, organization_name: organization_name)
           end
         end
       end
@@ -166,6 +166,13 @@ describe SignUpController, fixtures: true do
           expect(response).to be_success
           expect(response).to render_template('sign_up/show')
         end
+
+        it 'renders an active form with the "view only" param set' do
+          get :show, organization_id: 'raceteam', view: true
+          expect(response).to be_success
+          expect(response).to render_template('sign_up/show')
+          expect(assigns(:view_only)).to be_false
+        end
       end
 
       context 'for a non public organization' do
@@ -181,6 +188,15 @@ describe SignUpController, fixtures: true do
       it 'redirects to the organization' do
         get :show, organization_id: 'raceteam'
         expect(response).to redirect_to conversations_path(organization, 'my')
+      end
+
+      context 'when given the "show anyway" parameter' do
+        it 'renders show' do
+          get :show, organization_id: 'raceteam', view: true
+          expect(response).to be_success
+          expect(response).to render_template('sign_up/show')
+          expect(assigns(:view_only)).to be_true
+        end
       end
 
       context 'when the organization does not exist' do

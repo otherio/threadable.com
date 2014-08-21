@@ -14,7 +14,7 @@
       = form_tag organization_join_path, class: 'uk-form uk-form-stacked' do
         .error
           = @error
-        - if current_user.present?
+        - if current_user.present? && !@view_only
           .uk-form-row
             = submit_tag 'Join this organization', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
 
@@ -28,11 +28,11 @@
             %label.uk-form-label
               Your name:
             .uk-form-controls
-              = text_field_tag 'sign_up[name]', '', placeholder: 'Jessie Smith', required: true
+              = text_field_tag 'sign_up[name]', '', placeholder: 'Jessie Smith', required: true, disabled: @view_only
           .uk-form-row
             %label.uk-form-label
               Your email address:
             .uk-form-controls
-              = text_field_tag 'sign_up[email_address]', '', placeholder: 'jessie@example.com', type: 'email', required: true
+              = text_field_tag 'sign_up[email_address]', '', placeholder: 'jessie@example.com', type: 'email', required: true, disabled: @view_only
           .uk-form-row
-            = submit_tag 'Sign up', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+            = submit_tag 'Sign up', class: 'uk-button uk-button-primary uk-button-large sign-in-button', disabled: @view_only

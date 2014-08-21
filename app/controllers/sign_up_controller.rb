@@ -1,7 +1,6 @@
 class SignUpController < ApplicationController
 
   skip_before_filter :require_user_be_signed_in!
-  before_filter :ensure_current_user_is_not_a_member, only: [:show, :create]
 
   layout 'new'
 
@@ -32,6 +31,13 @@ class SignUpController < ApplicationController
   end
 
   def show
+    @organization = threadable.organizations.find_by_slug!(params[:organization_id])
+    if !params[:view] && current_user_is_a_member?
+      return redirect_to conversations_path(@organization.slug, 'my')
+    end
+
+    @view_only = params[:view] && current_user_is_a_member?
+
     if @organization.public_signup?
       render :show
     else
@@ -40,6 +46,12 @@ class SignUpController < ApplicationController
   end
 
   def create
+    @organization = threadable.organizations.find_by_slug!(params[:organization_id])
+
+    if current_user_is_a_member?
+      return redirect_to conversations_path(@organization.slug, 'my')
+    end
+
     if current_user.present?
       @organization.members.add user: current_user, confirmed: true
       return redirect_to conversations_path(@organization.slug, 'my')
@@ -76,12 +88,8 @@ class SignUpController < ApplicationController
 
   private
 
-  def ensure_current_user_is_not_a_member
-    @organization = threadable.organizations.find_by_slug!(params[:organization_id])
-
-    if current_user.present? && @organization.members.include?(current_user)
-      return redirect_to conversations_path(@organization.slug, 'my')
-    end
+  def current_user_is_a_member?
+    @current_user_is_a_member ||= current_user.present? && @organization.members.include?(current_user)
   end
 
 end
