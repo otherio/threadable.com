@@ -98,6 +98,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'rest-client'
+  gem 'rspec-legacy_formatters'
 end
 
 group :staging_spec do

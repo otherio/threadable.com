@@ -328,6 +328,9 @@ GEM
       rspec-support (~> 3.0.0)
     rspec-instafail (0.2.5)
       rspec
+    rspec-legacy_formatters (1.0.0)
+      rspec-core (>= 3.0.0.beta2)
+      rspec-support (>= 3.0.0.beta2)
     rspec-mocks (3.0.4)
       rspec-support (~> 3.0.0)
     rspec-rails (3.0.2)
@@ -480,6 +483,7 @@ DEPENDENCIES
   rest-client
   roadie-rails
   rspec-instafail
+  rspec-legacy_formatters
   rspec-rails (= 3.0.2)
   sanitize
   sass-rails
