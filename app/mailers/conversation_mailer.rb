@@ -206,7 +206,18 @@ class ConversationMailer < Threadable::Mailer
   end
 
   def recipient_email_addresses
-    @recipient_email_addresses ||= @conversation.recipients.all.map(&:email_address)
+    return @recipient_email_addresses if @recipient_email_addresses
+
+    redis_key = "#{self.class}:recipient_email_addresses:#{@message.id}"
+    cached_result = Threadable.redis.get(redis_key)
+    return JSON.parse(cached_result) unless cached_result.nil?
+
+    fetched_result = @conversation.recipients.all.map{|r| r.email_address.address}
+
+    Threadable.redis.set(redis_key, fetched_result.to_json) and \
+    Threadable.redis.expire(redis_key, 15) # seconds
+
+    fetched_result
   end
 
   def filter_out_recipients email_addresses
