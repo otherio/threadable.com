@@ -4,7 +4,7 @@ require 'rspec/instafail'
 class DocumentationInstafail < RSpec::Core::Formatters::DocumentationFormatter
   def example_failed(example)
     super(example)
-    instafail.example_failed(example)
+    # instafail.example_failed(example)
   end
 
   def instafail
