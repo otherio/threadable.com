@@ -9,15 +9,15 @@ class Threadable::Organization::Members < Threadable::Collection
   attr_reader :organization
 
   def all
-    scope.map{|membership| member_for membership }
+    scope.reload.map{|membership| member_for membership }
   end
 
   def who_get_email
-    scope.who_get_email.map{|membership| member_for membership }
+    scope.reload.who_get_email.map{|membership| member_for membership }
   end
 
   def who_are_owners
-    scope.who_are_owners.map{|membership| member_for membership }
+    scope.reload.who_are_owners.map{|membership| member_for membership }
   end
 
   def who_get_summaries
@@ -124,11 +124,11 @@ class Threadable::Organization::Members < Threadable::Collection
   private
 
   def groups_scope
-    GroupMembership.for_organization(organization.id).includes(:user).reload
+    GroupMembership.for_organization(organization.id).includes(:user)
   end
 
   def scope
-    organization.organization_record.memberships.active.includes(:user).reload
+    organization.organization_record.memberships.active.includes(:user)
   end
 
   def member_for organization_membership_record
