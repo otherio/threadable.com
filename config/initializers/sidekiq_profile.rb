@@ -1,3 +1,5 @@
+#http://www.happybootstrapper.com/2014/profile-leaky-sidekiq-job-heroku/
+
 if ENV["SIDEKIQ_PROFILE"]
   require "objspace"
   ObjectSpace.trace_object_allocations_start
