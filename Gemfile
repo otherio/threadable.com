@@ -61,8 +61,6 @@ gem 'google-api-client'
 gem 'algoliasearch-rails'
 gem 'dnsruby'
 
-gem 'skylight'
-
 group :production, :staging do
   gem 'rails_12factor'
 end
