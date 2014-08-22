@@ -61,8 +61,6 @@ module RSpec::Support::LiveExampleGroup
 
   end
 
-  RSpec.configuration.include self, :type => :live, :example_group => {
-    :file_path => %r{spec[\\/]live[\\/]}
-  }
+  RSpec.configuration.include self, :type => :live, file_path: %r{spec[\\/]live[\\/]}
 
 end

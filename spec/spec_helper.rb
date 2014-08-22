@@ -6,7 +6,6 @@ require Rails.root.join("spec/support/disabled_angolia_search")
 Rails.application.eager_load!
 
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'factories'
 require 'sidekiq/testing'
 require 'shoulda-matchers'

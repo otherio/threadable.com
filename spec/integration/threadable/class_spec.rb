@@ -53,7 +53,7 @@ describe Threadable::Class, :type => :request do
       expect( organization.messages      .count ).to eq ::Organization.find(organization.id).messages.count
     end
 
-    expect(threadable.env.symbolize_keys).to eq({
+    expect(threadable.env.symbolize_keys).to match({
       protocol: 'http',
       host: '127.0.0.1',
       port: anything,

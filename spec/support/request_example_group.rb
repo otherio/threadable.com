@@ -57,5 +57,5 @@ module RSpec::Support::RequestExampleGroup
 
   end
 
-  RSpec.configuration.include self, :example_group => { :file_path => %r{spec[\\/]requests[\\/]} }
+  RSpec.configuration.include self, file_path: %r{spec[\\/]requests[\\/]}
 end

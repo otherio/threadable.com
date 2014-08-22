@@ -35,7 +35,7 @@ describe User, :type => :model do
 
     let(:user){ build(:user, user_attributes) }
 
-    subject{ user.errors_on(:password) }
+    subject{ user.errors[:password] }
 
     before{ user.valid? }
 
@@ -49,7 +49,7 @@ describe User, :type => :model do
     end
 
     context "when passwords do not match" do
-      subject{ user.errors_on(:password_confirmation) }
+      subject{ user.errors[:password_confirmation] }
       def user_attributes
         { password: "asjkdhjksadhjksa", password_confirmation: "2348392489320890" }
       end
@@ -57,7 +57,7 @@ describe User, :type => :model do
     end
 
     context "when password is present but password_confirmation is blank" do
-      subject{ user.errors_on(:password_confirmation) }
+      subject{ user.errors[:password_confirmation] }
       def user_attributes
         { password: "asjkdhjksadhjksa" }
       end

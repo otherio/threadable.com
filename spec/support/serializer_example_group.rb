@@ -26,8 +26,6 @@ module RSpec::Support::SerializerExampleGroup
 
   delegate :current_user, to: :threadable
 
-  RSpec.configuration.include self, :type => :serializer, :example_group => {
-    :file_path => %r{spec[\\/]serializers[\\/]}
-  }
+  RSpec.configuration.include self, :type => :serializer, file_path: %r{spec[\\/]serializers[\\/]}
 
 end

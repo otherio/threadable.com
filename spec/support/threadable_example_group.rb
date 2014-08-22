@@ -13,9 +13,7 @@ module RSpec::Support::ThreadableExampleGroup
 
   delegate :current_user, to: :threadable
 
-  RSpec.configuration.include self, :type => :threadable, :example_group => {
-    :file_path => %r{spec[\\/]models[\\/]threadable[\\/]}
-  }
+  RSpec.configuration.include self, :type => :threadable, file_path: %r{spec[\\/]models[\\/]threadable[\\/]}
 
   RSpec.configuration.include FactoryGirl::Syntax::Methods, :type => :threadable
 end

@@ -13,8 +13,6 @@ module RSpec::Support::WorkerExampleGroup
 
   delegate :current_user, to: :threadable
 
-  RSpec.configuration.include self, :type => :worker, :example_group => {
-    :file_path => %r{spec[\\/]workers[\\/]}
-  }
+  RSpec.configuration.include self, :type => :worker, file_path: %r{spec[\\/]workers[\\/]}
 
 end

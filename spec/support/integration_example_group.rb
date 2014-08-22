@@ -50,8 +50,6 @@ module RSpec::Support::IntegrationExampleGroup
 
   end
 
-  RSpec.configuration.include self, :type => :integration, :example_group => {
-    :file_path => %r{spec[\\/]integration[\\/]}
-  }
+  RSpec.configuration.include self, :type => :integration, file_path: %r{spec[\\/]integration[\\/]}
 
 end

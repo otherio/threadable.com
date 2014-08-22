@@ -7,8 +7,8 @@ module RSpec::Support::WidgetExampleGroup
   end
 
   RSpec.configure do |config|
-    config.include self, example_group: { file_path: %r{spec[\\/]widgets[\\/]} }
-    config.include self, example_group: { file_path: %r{rails[\\/]widgets[\\/]rspec} }
+    config.include self, file_path: %r{spec[\\/]widgets[\\/]}
+    config.include self, file_path: %r{rails[\\/]widgets[\\/]rspec}
   end
 
 
