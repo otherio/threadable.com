@@ -24,6 +24,12 @@ describe VerifyDmarc, fixtures: false do
       call(address)
     end
 
+    it 'queries the DMARC txt record once, and returns the value from redis the second time' do
+      expect(resolver).to receive(:query).with('_dmarc.bar.com', Types.TXT).once
+      call(address)
+      call(address)
+    end
+
     describe 'checking the dmarc policy' do
       context 'with a dmarc policy that allows unmatched domains' do
         it 'returns true' do
