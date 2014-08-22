@@ -67,7 +67,7 @@ class Threadable::Organization::Groups < Threadable::Groups
   end
 
   def primary
-    group_for scope.where(primary: true).first
+    @primary_group ||= group_for scope.where(primary: true).first
   end
 
   def inspect
