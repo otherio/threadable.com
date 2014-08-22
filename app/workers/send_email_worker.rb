@@ -10,10 +10,11 @@ class SendEmailWorker < Threadable::Worker
 
   def conversation_message organization_id, message_id, recipient_id
     organization   = threadable.organizations.find_by_id! organization_id
-    message   = organization.messages.find_by_id! message_id
     recipient = organization.members.find_by_user_id! recipient_id
-
     return unless recipient.subscribed?
+
+    message   = organization.messages.find_by_id! message_id
+
     threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
     # this marks the sent email record, if there is one, as delivered to mailgun
