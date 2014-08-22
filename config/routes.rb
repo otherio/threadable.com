@@ -53,6 +53,7 @@ Threadable::Application.routes.draw do
 
   get '/admin' => 'admin#show'
   namespace :admin do
+    get    'profiler'         => 'profiler#show'
     get    'debug'         => 'debug#show'
     get    'debug/enable'  => 'debug#enable'
     get    'debug/disable' => 'debug#disable'
