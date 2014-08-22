@@ -70,6 +70,9 @@ end
 group :development do
   gem 'spring'
   gem 'active_record_query_trace'
+  # gem 'ruby-prof'
+  # gem 'rack-mini-profiler'
+  # gem 'flamegraph'
 end
 
 group :development, :test, :staging do
