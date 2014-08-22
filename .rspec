@@ -1,4 +1,5 @@
 --colour
 --backtrace
+--require rspec/legacy_formatters
 --require ./spec/support/documentation_instafail_formatter.rb
 --format DocumentationInstafail
