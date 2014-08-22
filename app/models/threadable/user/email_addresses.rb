@@ -10,7 +10,7 @@ class Threadable::User::EmailAddresses < Threadable::EmailAddresses
   attr_reader :user
 
   def primary
-    if user.user_record.email_addresses.loaded?
+    @primary ||= if user.user_record.email_addresses.loaded?
       email_address_for user.user_record.primary_email_address
     else
       email_address_for (scope.primary.first or return)
