@@ -12,4 +12,4 @@
         %a.button{href: "/#quit-learning-new-tools"} Features
 
       - unless current_user.present?
-        %a.button.blue-button.sign-in-button{href: sign_in_url} SIGN IN
+        %a.button.blue-button.sign-in-button{href: sign_in_url(r: request.fullpath)} SIGN IN
