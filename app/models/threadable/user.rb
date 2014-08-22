@@ -73,6 +73,7 @@ class Threadable::User < Threadable::Model
   def reload
     @email_address = nil
     user_record.reload
+    email_addresses.reload
     self
   end
 

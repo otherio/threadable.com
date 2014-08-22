@@ -44,6 +44,10 @@ class Threadable::User::EmailAddresses < Threadable::EmailAddresses
     %(#<#{self.class} user_id: #{user.id}>)
   end
 
+  def reload
+    @primary = nil
+  end
+
   private
 
   def scope
