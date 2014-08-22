@@ -51,6 +51,16 @@ class Threadable::Users < Threadable::Collection
     find_by_id(id) or raise Threadable::RecordNotFound, "unable to find user with id: #{id}"
   end
 
+  def all_email_addresses
+    scope.distinct.joins(:organization_memberships).
+      where(organization_memberships: {gets_email: true, confirmed: true, active: true}).map do |u|
+        address = u.email_addresses.primary.first.address
+        first_name, last_name = u.name.split(/\s/, 2)
+        next if(address =~ /multifyapp.com/ || address =~ /example.com/)
+        [first_name, last_name, address]
+      end.compact
+  end
+
   def exists? id
     scope.exists?(id) ? id : false
   end

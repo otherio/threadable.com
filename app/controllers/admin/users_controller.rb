@@ -1,3 +1,5 @@
+require 'csv'
+
 class Admin::UsersController < ApplicationController
 
   layout 'old'
@@ -49,6 +51,10 @@ class Admin::UsersController < ApplicationController
       flash[:success] = "#{@user.name} (user #{@user.id}) was merge into #{@destination_user.name} (user #{@destination_user.id})"
       redirect_to admin_user_path(@destination_user)
     end
+  end
+
+  def emails
+    send_data(threadable.users.all_email_addresses.map(&:to_csv).join("\n"), filename: 'threadable-emails.csv')
   end
 
 end
