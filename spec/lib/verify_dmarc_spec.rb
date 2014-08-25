@@ -25,6 +25,7 @@ describe VerifyDmarc, fixtures: false do
     end
 
     it 'queries the DMARC txt record once, and returns the value from redis the second time' do
+      pending "For the moment, this seems to break dmarc checking sometimes."
       expect(resolver).to receive(:query).with('_dmarc.bar.com', Types.TXT).once
       call(address)
       call(address)

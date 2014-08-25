@@ -7,15 +7,15 @@ class VerifyDmarc < MethodObject
   def call email_address
     domain = email_address.domain
 
-    redis_key = "#{self.class}:#{domain}"
-    cached_result = Threadable.redis.get(redis_key)
-    return cached_result unless cached_result.nil?
+    # redis_key = "#{self.class}:#{domain}"
+    # cached_result = Threadable.redis.get(redis_key)
+    # return cached_result unless cached_result.nil?
 
     @resolver = Dnsruby::Resolver.new
     dns_result = !dmarc_records("_dmarc.#{domain}").flatten.join(';').include?('p=reject')
 
-    Threadable.redis.set(redis_key, dns_result) and \
-    Threadable.redis.expire(redis_key, 300) # seconds
+    # Threadable.redis.set(redis_key, dns_result) and \
+    # Threadable.redis.expire(redis_key, 300) # seconds
 
     dns_result
   end
