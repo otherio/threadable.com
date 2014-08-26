@@ -34,6 +34,7 @@ class MessagesSerializer < Serializer
           mimetype:   attachment.mimetype,
           size:       attachment.size,
           content_id: attachment.content_id,
+          inline:     attachment.inline?,
         }
       end,
     }

@@ -68,14 +68,17 @@ describe MessagesSerializer do
       expect(attachments[0][:filename]).to eq    "some.gif"
       expect(attachments[0][:mimetype]).to eq    "image/gif"
       expect(attachments[0][:size]    ).to eq    1829
+      expect(attachments[0][:inline]  ).to eq    false
       expect(attachments[1][:url]     ).to match /some\.jpg$/
       expect(attachments[1][:filename]).to eq    "some.jpg"
       expect(attachments[1][:mimetype]).to eq    "image/jpeg"
       expect(attachments[1][:size]    ).to eq    2974
+      expect(attachments[1][:inline]  ).to eq    false
       expect(attachments[2][:url]     ).to match /some\.txt$/
       expect(attachments[2][:filename]).to eq    "some.txt"
       expect(attachments[2][:mimetype]).to eq    "text/plain"
       expect(attachments[2][:size]    ).to eq    35
+      expect(attachments[2][:inline]  ).to eq    false
     end
   end
 
