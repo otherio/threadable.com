@@ -13,6 +13,11 @@
 %table.table.table-bordered
   %tbody
     %tr
+      %th Groups
+      %td
+        - @held_message.incoming_email.groups.each do |group|
+          = group.name
+    %tr
       %th Subject
       %td= @held_message.subject
     -# %tr
