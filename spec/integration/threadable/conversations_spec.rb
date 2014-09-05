@@ -19,6 +19,13 @@ describe Threadable::Conversations, :type => :request do
     end
   end
 
+  describe '#empty_trash!' do
+    it 'deletes all conversations that are in the trash' do
+      conversations.empty_trash!
+      expect(conversations.trashed.map(&:slug)).to eq []
+    end
+  end
+
   describe '#all_with_participants' do
     it 'returns all the conversations with participants loaded' do
       expect(conversations.all_with_participants).to eq ::Conversation.order('conversations.updated_at DESC').map{|conversation_record|

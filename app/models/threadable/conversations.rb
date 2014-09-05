@@ -77,6 +77,12 @@ class Threadable::Conversations < Threadable::Collection
     conversation
   end
 
+  def empty_trash!
+    trashed.each do |conversation|
+      conversation.destroy!
+    end
+  end
+
   private
 
   def scope
