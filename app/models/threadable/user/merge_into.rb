@@ -44,12 +44,9 @@ class Threadable::User::MergeInto < MethodObject
 
   def move_events!
     @user_record.events.update_all(user_id: @destination_user_id)
-    # go though each event updating the serialized content hash
-    Event.find_each do |event|
-      if event.content[:doer_id] && event.content[:doer_id] == @user.id
-        event.content[:doer_id] = @destination_user_id
-        event.save!
-      end
+    Event.where(event_type: [:task_added_doer, :task_removed_doer], content: {doer_id: @user.id}.to_yaml).each do |event|
+      event.content[:doer_id] = @destination_user_id
+      event.save!
     end
   end
 
