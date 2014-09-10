@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818204852) do
+ActiveRecord::Schema.define(version: 20140906005133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,17 +251,19 @@ ActiveRecord::Schema.define(version: 20140818204852) do
 
   create_table "organizations", force: true do |t|
     t.string   "name"
-    t.string   "slug",                                   null: false
+    t.string   "slug",                                        null: false
     t.text     "description"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.string   "subject_tag"
     t.string   "email_address_username"
-    t.boolean  "trusted",                default: false
-    t.boolean  "hold_all_messages",      default: false, null: false
+    t.boolean  "trusted",                     default: false
+    t.boolean  "hold_all_messages",           default: false, null: false
     t.integer  "google_user_id"
-    t.integer  "plan",                   default: 0,     null: false
-    t.boolean  "public_signup",          default: false, null: false
+    t.integer  "plan",                        default: 0,     null: false
+    t.boolean  "public_signup",               default: false, null: false
+    t.integer  "group_membership_permission", default: 0,     null: false
+    t.integer  "group_settings_permission",   default: 0,     null: false
   end
 
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree

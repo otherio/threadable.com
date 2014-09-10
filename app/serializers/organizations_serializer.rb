@@ -29,6 +29,9 @@ class OrganizationsSerializer < Serializer
       can_remove_non_empty_group: can?(:remove_non_empty_group_from, organization),
       can_be_google_user:         can?(:be_google_user_for, organization),
       can_change_settings:        can?(:change_settings_for, organization),
+
+      group_membership_permission: organization.group_membership_permission,
+      group_settings_permission:   organization.group_settings_permission,
     }
   end
 

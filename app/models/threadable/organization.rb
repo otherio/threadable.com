@@ -29,6 +29,14 @@ class Threadable::Organization < Threadable::Model
     public_signup?
   }, to: :organization_record
 
+  let(:settings) do
+    Threadable::Organization::Settings.new(
+      self,
+      group_membership_permission: {options: [:member, :owner], default: :member, membership_required: :paid},
+      group_settings_permission:   {options: [:member, :owner], default: :member, membership_required: :paid},
+    )
+  end
+
   ::Organization::PLANS.each do |plan|
     define_method("#{plan}?"){ self.plan == plan }
   end

@@ -314,4 +314,10 @@ describe Threadable::Organization, :type => :request do
     end
   end
 
+  it 'has the correct settings with proper defaults' do
+    expect(organization.settings.group_membership_permission).to eq :member
+    expect(organization.settings.group_settings_permission).to eq :member
+  end
+
+
 end
