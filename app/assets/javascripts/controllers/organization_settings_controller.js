@@ -15,6 +15,15 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     {prettyName: 'Anyone can join via the web', method: true}
   ],
 
+  membershipTypes: [
+    {prettyName: 'Members and owners', role: 'member'},
+    {prettyName: 'Owners only',        role: 'owner' }
+  ],
+
+  isFree: function() {
+    return ! this.get('isPaid');
+  }.property('isPaid'),
+
   editableOrganization: function() { return this.get('model').copy(); }.property('model'),
 
   descriptionLengthRemaining: function() {
@@ -54,6 +63,9 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
         name:         this.get('editableOrganization.name'),
         description:  this.get('editableOrganization.description'),
         publicSignup: this.get('editableOrganization.publicSignup'),
+
+        groupMembershipPermission: this.get('editableOrganization.groupMembershipPermission'),
+        groupSettingsPermission:   this.get('editableOrganization.groupSettingsPermission'),
       });
 
       organization.saveRecord().then(organizationSaved.bind(this), error.bind(this));

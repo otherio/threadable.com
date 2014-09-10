@@ -30,8 +30,8 @@ class OrganizationsSerializer < Serializer
       can_be_google_user:         can?(:be_google_user_for, organization),
       can_change_settings:        can?(:change_settings_for, organization),
 
-      group_membership_permission: organization.group_membership_permission,
-      group_settings_permission:   organization.group_settings_permission,
+      group_membership_permission: organization.settings.group_membership_permission,
+      group_settings_permission:   organization.settings.group_settings_permission,
     }
   end
 

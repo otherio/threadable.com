@@ -11,7 +11,7 @@ class Threadable::Organization < Threadable::Model
   end
   attr_reader :organization_record
 
-  delegate *%w{
+  delegate(*%w{
     id
     to_param
     name
@@ -27,7 +27,7 @@ class Threadable::Organization < Threadable::Model
     trusted?
     plan
     public_signup?
-  }, to: :organization_record
+  }, to: :organization_record)
 
   let(:settings) do
     Threadable::Organization::Settings.new(

@@ -9,6 +9,10 @@ describe Threadable::Organization::Settings, :type => :request do
   end
 
   describe '#set' do
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+    end
+
     context 'when the org is unpaid' do
       before do
         organization.organization_record.update_attribute(:plan, :free)
@@ -24,17 +28,34 @@ describe Threadable::Organization::Settings, :type => :request do
     end
 
     context 'when the org is paid' do
-      before do
-        organization.organization_record.update_attribute(:plan, :paid)
+      context 'when the current user has permission to change settings' do
+        before do
+          organization.organization_record.update_attribute(:plan, :paid)
+        end
+
+        it 'is settable' do
+          expect(organization.settings.settable?(:group_membership_permission)).to be_truthy
+        end
+
+        it 'sets the value' do
+          organization.settings.set(:group_membership_permission, :owner)
+          expect(organization.settings.group_membership_permission).to eq :owner
+        end
+
+        it 'works with strings' do
+          organization.settings.set('group_membership_permission', 'owner')
+          expect(organization.settings.group_membership_permission).to eq :owner
+        end
       end
 
-      it 'is settable' do
-        expect(organization.settings.settable?(:group_membership_permission)).to be_truthy
-      end
+      context 'when the current user does not have permission to change settings' do
+        before do
+          sign_in_as 'bethany@ucsd.example.com'
+        end
 
-      it 'sets the value' do
-        organization.settings.set(:group_membership_permission, :owner)
-        expect(organization.settings.group_membership_permission).to eq :owner
+        it 'raises an error when trying to set it' do
+          expect{organization.settings.set(:group_membership_permission, :owner)}.to raise_error Threadable::AuthorizationError, 'You do not have permission to change settings on this organization'
+        end
       end
     end
   end

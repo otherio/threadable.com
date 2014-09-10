@@ -86,12 +86,26 @@ describe Api::OrganizationsController, :type => :controller do
             expect(updated_organization.name).to eq 'Racy Team'
             expect(response.body).to eq serialize(:organizations, updated_organization).to_json
           end
+
+          it 'updates the org settings' do
+            xhr :patch, :update, format: :json, id: raceteam.slug, organization: { group_settings_permission: 'owner', group_membership_permission: 'owner' }
+            expect(response.status).to eq 200
+            updated_organization = threadable.organizations.find_by_slug!('raceteam')
+            expect(updated_organization.settings.group_membership_permission).to eq :owner
+            expect(updated_organization.settings.group_settings_permission).to eq :owner
+            expect(response.body).to eq serialize(:organizations, updated_organization).to_json
+          end
         end
       end
 
       context 'when the user does not have the correct permissions' do
         it 'fails authorization' do
           xhr :patch, :update, format: :json, id: raceteam.slug, organization: { description: 'foo', public_signup: false }
+          expect(response.status).to eq 401
+        end
+
+        it 'fails authorization when only changing settings' do
+          xhr :patch, :update, format: :json, id: raceteam.slug, organization: { group_settings_permission: 'owner' }
           expect(response.status).to eq 401
         end
       end

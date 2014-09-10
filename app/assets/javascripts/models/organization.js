@@ -26,6 +26,9 @@ Threadable.Organization = RL.Model.extend({
   canBeGoogleUser:           RL.attr('boolean'),
   canChangeSettings:         RL.attr('boolean'),
 
+  groupMembershipPermission: RL.attr('string'),
+  groupSettingsPermission:   RL.attr('string'),
+
   isPaid: function() {
     return this.get('plan') == 'paid';
   }.property('plan'),

@@ -23,7 +23,17 @@ class Api::OrganizationsController < ApiController
       :name,
     )
 
-    organization.update(organization_params)
+    organization_settings = params.require(:organization).permit(
+      :group_membership_permission,
+      :group_settings_permission,
+    )
+
+    Threadable.transaction do
+      organization.update(organization_params)
+      organization_settings.keys.each do |setting|
+        organization.settings.set(setting, organization_settings[setting])
+      end
+    end
     render json: serialize(:organizations, organization), status: 200
   end
 
