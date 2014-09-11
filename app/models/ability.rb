@@ -19,11 +19,11 @@ class Ability
         can :set_google_sync_for,         Threadable::Group
         can :change_settings_for,         Threadable::Group
 
-        can :create,                      Threadable::Group::Member
-        can :delete,                      Threadable::Group::Member
+        can :create,                      Threadable::Group::Members
+        can :delete,                      Threadable::Group::Members
       when :member
         if user.organization.settings.group_membership_permission == :member
-          can [:create, :delete], Threadable::Group::Member
+          can [:create, :delete], Threadable::Group::Members
         end
 
         if user.organization.settings.group_settings_permission == :member

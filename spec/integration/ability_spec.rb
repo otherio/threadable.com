@@ -5,7 +5,7 @@ describe Ability, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
   let(:member) { organization.members.current_member}
   let(:group) { organization.groups.find_by_slug('electronics') }
-  let(:group_member) { group.members.all.first }
+  let(:group_members) { group.members }
 
   describe 'for owners' do
     before do
@@ -26,8 +26,8 @@ describe Ability, :type => :request do
       it 'can do everything' do
         expect(member.can?(:set_google_sync_for, group)).to be_truthy
         expect(member.can?(:change_settings_for, group)).to be_truthy
-        expect(member.can?(:create,              group_member)).to be_truthy
-        expect(member.can?(:delete,              group_member)).to be_truthy
+        expect(member.can?(:create,              group_members)).to be_truthy
+        expect(member.can?(:delete,              group_members)).to be_truthy
       end
     end
   end
@@ -78,8 +78,8 @@ describe Ability, :type => :request do
         end
 
         it 'can change the group membership' do
-          expect(member.can?(:create, group_member)).to be_truthy
-          expect(member.can?(:delete, group_member)).to be_truthy
+          expect(member.can?(:create, group_members)).to be_truthy
+          expect(member.can?(:delete, group_members)).to be_truthy
         end
       end
 
@@ -89,8 +89,8 @@ describe Ability, :type => :request do
         end
 
         it 'can change the group membership' do
-          expect(member.can?(:create, group_member)).to be_falsy
-          expect(member.can?(:delete, group_member)).to be_falsy
+          expect(member.can?(:create, group_members)).to be_falsy
+          expect(member.can?(:delete, group_members)).to be_falsy
         end
       end
     end
