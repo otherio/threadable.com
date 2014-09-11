@@ -6,24 +6,27 @@
         | {{group.members.length}} members, {{summaryCount}} receive summaries
 
     each member in controller
-      li
-        if member.isMember
+      if member.isMember
+        li
           link-to "group_member" member.slug class="not-link group-member-settings-link"
             partial "group_members/details"
-          if member.updateInProgress
-            button.toggle.uk-button.remove
-              partial "lines_spinner_button"
-          else
-            a.toggle.uk-button.remove href="" click="removeMember member"
-              span.normal member
-              span.hover remove
-        else
-          div
-            partial "group_members/details"
-          if member.updateInProgress
-            button.toggle.uk-button.add
-              partial "lines_spinner_button"
-          else
-            a.toggle.uk-button.add href="" click="addMember member"
-              i.uk-icon-plus
-              | &nbsp; add
+          if group.canDeleteMembers
+            if member.updateInProgress
+              button.toggle.uk-button.remove
+                partial "lines_spinner_button"
+            else
+              a.toggle.uk-button.remove href="" click="removeMember member"
+                span.normal member
+                span.hover remove
+      else
+        if group.canCreateMembers
+          li
+            div
+              partial "group_members/details"
+            if member.updateInProgress
+              button.toggle.uk-button.add
+                partial "lines_spinner_button"
+            else
+              a.toggle.uk-button.add href="" click="addMember member"
+                i.uk-icon-plus
+                | &nbsp; add

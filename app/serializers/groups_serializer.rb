@@ -1,7 +1,7 @@
 class GroupsSerializer < Serializer
 
   def serialize_record group
-    current_member = group.organization.members.try(:current_member)
+    @current_member = group.organization.members.try(:current_member)
 
     {
       id:                               group.id,
@@ -32,7 +32,10 @@ class GroupsSerializer < Serializer
       current_user_is_a_member:         current_user_group_ids.include?(group.id),
       current_user_is_a_limited_member: current_user_limited_group_ids.include?(group.id),
 
-      can_set_google_sync:          !! current_member && current_member.can?(:set_google_sync_for, group),
+      can_set_google_sync:              can?(:set_google_sync_for, group),
+      can_change_settings:              can?(:change_settings_for, group),
+      can_create_members:               can?(:create, group.members),
+      can_delete_members:               can?(:delete, group.members),
     }
   end
 

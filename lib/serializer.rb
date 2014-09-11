@@ -21,7 +21,7 @@ class Serializer
   def initialize threadable, payload, options={}
     @threadable, @payload, @options = threadable, payload, options
   end
-  attr_reader :threadable, :payload, :options
+  attr_reader :threadable, :payload, :options, :current_member
   delegate :current_user, to: :threadable
   delegate :plural_record_name, :singular_record_name, to: :class
 
@@ -43,6 +43,10 @@ class Serializer
 
   def serialize_record record
     raise "not implemented by subclass"
+  end
+
+  def can? ability, target
+    !! current_member && current_member.can?(ability, target)
   end
 
 end

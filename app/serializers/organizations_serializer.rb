@@ -35,10 +35,4 @@ class OrganizationsSerializer < Serializer
     }
   end
 
-  private
-
-  def can? ability, organization
-    !! @current_member && @current_member.can?(ability, organization)
-  end
-
 end

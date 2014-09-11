@@ -40,7 +40,11 @@ describe GroupsSerializer do
 
         current_user_is_a_member: false,
         current_user_is_a_limited_member: false,
+
         can_set_google_sync:      true,
+        can_change_settings:      true,
+        can_create_members:       true,
+        can_delete_members:       true,
       )
     end
   end
@@ -78,7 +82,11 @@ describe GroupsSerializer do
 
           current_user_is_a_member: false,
           current_user_is_a_limited_member: false,
+
           can_set_google_sync:      true,
+          can_change_settings:      true,
+          can_create_members:       true,
+          can_delete_members:       true,
         },{
           id:                  fundraising.id,
           slug:                "fundraising",
@@ -107,7 +115,11 @@ describe GroupsSerializer do
 
           current_user_is_a_member: true,
           current_user_is_a_limited_member: false,
+
           can_set_google_sync:      true,
+          can_change_settings:      true,
+          can_create_members:       true,
+          can_delete_members:       true,
         },
       ]
     end

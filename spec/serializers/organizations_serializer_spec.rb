@@ -55,8 +55,8 @@ describe OrganizationsSerializer do
         can_be_google_user:           true,
         can_change_settings:          true,
 
-        group_membership_permission:  'member',
-        group_settings_permission:    'member',
+        group_membership_permission:  :member,
+        group_settings_permission:    :member,
       )
     end
   end
@@ -99,8 +99,8 @@ describe OrganizationsSerializer do
           can_be_google_user:           true,
           can_change_settings:          true,
 
-          group_membership_permission:  'member',
-          group_settings_permission:    'member',
+          group_membership_permission:  :member,
+          group_settings_permission:    :member,
         },{
           id:                sfhealth.id,
           param:             "sfhealth",
@@ -128,8 +128,8 @@ describe OrganizationsSerializer do
           can_be_google_user:           false,
           can_change_settings:          false,
 
-          group_membership_permission:  'member',
-          group_settings_permission:    'member',
+          group_membership_permission:  :member,
+          group_settings_permission:    :member,
         }
       ]
     end
