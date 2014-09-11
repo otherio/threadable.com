@@ -32,10 +32,15 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def add user, options={}
+    is_self = threadable.current_user.present? && threadable.current_user.id == user.id
+    unless is_self || options[:auto_join] || group.organization.members.current_member.can?(:create, Threadable::Group::Member)
+      raise Threadable::AuthorizationError, 'You do not have permission to change membership for this group'
+    end
+
     group_membership_record = group.group_record.memberships.find_or_initialize_by(user_id: user.user_id)
     if group_membership_record.new_record?
       group_membership_record.save!
-      if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
+      if options[:send_notice] != false && !is_self
         threadable.emails.send_email_async(:added_to_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
       end
     end
@@ -45,10 +50,15 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def remove user, options={}
+    is_self = threadable.current_user.present? && threadable.current_user.id == user.id
+    unless is_self || group.organization.members.current_member.can?(:create, Threadable::Group::Member)
+      raise Threadable::AuthorizationError, 'You do not have permission to change membership for this group'
+    end
+
     group.group_record.memberships
     group.group_record.members.delete(user.user_record)
 
-    if options[:send_notice] != false && threadable.current_user.present? && threadable.current_user.id != user.id
+    if options[:send_notice] != false && !is_self
       threadable.emails.send_email_async(:removed_from_group_notice, group.organization.id, group.id, threadable.current_user.id, user.id)
     end
     GoogleSyncWorker.perform_async(threadable.env, group.organization.id, group.id) if group.google_sync?

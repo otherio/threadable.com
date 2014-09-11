@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Threadable::Group, :type => :request do
 
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
+  let(:group) { organization.groups.find_by_slug('electronics') }
 
   describe 'email addresses' do
-    let(:group) { organization.groups.find_by_slug('electronics') }
     let(:email_domain) { organization.email_domains.find_by_domain('raceteam.com') }
 
     context 'with an outgoing email domain' do
@@ -28,6 +28,52 @@ describe Threadable::Group, :type => :request do
         it 'returns the alias email address' do
           expect(group.formatted_email_address).to eq 'My Elsewhere <my@elsewhere.com>'
         end
+      end
+    end
+  end
+
+  describe '#update' do
+    before do
+      sign_in_as 'bethany@ucsd.example.com'
+    end
+
+    context 'when the current user has permission to change group settings' do
+      it 'updates the group' do
+        group.update(alias_email_address: 'foo@bar.com')
+        expect(group.alias_email_address).to eq 'foo@bar.com'
+      end
+    end
+
+    context 'when the current user does not have permission to change group settings' do
+      before do
+        organization.organization_record.update_attribute(:group_settings_permission, 1)
+      end
+
+      it 'raises an error' do
+        expect { group.update(alias_email_address: 'foo@bar.com') }.to raise_error Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
+      end
+    end
+  end
+
+  describe '#admin_update' do
+    context 'when the current user has permission to change group settings' do
+      before do
+        sign_in_as 'ian@other.io'
+      end
+
+      it 'updates the group' do
+        group.admin_update(alias_email_address: 'foo@bar.com')
+        expect(group.alias_email_address).to eq 'foo@bar.com'
+      end
+    end
+
+    context 'when the current user does not have permission to change group settings' do
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+      end
+
+      it 'raises an error' do
+        expect { group.admin_update(alias_email_address: 'foo@bar.com') }.to raise_error Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
       end
     end
   end

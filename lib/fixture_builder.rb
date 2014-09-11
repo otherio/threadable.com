@@ -17,7 +17,7 @@ class FixtureBuilder
   delegate :current_user, to: :threadable
 
   def as_an_admin
-    threadable.current_user_id = ::User.find_by_email_address!('jared@other.io').id
+    threadable.current_user_id = ::User.find_by_email_address!('ian@other.io').id
     yield
   ensure
     threadable.current_user_id = nil
@@ -27,7 +27,6 @@ class FixtureBuilder
     threadable.current_user_id = member(email_address).user_id
     yield
   ensure
-    @current_member = nil
     threadable.current_user_id = nil
   end
 
@@ -45,6 +44,7 @@ class FixtureBuilder
     member.user.update(:munge_reply_to => true)
     @members ||= {}
     @members[email_address] = member
+    member
   end
 
   def remove_member email_address

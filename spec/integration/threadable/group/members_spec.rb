@@ -22,15 +22,6 @@ describe Threadable::Group::Members, :type => :request do
   end
 
   describe '#add' do
-    it 'adds the given member to the group and does not send email' do
-      new_member = (organization.members.all - members.all).first
-      expect( members ).to_not include new_member
-      members.add new_member
-      expect( members ).to include new_member
-      drain_background_jobs!
-      expect(sent_emails).to be_empty
-    end
-
     context 'when signed in' do
       before do
         sign_in_as 'alice@ucsd.example.com'
@@ -40,9 +31,25 @@ describe Threadable::Group::Members, :type => :request do
         let(:member) { current_user }
 
         it 'does not send email' do
+          expect( members ).to_not include member
           members.add member
+          expect( members ).to include member
+
           drain_background_jobs!
           expect(sent_emails).to be_empty
+        end
+
+        context 'when the current user does not have permission to change group membership' do
+          before do
+            sign_in_as 'nadya@ucsd.example.com'
+            organization.organization_record.update_attribute(:group_membership_permission, 1)
+          end
+
+          it 'still works' do
+            expect( members ).to_not include member
+            members.add member
+            expect( members ).to include member
+          end
         end
       end
 
@@ -51,9 +58,23 @@ describe Threadable::Group::Members, :type => :request do
 
         it 'sends email' do
           expect(member.id).to_not eq current_user.id
+          expect( members ).to_not include member
           members.add member
+          expect( members ).to include member
+
           drain_background_jobs!
           expect(sent_emails.first.subject).to include 'I added you to Electronics on UCSD Electric Racing'
+        end
+
+        context 'when the current user does not have permission to change group membership' do
+          before do
+            sign_in_as 'nadya@ucsd.example.com'
+            organization.organization_record.update_attribute(:group_membership_permission, 1)
+          end
+
+          it 'raises an exception' do
+            expect { members.add member }.to raise_error Threadable::AuthorizationError, 'You do not have permission to change membership for this group'
+          end
         end
       end
     end
@@ -84,14 +105,6 @@ describe Threadable::Group::Members, :type => :request do
   end
 
   describe '#remove' do
-    it 'removes the given member from the group and does not send email' do
-      member_to_remove = members.all.first
-      members.remove(member_to_remove)
-      expect( members ).to_not include member_to_remove
-      drain_background_jobs!
-      expect(sent_emails).to be_empty
-    end
-
     context 'when signed in' do
       before do
         sign_in_as 'tom@ucsd.example.com' # a member.
@@ -101,9 +114,24 @@ describe Threadable::Group::Members, :type => :request do
         let(:member) { current_user }
 
         it 'does not send email' do
+          expect( members ).to include member
           members.remove member
+          expect( members ).to_not include member
           drain_background_jobs!
           expect(sent_emails).to be_empty
+        end
+
+        context 'when the current user does not have permission to change group membership' do
+          before do
+            sign_in_as 'tom@ucsd.example.com'
+            organization.organization_record.update_attribute(:group_membership_permission, 1)
+          end
+
+          it 'still works' do
+            expect( members ).to include member
+            members.remove member
+            expect( members ).to_not include member
+          end
         end
       end
 
@@ -112,9 +140,22 @@ describe Threadable::Group::Members, :type => :request do
 
         it 'sends email' do
           expect(member.id).to_not eq current_user.id
+          expect( members ).to include member
           members.remove member
+          expect( members ).to_not include member
           drain_background_jobs!
           expect(sent_emails.first.subject).to include 'I removed you from Electronics on UCSD Electric Racing'
+        end
+
+        context 'when the current user does not have permission to change group membership' do
+          before do
+            sign_in_as 'tom@ucsd.example.com'
+            organization.organization_record.update_attribute(:group_membership_permission, 1)
+          end
+
+          it 'raises an exception' do
+            expect { members.remove member }.to raise_error Threadable::AuthorizationError, 'You do not have permission to change membership for this group'
+          end
         end
       end
     end

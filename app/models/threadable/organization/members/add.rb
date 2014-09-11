@@ -99,7 +99,7 @@ class Threadable::Organization::Members::Add < MethodObject
 
   def auto_join_groups!
     @organization.groups.auto_joinable.each do |group|
-      group.members.add(@new_member, send_notice: false)
+      group.members.add(@new_member, send_notice: false, auto_join: true)
     end
   end
 
