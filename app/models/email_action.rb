@@ -103,9 +103,9 @@ class EmailAction
     when 'remove'
       record.doers.remove(member)
     when 'join'
-      record.members.add(member)
+      record.members.add(member, from_email_action: true)
     when 'leave'
-      record.members.remove(member)
+      record.members.remove(member, from_email_action: true)
     end
     @executed = true
     threadable.track_for_user(@user_id, 'Email action taken',

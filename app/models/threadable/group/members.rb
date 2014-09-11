@@ -32,7 +32,7 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def add user, options={}
-    is_self = threadable.current_user.present? && threadable.current_user.id == user.id
+    is_self = options[:from_email_action] || (threadable.current_user.present? && threadable.current_user.id == user.id)
     unless is_self || options[:auto_join] || group.organization.members.current_member.can?(:create, self)
       raise Threadable::AuthorizationError, 'You do not have permission to change membership for this group'
     end
@@ -50,7 +50,7 @@ class Threadable::Group::Members < Threadable::Collection
   end
 
   def remove user, options={}
-    is_self = threadable.current_user.present? && threadable.current_user.id == user.id
+    is_self = options[:from_email_action] || (threadable.current_user.present? && threadable.current_user.id == user.id)
     unless is_self || group.organization.members.current_member.can?(:delete, self)
       raise Threadable::AuthorizationError, 'You do not have permission to change membership for this group'
     end

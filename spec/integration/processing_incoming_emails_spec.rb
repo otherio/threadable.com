@@ -429,7 +429,7 @@ describe "processing incoming emails", :type => :request do
       let(:expected_sent_email_smtp_envelope_from) { 'main@raceteam.localhost' }
 
       before do
-        expected_organization.groups.primary.update(email_address_tag: 'main')
+        expected_organization.groups.primary.group_record.update_attribute(:email_address_tag, 'main')
       end
 
       it 'delivers the email' do
@@ -606,7 +606,7 @@ describe "processing incoming emails", :type => :request do
           let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics+fundraising@localhost>' }
 
           before do
-            expected_organization.groups.find_by_slug!('electronics').update(hold_messages: false)
+            expected_organization.groups.find_by_slug!('electronics').group_record.update_attribute(:hold_messages, false)
           end
 
           let(:expected_sent_email_cc)       { from }

@@ -139,6 +139,7 @@ describe Threadable::Conversation, :type => :request do
 
     context 'for a user who is a recipient' do
       before do
+        sign_in_as 'alice@ucsd.example.com'
         group.members.add(recipient)
       end
 
