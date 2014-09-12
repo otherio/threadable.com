@@ -132,6 +132,31 @@ describe Threadable::Conversation, :type => :request do
     end
   end
 
+  describe 'private?' do
+    let(:group) { organization.groups.find_by_slug('leaders') }
+
+    context 'when the conversation is in only private groups' do
+      let(:conversation) { group.conversations.find_by_slug('recruiting')}
+      it 'is private' do
+        expect(conversation.private?).to be_truthy
+      end
+    end
+
+    context 'when the conversation is in a public and a private group' do
+      let(:conversation) { group.conversations.find_by_slug('budget-worknight')}
+      it 'is public' do
+        expect(conversation.private?).to be_falsey
+      end
+    end
+
+    context 'when the conversation is only public groups' do
+      let(:conversation) { organization.conversations.find_by_slug('layup-body-carbon')}
+      it 'is public' do
+        expect(conversation.private?).to be_falsey
+      end
+    end
+  end
+
   describe '#sync_to_user' do
     let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
     let(:recipient) { organization.members.find_by_email_address('alice@ucsd.example.com') }

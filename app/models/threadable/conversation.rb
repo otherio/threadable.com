@@ -142,6 +142,11 @@ class Threadable::Conversation < Threadable::Model
   end
   alias_method :followed_by, :followed_by?
 
+  def private?
+    private_count = conversation_record.groups.where(private: true).count
+    private_count > 0 && private_count == conversation_record.groups.count
+  end
+
   def sync_to_user recipient
     raise Threadable::AuthorizationError, "You must be a recipient of a conversation to sync it" unless recipients.include? recipient
     messages.not_sent_to(recipient).each do |message|

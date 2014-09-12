@@ -111,6 +111,10 @@ FixtureBuilder.build do
     add_member_to_group 'press', 'tom@ucsd.example.com'
     add_member_to_group 'press', 'nadya@ucsd.example.com'
 
+    @leaders_group = create_group name: 'Leaders', color: '#e67e22', description: 'Secret Leadership Cabal', private: true, auto_join: false
+    add_member_to_group 'leaders', 'alice@ucsd.example.com'
+    add_member_to_group 'leaders', 'tom@ucsd.example.com'
+
     @primary_group = organization.groups.find_by_slug!('raceteam')
   end
 
@@ -152,6 +156,18 @@ FixtureBuilder.build do
       subject: 'Drive trains are expensive!',
       text:    %(We should get some nice renders of the motor and transmission for our fundraising video.),
       groups:  [@electronics_group, @fundraising_group],
+    )
+
+    @recruiting = create_conversation(
+      subject: 'Recruiting?',
+      text:    %(We need to find a CNC machinist and a painter),
+      groups:  [@leaders_group],
+    )
+
+    @budget_worknight = create_conversation(
+      subject: 'Budget worknight',
+      text:    %(Let's have a budget worknight on wednesday),
+      groups:  [@leaders_group, @fundraising_group],
     )
 
     conversation_of_cash = create_conversation(
