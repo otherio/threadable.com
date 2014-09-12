@@ -1,11 +1,14 @@
 require 'spec_helper'
 
 describe GroupMembersSerializer do
-
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:group)       { organization.groups.find_by_slug! 'fundraising' }
   let(:alice)       { group.members.find_by_user_id! organization.members.find_by_email_address!('alice@ucsd.example.com').user_id }
   let(:bob)         { group.members.find_by_user_id! organization.members.find_by_email_address!('bob@ucsd.example.com').user_id }
+
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
 
   context 'when given a single record' do
     let(:payload){ alice }
@@ -20,6 +23,8 @@ describe GroupMembersSerializer do
         slug:            "alice-neilson",
         avatar_url:      "/fixture_images/alice.jpg",
         delivery_method: "gets_each_message",
+
+        can_change_delivery: true,
       )
     end
   end
@@ -38,6 +43,8 @@ describe GroupMembersSerializer do
           slug:            "alice-neilson",
           avatar_url:      "/fixture_images/alice.jpg",
           delivery_method: "gets_each_message",
+
+          can_change_delivery: true,
         },{
           id:              bob.id,
           user_id:         bob.user_id,
@@ -47,6 +54,8 @@ describe GroupMembersSerializer do
           slug:            "bob-cauchois",
           avatar_url:      "/fixture_images/bob.jpg",
           delivery_method: "gets_in_summary",
+
+          can_change_delivery: true,
         }
       ]
     end

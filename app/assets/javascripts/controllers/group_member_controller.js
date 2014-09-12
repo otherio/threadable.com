@@ -14,6 +14,10 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
     return !!this.get('group.members').findBy('userId', this.get('userId'));
   }.property('group.members.@each'),
 
+  notEditable: function() {
+    return !this.get('canChangeDelivery');
+  }.property('canChangeDelivery'),
+
   autoSave: function() {
     if (this.get('saving')) return;
     this.save();

@@ -1,9 +1,10 @@
 //= require ./user
 
 Threadable.GroupMember = Threadable.User.extend({
-  organizationSlug: RL.attr('string'),
-  personalMessage:  RL.attr('string'),
-  deliveryMethod:   RL.attr('string'),
+  organizationSlug:  RL.attr('string'),
+  personalMessage:   RL.attr('string'),
+  deliveryMethod:    RL.attr('string'),
+  canChangeDelivery: RL.attr('boolean'),
 
   getsEachMessage: function() {
     return this.get('deliveryMethod') == 'gets_each_message';

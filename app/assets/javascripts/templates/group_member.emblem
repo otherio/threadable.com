@@ -14,7 +14,7 @@
           | Delivery Method:
         form.uk-form
           .control
-            | {{view Ember.Select content=deliveryMethods optionLabelPath="content.prettyName" optionValuePath="content.method" value=deliveryMethod}}
+            | {{view Ember.Select disabled=notEditable content=deliveryMethods optionLabelPath="content.prettyName" optionValuePath="content.method" value=deliveryMethod}}
         br
         p.subtitle
           if getsEachMessage

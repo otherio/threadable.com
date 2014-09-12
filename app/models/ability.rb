@@ -24,6 +24,7 @@ class Ability
 
         can :change_delivery_for,         Threadable::Group::Member
       when :member
+        can :change_delivery_for, Threadable::Group::Member, :user_id => user.id
         if user.organization.settings.group_membership_permission == :member
           can [:create, :delete],   Threadable::Group::Members
           can :change_delivery_for, Threadable::Group::Member

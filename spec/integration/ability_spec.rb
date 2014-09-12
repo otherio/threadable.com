@@ -6,6 +6,7 @@ describe Ability, :type => :request do
   let(:member) { organization.members.current_member}
   let(:group) { organization.groups.find_by_slug('electronics') }
   let(:group_members) { group.members }
+  let(:tom) { organization.members.find_by_email_address('tom@ucsd.example.com')}
 
   describe 'for owners' do
     before do
@@ -28,11 +29,14 @@ describe Ability, :type => :request do
         expect(member.can?(:change_settings_for, group)).to be_truthy
         expect(member.can?(:create,              group_members)).to be_truthy
         expect(member.can?(:delete,              group_members)).to be_truthy
+        expect(member.can?(:change_delivery_for, group.members.find_by_user_id(tom.id))).to be_truthy
       end
     end
   end
 
   describe 'for members' do
+    let(:bethany) { organization.members.find_by_email_address('bethany@ucsd.example.com')}
+
     before do
       sign_in_as 'bethany@ucsd.example.com'
     end
@@ -80,6 +84,7 @@ describe Ability, :type => :request do
         it 'can change the group membership' do
           expect(member.can?(:create, group_members)).to be_truthy
           expect(member.can?(:delete, group_members)).to be_truthy
+          expect(member.can?(:change_delivery_for, group.members.find_by_user_id(tom.id))).to be_truthy
         end
       end
 
@@ -91,6 +96,8 @@ describe Ability, :type => :request do
         it 'can change the group membership' do
           expect(member.can?(:create, group_members)).to be_falsy
           expect(member.can?(:delete, group_members)).to be_falsy
+          expect(member.can?(:change_delivery_for, group.members.find_by_user_id(tom.id))).to be_falsy
+          expect(member.can?(:change_delivery_for, group.members.find_by_user_id(bethany.id))).to be_truthy
         end
       end
     end
