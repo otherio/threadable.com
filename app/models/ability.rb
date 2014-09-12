@@ -21,9 +21,12 @@ class Ability
 
         can :create,                      Threadable::Group::Members
         can :delete,                      Threadable::Group::Members
+
+        can :change_delivery_for,         Threadable::Group::Member
       when :member
         if user.organization.settings.group_membership_permission == :member
-          can [:create, :delete], Threadable::Group::Members
+          can [:create, :delete],   Threadable::Group::Members
+          can :change_delivery_for, Threadable::Group::Member
         end
 
         if user.organization.settings.group_settings_permission == :member

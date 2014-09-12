@@ -38,8 +38,11 @@ class Threadable::Group::Member < Threadable::User
     @user ||= Threadable::User.new(threadable, user_record)
   end
 
-  def delivery_method= delivery_method
-    group_membership_record.update_attribute(:delivery_method, delivery_method)
+  def update attributes
+    group.organization.members.current_member.can?(:change_delivery_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change delivery settings for this group'
+
+    group_membership_record.update_attributes!(attributes)
+    self
   end
 
   def reload

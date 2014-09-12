@@ -13,9 +13,9 @@ class Api::GroupMembersController < ApiController
   end
 
   def update
-    member_params = params.require(:group_member).permit(:user_id, :delivery_method)
-    member = group.members.find_by_user_id!(member_params[:user_id])
-    member.delivery_method = member_params[:delivery_method]
+    member = group.members.find_by_user_id!(params[:group_member][:user_id])
+    member_params = params.require(:group_member).permit(:delivery_method)
+    member.update(member_params)
     render json: serialize(:group_members, member)
   end
 
