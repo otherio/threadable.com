@@ -27,12 +27,32 @@ describe Ability, :type => :request do
     end
 
     describe 'group' do
-      it 'can do everything' do
+      it 'can do almost everything' do
         expect(member.can?(:set_google_sync_for, group)).to be_truthy
         expect(member.can?(:change_settings_for, group)).to be_truthy
         expect(member.can?(:create,              group_members)).to be_truthy
         expect(member.can?(:delete,              group_members)).to be_truthy
         expect(member.can?(:change_delivery_for, group.members.find_by_user_id(tom.id))).to be_truthy
+      end
+
+      context 'when the organization is free' do
+        before do
+          organization.organization_record.update_attribute(:plan, :free)
+        end
+
+        it 'cannot make private groups' do
+          expect(member.can?(:make_private, organization.groups)).to be_falsy
+        end
+      end
+
+      context 'when the organization is paid' do
+        before do
+          organization.organization_record.update_attribute(:plan, :paid)
+        end
+
+        it 'cannot make private groups' do
+          expect(member.can?(:make_private, organization.groups)).to be_truthy
+        end
       end
     end
   end
@@ -80,6 +100,26 @@ describe Ability, :type => :request do
     describe 'group' do
       it 'cannot change the google user' do
         expect(member.can?(:set_google_sync_for, group)).to be_falsy
+      end
+
+      context 'when the organization is free' do
+        before do
+          organization.organization_record.update_attribute(:plan, :free)
+        end
+
+        it 'cannot make private groups' do
+          expect(member.can?(:make_private, organization.groups)).to be_falsy
+        end
+      end
+
+      context 'when the organization is paid' do
+        before do
+          organization.organization_record.update_attribute(:plan, :paid)
+        end
+
+        it 'cannot make private groups' do
+          expect(member.can?(:make_private, organization.groups)).to be_truthy
+        end
       end
 
       context 'when the org allows changing group settings' do

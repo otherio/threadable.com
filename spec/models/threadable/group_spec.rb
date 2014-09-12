@@ -46,6 +46,7 @@ describe Threadable::Group, :type => :model do
   it { is_expected.to delegate(:description        ).to(:group_record) }
   it { is_expected.to delegate(:google_sync?       ).to(:group_record) }
   it { is_expected.to delegate(:primary?           ).to(:group_record) }
+  it { is_expected.to delegate(:private?           ).to(:group_record) }
 
   describe 'model_name' do
     subject{ described_class }

@@ -11,6 +11,7 @@ Threadable.Group = RL.Model.extend({
   holdMessages:                RL.attr('boolean'),
   googleSync:                  RL.attr('boolean'),
   primary:                     RL.attr('boolean'),
+  private:                     RL.attr('boolean'),
   emailAddress:                RL.attr('string'),
   taskEmailAddress:            RL.attr('string'),
   formattedEmailAddress:       RL.attr('string'),

@@ -30,5 +30,32 @@ describe Threadable::Organization::Groups::Create, :type => :request do
         expect(group.members.count).to eq 0
       end
     end
+
+    context 'when signed in' do
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+      end
+
+      context 'when the organization is free' do
+        before do
+          organization.organization_record.update_attribute(:plan, :free)
+        end
+        it 'does not allow creating a private group' do
+          expect{organization.groups.create(name: 'foo', private: true)}.to raise_error Threadable::AuthorizationError, 'You do not have permission to make private groups for this organization'
+        end
+      end
+
+      context 'when the organization is paid' do
+        before do
+          organization.organization_record.update_attribute(:plan, :paid)
+        end
+
+        it 'allows creating a private group' do
+          group = organization.groups.create(name: 'foo', private: true)
+          expect(group.private?).to be_truthy
+        end
+      end
+    end
+
   end
 end

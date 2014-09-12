@@ -4,6 +4,13 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
   editingEmailAddressTag: false,
   editingSubjectTag: false,
 
+  organization: Ember.computed.alias('controllers.organization'),
+
+  accessTypes: [
+    {prettyName: 'Open to all organization members', private: false},
+    {prettyName: 'Private for group members only',   private: true }
+  ],
+
   calculatedEmailAddressTag: function() {
     var name = this.get('name') || '';
 
@@ -24,7 +31,7 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
     var name = this.get('name') || '';
     var whichTag = this.get('editingEmailAddressTag') ? 'emailAddressTag' : 'calculatedEmailAddressTag';
 
-    return  this.get(whichTag) + '@' + this.get('controllers.organization.emailAddressUsername') + '.threadable.com';
+    return  this.get(whichTag) + '@' + this.get('organization.emailAddressUsername') + '.threadable.com';
   }.property('name', 'emailAddressTag'),
 
   actions: {
@@ -49,7 +56,7 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
         group.set('emailAddressTag', this.get('calculatedEmailAddressTag'));
       }
 
-      group.set('organizationSlug', this.get('controllers.organization.model.slug'));
+      group.set('organizationSlug', this.get('organization.content.slug'));
 
       group.saveRecord().then(
         groupSaved.bind(this),
@@ -58,7 +65,7 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
 
       function groupSaved(response) {
         group.deserialize(response.group);
-        this.get('controllers.organization.groups').pushObject(group);
+        this.get('organization.groups').pushObject(group);
         if (group.get('autoJoin')){
           this.send('transitionToGroupCompose', group);
         }else{

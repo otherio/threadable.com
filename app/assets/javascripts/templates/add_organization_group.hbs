@@ -1,8 +1,12 @@
 <div class="group-settings scrollable">
   <div>
     <form class="uk-form" {{action 'createGroup' on='submit'}}>
+      {{#if private}}
+        <h3 class="uk-text-bold"><i class="uk-icon-lock"></i> Create new private group</h3>
+      {{else}}
+        <h3 class="uk-text-bold">Create new open group</h3>
+      {{/if}}
 
-      <h3 class="uk-text-bold">Create new group</h3>
       {{#if error}}
         <h3>Error: {{error}}</h3>
       {{/if}}
@@ -19,16 +23,35 @@
 
         <div class="uk-form-row">
           <label class="uk-text-bold uk-form-label input-label">
+            Access:
+          </label>
+          <div class="uk-form-controls input-field">
+            {{view Ember.Select disabled=organization.isFree content=accessTypes optionLabelPath="content.prettyName" optionValuePath="content.private" value=private}}
+            {{#if organization.isFree}}
+              <span class="upgrade">
+                <i class="uk-icon-asterisk"></i> Pro required
+              </span>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="uk-form-row">
+          <label class="uk-text-bold uk-form-label input-label">
             Email address:
           </label>
           {{#if editingEmailAddressTag}}
             <div class="uk-form-controls input-field">
-              {{input value=emailAddressTag name="emailAddressTag"}}@{{controllers.organization.emailAddressUsername}}.threadable.com
+              {{input value=emailAddressTag name="emailAddressTag"}}@{{organization.emailAddressUsername}}.threadable.com
             </div>
           {{else}}
             <div class="uk-form-controls input-field">
+<<<<<<< HEAD
               {{calculatedEmailAddressTag}}@{{controllers.organization.emailAddressUsername}}.threadable.com
               <a href {{action 'editEmailAddressTag'}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
+=======
+              {{calculatedEmailAddressTag}}@{{organization.emailAddressUsername}}.threadable.com
+              <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
+>>>>>>> Added private groups and a way to create them. They don't work yet, though.
             </div>
           {{/if}}
         </div>
@@ -84,7 +107,7 @@
     <div class="example-email well">
       <h4 class="uk-text-bold">Your group's email address:</h4>
       <div>
-        <span class="email">"{{controllers.organization.name}}: {{name}}" &lt;{{calculatedEmailAddress}}&gt;</span>
+        <span class="email">"{{organization.name}}: {{name}}" &lt;{{calculatedEmailAddress}}&gt;</span>
       </div>
 
       <h4 class="uk-text-bold">Example email subject:</h4>

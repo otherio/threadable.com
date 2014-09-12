@@ -26,6 +26,7 @@ Threadable.Organization = RL.Model.extend({
   canBeGoogleUser:           RL.attr('boolean'),
   canChangeSettings:         RL.attr('boolean'),
   canInviteMembers:          RL.attr('boolean'),
+  canMakePrivateGroups:      RL.attr('boolean'),
 
   organizationMembershipPermission: RL.attr('string'),
   groupMembershipPermission:        RL.attr('string'),
@@ -34,6 +35,10 @@ Threadable.Organization = RL.Model.extend({
   isPaid: function() {
     return this.get('plan') == 'paid';
   }.property('plan'),
+
+  isFree: function() {
+    return ! this.get('isPaid');
+  }.property('isPaid'),
 
   loadMembers: RL.loadAssociationMethod('members', function(organization){
     return Threadable.OrganizationMember.fetch({

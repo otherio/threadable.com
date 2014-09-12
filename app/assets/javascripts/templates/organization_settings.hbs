@@ -73,8 +73,8 @@
             Can change group members:
           </label>
           <div class="uk-form-controls input-field">
-            {{view Ember.Select disabled=isFree content=membershipTypes optionLabelPath="content.prettyName" optionValuePath="content.role" value=editableOrganization.groupMembershipPermission}}
-            {{#if isFree}}
+            {{view Ember.Select disabled=organization.isFree content=membershipTypes optionLabelPath="content.prettyName" optionValuePath="content.role" value=editableOrganization.groupMembershipPermission}}
+            {{#if organization.isFree}}
               <span class="upgrade">
                 <i class="uk-icon-asterisk"></i> Pro required
               </span>
@@ -87,8 +87,8 @@
             Can change group settings:
           </label>
           <div class="uk-form-controls input-field">
-            {{view Ember.Select disabled=isFree content=membershipTypes optionLabelPath="content.prettyName" optionValuePath="content.role" value=editableOrganization.groupSettingsPermission}}
-            {{#if isFree}}
+            {{view Ember.Select disabled=organization.isFree content=membershipTypes optionLabelPath="content.prettyName" optionValuePath="content.role" value=editableOrganization.groupSettingsPermission}}
+            {{#if organization.isFree}}
               <span class="upgrade">
                 <i class="uk-icon-asterisk"></i> Pro required
               </span>

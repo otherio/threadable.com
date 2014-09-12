@@ -17,6 +17,7 @@ class GroupsSerializer < Serializer
       webhook_url:                      group.webhook_url,
       google_sync:                      group.google_sync?,
       primary:                          group.primary?,
+      private:                          group.private?,
 
       email_address:                    group.email_address,
       task_email_address:               group.task_email_address,

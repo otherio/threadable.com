@@ -1,7 +1,12 @@
 <li class="group" data-group-id="{{unbound group.id}}">
   {{#link-to 'conversations' group.slug classNames="group-row"}}
     <span class="badge" {{bind-attr style="group.badgeStyle"}}>{{group.conversationsCount}}</span>
-    <span class="name">{{group.name}}</span><br/>
+    <span class="name">
+      {{group.name}}
+      {{#if group.private}}
+        <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+      {{/if}}
+    </span><br/>
     {{#if group.description}}
       <span class="description">{{group.description}}</span>
     {{/if}}

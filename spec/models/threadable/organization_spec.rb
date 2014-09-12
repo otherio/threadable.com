@@ -31,6 +31,10 @@ describe Threadable::Organization, :type => :model do
   it { is_expected.to delegate(:errors                ).to(:organization_record) }
   it { is_expected.to delegate(:new_record?           ).to(:organization_record) }
   it { is_expected.to delegate(:persisted?            ).to(:organization_record) }
+  it { is_expected.to delegate(:hold_all_messages?    ).to(:organization_record) }
+  it { is_expected.to delegate(:trusted?              ).to(:organization_record) }
+  it { is_expected.to delegate(:plan                  ).to(:organization_record) }
+  it { is_expected.to delegate(:public_signup?        ).to(:organization_record) }
 
   it { is_expected.to delegate(:billforward_account_id      ).to(:organization_record) }
   it { is_expected.to delegate(:billforward_subscription_id ).to(:organization_record) }

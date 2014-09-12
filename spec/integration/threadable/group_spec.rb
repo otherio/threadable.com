@@ -53,6 +53,33 @@ describe Threadable::Group, :type => :request do
         expect { group.update(alias_email_address: 'foo@bar.com') }.to raise_error Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
       end
     end
+
+    context 'when the org is free' do
+      before do
+        organization.organization_record.update_attribute(:plan, :free)
+      end
+
+      it 'does not allow you to make the group private' do
+        expect {group.update(private: true)}.to raise_error Threadable::AuthorizationError, 'You do not have permission to make private groups for this organization'
+      end
+
+      it 'does allow you to make the group un-private' do
+        group.group_record.update_attribute(:private, true)
+        group.update(private: false)
+        expect(group.private?).to be_falsy
+      end
+    end
+
+    context 'when the org is paid' do
+      before do
+        organization.organization_record.update_attribute(:plan, :paid)
+      end
+
+      it 'allows you to make the group private' do
+        group.update(private: true)
+        expect(group.private?).to be_truthy
+      end
+    end
   end
 
   describe '#admin_update' do

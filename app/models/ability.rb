@@ -27,6 +27,10 @@ class Ability
         can :delete,                      Threadable::Group::Members
 
         can :change_delivery_for,         Threadable::Group::Member
+
+        if user.organization.paid?
+          can :make_private, Threadable::Groups
+        end
       when :member
         can :change_delivery_for, Threadable::Group::Member, :user_id => user.id
         can :change_delivery_for, Threadable::Organization::Member, :user_id => user.id
@@ -45,6 +49,9 @@ class Ability
           can :change_settings_for, Threadable::Group
         end
 
+        if user.organization.paid?
+          can :make_private, Threadable::Groups
+        end
       end
     when Threadable::Group::Member
 

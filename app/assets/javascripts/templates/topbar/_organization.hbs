@@ -6,6 +6,9 @@
   <span class="current-org-and-group">
     {{#if group}}
       {{group.name}}
+      {{#if group.private}}
+        <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+      {{/if}}
       <span class="group-email-address">
         {{group.emailAddress}}
       </span>
