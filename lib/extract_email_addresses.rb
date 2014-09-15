@@ -6,7 +6,7 @@ class ExtractEmailAddresses < MethodObject
 
   def filter_invalid_characters string
     string = string.to_ascii if string =~ /[^\u0000-\u007F]/
-    string.gsub(/:/, '')
+    string.gsub(/[:,]/, '')
   end
 
 end
