@@ -961,6 +961,14 @@ describe "processing incoming emails", :type => :request do
               validate! :delivered
             end
           end
+
+          context 'contains an unquoted comma' do
+            let(:from)        { 'José A. Gamero, Jr. <jose.gamero@gmail.com>' }
+
+            it "delivers the message anyway, dammit" do
+              validate! :delivered
+            end
+          end
         end
       end
 
