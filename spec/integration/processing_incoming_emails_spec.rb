@@ -933,6 +933,24 @@ describe "processing incoming emails", :type => :request do
               validate! :delivered
             end
           end
+
+          context 'contains unquoted unicode and an errant comma' do
+            let(:to)        { 'José A. Gamero, Jr. <jose.gamero@gmail.com>, "UCSD Electric Racing: Electronics" <raceteam--electronics@localhost>' }
+            let(:expected_sent_email_to)                 { ['jose.gamero@gmail.com', "electronics@raceteam.localhost"] }
+
+            it "delivers the message anyway, dammit" do
+              validate! :delivered
+            end
+          end
+
+          context 'contains unquoted unicode, an errant comma, and some legit commas' do
+            let(:to) { 'José A. Gamero, Jr. <jose.gamero@gmail.com>, someguy@someplace.com, hey@there.com, "UCSD Electric Racing: Electronics" <raceteam--electronics@localhost>' }
+            let(:expected_sent_email_to) { ['jose.gamero@gmail.com', 'someguy@someplace.com', 'hey@there.com', "electronics@raceteam.localhost"] }
+
+            it "delivers the message anyway, dammit" do
+              validate! :delivered
+            end
+          end
         end
 
         context 'and the header contains a malformed but mostly correct From address' do

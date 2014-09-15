@@ -117,7 +117,7 @@ class MembershipMailer < Threadable::Mailer
     address = begin
       Mail::Address.new(email_address)
     rescue Mail::Field::ParseError
-      Mail::Address.new(email_address.to_ascii.gsub(/:/, ''))
+      Mail::Address.new(email_address.to_ascii.gsub(/[:,]/, ''))
     end
 
     return { from: email_address } if VerifyDmarc.call(address)
