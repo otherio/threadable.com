@@ -107,7 +107,7 @@ class MailPreview < MailView
     organization_record   = Organization.last!
     recipient_record = organization_record.members.active.last!
 
-    threadable.current_user_id = organization_record.members.first!
+    threadable.current_user_id = organization_record.members.first!.id
     organization   = threadable.current_user.organizations.find_by_id!(organization_record.id)
     recipient = organization.members.find_by_user_id!(recipient_record.id)
     [organization, recipient]

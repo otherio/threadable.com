@@ -89,11 +89,11 @@ class Threadable::Organization::Groups < Threadable::Groups
   def scope
     if threadable.current_user && organization.members.current_member
       if organization.members.current_member.can?(:read_private, self)
-        organization.organization_record.groups.all
+        organization.organization_record.groups
       else
         organization.organization_record.groups.
           joins('LEFT JOIN group_memberships on groups.id = group_memberships.group_id').
-          where("groups.private = 'f' OR group_memberships.user_id = #{threadable.current_user.id}").
+          where("groups.private = 'f' OR group_memberships.user_id = #{threadable.current_user_id}").
           group('groups.id')
       end
     else
