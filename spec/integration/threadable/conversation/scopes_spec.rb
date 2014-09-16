@@ -55,6 +55,8 @@ describe Threadable::Conversation::Scopes, :type => :request do
           "how-are-we-going-to-build-the-body",
           "drive-trains-are-expensive",
           "inventory-led-supplies",
+          "budget-worknight",
+          "recruiting",   # access to this is controlled elsewhere.
         ]
 
         expect( slugs_for @done_tasks ).to match_array [

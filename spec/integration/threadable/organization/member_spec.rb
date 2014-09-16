@@ -94,6 +94,7 @@ describe Threadable::Organization::Member, :type => :request do
           "drive-trains-are-expensive",
           "how-are-we-paying-for-the-motor-controller",
           "inventory-led-supplies",
+          "budget-worknight",
         ]
       end
     end
@@ -111,6 +112,7 @@ describe Threadable::Organization::Member, :type => :request do
         expect(conversations.map(&:slug)).to match_array [
           "how-are-we-paying-for-the-motor-controller",
           "inventory-led-supplies",
+          "budget-worknight",
         ]
       end
     end
@@ -151,6 +153,7 @@ describe Threadable::Organization::Member, :type => :request do
           "drive-trains-are-expensive",
           "how-are-we-paying-for-the-motor-controller",
           "inventory-led-supplies",
+          "budget-worknight",
         ]
       end
     end

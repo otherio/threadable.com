@@ -42,7 +42,11 @@ class Threadable::Organization::Tasks < Threadable::Tasks
   private
 
   def scope
-    organization.organization_record.tasks.accessible_to_user(threadable.current_user_id)
+    if threadable.current_user
+      organization.organization_record.tasks.accessible_to_user(threadable.current_user_id)
+    else
+      organization.organization_record.tasks.in_open_groups
+    end
   end
 
 end

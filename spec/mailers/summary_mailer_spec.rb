@@ -38,7 +38,7 @@ describe SummaryMailer, :type => :mailer do
       expect(mail.subject).to include "[RaceTeam]"
       expect(mail.subject).to include "Summary for"
       expect(mail.subject).to include today.strftime('%a, %b %-d')
-      expect(mail.subject).to include '19 new messages in 11 conversations'
+      expect(mail.subject).to include '20 new messages in 12 conversations'
       expect(mail.subject.scan('RaceTeam').size).to eq(1)
 
       expect(mail.to).to                    eq([expected_to])
@@ -61,8 +61,8 @@ describe SummaryMailer, :type => :mailer do
       expect(text_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
       expect(html_part).to include "UCSD Electric Racing summary for #{today.strftime('%a, %b %-d')}."
 
-      expect(text_part).to include '19 new messages in 11 conversations'
-      expect(html_part).to include '19 new messages in 11 conversations'
+      expect(text_part).to include '20 new messages in 12 conversations'
+      expect(html_part).to include '20 new messages in 12 conversations'
 
       expect(html_part).to include "mailto:#{organization.email_address}"
       expect(html_part).to include "mailto:#{organization.task_email_address}"

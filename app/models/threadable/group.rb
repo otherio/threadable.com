@@ -150,7 +150,7 @@ class Threadable::Group < Threadable::Model
 
   def update attributes
     organization.members.current_member.can?(:change_settings_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
-    attributes.symbolize_keys!
+    attributes.symbolize_keys! unless attributes.is_a? ActionController::Parameters
 
     if attributes[:private].present? && attributes[:private]  #present and any true value
       organization.members.current_member.can?(:make_private, self.organization.groups) or raise Threadable::AuthorizationError, 'You do not have permission to make private groups for this organization'

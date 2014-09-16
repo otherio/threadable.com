@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Threadable::Class, :type => :request do
 
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
+
   it "getting records" do
     expect( threadable.organizations   .count ).to eq ::Organization  .count
     expect( threadable.email_addresses .count ).to eq ::EmailAddress  .count
@@ -36,7 +40,7 @@ describe Threadable::Class, :type => :request do
       Threadable::Events::TaskDone,
       Threadable::Events::ConversationRemovedGroup,
     ]
-    expect( events[Threadable::Events::ConversationCreated].count ).to eq 18
+    expect( events[Threadable::Events::ConversationCreated].count ).to eq 20
     expect( events[Threadable::Events::ConversationTrashed].count ).to eq 1
     expect( events[Threadable::Events::TaskCreated        ].count ).to eq 34
     expect( events[Threadable::Events::TaskAddedDoer      ].count ).to eq 11
@@ -57,7 +61,7 @@ describe Threadable::Class, :type => :request do
       protocol: 'http',
       host: '127.0.0.1',
       port: anything,
-      current_user_id: nil,
+      current_user_id: anything,
       worker: false,
     })
   end

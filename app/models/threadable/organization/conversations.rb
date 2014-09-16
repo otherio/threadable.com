@@ -48,7 +48,11 @@ class Threadable::Organization::Conversations < Threadable::Conversations
   private
 
   def scope
-    organization.organization_record.conversations.accessible_to_user(threadable.current_user_id)
+    if threadable.current_user
+      organization.organization_record.conversations.accessible_to_user(threadable.current_user_id)
+    else
+      organization.organization_record.conversations.in_open_groups
+    end
   end
 
   def muted_scope

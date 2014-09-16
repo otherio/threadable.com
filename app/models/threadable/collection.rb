@@ -8,7 +8,8 @@ class Threadable::Collection
   attr_reader :threadable
 
   def count
-    scope.count
+    record_counts = scope.count
+    record_counts.is_a?(Hash) ? record_counts.count : record_counts
   end
 
   def inspect

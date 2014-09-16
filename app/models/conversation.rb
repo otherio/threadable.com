@@ -51,6 +51,10 @@ class Conversation < ActiveRecord::Base
     group('conversations.id')
   }
 
+  scope :in_open_groups, ->{
+    joins(:groups).where(groups: {private: false}).group('conversations.id')
+  }
+
   scope :for_user, ->(user_id){
     user_id = Conversation.sanitize(user_id)
     joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
