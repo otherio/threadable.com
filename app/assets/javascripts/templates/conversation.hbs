@@ -10,6 +10,11 @@
           {{/if}}
         </span>
       {{/each}}
+      {{#if hasAdditionalPrivateGroups}}
+        <span class="badge badge-private">
+          +{{additionalPrivateGroupsCount}} private...
+        </span>
+      {{/if}}
       {{group-selector groups=unselectedGroups target=controller}}
     </div>
 

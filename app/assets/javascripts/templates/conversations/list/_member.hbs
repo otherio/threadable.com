@@ -26,6 +26,12 @@
         {{#each group in conversation.groups}}
           <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>{{group.name}}</span>
         {{/each}}
+        {{#if conversation.hasAdditionalPrivateGroups}}
+          <span class="badge badge-small badge-private">
+            +{{conversation.additionalPrivateGroupsCount}}
+            <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+          </span>
+        {{/if}}
         <i class="uk-icon-chevron-right arrow"></i>
       </span>
       {{#if conversation.messageSummary}}

@@ -59,6 +59,14 @@ Threadable.Conversation = RL.Model.extend({
     }).sortBy('name');
   }.property('groupIds','organization.groups'),
 
+  additionalPrivateGroupsCount: function() {
+    return this.get('groupIds').length - this.get('groups').length;
+  }.property('groups'),
+
+  hasAdditionalPrivateGroups: function() {
+    return this.get('additionalPrivateGroupsCount') > 0;
+  }.property('additionalPrivateGroupsCount'),
+
   myTask: function() {
     if (!this.get('isTask')) return false;
     var userId = Threadable.currentUser.get('userId');
