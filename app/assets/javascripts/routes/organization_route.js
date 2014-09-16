@@ -3,7 +3,11 @@ Threadable.OrganizationRoute = Ember.Route.extend({
   model: function(params){
     return Threadable.Organization.fetch(params.organization).then(function(organization) {
       var currentUser = Threadable.currentUser;
-      organization.loadMembers();
+      organization.loadMembers().then(function() {
+        if (typeof rails_env.docent_token !== "undefined"){
+          Threadable.setupDocent(currentUser, organization);
+        }
+      });
       Threadable.setupUserVoice(currentUser, organization);
       currentUser.set('currentOrganizationId', organization.get('id'));
       return organization;

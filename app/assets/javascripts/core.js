@@ -1,6 +1,8 @@
 //= require modernizr
+//= require rails_env
 //= require ga
 //= require mixpanel
+//= require docent
 //= require user_voice
 //= require jquery
 //= require uikit
