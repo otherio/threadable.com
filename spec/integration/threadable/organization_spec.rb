@@ -181,6 +181,30 @@ describe Threadable::Organization, :type => :request do
         end
       end
 
+      describe 'my.not_muted_conversations' do
+        it "returns the non-muted conversations in bethany's groups" do
+          conversations = organization.my.not_muted_conversations(0)
+          conversations.each do |conversation|
+            expect(conversation).to be_a Threadable::Conversation
+            expect(conversation).to_not be_muted_by current_user
+          end
+          expect( slugs_for conversations ).to match_array [
+            "who-wants-to-pick-up-breakfast",
+            "who-wants-to-pick-up-dinner",
+            "who-wants-to-pick-up-lunch",
+            "get-some-4-gauge-wire",
+            "get-a-new-soldering-iron",
+            "make-wooden-form-for-carbon-layup",
+            "trim-body-panels",
+            "install-mirrors",
+            "parts-for-the-motor-controller",
+            "how-are-we-going-to-build-the-body",
+            "drive-trains-are-expensive",
+            "inventory-led-supplies",
+          ]
+        end
+      end
+
     end
 
     def slugs_for collection

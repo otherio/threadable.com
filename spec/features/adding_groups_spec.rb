@@ -44,6 +44,8 @@ feature "Adding groups spec" do
       expect(page).to_not have_text 'Super Troops'
     end
 
+    organization.groups.unload
+
     expect(organization.groups.all.map(&:name)).to_not include "Super Troops"
   end
 end

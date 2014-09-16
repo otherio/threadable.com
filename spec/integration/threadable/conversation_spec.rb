@@ -133,6 +133,10 @@ describe Threadable::Conversation, :type => :request do
   end
 
   describe 'private?' do
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+    end
+
     let(:group) { organization.groups.find_by_slug('leaders') }
 
     context 'when the conversation is in only private groups' do

@@ -20,4 +20,8 @@ class Threadable::Collection
     all.as_json(options)
   end
 
+  def unload
+    scope.unload
+  end
+
 end

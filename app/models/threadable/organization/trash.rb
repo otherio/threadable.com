@@ -11,11 +11,11 @@ class Threadable::Organization::Trash
   private
 
   def conversations_scope
-    organization_record.conversations.trashed.grouped
+    organization_record.conversations.accessible_to_user(threadable.current_user_id).trashed
   end
 
   def tasks_scope
-    organization_record.tasks.trashed.grouped
+    organization_record.tasks.accessible_to_user(threadable.current_user_id).trashed
   end
 
 end
