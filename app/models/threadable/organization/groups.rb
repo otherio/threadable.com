@@ -92,8 +92,8 @@ class Threadable::Organization::Groups < Threadable::Groups
         organization.organization_record.groups
       else
         organization.organization_record.groups.
-          joins('LEFT JOIN group_memberships on groups.id = group_memberships.group_id').
-          where("groups.private = 'f' OR group_memberships.user_id = #{threadable.current_user_id}").
+          joins('LEFT JOIN group_memberships scope_group_memberships on groups.id = scope_group_memberships.group_id').
+          where("groups.private = 'f' OR scope_group_memberships.user_id = #{threadable.current_user_id}").
           group('groups.id')
       end
     else

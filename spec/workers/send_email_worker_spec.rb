@@ -27,6 +27,7 @@ describe SendEmailWorker do
   let(:members       ){ double :members  }
   let(:users         ){ double :users    }
   let(:conversations ){ double :conversations, length: 5 }
+  let(:conversation  ){ double :conversation }
   let(:groups        ){ double :groups    }
 
   let(:organization ){ double :organization }
@@ -50,6 +51,9 @@ describe SendEmailWorker do
 
       expect(message).to receive(:sent_email).with(recipient).and_return(sent_email)
       expect(sent_email).to receive(:relayed!)
+
+      expect(message).to receive(:conversation).and_return(conversation)
+      expect(conversation).to receive(:private?).and_return false
 
       expect(recipient).to receive(:subscribed?).and_return(true)
 

@@ -59,7 +59,9 @@ describe Threadable::Conversations, :type => :request do
         "parts-for-the-motor-controller",
         "who-wants-to-pick-up-breakfast",
         "who-wants-to-pick-up-dinner",
-        "who-wants-to-pick-up-lunch"
+        "who-wants-to-pick-up-lunch",
+        "budget-worknight",
+        "recruiting",
       ]
     end
   end
@@ -86,6 +88,7 @@ describe Threadable::Conversations, :type => :request do
         "drive-trains-are-expensive",
         "get-some-4-gauge-wire",
         "inventory-led-supplies",
+        "budget-worknight",
       ]
     end
   end

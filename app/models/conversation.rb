@@ -25,42 +25,43 @@ class Conversation < ActiveRecord::Base
   scope :trashed,   ->{ where('trashed_at IS NOT NULL') }
 
   scope :muted_by, ->(user_id){
-    joins('LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id').where('m.user_id = ?', user_id)
+    joins('LEFT JOIN conversations_muters AS m ON m.conversation_id = conversations.id').where('m.user_id = ?', user_id)
   }
 
   scope :not_muted_by, ->(user_id){
     user_id = Conversation.sanitize(user_id)
-    joins("LEFT JOIN conversations_muters m ON m.conversation_id = conversations.id AND m.user_id = #{user_id}").where('m.user_id IS NULL')
+    joins("LEFT JOIN conversations_muters AS m ON m.conversation_id = conversations.id AND m.user_id = #{user_id}").where('m.user_id IS NULL')
   }
 
   scope :followed_by, ->(user_id){
-    joins('LEFT JOIN conversations_followers f ON f.conversation_id = conversations.id').where('f.user_id = ?', user_id)
+    joins('LEFT JOIN conversations_followers AS f ON f.conversation_id = conversations.id').where('f.user_id = ?', user_id)
   }
 
   scope :not_followed_by, ->(user_id){
     user_id = Conversation.sanitize(user_id)
-    joins("LEFT JOIN conversations_followers f ON f.conversation_id = conversations.id AND f.user_id = #{user_id}").where('f.user_id IS NULL')
+    joins("LEFT JOIN conversations_followers AS f ON f.conversation_id = conversations.id AND f.user_id = #{user_id}").where('f.user_id IS NULL')
   }
 
   scope :accessible_to_user, ->(user_id){
     user_id = Conversation.sanitize(user_id)
-    joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
-    joins('LEFT JOIN groups ON groups.id = conversation_groups.group_id and groups.private = \'t\'').
-    joins('LEFT JOIN group_memberships ON conversation_groups.group_id = group_memberships.group_id').
-    where('((group_memberships.user_id = ? and conversation_groups.active = \'t\') or groups.id is null)', user_id).
+    joins('LEFT JOIN conversation_groups AS scope_conversation_groups ON conversations.id = scope_conversation_groups.conversation_id and scope_conversation_groups.active = \'t\'').
+    joins('LEFT JOIN groups AS scope_groups ON scope_groups.id = scope_conversation_groups.group_id and scope_groups.private = \'t\'').
+    joins('LEFT JOIN group_memberships ON scope_conversation_groups.group_id = group_memberships.group_id').
+    where('((group_memberships.user_id = ? and scope_conversation_groups.active = \'t\') or scope_groups.id is null)', user_id).
     group('conversations.id')
   }
 
   scope :in_open_groups, ->{
-    joins(:groups).where(groups: {private: false}).group('conversations.id')
+    joins('INNER JOIN conversation_groups AS scope_conversation_groups ON conversations.id = scope_conversation_groups.conversation_id and scope_conversation_groups.active = \'t\'').
+    joins('INNER JOIN groups AS scope_groups ON scope_groups.id = scope_conversation_groups.group_id and scope_groups.private = \'f\'')
   }
 
   scope :for_user, ->(user_id){
     user_id = Conversation.sanitize(user_id)
-    joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
-    joins('LEFT JOIN group_memberships ON conversation_groups.group_id = group_memberships.group_id').
+    joins('LEFT JOIN conversation_groups AS scope_conversation_groups ON conversations.id = scope_conversation_groups.conversation_id and scope_conversation_groups.active = \'t\'').
+    joins('LEFT JOIN group_memberships ON scope_conversation_groups.group_id = group_memberships.group_id').
     joins("LEFT JOIN conversations_followers ON conversations_followers.conversation_id = conversations.id AND conversations_followers.user_id = #{user_id}").
-    where('((group_memberships.user_id = ? and conversation_groups.active = \'t\') or conversation_groups.group_id is null) or conversations_followers.user_id is not null', user_id)
+    where('((group_memberships.user_id = ? and scope_conversation_groups.active = \'t\') or scope_conversation_groups.group_id is null) or conversations_followers.user_id is not null', user_id)
   }
 
   scope :grouped, -> {
