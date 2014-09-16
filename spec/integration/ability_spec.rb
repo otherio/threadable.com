@@ -33,6 +33,7 @@ describe Ability, :type => :request do
         expect(member.can?(:create,              group_members)).to be_truthy
         expect(member.can?(:delete,              group_members)).to be_truthy
         expect(member.can?(:change_delivery_for, group.members.find_by_user_id(tom.id))).to be_truthy
+        expect(member.can?(:read_private,        organization.groups)).to be_truthy
       end
 
       context 'when the organization is free' do

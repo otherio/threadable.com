@@ -55,6 +55,7 @@ describe Threadable::Organization::Conversations, :type => :request do
         "how-are-we-going-to-build-the-body",
         "drive-trains-are-expensive",
         "inventory-led-supplies",
+        "budget-worknight",
       ]
     end
 
@@ -76,6 +77,28 @@ describe Threadable::Organization::Conversations, :type => :request do
     describe '#not_muted_with_participants' do
       it 'returns an empty array' do
         expect(conversations.not_muted_with_participants.map(&:slug)).to match_array not_muted_conversation_slugs
+      end
+    end
+
+    describe '#find_by_slug' do
+      it 'does not find the private conversation' do
+        expect(organization.conversations.find_by_slug('recruiting')).to be_nil
+      end
+
+      it 'finds the partly-private conversation' do
+        expect(organization.conversations.find_by_slug('budget-worknight')).to be_a Threadable::Conversation
+      end
+    end
+  end
+
+  when_signed_in_as 'alice@ucsd.example.com' do
+    describe '#find_by_slug' do
+      it 'finds the private conversation' do
+        expect(organization.conversations.find_by_slug('recruiting')).to be_a Threadable::Conversation
+      end
+
+      it 'finds the partly-private conversation' do
+        expect(organization.conversations.find_by_slug('budget-worknight')).to be_a Threadable::Conversation
       end
     end
   end

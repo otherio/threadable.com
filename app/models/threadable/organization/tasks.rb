@@ -42,7 +42,7 @@ class Threadable::Organization::Tasks < Threadable::Tasks
   private
 
   def scope
-    organization.organization_record.tasks.unload
+    organization.organization_record.tasks.accessible_to_user(threadable.current_user_id)
   end
 
 end

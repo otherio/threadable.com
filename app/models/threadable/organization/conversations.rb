@@ -45,15 +45,10 @@ class Threadable::Organization::Conversations < Threadable::Conversations
     %(#<#{self.class} organization_id: #{organization.id.inspect}>)
   end
 
-  # TODO: remove this after migrations run
-  def ungrouped
-    conversations_for ungrouped_scope
-  end
-
   private
 
   def scope
-    organization.organization_record.conversations.unload
+    organization.organization_record.conversations.accessible_to_user(threadable.current_user_id)
   end
 
   def muted_scope
@@ -69,13 +64,5 @@ class Threadable::Organization::Conversations < Threadable::Conversations
     conversation.organization = organization
     conversation
   end
-
-  # TODO: remove this after migrations run
-  def ungrouped_scope
-    scope.
-      joins("LEFT JOIN conversation_groups ON conversation_groups.conversation_id = conversations.id and conversation_groups.active = 't'").
-      where(conversation_groups:{conversation_id:nil})
-  end
-
 
 end

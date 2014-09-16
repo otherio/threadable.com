@@ -45,8 +45,6 @@ class Api::ConversationsController < ApiController
       "group_#{organization.groups.find_by_slug!(group_slug).id}"
     end
 
-    puts "tag_filters: #{tag_filters.inspect}"
-
     search_results = Message.algolia_raw_search(query, tagFilters: tag_filters)
     conversation_ids = search_results["hits"].map{|h| h["conversation_id"] }.uniq
 
@@ -63,7 +61,7 @@ class Api::ConversationsController < ApiController
 
     conversation_params[:creator] = current_user
     group_ids = Array(params[:conversation][:group_ids])
-    conversation_params[:groups] = organization.groups.find_by_ids(group_ids) if group_ids
+    conversation_params[:groups] = organization.groups.find_by_ids!(group_ids) if group_ids
     conversation = organization.conversations.create! conversation_params.symbolize_keys
 
     render json: serialize(:conversations, conversation), status: 201

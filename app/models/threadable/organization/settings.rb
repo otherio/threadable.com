@@ -10,16 +10,16 @@ class Threadable::Organization::Settings < Threadable::Settings
 
   def settable? setting
     raise Threadable::AuthorizationError, 'You do not have permission to change settings on this organization' unless organization.members.current_member && organization.members.current_member.can?(:change_settings_for, organization)
-    accessable? setting
+    accessible? setting
   end
 
   def gettable? setting
-    accessable? setting
+    accessible? setting
   end
 
   private
 
-  def accessable? setting
+  def accessible? setting
     settings[setting][:membership_required] == :free || organization.paid?
   end
 

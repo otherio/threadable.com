@@ -5,6 +5,65 @@ describe Threadable::Organization::Groups, :type => :request do
   let(:groups){ organization.groups }
   subject{ groups }
 
+  describe '#all' do
+    context 'when not logged in' do
+      it 'returns all the groups, without private groups' do
+        expect(organization.groups.all.map(&:slug)).to match_array [
+          "raceteam",
+          "electronics",
+          "fundraising",
+          "graphic-design",
+          "press",
+        ]
+      end
+    end
+
+    context 'when logged in as a member without access to private groups' do
+      before do
+        sign_in_as 'bethany@ucsd.example.com'
+      end
+
+      it 'returns all the groups, without private groups' do
+        expect(organization.groups.all.map(&:slug)).to match_array [
+          "raceteam",
+          "electronics",
+          "fundraising",
+          "graphic-design",
+          "press",
+        ]
+      end
+    end
+
+    context 'when logged in as a member who has access to private groups' do
+      before do
+        sign_in_as 'tom@ucsd.example.com'
+      end
+
+      it 'returns all the groups, including private groups' do
+        expect(organization.groups.all.map(&:slug)).to match_array [
+          "raceteam",
+          "electronics",
+          "fundraising",
+          "graphic-design",
+          "press",
+          "leaders",
+        ]
+      end
+    end
+  end
+
+  describe '#find_by_ids!' do
+    it 'finds the groups when they exist' do
+      groups_to_find = [groups.find_by_slug('electronics'), groups.find_by_slug('fundraising')]
+      expect(groups.find_by_ids!(groups_to_find.map(&:id))).to match_array groups_to_find
+    end
+
+    it 'raises an error when any group is not found' do
+      electronics = groups.find_by_slug('electronics')
+      expect{groups.find_by_ids!([electronics.id, electronics.id + 500])}.to raise_error Threadable::RecordNotFound, 'Unable to find one of the specified groups'
+    end
+  end
+
   describe '#find_by_email_address_tags' do
 
     context 'when given valid group email address tags' do

@@ -15,6 +15,10 @@ class SendEmailWorker < Threadable::Worker
 
     message   = organization.messages.find_by_id! message_id
 
+    if message.conversation.private?
+      return if (message.conversation.group_ids & recipient.group_ids).empty?
+    end
+
     threadable.emails.send_email(:conversation_message, organization, message, recipient)
 
     # this marks the sent email record, if there is one, as delivered to mailgun

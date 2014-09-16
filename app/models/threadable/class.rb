@@ -23,6 +23,7 @@ class Threadable::Class
   end
 
   attr_reader :protocol, :host, :port, :current_user_id, :tracker, :worker
+  alias_method :worker?, :worker
 
   def tracking_id
     current_user_id || @tracking_id

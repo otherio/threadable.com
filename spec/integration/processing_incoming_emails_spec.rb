@@ -4,6 +4,7 @@ describe "processing incoming emails", :type => :request do
 
   before do
     allow(VerifyDmarc).to receive(:call).and_return(true)
+    sign_in_as 'alice@ucsd.example.com'  #for access to private groups
   end
 
   let :params do
@@ -1597,7 +1598,20 @@ describe "processing incoming emails", :type => :request do
         validate! :delivered
       end
     end
-
   end
 
+  context 'when the group is private' do
+    let(:recipient) { 'leaders@raceteam.localhost' }
+    let(:to)        { 'UCSD Electric Racing: Leaders <leaders@raceteam.localhost>' }
+
+    let(:expected_groups)           { 'Leaders' }
+    let(:expected_email_recipients) { ["alice@ucsd.example.com", "tom@ucsd.example.com"] }
+    let(:expected_sent_email_to)    { ["leaders@raceteam.localhost"] }
+    let(:expected_sent_email_smtp_envelope_from) { "leaders@raceteam.localhost" }
+    let(:expected_sent_email_reply_to) { "\"UCSD Electric Racing: Leaders\" <leaders@raceteam.localhost>" }
+
+    it 'delivers to the group members' do
+      validate! :delivered
+    end
+  end
 end

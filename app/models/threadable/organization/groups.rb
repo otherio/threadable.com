@@ -13,6 +13,12 @@ class Threadable::Organization::Groups < Threadable::Groups
     groups_for scope.where(id: group_ids)
   end
 
+  def find_by_ids! group_ids
+    groups = find_by_ids group_ids
+    groups.length == group_ids.length or raise Threadable::RecordNotFound, 'Unable to find one of the specified groups'
+    groups
+  end
+
   def find_by_id group_id
     find_by_ids([group_id]).try(:first)
   end
@@ -49,7 +55,11 @@ class Threadable::Organization::Groups < Threadable::Groups
   end
 
   def all_for_user user
-    groups_for scope.joins(:members).where(group_memberships: {user_id: user.id})
+    if threadable.current_user && ! organization.members.current_member.can?(:read_private, self)
+      groups_for scope.where(group_memberships: {user_id: user.id})
+    else
+      groups_for scope.joins(:members).where(group_memberships: {user_id: user.id})
+    end
   end
 
   def auto_joinable
@@ -77,7 +87,22 @@ class Threadable::Organization::Groups < Threadable::Groups
   private
 
   def scope
-    organization.organization_record.groups.unload
+    if threadable.current_user && organization.members.current_member
+      if organization.members.current_member.can?(:read_private, self)
+        organization.organization_record.groups.all
+      else
+        organization.organization_record.groups.
+          joins('LEFT JOIN group_memberships on groups.id = group_memberships.group_id').
+          where("groups.private = 'f' OR group_memberships.user_id = #{threadable.current_user.id}").
+          group('groups.id')
+      end
+    else
+      if threadable.worker?
+        organization.organization_record.groups
+      else
+        organization.organization_record.groups.where(private: false)
+      end
+    end
   end
 
   def group_for group_record
@@ -87,7 +112,6 @@ class Threadable::Organization::Groups < Threadable::Groups
   def groups_for group_records
     group_records.map{|group_record| group_for group_record }
   end
-
 end
 
 require 'threadable/organization/groups/create'

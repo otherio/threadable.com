@@ -42,6 +42,15 @@ class Conversation < ActiveRecord::Base
     joins("LEFT JOIN conversations_followers f ON f.conversation_id = conversations.id AND f.user_id = #{user_id}").where('f.user_id IS NULL')
   }
 
+  scope :accessible_to_user, ->(user_id){
+    user_id = Conversation.sanitize(user_id)
+    joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').
+    joins('LEFT JOIN groups ON groups.id = conversation_groups.group_id and groups.private = \'t\'').
+    joins('LEFT JOIN group_memberships ON conversation_groups.group_id = group_memberships.group_id').
+    where('((group_memberships.user_id = ? and conversation_groups.active = \'t\') or groups.id is null)', user_id).
+    group('conversations.id')
+  }
+
   scope :for_user, ->(user_id){
     user_id = Conversation.sanitize(user_id)
     joins('LEFT JOIN conversation_groups ON conversations.id = conversation_groups.conversation_id and conversation_groups.active = \'t\'').

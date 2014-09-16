@@ -28,6 +28,7 @@ class Ability
 
         can :change_delivery_for,         Threadable::Group::Member
 
+        can :read_private,                Threadable::Groups
         if user.organization.paid?
           can :make_private, Threadable::Groups
         end
