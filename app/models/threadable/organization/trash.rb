@@ -11,11 +11,19 @@ class Threadable::Organization::Trash
   private
 
   def conversations_scope
-    organization_record.conversations.accessible_to_user(threadable.current_user_id).trashed
+    if organization.members.current_member && organization.members.current_member.can?(:read_private, organization.groups)
+      organization_record.conversations.trashed
+    else
+      organization_record.conversations.accessible_to_user(threadable.current_user_id).trashed
+    end
   end
 
   def tasks_scope
-    organization_record.tasks.accessible_to_user(threadable.current_user_id).trashed
+    if organization.members.current_member && organization.members.current_member.can?(:read_private, organization.groups)
+      organization_record.tasks.trashed
+    else
+      organization_record.tasks.accessible_to_user(threadable.current_user_id).trashed
+    end
   end
 
 end
