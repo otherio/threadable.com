@@ -52,7 +52,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
         declineText: 'cancel',
         approved: function() {
           controller.set('task', true);
-          controller.get('content').saveRecord();
+          controller.get('model').saveRecord();
         }
       });
     },
@@ -65,7 +65,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
         declineText: 'cancel',
         approved: function() {
           controller.set('task', false);
-          controller.get('content').saveRecord().then(function() {
+          controller.get('model').saveRecord().then(function() {
             // TODO clear out any pending doers - Jared
           });
         }
@@ -75,19 +75,19 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
       this.toggleProperty('showDoerSelector');
     },
     toggleComplete: function() {
-      var conversation = this.get('content');
+      var conversation = this.get('model');
       conversation.set('done', !conversation.get('done'));
       conversation.saveRecord().then(function() {
         conversation.loadEvents(true);
       }.bind(this));
     },
     toggleMuted: function() {
-      var conversation = this.get('content');
+      var conversation = this.get('model');
       conversation.set('muted', !conversation.get('muted'));
       conversation.saveRecord();
     },
     toggleFollowed: function() {
-      var conversation = this.get('content');
+      var conversation = this.get('model');
       conversation.set('followed', !conversation.get('followed'));
       conversation.saveRecord();
     },
@@ -103,7 +103,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
         approveText: 'move to trash',
         declineText: 'cancel',
         approved: function() {
-          var conversation = this.get('content');
+          var conversation = this.get('model');
           conversation.set('trashed', true);
           conversation.saveRecord().then(function() {
             conversation.loadEvents(true);
@@ -113,7 +113,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
 
     },
     unTrash: function() {
-      var conversation = this.get('content');
+      var conversation = this.get('model');
       conversation.set('trashed', false);
       conversation.saveRecord().then(function() {
         conversation.loadEvents(true);
@@ -129,7 +129,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
         approveText: 'remove',
         declineText: 'cancel',
         approved: function() {
-          var conversation = this.get('content');
+          var conversation = this.get('model');
           conversation.get('groupIds').removeObject(group.get('id'));
 
           // this should not be necessary, but ember-restless doesn't detect the array change
@@ -142,7 +142,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
       });
     },
     addGroup: function(group) {
-      var conversation = this.get('content');
+      var conversation = this.get('model');
       conversation.get('groupIds').pushObject(group.get('id'));
 
       // this should not be necessary, but ember-restless doesn't detect the array change
@@ -154,7 +154,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
     },
     syncToInbox: function() {
       this.set('error', null);
-      var conversation = this.get('content');
+      var conversation = this.get('model');
 
       $.ajax({
         type: "POST",

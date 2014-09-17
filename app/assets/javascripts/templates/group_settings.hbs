@@ -1,6 +1,6 @@
 <div class="group-settings scrollable">
   <div>
-    <form class="uk-form" {{action updateGroup on='submit'}}>
+    <form class="uk-form" {{action 'updateGroup' on='submit'}}>
 
       <div class="uk-alert uk-alert-warning warning">
         <i class="uk-icon-exclamation-triangle uk-float-left"></i>
@@ -123,10 +123,10 @@
               </label>
             </div>
 
-            <a href="" class="toggle-advanced" {{action toggleAdvanced}}><i class="uk-icon-flask"></i> Hide experimental options</a>
+            <a href="" class="toggle-advanced" {{action 'toggleAdvanced'}}><i class="uk-icon-flask"></i> Hide experimental options</a>
           </div>
         {{else}}
-          <a href="" class="toggle-advanced" {{action toggleAdvanced}}><i class="uk-icon-flask"></i> Show experimental options</a>
+          <a href="" class="toggle-advanced" {{action 'toggleAdvanced'}}><i class="uk-icon-flask"></i> Show experimental options</a>
         {{/if}}
 
         <div class="uk-form-row">
@@ -166,7 +166,7 @@
         <div class="example-email well danger-zone">
           <h4 class="title">Danger Zone</h4>
           <p class="subtitle">These actions cannot be undone</p>
-          <button {{action deleteGroup}} class="uk-button uk-button-danger">Delete group</button>
+          <button {{action 'deleteGroup'}} class="uk-button uk-button-danger">Delete group</button>
         </div>
       {{else}}
         <div class="well">

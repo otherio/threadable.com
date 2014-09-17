@@ -10,7 +10,7 @@
   {{#if error}}
     <h2>Error: {{error}}</h2>
   {{/if}}
-  <form class="uk-form-horizontal" {{action sendMessage on='submit'}}>
+  <form class="uk-form-horizontal" {{action 'sendMessage' on='submit'}}>
     <fieldset>
       {{textarea value=body class="uk-form-blank reply-content" name="body" placeholder="Add your voice..."}}
       <div class="controls">

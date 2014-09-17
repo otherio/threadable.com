@@ -1,10 +1,10 @@
 {{#if loadFailed}}
-  <a href="" class="load-more-button load-failed" {{action loadMore}}>
+  <a href="" class="load-more-button load-failed" {{action 'loadMore'}}>
     <div>Whoops something went wrong. </div>
     <div>Click here to try again.</div>
   </a>
 {{else}}
-  <a href="" class="load-more-button" {{action loadMore}}>
+  <a href="" class="load-more-button" {{action 'loadMore'}}>
     Load More
   </a>
 {{/if}}

@@ -39,7 +39,7 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
     },
 
     createGroup: function() {
-      var group = this.get('content');
+      var group = this.get('model');
 
       if(!this.get('editingSubjectTag')) {
         group.set('subjectTag', this.get('calculatedSubjectTag'));
@@ -49,7 +49,7 @@ Threadable.AddOrganizationGroupController = Ember.ObjectController.extend(Thread
         group.set('emailAddressTag', this.get('calculatedEmailAddressTag'));
       }
 
-      group.set('organizationSlug', this.get('controllers.organization.content.slug'));
+      group.set('organizationSlug', this.get('controllers.organization.model.slug'));
 
       group.saveRecord().then(
         groupSaved.bind(this),

@@ -1,6 +1,6 @@
 Threadable.DoerSelectorController = Ember.ArrayController.extend({
   needs: ['organization', 'conversation'],
-  content: Ember.computed.alias('controllers.organization.members'),
+  model: Ember.computed.alias('controllers.organization.members'),
 
   itemController: 'doer_selector_item',
   sortProperties: ['isDoer'], // why doesnt this work!?!?! - Jared

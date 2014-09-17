@@ -15,7 +15,7 @@
               button.toggle.uk-button.remove
                 partial "lines_spinner_button"
             else
-              a.toggle.uk-button.remove href="" click="removeMember member"
+              a.toggle.uk-button.remove{action 'removeMember' member on="click"} href=""
                 span.normal member
                 span.hover remove
       else
@@ -27,6 +27,6 @@
               button.toggle.uk-button.add
                 partial "lines_spinner_button"
             else
-              a.toggle.uk-button.add href="" click="addMember member"
+              a.toggle.uk-button.add{action 'addMember' member on="click"} href=""
                 i.uk-icon-plus
                 | &nbsp; add

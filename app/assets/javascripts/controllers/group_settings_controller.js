@@ -67,7 +67,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
       this.set('error', null);
       this.set('updateInProgress', true);
 
-      var group = this.get('content');
+      var group = this.get('model');
       group.setProperties({
         description:       this.get('editableGroup.description'),
         subjectTag:        this.get('editableGroup.subjectTag'),

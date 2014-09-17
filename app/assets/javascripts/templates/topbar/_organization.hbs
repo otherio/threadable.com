@@ -1,5 +1,5 @@
 <div class="left-nav">
-  <a href="" {{action openSidebar}} class="open-sidebar burger hidden-on-large-screens">
+  <a href="" {{action 'openSidebar'}} class="open-sidebar burger hidden-on-large-screens">
     <i class="uk-icon-bars"><span class="sr-only">Menu</span></i>
   </a>
 
@@ -21,7 +21,7 @@
 <div class="right-nav">
   {{#if conversations.isTrash}}
   {{else}}
-    <a href="" class="toggle-conversations-controls" {{action toggleConversationsListControls}}>
+    <a href="" class="toggle-conversations-controls" {{action 'toggleConversationsListControls'}}>
       {{#if showingConversationsListControls}}
         <i class="uk-icon-caret-up"><span class="sr-only">Hide Controls</span></i>
       {{else}}

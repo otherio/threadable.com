@@ -30,12 +30,12 @@
 
       <li>
         {{#if group.currentUserIsAMember}}
-          <a href="" {{action leaveGroup group}}>
+          <a href="" {{action 'leaveGroup' group}}>
             <i class="uk-icon-sign-out"></i>
             Leave Group
           </a>
         {{else}}
-          <a href="" {{action joinGroup group}}>
+          <a href="" {{action 'joinGroup' group}}>
             <i class="uk-icon-sign-in"></i>
             Join Group
           </a>

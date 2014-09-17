@@ -58,7 +58,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
       this.set('error', null);
       this.set('updateInProgress', true);
 
-      var organization = this.get('content');
+      var organization = this.get('model');
       organization.setProperties({
         name:         this.get('editableOrganization.name'),
         description:  this.get('editableOrganization.description'),
@@ -97,7 +97,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
 
     addDomain: function() {
       this.set('error', null);
-      var organization = this.get('content');
+      var organization = this.get('model');
 
       var domain = Threadable.EmailDomain.create({
         domain: this.get('domain'),
@@ -123,7 +123,7 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
 
     outgoingDomain: function(domain) {
       this.set('error', null);
-      var organization = this.get('content');
+      var organization = this.get('model');
 
       if(domain == 'none') {
         domain = organization.get('emailDomains').find(function(domain) { return domain.get('outgoing'); });
@@ -133,14 +133,14 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
       }
 
       domain.saveRecord().then(
-        this.get('content').loadEmailDomains(true)
+        this.get('model').loadEmailDomains(true)
       );
     },
 
     deleteDomain: function(domain) {
       this.set('error', null);
       domain.deleteRecord().then(
-        this.get('content').loadEmailDomains(true)
+        this.get('model').loadEmailDomains(true)
       );
     },
 

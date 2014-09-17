@@ -4,7 +4,7 @@ Threadable.NotDoneTasksController = Ember.ArrayController.extend(Threadable.Rout
   prioritizing: Ember.computed.alias('controllers.tasks.prioritizing'),
   itemController: 'not_done_tasks_item',
 
-  content: [],
+  model: [],
   sortProperties: ['position'],
   sortAscending: true,
 
@@ -18,7 +18,7 @@ Threadable.NotDoneTasksController = Ember.ArrayController.extend(Threadable.Rout
   loadFailed: false,
 
   setup: function(groupSlug, tasksScope) {
-    this.set('content', Ember.ArrayProxy.create({content:[]}));
+    this.set('model', Ember.ArrayProxy.create({content:[]}));
     this.set('groupSlug', groupSlug);
     this.set('tasksScope', tasksScope);
     this.set('currentPage', -1);
@@ -55,7 +55,7 @@ Threadable.NotDoneTasksController = Ember.ArrayController.extend(Threadable.Rout
       if (tasks.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);
       self.set('loading', false);
       self.set('currentPage', page);
-      self.get('content').pushObjects(tasks.content);
+      self.get('model').pushObjects(tasks.content);
     });
 
     promise.catch(function(response) {

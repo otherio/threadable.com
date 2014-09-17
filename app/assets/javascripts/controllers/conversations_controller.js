@@ -16,7 +16,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
   isTrash: false,
 
   setup: function(groupSlug, conversationsScope) {
-    this.set('content', Ember.ArrayProxy.create({content:[]}));
+    this.set('model', Ember.ArrayProxy.create({content:[]}));
     this.set('groupSlug', groupSlug);
     this.set('conversationsScope', conversationsScope);
     this.set('currentPage', -1);
@@ -64,7 +64,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
     promise.then(function(conversations) {
       if (conversations.get('length') < self.PAGE_SIZE) self.set('fullyLoaded', true);
       self.set('loading', false);
-      self.get('content').pushObjects(conversations.content);
+      self.get('model').pushObjects(conversations.content);
       self.set('currentPage', page);
     });
 

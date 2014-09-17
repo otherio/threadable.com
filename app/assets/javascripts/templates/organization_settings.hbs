@@ -1,6 +1,6 @@
 <div class="group-settings organization-settings scrollable">
   <div>
-    <form class="uk-form" {{action updateOrganization on='submit'}}>
+    <form class="uk-form" {{action 'updateOrganization' on='submit'}}>
 
       <h3 class="uk-text-bold">Organization Settings</h3>
       {{#if error}}
@@ -110,7 +110,7 @@
             (your account)
           {{else}}
             {{#if hasGoogleAuth}}
-              <button {{action claimGoogleAccount}} class="uk-button uk-button-primary">Connect to my Google account</button>
+              <button {{action 'claimGoogleAccount'}} class="uk-button uk-button-primary">Connect to my Google account</button>
             {{else}}
               To connect your Google Apps domain admin account, visit your <a href="/profile">profile</a>.
             {{/if}}
@@ -130,7 +130,7 @@
               {{#if internalDomainOutgoing}}
                 <i class="uk-icon-arrow-circle-right"></i> outgoing
               {{else}}
-                <a {{action "outgoingDomain" "none"}}>set outgoing</a>
+                <a {{action 'outgoingDomain' "none"}}>set outgoing</a>
               {{/if}}
             </span>
             {{emailAddressUsername}}.threadable.com
@@ -151,7 +151,7 @@
           {{/each}}
         </ul>
 
-        <form class="uk-form" {{action addDomain on='submit'}}>
+        <form class="uk-form" {{action 'addDomain' on='submit'}}>
           <fieldset>
             <div class="uk-form-row">
               <label class="uk-text-bold uk-form-label input-label">

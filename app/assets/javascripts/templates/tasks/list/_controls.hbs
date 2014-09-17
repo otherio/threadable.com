@@ -11,7 +11,7 @@
     {{/link-to}}
   </div>
   <div class="uk-float-right">
-    <a href="" {{action toggleDone}} {{bind-attr class=":toggle-done :icon-with-text"}}>
+    <a href="" {{action 'toggleDone'}} {{bind-attr class=":toggle-done :icon-with-text"}}>
       {{#if showingDone}}
         <i class="uk-icon-check-circle"></i>
         <span class="hide">Hide Done</span>
@@ -20,7 +20,7 @@
         <span class="show">Show Done</span>
       {{/if}}
     </a>
-    <a href="" {{action togglePrioritizing}} {{bind-attr class=":prioritize :icon-with-text"}}>
+    <a href="" {{action 'togglePrioritizing'}} {{bind-attr class=":prioritize :icon-with-text"}}>
       {{#if prioritizing}}
         <i class="uk-icon-list"></i>
         <span>List</span>

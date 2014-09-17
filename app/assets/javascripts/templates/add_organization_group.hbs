@@ -1,6 +1,6 @@
 <div class="group-settings scrollable">
   <div>
-    <form class="uk-form" {{action createGroup on='submit'}}>
+    <form class="uk-form" {{action 'createGroup' on='submit'}}>
 
       <h3 class="uk-text-bold">Create new group</h3>
       {{#if error}}
@@ -28,7 +28,7 @@
           {{else}}
             <div class="uk-form-controls input-field">
               {{calculatedEmailAddressTag}}@{{controllers.organization.emailAddressUsername}}.threadable.com
-              <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
+              <a href {{action 'editEmailAddressTag'}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
             </div>
           {{/if}}
         </div>
@@ -44,7 +44,7 @@
           {{else}}
             <div class="uk-form-controls input-field">
               [{{calculatedSubjectTag}}] Example email subject!
-              <a href {{action editSubjectTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
+              <a href {{action 'editSubjectTag'}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
             </div>
           {{/if}}
         </div>

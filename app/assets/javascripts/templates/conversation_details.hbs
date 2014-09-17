@@ -45,7 +45,7 @@
             <span class="badge" {{bind-attr style="group.badgeStyle"}}>
               {{group.name}}
               {{#if canRemoveGroups}}
-                <a href="" {{action removeGroup group}}><i class="uk-icon-times"><span class="sr-only">Remove</span></i></a>
+                <a href="" {{action 'removeGroup' group}}><i class="uk-icon-times"><span class="sr-only">Remove</span></i></a>
               {{/if}}
             </span>
           {{/each}}
@@ -53,7 +53,7 @@
       </h3>
 
       <h3 class="all-recipients">All recipients:</h3>
-      <a href="" {{action toggleGroupRecipients}} class="uk-button uk-button-small all-recipients">
+      <a href="" {{action 'toggleGroupRecipients'}} class="uk-button uk-button-small all-recipients">
       {{#if showGroupRecipients}}
         <i class="uk-icon-caret-down"></i> hide
       {{else}}

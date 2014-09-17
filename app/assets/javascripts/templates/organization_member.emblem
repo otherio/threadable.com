@@ -25,7 +25,7 @@
               | not yet confirmed:
             span
               if invitationNotSent
-                button.uk-button click="resendInvitation" resend invitation
+                button.uk-button{action 'resendInvitation' on="click"} resend invitation
               else
                 button.uk-button disabled="disabled" invitation sent
           else
@@ -36,7 +36,7 @@
         h4.label
           | Subscribed:
         .control
-          a.subscribed.input-switch href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled} click="toggleSubscribed"
+          a.subscribed.input-switch{action 'toggleSubscribed' on="click"} href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled}
             .input-switch-wrapper
               .slider
                 .on
@@ -58,6 +58,6 @@
             | Danger Zone
           p.subtitle
             | These actions cannot be undone
-          a.uk-button.uk-button-danger click="removeMember" Remove this member
+          a.uk-button.uk-button-danger{action 'removeMember' on="click"} Remove this member
 
 

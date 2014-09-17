@@ -5,6 +5,6 @@
 
     .uk-clearfix
       .uk-float-left
-        a href="" click="dismissWelcomeModalView false" I'll watch later
+        a{action 'dismissWelcomeModalView' false on="click"} href="" I'll watch later
       .uk-float-right
-        a href="" click="dismissWelcomeModalView true" Got it, don't show this again
+        a{action 'dismissWelcomeModalView' true on="click"} href=""  Got it, don't show this again

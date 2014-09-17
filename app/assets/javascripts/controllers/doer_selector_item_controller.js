@@ -36,7 +36,7 @@ Threadable.DoerSelectorItemController = Ember.ObjectController.extend({
 
   actions: {
     toggleDoer: function() {
-      var doer  = this.get('content');
+      var doer  = this.get('model');
       var doers = this.get('doers');
       if(this.get('isDoer') ){
         this.get('controllers.doerSelector').set('doers', doers.reject(function(filteredDoer) {

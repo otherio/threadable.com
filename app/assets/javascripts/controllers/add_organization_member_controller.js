@@ -9,7 +9,7 @@ Threadable.AddOrganizationMemberController = Ember.ObjectController.extend(Threa
 
   actions: {
     addMember: function() {
-      var member = this.get('content');
+      var member = this.get('model');
       var organization = this.get('controllers.organization');
 
       member.set('organizationSlug', organization.get('slug') );

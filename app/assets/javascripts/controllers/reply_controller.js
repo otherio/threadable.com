@@ -49,11 +49,11 @@
       if (this.get('disabled')) return;
       this.set('sending', true);
       this.set('error', null);
-      var organizationSlug = this.get('controllers.organization.content.slug');
+      var organizationSlug = this.get('controllers.organization.model.slug');
 
       // TODO: figure out how to not need to work with both of these.
       var conversation = this.get('controllers.conversation.model');
-      var conversationInList = this.get('controllers.conversations.content').findBy('id', conversation.get('id'));
+      var conversationInList = this.get('controllers.conversations.model').findBy('id', conversation.get('id'));
 
       var message = this.get('message');
 
@@ -96,7 +96,7 @@
           conversationInList.deserialize(response.message.conversation);
         }
 
-        var message = this.get('content');
+        var message = this.get('model');
         var event = Threadable.Event.create({
           id:        'message-' + message.get('id'),
           eventType: 'created_message',
@@ -105,7 +105,7 @@
         });
 
         conversation.get('events').pushObject(event);
-        this.set('content', Threadable.Message.create({}));
+        this.set('model', Threadable.Message.create({}));
         this.set('sending', false);
       }
 
