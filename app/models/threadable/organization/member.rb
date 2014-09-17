@@ -30,7 +30,7 @@ class Threadable::Organization::Member < Threadable::User
   }, to: :organization_membership_record
 
   OrganizationMembership::ROLES.each do |role|
-    define_method("#{role}?"){ this.role == role }
+    define_method("#{role}?"){ self.role == role }
   end
 
   let(:groups) { Threadable::Organization::Member::Groups.new(self) }

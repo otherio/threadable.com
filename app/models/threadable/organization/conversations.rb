@@ -49,7 +49,11 @@ class Threadable::Organization::Conversations < Threadable::Conversations
 
   def scope
     if threadable.current_user
-      organization.organization_record.conversations.accessible_to_user(threadable.current_user_id)
+      if organization.members.current_member && organization.members.current_member.can?(:read_private, organization.groups)
+        organization.organization_record.conversations
+      else
+        organization.organization_record.conversations.accessible_to_user(threadable.current_user_id)
+      end
     else
       organization.organization_record.conversations.in_open_groups
     end

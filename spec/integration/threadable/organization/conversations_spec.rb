@@ -26,6 +26,17 @@ describe Threadable::Organization::Conversations, :type => :request do
         expect(conversations.not_muted_with_participants.map(&:slug)).to eq []
       end
     end
+
+    describe '#find_by_slug' do
+      it 'does not find the private conversation' do
+        expect(organization.conversations.find_by_slug('recruiting')).to be_nil
+      end
+
+      it 'finds the partly-private conversation' do
+        expect(organization.conversations.find_by_slug('budget-worknight')).to be_a Threadable::Conversation
+      end
+    end
+
   end
 
   when_signed_in_as 'bethany@ucsd.example.com' do
@@ -99,6 +110,18 @@ describe Threadable::Organization::Conversations, :type => :request do
 
       it 'finds the partly-private conversation' do
         expect(organization.conversations.find_by_slug('budget-worknight')).to be_a Threadable::Conversation
+      end
+
+      context 'when not a member of the group' do
+        let(:leaders) { organization.groups.find_by_slug('leaders') }
+
+        before do
+          leaders.members.remove(threadable.current_user)
+        end
+
+        it 'still finds the private conversation' do
+          expect(organization.conversations.find_by_slug('recruiting')).to be_a Threadable::Conversation
+        end
       end
     end
   end
