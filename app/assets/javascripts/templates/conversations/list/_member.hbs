@@ -24,7 +24,12 @@
     <section class="line line-3">
       <span class="groups">
         {{#each group in conversation.groups}}
-          <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>{{group.name}}</span>
+          <span class="badge badge-small" {{bind-attr style="group.badgeStyle"}}>
+            {{group.name}}
+            {{#if group.private}}
+              <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+            {{/if}}
+          </span>
         {{/each}}
         {{#if conversation.hasAdditionalPrivateGroups}}
           <span class="badge badge-small badge-private">

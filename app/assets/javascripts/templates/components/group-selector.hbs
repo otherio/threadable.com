@@ -4,8 +4,16 @@
 <div class="groups">
   {{#each group in groups}}
     <a href="" {{action 'addGroup' group}} class="badge" {{bind-attr style="group.badgeStyle"}}>
-      <div class="members-count">{{group.membersCount}}</div>
-      <div class="name">{{group.name}}</div>
+      <div class="members-count">
+        {{group.membersCount}}
+        <i class="uk-icon-user"><span class="sr-only">users:</span></i>
+      </div>
+      <div class="name">
+        {{group.name}}
+        {{#if group.private}}
+          <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+        {{/if}}
+      </div>
       <div class="email-address">{{group.emailAddress}}</div>
     </a>
   {{/each}}
