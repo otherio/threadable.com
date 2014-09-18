@@ -91,7 +91,7 @@ feature "Viewing conversations and tasks" do
       conversation['subject'].strip!
       conversation['message_summary'].strip!
       conversation['number_of_messages'] = conversation['number_of_messages'][1..-2].to_i
-      conversation['groups'] = conversation['groups'].to_set
+      conversation['groups'] = conversation['groups'].map{|g| g.strip!}.to_set
     end
   end
 
