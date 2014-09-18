@@ -32,8 +32,9 @@ class Threadable::Organization < Threadable::Model
   let(:settings) do
     Threadable::Organization::Settings.new(
       self,
-      group_membership_permission: {options: [:member, :owner], default: :member, membership_required: :paid},
-      group_settings_permission:   {options: [:member, :owner], default: :member, membership_required: :paid},
+      organization_membership_permission: {options: [:member, :owner], default: :member, membership_required: :paid},
+      group_membership_permission:        {options: [:member, :owner], default: :member, membership_required: :paid},
+      group_settings_permission:          {options: [:member, :owner], default: :member, membership_required: :paid},
     )
   end
 

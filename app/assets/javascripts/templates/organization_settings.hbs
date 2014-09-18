@@ -52,6 +52,22 @@
         </div>
 
         <h4 class="uk-text-bold">Member permissions</h4>
+        {{#unless publicSignup}}
+          <div class="uk-form-row hidden-setting">
+            <label class="uk-form-label input-label">
+              Can invite new organization members:
+            </label>
+            <div class="uk-form-controls input-field">
+              {{view Ember.Select disabled=isFree content=membershipTypes optionLabelPath="content.prettyName" optionValuePath="content.role" value=editableOrganization.organizationMembershipPermission}}
+              {{#if isFree}}
+                <span class="upgrade">
+                  <i class="uk-icon-asterisk"></i> Pro required
+                </span>
+              {{/if}}
+            </div>
+          </div>
+        {{/unless}}
+
         <div class="uk-form-row">
           <label class="uk-form-label input-label">
             Can change group members:

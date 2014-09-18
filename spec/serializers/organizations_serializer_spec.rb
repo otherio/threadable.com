@@ -54,9 +54,11 @@ describe OrganizationsSerializer do
         can_remove_non_empty_group:   true,
         can_be_google_user:           true,
         can_change_settings:          true,
+        can_invite_members:           true,
 
-        group_membership_permission:  :member,
-        group_settings_permission:    :member,
+        organization_membership_permission: :member,
+        group_membership_permission:        :member,
+        group_settings_permission:          :member,
       )
     end
   end
@@ -67,7 +69,9 @@ describe OrganizationsSerializer do
 
     before do
       # you have to be a member of an org to list its groups
+      sign_in_as 'amywong.phd@gmail.com'
       sfhealth.members.add(email_address: 'alice@ucsd.example.com')
+      sign_in_as 'alice@ucsd.example.com'
     end
 
     it do
@@ -98,9 +102,11 @@ describe OrganizationsSerializer do
           can_remove_non_empty_group:   true,
           can_be_google_user:           true,
           can_change_settings:          true,
+          can_invite_members:           true,
 
-          group_membership_permission:  :member,
-          group_settings_permission:    :member,
+          organization_membership_permission: :member,
+          group_membership_permission:        :member,
+          group_settings_permission:          :member,
         },{
           id:                sfhealth.id,
           param:             "sfhealth",
@@ -127,9 +133,11 @@ describe OrganizationsSerializer do
           can_remove_non_empty_group:   false,
           can_be_google_user:           false,
           can_change_settings:          false,
+          can_invite_members:           true,
 
-          group_membership_permission:  :member,
-          group_settings_permission:    :member,
+          organization_membership_permission: :member,
+          group_membership_permission:        :member,
+          group_settings_permission:          :member,
         }
       ]
     end

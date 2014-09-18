@@ -11,8 +11,12 @@ class Threadable::Organization::Members::Add < MethodObject
     @options          = options
     @send_join_notice = @options.fetch(:send_join_notice){ true }
 
-    unless @organization.public_signup?
-      @threadable.current_user.present? or raise Threadable::AuthorizationError, "you must be signed in to add a member to an organization"
+    unless @organization.public_signup? || members.count == 0
+      current_member = members.current_member
+      current_member.present? or raise Threadable::AuthorizationError, "you must be signed in to add a member to an organization"
+      if !current_member.can?(:create, members)
+        raise Threadable::AuthorizationError, 'You cannot add members to this organization'
+      end
     end
 
     Threadable.transaction do

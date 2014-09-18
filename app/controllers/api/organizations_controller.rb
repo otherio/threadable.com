@@ -24,6 +24,7 @@ class Api::OrganizationsController < ApiController
     )
 
     organization_settings = params.require(:organization).permit(
+      :organization_membership_permission,
       :group_membership_permission,
       :group_settings_permission,
     )

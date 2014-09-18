@@ -88,9 +88,10 @@ describe Api::OrganizationsController, :type => :controller do
           end
 
           it 'updates the org settings' do
-            xhr :patch, :update, format: :json, id: raceteam.slug, organization: { group_settings_permission: 'owner', group_membership_permission: 'owner' }
+            xhr :patch, :update, format: :json, id: raceteam.slug, organization: { organization_membership_permission: 'owner', group_settings_permission: 'owner', group_membership_permission: 'owner' }
             expect(response.status).to eq 200
             updated_organization = threadable.organizations.find_by_slug!('raceteam')
+            expect(updated_organization.settings.organization_membership_permission).to eq :owner
             expect(updated_organization.settings.group_membership_permission).to eq :owner
             expect(updated_organization.settings.group_settings_permission).to eq :owner
             expect(response.body).to eq serialize(:organizations, updated_organization).to_json

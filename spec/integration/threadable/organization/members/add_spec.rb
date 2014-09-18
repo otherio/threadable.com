@@ -22,6 +22,10 @@ describe Threadable::Organization::Members::Add, :type => :request do
       end
 
       context 'when the organization allows public signup' do
+        before do
+          organization.organization_record.update_attribute(:public_signup, true)
+        end
+
         it 'creates a new user adds them to the organization' do
           expect{
             organization.members.add(email_address: 'pete.tong@example.com', name: 'Pete Tong')
@@ -30,11 +34,27 @@ describe Threadable::Organization::Members::Add, :type => :request do
       end
     end
 
-    when_signed_in_as 'lcuddy@sfhealth.example.com' do
+    when_signed_in_as 'nadya@ucsd.example.com' do
+      before do
+        organization.organization_record.update_attribute(:public_signup, false)
+      end
+
+      context 'when the current user does not have permission to change organization membership' do
+        before do
+          organization.organization_record.update_attribute(:organization_membership_permission, 1)
+        end
+
+        it 'raises an error' do
+          expect{
+            organization.members.add(email_address: 'pete.tong@example.com', name: 'Pete Tong')
+          }.to raise_error(Threadable::AuthorizationError, 'You cannot add members to this organization')
+        end
+      end
 
       context "when given an existing user's email address" do
         let(:user) { threadable.users.find_by_email_address('amywong.phd@gmail.com') }
         it 'adds that user to the organization and all auto-joins groups but does not email our group add notices' do
+
           expect{
             organization.members.add(email_address: 'amywong.phd@gmail.com', name: 'Amy Wong')
           }.to_not change{ User.count }

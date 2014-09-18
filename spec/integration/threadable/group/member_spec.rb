@@ -25,7 +25,7 @@ describe Threadable::Group::Member, :type => :request do
       end
     end
 
-    context 'when the current user does not have permission to change group settings' do
+    context 'when the current user does not have permission to change group member settings' do
       before do
         organization.organization_record.update_attribute(:group_membership_permission, 1)
       end

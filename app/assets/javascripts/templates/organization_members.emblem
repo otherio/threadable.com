@@ -5,10 +5,11 @@
       div
         | {{content.length}} members, {{subscriberCount}} subscribed
 
-    li.add-button
-      link-to "add_organization_member" organization class="not-link"
-        i.uk-icon-plus.uk-float-left
-        div Add member
+    if organization.canInviteMembers
+      li.add-button
+        link-to "add_organization_member" organization class="not-link"
+          i.uk-icon-plus.uk-float-left
+          div Add member
 
     each member in controller
       li

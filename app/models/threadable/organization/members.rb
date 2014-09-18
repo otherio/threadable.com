@@ -107,6 +107,7 @@ class Threadable::Organization::Members < Threadable::Collection
   # remove(user: member)
   # remove(user: user)
   # remove(user_id: user_id)
+  # WARNING COMMENT: This only gets used in the admin interface. Don't use it. it's bad.
   def remove options
     Remove.call(self, options)
     return self

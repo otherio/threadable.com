@@ -25,9 +25,11 @@ Threadable.Organization = RL.Model.extend({
   canRemoveNonEmptyGroup:    RL.attr('boolean'),
   canBeGoogleUser:           RL.attr('boolean'),
   canChangeSettings:         RL.attr('boolean'),
+  canInviteMembers:          RL.attr('boolean'),
 
-  groupMembershipPermission: RL.attr('string'),
-  groupSettingsPermission:   RL.attr('string'),
+  organizationMembershipPermission: RL.attr('string'),
+  groupMembershipPermission:        RL.attr('string'),
+  groupSettingsPermission:          RL.attr('string'),
 
   isPaid: function() {
     return this.get('plan') == 'paid';

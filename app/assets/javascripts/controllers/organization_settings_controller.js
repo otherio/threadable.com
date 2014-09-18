@@ -64,8 +64,9 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
         description:  this.get('editableOrganization.description'),
         publicSignup: this.get('editableOrganization.publicSignup'),
 
-        groupMembershipPermission: this.get('editableOrganization.groupMembershipPermission'),
-        groupSettingsPermission:   this.get('editableOrganization.groupSettingsPermission'),
+        organizationMembershipPermission: this.get('editableOrganization.organizationMembershipPermission'),
+        groupMembershipPermission:        this.get('editableOrganization.groupMembershipPermission'),
+        groupSettingsPermission:          this.get('editableOrganization.groupSettingsPermission'),
       });
 
       organization.saveRecord().then(organizationSaved.bind(this), error.bind(this));

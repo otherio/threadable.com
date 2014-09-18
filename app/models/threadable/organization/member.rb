@@ -72,7 +72,7 @@ class Threadable::Organization::Member < Threadable::User
   def remove
     current_member = organization.members.current_member
 
-    if !current_member.can?(:remove_member_from, @organization)
+    if !current_member.can?(:delete, @organization.members)
       raise Threadable::AuthorizationError, 'You cannot remove members from this organization'
     end
 
