@@ -62,6 +62,8 @@ class Threadable::Group < Threadable::Model
   end
 
   def google_sync= sync
+    organization.members.current_member.can?(:set_google_sync_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
+
     unless sync
       group_record.update_attributes(google_sync: false)
       return
@@ -149,7 +151,13 @@ class Threadable::Group < Threadable::Model
   end
 
   def update attributes
-    organization.members.current_member.can?(:change_settings_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
+    current_member = organization.members.current_member
+    current_member.can?(:change_settings_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
+
+    if self.private? && !self.members.include?(current_member)
+      current_member.can?(:change_settings_when_private_for, self) or raise Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
+    end
+
     attributes.symbolize_keys! unless attributes.is_a? ActionController::Parameters
 
     if attributes[:private].present? && attributes[:private]  #present and any true value

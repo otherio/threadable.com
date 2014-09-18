@@ -22,6 +22,7 @@ class Ability
 
         can :set_google_sync_for,         Threadable::Group
         can :change_settings_for,         Threadable::Group
+        can :change_settings_when_private_for, Threadable::Group
 
         can :create,                      Threadable::Group::Members
         can :delete,                      Threadable::Group::Members

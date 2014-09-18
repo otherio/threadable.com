@@ -54,6 +54,46 @@ describe Threadable::Group, :type => :request do
       end
     end
 
+    context 'when the group is private' do
+      let(:group_record) { ::Group.where(email_address_tag: 'leaders').first }
+      let(:group) { Threadable::Group.new(threadable, group_record) }
+
+      context 'when the user is an owner' do
+        before do
+          sign_in_as 'alice@ucsd.example.com'
+          group.members.remove(organization.members.find_by_email_address('alice@ucsd.example.com'))
+        end
+
+        it 'updates the group' do
+          group.update(alias_email_address: 'foo@bar.com')
+          expect(group.alias_email_address).to eq 'foo@bar.com'
+        end
+      end
+
+      context 'when the user is a member' do
+        context 'when the user is in the group' do
+          before do
+            sign_in_as 'tom@ucsd.example.com'
+          end
+
+          it 'updates the group' do
+            group.update(alias_email_address: 'foo@bar.com')
+            expect(group.alias_email_address).to eq 'foo@bar.com'
+          end
+        end
+
+        context 'when the user is not in the group' do
+          before do
+            sign_in_as 'bethany@ucsd.example.com'
+          end
+
+          it 'raises an error' do
+            expect { group.update(alias_email_address: 'foo@bar.com') }.to raise_error Threadable::AuthorizationError, 'You do not have permission to change settings for this group'
+          end
+        end
+      end
+    end
+
     context 'when the org is free' do
       before do
         organization.organization_record.update_attribute(:plan, :free)
@@ -215,6 +255,8 @@ describe Threadable::Group, :type => :request do
           body_object: anything,
         ).and_return(api_settings_response)
         drain_background_jobs!
+
+        sign_in_as 'alice@ucsd.example.com'
       end
 
       after do

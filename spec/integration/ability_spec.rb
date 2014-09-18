@@ -30,6 +30,7 @@ describe Ability, :type => :request do
       it 'can do almost everything' do
         expect(member.can?(:set_google_sync_for, group)).to be_truthy
         expect(member.can?(:change_settings_for, group)).to be_truthy
+        expect(member.can?(:change_settings_when_private_for, group)).to be_truthy
         expect(member.can?(:create,              group_members)).to be_truthy
         expect(member.can?(:delete,              group_members)).to be_truthy
         expect(member.can?(:change_delivery_for, group.members.find_by_user_id(tom.id))).to be_truthy
@@ -99,8 +100,9 @@ describe Ability, :type => :request do
     end
 
     describe 'group' do
-      it 'cannot change the google user' do
+      it 'cannot change the google user or private group settings' do
         expect(member.can?(:set_google_sync_for, group)).to be_falsy
+        expect(member.can?(:change_settings_when_private_for, group)).to be_falsy
       end
 
       context 'when the organization is free' do
