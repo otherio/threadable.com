@@ -11,6 +11,7 @@ describe "organization membership roles", :type => :request do
       organization = threadable.organizations.create!(name: 'love bucket', add_current_user_as_a_member: false)
       membership = organization.members.add user: threadable.users.all.first
       expect(membership.role).to eq :owner
+      sign_in_as threadable.users.all.first.email_address.address
       membership = organization.members.add user: threadable.users.all.last
       expect(membership.role).to eq :member
     end

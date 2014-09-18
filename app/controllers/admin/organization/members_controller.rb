@@ -65,6 +65,7 @@ class Admin::Organization::MembersController < ApplicationController
         user:             user,
         send_join_notice: params[:send_join_notice],
         personal_message: params[:personal_message],
+        via_admin:        true,
       )
     end
 
@@ -84,6 +85,7 @@ class Admin::Organization::MembersController < ApplicationController
         gets_email:       member_params[:gets_email],
         send_join_notice: member_params[:send_join_notice],
         personal_message: member_params[:personal_message],
+        via_admin:        true,
       )
       flash[:notice] = "#{member.formatted_email_address} was successfully added to #{organization.name}."
     end

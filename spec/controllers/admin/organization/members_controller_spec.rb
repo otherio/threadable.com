@@ -35,6 +35,7 @@ describe Admin::Organization::MembersController, :type => :controller do
         email_address:    'mary@frank.ly',
         gets_email:       false,
         send_join_notice: false,
+        via_admin:        true,
       }
     end
     let(:member){ double(:member, formatted_email_address: 'Mary Frank <mary@frank.ly>') }
@@ -52,6 +53,7 @@ describe Admin::Organization::MembersController, :type => :controller do
             id:               898,
             gets_email:       false,
             send_join_notice: false,
+            via_admin:        true,
           }
         end
 
@@ -78,7 +80,7 @@ describe Admin::Organization::MembersController, :type => :controller do
           context 'and the user is not a member of the organization' do
             before{ expect(organization.members).to receive(:include?).with(user).and_return(false) }
             it 'redirect back to the admin organization edit page with an success notice' do
-              expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false, personal_message: nil).and_return(member)
+              expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false, personal_message: nil, via_admin: true).and_return(member)
               post :add, organization_id: 'fish-eating-contest', user: member_params
               expect(response).to redirect_to admin_edit_organization_url(organization)
               expect(flash[:notice]).to eq "Mary Frank <mary@frank.ly> was successfully added to Fish Eating Contest."
@@ -95,7 +97,7 @@ describe Admin::Organization::MembersController, :type => :controller do
             expect(threadable.users).to receive(:find_by_email_address).with(member_params[:email_address]).and_return(nil)
             expect(threadable.users).to receive(:create!).with(name: member_params[:name], email_address: member_params[:email_address]).and_return(user)
             expect(organization.members).to receive(:include?).with(user).and_return(false)
-            expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false, personal_message: nil).and_return(member)
+            expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false, personal_message: nil, via_admin: true).and_return(member)
           end
 
           it 'it should create a new user, add them to the organization and redirect back to the admin organization edit page' do
@@ -122,7 +124,7 @@ describe Admin::Organization::MembersController, :type => :controller do
           context 'and the user is not a member of the organization' do
             before{ expect(organization.members).to receive(:include?).with(user).and_return(false) }
             it 'redirect back to the admin organization edit page with an success notice' do
-              expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false, personal_message: nil).and_return(member)
+              expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: false, personal_message: nil, via_admin: true).and_return(member)
               post :add, organization_id: 'fish-eating-contest', user: member_params
               expect(response).to redirect_to admin_edit_organization_url(organization)
               expect(flash[:notice]).to eq "Mary Frank <mary@frank.ly> was successfully added to Fish Eating Contest."
@@ -135,11 +137,12 @@ describe Admin::Organization::MembersController, :type => :controller do
                   email_address:    'mary@frank.ly',
                   gets_email:       false,
                   send_join_notice: 'true',
+                  via_admin:        true,
                 }
               end
 
               it 'redirect back to the admin organization edit page with an success notice' do
-                expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: true, personal_message: 'hi there').and_return(member)
+                expect(organization.members).to receive(:add).with(user: user, gets_email: false, send_join_notice: true, personal_message: 'hi there', via_admin: true).and_return(member)
                 post :add, organization_id: 'fish-eating-contest', user: member_params, personal_message: 'hi there'
               end
             end
