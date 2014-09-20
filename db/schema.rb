@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917214324) do
+ActiveRecord::Schema.define(version: 20140918224626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(version: 20140917214324) do
     t.boolean  "google_sync",         default: false, null: false
     t.string   "description"
     t.boolean  "primary",             default: false, null: false
+    t.boolean  "private",             default: false, null: false
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
@@ -260,11 +261,20 @@ ActiveRecord::Schema.define(version: 20140917214324) do
     t.boolean  "trusted",                            default: false
     t.boolean  "hold_all_messages",                  default: false, null: false
     t.integer  "google_user_id"
+<<<<<<< HEAD
     t.integer  "plan",                               default: 0,     null: false
     t.boolean  "public_signup",                      default: false, null: false
     t.integer  "group_membership_permission",        default: 0,     null: false
     t.integer  "group_settings_permission",          default: 0,     null: false
     t.integer  "organization_membership_permission", default: 0,     null: false
+=======
+    t.integer  "plan",                        default: 0,     null: false
+    t.boolean  "public_signup",               default: false, null: false
+    t.integer  "group_membership_permission", default: 0,     null: false
+    t.integer  "group_settings_permission",   default: 0,     null: false
+    t.string   "billforward_account_id"
+    t.string   "billforward_subscription_id"
+>>>>>>> Billforward integration. Works for making a subscription, webhook might not work yet
   end
 
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree

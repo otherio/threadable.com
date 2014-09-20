@@ -32,6 +32,9 @@ describe Threadable::Organization, :type => :model do
   it { is_expected.to delegate(:new_record?           ).to(:organization_record) }
   it { is_expected.to delegate(:persisted?            ).to(:organization_record) }
 
+  it { is_expected.to delegate(:billforward_account_id      ).to(:organization_record) }
+  it { is_expected.to delegate(:billforward_subscription_id ).to(:organization_record) }
+
   describe 'model_name' do
     subject{ described_class }
 

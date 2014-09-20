@@ -27,6 +27,8 @@ class Threadable::Organization < Threadable::Model
     trusted?
     plan
     public_signup?
+    billforward_account_id
+    billforward_subscription_id
   }, to: :organization_record)
 
   let(:settings) do
@@ -208,8 +210,21 @@ class Threadable::Organization < Threadable::Model
     self
   end
 
+  def paid!
+    organization_record.update!(plan: :paid)
+  end
+
+  def free!
+    organization_record.update!(plan: :free)
+  end
+
   def destroy!
     organization_record.destroy!
+  end
+
+  def reload
+    organization_record.reload
+    self
   end
 
   def inspect

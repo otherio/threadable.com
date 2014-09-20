@@ -14,6 +14,9 @@ Threadable::Application.routes.draw do
   get  '/ea/:token' => 'email_actions#show', as: 'email_action'
   post '/ea/:token' => 'email_actions#take'
 
+  get  '/subscribe/:organization_id' => 'subscribe#show', as: 'subscribe'
+  post '/subscribe/callback' => 'subscribe#callback', as: 'subscribe_callback'
+
   namespace :api, except: [:new, :edit] do
     scope :users do
       resource :current, controller: 'current_user', only: [:show, :update]

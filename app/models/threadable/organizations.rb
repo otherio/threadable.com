@@ -20,6 +20,14 @@ class Threadable::Organizations < Threadable::Collection
     find_by_id(id) or raise Threadable::RecordNotFound, "unable to find organization with id #{id.inspect}"
   end
 
+  def find_by_billforward_subscription_id id
+    organization_for (scope.where(billforward_subscription_id: id).first or return)
+  end
+
+  def find_by_billforward_subscription_id! id
+    find_by_billforward_subscription_id(id) or raise Threadable::RecordNotFound, "unable to find organization with subscription id #{id.inspect}"
+  end
+
   def find_by_email_address email_address
     email_address.present? or return
     email_address_username, host = email_address.downcase.strip_non_ascii.split('@')
