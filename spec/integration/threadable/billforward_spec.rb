@@ -243,16 +243,20 @@ describe Threadable::Billforward, :type => :request do
     context 'with a successful request' do
       let(:response_data) do
         {
-          'id' => 'the_subscription_id',
-          'accountID' => 'the_account_id',
-          'state' => state,
+          'results' => [
+            {
+              'id' => 'the_subscription_id',
+              'accountID' => 'the_account_id',
+              'state' => state,
+            }
+          ]
         }
       end
 
       before do
         organization.organization_record.update_attributes(billforward_account_id: 'the_account_id', billforward_subscription_id: 'the_subscription_id')
 
-        stub_request(:get, 'https://sandbox.billforward.net/subscriptions/the_subscription_id').with(
+        stub_request(:get, /^https:\/\/sandbox.billforward.net\/subscriptions\/the_subscription_id/).with(
           headers: {'Authorization' => "Bearer #{token}"},
         ).to_return(
           body: response_data.to_json,
@@ -296,7 +300,7 @@ describe Threadable::Billforward, :type => :request do
       before do
         organization.organization_record.update_attributes(billforward_account_id: 'the_account_id', billforward_subscription_id: 'the_subscription_id')
 
-        stub_request(:get, 'https://sandbox.billforward.net/subscriptions/the_subscription_id').to_return(
+        stub_request(:get, /^https:\/\/sandbox.billforward.net\/subscriptions\/the_subscription_id/).to_return(
           body: {
             errorType: 'StuffBrokenError',
             errorMessage: 'Things are broken',

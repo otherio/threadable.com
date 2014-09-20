@@ -15,9 +15,10 @@ class Threadable::Billforward
 
     @threadable ||= organization.threadable
     @url          = ENV['THREADABLE_BILLFORWARD_API_URL']
+    @token        = ENV['THREADABLE_BILLFORWARD_TOKEN']
   end
 
-  attr_reader :url, :organization, :threadable
+  attr_reader :url, :organization, :threadable, :token
 
   def create_account
     (first_name, last_name) = threadable.current_user.name.split(' ', 2);
@@ -91,9 +92,9 @@ class Threadable::Billforward
   def update_paid_status
     return unless organization.billforward_subscription_id
 
-    response = self.class.get("#{url}/subscriptions/#{organization.billforward_subscription_id}")
+    response = HTTParty.get("#{url}/subscriptions/#{organization.billforward_subscription_id}?access_token=#{token}")
     response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to fetch subscription for #{organization.slug}: #{response['errorMessage']}"
-    state = response['state']
+    state = response['results'][0]['state']
     if state == 'Paid' || state == 'Trial'
       organization.paid!
     else
