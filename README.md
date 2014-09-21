@@ -41,3 +41,10 @@ script/deploy
 
 To push to production, run:
 script/deploy production
+
+### Local proxy (for webhooks, etc)
+
+    gem install proxylocal
+    proxylocal 3000 --host threadable-dev
+
+Then, point your external thing that needs to make a callback at http://threadable-dev.t.proxylocal.com/
