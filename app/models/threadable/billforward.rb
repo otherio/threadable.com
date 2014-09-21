@@ -63,27 +63,20 @@ class Threadable::Billforward
     organization.update(billforward_subscription_id: response['results'][0]['id'])
   end
 
-  def update_member_count
+  def update_member_count old_value
     return unless organization.billforward_subscription_id
 
-    payload = {
-      'id' => organization.billforward_subscription_id,
-      'accountID' => organization.billforward_account_id,
-      'productID' => ENV['THREADABLE_BILLFORWARD_PRO_PRODUCT_ID'],
-      'productRatePlanID' => ENV['THREADABLE_BILLFORWARD_PRO_PLAN_ID'],
-      'name' => "Pro: #{organization.name}",
-      'type' => "Subscription",
-
-      'pricingComponentValueChanges' => [
-        {
-          'pricingComponentID' => ENV['THREADABLE_BILLFORWARD_PEOPLE_COMPONENT_ID'],
-          'value' => organization.members.count,
-          'mode' => 'delayed',
-          'state' => 'New',
-          'asOf' => Time.now.utc.iso8601,
-        }
-      ]
-    }
+    payload = get_subscription
+    payload['pricingComponentValueChanges'] = [
+      {
+        'pricingComponentID' => ENV['THREADABLE_BILLFORWARD_PEOPLE_COMPONENT_ID'],
+        'oldValue' => old_value,
+        'newValue' => organization.members.count,
+        'mode' => 'delayed',
+        'state' => 'New',
+        'asOf' => Time.now.utc.iso8601,
+      }
+    ]
 
     response = self.class.put("#{url}/subscriptions", body: payload.to_json)
     response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to update active member count: #{response['errorMessage']}"
@@ -92,14 +85,20 @@ class Threadable::Billforward
   def update_paid_status
     return unless organization.billforward_subscription_id
 
-    response = HTTParty.get("#{url}/subscriptions/#{organization.billforward_subscription_id}?access_token=#{token}")
-    response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to fetch subscription for #{organization.slug}: #{response['errorMessage']}"
-    state = response['results'][0]['state']
+    state = get_subscription['state']
     if state == 'Paid' || state == 'Trial'
       organization.paid!
     else
       organization.free!
     end
+  end
+
+  private
+
+  def get_subscription
+    response = HTTParty.get("#{url}/subscriptions/#{organization.billforward_subscription_id}?access_token=#{token}")
+    response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to fetch subscription for #{organization.slug}: #{response['errorMessage']}"
+    response['results'][0]
   end
 
 end

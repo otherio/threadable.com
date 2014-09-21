@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Threadable::Organization::Members::Add, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
+  let(:billforward) { double(:billforward) }
 
   describe '#call' do
     let(:auto_join_group) { organization.groups.find_by_email_address_tag('graphic-design') }
@@ -27,6 +28,9 @@ describe Threadable::Organization::Members::Add, :type => :request do
         end
 
         it 'creates a new user adds them to the organization' do
+          expect(Threadable::Billforward).to receive(:new).with(organization: organization).and_return(billforward)
+          expect(billforward).to receive(:update_member_count)
+
           expect{
             organization.members.add(email_address: 'pete.tong@example.com', name: 'Pete Tong')
           }.to change{ User.count }.by(1)
@@ -54,6 +58,8 @@ describe Threadable::Organization::Members::Add, :type => :request do
       context "when given an existing user's email address" do
         let(:user) { threadable.users.find_by_email_address('amywong.phd@gmail.com') }
         it 'adds that user to the organization and all auto-joins groups but does not email our group add notices' do
+          expect(Threadable::Billforward).to receive(:new).with(organization: organization).and_return(billforward)
+          expect(billforward).to receive(:update_member_count)
 
           expect{
             organization.members.add(email_address: 'amywong.phd@gmail.com', name: 'Amy Wong')

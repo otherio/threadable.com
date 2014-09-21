@@ -76,6 +76,8 @@ class Threadable::Organization::Member < Threadable::User
       raise Threadable::AuthorizationError, 'You cannot remove members from this organization'
     end
 
+    original_member_count = organization.members.count
+
     Threadable.transaction do
       organization.groups.all_for_user(user).each do |group|
         group.members.remove user, send_notice: false
@@ -86,6 +88,9 @@ class Threadable::Organization::Member < Threadable::User
       end
 
       organization_membership_record.update_attribute(:active, false)
+
+      billforward = Threadable::Billforward.new(organization: organization)
+      billforward.update_member_count original_member_count
     end
 
     @threadable.track("Removed User", {

@@ -186,19 +186,25 @@ describe Threadable::Billforward, :type => :request do
     end
 
     context 'with valid data' do
+      let(:subscription_data) do
+        {
+          'results' => [
+            {
+              'id' => 'the_subscription_id'
+            }
+          ]
+        }
+      end
+
       let(:component_value_change_data) do
         {
           'id' => 'the_subscription_id',
-          'accountID' => 'the_account_id',
-          'productID' => 'the_pro_product_id',
-          'productRatePlanID' => 'the_pro_plan_id',
-          'name' => "Pro: #{organization.name}",
-          'type' => "Subscription",
 
           'pricingComponentValueChanges' => [
             {
               'pricingComponentID' => 'the_people_component_id',
-              'value' => organization.members.count,
+              'oldValue' => organization.members.count - 1,
+              'newValue' => organization.members.count,
               'mode' => 'delayed',
               'state' => 'New',
               'asOf' => Time.now.utc.iso8601,
@@ -219,6 +225,12 @@ describe Threadable::Billforward, :type => :request do
       end
 
       before do
+        stub_request(:get, "https://sandbox.billforward.net/subscriptions/the_subscription_id?access_token=#{token}").to_return(
+          body: subscription_data.to_json,
+          headers: {'Content-type' => 'application/json'},
+          status: 200,
+        )
+
         stub_request(:put, 'https://sandbox.billforward.net/subscriptions').with(
           body: component_value_change_data.to_json,
           headers: {'Authorization' => "Bearer #{token}", 'Content-type' => 'application/json'},
@@ -230,7 +242,7 @@ describe Threadable::Billforward, :type => :request do
       end
 
       it 'sets the member count at billforward' do
-        billforward.update_member_count
+        billforward.update_member_count organization.members.count - 1
       end
     end
   end
