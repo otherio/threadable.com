@@ -61,15 +61,15 @@ ActiveRecord::Schema.define(version: 20140918224626) do
 
   create_table "conversations", force: true do |t|
     t.string   "type"
-    t.text     "subject",                                                 null: false
-    t.integer  "organization_id",                                         null: false
+    t.text     "subject",                                   null: false
+    t.integer  "organization_id",                           null: false
     t.integer  "creator_id"
     t.integer  "position"
-    t.string   "slug",                                                    null: false
+    t.string   "slug",                                      null: false
     t.datetime "done_at"
     t.integer  "messages_count",          default: 0
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "group_ids_cache"
     t.text     "message_summary_cache"
     t.text     "participant_names_cache"
@@ -261,20 +261,13 @@ ActiveRecord::Schema.define(version: 20140918224626) do
     t.boolean  "trusted",                            default: false
     t.boolean  "hold_all_messages",                  default: false, null: false
     t.integer  "google_user_id"
-<<<<<<< HEAD
     t.integer  "plan",                               default: 0,     null: false
     t.boolean  "public_signup",                      default: false, null: false
     t.integer  "group_membership_permission",        default: 0,     null: false
     t.integer  "group_settings_permission",          default: 0,     null: false
-    t.integer  "organization_membership_permission", default: 0,     null: false
-=======
-    t.integer  "plan",                        default: 0,     null: false
-    t.boolean  "public_signup",               default: false, null: false
-    t.integer  "group_membership_permission", default: 0,     null: false
-    t.integer  "group_settings_permission",   default: 0,     null: false
     t.string   "billforward_account_id"
     t.string   "billforward_subscription_id"
->>>>>>> Billforward integration. Works for making a subscription, webhook might not work yet
+    t.integer  "organization_membership_permission", default: 0,     null: false
   end
 
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree
