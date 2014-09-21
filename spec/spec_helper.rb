@@ -11,6 +11,7 @@ require 'sidekiq/testing'
 require 'shoulda-matchers'
 require 'timecop'
 require 'timeout'
+require 'webmock/rspec'
 
 Sidekiq::Testing.fake!
 
@@ -46,6 +47,8 @@ RSpec.configure do |config|
   end
 
   config.around :each do |example|
+    WebMock.allow_net_connect!
+
     use_fixtures    = example.metadata[:fixtures] != false
     use_transaction = example.metadata[:transaction] != false
 

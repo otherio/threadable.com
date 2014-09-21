@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'webmock/rspec'
 
 describe Threadable::Billforward, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
@@ -9,6 +8,7 @@ describe Threadable::Billforward, :type => :request do
   subject { billforward }
 
   before do
+    WebMock.disable_net_connect!
     ENV['THREADABLE_BILLFORWARD_API_URL'] = 'https://sandbox.billforward.net'
     ENV['THREADABLE_BILLFORWARD_PRO_PLAN_ID'] = 'the_pro_plan_id'
     ENV['THREADABLE_BILLFORWARD_PEOPLE_COMPONENT_ID'] = 'the_people_component_id'

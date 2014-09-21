@@ -1,10 +1,13 @@
 require 'spec_helper'
-require 'webmock/rspec'
 
 describe SubscribeController, type: :controller, fixtures: true do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
 
   include EmberRouteUrlHelpers
+
+  before do
+    WebMock.disable_net_connect!
+  end
 
   when_not_signed_in do
     describe '#show' do
