@@ -1,5 +1,7 @@
 class SubscribeController < ApplicationController
 
+  include EmberRouteUrlHelpers
+
   skip_before_action :require_user_be_signed_in!, only: [:callback]
   protect_from_forgery except: :callback
 
@@ -13,7 +15,7 @@ class SubscribeController < ApplicationController
     end
 
     url = ENV['THREADABLE_BILLFORWARD_CHECKOUT_URL']
-    redirect_to "#{url}/subscription/#{organization.billforward_subscription_id}?wanted_state=AwaitingPayment"
+    redirect_to "#{url}/subscription/#{organization.billforward_subscription_id}?wanted_state=AwaitingPayment&redirect=#{organization_settings_url(organization)}&force_redirect=true"
   end
 
   def callback

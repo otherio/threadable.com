@@ -4,6 +4,8 @@ require 'webmock/rspec'
 describe SubscribeController, type: :controller, fixtures: true do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
 
+  include EmberRouteUrlHelpers
+
   when_not_signed_in do
     describe '#show' do
       it 'redirects to sign_in' do
@@ -23,16 +25,22 @@ describe SubscribeController, type: :controller, fixtures: true do
 
       let(:response_data) do
         {
-          'id' => 'the_subscription_id',
-          'accountID' => 'the_account_id',
-          'state' => 'Paid',
+          'results' => [
+            {
+              'id' => 'the_subscription_id',
+              'accountID' => 'the_account_id',
+              'state' => 'Paid',
+            }
+          ]
         }
       end
+
+      let(:token) { ENV['THREADABLE_BILLFORWARD_TOKEN'] }
 
       before do
         ENV['THREADABLE_BILLFORWARD_API_URL'] = 'https://sandbox.billforward.net'
         organization.organization_record.update_attributes(billforward_account_id: 'the_account_id', billforward_subscription_id: 'the_subscription_id', plan: :free)
-        stub_request(:get, 'https://sandbox.billforward.net/subscriptions/the_subscription_id').to_return(
+        stub_request(:get, "https://sandbox.billforward.net/subscriptions/the_subscription_id?access_token=#{token}").to_return(
           body: response_data.to_json,
           headers: {'Content-type' => 'application/json'},
           status: 200,
@@ -61,7 +69,7 @@ describe SubscribeController, type: :controller, fixtures: true do
         expect(billforward).to receive(:update_member_count)
         get :show, organization_id: organization.slug
         url = ENV['THREADABLE_BILLFORWARD_CHECKOUT_URL']
-        expect(response).to redirect_to "#{url}/subscription/subscription_id?wanted_state=AwaitingPayment"
+        expect(response).to redirect_to "#{url}/subscription/subscription_id?wanted_state=AwaitingPayment&redirect=#{organization_settings_url(organization)}&force_redirect=true"
       end
     end
   end

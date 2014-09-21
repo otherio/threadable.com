@@ -24,6 +24,10 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     return ! this.get('isPaid');
   }.property('isPaid'),
 
+  subscribeUrl: function(){
+    return '/subscribe/' + this.get('slug');
+  }.property('slug'),
+
   editableOrganization: function() { return this.get('model').copy(); }.property('model'),
 
   descriptionLengthRemaining: function() {
