@@ -11,11 +11,19 @@ class Threadable::Organization::My
   private
 
   def conversations_scope
-    organization_record.conversations.untrashed.for_user(threadable.current_user_id)
+    if organization.members.current_member.can?(:read_private, organization.groups)
+      organization_record.conversations.untrashed.for_user_with_private(threadable.current_user_id)
+    else
+      organization_record.conversations.untrashed.for_user(threadable.current_user_id)
+    end
   end
 
   def tasks_scope
-    organization_record.tasks.untrashed.for_user(threadable.current_user_id)
+    if organization.members.current_member.can?(:read_private, organization.groups)
+      organization_record.tasks.untrashed.for_user_with_private(threadable.current_user_id)
+    else
+      organization_record.tasks.untrashed.for_user(threadable.current_user_id)
+    end
   end
 
 end

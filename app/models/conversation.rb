@@ -61,6 +61,15 @@ class Conversation < ActiveRecord::Base
     joins('LEFT JOIN conversation_groups AS scope_conversation_groups ON conversations.id = scope_conversation_groups.conversation_id and scope_conversation_groups.active = \'t\'').
     joins("LEFT JOIN group_memberships ON scope_conversation_groups.group_id = group_memberships.group_id AND group_memberships.user_id = #{user_id}").
     joins("LEFT JOIN conversations_followers ON conversations_followers.conversation_id = conversations.id AND conversations_followers.user_id = #{user_id}").
+    where('group_memberships.user_id is not null or (conversations.private_cache = \'f\' AND conversations_followers.user_id is not null)', user_id).
+    group('conversations.id')
+  }
+
+  scope :for_user_with_private, ->(user_id){
+    user_id = Conversation.sanitize(user_id)
+    joins('LEFT JOIN conversation_groups AS scope_conversation_groups ON conversations.id = scope_conversation_groups.conversation_id and scope_conversation_groups.active = \'t\'').
+    joins("LEFT JOIN group_memberships ON scope_conversation_groups.group_id = group_memberships.group_id AND group_memberships.user_id = #{user_id}").
+    joins("LEFT JOIN conversations_followers ON conversations_followers.conversation_id = conversations.id AND conversations_followers.user_id = #{user_id}").
     where('group_memberships.user_id is not null or conversations_followers.user_id is not null', user_id).
     group('conversations.id')
   }

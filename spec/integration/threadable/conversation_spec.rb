@@ -70,6 +70,16 @@ describe Threadable::Conversation, :type => :request do
     end
   end
 
+  describe '#muter_count' do
+    let(:conversation) { organization.conversations.find_by_slug('get-a-new-soldering-iron')}
+    before{ sign_in_as 'alice@ucsd.example.com' }
+
+    it 'returns the number of muters' do
+      conversation.mute!
+      expect(conversation.muter_count).to eq 1
+    end
+  end
+
   describe 'following a conversation' do
     let(:conversation){ organization.conversations.find_by_slug!(single_group_conversation) }
     let(:user) { organization.members.find_by_email_address('alice@ucsd.example.com') }
@@ -128,6 +138,52 @@ describe Threadable::Conversation, :type => :request do
         it 'raises an ArgumentError' do
           expect{ conversation.muted? }.to raise_error ArgumentError
         end
+      end
+    end
+
+    describe '#follower_count' do
+      before{ sign_in_as 'alice@ucsd.example.com' }
+
+      it 'returns the number of muters' do
+        conversation.follow!
+        expect(conversation.follower_count).to eq 1
+      end
+    end
+
+    describe '#recipient_follower_ids' do
+      let(:leaders) { organization.groups.find_by_slug('leaders') }
+      let(:bethany) { organization.members.find_by_email_address('bethany@ucsd.example.com') }
+      let(:alice)   { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+      before do
+        sign_in_as 'alice@ucsd.example.com'
+        conversation.follow_for(bethany)
+        conversation.follow!
+      end
+
+      context 'for a public conversation' do
+        it 'returns the number of followers' do
+          expect(conversation.recipient_follower_ids).to match_array([alice.id, bethany.id])
+        end
+      end
+
+      context 'for a private conversation' do
+        let(:conversation) { organization.conversations.find_by_slug('recruiting') }
+
+        it 'returns the number of group member followers only' do
+          expect(conversation.recipient_follower_ids).to match_array([alice.id])
+        end
+
+        context 'when a follower is an owner, but not a group member' do
+          before do
+            leaders.members.remove(alice)
+          end
+
+          it 'still includes them' do
+            expect(conversation.recipient_follower_ids).to match_array([alice.id])
+          end
+        end
+
       end
     end
   end

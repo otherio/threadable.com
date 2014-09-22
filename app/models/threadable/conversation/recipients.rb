@@ -6,7 +6,11 @@ class Threadable::Conversation::Recipients
     @conversation = conversation
   end
   attr_reader :conversation
-  delegate :threadable, to: :conversation
+
+  delegate *%w{
+    threadable
+    organization
+  }, to: :conversation
 
   def all
     organization_members_for scope
@@ -33,7 +37,7 @@ class Threadable::Conversation::Recipients
   end
 
   def scope_without_groups
-    OrganizationMembership.
+    ::OrganizationMembership.
       includes(:user).
       distinct.
       who_get_email.
@@ -42,8 +46,14 @@ class Threadable::Conversation::Recipients
   end
 
   def scope
-    groups = conversation.groups.all
-    scope_without_groups.in_groups_with_each_message_including_followers(conversation.id, groups.map(&:id), false)
+    group_ids = conversation.groups.all.map(&:id)
+
+    if conversation.private?
+      owner_ids = organization.organization_record.memberships.who_are_owners.map(&:user_id)
+      scope_without_groups.in_groups_with_each_message_including_member_followers(conversation.id, group_ids, owner_ids, false)
+    else
+      scope_without_groups.in_groups_with_each_message_including_followers(conversation.id, group_ids, false)
+    end
   end
 
 end

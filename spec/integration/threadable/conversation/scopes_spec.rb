@@ -8,14 +8,16 @@ describe Threadable::Conversation::Scopes, :type => :request do
     }.send(:include, described_class).new
   end
 
+  let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
+  let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
+  let(:bethany) { raceteam.members.find_by_email_address('bethany@ucsd.example.com') }
+  let(:private_conversation) { raceteam.conversations.find_by_slug('recruiting') }
+
   before do
     object.threadable             = threadable
     object.conversations_scope = conversations_scope
     object.tasks_scope         = tasks_scope
   end
-
-  let(:raceteam){ threadable.organizations.find_by_slug! 'raceteam' }
-  let(:sfhealth){ threadable.organizations.find_by_slug! 'sfhealth' }
 
   when_signed_in_as 'bethany@ucsd.example.com' do
     context 'and scope is the raceteam organization' do
@@ -109,10 +111,57 @@ describe Threadable::Conversation::Scopes, :type => :request do
       end
 
       context 'scoped to conversations the current user is subscribed to' do
-
         let(:conversations_scope){ raceteam.organization_record.conversations.for_user(threadable.current_user_id) }
 
-        it "returns the the expected conversations and tasks" do
+        it "returns 'my' conversations and tasks" do
+          @muted_conversations      = object.muted_conversations(0)
+          @not_muted_conversations  = object.not_muted_conversations(0)
+          @done_tasks               = object.done_tasks(0)
+          @not_done_tasks           = object.not_done_tasks(0)
+          @done_doing_tasks         = object.done_doing_tasks(0)
+          @not_done_doing_tasks     = object.not_done_doing_tasks(0)
+
+          expect( slugs_for @not_muted_conversations ).to match_array []
+          expect( slugs_for @muted_conversations ).to match_array []
+
+          expect( slugs_for @done_tasks ).to match_array [
+            "get-carbon-and-fiberglass", "get-epoxy", "get-release-agent", "layup-body-carbon"
+          ]
+
+          expect( slugs_for @not_done_tasks ).to match_array [
+            "get-a-new-soldering-iron", "get-some-4-gauge-wire", "install-mirrors", "inventory-led-supplies", "make-wooden-form-for-carbon-layup", "trim-body-panels"
+          ]
+
+          expect( slugs_for @done_doing_tasks ).to match_array []
+          expect( slugs_for @not_done_doing_tasks ).to match_array ["get-a-new-soldering-iron"]
+
+        end
+      end
+
+      context 'scoped to conversations the current user is subscribed to, including private conversations' do
+        let(:conversations_scope){ raceteam.organization_record.conversations.for_user_with_private(threadable.current_user_id) }
+
+        it "returns 'my' conversations and tasks" do
+          @muted_conversations      = object.muted_conversations(0)
+          @not_muted_conversations  = object.not_muted_conversations(0)
+          @done_tasks               = object.done_tasks(0)
+          @not_done_tasks           = object.not_done_tasks(0)
+          @done_doing_tasks         = object.done_doing_tasks(0)
+          @not_done_doing_tasks     = object.not_done_doing_tasks(0)
+
+          expect( slugs_for @not_muted_conversations ).to match_array []
+          expect( slugs_for @muted_conversations ).to match_array []
+
+          expect( slugs_for @done_tasks ).to match_array [
+            "get-carbon-and-fiberglass", "get-epoxy", "get-release-agent", "layup-body-carbon"
+          ]
+
+          expect( slugs_for @not_done_tasks ).to match_array [
+            "get-a-new-soldering-iron", "get-some-4-gauge-wire", "install-mirrors", "inventory-led-supplies", "make-wooden-form-for-carbon-layup", "trim-body-panels"
+          ]
+
+          expect( slugs_for @done_doing_tasks ).to match_array []
+          expect( slugs_for @not_done_doing_tasks ).to match_array ["get-a-new-soldering-iron"]
 
         end
       end

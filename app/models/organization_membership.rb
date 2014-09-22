@@ -34,7 +34,18 @@ class OrganizationMembership < ActiveRecord::Base
 
     joins("LEFT JOIN group_memberships ON group_memberships.group_id in (#{group_ids})").
     joins("LEFT JOIN conversations_followers f ON f.user_id = organization_memberships.user_id AND f.conversation_id in (#{conversation_ids})").
-    where("(group_memberships.user_id = organization_memberships.user_id AND group_memberships.delivery_method in (#{delivery_methods.join(',')})) OR f.user_id IS NOT NULL")
+    where("(group_memberships.user_id = organization_memberships.user_id AND group_memberships.delivery_method in (?)) OR f.user_id IS NOT NULL", delivery_methods)
+  }
+
+  scope :in_groups_with_each_message_including_member_followers, ->(conversation_ids, group_ids, owner_ids, first_message = false){
+    group_ids = Array(group_ids).map(&:to_i).join(',')
+    conversation_ids = Array(conversation_ids).map(&:to_i).join(',')
+    delivery_methods = [::GroupMembership.delivery_methods[:gets_each_message]]
+    delivery_methods << ::GroupMembership.delivery_methods[:gets_first_message] if first_message
+
+    joins("LEFT JOIN group_memberships ON group_memberships.group_id in (#{group_ids}) AND organization_memberships.user_id = group_memberships.user_id").
+    joins("LEFT JOIN conversations_followers f ON f.user_id = organization_memberships.user_id AND f.conversation_id in (#{conversation_ids})").
+    where("group_memberships.delivery_method in (?) OR (f.user_id IS NOT NULL AND (group_memberships.user_id IS NOT NULL OR f.user_id IN (?)))", delivery_methods, owner_ids)
   }
 
   ROLES.each do |role|

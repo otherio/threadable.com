@@ -56,6 +56,24 @@ class Threadable::Conversation < Threadable::Model
     conversation_record.follower_ids_cache
   end
 
+  def muter_count
+    conversation_record.muter_ids_cache.length
+  end
+
+  def follower_count
+    recipient_follower_ids.length
+  end
+
+  def recipient_follower_ids
+    if private?
+      group_recipient_ids = conversation_record.groups.eager_load(:members).map(&:members).flatten.map(&:id)
+      owner_ids = organization.organization_record.memberships.who_are_owners.map(&:user_id)
+      conversation_record.follower_ids_cache & group_recipient_ids + owner_ids
+    else
+      conversation_record.follower_ids_cache
+    end
+  end
+
   def mute_for user
     unless muted_by? user
       Threadable.transaction do
@@ -143,8 +161,7 @@ class Threadable::Conversation < Threadable::Model
   alias_method :followed_by, :followed_by?
 
   def private?
-    private_count = conversation_record.groups.where(private: true).count
-    private_count > 0 && private_count == conversation_record.groups.count
+    conversation_record.private_cache
   end
 
   def sync_to_user recipient
@@ -289,8 +306,9 @@ class Threadable::Conversation < Threadable::Model
 
   def update_group_caches! group_ids=nil
     group_ids ||= groups.all.map(&:id)
-    update(group_ids_cache: group_ids)
-    update(groups_count: group_ids.size)
+    private_count = conversation_record.groups.where(private: true).count
+    is_private = private_count > 0 && private_count == group_ids.count
+    update(group_ids_cache: group_ids, groups_count: group_ids.size, private_cache: is_private)
   end
 
   def update_message_summary_cache!

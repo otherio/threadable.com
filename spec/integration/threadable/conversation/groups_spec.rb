@@ -10,8 +10,11 @@ describe Threadable::Conversation::Groups, :type => :request do
   let(:fundraising) { organization.groups.find_by_email_address_tag('fundraising') }
   let(:graphic_design) { organization.groups.find_by_email_address_tag('graphic-design') }
 
-
   subject{ groups }
+
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
 
   describe '#all' do
     subject { super().all }
@@ -69,7 +72,19 @@ describe Threadable::Conversation::Groups, :type => :request do
           [:conversation_added_group,   electronics.id],
         ]
       end
+    end
 
+    context 'with private groups' do
+      let(:conversation){ organization.conversations.find_by_slug('recruiting') }
+
+      it 'is private when all groups are private' do
+        expect(conversation.private?).to be_truthy
+      end
+
+      it 'changes to open when a non-private group is added' do
+        conversation.groups.add(electronics)
+        expect(conversation.private?).to be_falsy
+      end
     end
 
   end
@@ -118,8 +133,21 @@ describe Threadable::Conversation::Groups, :type => :request do
 
         expect(conversation.events.count).to eq starting_events_count
       end
-
     end
+
+    context 'with private groups' do
+      let(:conversation){ organization.conversations.find_by_slug('recruiting') }
+
+      it 'is private when all groups are private' do
+        expect(conversation.private?).to be_truthy
+      end
+
+      it 'changes to open when a non-private group is added' do
+        conversation.groups.add_unless_removed(electronics)
+        expect(conversation.private?).to be_falsy
+      end
+    end
+
 
   end
 
@@ -196,6 +224,7 @@ describe Threadable::Conversation::Groups, :type => :request do
         expect(events).to_not eq [:conversation_removed_group]
       end
     end
+
   end
 
 end
