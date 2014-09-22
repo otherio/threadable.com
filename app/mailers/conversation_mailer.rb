@@ -1,6 +1,7 @@
 # Encoding: UTF-8
 require 'prepare_email_subject'
 require 'verify_dmarc'
+require 'address_list'
 
 class ConversationMailer < Threadable::Mailer
 
