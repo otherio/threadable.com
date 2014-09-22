@@ -4,7 +4,7 @@ describe Threadable::Organization::Members::Remove, :type => :model do
 
   delegate :call, to: :described_class
 
-  let(:organization){ double(:organization, id: 134, name: 'lick a baby') }
+  let(:organization){ double(:organization, id: 134, name: 'lick a baby', members: double(:members, count: 10)) }
   let(:members){ double(:members, organization: organization) }
   let(:scope  ){ double(:scope) }
   let(:billforward) { double(:billforward) }
