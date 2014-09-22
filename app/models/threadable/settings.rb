@@ -22,6 +22,7 @@ class Threadable::Settings < Threadable::Model
   def set setting, value
     setting = setting.to_sym
     value = value.to_sym
+    return if get(setting) == value
     raise Threadable::AuthorizationError, 'You cannot set that parameter with your current plan' unless settable?(setting)
     model.update_attribute(setting, options_for(setting).index(value))
   end

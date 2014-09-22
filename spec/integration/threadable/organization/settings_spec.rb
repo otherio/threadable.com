@@ -25,6 +25,10 @@ describe Threadable::Organization::Settings, :type => :request do
       it 'raises an error when trying to set it' do
         expect{organization.settings.set(:group_membership_permission, :owner)}.to raise_error Threadable::AuthorizationError, 'You cannot set that parameter with your current plan'
       end
+
+      it 'does not raise an error if it would not be changed' do
+        expect{organization.settings.set(:group_membership_permission, :member)}.to_not raise_error
+      end
     end
 
     context 'when the org is paid' do
