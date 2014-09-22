@@ -22,7 +22,7 @@ describe EmberRouteUrlHelpers, fixtures: false do
 
     expect( helper.organization_member_url        'raceteam', '1'                                ).to eq 'http://example.com:3456/raceteam/members/1'
     expect( helper.organization_members_url       'raceteam'                                     ).to eq 'http://example.com:3456/raceteam/members'
-    expect( helper.organization_members_add_url   'raceteam'                                     ).to eq 'http://example.com:3456/raceteam/members/add'
+    expect( helper.add_organization_member_url    'raceteam'                                     ).to eq 'http://example.com:3456/raceteam/members/add'
     expect( helper.group_member_url               'raceteam', 'electronics', '1'                 ).to eq 'http://example.com:3456/raceteam/electronics/members/1'
     expect( helper.group_members_url              'raceteam', 'electronics'                      ).to eq 'http://example.com:3456/raceteam/electronics/members'
     expect( helper.conversation_url               'raceteam', 'electronics', 'who-ate-my-cheese' ).to eq 'http://example.com:3456/raceteam/electronics/conversations/who-ate-my-cheese'

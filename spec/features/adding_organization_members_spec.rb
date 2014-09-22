@@ -85,7 +85,7 @@ feature "Adding organization members" do
   end
 
   def add_member_to_organization name, email_address, organization_slug, personal_message=nil
-    visit organization_members_add_url(organization_slug)
+    visit add_organization_member_url(organization_slug)
 
     within '.add-member' do
       fill_in 'Name', with: name

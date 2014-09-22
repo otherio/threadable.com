@@ -20,7 +20,7 @@ class Threadable::Organization::Members::Remove < MethodObject
   end
 
   def delete_organization_membership!
-    original_member_count = organization.members.count
+    original_member_count = @organization.members.count
 
     Threadable.transaction do
       @scope.where(user_id: user_id).delete_all
