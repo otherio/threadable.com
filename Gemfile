@@ -100,7 +100,6 @@ group :test do
   gem 'ffaker'
   gem 'rest-client'
   gem 'rspec-legacy_formatters'
-  gem 'webmock', require: nil
 end
 
 group :staging_spec do
