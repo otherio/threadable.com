@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.0.0"
+ruby "2.1.3"
 
 gem 'rails', '4.1.5'
 gem 'jquery-rails'
@@ -14,7 +14,7 @@ gem 'sidekiq-unique-jobs'
 gem 'redis'
 gem 'pg'
 
-gem 'bcrypt-ruby'
+gem 'bcrypt'
 gem 'stringex'
 gem 'method_object'
 gem 'options_hash-method_object'
@@ -100,6 +100,7 @@ group :test do
   gem 'ffaker'
   gem 'rest-client'
   gem 'rspec-legacy_formatters'
+  gem 'webmock', require: nil
 end
 
 group :staging_spec do
