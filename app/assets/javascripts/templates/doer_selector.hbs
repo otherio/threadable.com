@@ -1,30 +1,32 @@
-<div class="doer-selector scrollable">
+<div class="doer-selector">
   <a href="" class="label not-link" {{action 'toggleDoerSelector'}}>
     <div class="uk-float-right"><i class="uk-icon-times"></i></div>
     <i class="caret-icon uk-icon-caret-down"><span class="sr-only">Show doers</span></i>
     doers:
   </a>
-  <ul>
-    {{#each member in controller}}
-      <li {{bind-attr class="member.isChanged:changed member.isDoer:is-doer :member :uk-clearfix"}}>
-        <a href="" class="not-link" {{action 'toggleDoer'}}>
-          <div class="right-content uk-float-right">
-            {{#if member.isDoer}}
-              <i class="toggle-doer uk-icon-minus"><span class="sr-only">Remove</span></i>
-            {{else}}
-              <i class="toggle-doer uk-icon-plus"><span class="sr-only">Add</span></i>
-            {{/if}}
-          </div>
+  <div class="list-container scrollable">
+    <ul>
+      {{#each member in controller}}
+        <li {{bind-attr class="member.isChanged:changed member.isDoer:is-doer :member :uk-clearfix"}}>
+          <a href="" class="not-link" {{action 'toggleDoer'}}>
+            <div class="right-content uk-float-right">
+              {{#if member.isDoer}}
+                <i class="toggle-doer uk-icon-minus"><span class="sr-only">Remove</span></i>
+              {{else}}
+                <i class="toggle-doer uk-icon-plus"><span class="sr-only">Add</span></i>
+              {{/if}}
+            </div>
 
-          <div class="left-content">
-            <span class="avatar avatar-small uk-float-left">
-              <img {{bind-attr src="member.avatarUrl"}}></img>
-            </span>
-            <div class="name">{{member.name}}</div>
-            <div class="email">{{member.emailAddress}}</div>
-          </div>
-        </a>
-      </li>
-    {{/each}}
-  </ul>
+            <div class="left-content">
+              <span class="avatar avatar-small uk-float-left">
+                <img {{bind-attr src="member.avatarUrl"}}></img>
+              </span>
+              <div class="name">{{member.name}}</div>
+              <div class="email">{{member.emailAddress}}</div>
+            </div>
+          </a>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
 </div>
