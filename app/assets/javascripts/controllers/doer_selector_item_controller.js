@@ -5,11 +5,12 @@ Threadable.DoerSelectorItemController = Ember.ObjectController.extend({
 
   isDoer: function() {
     var doers = this.get('doers');
-    if (!doers) return false;
-    return doers.mapBy('id').indexOf(this.get('id')) !== -1;
-  }.property('doers.@each'),
+    if(!doers) debugger;
+    if (doers.length < 1) return false;
+    return !! doers.findBy('id', this.get('id'));
+  }.property('doers.@each', 'id'),
 
-  change: function() {
+  changeType: function() {
     var persistedDoers = this.get('controllers.conversation.doers');
 
     if(persistedDoers) {
@@ -24,24 +25,22 @@ Threadable.DoerSelectorItemController = Ember.ObjectController.extend({
     if (doerHere == doerSaved) return null;
     if (doerSaved) return 'removed';
     return 'added';
-  }.property('doers.@each', 'controllers.conversation.doers.@each'),
+  }.property('id', 'isDoer', 'controllers.conversation.doers.@each'),
 
   isChanged: function() {
-    return !!this.get('change');
-  }.property('change'),
+    return !!this.get('changeType');
+  }.property('changeType'),
 
   isAdded: function() {
-    return this.get('change') == 'added';
-  }.property('change'),
+    return this.get('changeType') == 'added';
+  }.property('changeType'),
 
   actions: {
     toggleDoer: function() {
       var doer  = this.get('model');
       var doers = this.get('doers');
       if(this.get('isDoer') ){
-        this.get('controllers.doerSelector').set('doers', doers.reject(function(filteredDoer) {
-          return doer.get('id') === filteredDoer.get('id');
-        }));
+        this.get('controllers.doerSelector').set('doers', doers.rejectBy('id', doer.get('id')));
       } else {
         doers.pushObject(doer);
       }

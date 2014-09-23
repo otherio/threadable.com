@@ -3,11 +3,8 @@ Threadable.DoerSelectorController = Ember.ArrayController.extend({
   model: Ember.computed.alias('controllers.organization.members'),
 
   itemController: 'doer_selector_item',
-  sortProperties: ['isDoer'], // why doesnt this work!?!?! - Jared
 
-  doers: function(){
-    return this.get('controllers.conversation.doers').toArray();
-  }.property('controlers.conversation', 'controlers.conversation.doers'),
+  doers: [],
 
   actions: {
     toggleDoerSelector: function() {
