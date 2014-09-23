@@ -24,7 +24,11 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
   }.property('totalMessages', 'sentMessages', 'currentUserIsARecipient'),
 
   unselectedGroups: function() {
-    var groups = Ember.ArrayProxy.create({content:[]});
+    var groups = Ember.ArrayProxy.createWithMixins(Ember.SortableMixin, {
+      content:[],
+      sortProperties: ['name'],
+      sortAscending: true
+    });
     groups.addObjects(this.get('organization.groups'));
     groups.removeObjects(this.get('groups'));
     return groups;
