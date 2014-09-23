@@ -45,13 +45,8 @@
             </div>
           {{else}}
             <div class="uk-form-controls input-field">
-<<<<<<< HEAD
-              {{calculatedEmailAddressTag}}@{{controllers.organization.emailAddressUsername}}.threadable.com
-              <a href {{action 'editEmailAddressTag'}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
-=======
               {{calculatedEmailAddressTag}}@{{organization.emailAddressUsername}}.threadable.com
               <a href {{action editEmailAddressTag}}><i class="uk-icon-edit"><span class="sr-only">Edit</span></i></a>
->>>>>>> Added private groups and a way to create them. They don't work yet, though.
             </div>
           {{/if}}
         </div>

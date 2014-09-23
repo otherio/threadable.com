@@ -69,11 +69,18 @@
                   = link_to "#{group.name}", conversations_url(@organization, group)
                   |
                   = mail_to group.email_address, group.email_address
-                  = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
-                  |
-                  - if group.members.include? @recipient
-                    = link_to 'leave', email_action_link(group, @recipient, "leave")
+                  - if group.private?
+                    - if group.members.include?(@recipient)
+                      = "(private, #{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
+                    - else
+                      (private)
                   - else
+                    = "(#{link_to "#{group.members.count} people...", group_members_url(@organization, group)})".html_safe
+                  - if group.members.include? @recipient
+                    |
+                    = link_to 'leave', email_action_link(group, @recipient, "leave")
+                  - elsif !group.private?
+                    |
                     = link_to 'join', email_action_link(group, @recipient, "join")
             - if @follower_count > 0 || @muter_count > 0
               .threadable-participants{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}

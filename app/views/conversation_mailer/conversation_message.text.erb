@@ -5,7 +5,7 @@ _____
 <% if @flash.present? %>
 <%= @flash %>
 <% end %><% @conversation.groups.all.each do |group| %>
-<%= group.name %>: <%= group.email_address %>
+<%= group.name %>: <%= group.email_address %><%if group.private? %> (private)<% end %>
 <% end %>
 
 Web view:
