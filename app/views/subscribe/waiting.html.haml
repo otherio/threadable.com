@@ -1,0 +1,65 @@
+!!!
+%html.client-app
+  %head
+    = render 'layouts/headers'
+    = stylesheet_link_tag 'application', :media => "all"
+
+  %body
+
+    :css
+      .spinner {
+        margin: 100px auto;
+        width: 100px;
+        height: 100px;
+        position: relative;
+      }
+
+      .cube1, .cube2 {
+        background-color: #333;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        -webkit-animation: plcubemove 1.8s infinite ease-in-out;
+        animation: plcubemove 1.8s infinite ease-in-out;
+      }
+
+      .cube2 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+      }
+
+      @-webkit-keyframes plcubemove {
+        25% { -webkit-transform: translateX(100px) rotate(-90deg) scale(0.5) }
+        50% { -webkit-transform: translateX(100px) translateY(100px) rotate(-180deg) }
+        75% { -webkit-transform: translateX(0px) translateY(100px) rotate(-270deg) scale(0.5) }
+        100% { -webkit-transform: rotate(-360deg) }
+      }
+
+      @keyframes plcubemove {
+        25% {
+          transform: translateX(100px) rotate(-90deg) scale(0.5);
+          -webkit-transform: translateX(100px) rotate(-90deg) scale(0.5);
+        } 50% {
+          transform: translateX(100px) translateY(100px) rotate(-179deg);
+          -webkit-transform: translateX(100px) translateY(100px) rotate(-179deg);
+        } 50.1% {
+          transform: translateX(100px) translateY(100px) rotate(-180deg);
+          -webkit-transform: translateX(100px) translateY(100px) rotate(-180deg);
+        } 75% {
+          transform: translateX(0px) translateY(100px) rotate(-270deg) scale(0.5);
+          -webkit-transform: translateX(0px) translateY(100px) rotate(-270deg) scale(0.5);
+        } 100% {
+          transform: rotate(-360deg);
+          -webkit-transform: rotate(-360deg);
+        }
+      }
+
+    :javascript
+      setTimeout(function() {window.location = "#{subscribe_wait_path(@organization, retries: @retries)}"; }, 2000);
+
+    .page-loading.spinner
+      .cube1
+      .cube2

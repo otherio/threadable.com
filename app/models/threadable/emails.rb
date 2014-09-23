@@ -61,6 +61,7 @@ class Threadable::Emails
       message_accepted_notice:    IncomingEmailMailer,
       message_bounced_dsn:        IncomingEmailMailer,
       spam_complaint:             ErrorMailer,
+      billing_callback_error:     ErrorMailer,
     }
   end
 

@@ -15,6 +15,7 @@ Threadable::Application.routes.draw do
   post '/ea/:token' => 'email_actions#take'
 
   get  '/subscribe/:organization_id' => 'subscribe#show', as: 'subscribe'
+  get  '/subscribe/wait/:organization_id' => 'subscribe#wait', as: 'subscribe_wait'
   post '/subscribe/callback' => 'subscribe#callback', as: 'subscribe_callback'
 
   namespace :api, except: [:new, :edit] do

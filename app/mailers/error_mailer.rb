@@ -9,4 +9,12 @@ class ErrorMailer < Threadable::Mailer
     )
   end
 
+  def billing_callback_error(organization_slug)
+    @organization_slug = organization_slug
+    mail(
+      to:      'accounts@threadable.threadable.com',
+      from:    "Threadable accounts <accounts@threadable.threadable.com>",
+      subject: "Billing Callback Error",
+    )
+  end
 end

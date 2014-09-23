@@ -206,6 +206,29 @@ describe 'sending emails', :type => :request do
       end
     end
 
+    describe 'billing_callback_error' do
+      def expect_email!
+        email = sent_emails.to('accounts@threadable.threadable.com').with_subject("Billing Callback Error").first
+        expect(email).to be_present
+      end
+
+      context "sync" do
+        it "should send email" do
+          threadable.emails.send_email(:billing_callback_error, organization.slug)
+          expect_email!
+        end
+      end
+      context "async" do
+        it "should schedule a job that sends the email" do
+          threadable.emails.send_email_async(:billing_callback_error, organization.slug)
+          expect(sent_emails).to be_empty
+          expect_job_to_be_enqueued! "billing_callback_error", organization.slug
+          run_jobs!
+          expect_email!
+        end
+      end
+    end
+
     describe 'reset_password' do
 
       def expect_email!

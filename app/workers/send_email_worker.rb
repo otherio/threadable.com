@@ -110,4 +110,8 @@ class SendEmailWorker < Threadable::Worker
     threadable.emails.send_email(:spam_complaint, params)
   end
 
+  def billing_callback_error organization_slug
+    threadable.emails.send_email(:billing_callback_error, organization_slug)
+  end
+
 end

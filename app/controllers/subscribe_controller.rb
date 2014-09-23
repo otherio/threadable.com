@@ -15,7 +15,23 @@ class SubscribeController < ApplicationController
     end
 
     url = ENV['THREADABLE_BILLFORWARD_CHECKOUT_URL']
-    redirect_to "#{url}/subscription/#{organization.billforward_subscription_id}?wanted_state=AwaitingPayment&redirect=#{organization_settings_url(organization)}&force_redirect=true"
+    redirect_to "#{url}/subscription/#{organization.billforward_subscription_id}?wanted_state=AwaitingPayment&redirect=#{subscribe_wait_url(organization)}&force_redirect=true"
+  end
+
+  def wait
+    if organization.paid?
+      return redirect_to organization_settings_path(organization)
+    end
+
+    @retries = params[:retries].to_i + 1
+
+    if @retries > 3
+      organization.update(plan: :paid)
+      threadable.emails.send_email_async(:billing_callback_error, organization.slug)
+      return redirect_to organization_settings_path(organization)
+    end
+
+    render :waiting
   end
 
   def callback

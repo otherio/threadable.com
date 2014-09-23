@@ -17,6 +17,13 @@ describe SubscribeController, type: :controller, fixtures: true do
       end
     end
 
+    describe '#wait' do
+      it 'redirects to sign_in' do
+        get :wait, organization_id: organization.slug
+        expect(response.status).to eq 302
+      end
+    end
+
     describe '#callback' do
       let(:params) do
         {
@@ -72,7 +79,40 @@ describe SubscribeController, type: :controller, fixtures: true do
         expect(billforward).to receive(:update_member_count)
         get :show, organization_id: organization.slug
         url = ENV['THREADABLE_BILLFORWARD_CHECKOUT_URL']
-        expect(response).to redirect_to "#{url}/subscription/subscription_id?wanted_state=AwaitingPayment&redirect=#{organization_settings_url(organization)}&force_redirect=true"
+        expect(response).to redirect_to "#{url}/subscription/subscription_id?wanted_state=AwaitingPayment&redirect=#{subscribe_wait_url(organization)}&force_redirect=true"
+      end
+    end
+
+    describe '#wait' do
+      context 'when the organization is paid' do
+        before do
+          organization.update(plan: :paid)
+        end
+
+        it 'redirects to the organization settings' do
+          get :wait, organization_id: organization.slug
+          expect(response).to redirect_to organization_settings_path(organization)
+        end
+      end
+
+      context 'when the org is unpaid' do
+        before do
+          organization.update(plan: :free)
+        end
+
+        it 'displays the waiting page when retries < 2' do
+          get :wait, organization_id: organization.slug, retries: 2
+          expect(response).to render_template :waiting
+        end
+
+        it 'sets the org as paid anyway, mails an error, and redirects when retries > 2' do
+          get :wait, organization_id: organization.slug, retries: 3
+          expect(response).to redirect_to organization_settings_path(organization)
+          organization.reload
+          expect(organization.paid?).to be_truthy
+          drain_background_jobs!
+          expect(sent_emails.with_subject("Billing Callback Error")).to be
+        end
       end
     end
   end
