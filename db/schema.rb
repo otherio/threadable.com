@@ -176,7 +176,6 @@ ActiveRecord::Schema.define(version: 20140918224626) do
     t.boolean  "google_sync",         default: false, null: false
     t.string   "description"
     t.boolean  "primary",             default: false, null: false
-    t.boolean  "private",             default: false, null: false
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
@@ -265,11 +264,12 @@ ActiveRecord::Schema.define(version: 20140918224626) do
     t.boolean  "public_signup",                      default: false, null: false
     t.integer  "group_membership_permission",        default: 0,     null: false
     t.integer  "group_settings_permission",          default: 0,     null: false
+    t.integer  "organization_membership_permission", default: 0,     null: false
     t.string   "billforward_account_id"
     t.string   "billforward_subscription_id"
-    t.integer  "organization_membership_permission", default: 0,     null: false
   end
 
+  add_index "organizations", ["billforward_subscription_id"], name: "index_organizations_on_billforward_subscription_id", using: :btree
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree
   add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
 
