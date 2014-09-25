@@ -8,11 +8,12 @@ This means that messages sent to:
 will now be sent to your inbox.
 
 
-If you don't want to be in the <%= @group.name %> group, you leave by going to the following url:
+If you don't want to be in the <%= @group.name %> group,
+you can leave by going to the following url:
 
   <%= email_action_link(@group, @recipient, "leave") %>
 
-To view this group in the web, click here:
+To view this group on the web, click here:
 
   <%= conversations_url(@organization, @group) %>
 
