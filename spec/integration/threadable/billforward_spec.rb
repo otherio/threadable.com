@@ -127,7 +127,7 @@ describe Threadable::Billforward, :type => :request do
 
           'pricingComponentValues' => [
             'pricingComponentID' => 'the_people_component_id',
-            'value'              => organization.members.count
+            'value'              => organization.members.who_get_email.count
           ]
         }
       end
@@ -157,6 +157,7 @@ describe Threadable::Billforward, :type => :request do
       it 'creates the subscription for the organization' do
         billforward.create_subscription
         expect(organization.billforward_subscription_id).to eq 'the_subscription_id'
+        expect(organization.daily_active_users).to eq organization.members.who_get_email.count
       end
     end
 
@@ -203,8 +204,8 @@ describe Threadable::Billforward, :type => :request do
           'pricingComponentValueChanges' => [
             {
               'pricingComponentID' => 'the_people_component_id',
-              'oldValue' => organization.members.count - 1,
-              'newValue' => organization.members.count,
+              'oldValue' => 5,
+              'newValue' => organization.members.who_get_email.count,
               'mode' => 'delayed',
               'state' => 'New',
               'asOf' => Time.now.utc.iso8601,
@@ -224,26 +225,44 @@ describe Threadable::Billforward, :type => :request do
         }
       end
 
-      before do
-        stub_request(:get, "https://sandbox.billforward.net/subscriptions/the_subscription_id?access_token=#{token}").to_return(
-          body: subscription_data.to_json,
-          headers: {'Content-type' => 'application/json'},
-          status: 200,
-        )
+      context 'when the counts differ' do
+        before do
+          stub_request(:get, "https://sandbox.billforward.net/subscriptions/the_subscription_id?access_token=#{token}").to_return(
+            body: subscription_data.to_json,
+            headers: {'Content-type' => 'application/json'},
+            status: 200,
+          )
 
-        stub_request(:put, 'https://sandbox.billforward.net/subscriptions').with(
-          body: component_value_change_data.to_json,
-          headers: {'Authorization' => "Bearer #{token}", 'Content-type' => 'application/json'},
-        ).to_return(
-          body: response_data.to_json,
-          headers: {'Content-type' => 'application/json'},
-          status: 200,
-        )
+          stub_request(:put, 'https://sandbox.billforward.net/subscriptions').with(
+            body: component_value_change_data.to_json,
+            headers: {'Authorization' => "Bearer #{token}", 'Content-type' => 'application/json'},
+          ).to_return(
+            body: response_data.to_json,
+            headers: {'Content-type' => 'application/json'},
+            status: 200,
+          )
+
+          organization.update(daily_active_users: 5)
+        end
+
+        it 'sets the member count at billforward, and stores the new count' do
+          billforward.update_member_count
+          expect(organization.daily_active_users).to eq 9
+        end
+
       end
 
-      it 'sets the member count at billforward' do
-        billforward.update_member_count organization.members.count - 1
+      context 'when the counts are the same' do
+        before do
+          organization.update(daily_active_users: organization.members.who_get_email.count)
+        end
+
+        it 'does not call out to billforward' do
+          # webmock will fail this if a call is made.
+          billforward.update_member_count
+        end
       end
+
     end
   end
 

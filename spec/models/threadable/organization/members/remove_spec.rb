@@ -21,9 +21,6 @@ describe Threadable::Organization::Members::Remove, :type => :model do
 
     expect(scope).to receive(:where).with(user_id: 9442).and_return(scope)
     expect(scope).to receive(:delete_all)
-
-    expect(Threadable::Billforward).to receive(:new).with(organization: organization).and_return(billforward)
-    expect(billforward).to receive(:update_member_count)
   end
 
   context 'when given a user id' do

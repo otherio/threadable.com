@@ -167,9 +167,6 @@ describe Threadable::Organization::Member, :type => :request do
       end
 
       it 'sets the member to inactive, removes them from groups, and makes them no longer a doer of any tasks' do
-        expect(Threadable::Billforward).to receive(:new).with(organization: organization).and_return(billforward)
-        expect(billforward).to receive(:update_member_count)
-
         member.remove
         expect(member.organization_membership_record.active).to be_falsey
         expect(organization.members.find_by_email_address('bethany@ucsd.example.com')).to be_nil

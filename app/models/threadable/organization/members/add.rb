@@ -26,7 +26,6 @@ class Threadable::Organization::Members::Add < MethodObject
       return existing_member if existing_user && existing_member
       create_user! unless existing_user
       create_or_update_membership_record!
-      update_member_count!
       return @new_member
     end
   end
@@ -110,10 +109,4 @@ class Threadable::Organization::Members::Add < MethodObject
       group.members.add(@new_member, send_notice: false, auto_join: true)
     end
   end
-
-  def update_member_count!
-    billforward = Threadable::Billforward.new(organization: @organization)
-    billforward.update_member_count @old_member_count
-  end
-
 end

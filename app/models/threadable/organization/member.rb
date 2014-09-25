@@ -88,9 +88,6 @@ class Threadable::Organization::Member < Threadable::User
       end
 
       organization_membership_record.update_attribute(:active, false)
-
-      billforward = Threadable::Billforward.new(organization: organization)
-      billforward.update_member_count original_member_count
     end
 
     @threadable.track("Removed User", {

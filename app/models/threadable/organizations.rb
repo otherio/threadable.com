@@ -4,6 +4,10 @@ class Threadable::Organizations < Threadable::Collection
     scope.reload.map{ |organization| organization_for organization }
   end
 
+  def with_subscription
+    scope.where('organizations.billforward_subscription_id IS NOT NULL').map{ |organization| organization_for organization }
+  end
+
   def find_by_slug slug
     organization_for (scope.where(slug: slug).first or return)
   end

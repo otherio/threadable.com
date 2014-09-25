@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140918224626) do
+ActiveRecord::Schema.define(version: 20140925174920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,10 +78,12 @@ ActiveRecord::Schema.define(version: 20140918224626) do
     t.integer  "groups_count",            default: 0
     t.datetime "trashed_at"
     t.text     "follower_ids_cache"
+    t.boolean  "private_cache",           default: false,   null: false
   end
 
   add_index "conversations", ["organization_id", "slug"], name: "index_conversations_on_organization_id_and_slug", unique: true, using: :btree
   add_index "conversations", ["organization_id"], name: "index_conversations_on_organization_id", using: :btree
+  add_index "conversations", ["private_cache"], name: "index_conversations_on_private_cache", using: :btree
   add_index "conversations", ["slug"], name: "index_conversations_on_slug", using: :btree
   add_index "conversations", ["trashed_at"], name: "index_conversations_on_trashed_at", using: :btree
 
@@ -176,6 +178,7 @@ ActiveRecord::Schema.define(version: 20140918224626) do
     t.boolean  "google_sync",         default: false, null: false
     t.string   "description"
     t.boolean  "primary",             default: false, null: false
+    t.boolean  "private",             default: false, null: false
   end
 
   add_index "groups", ["auto_join", "organization_id"], name: "index_groups_on_auto_join_and_organization_id", using: :btree
@@ -267,6 +270,7 @@ ActiveRecord::Schema.define(version: 20140918224626) do
     t.integer  "organization_membership_permission", default: 0,     null: false
     t.string   "billforward_account_id"
     t.string   "billforward_subscription_id"
+    t.integer  "daily_active_users"
   end
 
   add_index "organizations", ["billforward_subscription_id"], name: "index_organizations_on_billforward_subscription_id", using: :btree

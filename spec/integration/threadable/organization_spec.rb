@@ -5,6 +5,7 @@ describe Threadable::Organization, :type => :request do
   let(:organization_record){ find_organization_by_slug('raceteam') }
   let(:organization){ described_class.new(threadable, organization_record) }
   let(:primary_group) { raceteam.groups.primary }
+  let(:billforward) { double(:billforward) }
 
   subject{ organization }
 
@@ -320,5 +321,41 @@ describe Threadable::Organization, :type => :request do
     expect(organization.settings.group_settings_permission).to eq :member
   end
 
+  describe '#update_daily_active_users' do
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+    end
+
+    context 'with a subscription' do
+      before do
+        organization.update(billforward_subscription_id: 'sub_id', billforward_account_id: 'acct_id')
+      end
+
+      context 'when the counts differ' do
+        before do
+          organization.update(daily_active_users: 5)
+        end
+
+        it 'reports the count to billforward and changes the active count' do
+          expect(Threadable::Billforward).to receive(:new).with(organization: organization).and_return(billforward)
+          expect(billforward).to receive(:update_member_count)
+
+          organizations.update_daily_active_users!
+          organization.reload
+          expect(organization.daily_active_users).to eq 12
+        end
+      end
+
+      context 'when the counts are the same' do
+        it 'does not call billforward' do
+        end
+      end
+    end
+
+    context 'without a subscription' do
+      it 'does nothing' do
+      end
+    end
+  end
 
 end

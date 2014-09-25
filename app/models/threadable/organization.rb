@@ -29,6 +29,7 @@ class Threadable::Organization < Threadable::Model
     public_signup?
     billforward_account_id
     billforward_subscription_id
+    daily_active_users
   }, to: :organization_record)
 
   let(:settings) do

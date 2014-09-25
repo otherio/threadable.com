@@ -24,8 +24,6 @@ class Threadable::Organization::Members::Remove < MethodObject
 
     Threadable.transaction do
       @scope.where(user_id: user_id).delete_all
-      billforward = Threadable::Billforward.new(organization: @organization)
-      billforward.update_member_count original_member_count
     end
   end
 
