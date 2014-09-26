@@ -3,11 +3,12 @@ require_dependency 'threadable/organization/group'
 
 class Threadable::Organization::Groups < Threadable::Groups
 
-  def initialize organization
+  def initialize organization, options = {}
     @organization = organization
     @threadable = organization.threadable
+    @options = options
   end
-  attr_reader :organization
+  attr_reader :organization, :options
 
   def find_by_ids group_ids
     groups_for scope.where(id: group_ids)
@@ -87,6 +88,10 @@ class Threadable::Organization::Groups < Threadable::Groups
   private
 
   def scope
+    if options[:unrestricted]
+      return organization.organization_record.groups
+    end
+
     if threadable.current_user && organization.members.current_member
       if organization.members.current_member.can?(:read_private, self)
         organization.organization_record.groups

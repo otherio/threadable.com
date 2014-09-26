@@ -72,10 +72,11 @@ describe Threadable::IncomingEmail::Deliver, :type => :request do
     let(:parent_message) { conversation.messages.last }
     let(:in_reply_to)    { parent_message.message_id_header }
     let(:to)             { 'fundraising@raceteam.localhost' }
+    let(:sender)         { 'alice@ucsd.example.com'}
 
     context 'with email headers on the parent message' do
       before do
-        sign_in_as 'alice@ucsd.example.com'
+        sign_in_as sender
 
         incoming_email.find_organization!
         incoming_email.find_parent_message!
@@ -85,7 +86,7 @@ describe Threadable::IncomingEmail::Deliver, :type => :request do
         incoming_email.find_conversation!
       end
 
-      it 'adds groups found in the to and cc headers' do
+      it 'adds groups found in the to and cc headers, and removes groups that were removed' do
         call incoming_email
         conversation.conversation_record.reload
         expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising']
@@ -106,6 +107,48 @@ describe Threadable::IncomingEmail::Deliver, :type => :request do
           expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising', 'main']
         end
       end
+
+      context 'when there are private groups' do
+
+        context 'when the sender is not a member' do
+          let(:sender) { 'bethany@ucsd.example.com'}
+
+          context 'and a private group is added' do
+            let(:to) { 'leaders@raceteam.localhost, raceteam@raceteam.localhost' }
+
+            it 'adds the conversation to the private groups' do
+              call incoming_email
+              conversation.conversation_record.reload
+              expect(conversation.groups.all.map(&:slug)).to match_array ['leaders', 'raceteam']
+            end
+          end
+
+          context 'and the private group is removed' do
+            let(:conversation) { organization.conversations.find_by_slug('budget-worknight') }
+            let(:to)           { 'fundraising@raceteam.localhost' }
+            let(:recipient)    { 'fundraising@raceteam.localhost'}
+
+            it 'does not remove the private group' do
+              call incoming_email
+              conversation.conversation_record.reload
+              expect(conversation.groups.all.map(&:slug)).to match_array ['leaders', 'fundraising']
+            end
+          end
+        end
+
+        context 'when the sender is a member and the private group is removed' do
+          let(:conversation) { organization.conversations.find_by_slug('budget-worknight') }
+          let(:to)           { 'fundraising@raceteam.localhost' }
+          let(:recipient)    { 'fundraising@raceteam.localhost'}
+
+          it 'removes the private group' do
+            call incoming_email
+            conversation.conversation_record.reload
+            expect(conversation.groups.all.map(&:slug)).to match_array ['fundraising']
+          end
+        end
+      end
+
     end
 
     context 'when there are no mail headers on the parent message' do

@@ -89,7 +89,7 @@ class Threadable::IncomingEmail::Deliver < MethodObject
     parent_tags = organization.email_address_tags(parent_addresses)
 
     remove_groups = organization.groups.find_by_email_address_tags(parent_tags - incoming_tags)
-    add_groups    = organization.groups.find_by_email_address_tags(incoming_tags - parent_tags)
+    add_groups    = organization.unrestricted_groups.find_by_email_address_tags(incoming_tags - parent_tags)
 
     incoming_email.conversation.groups.add(add_groups)
     incoming_email.conversation.groups.remove(remove_groups)

@@ -32,6 +32,19 @@ describe Threadable::Organization::Groups, :type => :request do
           "press",
         ]
       end
+
+      context 'when groups are fetched unrestricted' do
+        it 'returns all the groups, including private groups' do
+          expect(organization.unrestricted_groups.all.map(&:slug)).to match_array [
+            "raceteam",
+            "electronics",
+            "fundraising",
+            "graphic-design",
+            "press",
+            "leaders",
+          ]
+        end
+      end
     end
 
     context 'when logged in as a member who has access to private groups' do

@@ -94,13 +94,14 @@ class Threadable::Organization < Threadable::Model
   end
 
   # collections
-  let(:members)        { Threadable::Organization::Members       .new(self) }
-  let(:conversations)  { Threadable::Organization::Conversations .new(self) }
-  let(:messages)       { Threadable::Organization::Messages      .new(self) }
-  let(:tasks)          { Threadable::Organization::Tasks         .new(self) }
-  let(:incoming_emails){ Threadable::Organization::IncomingEmails.new(self) }
-  let(:held_messages)  { Threadable::Organization::HeldMessages  .new(self) }
-  let(:groups)         { Threadable::Organization::Groups        .new(self) }
+  let(:members)             { Threadable::Organization::Members       .new(self) }
+  let(:conversations)       { Threadable::Organization::Conversations .new(self) }
+  let(:messages)            { Threadable::Organization::Messages      .new(self) }
+  let(:tasks)               { Threadable::Organization::Tasks         .new(self) }
+  let(:incoming_emails)     { Threadable::Organization::IncomingEmails.new(self) }
+  let(:held_messages)       { Threadable::Organization::HeldMessages  .new(self) }
+  let(:groups)              { Threadable::Organization::Groups        .new(self) }
+  let(:unrestricted_groups) { Threadable::Organization::Groups        .new(self, unrestricted: true) }
 
   # scopes
   include Threadable::Conversation::Scopes
