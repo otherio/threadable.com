@@ -87,7 +87,7 @@ class Threadable::Billforward
 
     response = self.class.put("#{url}/subscriptions", body: payload.to_json)
     response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to update active member count: #{response['errorMessage']}"
-    organization.update(daily_active_users: new_value)
+    organization.organization_record.update_attributes(daily_active_users: new_value)
   end
 
   def update_paid_status

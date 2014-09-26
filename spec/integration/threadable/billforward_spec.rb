@@ -183,6 +183,7 @@ describe Threadable::Billforward, :type => :request do
   describe '#update_member_count' do
     before do
       organization.update(billforward_account_id: 'the_account_id', billforward_subscription_id: 'the_subscription_id')
+      sign_out!
       Timecop.freeze
     end
 
@@ -242,7 +243,7 @@ describe Threadable::Billforward, :type => :request do
             status: 200,
           )
 
-          organization.update(daily_active_users: 5)
+          organization.organization_record.update_attributes(daily_active_users: 5)
         end
 
         it 'sets the member count at billforward, and stores the new count' do
@@ -254,7 +255,7 @@ describe Threadable::Billforward, :type => :request do
 
       context 'when the counts are the same' do
         before do
-          organization.update(daily_active_users: organization.members.who_get_email.count)
+          organization.organization_record.update_attributes(daily_active_users: organization.members.who_get_email.count)
         end
 
         it 'does not call out to billforward' do
