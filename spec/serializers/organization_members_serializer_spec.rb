@@ -6,6 +6,10 @@ describe OrganizationMembersSerializer do
   let(:alice) { organization.members.find_by_email_address!('alice@ucsd.example.com') }
   let(:bob){ organization.members.find_by_email_address!('bob@ucsd.example.com') }
 
+  before do
+    sign_in_as 'alice@ucsd.example.com'
+  end
+
   context 'when given a single record' do
     let(:payload){ alice }
     let(:expected_key){ :organization_member }
@@ -21,6 +25,8 @@ describe OrganizationMembersSerializer do
         subscribed:    true,
         role:          :owner,
         confirmed:     true,
+
+        can_change_delivery: true,
       )
     end
   end
@@ -41,6 +47,8 @@ describe OrganizationMembersSerializer do
           subscribed:    true,
           role:          :owner,
           confirmed:     true,
+
+          can_change_delivery: true,
         },{
           id:            bob.id,
           user_id:       bob.user_id,
@@ -52,6 +60,8 @@ describe OrganizationMembersSerializer do
           subscribed:    true,
           role:          :member,
           confirmed:     true,
+
+          can_change_delivery: true,
         }
       ]
     end

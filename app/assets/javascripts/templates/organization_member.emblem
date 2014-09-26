@@ -35,22 +35,29 @@
       .setting
         h4.label
           | Subscribed:
-        .control
-          a.subscribed.input-switch{action 'toggleSubscribed' on="click"} href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled}
-            .input-switch-wrapper
-              .slider
-                .on
-                  i.uk-icon-check
-                  span.sr-only
-                    | On
-                .off
-                  i.uk-icon-times
-                  span.sr-only
-                    | Off
-                .switch
-        br
-        p.subtitle
-          | Turn off to completely disable email delivery for #{name} on #{organization.name}.
+
+        if canChangeDelivery
+          .control
+            a.subscribed.input-switch{action 'toggleSubscribed' on="click"} href="" class={ subscribed:input-switch-on:input-switch-off saving:disabled}
+              .input-switch-wrapper
+                .slider
+                  .on
+                    i.uk-icon-check
+                    span.sr-only
+                      | On
+                  .off
+                    i.uk-icon-times
+                    span.sr-only
+                      | Off
+                  .switch
+          br
+          p.subtitle
+            | Turn off to completely disable email delivery for #{name} on #{organization.name}.
+        else
+          if subscribed
+            | #{name} can receive email from #{organization.name}.
+          else
+            | #{name} has disabled email from #{organization.name}.
 
       if canEdit
         .danger-zone

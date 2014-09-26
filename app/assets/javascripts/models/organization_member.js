@@ -7,6 +7,8 @@ Threadable.OrganizationMember = Threadable.User.extend({
   role:                  RL.attr('string'),
   confirmed:             RL.attr('boolean'),
 
+  canChangeDelivery:     RL.attr('boolean'),
+
   isOwner: function() {
     return this.get('role') === 'owner';
   }.property('role'),

@@ -20,11 +20,17 @@ class Threadable::Organization::Member::Update < MethodObject
     record = member.organization_membership_record
 
     if attributes[:role].present? && attributes[:role].to_sym != record.role && !current_user.admin?
-      if !current_member.can?(:make_owners_for, @member.organization)
+      if !current_member.can?(:make_owners_for, member.organization)
         raise Threadable::AuthorizationError, 'You are not authorized to change organization membership roles'
       end
       if current_member == member
         raise Threadable::AuthorizationError, 'You cannot change your own organization membership role'
+      end
+    end
+
+    if attributes.has_key?(:subscribed) && attributes[:subscribed] != record.subscribed? && !current_user.admin?
+      unless current_member.can?(:change_delivery_for, member)
+        raise Threadable::AuthorizationError, 'You cannot change subscription settings for this member'
       end
     end
 
