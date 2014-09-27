@@ -1,4 +1,4 @@
-Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUserMixin, Threadable.RoutesMixin, {
+Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUserMixin, Threadable.RoutesMixin, Threadable.ConfirmationMixin, {
   needs: ['organization', 'application', 'conversation'],
   organization: Ember.computed.alias('controllers.organization'),
   currentPath: Ember.computed.alias('controllers.application.currentPath').readOnly(),
@@ -47,13 +47,23 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
       group.join().then(this.reopenGroups.bind(this, $('.sidebar .group.open')));
     },
     leaveGroup: function(group) {
-      group.leave().then(function(group) {
-        this.reopenGroups($('.sidebar .group.open'));
+      this.confirm({
+        message: (
+          "Are you sure you want to leave the "+
+          group.get('name')+' group?'
+        ),
+        approveText: 'leave',
+        declineText: 'cancel',
+        approved: function(group) {
+          group.leave().then(function(group) {
+            this.reopenGroups($('.sidebar .group.open'));
 
-        if(!this.get('organization.canReadPrivateGroups') && group.get('private') && !group.get('currentUserIsAMember')) {
-          this.get('organization.groups').removeObject(group);
-        }
-      }.bind(this, group));
+            if(!this.get('organization.canReadPrivateGroups') && group.get('private') && !group.get('currentUserIsAMember')) {
+              this.get('organization.groups').removeObject(group);
+            }
+          }.bind(this, group));
+        }.bind(this, group)
+      });
     }
   },
 
