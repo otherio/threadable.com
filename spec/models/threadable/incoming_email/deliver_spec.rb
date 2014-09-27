@@ -14,11 +14,12 @@ describe Threadable::IncomingEmail::Deliver, :type => :model do
 
   let :organization do
     double(:organization,
-      subject_tag:  'RaceTeam',
-      conversations: double(:conversations),
-      tasks:         double(:tasks),
-      groups:        double(:groups, all: groups, find_by_email_address_tags: 'TAGS'),
-      email_address_tags: [],
+      subject_tag:        'RaceTeam',
+      conversations:       double(:conversations),
+      tasks:               double(:tasks),
+      groups:              double(:groups, all: groups, find_by_email_address_tags: 'TAGS'),
+      unrestricted_groups: double(:unrestricted_groups, all: groups, find_by_email_address_tags: 'TAGS'),
+      email_address_tags:  [],
     )
   end
 
