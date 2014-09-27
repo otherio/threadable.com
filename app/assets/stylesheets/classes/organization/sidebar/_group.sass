@@ -37,9 +37,14 @@
       +absolute(null, 0, 0, 0)
 
   &.open
+    > .disclosure-triangle > .caret
+      +rotate(90deg)
+
     > .group-controls
       height: 82px
       &.with-settings
         height: 123px
-    > .disclosure-triangle > .caret
-      +rotate(90deg)
+      &.member
+        height: 123px
+      &.with-settings.member
+        height: 164px

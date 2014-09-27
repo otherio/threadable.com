@@ -5,7 +5,7 @@ Threadable.GroupMemberRoute = Ember.Route.extend({
   },
 
   afterModel: function(member, transition) {
-    if (member) return
+    if (member) return;
     this.transitionTo('group_members');
   },
 

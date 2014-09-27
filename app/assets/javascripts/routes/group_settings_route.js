@@ -5,7 +5,7 @@ Threadable.GroupSettingsRoute = Ember.Route.extend({
   },
 
   afterModel: function(group, transition) {
-    if (group) return
+    if (group) return;
     this.transitionTo('conversations', 'my');
   },
 

@@ -20,6 +20,7 @@ Threadable.Router.map(function() {
         this.resource('add_group_member', {path: '/add'});
       });
       this.resource('group_settings', {path: '/settings'});
+      this.resource('group_delivery_options', {path: '/delivery-options'});
       this.resource('group_search', {path: '/search'}, function() {
         this.resource('group_search_results', {path: '/:query'});
       });

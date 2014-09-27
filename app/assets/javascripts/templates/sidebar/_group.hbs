@@ -10,7 +10,7 @@
     <i class="caret uk-icon-caret-right"></i>
     <span class="sr-only">Group Options</span>
   </a>
-  <div {{bind-attr class=":group-controls group.canChangeSettings:with-settings"}}>
+  <div {{bind-attr class=":group-controls group.canChangeSettings:with-settings group.currentUserIsAMember:member"}}>
     <ul class="nested">
       <li>
         {{#link-to 'group_members' group.slug}}
@@ -19,11 +19,20 @@
         {{/link-to}}
       </li>
 
+      {{#if group.currentUserIsAMember}}
+        <li>
+          {{#link-to 'group_delivery_options' group.slug}}
+            <i class="uk-icon-envelope"></i>
+            Email Delivery
+          {{/link-to}}
+        </li>
+      {{/if}}
+
       {{#if group.canChangeSettings}}
         <li>
           {{#link-to 'group_settings' group.slug}}
             <i class="uk-icon-gear"></i>
-            Settings
+            Group Settings
           {{/link-to}}
         </li>
       {{/if}}
