@@ -27,6 +27,7 @@ Threadable.Organization = RL.Model.extend({
   canChangeSettings:         RL.attr('boolean'),
   canInviteMembers:          RL.attr('boolean'),
   canMakePrivateGroups:      RL.attr('boolean'),
+  canReadPrivateGroups:      RL.attr('boolean'),
 
   organizationMembershipPermission: RL.attr('string'),
   groupMembershipPermission:        RL.attr('string'),

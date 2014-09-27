@@ -1,6 +1,7 @@
 Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.ConfirmationMixin, {
-  needs: ['group_members'],
-  group: Ember.computed.alias('controllers.group_members.group').readOnly(),
+  needs: ['group_members', 'organization'],
+  group: Ember.computed.alias('controllers.group_members.group'),
+  organization: Ember.computed.alias('controllers.organization'),
 
   updateInProgress: false,
 
@@ -35,6 +36,9 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
         groupMember.set('group', group);
         groupMember.set('organization', group.get('organization'));
         group.get('members').addObject(groupMember);
+        if(parseInt(groupMember.get('id')) == this.get('organization.currentUser.userId')) {
+          group.set('currentUserIsAMember', true);
+        }
         controller.transitionToRoute('group_member', groupMember);
         this.set('updateInProgress', false);
       }.bind(this));
@@ -60,6 +64,9 @@ Threadable.GroupMemberController = Ember.ObjectController.extend(Threadable.Conf
 
           organizationMember.removeFromGroup(group).then(function() {
             groupMembers.removeObject(groupMember);
+            if(parseInt(groupMember.get('id')) == this.get('organization.currentUser.userId')) {
+              group.set('currentUserIsAMember', false);
+            }
             controller.transitionToRoute('group_members');
             this.set('updateInProgress', false);
           }.bind(this));

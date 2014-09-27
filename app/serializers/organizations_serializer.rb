@@ -31,6 +31,7 @@ class OrganizationsSerializer < Serializer
       can_change_settings:        can?(:change_settings_for, organization),
       can_invite_members:         can?(:create, organization.members),
       can_make_private_groups:    can?(:make_private, organization.groups),
+      can_read_private_groups:    can?(:read_private, organization.groups),
 
       organization_membership_permission: organization.settings.organization_membership_permission,
       group_membership_permission: organization.settings.group_membership_permission,

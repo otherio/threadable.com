@@ -47,7 +47,13 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
       group.join().then(this.reopenGroups.bind(this, $('.sidebar .group.open')));
     },
     leaveGroup: function(group) {
-      group.leave().then(this.reopenGroups.bind(this, $('.sidebar .group.open')));
+      group.leave().then(function(group) {
+        this.reopenGroups($('.sidebar .group.open'));
+
+        if(!this.get('organization.canReadPrivateGroups') && group.get('private') && !group.get('currentUserIsAMember')) {
+          this.get('organization.groups').removeObject(group);
+        }
+      }.bind(this, group));
     }
   },
 
