@@ -14,7 +14,7 @@
 
   %section.section-one
     %h1.header-huge
-      Mailing lists evolved.
+      Email Groups: Evolved
     %p.header-sub
       Threadable makes group email less noisy and more actionable
     = render 'sign_up_form', button_color_class: 'black-button'
@@ -22,20 +22,15 @@
 
   %section.section-two
 
-    .get-organized
-      .icon
-      .big-text GET ORGANIZED
-      %p Create flexible teams on the fly for any project.
+    .organizers
+      %img.iconic(data-src="assets/connections.svg")
+      .big-text ORGANIZERS
+      %p Keep in touch with every team member, regardless of their level of engagement.
 
-    .get-involved
-      .icon
-      .big-text GET INVOLVED
-      %p Use your existing tools from your inbox with integrations.
-
-    .get-things-done
-      .icon
-      .big-text GET ENGAGED
-      %p Let your email dreams run wild with webhooks and APIs.
+    .everyone
+      %img.iconic(data-src="assets/people.svg")
+      .big-text EVERYONE
+      %p Precisely control what shows up in your inbox. Save attention for what matters.
 
   %section.section-three.paneled-section{'data-scroll-position' => 'quit-learning-new-tools'}
     .left-panel.small-panel
@@ -44,38 +39,50 @@
       .content
         .h2 Quit learning new tools.
         %div
-          Your team already knows how to use email. Meet them where they're at, and keep everyone engaged and on the same
-          page, whether they're on desktop or mobile.
+          The most engaged team members need group communication most, but they're busy!
+        %br
+          Your team already knows how to use email.
+          Meet them where they're at, and keep everyone on the same page, whether they're on desktop, tablet, or mobile.
 
   %section.section-four.paneled-section
     .left-panel.large-panel
       .content
-        .h2 Groups: keep your inbox relevant
+        .h2 Groups: Organize fluidly
         %div
-          Anyone in your organization can make a new group, and you can join or leave them anytime. Move a conversation
-          from one group to another, <b>even after it's started</b>. Organize threads without interrupting them, and say
-          goodbye to reply-all.
+          Your team is creative. Let them approach new challenges independently.
+          Anyone on the team can create a new group—for a project, a sub-team, a department, anything!
+          Members-only, or shared with the whole team.
+        %br
+          Move a conversation from one group to another, <b>even after it's started</b>.
+          Don't anticipate your team's needs. Instead, create a group after discussion gains momentum.
+          It's a whole new way of working with email.
     .right-panel.small-panel
 
   %section.section-five.paneled-section
     .left-panel.small-panel
-
+      %img.iconic(data-src="assets/clock.svg")
     .right-panel.large-panel
       .content
-        .h2 Enjoy the silence
+        .h2 Email that respects your time
         %div
-          One click mute from any email thread stops delivery in its tracks – not just in one client, but in all of them.
-          Want to check back in? Threadable has a rich, fully searchable web archive of every conversation, in every group,
-          so it's easy to stay connected with the team.
+          Threadable gives you unprecedented control over what's in your inbox.
+          You can receive just the first message of each conversation, then follow the ones that look interesting.
+          Or, get a summary of a whole group each day, and choose the threads you want delivered.
+        %br
+          And if there's just one conversation you don't need, one-click mute gets it out of your way.
+          Not just in one client, but in all of them.
   %section.section-six.paneled-section
     .left-panel.large-panel
       .content
-        .h2 Easy integrations for everybody.
+        .h2 Never miss a thing
         %div
-          Pull comment streams from the tools you already use and give them new life as threaded email discussions. Search,
-          filter, reply, and subscribe using one easy interface. Get your whole team engaged with your existing tools. [Coming Soon!]
+          Join a new effort, start a new job, and you're dropped into the middle of existing conversations.
+        %br
+          Threadable keeps track of which messages you've received.
+          If you show up late to the party, just sync the older messages right into your inbox.
+          Or, read them in your browser using Threadable's responsive, fully-searchable web app.
     .right-panel.small-panel
-      = image_tag 'homepage/integrations.png'
+      %img.iconic(data-src="assets/calendar.svg")
 
   %section.section-seven.paneled-section
     .left-panel.small-panel
@@ -91,9 +98,10 @@
       .content
         .h2 API
         %div
+        :markdown
           Communication is key for social productivity to work. In less time than it takes to build simple email notifications,
           you can be using email as a full-featured platform for delivering real value to your users. Focus on your app's
-          special sauce, and let Threadable's API make your email sing. [Coming Soon!]
+          special sauce, and let [Threadable's API](http://docs.threadable.apiary.io) make your email sing.
     .right-panel.small-panel
       = image_tag 'homepage/tasks-in-your-inbox.jpg'
 

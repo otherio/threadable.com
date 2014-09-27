@@ -7,6 +7,7 @@
 //= require jquery
 //= require uikit
 //= require notify
+//= require iconic.min
 //= require_self
 
 UserVoice.push(['set', {

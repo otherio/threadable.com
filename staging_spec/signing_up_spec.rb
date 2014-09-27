@@ -15,7 +15,7 @@ describe 'Signing up' do
     within first('form') do
       fill_in 'Email address',     with: user.email_address
       fill_in 'Organization name', with: organization_name
-      click_on 'CREATE YOUR LIST'
+      click_on 'CREATE YOUR THREADABLE'
     end
 
     welcome_email = user.inbox.wait_for_message(subject: 'Welcome to Threadable!')
