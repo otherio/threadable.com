@@ -371,27 +371,17 @@ describe Threadable::IncomingEmail, :type => :model do
       context 'when there are no groups that do not hold messages' do
         before{ expect(incoming_email).to receive(:groups).and_return([]) }
 
-        context 'when there is a bounce reason' do
-          before{ expect(incoming_email).to receive(:bounce_reason).and_return(:blank_message) }
+        context 'when parent_message is present' do
+          before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
           it { is_expected.to be_falsey }
         end
 
-        context 'when there is no bounce reason is false' do
-          before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
+        context 'when parent_message is nil' do
+          before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
 
-          context 'when parent_message is present' do
-            before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
-            it { is_expected.to be_falsey }
-          end
-
-          context 'when parent_message is nil' do
-            before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
-
-            context 'when creator is not a member of the organization' do
-              before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
-              it { is_expected.to be_truthy }
-            end
-
+          context 'when creator is not a member of the organization' do
+            before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
+            it { is_expected.to be_truthy }
           end
         end
       end
@@ -406,18 +396,18 @@ describe Threadable::IncomingEmail, :type => :model do
     end
     context 'when bounceable? is false' do
       before{ expect(incoming_email).to receive(:bounceable?).and_return(false) }
-      context 'when holdable? is true' do
-        before{ expect(incoming_email).to receive(:holdable?).and_return(true) }
+      context 'when droppable? is true' do
+        before{ expect(incoming_email).to receive(:droppable?).and_return(true) }
         it { is_expected.to be_falsey }
       end
-      context 'when holdable? is false' do
-        before{ expect(incoming_email).to receive(:holdable?).and_return(false) }
-        context 'when droppable? is false' do
-          before{ expect(incoming_email).to receive(:droppable?).and_return(false) }
+      context 'when droppable? is false' do
+        before{ expect(incoming_email).to receive(:droppable?).and_return(false) }
+        context 'when holdable? is false' do
+          before{ expect(incoming_email).to receive(:holdable?).and_return(false) }
           it { is_expected.to be_truthy }
         end
-        context 'when droppable? is true' do
-          before{ expect(incoming_email).to receive(:droppable?).and_return(true) }
+        context 'when holdable? is true' do
+          before{ expect(incoming_email).to receive(:holdable?).and_return(true) }
           it { is_expected.to be_falsey }
         end
       end
@@ -432,21 +422,19 @@ describe Threadable::IncomingEmail, :type => :model do
 
       context 'and it contains only commands and whitespace' do
         before { expect(incoming_email).to receive(:command_only_message?).and_return(true) }
-
         it { is_expected.to be_truthy }
       end
 
       context 'and it has non-command content' do
         before { expect(incoming_email).to receive(:command_only_message?).and_return(false) }
 
-        context 'when the message is not spam' do
-          before{ expect(incoming_email).to receive(:spam?).and_return(false) }
-          it { is_expected.to be_falsey }
-        end
+        context 'and it would not otherwise bounce' do
+          before { expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
 
-        context 'when the message is spam' do
-          before{ expect(incoming_email).to receive(:spam?).and_return(true) }
-          it { is_expected.to be_truthy }
+          context 'and it will not be held' do
+            before{ expect(incoming_email).to receive(:hold_candidate?).and_return(false) }
+            it { is_expected.to be_falsey }
+          end
         end
       end
     end
@@ -454,16 +442,28 @@ describe Threadable::IncomingEmail, :type => :model do
     context 'when there is no parent message' do
       before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
 
-      context 'when the message is not spam' do
-        before{ expect(incoming_email).to receive(:spam?).and_return(false) }
-        it { is_expected.to be_falsey }
-      end
-
-      context 'when the message is spam' do
-        before{ expect(incoming_email).to receive(:spam?).and_return(true) }
+      context 'when the message would have bounced' do
+        before{ expect(incoming_email).to receive(:bounce_reason).and_return(:insufficient_kittens) }
         it { is_expected.to be_truthy }
       end
 
+      context 'when the message would not have bounced' do
+        before{ expect(incoming_email).to receive(:bounce_reason).and_return(nil) }
+
+        context 'when the message could be held' do
+          before{ expect(incoming_email).to receive(:hold_candidate?).and_return(true) }
+
+          context 'when the message is spam' do
+            before{ expect(incoming_email).to receive(:spam?).and_return(true) }
+            it { is_expected.to be_truthy }
+          end
+
+          context 'when the message is not spam' do
+            before{ expect(incoming_email).to receive(:spam?).and_return(false) }
+            it { is_expected.to be_falsey }
+          end
+        end
+      end
     end
   end
 

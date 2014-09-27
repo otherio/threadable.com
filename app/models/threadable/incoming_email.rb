@@ -117,7 +117,11 @@ class Threadable::IncomingEmail < Threadable::Model
 
   def holdable?
     (organization.hold_all_messages? && !creator_is_an_owner? && !reply?) ||
-    (groups.all?(&:hold_messages?) && !bounce_reason && (!reply? && !creator_is_an_organization_member?))
+    hold_candidate?
+  end
+
+  def hold_candidate?
+    groups.all?(&:hold_messages?) && (!reply? && !creator_is_an_organization_member?)
   end
 
   def reply?
@@ -130,11 +134,11 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def deliverable?
-    !bounceable? && !holdable? && !droppable?
+    !bounceable? && !droppable? && !holdable?
   end
 
   def droppable?
-    (!parent_message.nil? && command_only_message?) || spam?
+    (!parent_message.nil? && command_only_message?) || !!bounce_reason || (hold_candidate? && spam?)
   end
 
   def subject_valid?
