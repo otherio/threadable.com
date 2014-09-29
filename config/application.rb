@@ -40,8 +40,8 @@ module Threadable
       old.js
       old.css
       new.css
+      *.svg
     }
-
 
     config.app_generators do |c|
       c.test_framework :rspec, :fixture => true,
