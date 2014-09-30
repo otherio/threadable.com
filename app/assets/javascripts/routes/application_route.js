@@ -20,7 +20,7 @@ Threadable.ApplicationRoute = Ember.Route.extend({
 
   renderTemplate: function(controller, currentUser) {
     this._super.apply(this, arguments);
-    if (!currentUser.get('dismissedWelcomeModal')) this.welcomeModalView().appendTo('body');
+    if (!currentUser.get('dismissedWelcomeModal') && !rails_env.docent_token) this.welcomeModalView().appendTo('body');
   },
 
 
