@@ -1,11 +1,11 @@
 //= require modernizr
-//= require rails_env
 //= require ga
 //= require mixpanel
-//= require docent
+//= require rails_env
 //= require user_voice
 //= require jquery
 //= require uikit
+//= require docent
 //= require notify
 //= require iconic.min
 //= require_self
