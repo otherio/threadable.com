@@ -15,7 +15,7 @@ class SendEmailWorker < Threadable::Worker
 
     message   = organization.messages.find_by_id! message_id
 
-    if message.conversation.private?
+    if message.conversation.private? && !recipient.can?(:read_private, organization.groups)
       return if (message.conversation.group_ids & recipient.group_ids).empty?
     end
 
