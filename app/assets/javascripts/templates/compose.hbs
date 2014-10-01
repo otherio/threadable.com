@@ -31,6 +31,9 @@
           {{#each group in groups}}
             <span class="badge" {{bind-attr style="group.badgeStyle"}}>
               {{group.name}}
+              {{#if group.private}}
+                <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+              {{/if}}
               <a href="" {{action 'removeGroup' group}}><i class="uk-icon-times"><span class="sr-only">Remove</span></i></a>
             </span>
           {{/each}}

@@ -112,7 +112,12 @@
 
       <h4 class="uk-text-bold">Conversation list badge:</h4>
       <div>
-        <span class="badge" {{bind-attr style="badgeStyle"}}>{{name}}</span>
+        <span class="badge" {{bind-attr style="badgeStyle"}}>
+          {{name}}
+          {{#if private}}
+            <i class="uk-icon-lock"><span class="sr-only">private</span></i>
+          {{/if}}
+        </span>
       </div>
     </div>
   </div>
