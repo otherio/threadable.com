@@ -21,7 +21,7 @@ class Threadable::Billforward
   attr_reader :url, :organization, :threadable, :token
 
   def create_account
-    (first_name, last_name) = threadable.current_user.name.split(' ', 2);
+    (first_name, last_name) = threadable.current_user.name.split(' ', 2)
 
     payload = {
       "profile" => {
