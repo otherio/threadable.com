@@ -28,6 +28,7 @@ describe Threadable::Group::Member, :type => :request do
     context 'when the current user does not have permission to change group member settings' do
       before do
         organization.organization_record.update_attribute(:group_membership_permission, 1)
+        organization.reload
       end
 
       it 'raises an error' do
