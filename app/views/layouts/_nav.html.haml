@@ -10,7 +10,7 @@
         %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} Features
       - else
         %a.button{href: "/#quit-learning-new-tools"} Features
-
+      %a.button{href: "/pricing"} Pricing
       %a.button{href: "http://docs.threadable.apiary.io"} API
       - unless current_user.present?
         %a.button.blue-button.sign-in-button{href: sign_in_url(r: request.fullpath)} SIGN IN

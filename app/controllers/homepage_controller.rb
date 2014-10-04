@@ -9,6 +9,11 @@ class HomepageController < ApplicationController
     render 'homepage/show', layout: 'new'
   end
 
+  def pricing
+    @sign_up = SignUp.new(params)
+    render 'homepage/pricing', layout: 'new'
+  end
+
   private
 
   def render_client_app_if_signed_in!

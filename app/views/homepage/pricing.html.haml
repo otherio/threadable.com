@@ -1,0 +1,15 @@
+:javascript
+  mixpanel.track('Pricing page visited');
+  $(function(){
+    $('.section-one .header-huge, .section-one .header-sub').addClass('shown');
+
+    scrollToElement.offsetY = $('.nav').height() * -1;
+    var hash = location.hash.slice(1);
+    if (hash === "") return;
+    scrollToElement(hash, false);
+  });
+
+.homepage.page-column
+  %section.sign-up
+    = render 'shared/threadable_logo'
+    = render 'sign_up_form', button_color_class: 'black-button'

@@ -144,6 +144,7 @@ Threadable::Application.routes.draw do
 
   # load the ember app, handle requests to /organization_slug
   get  '/frontpage'                => 'homepage#show'
+  get  '/pricing'                  => 'homepage#pricing'
   post '/sign_up/:organization_id' => 'sign_up#create', as: 'organization_join'
   get  '/:organization_id'         => 'sign_up#show'
   get  '/*path'                    => 'client_app#show'
