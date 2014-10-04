@@ -9,7 +9,206 @@
     scrollToElement(hash, false);
   });
 
+= javascript_include_tag 'show'
+
 .homepage.page-column
+  %section
+    Features
+
+  %section
+    %table.uk-table.uk-table-striped.uk-table-condensed
+      %thead
+        %tr
+          %th
+          %th.free
+            Free
+          %th.pro
+            Pro
+      %tbody
+        %tr
+          %td
+            Unlimited members
+            .description
+              No caps on membership, ever
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Availabe in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Unlimited messages
+            .description
+              Don't limit your communication
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Open groups
+            .description
+              Anyone in your organization can read or join
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Private groups
+            .description
+              Only your members who are in the group have access
+          %td.free
+            %i.uk-icon-square-o
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Pro only
+
+        %tr
+          %td
+            Access controls
+            .description
+              Fine-grained control over what members can change
+          %td.free
+            %i.uk-icon-square-o
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Pro only
+
+        %tr
+          %td
+            Sync to inbox
+            .description
+              Join a new group? Receive messages you missed
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Availabe in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Delivery options
+            .description
+              Each message, first message in each conversation, or daily summary
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Availabe in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Follow
+            .description
+              Join a single conversation, without joining the group
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Availabe in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            One-click mute
+            .description
+              Stop receiving a single conversation, but keep the rest
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Availabe in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Public signup
+            .description
+              Allow anyone on the internet to join your organization
+          %td.free
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Availabe in free
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Available in pro
+
+        %tr
+          %td
+            Custom email domain
+            .description
+              Send & receive email at your own domain [beta]
+          %td.free
+            %i.uk-icon-square-o
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Pro only
+
+        %tr
+          %td
+            Google apps integration
+            .description
+              Integrate with google docs and calendar [beta]
+          %td.free
+            %i.uk-icon-square-o
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Pro only
+
+        %tr
+          %td
+            Google members sync
+            .description
+              Control membership from your Google Apps domain [coming soon]
+          %td.free
+            %i.uk-icon-square-o
+          %td.pro
+            %i.uk-icon-check-square-o
+              %span.sr-only
+                Pro only
+
+
+  %section
+    Threadable is $3/user/month*
+
+    %br
+
+    * We charge for active users. An active user is any user
+    who has confirmed their account and has not disabled email.
+
   %section.sign-up
     = render 'shared/threadable_logo'
-    = render 'sign_up_form', button_color_class: 'black-button'
+    = render 'sign_up_form', button_color_class: 'blue-button'
+
+:javascript
+  #{render 'sign_up_form.js'}
