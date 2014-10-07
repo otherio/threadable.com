@@ -18,7 +18,7 @@
             = held_message.from
         %td
           = link_to organization_held_message_path(@organization, held_message) do
-            = held_message.incoming_email.groups.first.name
+            = held_message.incoming_email.groups.first.try(:name)
         %td
           = link_to organization_held_message_path(@organization, held_message) do
             = held_message.subject
