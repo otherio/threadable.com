@@ -333,55 +333,63 @@ describe Threadable::IncomingEmail, :type => :model do
   describe 'holdable?' do
     subject{ incoming_email.holdable? }
 
-    before{ allow(incoming_email).to receive(:organization).and_return(organization) }
+    context 'when the message is not addressed to an organization' do
+      before{ allow(incoming_email).to receive(:organization).and_return(nil) }
 
-    context 'when the organization holds all messages' do
-      before do
-        allow(organization).to receive_messages :hold_all_messages? => true
-        expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
-      end
-
-      context 'when a parent message is not present' do
-        before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
-
-        it { is_expected.to be_truthy }
-      end
-
-      context 'when a parent message is present' do
-        let(:group){ double :group, :hold_messages? => false }
-
-        before do
-          expect(incoming_email).to receive(:parent_message).and_return(5235)
-          expect(incoming_email).to receive(:groups).and_return([group])
-        end
-
-        it { is_expected.to be_falsey }
-      end
+      it {is_expected.to be_falsey}
     end
 
-    context 'when the organization does not hold all messages' do
-      before{ allow(organization).to receive_messages :hold_all_messages? => false }
+    context 'with an organization' do
+      before{ allow(incoming_email).to receive(:organization).and_return(organization) }
 
-      context 'when is at least one group that does not hold messages' do
-        let(:group){ double :group, :hold_messages? => false }
-        before{ expect(incoming_email).to receive(:groups).and_return([group]) }
-        it { is_expected.to be_falsey }
+      context 'when the organization holds all messages' do
+        before do
+          allow(organization).to receive_messages :hold_all_messages? => true
+          expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false)
+        end
+
+        context 'when a parent message is not present' do
+          before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+
+          it { is_expected.to be_truthy }
+        end
+
+        context 'when a parent message is present' do
+          let(:group){ double :group, :hold_messages? => false }
+
+          before do
+            expect(incoming_email).to receive(:parent_message).and_return(5235)
+            expect(incoming_email).to receive(:groups).and_return([group])
+          end
+
+          it { is_expected.to be_falsey }
+        end
       end
 
-      context 'when there are no groups that do not hold messages' do
-        before{ expect(incoming_email).to receive(:groups).and_return([]) }
+      context 'when the organization does not hold all messages' do
+        before{ allow(organization).to receive_messages :hold_all_messages? => false }
 
-        context 'when parent_message is present' do
-          before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+        context 'when is at least one group that does not hold messages' do
+          let(:group){ double :group, :hold_messages? => false }
+          before{ expect(incoming_email).to receive(:groups).and_return([group]) }
           it { is_expected.to be_falsey }
         end
 
-        context 'when parent_message is nil' do
-          before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+        context 'when there are no groups that do not hold messages' do
+          before{ expect(incoming_email).to receive(:groups).and_return([]) }
 
-          context 'when creator is not a member of the organization' do
-            before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
-            it { is_expected.to be_truthy }
+          context 'when parent_message is present' do
+            before{ expect(incoming_email).to receive(:parent_message).and_return(34543) }
+            it { is_expected.to be_falsey }
+          end
+
+          context 'when parent_message is nil' do
+            before{ expect(incoming_email).to receive(:parent_message).and_return(nil) }
+
+            context 'when creator is not a member of the organization' do
+              before{ expect(incoming_email).to receive(:creator_is_an_organization_member?).and_return(false) }
+              it { is_expected.to be_truthy }
+            end
           end
         end
       end

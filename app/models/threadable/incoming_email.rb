@@ -116,6 +116,8 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def holdable?
+    return false if organization.nil?
+
     (organization.hold_all_messages? && !creator_is_an_owner? && !reply?) ||
     hold_candidate?
   end
