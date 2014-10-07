@@ -8,6 +8,8 @@
     = f.input :email_address_username, as: :string, required: false
     = f.input :description, as: :string, required: false
     = f.input :plan, as: :select, collection: Organization::PLANS, include_blank: false
+    = f.input :billforward_account_id, as: :string, label: "Billing Account ID", required: false
+    = f.input :billforward_subscription_id, as: :string, label: "Billing Subscription ID", required: false
     = f.input :trusted?, as: :boolean, label: "Trusted organization"
     = f.input :hold_all_messages?, as: :boolean, label: "Holds all messages"
     = f.input :public_signup?, as: :boolean, label: "Public signup"
