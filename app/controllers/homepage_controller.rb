@@ -17,7 +17,7 @@ class HomepageController < ApplicationController
   private
 
   def render_client_app_if_signed_in!
-    return if request.path == "/frontpage"
+    return if request.path == "/frontpage" || "/pricing"
     render 'client_app/show', layout: 'client_app' if signed_in?
   end
 
