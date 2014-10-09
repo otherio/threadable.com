@@ -9,7 +9,10 @@
       - if @on_homepage
         %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
       - else
-        %a.button{href: "/#quit-learning-new-tools"} FEATURES
+        - if current_user.present?
+          %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
+        - else
+          %a.button{href: "/#quit-learning-new-tools"} FEATURES
       %a.button{href: "/pricing"} PRICING
       %a.button{href: "http://docs.threadable.apiary.io"} API
       - unless current_user.present?
