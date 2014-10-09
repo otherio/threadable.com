@@ -28,6 +28,14 @@ Threadable.OrganizationSettingsController = Ember.ObjectController.extend(
     return '/subscribe/' + this.get('slug');
   }.property('slug'),
 
+  isNonprofit: function() {
+    return this.get('accountType') == 'nonprofit_account';
+  }.property('accountType'),
+
+  isYC: function() {
+    return this.get('accountType') == 'yc_account';
+  }.property('accountType'),
+
   editableOrganization: function() { return this.get('model').copy(); }.property('model'),
 
   descriptionLengthRemaining: function() {

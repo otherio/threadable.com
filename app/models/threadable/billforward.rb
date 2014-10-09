@@ -39,23 +39,25 @@ class Threadable::Billforward
 
     response = self.class.post("#{url}/accounts", body: payload.to_json)
     response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to create account: #{response['errorMessage']}"
-    organization.update(billforward_account_id: response['results'][0]['id'])
+    account_id = response['results'][0]['id']
+    raise Threadable::ExternalServiceError, "Did not get an account ID" unless account_id.present?
+    organization.update(billforward_account_id: account_id)
   end
 
   def create_subscription
-    create_account unless organization.billforward_account_id
+    create_account unless organization.billforward_account_id.present?
 
     member_count = organization.members.who_get_email.count
 
     payload = {
       'accountID'         => organization.billforward_account_id,
       'productID'         => ENV['THREADABLE_BILLFORWARD_PRO_PRODUCT_ID'],
-      'productRatePlanID' => ENV['THREADABLE_BILLFORWARD_PRO_PLAN_ID'],
+      'productRatePlanID' => plan_id,
       'name'              => "Pro: #{organization.name}",
       'type'              => "Subscription",
 
       'pricingComponentValues' => [
-        'pricingComponentID' => ENV['THREADABLE_BILLFORWARD_PEOPLE_COMPONENT_ID'],
+        'pricingComponentID' => component_id,
         'value'              => member_count,
       ]
     }
@@ -66,7 +68,7 @@ class Threadable::Billforward
   end
 
   def update_member_count
-    return unless organization.billforward_subscription_id
+    return unless organization.billforward_subscription_id.present?
 
     old_value = organization.daily_active_users
     new_value = organization.members.who_get_email.count
@@ -76,7 +78,7 @@ class Threadable::Billforward
     payload = get_subscription
     payload['pricingComponentValueChanges'] = [
       {
-        'pricingComponentID' => ENV['THREADABLE_BILLFORWARD_PEOPLE_COMPONENT_ID'],
+        'pricingComponentID' => component_id,
         'oldValue' => old_value,
         'newValue' => new_value,
         'mode' => 'delayed',
@@ -91,7 +93,7 @@ class Threadable::Billforward
   end
 
   def update_paid_status
-    return unless organization.billforward_subscription_id
+    return unless organization.billforward_subscription_id.present?
 
     state = get_subscription['state']
     if state == 'Paid' || state == 'Trial'
@@ -107,6 +109,26 @@ class Threadable::Billforward
     response = HTTParty.get("#{url}/subscriptions/#{organization.billforward_subscription_id}?access_token=#{token}")
     response.code < 300 && response.respond_to?(:[]) or raise Threadable::ExternalServiceError, "Unable to fetch subscription for #{organization.slug}: #{response['errorMessage']}"
     response['results'][0]
+  end
+
+  def plan_id
+    if organization.standard_account?
+      ENV['THREADABLE_BILLFORWARD_PRO_PLAN_ID']
+    elsif organization.yc_account?
+      ENV['THREADABLE_BILLFORWARD_YC_PLAN_ID']
+    elsif organization.nonprofit_account?
+      ENV['THREADABLE_BILLFORWARD_NONPROFIT_PLAN_ID']
+    end
+  end
+
+  def component_id
+    if organization.standard_account?
+      ENV['THREADABLE_BILLFORWARD_PRO_COMPONENT_ID']
+    elsif organization.yc_account?
+      ENV['THREADABLE_BILLFORWARD_YC_COMPONENT_ID']
+    elsif organization.nonprofit_account?
+      ENV['THREADABLE_BILLFORWARD_NONPROFIT_COMPONENT_ID']
+    end
   end
 
 end

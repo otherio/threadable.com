@@ -1,9 +1,15 @@
 class Organization < ActiveRecord::Base
 
-  # WARNING! you can only append to this list. The indices are meaningful!
+  # WARNING! you can only append to these lists. The indices are meaningful!
   PLANS = [
     :free,
     :paid,
+  ].freeze
+
+  ACCOUNT_TYPES = [
+    :standard_account,
+    :nonprofit_account,
+    :yc_account,
   ].freeze
 
   has_many :conversations, dependent: :destroy
@@ -45,6 +51,7 @@ class Organization < ActiveRecord::Base
   # end
 
   validates_inclusion_of :plan, :in => PLANS
+  validates_inclusion_of :account_type, :in => ACCOUNT_TYPES
   validates_presence_of :name, :slug, :email_address_username
   validates_uniqueness_of :slug, :email_address_username
   validates_format_of :subject_tag, with: /\A([\w \&\.\'\-+]+|)\z/
@@ -84,6 +91,17 @@ class Organization < ActiveRecord::Base
     value = value.to_sym
     index = PLANS.index(value)
     index or raise ArgumentError, "expected #{value.inspect} to be one of #{PLANS.inspect}"
+    super(index)
+  end
+
+  def account_type
+    ACCOUNT_TYPES[super]
+  end
+
+  def account_type= value
+    value = value.to_sym
+    index = ACCOUNT_TYPES.index(value)
+    index or raise ArgumentError, "expected #{value.inspect} to be one of #{ACCOUNT_TYPES.inspect}"
     super(index)
   end
 

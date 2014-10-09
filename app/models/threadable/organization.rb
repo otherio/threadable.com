@@ -30,6 +30,7 @@ class Threadable::Organization < Threadable::Model
     billforward_account_id
     billforward_subscription_id
     daily_active_users
+    account_type
   }, to: :organization_record)
 
   let(:settings) do
@@ -43,6 +44,10 @@ class Threadable::Organization < Threadable::Model
 
   ::Organization::PLANS.each do |plan|
     define_method("#{plan}?"){ self.plan == plan }
+  end
+
+  ::Organization::ACCOUNT_TYPES.each do |account_type|
+    define_method("#{account_type}?"){ self.account_type == account_type }
   end
 
   let(:email_domains) { Threadable::Organization::EmailDomains.new(self) }

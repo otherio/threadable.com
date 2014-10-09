@@ -196,7 +196,15 @@
           <li>Connect Threadable to Google Apps</li>
         </ul>
         <a {{bind-attr href='subscribeUrl'}} class="uk-button uk-button-primary">Subscribe now</a><br>
-        Special early-adopter pricing: <b>$3/user/month!</b>
+        {{#if isNonprofit}}
+          Flat-rate nonprofit pricing: <b>$10/mo for unlimited users!</b>
+        {{else}}
+          {{#if isYC}}
+            Early-adopter YC pricing: <b>$2/user/month!</b>
+          {{else}}
+            Special early-adopter pricing: <b>$3/user/month!</b>
+          {{/if}}
+        {{/if}}
       </p>
     {{/if}}
 

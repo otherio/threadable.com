@@ -8,7 +8,7 @@ class SubscribeController < ApplicationController
   def show
     billforward = Threadable::Billforward.new(organization: organization)
 
-    if organization.billforward_subscription_id
+    if organization.billforward_subscription_id.present?
       billforward.update_member_count
     else
       billforward.create_subscription

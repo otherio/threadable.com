@@ -287,6 +287,26 @@ describe Threadable::Organization, :type => :request do
     end
   end
 
+  describe 'account types' do
+    describe '#standard_account?' do
+      it 'tells us whether the org is standard' do
+        expect(organization.standard_account?).to be_truthy
+      end
+    end
+
+    describe '#nonprofit_account?' do
+      it 'tells us whether the org is nonprofit' do
+        expect(organization.nonprofit_account?).to be_falsey
+      end
+    end
+
+    describe '#yc_account?' do
+      it 'tells us whether the org is yc' do
+        expect(organization.yc_account?).to be_falsey
+      end
+    end
+  end
+
   describe '#email_host' do
     it 'returns the email host' do
       expect(organization.email_host).to eq 'raceteam.localhost'

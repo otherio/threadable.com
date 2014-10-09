@@ -15,6 +15,7 @@ class OrganizationsSerializer < Serializer
       trusted:           organization.trusted?,
       plan:              organization.plan,
       public_signup:     organization.public_signup?,
+      account_type:      organization.account_type,
 
       email_address_username:       organization.email_address_username,
       email_address:                organization.email_address,

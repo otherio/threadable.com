@@ -40,6 +40,7 @@ describe OrganizationsSerializer do
         trusted:           true,
         plan:              :paid,
         public_signup:     true,
+        account_type:      :standard_account,
 
         email_address_username:       raceteam.email_address_username,
         email_address:                raceteam.email_address,
@@ -90,6 +91,7 @@ describe OrganizationsSerializer do
           trusted:           true,
           plan:              :paid,
           public_signup:     true,
+          account_type:      :standard_account,
 
           email_address_username:       raceteam.email_address_username,
           email_address:                raceteam.email_address,
@@ -123,6 +125,7 @@ describe OrganizationsSerializer do
           trusted:           false,
           plan:              :free,
           public_signup:     false,
+          account_type:      :standard_account,
 
           email_address_username:       sfhealth.email_address_username,
           email_address:                sfhealth.email_address,

@@ -7,6 +7,7 @@
     = f.input :slug, required: false
     = f.input :email_address_username, as: :string, required: false
     = f.input :description, as: :string, required: false
+    = f.input :account_type, as: :select, collection: Organization::ACCOUNT_TYPES, include_blank: false
     = f.input :plan, as: :select, collection: Organization::PLANS, include_blank: false
     = f.input :billforward_account_id, as: :string, label: "Billing Account ID", required: false
     = f.input :billforward_subscription_id, as: :string, label: "Billing Subscription ID", required: false

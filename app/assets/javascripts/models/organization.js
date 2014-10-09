@@ -17,6 +17,7 @@ Threadable.Organization = RL.Model.extend({
   hasHeldMessages:           RL.attr('boolean'),
   trusted:                   RL.attr('boolean'),
   plan:                      RL.attr('string'),
+  accountType:               RL.attr('string'),
 
   groups:                    RL.hasMany('Threadable.Group'),
   emailDomains:              RL.hasMany('Threadable.EmailDomain'),

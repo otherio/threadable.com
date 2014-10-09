@@ -68,6 +68,7 @@ class Admin::OrganizationsController < ApplicationController
         :public_signup,
         :billforward_account_id,
         :billforward_subscription_id,
+        :account_type,
       ).symbolize_keys
       if @organization_params.key? :add_current_user_as_a_member
         @organization_params[:add_current_user_as_a_member] = @organization_params[:add_current_user_as_a_member] == "1"

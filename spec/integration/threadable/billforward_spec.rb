@@ -9,10 +9,15 @@ describe Threadable::Billforward, :type => :request do
 
   before do
     WebMock.disable_net_connect!
-    ENV['THREADABLE_BILLFORWARD_API_URL'] = 'https://sandbox.billforward.net'
-    ENV['THREADABLE_BILLFORWARD_PRO_PLAN_ID'] = 'the_pro_plan_id'
-    ENV['THREADABLE_BILLFORWARD_PEOPLE_COMPONENT_ID'] = 'the_people_component_id'
-    ENV['THREADABLE_BILLFORWARD_PRO_PRODUCT_ID'] = 'the_pro_product_id'
+    ENV['THREADABLE_BILLFORWARD_API_URL'] =                'https://sandbox.billforward.net'
+    ENV['THREADABLE_BILLFORWARD_PRO_PRODUCT_ID'] =         'the_pro_product_id'
+    ENV['THREADABLE_BILLFORWARD_PRO_PLAN_ID'] =            'the_pro_plan_id'
+    ENV['THREADABLE_BILLFORWARD_PRO_COMPONENT_ID'] =       'the_pro_component_id'
+    ENV['THREADABLE_BILLFORWARD_YC_PLAN_ID'] =             'the_yc_plan_id'
+    ENV['THREADABLE_BILLFORWARD_YC_COMPONENT_ID'] =        'the_yc_component_id'
+    ENV['THREADABLE_BILLFORWARD_NONPROFIT_PLAN_ID'] =      'the_nonprofit_plan_id'
+    ENV['THREADABLE_BILLFORWARD_NONPROFIT_COMPONENT_ID'] = 'the_nonprofit_component_id'
+
     sign_in_as 'alice@ucsd.example.com'
   end
 
@@ -117,16 +122,19 @@ describe Threadable::Billforward, :type => :request do
 
     context 'with valid data' do
 
+      let(:expected_plan_id)      { 'the_pro_plan_id' }
+      let(:expected_component_id) { 'the_pro_component_id' }
+
       let(:subscription_data) do
         {
           'accountID'         => 'the_account_id',
           'productID'         => 'the_pro_product_id',
-          'productRatePlanID' => 'the_pro_plan_id',
+          'productRatePlanID' => expected_plan_id,
           'name'              => "Pro: #{organization.name}",
           'type'              => "Subscription",
 
           'pricingComponentValues' => [
-            'pricingComponentID' => 'the_people_component_id',
+            'pricingComponentID' => expected_component_id,
             'value'              => organization.members.who_get_email.count
           ]
         }
@@ -154,10 +162,42 @@ describe Threadable::Billforward, :type => :request do
         )
       end
 
-      it 'creates the subscription for the organization' do
-        billforward.create_subscription
-        expect(organization.billforward_subscription_id).to eq 'the_subscription_id'
-        expect(organization.daily_active_users).to eq organization.members.who_get_email.count
+      context 'with a standard plan' do
+        it 'creates the subscription for the organization' do
+          billforward.create_subscription
+          expect(organization.billforward_subscription_id).to eq 'the_subscription_id'
+          expect(organization.daily_active_users).to eq organization.members.who_get_email.count
+        end
+      end
+
+      context 'with a yc plan' do
+        let(:expected_plan_id) { 'the_yc_plan_id' }
+        let(:expected_component_id) { 'the_yc_component_id' }
+
+        before do
+          organization.update(account_type: :yc_account)
+        end
+
+        it 'creats the subscription with the yc plan' do
+          billforward.create_subscription
+          expect(organization.billforward_subscription_id).to eq 'the_subscription_id'
+          expect(organization.daily_active_users).to eq organization.members.who_get_email.count
+        end
+      end
+
+      context 'with a nonprofit plan' do
+        let(:expected_plan_id) { 'the_nonprofit_plan_id' }
+        let(:expected_component_id) { 'the_nonprofit_component_id' }
+
+        before do
+          organization.update(account_type: :nonprofit_account)
+        end
+
+        it 'creats the subscription with the yc plan' do
+          billforward.create_subscription
+          expect(organization.billforward_subscription_id).to eq 'the_subscription_id'
+          expect(organization.daily_active_users).to eq organization.members.who_get_email.count
+        end
       end
     end
 
@@ -204,7 +244,7 @@ describe Threadable::Billforward, :type => :request do
 
           'pricingComponentValueChanges' => [
             {
-              'pricingComponentID' => 'the_people_component_id',
+              'pricingComponentID' => 'the_pro_component_id',
               'oldValue' => 5,
               'newValue' => organization.members.who_get_email.count,
               'mode' => 'delayed',
