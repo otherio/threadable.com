@@ -20,7 +20,7 @@ feature "signing up" do
     within first('.sign-up-form') do
       fill_in 'Organization name',  with: organization_name
       fill_in 'Your email address', with: email_address
-      click_on 'CREATE'
+      click_on 'SIGN UP'
     end
 
     wait_until_expectation do
