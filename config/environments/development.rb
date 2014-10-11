@@ -56,7 +56,7 @@ Threadable::Application.configure do
 
   config.storage = {local:'development'}
 
-  config.redis = { url: 'redis://127.0.0.1:6379/11' }
+  config.redis = { url: 'redis://127.0.0.1:6379/0' }
 
   config.track_in_memory = true
 
