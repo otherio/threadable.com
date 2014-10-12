@@ -78,11 +78,10 @@ module.exports = {
       redis.getSet.hget([("rtSession-" + userId), sessionId],
         function(err, session) {
           if (err || !session) {
-            console.log('could not auth user: ' + userId + ' with session: ' + sessionId);
+            console.log('Failed to auth user: ' + userId);
             next(new Error('Unauthorized Realtime user (session)'));
           } else {
-            console.log('authorized user: ' + userId + ' session: ' + sessionId);
-            console.log('got session: ' + session);
+            console.log('authorized user: ' + userId);
             socket.request.session = JSON.parse(session);
             next();
           }
