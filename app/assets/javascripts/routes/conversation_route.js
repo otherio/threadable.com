@@ -33,9 +33,11 @@ Threadable.ConversationRoute = Ember.Route.extend({
     this.controllerFor('doerSelector').set('doers', conversation.get('doers').toArray());
 
     var currentUser = this.modelFor('application');
-    currentUser.on('foo-bar', function(applicationUpdate) {
-      // TODO: do the work of updating the conversation here.
-      debugger;
+    currentUser.on('create-message', function(applicationUpdate) {
+      if(applicationUpdate.get('payload').conversation_id == conversation.get('id')){
+        conversation.set('newMessageCount', conversation.get('newMessageCount') + 1);
+        console.log('new message');
+      }
     });
   },
 
