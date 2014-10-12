@@ -1,6 +1,7 @@
 Threadable.ConversationController = Ember.ObjectController.extend(Threadable.ConfirmationMixin, Threadable.RoutesMixin, {
-  needs: ['organization', 'doerSelector', 'group'],
+  needs: ['organization', 'doerSelector', 'group', 'reply'],
   organization: Ember.computed.alias('controllers.organization'),
+  reply:        Ember.computed.alias('controllers.reply'),
 
   showDoerSelector: false,
 
@@ -24,8 +25,8 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
   }.property('totalMessages', 'sentMessages', 'currentUserIsARecipient'),
 
   hasNewMessages: function() {
-    return this.get('newMessageCount') !== 0;
-  }.property('newMessageCount'),
+    return this.get('newMessageCount') !== 0 && !this.get('reply.sending');
+  }.property('newMessageCount', 'reply.sending'),
 
   unselectedGroups: function() {
     var groups = Ember.ArrayProxy.createWithMixins(Ember.SortableMixin, {

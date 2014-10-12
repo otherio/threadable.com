@@ -51,7 +51,9 @@
       this.set('error', null);
       var organizationSlug = this.get('controllers.organization.model.slug');
 
+      // TODO: figure out how to not need to work with both of these.
       var conversation = this.get('controllers.conversation.model');
+      var conversationInList = this.get('controllers.conversations.model').findBy('id', conversation.get('id'));
 
       var message = this.get('message');
 
@@ -92,6 +94,12 @@
           conversation.set('newMessageCount', 0);
           this.set('sending', false);
         }.bind(this));
+
+        conversation.deserialize(response.message.conversation);
+        if(conversationInList) {
+          // if the task page was loaded directly, this isn't present.
+          conversationInList.deserialize(response.message.conversation);
+        }
 
         this.set('model', Threadable.Message.create({}));
       }
