@@ -3,7 +3,6 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
   organization: Ember.computed.alias('controllers.organization'),
 
   showDoerSelector: false,
-  newMessageCount: 0,
 
   messages: function() {
     return this.get('events').filter(function(event) {

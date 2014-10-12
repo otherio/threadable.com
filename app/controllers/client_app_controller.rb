@@ -24,7 +24,8 @@ class ClientAppController < ApplicationController
     user_id = threadable.current_user_id
 
     session_data = {
-        "user_id" => user_id,
+      user_id: user_id,
+      organization_ids: threadable.current_user.organizations.all.map(&:id)
     }.to_json
 
     Threadable.redis.hset(

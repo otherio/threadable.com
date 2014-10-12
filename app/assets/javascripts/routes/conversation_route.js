@@ -32,11 +32,14 @@ Threadable.ConversationRoute = Ember.Route.extend({
     this.controllerFor('reply').set('model', Threadable.Message.create({}));
     this.controllerFor('doerSelector').set('doers', conversation.get('doers').toArray());
 
-    var currentUser = this.modelFor('application');
-    currentUser.on('create-message', function(applicationUpdate) {
-      if(applicationUpdate.get('payload').conversation_id == conversation.get('id')){
-        conversation.set('newMessageCount', conversation.get('newMessageCount') + 1);
-        console.log('new message');
+    // catch new message events
+    this.modelFor('application').on('create-message', function(applicationUpdate) {
+      // this conversation?
+      if(applicationUpdate.get('payload').conversation_id == conversation.get('id')) {
+        // do we not have the message?
+        if(conversation.get('events').mapBy('id').indexOf(applicationUpdate.get('targetId')) == -1) {
+          conversation.set('newMessageCount', conversation.get('newMessageCount') + 1);
+        }
       }
     });
   },

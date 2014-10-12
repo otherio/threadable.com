@@ -25,19 +25,25 @@ module.exports = {
 
         msg = JSON.parse(message);
 
-        var currentSocketIoUserId = socket.request.session['user_id'];
+        var currentUserId = socket.request.session['user_id'];
+        var organizationIds = socket.request.session['organization_ids'];
 
-        // if the recipient user id list is not part of the message
-        // then define it anyways.
-        if (msg.recipient_user_ids === undefined || msg.recipient_user_ids === null) {
-          msg.recipient_user_ids = [];
+        // is this message for an organization we're not part of?
+        if(organizationIds.indexOf(msg.organization_id) == -1) {
+          return;
         }
 
-        if (msg.recipient_user_ids.indexOf(currentSocketIoUserId) != -1) {
-          delete msg.recipient_user_ids; //don't include this with the message
-          socket.emit('application_update', msg);
+        // if user ids were specified, make sure this user is included.
+        if (msg.user_ids !== undefined && msg.user_ids !== null) {
+          if (msg.user_ids.indexOf(currentUserId) == -1) {
+            return;
+          }
+
+          delete msg.user_ids; //don't include these
         }
 
+        console.log('Sending ' + msg.action + '-' + msg.target + ' for organization: ' + msg.organization_id + ', users: ' + msg.user_ids);
+        socket.emit('application_update', msg);
       });
 
     });
@@ -76,6 +82,7 @@ module.exports = {
             next(new Error('Unauthorized Realtime user (session)'));
           } else {
             console.log('authorized user: ' + userId + ' session: ' + sessionId);
+            console.log('got session: ' + session);
             socket.request.session = JSON.parse(session);
             next();
           }
@@ -91,7 +98,7 @@ module.exports = {
     var redisURL = url.parse("redis://127.0.0.1:6379/0");
     var redisSub, redisPub, redisGetSet = null;
 
-    if (process.env.REDISCLOUD_URL === null) {
+    if (! process.env.REDISCLOUD_URL) {
       // use local client if there's no redis cloud url set up.
       redisSub = redis.createClient(redisURL.port, redisURL.hostname);
       redisPub = redis.createClient();

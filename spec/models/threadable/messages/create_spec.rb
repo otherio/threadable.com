@@ -58,7 +58,7 @@ describe Threadable::Messages::Create, :type => :model do
   let(:expected_to_header)          { "Foo Thing <foo@thing.com>" }
   let(:expected_cc_header)          { nil }
 
-  let(:message_record) { double :message_record, created_at: Time.now }
+  let(:message_record) { double :message_record, created_at: Time.now, id: 10 }
   let(:message)        { double :message, persisted?: true, recipients: double(:recipients, all: []) }
   let(:latest_message) { nil }
 
@@ -73,6 +73,13 @@ describe Threadable::Messages::Create, :type => :model do
     expect(::Attachment).to receive(:create).with(attachment2).and_return(attachment_record2)
 
     allow(conversation).to receive_message_chain(:messages, :latest).and_return(latest_message)
+
+    expect(organization).to receive(:application_update).with({
+      action:          'create',
+      target:          'message',
+      target_id:       message_record.id,
+      payload:         {conversation_id: conversation.id},
+    })
 
     expect(message_record).to receive(:attachments=).with([attachment_record1, attachment_record2])
   end

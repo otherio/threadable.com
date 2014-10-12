@@ -10,7 +10,7 @@ Threadable.realtime.connect = function(currentUser) {
       Threadable.realtime.socketIo.emit('realtime_user_id_connected', { userId: userId });
     });
 
-    Threadable.realtime.socketIo.on('realtime_msg', function(message) {
+    Threadable.realtime.socketIo.on('application_update', function(message) {
       // camelize the keys.
       Object.keys(message).map(function(key) {
         var value = message[key];

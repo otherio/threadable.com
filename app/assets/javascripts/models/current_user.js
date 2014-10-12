@@ -58,7 +58,7 @@ Threadable.CurrentUser = RL.Model.extend(Ember.Evented, {
 
   triggerUpdateEvent: function() {
     var update = this.get('applicationUpdates.lastObject');
-    console.log('triggering ' + update.get('action') + '-' + update.get('target'));
+    console.log('Received application update: ' + update.get('action') + '-' + update.get('target'));
     this.trigger(update.get('action') + '-' + update.get('target'), update);
   }.observes('applicationUpdates.@each'),
 });

@@ -27,6 +27,8 @@ Threadable.Conversation = RL.Model.extend({
   isFollowed: Ember.computed.alias('followed'),
   isTrashed:  Ember.computed.alias('trashed'),
 
+  newMessageCount: 0,
+
   loadEvents: RL.loadAssociationMethod('events', function(conversation){
     return Threadable.Event.fetch({
       organization_id: conversation.get('organizationSlug'),

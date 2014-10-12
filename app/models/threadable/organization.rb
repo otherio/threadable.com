@@ -212,6 +212,10 @@ class Threadable::Organization < Threadable::Model
     Update.call(self, attributes)
   end
 
+  def application_update options
+    ApplicationUpdate.call(self, options)
+  end
+
   def hold_all_messages!
     organization_record.update!(hold_all_messages: true)
     self

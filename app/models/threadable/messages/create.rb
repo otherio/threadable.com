@@ -26,6 +26,7 @@ class Threadable::Messages::Create < MethodObject
       track!
       create_attachments!
       follow_for_creator!
+      send_application_update!
       @message.send_emails! @options.sent_via_web
     end
     return @message
@@ -154,6 +155,15 @@ class Threadable::Messages::Create < MethodObject
       'Task' => @conversation.task?,
       'Message ID' => message_id_header,
     })
+  end
+
+  def send_application_update!
+    @conversation.organization.application_update(
+      action:          'create',
+      target:          'message',
+      target_id:       @message_record.id,
+      payload:         {conversation_id: @conversation.id},
+    )
   end
 
   def strip_html(html)
