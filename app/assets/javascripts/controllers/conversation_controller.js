@@ -25,7 +25,7 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
   }.property('totalMessages', 'sentMessages', 'currentUserIsARecipient'),
 
   hasNewMessages: function() {
-    return this.get('newMessageCount') != 0;
+    return this.get('newMessageCount') !== 0;
   }.property('newMessageCount'),
 
   unselectedGroups: function() {

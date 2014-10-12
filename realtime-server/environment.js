@@ -29,7 +29,7 @@ module.exports = {
 
                 // if the recipient user id list is not part of the message
                 // then define it anyways.
-                if (msg.recipient_user_ids === undefined || msg.recipient_user_ids == null) {
+                if (msg.recipient_user_ids === undefined || msg.recipient_user_ids === null) {
                     msg.recipient_user_ids = [];
                 }
 
@@ -60,7 +60,7 @@ module.exports = {
                 param = requestParams[i];
                 if (param){
                     var p=param.split('=');
-                    if (p.length != 2) { continue };
+                    if (p.length != 2) { continue; }
                     params[p[0]] = p[1];
                 }
             }
@@ -91,7 +91,7 @@ module.exports = {
         var redisURL = url.parse("redis://127.0.0.1:6379/0");
         var redisSub, redisPub, redisGetSet = null;
 
-        if (process.env.REDISCLOUD_URL == null) {
+        if (process.env.REDISCLOUD_URL === null) {
             // use local client if there's no redis cloud url set up.
             redisSub = redis.createClient(redisURL.port, redisURL.hostname);
             redisPub = redis.createClient();
@@ -121,4 +121,4 @@ module.exports = {
             getSet: redisGetSet,
         };
     },
-}
+};
