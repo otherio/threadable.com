@@ -74,11 +74,14 @@ describe Threadable::Messages::Create, :type => :model do
 
     allow(conversation).to receive_message_chain(:messages, :latest).and_return(latest_message)
 
+    expect(conversation).to receive(:private?).and_return(true)
+    expect(conversation).to receive(:private_permitted_user_ids).and_return([42,43])
     expect(organization).to receive(:application_update).with({
       action:          'create',
       target:          'message',
       target_id:       message_record.id,
       payload:         {conversation_id: conversation.id},
+      user_ids:        [42,43],
     })
 
     expect(message_record).to receive(:attachments=).with([attachment_record1, attachment_record2])

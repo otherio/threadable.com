@@ -217,6 +217,22 @@ describe Threadable::Conversation, :type => :request do
     end
   end
 
+  describe '#private_permitted_user_ids' do
+    let(:group) { organization.groups.find_by_slug('leaders') }
+    let(:conversation) { group.conversations.find_by_slug('recruiting') }
+    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+    before do
+      sign_in_as 'alice@ucsd.example.com'
+    end
+
+    it 'returns the members with access, plus org owners' do
+      user_ids = group.members.all.map(&:id)
+      user_ids << alice.id
+      expect(conversation.private_permitted_user_ids).to match_array user_ids.uniq
+    end
+  end
+
   describe '#sync_to_user' do
     let(:conversation) { threadable.conversations.find_by_slug!(single_group_conversation) }
     let(:recipient) { organization.members.find_by_email_address('alice@ucsd.example.com') }

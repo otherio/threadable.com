@@ -174,6 +174,10 @@ class Threadable::Organization < Threadable::Model
     tags.compact.uniq
   end
 
+  def owner_ids
+    organization_record.memberships.who_are_owners.map(&:user_id)
+  end
+
   def google_user
     return nil unless organization_record.google_user
     Threadable::User.new(threadable, organization_record.google_user)

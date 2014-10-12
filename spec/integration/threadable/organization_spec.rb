@@ -361,6 +361,14 @@ describe Threadable::Organization, :type => :request do
     end
   end
 
+  describe '#owner_ids' do
+    let(:alice) { organization.members.find_by_email_address('alice@ucsd.example.com') }
+
+    it 'returns the ids of all org owners' do
+      expect(organization.owner_ids).to match_array [alice.id]
+    end
+  end
+
   it 'has the correct settings with proper defaults' do
     expect(organization.settings.organization_membership_permission).to eq :member
     expect(organization.settings.group_membership_permission).to eq :member

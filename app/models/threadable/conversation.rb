@@ -164,6 +164,13 @@ class Threadable::Conversation < Threadable::Model
     conversation_record.private_cache
   end
 
+  def private_permitted_user_ids
+    user_ids = GroupMembership.
+      joins("INNER JOIN conversation_groups ON group_memberships.group_id = conversation_groups.group_id AND conversation_groups.active = \'t\' AND conversation_groups.conversation_id = #{self.id}").
+      map(&:user_id)
+    (user_ids + organization.owner_ids).uniq
+  end
+
   def sync_to_user recipient
     raise Threadable::AuthorizationError, "You must be a recipient of a conversation to sync it" unless recipients.include? recipient
     messages.not_sent_to(recipient).each do |message|

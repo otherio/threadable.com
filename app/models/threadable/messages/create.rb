@@ -158,12 +158,16 @@ class Threadable::Messages::Create < MethodObject
   end
 
   def send_application_update!
-    @conversation.organization.application_update(
+    update = {
       action:          'create',
       target:          'message',
       target_id:       @message_record.id,
       payload:         {conversation_id: @conversation.id},
-    )
+    }
+
+    update[:user_ids] = @conversation.private_permitted_user_ids if @conversation.private?
+
+    @conversation.organization.application_update(update)
   end
 
   def strip_html(html)
