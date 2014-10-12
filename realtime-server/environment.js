@@ -54,9 +54,6 @@ module.exports = {
   authorize: function authorize(io, redis) {
     io.use(function(socket, next) {
 
-      var sessionId = null;
-      var userId = null;
-
       var url = require('url');
       requestUrl = url.parse(socket.request.url);
       requestQuery = requestUrl.query;
@@ -71,11 +68,11 @@ module.exports = {
         }
       }
 
-      sessionId = params["_rtToken"];
-      userId = params["_rtUserId"];
+      var token = params["token"];
+      var userId = params["userId"];
 
-      // retrieve session from redis using the unique key stored in cookies
-      redis.getSet.hget([("rtSession-" + userId), sessionId],
+      // retrieve session from redis using the supplied session token
+      redis.getSet.hget([("realtime_session-" + userId), token],
         function(err, session) {
           if (err || !session) {
             console.log('Failed to auth user: ' + userId);

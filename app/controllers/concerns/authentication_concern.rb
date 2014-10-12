@@ -36,6 +36,11 @@ module AuthenticationConcern
 
   def sign_out!
     return unless signed_in?
+
+    user_id = threadable.current_user_id
+    realtime_token = Digest::SHA1.hexdigest("#{session[:session_id]}:#{user_id}")
+    Threadable.redis.hdel("realtime_session-#{user_id}", realtime_token)
+
     @threadable = nil
     session.delete(:user_id)
     cookies.delete(:remember_me)

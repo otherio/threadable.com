@@ -2,8 +2,9 @@
   {{#if hasNewMessages}}
     <div class="new-messages">
       This conversation has {{newMessageCount}} new {{pluralize newMessageCount s="message"}}.
-      <a href="" {{action 'refresh'}}><i class="uk-icon-refresh"></i> show</a>
+      <a href="" {{action 'refresh'}} class="uk-button"><i class="uk-icon-refresh"></i> show</a>
     </div>
+    <div class="new-messages-spacer">&nbsp;</div>
   {{/if}}
 
   <div class="padded">
