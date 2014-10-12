@@ -1,7 +1,7 @@
 <div {{bind-attr class=":conversation-show :scrollable showDoerSelector:show-doer-selector"}}>
   {{#if hasNewMessages}}
     <div class="new-messages">
-      This conversation has {{newMessageCount}} new message(s).
+      This conversation has {{newMessageCount}} new {{pluralize newMessageCount s="message"}}.
       <a href="" {{action 'refresh'}}><i class="uk-icon-refresh"></i> show</a>
     </div>
   {{/if}}
