@@ -29,6 +29,7 @@ Threadable = Ember.Application.create({
 });
 // Ember.run.backburner.DEBUG = true;
 
+Threadable.realtime = {};
 
 Threadable.deferReadiness();
 
@@ -71,4 +72,4 @@ Threadable.htmlEscape = function (str) {
             .replace(/'/g, '&#39;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
-}
+};

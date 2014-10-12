@@ -9,6 +9,7 @@ Threadable.OrganizationRoute = Ember.Route.extend({
         }
       });
       Threadable.setupUserVoice(currentUser, organization);
+      Threadable.realtime.connect(currentUser);
       currentUser.set('currentOrganizationId', organization.get('id'));
       return organization;
     });

@@ -31,6 +31,12 @@ Threadable.ConversationRoute = Ember.Route.extend({
     conversation.set('model', model);
     this.controllerFor('reply').set('model', Threadable.Message.create({}));
     this.controllerFor('doerSelector').set('doers', conversation.get('doers').toArray());
+
+    var currentUser = this.modelFor('application');
+    currentUser.on('foo-bar', function(applicationUpdate) {
+      // TODO: do the work of updating the conversation here.
+      debugger;
+    });
   },
 
   renderTemplate: function() {

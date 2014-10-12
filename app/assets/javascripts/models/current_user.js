@@ -1,7 +1,7 @@
 Threadable.currentUserPromise = currentUserPromise;
 delete this.currentUserPromise;
 
-Threadable.CurrentUser = RL.Model.extend({
+Threadable.CurrentUser = RL.Model.extend(Ember.Evented, {
   id:                     RL.attr('string'),
   userId:                 RL.attr('number'),
   param:                  RL.attr('string'),
@@ -14,6 +14,8 @@ Threadable.CurrentUser = RL.Model.extend({
   dismissedWelcomeModal:  RL.attr('boolean'),
 
   organizations: RL.hasMany('Threadable.Organization'),
+
+  applicationUpdates: RL.hasMany('Threadable.ApplicationUpdate'),
 
   update: function(data) {
     return $.ajax({
@@ -54,6 +56,11 @@ Threadable.CurrentUser = RL.Model.extend({
     this.update({dismissed_welcome_modal: true});
   },
 
+  triggerUpdateEvent: function() {
+    var update = this.get('applicationUpdates.lastObject');
+    console.log('triggering ' + update.get('action') + '-' + update.get('target'));
+    this.trigger(update.get('action') + '-' + update.get('target'), update);
+  }.observes('applicationUpdates.@each'),
 });
 
 Threadable.CurrentUser.reopenClass({
@@ -78,3 +85,4 @@ Threadable.CurrentUser.reopenClass({
     return this._reloadPromise;
   },
 });
+
