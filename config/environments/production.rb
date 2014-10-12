@@ -114,4 +114,5 @@ Threadable::Application.configure do
   config.default_protocol = 'https'
   config.default_port = 443
 
+  config.realtime = { url: 'https://threadable-realtime.herokuapp.com' }
 end

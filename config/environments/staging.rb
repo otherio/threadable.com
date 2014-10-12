@@ -23,4 +23,6 @@ Threadable::Application.configure do
   config.default_host = 'threadablestaging.com'
   config.default_protocol = 'http'
   config.default_port = 80
+
+  config.realtime = { url: 'https://threadable-staging-realtime.herokuapp.com' }
 end

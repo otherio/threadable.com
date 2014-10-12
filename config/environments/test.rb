@@ -59,4 +59,6 @@ Threadable::Application.configure do
   config.default_host = '127.0.0.1'
   config.default_protocol = 'http'
   config.default_port = defined?(Capybara) ? Capybara.server_port : 80
+
+  config.realtime = { url: 'http://127.0.0.1:5001' }
 end

@@ -11,7 +11,7 @@ class ClientAppController < ApplicationController
     return redirect_to sign_in_path(r: request.url) unless signed_in?
 
     update_realtime_token!
-    @realtime_url = 'http://127.0.0.1:5001'
+    @realtime_url = Rails.configuration.realtime[:url]
   end
 
   private

@@ -65,4 +65,6 @@ Threadable::Application.configure do
   config.default_protocol = 'http'
   config.default_port = 80
 
+  config.realtime = { url: 'http://127.0.0.1:5001' }
+
 end
