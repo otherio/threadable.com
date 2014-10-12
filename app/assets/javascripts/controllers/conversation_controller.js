@@ -175,6 +175,11 @@ Threadable.ConversationController = Ember.ObjectController.extend(Threadable.Con
         var error = response && JSON.parse(response.responseText).error || 'an unknown error occurred';
         this.set('error', error);
       }.bind(this));
+    },
+    refresh: function() {
+      this.get('model').loadEvents(true).then(function() {
+        this.set('newMessageCount', 0);
+      }.bind(this));
     }
   }
 });
