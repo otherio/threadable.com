@@ -1,7 +1,7 @@
 Threadable.setupDocent = function(currentUser, organization) {
   Ember.run.later(function() {
     docent.setup({
-      uid:  Threadable.currentUser.get('id'),
+      uid:  Threadable.currentUser.get('userId'),
       plan: organization.get('plan'),
       role: organization.get('members').findBy('userId', currentUser.get('userId')).get('role')
     });
