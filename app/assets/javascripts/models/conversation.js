@@ -112,6 +112,10 @@ Threadable.Conversation.reopenClass({
     return this.getCache(organizationSlug)[conversation_slug];
   },
 
+  unCache: function(organizationSlug, conversation_slug) {
+    delete this.getCache(organizationSlug)[conversation_slug];
+  },
+
   cache: function(conversation) {
     var
       organizationSlug   = conversation.get('organizationSlug'),

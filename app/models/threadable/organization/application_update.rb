@@ -16,8 +16,9 @@ class Threadable::Organization::ApplicationUpdate < MethodObject
     Threadable.redis.publish(
       'application_update',
       options.merge({
-        organization_id: organization.id,
-        created_at:      Time.now.utc.iso8601,
+        organization_id:   organization.id,
+        organization_slug: organization.slug,
+        created_at:        Time.now.utc.iso8601,
       }).to_json
     )
 

@@ -40,6 +40,7 @@ describe Threadable::Messages::Create, :type => :model do
       subject: 'I like your face',
       task?: false,
       id: 1234,
+      slug: 'i-like-your-face',
       formatted_email_addresses: ['Foo Thing <foo@thing.com>'],
     )
   end
@@ -80,7 +81,7 @@ describe Threadable::Messages::Create, :type => :model do
       action:          'create',
       target:          'message',
       target_id:       message_record.id,
-      payload:         {conversation_id: conversation.id},
+      payload:         {conversation_slug: conversation.slug},
       user_ids:        [42,43],
     })
 

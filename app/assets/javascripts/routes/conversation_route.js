@@ -33,15 +33,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
     this.controllerFor('doerSelector').set('doers', conversation.get('doers').toArray());
 
     // catch new message events
-    this.modelFor('application').on('create-message', function(applicationUpdate) {
-      // this conversation?
-      if(applicationUpdate.get('payload').conversation_id == conversation.get('id')) {
-        // do we not have the message?
-        if(conversation.get('events').mapBy('id').indexOf(applicationUpdate.get('targetId')) == -1) {
-          conversation.set('newMessageCount', conversation.get('newMessageCount') + 1);
-        }
-      }
-    });
+    this.modelFor('application').on('create-message', this, this.updateNewMessageCount);
   },
 
   renderTemplate: function() {
@@ -52,9 +44,23 @@ Threadable.ConversationRoute = Ember.Route.extend({
     this.controllerFor('organization').set('focus', 'conversation');
   },
 
+  updateNewMessageCount: function(applicationUpdate) {
+    var conversation = this.controllerFor('conversation');
+
+    // this conversation?
+    if(applicationUpdate.get('payload').conversation_slug == conversation.get('slug')) {
+      // do we not have the message?
+      if(conversation.get('events').mapBy('id').indexOf('message-' + applicationUpdate.get('targetId')) == -1) {
+        conversation.set('newMessageCount', conversation.get('newMessageCount') + 1);
+      }
+    }
+  },
+
   actions: {
     willTransition: function(transition) {
       this.controllerFor('doerSelector').set('doers', []);
+
+      this.modelFor('application').off('create-message', this.updateNewMessageCount);
 
       if (! transition.targetName.match(/_detail$/)) {
         this.controllerFor('organization').set('focus', 'conversations');

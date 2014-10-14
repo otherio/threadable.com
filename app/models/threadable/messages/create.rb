@@ -162,7 +162,7 @@ class Threadable::Messages::Create < MethodObject
       action:          'create',
       target:          'message',
       target_id:       @message_record.id,
-      payload:         {conversation_id: @conversation.id},
+      payload:         {conversation_slug: @conversation.slug},
     }
 
     update[:user_ids] = @conversation.private_permitted_user_ids if @conversation.private?

@@ -14,13 +14,14 @@ describe Threadable::Organization::ApplicationUpdate, :type => :request do
     expect(Threadable.redis).to receive(:publish).with(
       'application_update',
       {
-        action:          'create',
-        target:          'message',
-        target_id:       15,
-        payload:         {conversation_id: 105},
-        user_ids:        [10, 16],
-        organization_id: organization.id,
-        created_at:      Time.now.utc.iso8601,
+        action:            'create',
+        target:            'message',
+        target_id:         15,
+        payload:           {conversation_id: 105},
+        user_ids:          [10, 16],
+        organization_id:   organization.id,
+        organization_slug: organization.slug,
+        created_at:        Time.now.utc.iso8601,
       }.to_json
     )
 
