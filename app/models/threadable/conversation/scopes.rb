@@ -7,6 +7,7 @@ module Threadable::Conversation::Scopes
   def muted_conversations page
     conversations_for conversations_scope_with_includes.
       muted_by(threadable.current_user_id).
+      reorder(last_message_at: :desc).
       limit(PAGE_SIZE).
       offset(PAGE_SIZE * page).uniq
   end
@@ -14,6 +15,7 @@ module Threadable::Conversation::Scopes
   def not_muted_conversations page
     conversations_for conversations_scope_with_includes.
       not_muted_by(threadable.current_user_id).
+      reorder(last_message_at: :desc).
       limit(PAGE_SIZE).
       offset(PAGE_SIZE * page).uniq
   end
