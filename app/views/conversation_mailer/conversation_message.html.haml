@@ -88,7 +88,7 @@
                   %div.footer-flash
                     = @flash
 
-                = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_details_url(@organization, 'my', @conversation)).html_safe
+                = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_detail_url(@organization, 'my', @conversation)).html_safe
                 - unless @show_mail_buttons
                   |
                   = link_to 'web view', conversation_url(@organization, 'my', @conversation)

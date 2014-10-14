@@ -206,6 +206,7 @@ describe ConversationMailer, :type => :mailer do
       context 'with muters or followers' do
         it 'displays the count' do
           expect(html).to include '0 followers, 1 muted'
+          expect(html).to include conversation_detail_url(organization, 'my', conversation)
         end
       end
     end
