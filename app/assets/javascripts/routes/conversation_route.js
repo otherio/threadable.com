@@ -33,6 +33,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
     this.controllerFor('doerSelector').set('doers', conversation.get('doers').toArray());
 
     // catch new message events
+    this.modelFor('application').off('create-message', this.updateNewMessageCount);
     this.modelFor('application').on('create-message', this, this.updateNewMessageCount);
   },
 
