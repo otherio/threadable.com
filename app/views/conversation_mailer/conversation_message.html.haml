@@ -82,15 +82,17 @@
                   - elsif !group.private?
                     |
                     = link_to 'join', email_action_link(group, @recipient, "join")
-            - if @follower_count > 0 || @muter_count > 0
+            - if @follower_count > 0 || @muter_count > 0 || ! @show_mail_buttons
               .threadable-participants{:style => "font-family: Helvetica Neue, Arial, Helvetica, sans-serif;font-size: 12px"}
                 - if @flash.present? && !@show_mail_buttons
                   %div.footer-flash
                     = @flash
 
-                = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_detail_url(@organization, 'my', @conversation)).html_safe
+                - if @follower_count > 0 || @muter_count > 0
+                  = link_to("#{pluralize(@follower_count, 'follower')}, #{@muter_count} muted", conversation_detail_url(@organization, 'my', @conversation)).html_safe
+                  - unless @show_mail_buttons
+                    |
                 - unless @show_mail_buttons
-                  |
                   = link_to 'web view', conversation_url(@organization, 'my', @conversation)
                   |
                   - if @is_group_member

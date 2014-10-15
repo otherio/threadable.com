@@ -265,11 +265,15 @@ describe ConversationMailer, :type => :mailer do
       end
 
       context "with mail buttons disabled" do
+        let(:conversation){ organization.conversations.find_by_slug! 'get-a-new-soldering-iron' }
+
         before do
           recipient.update(show_mail_buttons: false)
         end
+
         it "doesn't have buttons in the mail" do
           expect(mail.html_part.body.to_s).not_to include 'class="threadable-button"'
+          expect(mail.html_part.body.to_s).to include 'web view'
         end
       end
     end
