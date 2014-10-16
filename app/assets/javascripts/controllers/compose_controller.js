@@ -143,8 +143,8 @@ Threadable.ComposeController = Ember.Controller.extend({
       }
 
       function error(response) {
-        var error = response && response.error || 'an unknown error occurred';
-        this.set('error', error);
+        var errorMessage = response && response.error || 'an unknown error occurred';
+        this.set('error', errorMessage);
       }
 
     }
