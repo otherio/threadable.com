@@ -2,7 +2,7 @@ Threadable.realtime.connect = function(currentUser) {
   var userId = currentUser.get('userId');
 
   if (typeof io != 'undefined' && io !== null) {
-    Threadable.realtime.socketIo = io.connect(Threadable.realtime.url + '/?userId=' + userId + '&token=' + Threadable.realtime.token);
+    Threadable.realtime.socketIo = io.connect(realtimeConfig.url + '/?userId=' + userId + '&token=' + realtimeConfig.token);
   }
 
   if (Threadable.realtime.socketIo) {
