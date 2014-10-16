@@ -46,7 +46,7 @@ describe Threadable::Messages::Create, :type => :request do
 
       it 'adds the member as a follower' do
         expect(conversation.followed_by?(alice)).to be_falsey
-        message = call(conversation.messages, message_options)
+        call(conversation.messages, message_options)
         expect(conversation.followed_by?(alice)).to be_truthy
       end
     end

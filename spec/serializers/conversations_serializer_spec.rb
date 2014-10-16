@@ -96,5 +96,4 @@ describe ConversationsSerializer do
       ]
     end
   end
-
 end

@@ -4,7 +4,7 @@ Threadable.ApplicationRoute = Ember.Route.extend({
     return Threadable.CurrentUser.fetch().then(function(currentUser) {
       // set up global applicationUpdate event handlers
       currentUser.on('create-message', function(applicationUpdate) {
-        Threadable.Conversation.unCache(applicationUpdate.get('organizationSlug'), applicationUpdate.get('payload').conversation_slug);
+        Threadable.Conversation.unCache(applicationUpdate.get('organizationSlug'), applicationUpdate.get('payload').conversationSlug);
       });
 
       return currentUser;

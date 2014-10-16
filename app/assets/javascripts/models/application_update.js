@@ -6,4 +6,5 @@ Threadable.ApplicationUpdate = RL.Model.extend({
   actor:          RL.attr('string'),
   createdAt:      RL.attr('date'),
   payload:        RL.attr('object'),
+  triggered:      RL.attr('boolean'),
 });

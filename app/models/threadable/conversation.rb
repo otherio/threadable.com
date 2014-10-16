@@ -198,12 +198,30 @@ class Threadable::Conversation < Threadable::Model
     ! trashed_at.nil?
   end
 
-  def update attributes
-    !!conversation_record.update_attributes(attributes)
+  def update attributes, notify = false
+    if conversation_record.update_attributes(attributes)
+      notify_update! if notify
+      return true
+    end
+
+    false
   end
 
   def update! attributes
     update(attributes) or raise Threadable::RecordInvalid, "Conversation invalid: #{errors.full_messages.to_sentence}"
+  end
+
+  def notify_update!
+    update = {
+      action: :update,
+      target: :conversation,
+      target_record: self,
+      serializer: :base_conversations,
+    }
+
+    update[:user_ids] = private_permitted_user_ids if private?
+
+    organization.application_update(update)
   end
 
   def destroy!

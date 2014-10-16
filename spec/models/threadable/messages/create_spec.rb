@@ -75,20 +75,22 @@ describe Threadable::Messages::Create, :type => :model do
 
     allow(conversation).to receive_message_chain(:messages, :latest).and_return(latest_message)
 
-    expect(conversation).to receive(:private?).and_return(true)
-    expect(conversation).to receive(:private_permitted_user_ids).and_return([42,43])
-    expect(organization).to receive(:application_update).with({
-      action:          'create',
-      target:          'message',
-      target_id:       message_record.id,
-      payload:         {conversation_slug: conversation.slug},
-      user_ids:        [42,43],
-    })
-
     expect(message_record).to receive(:attachments=).with([attachment_record1, attachment_record2])
   end
 
   context "when not given a date" do
+    before do
+      expect(conversation).to receive(:private?).and_return(true)
+      expect(conversation).to receive(:private_permitted_user_ids).and_return([42,43])
+      expect(organization).to receive(:application_update).with({
+        action:          'create',
+        target:          'message',
+        target_id:       message_record.id,
+        payload:         {conversation_slug: conversation.slug},
+        user_ids:        [42,43],
+      })
+    end
+
     it "sends the message with the expected data, and tracks that it was done" do
 
       expect(conversation_record.messages).to receive(:create).with(
@@ -112,6 +114,7 @@ describe Threadable::Messages::Create, :type => :model do
       expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
       expect(conversation).to receive(:update_participant_names_cache!)
       expect(conversation).to receive(:update_message_summary_cache!)
+      expect(conversation).to receive(:notify_update!)
 
       expect(threadable).to receive(:track).with('Composed Message', {
         'Organization' => organization.id,
@@ -169,6 +172,7 @@ describe Threadable::Messages::Create, :type => :model do
       expect(conversation).to receive(:update).with(last_message_at: message_record.created_at)
       expect(conversation).to receive(:update_participant_names_cache!)
       expect(conversation).to receive(:update_message_summary_cache!)
+      expect(conversation).to receive(:notify_update!)
 
       expect(threadable).to receive(:track).with('Composed Message', {
         'Organization' => organization.id,

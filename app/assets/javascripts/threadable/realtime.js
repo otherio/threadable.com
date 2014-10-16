@@ -15,12 +15,23 @@ Threadable.realtime.connect = function(currentUser) {
     });
 
     Threadable.realtime.socketIo.on('application_update', function(message) {
-      // camelize the keys.
-      Object.keys(message).map(function(key) {
-        var value = message[key];
-        delete message[key];
-        message[Ember.String.camelize(key)] = value;
-      }, this);
+      camelizeKeys = function(toCamelize) {
+        if(typeof(toCamelize) !== 'object' || toCamelize === null) {
+          return toCamelize;
+        }
+
+        Object.keys(toCamelize).map(function(key) {
+          var value = toCamelize[key];
+          delete toCamelize[key];
+          toCamelize[Ember.String.camelize(key)] = camelizeKeys(value);
+        }, this);
+
+        return toCamelize;
+      };
+
+      message = camelizeKeys(message);
+
+      message.triggered = false;
 
       var update = Threadable.ApplicationUpdate.create(message);
       currentUser.get('applicationUpdates').pushObject(update);

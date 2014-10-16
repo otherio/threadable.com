@@ -123,6 +123,7 @@ class Threadable::Messages::Create < MethodObject
     @conversation.update(last_message_at: @message_record.created_at)
     @conversation.update_participant_names_cache!
     @conversation.update_message_summary_cache!
+    @conversation.notify_update!
     @message = Threadable::Message.new(@threadable, @message_record)
   end
 
@@ -158,6 +159,7 @@ class Threadable::Messages::Create < MethodObject
   end
 
   def send_application_update!
+    return unless @message_record.parent_message
     update = {
       action:          'create',
       target:          'message',

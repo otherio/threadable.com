@@ -19,7 +19,10 @@ class Threadable::Conversations::Create < MethodObject
     add_groups!
     @conversation.update_participant_names_cache!
     create_created_at_event!
-    return object.new(@threadable, @conversation_record.reload)
+
+    @conversation.reload
+    send_application_update!
+    @conversation
   end
 
   def scope
@@ -52,4 +55,16 @@ class Threadable::Conversations::Create < MethodObject
     @conversation.events.create!(event_type, user_id: user_id)
   end
 
+  def send_application_update!
+    update = {
+      action:        :create,
+      target:        :conversation,
+      target_record: @conversation,
+      serializer:    :base_conversations,
+    }
+
+    update[:user_ids] = @conversation.private_permitted_user_ids if @conversation.private?
+
+    @organization.application_update(update)
+  end
 end

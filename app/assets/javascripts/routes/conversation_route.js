@@ -49,7 +49,7 @@ Threadable.ConversationRoute = Ember.Route.extend({
     var conversation = this.controllerFor('conversation');
 
     // this conversation?
-    if(applicationUpdate.get('payload').conversation_slug == conversation.get('slug')) {
+    if(applicationUpdate.get('payload').conversationSlug == conversation.get('slug')) {
       // do we not have the message?
       if(conversation.get('events').mapBy('id').indexOf('message-' + applicationUpdate.get('targetId')) == -1) {
         conversation.set('newMessageCount', conversation.get('newMessageCount') + 1);

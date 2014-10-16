@@ -11,5 +11,6 @@ module SerializerConcern
   def serialize type, payload, options={}
     serializer(type).serialize(threadable, payload, options)
   end
+  alias_method :serialize_model, :serialize
 
 end

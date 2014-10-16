@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Threadable::Conversation, :type => :model do
 
-  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false, creator_id: 8993) }
+  let(:conversation_record){ double(:conversation_record, id: 2323, task?: false, creator_id: 8993, organization: organization_record) }
+  let(:organization_record) { double(:organization_record)}
   let(:conversation){ described_class.new(threadable, conversation_record) }
   subject{ conversation }
 
@@ -57,10 +58,26 @@ describe Threadable::Conversation, :type => :model do
 
 
   describe 'update' do
+    let(:organization){ double(:organization) }
+
+    before do
+      expect(Threadable::Organization).to receive(:new).and_return(organization)
+
+      expect(conversation).to receive(:private?).and_return(true)
+      expect(conversation).to receive(:private_permitted_user_ids).and_return([42,43])
+      expect(organization).to receive(:application_update).with({
+        action:          :update,
+        target:          :conversation,
+        target_record:   conversation,
+        serializer:      :base_conversations,
+        user_ids:        [42,43],
+      })
+    end
+
     it 'should call update_attributes on the conversation record' do
       attributes = double(:attributes)
       expect(conversation_record).to receive(:update_attributes).with(attributes).and_return(4)
-      expect(subject.update(attributes)).to be_truthy
+      expect(subject.update(attributes, true)).to be_truthy
     end
   end
 

@@ -56,10 +56,13 @@ Threadable.CurrentUser = RL.Model.extend(Ember.Evented, {
     this.update({dismissed_welcome_modal: true});
   },
 
-  triggerUpdateEvent: function() {
-    var update = this.get('applicationUpdates.lastObject');
-    console.log('Received application update: ' + update.get('action') + '-' + update.get('target'));
-    this.trigger(update.get('action') + '-' + update.get('target'), update);
+  triggerUpdateEvents: function() {
+    var updates = this.get('applicationUpdates').filterBy('triggered', false);
+    updates.forEach(function(update) {
+      console.log('Received application update: ' + update.get('action') + '-' + update.get('target'));
+      this.trigger(update.get('action') + '-' + update.get('target'), update);
+      update.set('triggered', true);
+    }.bind(this));
   }.observes('applicationUpdates.@each'),
 });
 
