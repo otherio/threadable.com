@@ -181,16 +181,18 @@ class Threadable::Conversation < Threadable::Model
   def trash!
     return if trashed?
     Threadable.transaction do
-      update(trashed_at: Time.now.utc, true)
+      update(trashed_at: Time.now.utc)
       events.create! :conversation_trashed
+      notify_update!
     end
   end
 
   def untrash!
     return unless trashed?
     Threadable.transaction do
-      update(trashed_at: nil, true)
+      update(trashed_at: nil)
       events.create! :conversation_untrashed
+      notify_update!
     end
   end
 

@@ -21,12 +21,27 @@ Threadable.ConversationsRoute = Ember.Route.extend({
     }
 
     var conversationObject = update.get('payload').conversation;
+    var groupSlug = this.controller.get('groupSlug');
+
     var conversations = this.controller.get('model');
     var existingConversation = conversations.findBy('id', conversationObject.id);
 
     if(existingConversation) {
       existingConversation.setProperties(conversationObject);
     } else {
+      if(groupSlug == 'my') {
+        var myGroupIds = organization.get('groups').filterBy('currentUserIsAMember', true).mapBy('id');
+        if(Ember.EnumerableUtils.intersection(conversationObject.groupIds, myGroupIds).length === 0) {
+          // TODO: check if following
+          // TODO: check if muted
+          return; // not in the user's groups
+        }
+      } else {
+        if(conversationObject.groupIds.indexOf(organization.get('groups').findBy('slug', groupSlug)) == -1) {
+          return; // not in this group
+        }
+      }
+
       var newConversation = Threadable.Conversation.create(conversationObject);
       newConversation.set('organization', organization);
       conversations.unshiftObject(newConversation);

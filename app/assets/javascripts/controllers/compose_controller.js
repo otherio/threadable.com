@@ -1,7 +1,8 @@
 Threadable.ComposeController = Ember.Controller.extend({
-  needs: ['organization', 'group', 'topbar'],
+  needs: ['organization', 'group', 'topbar', 'conversations'],
 
   organization: Ember.computed.alias('controllers.organization'),
+  conversations: Ember.computed.alias('controllers.conversations'),
 
   sending: false,
   conversation: null,
@@ -119,8 +120,13 @@ Threadable.ComposeController = Ember.Controller.extend({
       }
 
       function saveFinished() {
+        //TODO: move all of this into the spot in conversations_controller where we get the event from redis
         conversation.set('organization', organization);
-        Threadable.Conversation.cache(conversation);
+
+        if(this.get('conversations').findBy('id', conversation.get('id'))) {
+          Threadable.Conversation.cache(conversation);
+        }
+
         this.send('reset');
         this.send('addConversation', conversation);
         this.send('transitionToConversation', conversation);
