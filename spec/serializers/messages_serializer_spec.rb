@@ -50,7 +50,7 @@ describe MessagesSerializer do
     context 'when given the option include: :conversation' do
       let(:options){ {include: :conversation} }
       it do
-        is_expected.to eq expected_return_value.merge serialize(:conversations, message.conversation)
+        is_expected.to eq expected_return_value.merge serialize_model(:conversations, message.conversation)
       end
     end
   end

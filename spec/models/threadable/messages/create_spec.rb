@@ -80,6 +80,7 @@ describe Threadable::Messages::Create, :type => :model do
 
   context "when not given a date" do
     before do
+      expect(message_record).to receive(:parent_message).and_return('the message record')
       expect(conversation).to receive(:private?).and_return(true)
       expect(conversation).to receive(:private_permitted_user_ids).and_return([42,43])
       expect(organization).to receive(:application_update).with({
@@ -148,6 +149,10 @@ describe Threadable::Messages::Create, :type => :model do
 
     let(:expected_parent_message_id) { 235 }
     let(:expected_references_header) { "REFERENCES_HEADER_OMG MESSAGE_ID_HEADER_OMG" }
+
+    before do
+      expect(message_record).to receive(:parent_message).and_return(nil)
+    end
 
     it "gets the parent message from the conversation" do
 

@@ -22,9 +22,9 @@ describe CurrentUserSerializer do
         email_address:           alice.email_address.to_s,
         slug:                    alice.slug,
         avatar_url:              alice.avatar_url,
-        external_authorizations: serialize(:external_authorizations, alice.external_authorizations.all).values.first,
+        external_authorizations: serialize_model(:external_authorizations, alice.external_authorizations.all).values.first,
         current_organization_id: alice.current_organization_id,
-        organizations:           serialize(:light_organizations, alice.organizations.all).values.first,
+        organizations:           serialize_model(:light_organizations, alice.organizations.all).values.first,
         dismissed_welcome_modal: true,
       )
     end
@@ -43,7 +43,7 @@ describe CurrentUserSerializer do
         avatar_url:              marcus.avatar_url,
         external_authorizations: [],
         current_organization_id: marcus.current_organization_id,
-        organizations:           serialize(:light_organizations, marcus.organizations.all).values.first,
+        organizations:           serialize_model(:light_organizations, marcus.organizations.all).values.first,
         dismissed_welcome_modal: true,
       )
     end
