@@ -123,7 +123,7 @@ Threadable.ComposeController = Ember.Controller.extend({
         //TODO: move all of this into the spot in conversations_controller where we get the event from redis
         conversation.set('organization', organization);
 
-        if(this.get('conversations').findBy('id', conversation.get('id'))) {
+        if(! this.get('conversations').findBy('id', conversation.get('id'))) {
           Threadable.Conversation.cache(conversation);
         }
 
