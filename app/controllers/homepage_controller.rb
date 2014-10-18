@@ -18,7 +18,10 @@ class HomepageController < ApplicationController
 
   def redirect_to_client_app_if_signed_in!
     return if ['/frontpage', '/pro', '/pricing'].include?(request.path)
-    redirect_to conversations_path(current_user.current_organization, 'my') if signed_in?
+    if signed_in?
+      current_organization = current_user.current_organization || current_user.organizations.all.first
+      redirect_to conversations_path(current_organization, 'my')
+    end
   end
 
 end

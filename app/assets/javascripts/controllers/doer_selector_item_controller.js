@@ -5,7 +5,6 @@ Threadable.DoerSelectorItemController = Ember.ObjectController.extend({
 
   isDoer: function() {
     var doers = this.get('doers');
-    if(!doers) debugger;
     if (doers.length < 1) return false;
     return !! doers.findBy('id', this.get('id'));
   }.property('doers.@each', 'id'),
