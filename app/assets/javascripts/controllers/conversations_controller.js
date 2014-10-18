@@ -36,10 +36,10 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
   filteredContent: function() {
     var showTrashed = (this.get('groupSlug') == 'trash');
 
-    return this.get('model').filter(function(item) {
+    return this.get('arrangedContent').filter(function(item) {
       return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
     });
-  }.property('model.@each.isTrashed'),
+  }.property('model.@each.isTrashed', 'model.@each.lastMessageAt', 'model.@each.trashedAt'),
 
   loadConversations: function() {
     if (this.get('loading') || this.get('fullyLoaded')) return;

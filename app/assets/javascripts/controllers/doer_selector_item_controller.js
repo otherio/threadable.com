@@ -11,6 +11,7 @@ Threadable.DoerSelectorItemController = Ember.ObjectController.extend({
   }.property('doers.@each', 'id'),
 
   changeType: function() {
+    var persistedDoerIds = [];
     var persistedDoers = this.get('controllers.conversation.doers');
 
     if(persistedDoers) {

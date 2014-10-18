@@ -27,7 +27,15 @@ Threadable.ConversationsRoute = Ember.Route.extend({
     var existingConversation = conversations.findBy('id', conversationObject.id);
 
     if(existingConversation) {
-      existingConversation.setProperties(conversationObject);
+      var newConversation = Threadable.Conversation.create();
+      newConversation.deserialize(conversationObject);
+
+      // copy only the changed properties, but with complete deserialized objects.
+      existingConversation.beginPropertyChanges();
+      Object.keys(conversationObject).forEach(function(key) {
+        existingConversation.set(key, newConversation.get(key));
+      });
+      existingConversation.endPropertyChanges();
     } else {
       if(groupSlug == 'my') {
         var myGroupIds = organization.get('groups').filterBy('currentUserIsAMember', true).mapBy('id');
@@ -42,7 +50,8 @@ Threadable.ConversationsRoute = Ember.Route.extend({
         }
       }
 
-      var newConversation = Threadable.Conversation.create(conversationObject);
+      var newConversation = Threadable.Conversation.create();
+      newConversation.deserialize(conversationObject);
       newConversation.set('organization', organization);
       conversations.unshiftObject(newConversation);
     }
