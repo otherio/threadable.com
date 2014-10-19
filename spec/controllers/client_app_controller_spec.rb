@@ -30,9 +30,6 @@ describe ClientAppController, type: :controller, fixtures: true do
         token = assigns(:realtime_token)
         expect(token).to eq Digest::SHA1.hexdigest("#{session[:session_id]}:#{current_user.id}")
         expect(assigns(:realtime_url)).to be
-        session = JSON.parse(Threadable.redis.hget("realtime_session-#{current_user.id}", token)).symbolize_keys
-        expect(session[:user_id]).to eq current_user.id
-        expect(session[:organization_ids]).to match_array current_user.organizations.all.map(&:id)
       end
     end
   end
