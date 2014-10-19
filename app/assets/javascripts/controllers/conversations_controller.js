@@ -29,7 +29,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
       this.set('sortProperties', ['trashedAt']);
     } else {
       this.set('isTrash', false);
-      this.set('sortProperties', ['lastMessageAt']);
+      this.set('sortProperties', ['lastMessageAt', 'updatedAt']);
     }
   },
 
@@ -39,7 +39,7 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
     return this.get('arrangedContent').filter(function(item) {
       return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
     });
-  }.property('model.@each.isTrashed', 'model.@each.lastMessageAt', 'model.@each.trashedAt'),
+  }.property('model.@each.isTrashed', 'model.@each.updatedAt', 'model.@each.lastMessageAt', 'model.@each.trashedAt'),
 
   loadConversations: function() {
     if (this.get('loading') || this.get('fullyLoaded')) return;
