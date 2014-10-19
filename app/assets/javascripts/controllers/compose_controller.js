@@ -125,10 +125,10 @@ Threadable.ComposeController = Ember.Controller.extend({
 
         if(! this.get('conversations').findBy('id', conversation.get('id'))) {
           Threadable.Conversation.cache(conversation);
+          this.send('addConversation', conversation);
         }
 
         this.send('reset');
-        this.send('addConversation', conversation);
         this.send('transitionToConversation', conversation);
         this.set('sending', false);
       }
