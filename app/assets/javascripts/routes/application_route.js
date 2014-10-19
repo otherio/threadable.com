@@ -7,6 +7,10 @@ Threadable.ApplicationRoute = Ember.Route.extend({
         Threadable.Conversation.unCache(applicationUpdate.get('organizationSlug'), applicationUpdate.get('payload').conversationSlug);
       });
 
+      currentUser.on('update-conversation', function(applicationUpdate) {
+        Threadable.Conversation.unCache(applicationUpdate.get('organizationSlug'), applicationUpdate.get('payload').conversation.slug);
+      });
+
       return currentUser;
     });
   },
