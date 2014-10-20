@@ -53,7 +53,7 @@ describe Admin::OrganizationsController, :type => :controller do
     describe 'GET :index' do
       it 'should render the index page' do
         organizations = double(:organizations)
-        expect(threadable.organizations).to receive(:all).and_return(organizations)
+        expect(threadable.organizations).to receive(:all_by_created_at).and_return(organizations)
         get :index
         expect(response).to render_template :index
         expect(assigns[:organizations]).to eq organizations
