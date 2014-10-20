@@ -6,7 +6,7 @@ class Admin::OrganizationsController < ApplicationController
 
   # GET /admin/organizations
   def index
-    @organizations = threadable.organizations.all
+    @organizations = threadable.organizations.all_by_created_at
   end
 
   # GET /admin/organizations/new

@@ -4,6 +4,10 @@ class Threadable::Organizations < Threadable::Collection
     scope.reload.map{ |organization| organization_for organization }
   end
 
+  def all_by_created_at
+    scope.order(:created_at).reload.map{ |organization| organization_for organization }
+  end
+
   def with_subscription
     scope.where('organizations.billforward_subscription_id IS NOT NULL').map{ |organization| organization_for organization }
   end

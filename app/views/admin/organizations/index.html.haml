@@ -7,9 +7,11 @@
 %table.organizations.table
   %thead
     %th Name
+    %th Trusted
     %th
   %tbody
     - @organizations.each do |organization|
       %tr
         %td= link_to organization.name, admin_edit_organization_path(organization)
+        %td= organization.trusted? ? 'Trusted' : ''
         %td= link_to 'destroy', admin_organization_path(organization), method: :delete, data: { confirm: 'Are you sure?' }
