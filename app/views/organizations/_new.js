@@ -7,7 +7,7 @@ $(function(){
       emailAddressUsername          = $('#new_organization_email_address_username').val(),
       generatedEmailAddressUsername = organizationNameToEmailAddressUsername();
 
-    if (emailAddressUsername == ""){
+    if (emailAddressUsername === ""){
       emailAddressUsername = generatedEmailAddressUsername;
       $('#new_organization_email_address_username').val(generatedEmailAddressUsername);
     }
@@ -65,10 +65,10 @@ $(function(){
   function organizationNameToEmailAddressUsername(organizationName) {
     if (!organizationName) organizationName = $('#new_organization_organization_name').val();
     return organizationName.toLowerCase().replace(/[\W_\.]+/g, '-');
-  };
+  }
 
 
   // focus first empty input
-  $('form.new_organization input').filter(function(){ return $(this).val() == ""; }).first().focus();
+  $('form.new_organization input').filter(function(){ return $(this).val() === ""; }).first().focus();
 
 });

@@ -36,53 +36,61 @@
 
 
 .uk-container-center.uk-width-large-2-3.uk-width-medium-2-3.authentication-form
-  %h2 Threadable
+  %h2 Create your Threadable
   .well-when-not-small
     = simple_form_for @new_organization, url: new_organization_path, html: {class: 'uk-form uk-form-stacked'} do |f|
       = hidden_field_tag 'token', sign_up_confirmation_token
       %section.organization
         %h3 Your organization
-        %fieldset
-          .uk-form-row
-            = f.input :organization_name,                   placeholder: 'Organization name', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
-          .uk-form-row.email-address-username
-            = f.input :email_address_username, as: :string, placeholder: 'address',           input_html: {class: 'uk-width-1-1 uk-form-large', maxlength: 30}, label: false, required: true
-            %span @[your-organization].threadable.com
+        .uk-form-row
+          %label.uk-form-label Organization name
+          = f.input :organization_name,                   placeholder: 'Thingsworth Incorporated', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+        .uk-form-row.email-address-username
+          %label.uk-form-label Your new email domain
+          group_name@
+          = f.input :email_address_username, as: :string, placeholder: 'thingsworth', input_html: {class: 'uk-width-1-1 uk-form-large', maxlength: 30}, label: false, required: true
+          %span .threadable.com
+
+        You can have as many groups as you like. Your first group will be named the same as your organization.
 
       %section.creator
+        %h3 You
         - if signed_in?
           = link_to 'This is not me', sign_out_path(r: new_organization_path(organization_name: @new_organization.organization_name)), class: 'auth-link', tabindex: -1
           .current-user
             .avatar{style: "margin-right: 1em"}
               = image_tag current_user.avatar_url
             %h3= %("#{current_user.name}" <#{current_user.email_address}>)
-
         - else
           = link_to 'I already have an account', sign_in_path(r: new_organization_path(organization_name: @new_organization.organization_name)), class: 'auth-link', tabindex: -1
-          %fieldset
-            .uk-form-row
-              = f.input :your_name,                            placeholder: 'Your name',             input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
-            .uk-form-row
-              = f.input :your_email_address,    as: :email,    placeholder: 'Your email address',    input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, disabled: true
-            .uk-form-row
-              = f.input :password,              as: :password, placeholder: 'Password',              input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
-            .uk-form-row
-              = f.input :password_confirmation, as: :password, placeholder: 'Password confirmation', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+          .uk-form-row
+            %label.uk-form-label Your name
+            = f.input :your_name,                            placeholder: 'Alice Adminwright',             input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+          .uk-form-row
+            %label.uk-form-label Your email address
+            = f.input :your_email_address,    as: :email,    placeholder: 'alice@thingsworthinc.com',    input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, disabled: true
+          .uk-form-row
+            %label.uk-form-label Password
+            = f.input :password,              as: :password, placeholder: '*****',              input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+          .uk-form-row
+            %label.uk-form-label Password confirmation
+            = f.input :password_confirmation, as: :password, placeholder: '*****', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
 
       %section.members
         %h3 Other members
+        Each of these people will receive an invitation to your organization.
         - (@new_organization.members + [@new_organization.new_member]).each do |member|
           = f.simple_fields_for :members, member do |m|
-            %fieldset.other-member
+            .other-member
               .uk-form-row
-                = m.input :name,           as: :string, placeholder: "Your friend's name",      input_html: {name: 'new_organization[members][][name]',          class: 'uk-width-1-1 uk-form-large'}, label: false, required: false
+                %label.uk-form-label Your friend's name
+                = m.input :name,           as: :string, placeholder: "Bob von Usersmith",      input_html: {name: 'new_organization[members][][name]',          class: 'uk-width-1-1 uk-form-large'}, label: false, required: false
               .uk-form-row
-                = m.input :email_address,  as: :email,  placeholder: 'your.friend@example.com', input_html: {name: 'new_organization[members][][email_address]', class: 'uk-width-1-1 uk-form-large'}, label: false, required: false
+                %label.uk-form-label Your friend's email address
+                = m.input :email_address,  as: :email,  placeholder: 'bob@thingsworthinc.com', input_html: {name: 'new_organization[members][][email_address]', class: 'uk-width-1-1 uk-form-large'}, label: false, required: false
 
-
-      %fieldset
-        .uk-form-row
-          = f.submit 'Create', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
+      .uk-form-row
+        = f.submit 'Create', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
 
 
 

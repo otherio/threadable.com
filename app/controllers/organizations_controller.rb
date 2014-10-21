@@ -4,6 +4,8 @@ class OrganizationsController < ApplicationController
   before_action :require_user_be_signed_in_or_have_a_sign_up_confirmation_token!
   before_action :decrypt_sign_up_confirmation_token!
 
+  layout 'new'
+
   # GET /create
   def new
     @new_organization = NewOrganization.new(self,
