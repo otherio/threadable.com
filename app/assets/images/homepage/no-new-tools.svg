@@ -6,41 +6,41 @@
 	 height="368.46px" viewBox="4 -4.167 357.334 368.46" enable-background="new 4 -4.167 357.334 368.46" xml:space="preserve">
 <g id="message" transform="translate(49.000000, 98.000000)" sketch:type="MSLayerGroup">
 	<g id="body-field" transform="translate(0.000000, 85.000000)">
-		<polygon fill="#F7FAFF" points="0,84.728 54.485,133.37 131.981,160.38 210.896,134.597 273.863,80.568 290.867,0.398 
-			290.83,0.203 0,0.203 		"/>
-		<text transform="matrix(1 0 0 1 9.3506 24.4277)" font-family="'HelveticaNeue-Light'" font-size="13">I’m getting on stage tomorrow, and I don’t want to</text>
-		<text transform="matrix(1 0 0 1 9.3506 40.4277)" font-family="'HelveticaNeue-Light'" font-size="13">myself, how is GIF supposed to be pronounced th</text>
-		<text transform="matrix(1 0 0 1 9.3506 56.4277)" font-family="'HelveticaNeue-Light'" font-size="13">Hard-G?</text>
-		<text transform="matrix(1 0 0 1 9.3506 88.4277)" font-family="'HelveticaNeue-Light'" font-size="13">Thanks!</text>
+		<polygon fill="#F7FAFF" points="0,83.796 54.485,132.438 131.981,159.448 210.896,133.665 273.863,79.637 290.867,-0.533 
+			290.83,-0.729 0,-0.729 		"/>
+		<text transform="matrix(1 0 0 1 9.3506 23.4961)" font-family="'HelveticaNeue-Light'" font-size="13">I’m getting on stage tomorrow, and I don’t want to</text>
+		<text transform="matrix(1 0 0 1 9.3506 39.4961)" font-family="'HelveticaNeue-Light'" font-size="13">myself, how is GIF supposed to be pronounced th</text>
+		<text transform="matrix(1 0 0 1 9.3506 55.4961)" font-family="'HelveticaNeue-Light'" font-size="13">Hard-G?</text>
+		<text transform="matrix(1 0 0 1 9.3506 87.4961)" font-family="'HelveticaNeue-Light'" font-size="13">Thanks!</text>
 	</g>
 	<g id="Subject:-field" transform="translate(0.000000, 57.000000)">
-		<polygon fill="#F7FAFF" points="0,28 290.792,28 285.477,-0.333 0,-0.333 		"/>
-		<text transform="matrix(1 0 0 1 9 19)" font-family="'HelveticaNeue-Medium'" font-size="13">Subject:</text>
-		<polygon fill="none" stroke="#979797" stroke-width="0.2835" points="290.867,28.398 290.84,28.25 0,28.25 290.84,28.25 		"/>
-		<polygon fill="none" stroke="#979797" stroke-width="0.2835" points="290.867,-0.333 290.84,-0.481 0,-0.481 290.84,-0.481 		"/>
-		<text transform="matrix(1 0 0 1 69 19)" font-family="'HelveticaNeue-Light'" font-size="13">How do you pronounce GIF anyway?</text>
+		<polygon fill="#F7FAFF" points="0,27.068 290.792,27.068 285.477,-1.265 0,-1.265 		"/>
+		<text transform="matrix(1 0 0 1 9 18.0684)" font-family="'HelveticaNeue-Medium'" font-size="13">Subject:</text>
+		<polygon fill="none" stroke="#979797" stroke-width="0.2835" points="290.867,27.467 290.84,27.318 0,27.318 290.84,27.318 		"/>
+		<polygon fill="none" stroke="#979797" stroke-width="0.2835" points="290.867,-1.265 290.84,-1.413 0,-1.413 290.84,-1.413 		"/>
+		<text transform="matrix(1 0 0 1 69 18.0684)" font-family="'HelveticaNeue-Light'" font-size="13">How do you pronounce GIF anyway?</text>
 	</g>
 	<g id="To:-field" transform="translate(0.000000, 28.000000)">
-		<polygon fill="#F7FAFF" points="0,28.25 285.398,28.25 280.161,0.333 0,0.333 		"/>
-		<text transform="matrix(1 0 0 1 9 19)" font-family="'HelveticaNeue-Medium'" font-size="13">To:</text>
-		<text transform="matrix(1 0 0 1 36 19)" font-family="'HelveticaNeue-Light'" font-size="13">my-team@awesome-co.threadable.com</text>
+		<polygon fill="#F7FAFF" points="0,27.318 285.398,27.318 280.161,-0.598 0,-0.598 		"/>
+		<text transform="matrix(1 0 0 1 9 18.0684)" font-family="'HelveticaNeue-Medium'" font-size="13">To:</text>
+		<text transform="matrix(1 0 0 1 36 18.0684)" font-family="'HelveticaNeue-Light'" font-size="13">my-team@awesome-co.threadable.com</text>
 	</g>
 	<g id="Title-Bar">
-		<polygon fill="#4990E2" points="271.139,0 0,0 0,29.3 280.343,29.3 275.592,3.976 		"/>
-		<text transform="matrix(1 0 0 1 9.3506 18.3564)" fill="#FFFFFF" font-family="'HelveticaNeue-Light'" font-size="13">New Message</text>
+		<polygon fill="#4990E2" points="271.139,-0.932 0,-0.932 0,28.368 280.343,28.368 275.592,3.044 		"/>
+		<text transform="matrix(1 0 0 1 9.3506 17.4248)" fill="#FFFFFF" font-family="'HelveticaNeue-Light'" font-size="13">New Message</text>
 	</g>
 </g>
-<path id="hexa" fill="#EBF4FF" d="M347.047,182.064l12.229-58.963L330.78,97.429l-7.237-37.638l-56.866-20.102L220.379-2.019
-	l-37.253,12.17L147.187-2.551l-45.996,39.47L43.544,55.752l-7.73,37.269L6.087,118.529l11.753,61.141L5.609,238.642l28.503,25.675
+<path id="hexa" fill="#5DBFD1" d="M347.047,180.722l12.229-58.963L330.78,96.087l-7.237-37.638l-56.866-20.102L220.379-3.36
+	L183.126,8.81L147.187-3.893l-45.996,39.47L43.544,54.41l-7.73,37.269L6.087,117.188l11.753,61.141L5.609,237.3l28.503,25.675
 	l7.233,37.636l56.86,20.1l46.304,41.71l37.257-12.172l35.937,12.704l45.995-39.47l57.639-18.832l7.732-37.267l29.729-25.512
-	L347.047,182.064L347.047,182.064z M350.65,125.92l-7.552,35.61l-9.828-51.125L350.65,125.92L350.65,125.92z M338.612,182.7
-	l-16.94,79.869l-62.73,53.825l-78.619,25.687l-77.205-26.908L41.497,260.16l-15.219-81.125l16.936-79.859l62.734-53.832
-	l78.619-25.683l77.201,26.903l61.627,55.019L338.612,182.7L338.612,182.7z M316.66,65.698l4.296,22.883L282.23,53.698L316.66,65.698
-	L316.66,65.698z M219.021,8.406l26.772,23.9l-48-16.965L219.021,8.406L219.021,8.406z M149.939,7.595l19.845,6.916l-45.059,14.721
-	L149.939,7.595L149.939,7.595z M50.81,63.356L82.41,53.032L46.457,83.886L50.81,63.356L50.81,63.356z M15.722,122.769l16.935-14.534
-	l-10.325,49.775L15.722,122.769L15.722,122.769z M14.234,235.825l7.555-35.617l9.828,51.134L14.234,235.825L14.234,235.825z
-	 M48.228,296.046l-4.292-22.882l38.72,34.878L48.228,296.046L48.228,296.046z M145.865,353.337l-26.774-23.901l48.002,16.964
-	L145.865,353.337L145.865,353.337z M214.95,354.149l-19.847-6.918l45.06-14.719L214.95,354.149L214.95,354.149z M314.075,298.388
-	l-31.595,10.317l35.95-30.846L314.075,298.388L314.075,298.388z M342.557,203.724l6.609,35.249l-16.938,14.537L342.557,203.724
-	L342.557,203.724z"/>
+	L347.047,180.722L347.047,180.722z M350.65,124.579l-7.552,35.61l-9.828-51.125L350.65,124.579L350.65,124.579z M338.612,181.358
+	l-16.94,79.869l-62.73,53.825l-78.619,25.687l-77.205-26.908l-61.621-55.013l-15.219-81.125l16.936-79.859l62.734-53.832
+	l78.619-25.683l77.201,26.903l61.627,55.019L338.612,181.358L338.612,181.358z M316.66,64.356l4.296,22.883L282.23,52.356
+	L316.66,64.356L316.66,64.356z M219.021,7.064l26.772,23.9l-48-16.965L219.021,7.064L219.021,7.064z M149.939,6.253l19.845,6.916
+	L124.726,27.89L149.939,6.253L149.939,6.253z M50.81,62.015L82.41,51.69L46.457,82.544L50.81,62.015L50.81,62.015z M15.722,121.427
+	l16.935-14.534l-10.325,49.775L15.722,121.427L15.722,121.427z M14.234,234.483l7.555-35.617L31.617,250L14.234,234.483
+	L14.234,234.483z M48.228,294.704l-4.292-22.882l38.72,34.878L48.228,294.704L48.228,294.704z M145.865,351.995l-26.774-23.901
+	l48.002,16.964L145.865,351.995L145.865,351.995z M214.95,352.808l-19.847-6.918l45.06-14.719L214.95,352.808L214.95,352.808z
+	 M314.075,297.046l-31.595,10.317l35.95-30.846L314.075,297.046L314.075,297.046z M342.557,202.382l6.609,35.249l-16.938,14.537
+	L342.557,202.382L342.557,202.382z"/>
 </svg>
