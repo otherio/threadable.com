@@ -16,7 +16,7 @@
     %h1.header-huge
       Email Groups: Evolved
     %p.header-sub
-      Threadable is one simple email address for your group.
+      Threadable is one simple email address for your team.
       %br
       No reply-to-all, no noise, no hassle.
     = render 'sign_up_form', button_color_class: 'black-button'
@@ -39,12 +39,14 @@
 
     .right-panel.large-panel
       .content
-        .h2 Quit learning new tools.
+        .h2
+          You already know how to use it
         %div
-          Your team already knows how to use Threadable. It works right in your existing inbox,
-          with no plugins to install or apps to download. Just a single email address that reaches a whole group of people.
+          Threadable works right in your existing inbox, with no plugins to install or apps to download,
+          whether you're on desktop, tablet, or mobile.
         %br
-          Meet them where they're at, and keep everyone on the same page, whether they're on desktop, tablet, or mobile.
+          Just a single email address that reaches the whole team.
+
 
   %section.section-four.paneled-section
     .left-panel.large-panel
@@ -90,15 +92,8 @@
 
   %section.section-seven.paneled-section
     .left-panel.small-panel
+      = image_tag 'homepage/tasks-in-your-inbox.jpg'
     .right-panel.large-panel
-      .content
-        .h2 Webhooks for flexibility.
-        %div
-          Better than filters: process your team's email in realtime using your own code. Reformat, store, notify, slice
-          and dice – but leave all the messy parsing and delivery to us.
-
-  %section.section-eight.paneled-section
-    .left-panel.large-panel
       .content
         .h2 API
         %div
@@ -106,8 +101,6 @@
           Communication is key for social productivity to work. In less time than it takes to build simple email notifications,
           you can be using email as a full-featured platform for delivering real value to your users. Focus on your app's
           special sauce, and let [Threadable's API](http://docs.threadable.apiary.io) make your email sing.
-    .right-panel.small-panel
-      = image_tag 'homepage/tasks-in-your-inbox.jpg'
 
   %section.section-nine
     = render 'shared/threadable_logo'
