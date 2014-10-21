@@ -10,6 +10,7 @@
   > .paneled-section
     position: relative
     $smaller-panel-width: 500px
+    $smaller-panel-width-medium: 300px
 
     > .large-panel
       color: $white-color
@@ -19,7 +20,7 @@
         text-align: right
 
 
-    +large-screens
+    +medium-to-large-screens
       &, > .large-panel, > .small-panel
         height: 380px
 
@@ -34,7 +35,11 @@
         right: 0
 
       > .small-panel
-        width: $smaller-panel-width
+        +large-screens
+          width: $smaller-panel-width
+        +medium-screens
+          width: $smaller-panel-width-medium
+
         +no-select
         .flexbox &
           +display-box
@@ -59,9 +64,16 @@
         > .content
           margin: 0 130px
         &.left-panel
-          right: $smaller-panel-width
+          +large-screens
+            right: $smaller-panel-width
+          +medium-screens
+            right: $smaller-panel-width-medium
+
         &.right-panel
-          left: $smaller-panel-width
+          +large-screens
+            left: $smaller-panel-width
+          +medium-screens
+            left: $smaller-panel-width-medium
 
     +small-to-medium-screens
       > .small-panel
@@ -197,7 +209,10 @@
       background-image: image-url("homepage/no-new-tools.svg"), none
       background-repeat: no-repeat
       background-position: center center
-      background-size: 330px
+      +large-screens
+        background-size: 330px
+      +medium-screens
+        background-size: 290px
 
     .right-panel
       background-color: #31363C
@@ -211,7 +226,10 @@
       background-image: image-url("homepage/subgroups.svg"), none
       background-repeat: no-repeat
       background-position: center center
-      background-size: 410px
+      +large-screens
+        background-size: 410px
+      +medium-screens
+        background-size: 310px
 
   > .section-five
     .left-panel
@@ -220,7 +238,10 @@
       background-repeat: no-repeat
       background-position-y: 49%
       background-position-x: 50%
-      background-size: 240px
+      +large-screens
+        background-size: 240px
+      +medium-screens
+        background-size: 200px
 
     .iconic-clock-hour
       stroke: tint(#3896B7, 30)
@@ -238,11 +259,19 @@
       background-repeat: no-repeat
       background-position-y: 49%
       background-position-x: 50%
-      background-size: 300px
+      +large-screens
+        background-size: 300px
+      +medium-screens
+        background-size: 240px
 
     .iconic-calendar
-      width: 180px
-      height: 180px
+      +large-screens
+        width: 180px
+        height: 180px
+      +medium-screens
+        width: 140px
+        height: 140px
+
 
     .iconic-calendar-top
       stroke: white
