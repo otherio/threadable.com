@@ -4,7 +4,8 @@ describe Threadable::Group::Member, :type => :request do
 
   let(:organization){ threadable.organizations.find_by_slug! 'raceteam' }
   let(:group){ organization.groups.find_by_email_address_tag!('electronics') }
-  let(:member){ group.members.all.first }
+  let(:tom){ organization.members.find_by_email_address('tom@ucsd.example.com') }
+  let(:member){ group.members.find_by_user_id(tom.id) }
   subject{ member }
 
   describe '#user' do
