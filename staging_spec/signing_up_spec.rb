@@ -20,15 +20,15 @@ describe 'Signing up' do
 
     welcome_email = user.inbox.wait_for_message(subject: 'Welcome to Threadable!')
     expect(welcome_email).to be_present
-    welcome_email_link = welcome_email.href_for_link("Click here to confirm your email and create your organization")
+    welcome_email_link = welcome_email.href_for_link("Click here to confirm your email address and create your organization")
 
     visit welcome_email_link
     expect(page).to have_text 'Your organization'
     expect(page).to be_at_path '/create'
 
-    fill_in 'Your name', with: user.name
-    fill_in 'Password', with: user.password, match: :prefer_exact
-    fill_in 'Password confirmation', with: user.password
+    fill_in 'new_organization[your_name]',             with: user.name
+    fill_in 'new_organization[password]',              with: user.password,   match: :prefer_exact
+    fill_in 'new_organization[password_confirmation]', with: user.password
     click_on 'Create'
 
     expect(page).to be_at_path "/#{expected_organization_slug}/my/conversations/compose"

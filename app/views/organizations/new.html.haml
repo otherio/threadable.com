@@ -48,16 +48,16 @@
               = link_to 'I already have an account', sign_in_path(r: new_organization_path(organization_name: @new_organization.organization_name)), class: 'auth-link', tabindex: -1
             .uk-form-row
               %label.uk-form-label Your name
-              = f.input :your_name,                            placeholder: 'Alice Adminwright',             input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+              = f.input :your_name,                            placeholder: 'Alice Adminwright',        input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
             .uk-form-row
               %label.uk-form-label Your email address
-              = f.input :your_email_address,    as: :email,    placeholder: 'alice@thingsworthinc.com',    input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, disabled: true
+              = f.input :your_email_address,    as: :email,    placeholder: 'alice@thingsworthinc.com', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, disabled: true
             .uk-form-row
               %label.uk-form-label Password
-              = f.input :password,              as: :password, placeholder: '*****',              input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+              = f.input :password,              as: :password, placeholder: '*****',                    input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
             .uk-form-row
               %label.uk-form-label Password confirmation
-              = f.input :password_confirmation, as: :password, placeholder: '*****', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
+              = f.input :password_confirmation, as: :password, placeholder: '*****',                     input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
 
         .uk-grid.uk-grid-small.heading
           .uk-width-medium-2-5.uk-hidden-small

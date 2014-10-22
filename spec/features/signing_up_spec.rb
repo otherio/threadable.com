@@ -43,7 +43,7 @@ feature "signing up" do
     expect(email).to be_present
     sent_emails.clear
 
-    confirmation_url = email.link("Click here to confirm your email and create your organization")[:href]
+    confirmation_url = email.link("Click here to confirm your email address and create your organization")[:href]
     token = Rails.application.routes.recognize_path(confirmation_url)[:token]
     visit confirmation_url
     expect(page).to be_at_url new_organization_url(token: token)
@@ -54,17 +54,17 @@ feature "signing up" do
       email_address: 'john@the-hutchison-effect.org',
     )
 
-    expect(page).to have_field 'Organization name',     with: 'Zero point energy machine'
-    expect(page).to have_field 'address',               with: 'zero-point-energy-machine'
-    expect(page).to have_field 'Your name',             with: ''
-    expect(page).to have_field 'Your email address',    with: 'john@the-hutchison-effect.org', disabled: true
-    expect(page).to have_field 'Password',              with: '',                              match: :prefer_exact
-    expect(page).to have_field 'Password confirmation', with: ''
+    expect(page).to have_field 'new_organization[organization_name]',      with: 'Zero point energy machine'
+    expect(page).to have_field 'new_organization[email_address_username]', with: 'zero-point-energy-machine'
+    expect(page).to have_field 'new_organization[your_name]',              with: ''
+    expect(page).to have_field 'new_organization[your_email_address]',     with: 'john@the-hutchison-effect.org', disabled: true
+    expect(page).to have_field 'new_organization[password]',               with: '',                              match: :prefer_exact
+    expect(page).to have_field 'new_organization[password_confirmation]',  with: ''
 
-    fill_in 'address',               with: 'zero-point'
-    fill_in 'Your name',             with: 'John Hutchison'
-    fill_in 'Password',              with: 'imacharlatan',   match: :prefer_exact
-    fill_in 'Password confirmation', with: 'imacharlatan'
+    fill_in 'new_organization[email_address_username]', with: 'zero-point'
+    fill_in 'new_organization[your_name]',              with: 'John Hutchison'
+    fill_in 'new_organization[password]',               with: 'imacharlatan',   match: :prefer_exact
+    fill_in 'new_organization[password_confirmation]',  with: 'imacharlatan'
     add_members members
     click_on 'Create'
 
@@ -140,8 +140,8 @@ feature "signing up" do
     end
 
     expect(page).to be_at_url new_organization_url(organization_name: 'Zero point energy machine')
-    expect(page).to have_field('Organization name', with: 'Zero point energy machine')
-    expect(page).to have_field('address', with: 'zero-point-energy-machine')
+    expect(page).to have_field('new_organization[organization_name]', with: 'Zero point energy machine')
+    expect(page).to have_field('new_organization[email_address_username]', with: 'zero-point-energy-machine')
     expect(page).to have_text 'Bethany Pattern'
     expect(page).to have_text 'bethany@ucsd.example.com'
     expect(page).to_not have_field 'Your name'

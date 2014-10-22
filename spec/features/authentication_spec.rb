@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Authentication" do
   before do
     visit sign_out_url
-    expect(page).to have_text 'Quit learning new tools'
+    expect(page).to have_text 'You already know how to use it'
   end
 
   context "with no redirect" do

@@ -32,7 +32,7 @@ feature "mixpanel tracking" do
     expect(email).to be_present
     sent_emails.clear
 
-    confirmation_url = email.link("Click here to confirm your email and create your organization")[:href]
+    confirmation_url = email.link("Click here to confirm your email address and create your organization")[:href]
     token = Rails.application.routes.recognize_path(confirmation_url)[:token]
     visit confirmation_url
     expect(page).to be_at_url new_organization_url(token: token)
@@ -43,9 +43,9 @@ feature "mixpanel tracking" do
       email_address:              email_address,
     )
 
-    fill_in 'Your name',             with: name
-    fill_in 'Password',              with: 'password',   match: :prefer_exact
-    fill_in 'Password confirmation', with: 'password'
+    fill_in 'new_organization[your_name]',             with: name
+    fill_in 'new_organization[password]',              with: 'password',   match: :prefer_exact
+    fill_in 'new_organization[password_confirmation]', with: 'password'
     click_on 'Create'
 
     expect(page).to be_at_url compose_conversation_url(organization_slug, 'my')
