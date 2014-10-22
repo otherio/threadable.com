@@ -103,7 +103,3 @@ group :test do
   gem 'rspec-legacy_formatters'
   gem 'webmock', require: nil
 end
-
-group :staging_spec do
-  gem 'nvlope', '0.0.2'
-end

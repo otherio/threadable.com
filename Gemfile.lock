@@ -227,9 +227,6 @@ GEM
     newrelic_rpm (3.9.2.239)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
-    nvlope (0.0.2)
-      httparty
-      mail
     oauth (0.4.7)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
@@ -464,7 +461,6 @@ DEPENDENCIES
   method_object
   mixpanel-ruby
   newrelic_rpm
-  nvlope (= 0.0.2)
   omniauth
   omniauth-google-oauth2
   omniauth-trello

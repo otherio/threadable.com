@@ -16,12 +16,12 @@ class Inbox
   end
 
   def delete_all
-    NVLOPE.messages.delete map(&:id)
+    # NVLOPE.messages.delete map(&:id) Nvlope is long dead :(
     self
   end
 
   def reload
-    NVLOPE.messages.query(to: user.email_address).each do |message|
+    # NVLOPE.messages.query(to: user.email_address).each do |message| Nvlope is long dead :(
       @messages.add Message.new(self, message)
     end
     self
