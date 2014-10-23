@@ -1,4 +1,5 @@
 class UserMailer < Threadable::Mailer
+  include Roadie::Rails::Automatic
 
   def sign_up_confirmation(organization_name, email_address)
     @organization_name = organization_name.to_s
