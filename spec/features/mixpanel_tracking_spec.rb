@@ -48,6 +48,7 @@ feature "mixpanel tracking" do
     fill_in 'new_organization[password_confirmation]', with: 'password'
     click_on 'Create'
 
+    expect(page).to have_text %(New Conversation)
     expect(page).to be_at_url compose_conversation_url(organization_slug, 'my')
 
     user         = threadable.users.find_by_email_address!(email_address)
