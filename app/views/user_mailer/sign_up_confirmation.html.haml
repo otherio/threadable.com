@@ -6,16 +6,16 @@
     %style=Rails.application.assets['neue_email.css']
     %title Welcome to Threadable
 
-    %style{media: "screen", type: "text/css"}
-      :css
+    %style{media: "screen", type: "text/css", data: {:"roadie-ignore" => true}}
+      :plain
         @media screen {
           /*Thanks Outlook 2013! http://goo.gl/XLxpyl*/
           td, h1, h2, h3 {
             font-family: 'Source Sans Pro', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
           }
         }
-    %style{media: "only screen and (max-width: 480px)", type: "text/css"}
-      :css
+    %style{media: "only screen and (max-width: 480px)", type: "text/css", data: {:"roadie-ignore" => true}}
+      :plain
         /* Mobile styles */
         @media only screen and (max-width: 480px) {
           table[class="w320"] {
