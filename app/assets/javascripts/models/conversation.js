@@ -17,6 +17,8 @@ Threadable.Conversation = RL.Model.extend({
   done:              RL.attr('boolean'),
   muted:             RL.attr('boolean'),
   followed:          RL.attr('boolean'),
+  muterIds:          RL.attr('object'),
+  followerIds:       RL.attr('object'),
   trashed:           RL.attr('boolean'),
   trashedAt:         RL.attr('date'),
   position:          RL.attr('number'),

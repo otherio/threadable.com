@@ -16,18 +16,23 @@ Threadable.ConversationsRoute = Ember.Route.extend({
 
   addOrUpdateConversation: function(update) {
     var organization = this.modelFor('organization');
+    var currentUserId = this.modelFor('application').get('userId');
+
     if(organization.get('id') !== update.get('organizationId')) {
       return; // some other org.
     }
 
     var conversationObject = update.get('payload').conversation;
     var groupSlug = this.controller.get('groupSlug');
+    var scope = this.controller.get('conversationsScope');
 
     var conversations = this.controller.get('model');
     var existingConversation = conversations.findBy('id', conversationObject.id);
 
+    var newConversation;
+
     if(existingConversation) {
-      var newConversation = Threadable.Conversation.create();
+      newConversation = Threadable.Conversation.create();
       newConversation.deserialize(conversationObject);
 
       // copy only the changed properties, but with complete deserialized objects.
@@ -37,12 +42,21 @@ Threadable.ConversationsRoute = Ember.Route.extend({
       });
       existingConversation.endPropertyChanges();
     } else {
+      // check if muted.
+      if(scope == 'muted_conversations') {
+        if(conversationObject.muterIds.indexOf(currentUserId) !== -1) {
+          return;
+        }
+      }
+
       if(groupSlug == 'my') {
         var myGroupIds = organization.get('groups').filterBy('currentUserIsAMember', true).mapBy('id');
         if(Ember.EnumerableUtils.intersection(conversationObject.groupIds, myGroupIds).length === 0) {
-          // TODO: check if following
-          // TODO: check if muted
-          return; // not in the user's groups
+          // TODO: check task vs not task, maybe
+          // check if following
+          if(conversationObject.followerIds.indexOf(currentUserId) == -1) {
+            return; // not in the user's groups
+          }
         }
       } else {
         if(conversationObject.groupIds.indexOf(organization.get('groups').findBy('slug', groupSlug)) == -1) {
@@ -50,7 +64,7 @@ Threadable.ConversationsRoute = Ember.Route.extend({
         }
       }
 
-      var newConversation = Threadable.Conversation.create();
+      newConversation = Threadable.Conversation.create();
       newConversation.deserialize(conversationObject);
       newConversation.set('organization', organization);
       conversations.unshiftObject(newConversation);

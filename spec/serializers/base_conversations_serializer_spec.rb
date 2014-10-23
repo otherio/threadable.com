@@ -32,6 +32,8 @@ describe BaseConversationsSerializer do
             position:           layup_body_carbon.position,
             trashed_at:         nil,
             trashed:            false,
+            follower_ids:       layup_body_carbon.follower_ids,
+            muter_ids:          layup_body_carbon.muter_ids,
           }.merge(serialize(:doers, layup_body_carbon.doers.all))
         )
       end

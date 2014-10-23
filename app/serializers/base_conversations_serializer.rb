@@ -23,6 +23,8 @@ class BaseConversationsSerializer < Serializer
       position:           conversation.task? ? conversation.position : -1,
       trashed_at:         conversation.trashed_at,
       trashed:            conversation.trashed?,
+      follower_ids:       conversation.follower_ids,
+      muter_ids:          conversation.muter_ids,
     }
   end
 end
