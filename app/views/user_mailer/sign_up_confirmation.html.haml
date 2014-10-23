@@ -3,10 +3,10 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-    %style{data: {immutable: true}}=Rails.application.assets['neue_email.css']
+    %style=Rails.application.assets['neue_email.css']
     %title Welcome to Threadable
 
-    %style{media: "screen", type: "text/css", data: {immutable: true, :"roadie-ignore" => true}}
+    %style{media: "screen", type: "text/css", data: {:"roadie-ignore" => true}}
       :css
         @media screen {
           /*Thanks Outlook 2013! http://goo.gl/XLxpyl*/
@@ -14,7 +14,7 @@
             font-family: 'Source Sans Pro', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
           }
         }
-    %style{media: "only screen and (max-width: 480px)", type: "text/css", data: {immutable: true, :"roadie-ignore" => true}}
+    %style{media: "only screen and (max-width: 480px)", type: "text/css", data: {:"roadie-ignore" => true}}
       :css
         /* Mobile styles */
         @media only screen and (max-width: 480px) {
@@ -47,6 +47,7 @@
                                   We're really glad you're joining us.
                                   %br
                                     Click below to confirm your address and create your organization.
+                                    %br
                                     %br
                     %tr
                       %td
