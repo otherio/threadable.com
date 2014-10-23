@@ -104,6 +104,8 @@ GEM
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     descendants_tracker (0.0.3)
+    did_you_mean (0.7.0)
+      binding_of_caller
     diff-lcs (1.2.5)
     dnsruby (1.54)
     dotenv (0.8.0)
@@ -433,6 +435,7 @@ DEPENDENCIES
   capybara (>= 2.0.2)
   compass-flexbox
   compass-rails
+  did_you_mean
   dnsruby
   dotenv-rails
   ember-rails

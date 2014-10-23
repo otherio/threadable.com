@@ -90,6 +90,7 @@ group :development, :test do
   gem 'jasmine'
   gem 'timecop', require: nil
   gem 'rb-readline'  #needed because rbenv and homebrew readline still don't seem to play nice together
+  gem 'did_you_mean'
 end
 
 group :test do
