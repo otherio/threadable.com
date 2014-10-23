@@ -38,6 +38,8 @@ describe ConversationsSerializer do
           followed:           false,
           trashed_at:         nil,
           trashed:            false,
+          follower_ids:       layup_body_carbon.follower_ids,
+          muter_ids:          layup_body_carbon.muter_ids,
         }.merge(serialize(:doers, layup_body_carbon.doers.all))
       )
     end
@@ -70,6 +72,8 @@ describe ConversationsSerializer do
           followed:           false,
           trashed_at:         nil,
           trashed:            false,
+          follower_ids:       welcome.follower_ids,
+          muter_ids:          welcome.muter_ids,
         },{
           id:                 layup_body_carbon.id,
           slug:               "layup-body-carbon",
@@ -92,6 +96,8 @@ describe ConversationsSerializer do
           followed:           false,
           trashed_at:         nil,
           trashed:            false,
+          follower_ids:       layup_body_carbon.follower_ids,
+          muter_ids:          layup_body_carbon.muter_ids,
         }
       ]
     end
