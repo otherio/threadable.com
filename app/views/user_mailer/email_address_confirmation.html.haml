@@ -1,12 +1,63 @@
-%p The email address #{mail_to @email_address} has been added to #{@email_address.user.name}'s Threadable account.
+!!!
+%html{:xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %style=Rails.application.assets['neue_email.css']
+    %title Email Address Confirmation
 
-%p
-  If this is correct:
-  %blockquote
-    = link_to 'click here to confirm your email address', @confirm_email_address_url
+    %style{media: "screen", type: "text/css", data: {:"roadie-ignore" => true}}=Rails.application.assets['neue_email_outlook.css']
+    %style{media: "only screen and (max-width: 480px)", type: "text/css", data: {:"roadie-ignore" => true}}=Rails.application.assets['neue_email_mobile.css']
 
-%p
-  If this is not correct:
-  %blockquote
-    contact us at
-    = mail_to @threadable.support_email_address
+  %body.body{:bgcolor => "#ffffff", :style => "padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none"}
+    %table{:align => "center", :cellpadding => "0", :cellspacing => "0", :height => "100%", :width => "100%"}
+      %tr
+        %td{:align => "center", :bgcolor => "#ffffff", :valign => "top", :width => "100%"}
+          %center
+            %table.w320{:cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto;", :width => "600"}
+              %tr
+                %td{:align => "center", :valign => "top"}
+                  %table{:bgcolor => "#35afc6", :cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto;", :width => "100%"}
+                    %tr
+                      %td
+                        %br
+                    %tr
+                      %td.headline
+                        Confirm your email address!
+                    %tr
+                      %td
+                        %center
+                          %table{:cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto;", :width => "60%"}
+                            %tr
+                              %td{:style => "color:white;"}
+                                %br
+                                  The email address
+                                  %br
+                                  #{mail_to @email_address}
+                                  %br
+                                  was added to #{@email_address.user.name}'s Threadable account.
+                                  %br
+                                    If this is correct:
+                                    %br
+                                    %br
+                    %tr
+                      %td
+                        %div
+                          /[if mso]
+                            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="8%" stroke="f" fillcolor="#232527">
+                            <w:anchorlock/>
+                            <center>
+                          %a{:href => @confirm_sign_up_url, :style => "background-color:#232527;border-radius:4px;color:#ffffff;display:inline-block;font-family:Dosis,Helvetica, Arial, sans-serif;font-size:14px;font-weight:400;letter-spacing:3px;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;"} CONFIRM ADDRESS
+                          /[if mso]
+                            </center>
+                            </v:roundrect>
+                        %br
+                  %table.force-full-width{:bgcolor => "#414141", :cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto"}
+                    %tr
+                      %td{:style => "background-color:#414141;"}
+                        %br
+                    %tr
+                      %td{:style => "color:#bbbbbb; font-size:12px;"}
+                        © 2014 Threadable Team
+                        %br
+                          %br
