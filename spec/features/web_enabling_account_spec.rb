@@ -17,7 +17,7 @@ feature "web enabling account" do
     email = sent_emails.to(user.email_address).with_subject("Reset your password!").first
     expect(email).to be_present
 
-    link = email.link("Click here to reset your password")
+    link = email.link("RESET PASSWORD")
     expect(link).to be_present
 
     visit link[:href]
