@@ -22,9 +22,32 @@
     > .left-nav
       float: left
       margin-left: 2em
+
     > .right-nav
       float: right
       margin-right: 2em
+
+      .horizontal-nav
+        +medium-to-large-screens
+          display: inline
+        +small-screens
+          display: none
+
+      .menu-nav
+        +medium-to-large-screens
+          display: none
+        +small-screens
+          display: inline-block
+
+        font-size: 30px
+        color: white
+        position: absolute
+        right: 130px
+        top: 14px
+
+        .menu
+          background-color: $black-color
+          color: white
 
   .threadable-logo
     font-size: 30px
@@ -45,3 +68,4 @@
         display: none
       > .sign-in-button
         display: inline-block
+

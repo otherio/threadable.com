@@ -4,16 +4,39 @@
       %a{href: root_url}
         = render 'shared/threadable_logo'
     .right-nav
-
-      %a.button{href: "http://blog.threadable.com"} BLOG
-      - if @on_homepage
-        %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
-      - else
-        - if current_user.present?
-          %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
+      %span.horizontal-nav
+        %a.button{href: "http://blog.threadable.com"} BLOG
+        - if @on_homepage
+          %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
         - else
-          %a.button{href: "/#quit-learning-new-tools"} FEATURES
-      %a.button{href: "/pricing"} PRICING
-      %a.button{href: "http://docs.threadable.apiary.io"} API
+          - if current_user.present?
+            %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
+          - else
+            %a.button{href: "/#quit-learning-new-tools"} FEATURES
+        %a.button{href: "/pricing"} PRICING
+        %a.button{href: "http://docs.threadable.apiary.io"} API
+
+      %span.menu-nav
+        %div{:"data-uk-dropdown" => "{mode:'click'}"}
+          %i.uk-icon-bars
+
+          .menu.uk-dropdown
+            %ul.uk-nav.uk-nav-dropdown
+
+              %li
+                %a.button{href: "http://blog.threadable.com"} BLOG
+              %li
+                - if @on_homepage
+                  %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
+                - else
+                  - if current_user.present?
+                    %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
+                  - else
+                    %a.button{href: "/#quit-learning-new-tools"} FEATURES
+              %li
+                %a.button{href: "/pricing"} PRICING
+              %li
+                %a.button{href: "http://docs.threadable.apiary.io"} API
+
       - unless current_user.present?
         %a.button.blue-button.sign-in-button{href: sign_in_url(r: request.fullpath)} SIGN IN
