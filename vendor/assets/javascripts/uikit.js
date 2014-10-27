@@ -1,16 +1,58 @@
-/*! UIkit 2.3.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.4.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 
-(function($, doc, global) {
+(function(core) {
+
+    if (typeof define == "function" && define.amd) { // AMD
+        define("uikit", function(){
+
+            var uikit = core(window, window.jQuery, window.document);
+
+            uikit.load = function(res, req, onload, config) {
+
+                var resources = res.split(','), load = [], i, base = (config.config && config.config.uikit && config.config.uikit.base ? config.config.uikit.base : "").replace(/\/+$/g, "");
+
+                if (!base) {
+                    throw new Error( "Please define base path to uikit in the requirejs config." );
+                }
+
+                for (i = 0; i < resources.length; i += 1) {
+
+                    var resource = resources[i].replace(/\./g, '/');
+
+                    if (resource.match(/^addons/)) resource = resource.replace(/([^\/]+)$/g, '$1/$1');
+
+                    load.push(base+'/addons/'+resource+'/'+resource);
+                }
+
+                req(load, function() {
+                    onload(uikit);
+                });
+            };
+
+            return uikit;
+        });
+    }
+
+    if (!window.jQuery) {
+        throw new Error( "UIkit requires jQuery" );
+    }
+
+    if (window && window.jQuery) {
+        core(window, window.jQuery, window.document);
+    }
+
+
+})(function(global, $, doc) {
 
     "use strict";
 
     var UI = $.UIkit || {}, $html = $("html"), $win = $(window);
 
     if (UI.fn) {
-        return;
+        return UI;
     }
 
-    UI.version = '2.3.0';
+    UI.version = '2.4.0';
 
     UI.fn = function(command, options) {
 
@@ -43,14 +85,31 @@
                 }, name;
 
             for (name in transEndEventNames) {
-                if (element.style[name] !== undefined) {
-                    return transEndEventNames[name];
-                }
+                if (element.style[name] !== undefined) return transEndEventNames[name];
             }
-
         }());
 
         return transitionEnd && { end: transitionEnd };
+    })();
+
+    UI.support.animation = (function() {
+
+        var animationEnd = (function() {
+
+            var element = doc.body || doc.documentElement,
+                animEndEventNames = {
+                    WebkitAnimation: 'webkitAnimationEnd',
+                    MozAnimation: 'animationend',
+                    OAnimation: 'oAnimationEnd oanimationend',
+                    animation: 'animationend'
+                }, name;
+
+            for (name in animEndEventNames) {
+                if (element.style[name] !== undefined) return animEndEventNames[name];
+            }
+        }());
+
+        return animationEnd && { end: animationEnd };
     })();
 
     UI.support.requestAnimationFrame = global.requestAnimationFrame || global.webkitRequestAnimationFrame || global.mozRequestAnimationFrame || global.msRequestAnimationFrame || global.oRequestAnimationFrame || function(callback){ global.setTimeout(callback, 1000/60); };
@@ -164,14 +223,16 @@
 
         // remove css hover rules for touch devices
         if (UI.support.touch) {
-            //UI.Utils.removeCssRules(/\.uk-(?!navbar).*:hover/);
+            UI.Utils.removeCssRules(/\.uk-(?!navbar).*:hover/);
         }
     });
 
     // add touch identifier class
     $html.addClass(UI.support.touch ? "uk-touch" : "uk-notouch");
 
-})(jQuery, document, window);
+    return UI;
+
+});
 
 
 (function($, UI) {
@@ -895,7 +956,54 @@
 
             if (stacked) return;
 
-            this.elements.each(function() {
+            if(this.options.row) {
+
+                this.element.width(); // force redraw
+
+                setTimeout(function(){
+
+                    var lastoffset = false, group = [];
+
+                    $this.elements.each(function(i) {
+                        var ele = $(this), offset = ele.offset().top;
+
+                        if(offset != lastoffset && group.length) {
+
+                            $this.matchHeights($(group));
+                            group  = [];
+                            offset = ele.offset().top;
+                        }
+
+                        group.push(ele);
+                        lastoffset = offset;
+                    });
+
+                    if(group.length) {
+                        $this.matchHeights($(group));
+                    }
+
+                }, 0);
+
+            } else {
+
+                this.matchHeights(this.elements);
+            }
+
+            return this;
+        },
+
+        revert: function() {
+            this.elements.css('min-height', '');
+            return this;
+        },
+
+        matchHeights: function(elements){
+
+            if(elements.length < 2) return;
+
+            var max = 0;
+
+            elements.each(function() {
                 max = Math.max(max, $(this).outerHeight());
             }).each(function(i) {
 
@@ -904,19 +1012,13 @@
 
                 element.css('min-height', height + 'px');
             });
-
-            return this;
-        },
-
-        revert: function() {
-            this.elements.css('min-height', '');
-            return this;
         }
 
     });
 
     GridMatchHeight.defaults = {
-        "target": false
+        "target" : false,
+        "row"    : false
     };
 
     var GridMargin = function(element, options) {
@@ -962,7 +1064,6 @@
 
     var active = false,
         html   = $("html"),
-        tpl    = '<div class="uk-modal"><div class="uk-modal-dialog"></div></div>',
 
         Modal  = function(element, options) {
 
@@ -1039,20 +1140,15 @@
         },
 
         resize: function() {
-
-            this.dialog.css("margin-left", "");
-
-            var modalwidth = parseInt(this.dialog.css("width"), 10),
-                inview     = (modalwidth + parseInt(this.dialog.css("margin-left"),10) + parseInt(this.dialog.css("margin-right"),10)) < $win.width();
-
-            this.dialog.css("margin-left", modalwidth && inview ? -1*Math.ceil(modalwidth/2) : "");
+            this.scrollbarwidth = window.innerWidth - html.width();
+            html.css("padding-" + (UI.langdirection == 'left' ? "right":"left"), this.scrollbarwidth);
         },
 
         _hide: function() {
 
             this.element.hide().removeClass("uk-open");
 
-            html.removeClass("uk-modal-page");
+            html.removeClass("uk-modal-page").css("padding-" + (UI.langdirection == 'left' ? "right":"left"), "");
 
             if(active===this) active = false;
 
@@ -1065,6 +1161,9 @@
 
     });
 
+    Modal.dialog = {
+        tpl : '<div class="uk-modal"><div class="uk-modal-dialog"></div></div>'
+    };
 
     Modal.defaults = {
         keyboard: true,
@@ -1105,7 +1204,7 @@
 
     ModalTrigger.dialog = function(content, options) {
 
-        var modal = new Modal($(tpl).appendTo("body"), options);
+        var modal = new Modal($(Modal.dialog.tpl).appendTo("body"), options);
 
         modal.element.on("uk.modal.hide", function(){
             if (modal.persist) {
@@ -1123,8 +1222,8 @@
     ModalTrigger.alert = function(content, options) {
 
         ModalTrigger.dialog(([
-            '<div class="uk-margin">'+String(content)+'</div>',
-            '<button class="uk-button uk-button-primary uk-modal-close">Ok</button>'
+            '<div class="uk-margin uk-modal-content">'+String(content)+'</div>',
+            '<div class="uk-modal-buttons"><button class="uk-button uk-button-primary uk-modal-close">Ok</button></div>'
         ]).join(""), $.extend({bgclose:false, keyboard:false}, options)).show();
     };
 
@@ -1133,8 +1232,8 @@
         onconfirm = $.isFunction(onconfirm) ? onconfirm : function(){};
 
         var modal = ModalTrigger.dialog(([
-            '<div class="uk-margin">'+String(content)+'</div>',
-            '<button class="uk-button uk-button-primary js-modal-confirm">Ok</button> <button class="uk-button uk-modal-close">Cancel</button>'
+            '<div class="uk-margin uk-modal-content">'+String(content)+'</div>',
+            '<div class="uk-modal-buttons"><button class="uk-button uk-button-primary js-modal-confirm">Ok</button> <button class="uk-button uk-modal-close">Cancel</button></div>'
         ]).join(""), $.extend({bgclose:false, keyboard:false}, options));
 
         modal.element.find(".js-modal-confirm").on("click", function(){
@@ -1658,8 +1757,8 @@
             if (active.length) {
                 this.show(active);
             } else {
-                active = togglers.eq(0);
-                if (active.length) this.show(active);
+                active = togglers.eq(this.options.active);
+                this.show(active.length ? active : togglers.eq(0));
             }
         }
 
@@ -1693,7 +1792,8 @@
 
     Switcher.defaults = {
         connect : false,
-        toggler : ">*"
+        toggler : ">*",
+        active  : 0
     };
 
     UI["switcher"] = Switcher;

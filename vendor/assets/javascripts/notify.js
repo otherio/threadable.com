@@ -1,6 +1,18 @@
-/*! UIkit 2.3.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.4.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 
-(function($, UI){
+(function(addon) {
+
+    if (typeof define == "function" && define.amd) { // AMD
+        define("uikit-notify", ["uikit"], function(){
+            return jQuery.UIkit.notify ? jQuery.UIkit.notify : addon(window, window.jQuery, window.jQuery.UIkit);
+        });
+    }
+
+    if(window && window.jQuery && window.jQuery.UIkit) {
+        addon(window, window.jQuery, window.jQuery.UIkit);
+    }
+
+})(function(global, $, UI){
 
     var containers = {},
         messages   = {},
@@ -14,8 +26,6 @@
             if (arguments[1]) {
                 options = $.extend(options, $.type(arguments[1]) == 'string' ? {status:arguments[1]} : arguments[1]);
             }
-
-
 
             return (new Message(options)).show();
         },
@@ -162,4 +172,6 @@
     UI["notify"].message  = Message;
     UI["notify"].closeAll = closeAll;
 
-})(jQuery, jQuery.UIkit);
+    return notify;
+
+});
