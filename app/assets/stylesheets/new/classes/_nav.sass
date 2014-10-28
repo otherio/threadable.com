@@ -22,16 +22,8 @@
     > .left-nav
       float: left
       margin-left: 2em
-
-    > .right-nav
-      float: right
-      margin-right: 2em
-
-      .horizontal-nav
-        +medium-to-large-screens
-          display: inline
-        +small-screens
-          display: none
+      +small-screens
+        margin-left: 15px
 
       .menu-nav
         +medium-to-large-screens
@@ -39,21 +31,30 @@
         +small-screens
           display: inline-block
 
-        font-size: 30px
-        color: white
-        position: absolute
-        right: 130px
-        top: 14px
+        font-size: 27px
+        color: tint($teal-color, 70%)
+    > .right-nav
+      float: right
+      margin-right: 2em
+      +small-screens
+        margin-right: 15px
 
-        .menu
-          background-color: $black-color
-          color: white
+      .horizontal-nav
+        +medium-to-large-screens
+          display: inline
+        +small-screens
+          display: none
+
 
   .threadable-logo
     font-size: 30px
     line-height: 40px
     height: 40px
     width: 140px
+    +small-screens
+      display: inline
+      font-size: 28px
+      margin-left: 15px
     svg *
       fill: white
 
