@@ -2665,7 +2665,7 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover {
   /* 3 */
   /*border-radius: 0;*/
   /* 4 */
-  /*font: inherit;*/
+  font: inherit;
   /*color: inherit;*/
 }
 /*
