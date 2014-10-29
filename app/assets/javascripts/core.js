@@ -4,7 +4,8 @@
 //= require rails_env
 //= require user_voice
 //= require jquery
-//= require_tree ../../../vendor/assets/javascripts/uikit
+//= require uikit
+//= require notify
 //= require docent
 //= require iconic.min
 //= require_self
