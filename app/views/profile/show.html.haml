@@ -11,28 +11,37 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    = simple_form_for current_user, url: current_url, html: {class: 'uk-form uk-form-stacked'} do |f|
-      %section
-        .uk-form-row
-          %label.uk-form-label Your name
-          = f.input :name, input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
-        .uk-form-row
-          %label.uk-form-label
-            When you reply to an email, it should go to
-          = f.input :munge_reply_to?, as: :select, :collection => [['The original sender',false],['The group',true]], :include_blank => false, label: false
-          .details
-            Ian will explain what this means better. It's able to be pretty long, because these are details.
-      %section.uk-grid
-        .uk-width-medium-1-2
+    .profile-container
+      = simple_form_for current_user, url: current_url, html: {class: 'uk-form uk-form-stacked'} do |f|
+        %section
           .uk-form-row
-            %label.uk-form-label Email action buttons
-            = f.input :show_mail_buttons?, as: :select, :collection => [['Display email action buttons',true], ['Do not display email action buttons',false]], :include_blank => false, label: false
-        .uk-width-medium-1-2
+            %label.uk-form-label Your name
+            = f.input :name, input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false, required: true
           .uk-form-row
-            %label.uk-form-label Secure email action buttons
-            = f.input :secure_mail_buttons?, as: :select, :collection => [['Buttons work when logged out',false],['Buttons require login',true]], :include_blank => false, label: false
-      %section.uk-form-row
-        = f.submit :Update, class: 'uk-button uk-button-primary uk-button-large'
+            %label.uk-form-label
+              When you reply to an email, it should go to
+            = f.input :munge_reply_to?, as: :select, :collection => [['The original sender',false],['The group',true]], :include_blank => false, label: false
+            .details
+              Ian will explain what this means better. It's able to be pretty long, because these are details.
+        %section.uk-grid
+          .uk-width-medium-1-2
+            .uk-form-row
+              %label.uk-form-label Email action buttons
+              = f.input :show_mail_buttons?, as: :select, :collection => [['Display email action buttons',true], ['Do not display email action buttons',false]], :include_blank => false, label: false
+          .uk-width-medium-1-2
+            .uk-form-row
+              %label.uk-form-label Secure email action buttons
+              = f.input :secure_mail_buttons?, as: :select, :collection => [['Buttons work when logged out',false],['Buttons require login',true]], :include_blank => false, label: false
+        %section.uk-form-row
+          = f.submit :Update, class: 'uk-button uk-button-primary uk-button-large'
+      %section.uk-form-row.collapse
+        %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.profile-container'}"}
+          %i.uk-icon-compress
+          Collapse
+    %section.uk-form-row.expand.profile-container.uk-hidden
+      %button.uk-button{"data-uk-toggle" => "{target:'.profile-container'}"}
+        %i.uk-icon-expand
+        Expand
 
     .uk-grid.uk-grid-small.heading
       .uk-width-medium-2-5.uk-hidden-small
@@ -42,23 +51,33 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    = simple_form_for current_user, url: current_url, html: {class: 'uk-form uk-form-stacked'}  do |f|
-      %section
-        .uk-form-row
-          %label.uk-form-label Current password
-          = f.input :current_password, input_html: {class: 'uk-width-medium-1-2 uk-form-large'}, label: false, required: true
-      %section.uk-grid
-        .uk-width-medium-1-2
+    .password-container.uk-hidden
+      = simple_form_for current_user, url: current_url, html: {class: 'uk-form uk-form-stacked'}  do |f|
+        %section
           .uk-form-row
-            %label.uk-form-label New password
-            = f.input :password, input_html: {class: 'uk-form-large'}, label: false, required: true
-        .uk-width-medium-1-2
-          .uk-form-row
-            %label.uk-form-label New password confirmation
-            = f.input :password_confirmation, input_html: {class: 'uk-form-large'}, label: false, required: true
+            %label.uk-form-label Current password
+            = f.input :current_password, input_html: {class: 'uk-width-medium-1-2 uk-form-large'}, label: false, required: true
+        %section.uk-grid
+          .uk-width-medium-1-2
+            .uk-form-row
+              %label.uk-form-label New password
+              = f.input :password, input_html: {class: 'uk-form-large'}, label: false, required: true
+          .uk-width-medium-1-2
+            .uk-form-row
+              %label.uk-form-label New password confirmation
+              = f.input :password_confirmation, input_html: {class: 'uk-form-large'}, label: false, required: true
 
-      %section.uk-form-row
-        = f.submit :Update, class: 'uk-button uk-button-primary uk-button-large'
+        %section.uk-form-row
+          = f.submit 'Change password', class: 'uk-button uk-button-primary uk-button-large'
+
+      %section.uk-form-row.collapse
+        %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.password-container'}"}
+          %i.uk-icon-compress
+          Collapse
+    %section.uk-form-row.expand.password-container
+      %button.uk-button{"data-uk-toggle" => "{target:'.password-container'}"}
+        %i.uk-icon-expand
+        Expand
 
     .uk-grid.uk-grid-small.heading
       .uk-width-medium-2-5.uk-hidden-small
@@ -68,31 +87,50 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    %section
-      .uk-overflow-container
-        %table.uk-table.uk-table-condensed
-          %caption
-            Messages from any of these addresses will be associated with you, however we will only ever email you at your primary email address.
-          %thead
-            %tr
-              %th Address
-              %th Primary?
-              %th Confirmed?
-          %tbody
-            - current_user.email_addresses.all.sort_by(&:address).each do |email_address|
+    .email-container.uk-hidden
+      %section
+        .uk-overflow-container
+          %table.uk-table.uk-table-condensed
+            %caption
+              Messages from any of these addresses will be associated with you, however we will only ever email you at your primary email address.
+            %thead
               %tr
-                %td
-                  = email_address.address
-                %td.nowrap
-                  - if email_address.primary?
-                    primary
-                  - elsif email_address.confirmed?
-                    = link_to 'make primary', email_address_path(email_address:{ address: email_address.address, primary:1 }), data:{method:'patch'}
-                %td.nowrap
-                  - if email_address.confirmed?
-                    confirmed
-                  - else
-                    = link_to 'resend confirmation email', resend_email_address_confirmation_path(email_address:{ address: email_address.address }), data:{method:'post'}
+                %th Address
+                %th Primary?
+                %th Confirmed?
+            %tbody
+              - current_user.email_addresses.all.sort_by(&:address).each do |email_address|
+                %tr
+                  %td
+                    = email_address.address
+                  %td.nowrap
+                    - if email_address.primary?
+                      primary
+                    - elsif email_address.confirmed?
+                      = link_to 'make primary', email_address_path(email_address:{ address: email_address.address, primary:1 }), data:{method:'patch'}
+                  %td.nowrap
+                    - if email_address.confirmed?
+                      confirmed
+                    - else
+                      = link_to 'resend confirmation email', resend_email_address_confirmation_path(email_address:{ address: email_address.address }), data:{method:'post'}
+
+      %section
+        = form_for current_user.email_addresses.new, url: email_addresses_path, html: { class: 'uk-form' } do |f|
+          .uk-form-row
+            = f.text_field :address, class: 'uk-width-medium-1-2 uk-form-large new-mail', placeholder: 'my.email@example.com', type: 'email', label: false, required: true
+            = f.submit :Add, class: 'uk-button uk-button-large uk-button-primary new-mail', value: 'Add'
+            .details
+              If you need to delete an email address from your account please email us at
+              = mail_to threadable.support_email_address
+
+      %section.uk-form-row.collapse
+        %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.email-container'}"}
+          %i.uk-icon-compress
+          Collapse
+    %section.uk-form-row.expand.email-container
+      %button.uk-button{"data-uk-toggle" => "{target:'.email-container'}"}
+        %i.uk-icon-expand
+        Expand
 
     .uk-grid.uk-grid-small.heading
       .uk-width-medium-2-5.uk-hidden-small
@@ -102,55 +140,65 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    %section.services
-      .uk-form-row
-        %label.uk-form-label
-          - if @external_authorizations.length > 0
-            Services that you've authorized to share data with Threadable
-          - else
-            You haven't authenticated any external accounts for use in Threadable.
+    .services-container.uk-hidden
+      %section.services
+        .uk-form-row
+          %label.uk-form-label
+            - if @external_authorizations.length > 0
+              Services that you've authorized to share data with Threadable
+            - else
+              You haven't authenticated any external accounts for use in Threadable.
 
 
-    %section.connect
-      .uk-grid
-        .uk-width-medium-1-2.uk-width-small-1-1.uk-width-large-1-2
-          .uk-panel.uk-panel-box
-            .uk-panel-teaser
-              .service
-                .title-holder.uk-container-center
-                  %i.uk-icon-google.uk-icon-medium
-                  %span.title
-                    Google
-                  %span.add-button
-                    - if @google_auth
-                      = link_to 'Change', '/auth/google_oauth2', class: 'uk-button'
-                    - else
-                      = link_to 'Add', '/auth/google_oauth2', class: 'uk-button'
+      %section.connect
+        .uk-grid
+          .uk-width-medium-1-2.uk-width-small-1-1.uk-width-large-1-2
+            .uk-panel.uk-panel-box
+              .uk-panel-teaser
+                .service
+                  .title-holder.uk-container-center
+                    %i.uk-icon-google.uk-icon-medium
+                    %span.title
+                      Google
+                    %span.add-button
+                      - if @google_auth
+                        = link_to 'Change', '/auth/google_oauth2', class: 'uk-button'
+                      - else
+                        = link_to 'Add', '/auth/google_oauth2', class: 'uk-button'
 
-            - if @google_auth
-              .linked-account
-                = "#{@google_auth.name} #{@google_auth.nickname ? "(#{@google_auth.nickname})" : ''} &lt;#{@google_auth.email_address}&gt;".html_safe
-            .service-description
-              Link with Google to set up your account for Google Apps for Domains Sync.
+              - if @google_auth
+                .linked-account
+                  = "#{@google_auth.name} #{@google_auth.nickname ? "(#{@google_auth.nickname})" : ''} &lt;#{@google_auth.email_address}&gt;".html_safe
+              .service-description
+                Link with Google to set up your account for Google Apps for Domains Sync.
 
-        / .uk-width-medium-1-2.uk-width-small-1-1.uk-width-large-1-3
-        /   .uk-panel.uk-panel-box
-        /     .uk-panel-teaser
-        /       .service
-        /         .title-holder.uk-container-center
-        /           %i.uk-icon-trello.uk-icon-medium
-        /           %span.title
-        /             Trello
-        /           %span.add-button
-        /             - if @trello
-        /               = link_to 'Change', '/auth/trello', class: 'uk-button'
-        /             -else
-        /               = link_to 'Add', '/auth/trello', class: 'uk-button'
-        /     - if @trello
-        /       .linked-account
-        /         = "#{@trello.name} #{@trello.nickname ? "(#{@trello.nickname})" : ''} &lt;#{@trello.email_address}&gt;".html_safe
-        /     .service-description
-        /       Link with Trello to set up your account to manipulate Trello cards through email.
+          / .uk-width-medium-1-2.uk-width-small-1-1.uk-width-large-1-3
+          /   .uk-panel.uk-panel-box
+          /     .uk-panel-teaser
+          /       .service
+          /         .title-holder.uk-container-center
+          /           %i.uk-icon-trello.uk-icon-medium
+          /           %span.title
+          /             Trello
+          /           %span.add-button
+          /             - if @trello
+          /               = link_to 'Change', '/auth/trello', class: 'uk-button'
+          /             -else
+          /               = link_to 'Add', '/auth/trello', class: 'uk-button'
+          /     - if @trello
+          /       .linked-account
+          /         = "#{@trello.name} #{@trello.nickname ? "(#{@trello.nickname})" : ''} &lt;#{@trello.email_address}&gt;".html_safe
+          /     .service-description
+          /       Link with Trello to set up your account to manipulate Trello cards through email.
+
+      %section.uk-form-row.collapse
+        %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.services-container'}"}
+          %i.uk-icon-compress
+          Collapse
+    %section.uk-form-row.expand.services-container
+      %button.uk-button{"data-uk-toggle" => "{target:'.services-container'}"}
+        %i.uk-icon-expand
+        Expand
 
     .uk-grid.uk-grid-small.heading
       .uk-width-medium-2-5.uk-hidden-small
@@ -160,24 +208,34 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    .uk-form.uk-form-stacked
-      %section
-        - if current_user.api_access_token.present?
-          .uk-form-row
-            %input.uk-width-medium-1-2.uk-form-large{type:'text', name: 'api_access_token', value: current_user.api_access_token}
-            .details
-              Your token enables access to your account, organizations and groups data via the API, and needs to be kept private.
-          .uk-form-row
-            = form_tag api_access_tokens_path, method: 'post' do
-              = submit_tag :Regenerate, class: 'uk-button uk-button-primary uk-button-large', 'data-confirm' => 'This will disable your current api access token. Are you sure?'
-        - else
-          .uk-form-row
-            %label.uk-form-label Generate an access token to use Threadable through our API.
-            .details
-              An API token enables full access to your account, organizations and groups data via the API, and needs to be kept private.
-          .uk-form-row
-            = form_tag api_access_tokens_path, method: 'post' do
-              = submit_tag :Generate, class: 'uk-button uk-button-primary uk-button-large'
+    .api-container.uk-hidden
+      .uk-form.uk-form-stacked
+        %section
+          - if current_user.api_access_token.present?
+            .uk-form-row
+              %input.uk-width-medium-1-2.uk-form-large{type:'text', name: 'api_access_token', value: current_user.api_access_token}
+              .details
+                Your token enables access to your account, organizations and groups data via the API, and needs to be kept private.
+            .uk-form-row
+              = form_tag api_access_tokens_path, method: 'post' do
+                = submit_tag :Regenerate, class: 'uk-button uk-button-primary uk-button-large', 'data-confirm' => 'This will disable your current api access token. Are you sure?'
+          - else
+            .uk-form-row
+              %label.uk-form-label Generate an access token to use Threadable through our API.
+              .details
+                An API token enables full access to your account, organizations and groups data via the API, and needs to be kept private.
+            .uk-form-row
+              = form_tag api_access_tokens_path, method: 'post' do
+                = submit_tag :Generate, class: 'uk-button uk-button-primary uk-button-large'
+
+      %section.uk-form-row.collapse
+        %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.api-container'}"}
+          %i.uk-icon-compress
+          Collapse
+    %section.uk-form-row.expand.api-container
+      %button.uk-button{"data-uk-toggle" => "{target:'.api-container'}"}
+        %i.uk-icon-expand
+        Expand
 
 :javascript
   $(function(){
