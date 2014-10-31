@@ -1,10 +1,13 @@
 class ProfileController < ApplicationController
 
-  layout 'old'
+  layout 'new'
 
   before_filter :require_user_be_signed_in!
 
   def show
+    @external_authorizations = current_user.external_authorizations.all
+    @google_auth = @external_authorizations.find { |a| a.provider == 'google_oauth2' }
+    @trello = @external_authorizations.find { |a| a.provider == 'trello' }
   end
 
   def update

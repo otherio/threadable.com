@@ -3,15 +3,15 @@ class HomepageController < ApplicationController
   skip_before_action :require_user_be_signed_in!
   before_action :render_client_app_if_signed_in!
 
+  layout 'new'
+
   def show
     @sign_up = SignUp.new(params)
     @on_homepage = true
-    render 'homepage/show', layout: 'new'
   end
 
   def pricing
     @sign_up = SignUp.new(params)
-    render 'homepage/pricing', layout: 'new'
   end
 
   private
