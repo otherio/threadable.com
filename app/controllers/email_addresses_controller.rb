@@ -10,7 +10,7 @@ class EmailAddressesController < ApplicationController
     else
       flash[:error] = email_address.errors.full_messages.to_sentence
     end
-    redirect_to request.referrer || profile_path
+    redirect_to profile_path(expand_section: 'email')
   end
 
   def update
@@ -18,13 +18,13 @@ class EmailAddressesController < ApplicationController
       email_address.primary!
       flash[:notice] = "#{email_address} is now your primary email address."
     end
-    redirect_to request.referrer || profile_path
+    redirect_to profile_path(expand_section: 'email')
   end
 
   def resend_confirmation_email
     flash[:notice] = "We've resent a confirmation email to #{email_address}. Please check your email."
     threadable.emails.send_email_async(:email_address_confirmation, email_address.id)
-    redirect_to request.referrer || profile_path
+    redirect_to profile_path(expand_section: 'email')
   end
 
   def confirm
@@ -33,7 +33,7 @@ class EmailAddressesController < ApplicationController
     sign_in! email_address.user
     email_address.confirm!
     flash[:notice] = "#{email_address} has been confirmed"
-    redirect_to profile_path
+    redirect_to profile_path(expand_section: 'email')
   end
 
   private

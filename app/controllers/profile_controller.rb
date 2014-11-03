@@ -8,6 +8,7 @@ class ProfileController < ApplicationController
     @external_authorizations = current_user.external_authorizations.all
     @google_auth = @external_authorizations.find { |a| a.provider == 'google_oauth2' }
     @trello = @external_authorizations.find { |a| a.provider == 'trello' }
+    @expand = params[:expand_section]
   end
 
   def update
@@ -18,16 +19,19 @@ class ProfileController < ApplicationController
       current_user.update user_params.permit(:name, :munge_reply_to, :show_mail_buttons, :secure_mail_buttons)
       notice = "We've updated your profile"
     when user_params.key?(:current_password)
+      @expand = 'password'
+
       current_user.change_password user_params.permit(:current_password, :password, :password_confirmation)
       notice = "We've changed your password"
     end
 
-    if current_user.errors.present?
-      render :show
+    if current_user.errors
+      flash[:error] = "Error updating profile. See below."
     else
       flash[:notice] = notice
-      redirect_to profile_path
     end
+
+    render :show
   end
 
 end

@@ -51,7 +51,7 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    .password-container.uk-hidden
+    %div{class: @expand == 'password' ? 'password-container' : 'password-container uk-hidden'}
       = simple_form_for current_user, url: current_url, html: {class: 'uk-form uk-form-stacked'}  do |f|
         %section
           .uk-form-row
@@ -74,7 +74,7 @@
         %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.password-container'}"}
           %i.uk-icon-compress
           Collapse
-    %section.uk-form-row.expand.password-container
+    %section{class: @expand == 'password' ? 'uk-form-row expand password-container uk-hidden' : 'uk-form-row expand password-container'}
       %button.uk-button{"data-uk-toggle" => "{target:'.password-container'}"}
         %i.uk-icon-expand
         Expand
@@ -87,7 +87,7 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    .email-container.uk-hidden
+    %div{class: @expand == 'email' ? 'email-container' : 'email-container uk-hidden'}
       %section
         .uk-overflow-container
           %table.uk-table.uk-table-condensed
@@ -127,7 +127,7 @@
         %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.email-container'}"}
           %i.uk-icon-compress
           Collapse
-    %section.uk-form-row.expand.email-container
+    %section{class: @expand == 'email' ? 'uk-form-row expand email-container uk-hidden' : 'uk-form-row expand email-container'}
       %button.uk-button{"data-uk-toggle" => "{target:'.email-container'}"}
         %i.uk-icon-expand
         Expand
@@ -144,7 +144,7 @@
       %section.services
         .uk-form-row
           %label.uk-form-label
-            - if @external_authorizations.length > 0
+            - unless @external_authorizations.nil?
               Services that you've authorized to share data with Threadable
             - else
               You haven't authenticated any external accounts for use in Threadable.

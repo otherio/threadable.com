@@ -7,6 +7,21 @@
   %body
     .page
       = render 'layouts/nav'
-      .content.page-content= yield
+      .content.page-content
+        = yield
       = render 'layouts/footer'
 
+:javascript
+  var notifications = JSON.parse('#{escape_javascript(flash.to_json)}');
+  var statuses = {
+    'notice': 'success',
+    'alert':  'warning',
+    'error':  'danger'
+  };
+  $.each(notifications, function(pos, notification) {
+    $.UIkit.notify({
+      message: notification[1],
+      status: statuses[notification[0]],
+      timeout: 0
+    });
+  });

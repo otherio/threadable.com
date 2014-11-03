@@ -29,23 +29,27 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my password) do
-    fill_in 'Current password',      with: 'passwor'
-    fill_in 'Password',              with: 'supersecret', :match => :prefer_exact
-    fill_in 'Password confirmation', with: 'supersecrey', :match => :prefer_exact
+    within '.expand.password-container' do
+      click_on 'Expand'
+    end
+
+    fill_in 'user[current_password]',      with: 'passwor'
+    fill_in 'user[password]',              with: 'supersecret', :match => :prefer_exact
+    fill_in 'user[password_confirmation]', with: 'supersecrey', :match => :prefer_exact
     click_on 'Change password'
     expect(page).to have_text %(wrong password)
     expect(page).to_not have_text %(We've changed your password)
 
-    fill_in 'Current password',      with: 'password'
-    fill_in 'Password',              with: 'supersecret', :match => :prefer_exact
-    fill_in 'Password confirmation', with: 'supersecrey', :match => :prefer_exact
+    fill_in 'user[current_password]',      with: 'password'
+    fill_in 'user[password]',              with: 'supersecret', :match => :prefer_exact
+    fill_in 'user[password_confirmation]', with: 'supersecrey', :match => :prefer_exact
     click_on 'Change password'
     expect(page).to have_text %(doesn't match Password)
     expect(page).to_not have_text %(We've changed your password)
 
-    fill_in 'Current password',      with: 'password'
-    fill_in 'Password',              with: 'supersecret', :match => :prefer_exact
-    fill_in 'Password confirmation', with: 'supersecret', :match => :prefer_exact
+    fill_in 'user[current_password]',      with: 'password'
+    fill_in 'user[password]',              with: 'supersecret', :match => :prefer_exact
+    fill_in 'user[password_confirmation]', with: 'supersecret', :match => :prefer_exact
     click_on 'Change password'
     expect(page).to have_text %(We've changed your password)
 
@@ -53,6 +57,9 @@ feature "Editing my profile" do
   end
 
   scenario %(adding an email address) do
+    within '.expand.email-container' do
+      click_on 'Expand'
+    end
     expect(addresses).to eq Set['yan@ucsd.example.com', 'yan@yansterdam.io']
 
     fill_in 'my.email@example.com', with: 'yan@ucsd.example.com'

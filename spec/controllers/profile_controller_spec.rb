@@ -75,6 +75,7 @@ describe ProfileController, :type => :controller do
           }
           expect(response).to redirect_to profile_path
           expect(flash[:notice]).to eq "We've changed your password"
+          expect(assigns(:expand)).to eq 'password-container'
         end
 
         context 'with bad params' do
