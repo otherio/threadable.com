@@ -208,7 +208,7 @@
       .uk-width-medium-2-5.uk-hidden-small
         .divider
 
-    .api-container.uk-hidden
+    %div{class: @expand == 'api' ? 'api-container' : 'api-container uk-hidden'}
       .uk-form.uk-form-stacked
         %section
           - if current_user.api_access_token.present?
@@ -232,7 +232,7 @@
         %button.uk-button.uk-button-link{"data-uk-toggle" => "{target:'.api-container'}"}
           %i.uk-icon-compress
           Collapse
-    %section.uk-form-row.expand.api-container
+    %section{class: @expand == 'api' ? 'uk-form-row expand api-container uk-hidden' : 'uk-form-row expand api-container'}
       %button.uk-button{"data-uk-toggle" => "{target:'.api-container'}"}
         %i.uk-icon-expand
         Expand

@@ -8,9 +8,12 @@ feature "API access tokens" do
   end
 
   scenario %(generating an api access token) do
+    within '.expand.api-container' do
+      click_on 'Expand'
+    end
     expect(page).to have_text %(Generate an access token)
     click_on 'Generate'
-    expect(current_url).to eq profile_url
+    expect(current_url).to eq profile_url(expand_section: 'api')
 
     access_token = find_field('api_access_token').value
     response = get "/api/users/current.json?access_token=#{access_token}"
