@@ -25,7 +25,7 @@ class ProfileController < ApplicationController
       notice = "We've changed your password"
     end
 
-    if current_user.errors
+    if current_user.errors.any?
       flash[:error] = "Error updating profile. See below."
     else
       flash[:notice] = notice

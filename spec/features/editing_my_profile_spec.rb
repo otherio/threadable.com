@@ -12,19 +12,19 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my name) do
-    fill_in 'Name', with: '  '
+    fill_in 'user_name', with: '  '
     click_on 'Update'
     expect(page).to_not have_text %(We've updated your profile)
     expect(current_url).to eq profile_url
-    expect(page).to have_field('Name', with: '  ')
+    expect(page).to have_field('user_name', with: '  ')
     expect(page).to have_text "can't be blank"
     expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzu'
 
-    fill_in 'Name', with: 'Yan Hzurself'
+    fill_in 'user_name', with: 'Yan Hzurself'
     click_on 'Update'
     expect(page).to have_text %(We've updated your profile)
     expect(current_url).to eq profile_url
-    expect(page).to have_field('Name', with: 'Yan Hzurself')
+    expect(page).to have_field('user_name', with: 'Yan Hzurself')
     expect(threadable.users.find_by_email_address!('yan@ucsd.example.com').name).to eq 'Yan Hzurself'
   end
 
@@ -110,6 +110,9 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my primary email address) do
+    within '.expand.email-container' do
+      click_on 'Expand'
+    end
     expect( email_address_table_row('yan@ucsd.example.com') ).to have_text 'primary'
     expect( email_address_table_row('yan@yansterdam.io')   ).to have_link 'make primary'
 
