@@ -23,6 +23,7 @@ class Threadable::Organizations::Create < MethodObject
 
     create_primary_group!
     populate_starter_data! if populate_starter_data
+    @organization.create_closeio_lead!
     return @organization
   end
 

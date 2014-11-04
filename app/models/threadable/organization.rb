@@ -30,6 +30,7 @@ class Threadable::Organization < Threadable::Model
     billforward_account_id
     billforward_subscription_id
     daily_active_users
+    daily_last_message_at
     account_type
   }, to: :organization_record)
 
@@ -233,6 +234,18 @@ class Threadable::Organization < Threadable::Model
     organization_record.update!(plan: :free)
   end
 
+  def last_message_at
+    organization_record.conversations.order(:last_message_at).first.try(:last_message_at)
+  end
+
+  def update_daily_last_message_at!
+    organization_record.update_attribute(:daily_last_message_at, last_message_at)
+  end
+
+  def has_recent_activity?
+    last_message_at.present? && last_message_at > (Time.now - 1.month)
+  end
+
   def destroy!
     organization_record.destroy!
   end
@@ -242,8 +255,46 @@ class Threadable::Organization < Threadable::Model
     self
   end
 
+  def create_closeio_lead!
+    return unless ENV['CLOSEIO_API_KEY']
+
+    owner_contacts = members.who_are_owners.map do |owner|
+      {name: owner.name, emails: [
+        {type: 'other', email: owner.email_address.address}
+      ]}
+    end
+
+    Closeio::Lead.create(
+      name: name,
+      contacts: owner_contacts,
+      custom: {
+        organization_slug: slug,
+        recent_activity: has_recent_activity? ? 'yes' : 'no',
+      },
+      status_id: ENV['CLOSEIO_LEAD_STATUS_ID'],
+    )
+  end
+
+  def find_closeio_lead
+    Closeio::Lead.where(query: "custom.organization_slug:[#{slug}]").first
+  end
+
+  # For the moment, these two are utility methods for calling from the console.
+  def find_closeio_lead_by_name
+    lead = Closeio::Lead.where(query: "company:[#{name}]").first
+    (lead && lead.name == name) ? lead : nil
+  end
+
+  def set_closeio_lead_slug!
+    lead = find_closeio_lead_by_name
+    if lead
+      Closeio::Lead.update lead.id, 'custom.organization_slug' => slug, 'custom.recent_activity' => has_recent_activity? ? 'yes' : 'no'
+    else
+      create_closeio_lead!
+    end
+  end
+
   def inspect
     %(#<#{self.class} organization_id: #{id.inspect}, name: #{name.inspect}>)
   end
 end
-

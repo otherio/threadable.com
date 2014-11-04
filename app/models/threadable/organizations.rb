@@ -12,6 +12,15 @@ class Threadable::Organizations < Threadable::Collection
     scope.where('organizations.billforward_subscription_id IS NOT NULL').map{ |organization| organization_for organization }
   end
 
+  def with_last_message_between start_date, end_date
+    binding.pry
+    scope.
+      joins(:conversations).
+      distinct(:organization_id).
+      where('conversations.last_message_at > ? AND conversations.last_message_at < ?', start_date, end_date).
+      map{ |organization| organization_for organization }
+  end
+
   def find_by_slug slug
     organization_for (scope.where(slug: slug).first or return)
   end

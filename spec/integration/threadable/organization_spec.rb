@@ -369,6 +369,44 @@ describe Threadable::Organization, :type => :request do
     end
   end
 
+  describe '#last_message_at' do
+    let(:conversation) { organization.conversations.latest }
+
+    before do
+      Timecop.freeze
+      conversation.messages.create(body: 'a message')
+    end
+
+    it 'returns the time the last message qas created' do
+      expect(organization.last_message_at).to eq Time.now
+    end
+  end
+
+  describe '#create_closeio_lead!' do
+    before do
+      ENV['CLOSEIO_API_KEY'] = 'closeio_api_key'
+      ENV['CLOSEIO_LEAD_STATUS_ID'] = 'closeio_lead_status_id'
+      Timecop.freeze
+    end
+
+    it 'puts a lead in close' do
+      expect(Closeio::Lead).to receive(:create).with({
+        name: 'UCSD Electric Racing',
+        contacts: [
+          {name: 'Alice Neilson', emails: [type: 'other', email: 'alice@ucsd.example.com']}
+        ],
+        custom: {
+          organization_slug: 'raceteam',
+          recent_activity: 'no',
+        },
+        status_id: 'closeio_lead_status_id',
+      })
+
+      organization.create_closeio_lead!
+    end
+
+  end
+
   it 'has the correct settings with proper defaults' do
     expect(organization.settings.organization_membership_permission).to eq :member
     expect(organization.settings.group_membership_permission).to eq :member

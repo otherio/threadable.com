@@ -58,8 +58,9 @@ gem 'omniauth-trello'
 gem 'omniauth-google-oauth2'
 
 gem 'google-api-client'
-
+gem 'closeio'
 gem 'algoliasearch-rails'
+
 gem 'dnsruby'
 
 group :production, :staging do
