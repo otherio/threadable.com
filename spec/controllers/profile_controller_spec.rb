@@ -34,7 +34,7 @@ describe ProfileController, :type => :controller do
       context 'when updating your name' do
         it 'should update your name' do
           patch :update, user: { name: 'Yan!' }
-          expect(response).to redirect_to profile_path
+          expect(response).to render_template('profile/show')
           expect(flash[:notice]).to eq "We've updated your profile"
         end
       end
@@ -42,7 +42,7 @@ describe ProfileController, :type => :controller do
       context 'when updating your reply-to munging' do
         it 'should update the reply-to munging setting' do
           patch :update, user: { name: 'Yan!', munge_reply_to: false }
-          expect(response).to redirect_to profile_path
+          expect(response).to render_template('profile/show')
           expect(threadable.users.find_by_email_address('yan@ucsd.example.com').munge_reply_to?).to be_falsey
           expect(flash[:notice]).to eq "We've updated your profile"
         end
@@ -51,7 +51,7 @@ describe ProfileController, :type => :controller do
       context 'when updating your email button display' do
         it 'should update the email button display setting' do
           patch :update, user: { name: 'Yan!', show_mail_buttons: false }
-          expect(response).to redirect_to profile_path
+          expect(response).to render_template('profile/show')
           expect(threadable.users.find_by_email_address('yan@ucsd.example.com').show_mail_buttons?).to be_falsey
           expect(flash[:notice]).to eq "We've updated your profile"
         end
@@ -60,7 +60,7 @@ describe ProfileController, :type => :controller do
       context 'when updating your secure button preference' do
         it 'should update the secure button preference' do
           patch :update, user: { name: 'Yan!', secure_mail_buttons: true }
-          expect(response).to redirect_to profile_path
+          expect(response).to render_template('profile/show')
           expect(threadable.users.find_by_email_address('yan@ucsd.example.com').secure_mail_buttons?).to be_truthy
           expect(flash[:notice]).to eq "We've updated your profile"
         end
@@ -73,9 +73,9 @@ describe ProfileController, :type => :controller do
             password:              'supersecret',
             password_confirmation: 'supersecret',
           }
-          expect(response).to redirect_to profile_path
+          expect(response).to render_template('profile/show')
           expect(flash[:notice]).to eq "We've changed your password"
-          expect(assigns(:expand)).to eq 'password-container'
+          expect(assigns(:expand)).to eq 'password'
         end
 
         context 'with bad params' do
@@ -87,6 +87,7 @@ describe ProfileController, :type => :controller do
             }
             expect(response).to render_template('profile/show')
             expect(current_user.errors.to_a).to eq ["Current password wrong password"]
+            expect(assigns(:expand)).to eq 'password'
           end
           it 'should render the profile page with errors' do
             patch :update, user: {
@@ -96,6 +97,7 @@ describe ProfileController, :type => :controller do
             }
             expect(response).to render_template('profile/show')
             expect(current_user.errors.to_a).to eq ["Password confirmation doesn't match Password"]
+            expect(assigns(:expand)).to eq 'password'
           end
         end
       end
