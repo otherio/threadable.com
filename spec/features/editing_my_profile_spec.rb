@@ -12,6 +12,7 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my name) do
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
     fill_in 'user_name', with: '  '
     click_on 'Update'
     expect(page).to_not have_text %(We've updated your profile)
@@ -29,6 +30,7 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my password) do
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
     within '.expand.password-container' do
       click_on 'Expand'
     end
@@ -57,6 +59,7 @@ feature "Editing my profile" do
   end
 
   scenario %(adding an email address) do
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
     within '.expand.email-container' do
       click_on 'Expand'
     end
@@ -110,6 +113,7 @@ feature "Editing my profile" do
   end
 
   scenario %(changing my primary email address) do
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
     within '.expand.email-container' do
       click_on 'Expand'
     end
