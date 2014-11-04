@@ -103,4 +103,5 @@ group :test do
   gem 'rest-client'
   gem 'rspec-legacy_formatters'
   gem 'webmock', require: nil
+  gem 'rspec_junit_formatter', :git => 'git@github.com:circleci/rspec_junit_formatter.git'
 end
