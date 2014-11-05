@@ -217,7 +217,9 @@
             .uk-form-row
               %input.uk-width-medium-1-2.uk-form-large{type:'text', name: 'api_access_token', value: current_user.api_access_token}
               .details
-                Your token enables access to your account, organizations and groups data via the API, and needs to be kept private.
+                %em
+                  Keep your token private.
+                It enables access to your account, organizations and groups data via the API. To revoke it, press the Regenerate button.
             .uk-form-row
               = form_tag api_access_tokens_path, method: 'post' do
                 = submit_tag :Regenerate, class: 'uk-button uk-button-primary uk-button-large', 'data-confirm' => 'This will disable your current api access token. Are you sure?'
