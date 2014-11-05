@@ -26,9 +26,9 @@ class ProfileController < ApplicationController
     end
 
     if current_user.errors.any?
-      flash[:error] = "Error updating profile. See below."
+      flash.now[:error] = "Error updating profile. See below."
     else
-      flash[:notice] = notice
+      flash.now[:notice] = notice
     end
 
     render :show
