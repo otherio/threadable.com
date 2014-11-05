@@ -26,12 +26,13 @@ COMMAND = %(
   --colour
   --backtrace
   --format RspecJunitFormatter
-  --out rspec.xml
+  --out $CI_REPORTS/rspec/rspec.xml
   --require ./spec/support/documentation_instafail_formatter.rb
   --format DocumentationInstafail
   #{MY_SPECS.map(&:inspect).join(' ')}
 ).gsub(/\s*\n\s*/, ' ')
 puts
+system "mkdir $CI_REPORTS/rspec"
 puts COMMAND
 system COMMAND
 exit_status = $?.exitstatus
