@@ -21,8 +21,10 @@
             %label.uk-form-label
               When you reply to an email, it should go to
             = f.input :munge_reply_to?, as: :select, :collection => [['The original sender',false],['The group',true]], :include_blank => false, label: false
-            .details
-              Ian will explain what this means better. It's able to be pretty long, because these are details.
+            .details.munge_reply_to.uk-hidden
+              In your email client, hit 'reply' to respond to everyone in the group. To write to a message's sender, compose a new email.
+            .details.no_munge_reply_to.uk-hidden
+              In your email client, hit 'reply' to respond to the original sender, or 'reply to all' for everyone in the group.
         %section.uk-grid
           .uk-width-medium-1-2
             .uk-form-row
@@ -245,4 +247,18 @@
     $('.api-access-token').on('keydown', function(e){
       e.preventDefault();
     });
+
+    $('#user_munge_reply_to').on('change', setReplyMungingTip);
+
+    function setReplyMungingTip() {
+      if($('#user_munge_reply_to').val() == 'true') {
+        $('.details.munge_reply_to').removeClass('uk-hidden');
+        $('.details.no_munge_reply_to').addClass('uk-hidden');
+      } else {
+        $('.details.munge_reply_to').addClass('uk-hidden');
+        $('.details.no_munge_reply_to').removeClass('uk-hidden');
+      }
+    }
+
+    setReplyMungingTip();
   });
