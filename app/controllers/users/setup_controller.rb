@@ -12,7 +12,11 @@ class Users::SetupController < ApplicationController
       @was_confirmed = true
     end
     if user.web_enabled?
-      redirect_to organization_path(@organization)
+      if signed_in? && user.id == current_user_id
+        redirect_to organization_path(@organization)
+      else
+        redirect_to sign_in_path(r: organization_path(@organization))
+      end
     else
       render :edit
     end
