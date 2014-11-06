@@ -35,8 +35,9 @@ class Threadable::Conversations::Create < MethodObject
 
   def create_conversation!
     @conversation_record = scope.create(
-      subject:    @options.subject,
-      creator_id: @options.creator.try(:id) || @options.creator_id,
+      subject:         @options.subject,
+      creator_id:      @options.creator.try(:id) || @options.creator_id,
+      last_message_at: Time.now.utc,
     )
   end
 

@@ -235,7 +235,7 @@ class Threadable::Organization < Threadable::Model
   end
 
   def last_message_at
-    organization_record.conversations.order(:last_message_at).first.try(:last_message_at)
+    organization_record.conversations.reorder('last_message_at desc').first.last_message_at
   end
 
   def update_daily_last_message_at!
