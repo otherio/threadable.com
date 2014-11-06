@@ -44,6 +44,10 @@ RSpec.configure do |config|
 
   config.before :suite do
     Storage.absolute_local_path.rmtree if Storage.absolute_local_path.exist?
+
+    # prevent closeio transactions from actually happening except when they're explicitly tested.
+    ENV.delete('CLOSEIO_API_KEY')
+    ENV.delete('CLOSEIO_LEAD_STATUS_ID')
   end
 
   config.around :each do |example|

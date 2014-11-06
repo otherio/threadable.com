@@ -378,7 +378,7 @@ describe Threadable::Organization, :type => :request do
     end
 
     it 'returns the time the last message qas created' do
-      expect(organization.last_message_at).to eq Time.now.utc
+      expect(organization.last_message_at.utc).to eq Time.now.utc
     end
   end
 
