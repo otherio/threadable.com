@@ -30,10 +30,14 @@ class EmailAddressesController < ApplicationController
   def confirm
     email_address_id = EmailAddressConfirmationToken.decrypt(params[:token])
     email_address = threadable.email_addresses.find_by_id!(email_address_id)
-    sign_in! email_address.user
     email_address.confirm!
     flash[:notice] = "#{email_address} has been confirmed"
-    redirect_to profile_path(expand_section: 'email')
+
+    if signed_in? && email_address.user.id == current_user_id
+      redirect_to profile_path(expand_section: 'email')
+    else
+      redirect_to sign_in_path(r: profile_path(expand_section: 'email'))
+    end
   end
 
   private

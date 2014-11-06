@@ -18,6 +18,7 @@ class Threadable::EmailAddress < Threadable::Model
     errors
     persisted?
     confirmed?
+    reload
   }, to: :email_address_record
 
   def address
