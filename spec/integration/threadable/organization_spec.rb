@@ -386,7 +386,6 @@ describe Threadable::Organization, :type => :request do
     before do
       ENV['CLOSEIO_API_KEY'] = 'closeio_api_key'
       ENV['CLOSEIO_LEAD_STATUS_ID'] = 'closeio_lead_status_id'
-      Timecop.freeze
     end
 
     it 'puts a lead in close' do
@@ -398,6 +397,7 @@ describe Threadable::Organization, :type => :request do
         custom: {
           organization_slug: 'raceteam',
           recent_activity: 'no',
+          last_activity: '2014-02-02',
         },
         status_id: 'closeio_lead_status_id',
       })

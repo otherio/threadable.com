@@ -270,6 +270,7 @@ class Threadable::Organization < Threadable::Model
       custom: {
         organization_slug: slug,
         recent_activity: has_recent_activity? ? 'yes' : 'no',
+        last_activity: last_message_at.present? ? last_message_at.strftime('%Y-%m-%d') : '',
       },
       status_id: ENV['CLOSEIO_LEAD_STATUS_ID'],
     )

@@ -5,6 +5,7 @@ describe DailyConversationActivityWorker, :type => :request do
   let(:time) { Time.now.utc + 1.day }
   let(:raceteam) { threadable.organizations.find_by_slug('raceteam') }
   let(:sfhealth) { threadable.organizations.find_by_slug('sfhealth') }
+  let(:adminteam) { threadable.organizations.find_by_slug('adminteam') }
 
   subject{ described_class.new }
 
@@ -24,7 +25,8 @@ describe DailyConversationActivityWorker, :type => :request do
       end
 
       it 'tells close.io about active organizations, updates daily_last_message_at' do
-        expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'yes').exactly(2).times
+        expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'yes', 'custom.last_message_at' => adminteam.last_message_at.strftime('%Y-%m-%d'))
+        expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'yes', 'custom.last_message_at' => sfhealth.last_message_at.strftime('%Y-%m-%d'))
 
         perform! last_time, time
         drain_background_jobs!
@@ -35,7 +37,7 @@ describe DailyConversationActivityWorker, :type => :request do
         let(:time) { Time.zone.local(2014, 3, 2) }
 
         it 'tells close.io about orgs that have become inactive' do
-          expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'no')
+          expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'no', 'custom.last_message_at' => raceteam.last_message_at.strftime('%Y-%m-%d'))
 
           perform! last_time, time
           drain_background_jobs!
