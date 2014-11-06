@@ -18,8 +18,8 @@ describe SendSummaryEmailWorker, :type => :request do
       drain_background_jobs!
       expect(sent_emails.length).to eq 2
       expect(sent_emails.map(&:subject)).to match_array [
-        "[RaceTeam] Summary for Sun, Feb 2: 5 new messages in 4 conversations",
-        "[RaceTeam] Summary for Sun, Feb 2: 13 new messages in 6 conversations"
+        "[RaceTeam] Summary for Sun, Feb 2: 5 new messages in 5 conversations",
+        "[RaceTeam] Summary for Sun, Feb 2: 13 new messages in 12 conversations"
       ]
     end
   end

@@ -62,6 +62,13 @@ describe Threadable::Conversations, :type => :request do
         "who-wants-to-pick-up-lunch",
         "budget-worknight",
         "recruiting",
+        "get-carbon-and-fiberglass",
+        "get-epoxy",
+        "get-release-agent",
+        "get-some-4-gauge-wire",
+        "install-mirrors",
+        "make-wooden-form-for-carbon-layup",
+        "trim-body-panels",
       ]
     end
   end

@@ -82,6 +82,12 @@ describe Threadable::Organization::Member, :type => :request do
           "who-wants-to-pick-up-dinner",
           "who-wants-to-pick-up-lunch",
           "inventory-led-supplies",
+          "get-carbon-and-fiberglass",
+          "get-epoxy",
+          "get-release-agent",
+          "install-mirrors",
+          "make-wooden-form-for-carbon-layup",
+          "trim-body-panels",
         ]
       end
     end
@@ -95,6 +101,7 @@ describe Threadable::Organization::Member, :type => :request do
           "how-are-we-paying-for-the-motor-controller",
           "inventory-led-supplies",
           "budget-worknight",
+          "get-some-4-gauge-wire",
         ]
       end
     end
@@ -113,6 +120,7 @@ describe Threadable::Organization::Member, :type => :request do
           "how-are-we-paying-for-the-motor-controller",
           "inventory-led-supplies",
           "budget-worknight",
+          "get-some-4-gauge-wire",
         ]
       end
     end
@@ -154,6 +162,7 @@ describe Threadable::Organization::Member, :type => :request do
           "how-are-we-paying-for-the-motor-controller",
           "inventory-led-supplies",
           "budget-worknight",
+          "get-some-4-gauge-wire",
         ]
       end
     end
