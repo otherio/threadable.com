@@ -38,7 +38,7 @@ describe SummaryMailer, :type => :mailer do
       expect(mail.subject).to include "[RaceTeam]"
       expect(mail.subject).to include "Summary for"
       expect(mail.subject).to include today.strftime('%a, %b %-d')
-      expect(mail.subject).to include '20 new messages in 12 conversations'
+      expect(mail.subject).to include '20 new messages in 19 conversations'
       expect(mail.subject.scan('RaceTeam').size).to eq(1)
 
       expect(mail.to).to                    eq([expected_to])

@@ -26,7 +26,7 @@ describe EventsSerializer do
         doer:       nil,
         group:      nil,
         created_at: message.date_header,
-        message:    serialize(:messages, message).values.first,
+        message:    serialize_model(:messages, message).values.first,
       )
     end
   end
@@ -59,7 +59,7 @@ describe EventsSerializer do
           doer:       nil,
           group:      nil,
           created_at: message.date_header,
-          message:    serialize(:messages, message).values.first,
+          message:    serialize_model(:messages, message).values.first,
         },{
           id:         event.id,
           event_type: :task_added_doer,

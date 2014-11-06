@@ -378,7 +378,7 @@ describe Threadable::Organization, :type => :request do
     end
 
     it 'returns the time the last message qas created' do
-      expect(organization.last_message_at).to eq Time.now
+      expect(organization.last_message_at).to eq Time.now.utc
     end
   end
 
@@ -386,6 +386,11 @@ describe Threadable::Organization, :type => :request do
     before do
       ENV['CLOSEIO_API_KEY'] = 'closeio_api_key'
       ENV['CLOSEIO_LEAD_STATUS_ID'] = 'closeio_lead_status_id'
+    end
+
+    after do
+      ENV.delete('CLOSEIO_API_KEY')
+      ENV.delete('CLOSEIO_LEAD_STATUS_ID')
     end
 
     it 'puts a lead in close' do

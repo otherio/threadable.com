@@ -256,7 +256,7 @@ class Threadable::Organization < Threadable::Model
   end
 
   def create_closeio_lead!
-    return unless ENV['CLOSEIO_API_KEY']
+    return unless ENV['CLOSEIO_API_KEY'].present?
 
     owner_contacts = members.who_are_owners.map do |owner|
       {name: owner.name, emails: [
