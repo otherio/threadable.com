@@ -264,16 +264,21 @@ class Threadable::Organization < Threadable::Model
       ]}
     end
 
-    Closeio::Lead.create(
+    lead = {
       name: name,
       contacts: owner_contacts,
       custom: {
         organization_slug: slug,
         recent_activity: has_recent_activity? ? 'yes' : 'no',
-        last_activity: last_message_at.present? ? last_message_at.strftime('%Y-%m-%d') : '',
       },
       status_id: ENV['CLOSEIO_LEAD_STATUS_ID'],
-    )
+    }
+
+    if last_message_at.present?
+      lead[:custom][:last_activity] = last_message_at.strftime('%Y-%m-%d')
+    end
+
+    Closeio::Lead.create(lead)
   end
 
   def find_closeio_lead
@@ -287,9 +292,19 @@ class Threadable::Organization < Threadable::Model
   end
 
   def set_closeio_lead_slug!
+    return if find_closeio_lead
     lead = find_closeio_lead_by_name
     if lead
-      Closeio::Lead.update lead.id, 'custom.organization_slug' => slug, 'custom.recent_activity' => has_recent_activity? ? 'yes' : 'no'
+      lead_update = {
+        'custom.organization_slug' => slug,
+        'custom.recent_activity' => has_recent_activity? ? 'yes' : 'no',
+      }
+
+      if last_message_at.present?
+        lead_update['custom.last_activity'] = last_message_at.strftime('%Y-%m-%d')
+      end
+
+      Closeio::Lead.update lead.id, lead_update
     else
       create_closeio_lead!
     end
