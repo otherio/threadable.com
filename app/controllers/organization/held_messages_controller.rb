@@ -2,7 +2,7 @@ class Organization::HeldMessagesController < ApplicationController
 
   before_filter :require_user_be_signed_in!
 
-  layout 'old'
+  layout 'new'
 
   def index
     @held_messages = organization.held_messages.all

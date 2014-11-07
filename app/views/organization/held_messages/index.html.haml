@@ -1,27 +1,54 @@
-%p
-  This page is admittedly terrible. It's on the chopping block, and soon will be part of your usual app experience.
-%p
-  Click this to go back there
-  = link_to 'Take me back!', root_path, class: 'btn btn-primary'
-%table.table
-  %thead
-    %tr
-      %td From
-      %td Group
-      %td Subject
-      %td
-  %tbody
-    - @held_messages.each do |held_message|
-      %tr
-        %td
-          = link_to organization_held_message_path(@organization, held_message) do
-            = held_message.from
-        %td
-          = link_to organization_held_message_path(@organization, held_message) do
-            = held_message.incoming_email.groups.first.try(:name)
-        %td
-          = link_to organization_held_message_path(@organization, held_message) do
-            = held_message.subject
-        %td
-          = link_to 'Reject', reject_organization_held_message_path(@organization, held_message), class: 'btn', data:{method:'POST'}
-          = link_to 'Accept', accept_organization_held_message_path(@organization, held_message), class: 'btn', data:{method:'POST'}
+.held-messages.page-column
+  .top-box
+    Held Messages
+  %section.uk-width-medium-3-4.uk-container-center
+    %section
+      .uk-grid
+        - @held_messages.each do |held_message|
+          .uk-width-1-1
+            .uk-panel.uk-panel-box
+              .uk-panel-teaser
+                .mail{ style: "background-color: #{held_message.incoming_email.groups.first.color}" }
+                  .title-holder.uk-container-center
+                    %span.title
+                      to:
+                    %span.title
+                      = link_to organization_held_message_path(@organization, held_message) do
+                        = held_message.incoming_email.groups.first.try(:name)
+                    %span.add-button
+                      = link_to 'Reject', reject_organization_held_message_path(@organization, held_message), class: 'uk-button uk-button-small', data:{method:'POST'}
+                      = link_to 'Accept', accept_organization_held_message_path(@organization, held_message), class: 'uk-button uk-button-small', data:{method:'POST'}
+              %span.from
+                from:
+              %span.email_address
+                = link_to organization_held_message_path(@organization, held_message) do
+                  = held_message.incoming_email.sender
+              .spacer
+              %span.subject
+                subject:
+              %span.subject-text
+                = link_to organization_held_message_path(@organization, held_message) do
+                  = held_message.subject
+
+/ %table.table
+/   %thead
+/     %tr
+/       %td From
+/       %td Group
+/       %td Subject
+/       %td
+/   %tbody
+/     - @held_messages.each do |held_message|
+/       %tr
+/         %td
+/           = link_to organization_held_message_path(@organization, held_message) do
+/             = held_message.from
+/         %td
+/           = link_to organization_held_message_path(@organization, held_message) do
+/             = held_message.incoming_email.groups.first.try(:name)
+/         %td
+/           = link_to organization_held_message_path(@organization, held_message) do
+/             = held_message.subject
+/         %td
+/           = link_to 'Reject', reject_organization_held_message_path(@organization, held_message), class: 'btn', data:{method:'POST'}
+/           = link_to 'Accept', accept_organization_held_message_path(@organization, held_message), class: 'btn', data:{method:'POST'}
