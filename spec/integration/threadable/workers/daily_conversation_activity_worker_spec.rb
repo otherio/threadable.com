@@ -12,6 +12,11 @@ describe DailyConversationActivityWorker, :type => :request do
   before do
     Time.zone = 'US/Pacific'
     subject.instance_variable_set(:@threadable, threadable)
+    ENV['CLOSEIO_API_KEY'] = 'close api key'
+  end
+
+  after do
+    ENV.delete('CLOSEIO_API_KEY')
   end
 
   delegate :perform!, to: :subject

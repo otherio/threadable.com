@@ -6,6 +6,8 @@ class DailyConversationActivityWorker < Threadable::ScheduledWorker
   attr_reader :organization
 
   def perform! last_time, time
+    return unless ENV['CLOSEIO_API_KEY'].present?
+
     # active since the last run
     threadable.organizations.with_last_message_between(last_time, time).each do |organization|
       update_recent_activity organization
