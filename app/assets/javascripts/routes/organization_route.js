@@ -27,7 +27,7 @@ Threadable.OrganizationRoute = Ember.Route.extend({
       if (organizationController.get('hasHeldMessages')) Threadable.notify('warning',
         '<i class="uk-icon-envelope-o"></i> You\'ve got <a href="/' +
         organizationController.get('slug') +
-        '/held_messages">held messages</a>'
+        '/held_messages" target="threadable-settings">held messages</a>'
       );
     }else{
       this.render('not_found', {into: 'application'});
