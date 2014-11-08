@@ -32,6 +32,7 @@ class Threadable::Organization < Threadable::Model
     daily_active_users
     daily_last_message_at
     account_type
+    created_at
   }, to: :organization_record)
 
   let(:settings) do
@@ -269,7 +270,10 @@ class Threadable::Organization < Threadable::Model
       contacts: owner_contacts,
       custom: {
         organization_slug: slug,
-        recent_activity: has_recent_activity? ? 'yes' : 'no',
+        recent_activity:   has_recent_activity? ? 'yes' : 'no',
+        created_at:        created_at.strftime('%Y-%m-%d'),
+        active_members:    members.who_get_email.count,
+        conversations:     conversations.count,
       },
       status_id: ENV['CLOSEIO_LEAD_STATUS_ID'],
     }
@@ -283,6 +287,27 @@ class Threadable::Organization < Threadable::Model
 
   def find_closeio_lead
     Closeio::Lead.where(query: "custom.organization_slug:[#{slug}]").first
+  end
+
+  def update_recent_closeio_activity!
+    lead = find_closeio_lead
+    if lead
+      lead_update = {
+        'custom.recent_activity' => has_recent_activity? ? 'yes' : 'no',
+        'custom.last_activity' =>   last_message_at.strftime('%Y-%m-%d'),
+        'custom.created_at' =>      created_at.strftime('%Y-%m-%d'),
+        'custom.active_members' =>  members.who_get_email.count,
+        'custom.conversations' =>   conversations.count,
+      }
+
+      if last_message_at.present?
+        lead_update['custom.last_activity'] = last_message_at.strftime('%Y-%m-%d')
+      end
+
+      Closeio::Lead.update(lead.id, lead_update)
+    else
+      create_closeio_lead!
+    end
   end
 
   # For the moment, these two are utility methods for calling from the console.

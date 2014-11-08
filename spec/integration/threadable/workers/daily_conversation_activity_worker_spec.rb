@@ -30,8 +30,23 @@ describe DailyConversationActivityWorker, :type => :request do
       end
 
       it 'tells close.io about active organizations, updates daily_last_message_at' do
-        expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'yes', 'custom.last_message_at' => adminteam.last_message_at.strftime('%Y-%m-%d'))
-        expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'yes', 'custom.last_message_at' => sfhealth.last_message_at.strftime('%Y-%m-%d'))
+        expect(Closeio::Lead).to receive(:update).with(
+          'lead_id',
+          'custom.recent_activity' => 'yes',
+          'custom.last_activity' =>   adminteam.last_message_at.strftime('%Y-%m-%d'),
+          'custom.created_at' =>      adminteam.created_at.strftime('%Y-%m-%d'),
+          'custom.active_members' =>  adminteam.members.who_get_email.count,
+          'custom.conversations' =>   adminteam.conversations.count,
+        )
+
+        expect(Closeio::Lead).to receive(:update).with(
+          'lead_id',
+          'custom.recent_activity' => 'yes',
+          'custom.last_activity' =>   sfhealth.last_message_at.strftime('%Y-%m-%d'),
+          'custom.created_at' =>      sfhealth.created_at.strftime('%Y-%m-%d'),
+          'custom.active_members' =>  sfhealth.members.who_get_email.count,
+          'custom.conversations' =>   sfhealth.conversations.count,
+        )
 
         perform! last_time, time
         drain_background_jobs!
@@ -42,7 +57,15 @@ describe DailyConversationActivityWorker, :type => :request do
         let(:time) { Time.zone.local(2014, 3, 2) }
 
         it 'tells close.io about orgs that have become inactive' do
-          expect(Closeio::Lead).to receive(:update).with('lead_id', 'custom.recent_activity' => 'no', 'custom.last_message_at' => raceteam.last_message_at.strftime('%Y-%m-%d'))
+
+          expect(Closeio::Lead).to receive(:update).with(
+            'lead_id',
+            'custom.recent_activity' => 'no',
+            'custom.last_activity' =>   raceteam.last_message_at.strftime('%Y-%m-%d'),
+            'custom.created_at' =>      raceteam.created_at.strftime('%Y-%m-%d'),
+            'custom.active_members' =>  raceteam.members.who_get_email.count,
+            'custom.conversations' =>   raceteam.conversations.count,
+          )
 
           perform! last_time, time
           drain_background_jobs!

@@ -402,15 +402,38 @@ describe Threadable::Organization, :type => :request do
         ],
         custom: {
           organization_slug: 'raceteam',
-          recent_activity: 'no',
-          last_activity: '2014-02-02',
+          recent_activity:   'no',
+          last_activity:     '2014-02-02',
+          created_at:        organization.created_at.strftime('%Y-%m-%d'),
+          active_members:    9,
+          conversations:     26,
         },
         status_id: 'closeio_lead_status_id',
       })
 
       organization.create_closeio_lead!
     end
+  end
 
+  describe '#update_recent_closeio_activity!' do
+    let(:lead) { double(:lead, id: 'lead_id') }
+
+    before do
+      allow_any_instance_of(Threadable::Organization).to receive(:find_closeio_lead).and_return(lead)
+    end
+
+    it 'sends the updated custom fields to close' do
+      expect(Closeio::Lead).to receive(:update).with(
+        'lead_id',
+        'custom.recent_activity' => 'no',
+        'custom.last_activity' =>   organization.last_message_at.strftime('%Y-%m-%d'),
+        'custom.created_at' =>      organization.created_at.strftime('%Y-%m-%d'),
+        'custom.active_members' =>  organization.members.who_get_email.count,
+        'custom.conversations' =>   organization.conversations.count,
+      )
+
+      organization.update_recent_closeio_activity!
+    end
   end
 
   it 'has the correct settings with proper defaults' do
