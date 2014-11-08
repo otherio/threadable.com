@@ -294,7 +294,6 @@ class Threadable::Organization < Threadable::Model
     if lead
       lead_update = {
         'custom.recent_activity' => has_recent_activity? ? 'yes' : 'no',
-        'custom.last_activity' =>   last_message_at.strftime('%Y-%m-%d'),
         'custom.created_at' =>      created_at.strftime('%Y-%m-%d'),
         'custom.active_members' =>  members.who_get_email.count,
         'custom.conversations' =>   conversations.count,
