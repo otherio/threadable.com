@@ -45,8 +45,10 @@ feature "Held messages" do
     expect(page).to_not have_text body
     expect(page).to have_text organization.groups.primary.name
 
-    click_on email_subject
-    expect(page).to have_text email_subject
+    within '.expand' do
+      click_on 'Expand'
+    end
+
     expect(page).to have_text body
     expect(page).to have_text organization.groups.primary.name
   end

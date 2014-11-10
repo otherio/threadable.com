@@ -43,44 +43,39 @@
         margin-left: 1px
     i
       width: 30px
-  .from
-    font-weight: 400
-    color: $teal-color
-    +small-screens
-      display: block
 
-  .email_address
+  .email_address, .subject-text
     font-weight: 400
     +small-screens
       font-size: 13px
     a
       color: $black-color
 
-  .subject
+  .subject, .from, .message-title
     font-weight: 400
     color: $teal-color
     +small-screens
       display: block
-
-  .subject-text
-    font-weight: 400
-    +small-screens
-      font-size: 13px
-    a
-      color: $black-color
 
   .service-description
     margin-top: 10px
+
+  .message-spacer
+    margin: 8px -16px 1px -16px
+    height: 1px
+    border-top: 1px solid #dddddd
 
   .collapse
     position: relative
     +small-screens
       margin-top: 30px
     button
+      float: right
       position: absolute
       right: 0
       bottom: 0
 
   .expand
     button
+      float: right
       background-color: white
