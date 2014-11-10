@@ -27,7 +27,7 @@
               %span.subject-text
                 = held_message.subject
               .message-spacer.uk-hidden{ class: "message-#{held_message.id}" }
-              %span.message-text.uk-hidden{ class: "message-#{held_message.id}" }
+              .message-text.uk-hidden{ class: "message-#{held_message.id}" }
                 = held_message.incoming_email.stripped_plain
               .expand
                 %button.uk-button{"data-uk-toggle" => "{target:'.message-#{held_message.id}'}", class: "message-#{held_message.id}" }
