@@ -2,7 +2,7 @@ class SignUpController < ApplicationController
 
   skip_before_filter :require_user_be_signed_in!
 
-  layout 'new'
+  layout 'outside'
 
   def sign_up
     sign_up_params = params.require(:sign_up).permit(:organization_name, :email_address)
