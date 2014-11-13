@@ -14,6 +14,10 @@ class Threadable::MixpanelTracker < Threadable::Tracker
     set_properties_for_user tracking_id, properties
   end
 
+  def increment properties
+    increment_for_user tracking_id, properties
+  end
+
   def track_for_user tracking_id, event_name, event_attributes={}
     recover_from_expected_errors do
       event_attributes.merge! via: threadable.worker ? 'email' : 'web'
@@ -24,6 +28,12 @@ class Threadable::MixpanelTracker < Threadable::Tracker
   def set_properties_for_user tracking_id, properties
     recover_from_expected_errors do
       mixpanel.people.set(tracking_id, properties)
+    end
+  end
+
+  def increment_for_user tracking_id, properties
+    recover_from_expected_errors do
+      mixpanel.people.increment(tracking_id, properties)
     end
   end
 

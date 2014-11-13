@@ -101,4 +101,27 @@ describe Threadable::MixpanelTracker, :type => :model do
     end
   end
 
+  describe '#increment_for_user' do
+    let(:people){ double :people }
+    it 'calls Mixpanel::Tracker#people.increment' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:increment).with(98, 'foo' => 1)
+      threadable_mixpanel_tracker.increment_for_user(98, 'foo' => 1)
+    end
+  end
+
+  describe '#increment' do
+    let(:people){ double :people }
+
+    before do
+      expect(threadable).to receive(:current_user_id).and_return(98)
+    end
+
+    it 'calls Mixpanel::Tracker#people.increment, but looks up the tracking id' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:increment).with(98, 'foo' => 1)
+      threadable_mixpanel_tracker.increment('foo' => 1)
+    end
+  end
+
 end
