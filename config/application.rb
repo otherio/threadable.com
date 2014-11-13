@@ -39,7 +39,7 @@ module Threadable
       gibson-bold-webfont.woff
       old.js
       old.css
-      new.css
+      common.css
       *.svg
     }
 
