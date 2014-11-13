@@ -20,7 +20,6 @@ class Threadable::User < Threadable::Model
     persisted?
     avatar_url
     current_organization_id
-    current_organization
     created_at
     munge_reply_to?
     email_addresses_as_string
@@ -64,6 +63,11 @@ class Threadable::User < Threadable::Model
 
   def formatted_email_address
     FormattedEmailAddress.new(display_name: name, address: email_address).to_s
+  end
+
+  def current_organization
+    return nil unless user_record.current_organization.present?
+    Threadable::Organization.new(threadable, user_record.current_organization)
   end
 
   def authenticate(password)
