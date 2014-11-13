@@ -38,6 +38,10 @@ class Threadable::InMemoryTracker < Threadable::Tracker
     set_properties_for_user tracking_id, properties
   end
 
+  def increment properties
+    increment_for_user tracking_id, properties
+  end
+
   def track_for_user user_id, event_name, event_attributes={}
     trackings << [user_id, event_name.to_s, event_attributes.stringify_keys]
     Rails.logger.info "TRACKING: #{trackings.last.inspect}"
@@ -48,6 +52,15 @@ class Threadable::InMemoryTracker < Threadable::Tracker
     people[tracking_id] ||= {}
     people[tracking_id].update(properties)
     nil
+  end
+
+  def increment_for_user tracking_id, properties
+    people[tracking_id] ||= {}
+
+    properties.keys.each do |key|
+      people[tracking_id][key] ||= 0
+      people[tracking_id][key] += properties[key]
+    end
   end
 
   def track_user_change user
