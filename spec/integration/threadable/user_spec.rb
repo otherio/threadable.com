@@ -58,6 +58,16 @@ describe Threadable::User, :type => :request do
     end
   end
 
+  describe "#current_organization" do
+    before do
+      user.update(current_organization_id: organization.id)
+    end
+
+    it 'returns a Threadable::Organization' do
+      expect(user.current_organization).to be_a(Threadable::Organization)
+    end
+  end
+
   describe "#limited_group_ids" do
     context "when the current user is subscribed to one or more groups with summary" do
       before do

@@ -9,38 +9,24 @@
             .uk-offcanvas-bar
               %ul.uk-nav.uk-nav-offcanvas{"data-uk-nav" => ""}
                 %li
-                  %a.button{href: "http://blog.threadable.com"} BLOG
+                  %a.button{href: "/#{threadable.current_user.current_organization.slug}"}
+                    back to #{threadable.current_user.current_organization.name}
                 %li
-                  - if @on_homepage
-                    %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
-                  - else
-                    - if current_user.present?
-                      %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
-                    - else
-                      %a.button{href: "/#quit-learning-new-tools"} FEATURES
-                %li
-                  %a.button{href: "/pricing"} PRICING
-                %li
-                  %a.button{href: "http://docs.threadable.apiary.io"} API
+                  %a.button{href: "/profile"} Settings
+                -if threadable.current_user.current_organization.held_messages.count > 0
+                  %li
+                    %a.button{href: "/#{threadable.current_user.current_organization.slug}/held_messages"}
+                      Held Messages
 
         %a{href: root_url}
           = render 'shared/threadable_logo'
       .right-nav
         %span.horizontal-nav
-          %a.button{href: "http://blog.threadable.com"} BLOG
-          - if @on_homepage
-            %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
-          - else
-            - if current_user.present?
-              %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
-            - else
-              %a.button{href: "/#quit-learning-new-tools"} FEATURES
-          %a.button{href: "/pricing"} PRICING
-          %a.button{href: "http://docs.threadable.apiary.io"} API
-
-
-        - unless current_user.present?
-          %a.button.blue-button.sign-in-button{href: sign_in_url(r: request.fullpath)} SIGN IN
-
+          %a.button{href: "/profile"} Settings
+          -if threadable.current_user.current_organization.held_messages.count > 0
+            %a.button{href: "/#{threadable.current_user.current_organization.slug}/held_messages"}
+              Held Messages
+          %a.button{href: "/#{threadable.current_user.current_organization.slug}"}
+            back to #{threadable.current_user.current_organization.name}
 
 = render 'layouts/common'
