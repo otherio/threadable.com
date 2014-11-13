@@ -1,0 +1,46 @@
+= content_for :nav do
+  %nav.nav
+    .content
+      .left-nav
+        %span.menu-nav
+          %i.uk-icon-bars{"onclick" => '', "data-uk-offcanvas" => "{target:'#side-nav'}"}
+
+          #side-nav.uk-offcanvas
+            .uk-offcanvas-bar
+              %ul.uk-nav.uk-nav-offcanvas{"data-uk-nav" => ""}
+                %li
+                  %a.button{href: "http://blog.threadable.com"} BLOG
+                %li
+                  - if @on_homepage
+                    %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
+                  - else
+                    - if current_user.present?
+                      %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
+                    - else
+                      %a.button{href: "/#quit-learning-new-tools"} FEATURES
+                %li
+                  %a.button{href: "/pricing"} PRICING
+                %li
+                  %a.button{href: "http://docs.threadable.apiary.io"} API
+
+        %a{href: root_url}
+          = render 'shared/threadable_logo'
+      .right-nav
+        %span.horizontal-nav
+          %a.button{href: "http://blog.threadable.com"} BLOG
+          - if @on_homepage
+            %a.button{href: "#quit-learning-new-tools", 'data-scroll-to' => 'quit-learning-new-tools'} FEATURES
+          - else
+            - if current_user.present?
+              %a.button{href: "/frontpage#quit-learning-new-tools"} FEATURES
+            - else
+              %a.button{href: "/#quit-learning-new-tools"} FEATURES
+          %a.button{href: "/pricing"} PRICING
+          %a.button{href: "http://docs.threadable.apiary.io"} API
+
+
+        - unless current_user.present?
+          %a.button.blue-button.sign-in-button{href: sign_in_url(r: request.fullpath)} SIGN IN
+
+
+= render 'layouts/common'

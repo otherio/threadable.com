@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
 
-  layout 'new'
+  layout 'inside'
 
   before_filter :require_user_be_signed_in!
 
