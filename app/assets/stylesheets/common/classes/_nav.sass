@@ -11,6 +11,9 @@
     height: $nav-height
     background-color: $black-color
 
+  &.inside, > .inside
+    background-color: shade(#35afc6, 50%)
+
   > .content
     margin: 0 auto
     max-width: $max-page-width
@@ -45,6 +48,10 @@
         margin-right: 15px
 
       .horizontal-nav
+        .inside
+          letter-spacing: 1px
+          font-size: 15px
+          line-height: 9px
         +medium-to-large-screens
           display: inline
         +small-screens

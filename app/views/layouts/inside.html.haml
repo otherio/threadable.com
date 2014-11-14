@@ -1,6 +1,6 @@
 = content_for :nav do
-  %nav.nav
-    .content
+  %nav.nav.inside
+    .content.inside
       .left-nav
         %span.menu-nav
           %i.uk-icon-bars{"onclick" => '', "data-uk-offcanvas" => "{target:'#side-nav'}"}
@@ -22,11 +22,11 @@
           = render 'shared/threadable_logo'
       .right-nav
         %span.horizontal-nav
-          %a.button{href: "/profile"} Settings
+          %a.button.inside{href: "/profile"} Settings
           -if threadable.current_user.current_organization.held_messages.count > 0
-            %a.button{href: "/#{threadable.current_user.current_organization.slug}/held_messages"}
+            %a.button.inside{href: "/#{threadable.current_user.current_organization.slug}/held_messages"}
               Held Messages
-          %a.button{href: "/#{threadable.current_user.current_organization.slug}"}
+          %a.button.inside{href: "/#{threadable.current_user.current_organization.slug}"}
             back to #{threadable.current_user.current_organization.name}
 
 = render 'layouts/common'
