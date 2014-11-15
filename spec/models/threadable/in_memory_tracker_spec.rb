@@ -37,16 +37,28 @@ describe Threadable::InMemoryTracker, :type => :model do
   end
 
   describe '#track_user_change' do
-    let(:user) { double(:user, id: 5, name: 'Foo Guy', email_address: 'foo@bar.com', created_at: Time.now, organization_owner: true) }
+    let(:user) do
+      double(:user,
+        id: 5,
+        name: 'Foo Guy',
+        email_address: 'foo@bar.com',
+        created_at: Time.now,
+        organization_owner: true,
+        munge_reply_to?: false,
+        web_enabled?: true,
+      )
+    end
 
     it 'updates the user record in mixpanel' do
       tracker.track_user_change user
       expect(tracker.people[5]).to eq({
-        '$user_id' => 5,
-        '$name'    => 'Foo Guy',
-        '$email'   => 'foo@bar.com',
-        '$created' => user.created_at.iso8601,
-        'Owner'    => true
+        '$user_id'       => 5,
+        '$name'          => 'Foo Guy',
+        '$email'         => 'foo@bar.com',
+        '$created'       => user.created_at.iso8601,
+        'Owner'          => true,
+        'Web Enabled'    => true,
+        'Munge Reply-to' => false,
       })
     end
   end
