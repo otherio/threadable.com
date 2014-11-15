@@ -87,15 +87,28 @@ describe Threadable::MixpanelTracker, :type => :model do
 
   describe 'track_user_change' do
     let(:created_at){ double(:created_at, iso8601: "2013-12-03T16:24:37-08:00") }
-    let(:user){ double(:user, id: 833, name: 'steve', email_address: 'steve@steve.io', created_at: created_at) }
+    let(:user) do
+      double(:user,
+        id: 833,
+        name: 'steve',
+        email_address: 'steve@steve.io',
+        created_at: created_at,
+        organization_owner: false,
+        munge_reply_to?: false,
+        web_enabled?: true,
+    )
+    end
     let(:people){ double :people }
     it 'calls Mixpanel::Tracker#people.set' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
       expect(people).to receive(:set).with(833,
-        '$user_id' => user.id,
-        '$name'    => 'steve',
-        '$email'   => 'steve@steve.io',
-        '$created' => "2013-12-03T16:24:37-08:00",
+        '$user_id'       => user.id,
+        '$name'          => 'steve',
+        '$email'         => 'steve@steve.io',
+        '$created'       => "2013-12-03T16:24:37-08:00",
+        'Owner'          => false,
+        'Web Enabled'    => true,
+        'Munge Reply-to' => false,
       )
       threadable_mixpanel_tracker.track_user_change(user)
     end

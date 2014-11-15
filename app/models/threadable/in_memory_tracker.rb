@@ -66,11 +66,13 @@ class Threadable::InMemoryTracker < Threadable::Tracker
   def track_user_change user
     user_changes << user
     set_properties_for_user(user.id,
-      '$user_id' => user.id,
-      '$name'    => user.name,
-      '$email'   => user.email_address.to_s,
-      '$created' => user.created_at.try(:iso8601),
-      'Owner'    => user.organization_owner,
+      '$user_id'       => user.id,
+      '$name'          => user.name,
+      '$email'         => user.email_address.to_s,
+      '$created'       => user.created_at.try(:iso8601),
+      'Owner'          => user.organization_owner,
+      'Web Enabled'    => user.web_enabled?,
+      'Munge Reply-to' => user.munge_reply_to?,
     )
     Rails.logger.info "TRACKING USER CHANGE FOR: #{user.inspect}"
     nil
