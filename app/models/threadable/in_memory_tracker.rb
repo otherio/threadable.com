@@ -70,6 +70,7 @@ class Threadable::InMemoryTracker < Threadable::Tracker
       '$name'    => user.name,
       '$email'   => user.email_address.to_s,
       '$created' => user.created_at.try(:iso8601),
+      'Owner'    => user.organization_owner,
     )
     Rails.logger.info "TRACKING USER CHANGE FOR: #{user.inspect}"
     nil

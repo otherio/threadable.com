@@ -142,6 +142,10 @@ class Threadable::User < Threadable::Model
       where(id: group_ids, group_memberships: {delivery_method: ::GroupMembership.delivery_methods[delivery_method]}).present?
   end
 
+  def organization_owner
+    user_record.organization_memberships.who_are_owners.count > 0
+  end
+
   def == other
     (self.class === other || other.class === self) && self.user_id == other.user_id
   end
