@@ -42,13 +42,14 @@ describe Threadable::Messages::Create, :type => :model do
       id: 1234,
       slug: 'i-like-your-face',
       formatted_email_addresses: ['Foo Thing <foo@thing.com>'],
+      recipients: [],
     )
   end
 
   let(:expected_parent_message_id)  { nil }
   let(:expected_subject)            { 'I like your face' }
   let(:expected_from)               { nil }
-  let(:expected_creator_id)         { nil }
+  let(:expected_creator_id)         { 5 }
   let(:expected_body_plain)         { 'hi there' }
   let(:expected_body_html)          { '<p>hi there</p>' }
   let(:expected_stripped_plain)     { 'hi there' }
@@ -62,6 +63,7 @@ describe Threadable::Messages::Create, :type => :model do
   let(:message_record) { double :message_record, created_at: Time.now, id: 10 }
   let(:message)        { double :message, persisted?: true, recipients: double(:recipients, all: []) }
   let(:latest_message) { nil }
+  let(:tracker)        { double :tracker }
 
   before do
     allow(Mail).to receive_messages random_tag: '529695e5b8b3a_13b723fe73985e6d876688'
@@ -126,12 +128,21 @@ describe Threadable::Messages::Create, :type => :model do
         'Message ID' => expected_message_id_header,
       })
 
+      expect(threadable).to receive(:tracker).and_return(tracker)
+
+      expect(tracker).to receive(:increment_for_user).with(
+        expected_creator_id,
+        "Composed Messages" => 1,
+      )
+
       expect(message).to receive(:send_emails!).with(false)
 
       return_value = described_class.call(messages,
         conversation: conversation,
         body: '<p>hi there</p>',
         attachments: attachments,
+        creator: double(:creator, id: 5),
+        follow_for_creator: false,
       )
 
 
@@ -194,6 +205,8 @@ describe Threadable::Messages::Create, :type => :model do
         conversation: conversation,
         body: '<p>hi there</p>',
         attachments: attachments,
+        creator: double(:creator, id: 5),
+        follow_for_creator: false,
       )
 
 
