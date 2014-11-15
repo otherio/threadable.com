@@ -94,6 +94,15 @@ describe Threadable::User, :type => :request do
         expect(user.limited_group_ids).to include( electronics.id )
       end
     end
+  end
 
+  describe '#organization_owner' do
+    let(:alice) { threadable.users.find_by_email_address('alice@ucsd.example.com') }
+    let(:bob)   { threadable.users.find_by_email_address('bob@ucsd.example.com') }
+
+    it 'reports whether the user owns at least one org' do
+      expect(alice.organization_owner).to be_truthy
+      expect(bob.organization_owner).to be_falsey
+    end
   end
 end
