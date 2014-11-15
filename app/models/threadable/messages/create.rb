@@ -156,6 +156,13 @@ class Threadable::Messages::Create < MethodObject
       'Task' => @conversation.task?,
       'Message ID' => message_id_header,
     })
+
+    if creator
+      @threadable.tracker.increment_for_user(
+        creator.id,
+        "Composed Messages" => 1,
+      )
+    end
   end
 
   def send_application_update!
