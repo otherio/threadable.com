@@ -53,6 +53,7 @@ class Threadable::Class
 
   let(:emails         ){ Threadable::Emails         .new(self) }
   let(:email_addresses){ Threadable::EmailAddresses .new(self) }
+  let(:email_domains  ){ Threadable::EmailDomains   .new(self) }
   let(:users          ){ Threadable::Users          .new(self) }
   let(:organizations  ){ Threadable::Organizations  .new(self) }
   let(:conversations  ){ Threadable::Conversations  .new(self) }

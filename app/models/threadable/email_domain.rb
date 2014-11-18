@@ -13,6 +13,7 @@ class Threadable::EmailDomain < Threadable::Model
     persisted?
     outgoing?
     destroy
+    organization_id
   }, to: :email_domain_record
 
   def domain

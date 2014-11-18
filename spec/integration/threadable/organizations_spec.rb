@@ -27,7 +27,18 @@ describe Threadable::Organizations, :type => :request do
 
       expect(organizations.with_last_message_between(from, to).map(&:slug)).to eq ['raceteam']
     end
+  end
 
+  describe '#find_by_email_address' do
+    context 'when the org has an email domain' do
+      before do
+        raceteam.email_domains.add('foo.com')
+      end
+
+      it 'finds the org by email domain' do
+        expect(organizations.find_by_email_address('fundraising@foo.com')).to eq raceteam
+      end
+    end
   end
 
 end
