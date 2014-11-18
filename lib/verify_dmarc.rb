@@ -12,7 +12,8 @@ class VerifyDmarc < MethodObject
     # return cached_result unless cached_result.nil?
 
     @resolver = Dnsruby::Resolver.new
-    dns_result = !dmarc_records("_dmarc.#{domain}").flatten.join(';').include?('p=reject')
+    dmarc_records = dmarc_records("_dmarc.#{domain}").flatten.join(';')
+    dns_result = !(dmarc_records.include?('p=reject') || dmarc_records.include?('p=quarantine'))
 
     # Threadable.redis.set(redis_key, dns_result) and \
     # Threadable.redis.expire(redis_key, 300) # seconds
