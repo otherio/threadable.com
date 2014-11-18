@@ -1,5 +1,5 @@
 .profile-edit.page-column
-  %section.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2.authentication-form
+  %section.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2.authentication-errors
     .well-when-not-small
       - if @notice
         .uk-notify-message.uk-notify-message-success= @notice
@@ -7,6 +7,7 @@
         .uk-notify-message.uk-notify-message-success= @success
       - if @warning
         .uk-notify-message.uk-notify-message-warning= @warning
+  %section.uk-container-center.uk-width-large-1-3.uk-width-medium-1-2.authentication-form
     .profile-container
       = simple_form_for @authentication, url: sign_in_path, html: {class: 'sign-in-form uk-form uk-form-stacked'} do |f|
         %fieldset
