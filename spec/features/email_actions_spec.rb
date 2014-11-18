@@ -11,6 +11,7 @@ describe "Email actions", :type => :feature do
 
   i_am_not_signed_in do
 
+    # this whole file is probably unnecessary
     # tested thoroughly via: spec/controllers/email_actions_controller_spec.rb
     #                        spec/integration/email_action_spec.rb
     context 'with secure buttons enabled' do
