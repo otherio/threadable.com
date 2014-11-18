@@ -12,7 +12,7 @@ describe VerifyDmarc, fixtures: false do
   # stub the Dnsruby response
   let(:answer) { [ double(:dns_record1, rdata: rdata, type: 'TXT') ] }
   let(:rdata) { ["v=DMARC1; p=#{policy}; rua=mailto:mailauth-reports@foo.com"] }
-  let(:policy) { 'quarantine' }
+  let(:policy) { 'none' }
 
   before do
     allow(Dnsruby::Resolver).to receive(:new).and_return(resolver)
@@ -32,9 +32,10 @@ describe VerifyDmarc, fixtures: false do
     end
 
     describe 'checking the dmarc policy' do
-      context 'with a dmarc policy that allows unmatched domains' do
-        it 'returns true' do
-          expect(call(address)).to be_truthy
+      context 'with a dmarc policy of quarantine' do
+        let(:policy) { 'quarantine' }
+        it 'returns false' do
+          expect(call(address)).to be_falsey
         end
       end
 
