@@ -9,6 +9,7 @@ describe Threadable::Class, :type => :request do
   it "getting records" do
     expect( threadable.organizations   .count ).to eq ::Organization  .count
     expect( threadable.email_addresses .count ).to eq ::EmailAddress  .count
+    expect( threadable.email_domains   .count ).to eq ::EmailDomain   .count
     expect( threadable.users           .count ).to eq ::User          .count
     expect( threadable.organizations   .count ).to eq ::Organization  .count
     expect( threadable.conversations   .count ).to eq ::Conversation  .count
@@ -20,6 +21,7 @@ describe Threadable::Class, :type => :request do
 
     expect( threadable.organizations   .all.map(&:id) ).to eq ::Organization  .all.map(&:id)
     expect( threadable.email_addresses .all.map(&:id) ).to eq ::EmailAddress  .all.map(&:id)
+    expect( threadable.email_domains   .all.map(&:id) ).to eq ::EmailDomain   .all.map(&:id)
     expect( threadable.users           .all.map(&:id) ).to eq ::User          .all.map(&:id)
     expect( threadable.organizations   .all.map(&:id) ).to eq ::Organization  .all.map(&:id)
     expect( threadable.conversations   .all.map(&:id) ).to eq ::Conversation  .all.map(&:id)

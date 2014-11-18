@@ -55,6 +55,11 @@ class Threadable::Organizations < Threadable::Collection
       end
       email_address_username = email_address_username.gsub(/\./, '-')
     else
+      domain = threadable.email_domains.find_by_domain(host)
+      if domain.present?
+        return domain.organization
+      end
+
       email_address_username = host.split('.')[0]
     end
 
