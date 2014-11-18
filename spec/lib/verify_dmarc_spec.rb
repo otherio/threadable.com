@@ -39,6 +39,13 @@ describe VerifyDmarc, fixtures: false do
         end
       end
 
+      context 'when the policy spec is uppercase' do
+        let(:policy) { 'QUARANTINE' }
+        it 'returns false' do
+          expect(call(address)).to be_falsey
+        end
+      end
+
       context 'with a dmarc policy of none' do
         let(:policy) { 'none' }
         it 'returns true' do
