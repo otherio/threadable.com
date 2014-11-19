@@ -19,7 +19,7 @@ describe ConversationDetailsSerializer do
         {
           id:                 layup_body_carbon.id,
           slug:               "layup-body-carbon",
-          recipient_ids:      layup_body_carbon.recipients.all.map(&:id),
+          recipient_ids:      layup_body_carbon.recipients.all.map(&:id).sort,
           muter_count:        layup_body_carbon.muter_ids.length,
           follower_ids:       layup_body_carbon.follower_ids,
         }
@@ -35,13 +35,13 @@ describe ConversationDetailsSerializer do
         {
           id:                 welcome.id,
           slug:               "welcome-to-our-threadable-organization",
-          recipient_ids:      welcome.recipients.all.map(&:id),
+          recipient_ids:      welcome.recipients.all.map(&:id).sort,
           muter_count:        welcome.muter_ids.length,
           follower_ids:       welcome.follower_ids,
         },{
           id:                 layup_body_carbon.id,
           slug:               "layup-body-carbon",
-          recipient_ids:      layup_body_carbon.recipients.all.map(&:id),
+          recipient_ids:      layup_body_carbon.recipients.all.map(&:id).sort,
           muter_count:        layup_body_carbon.muter_ids.length,
           follower_ids:       layup_body_carbon.follower_ids,
         }
