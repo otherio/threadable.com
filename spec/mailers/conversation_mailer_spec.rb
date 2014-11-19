@@ -170,6 +170,18 @@ describe ConversationMailer, :type => :mailer do
         it "rewrites from, and adds from to cc" do
           validate_mail!
         end
+
+        context 'when the user has a comma in their name' do
+          let(:expected_from){ '"Canver, Thomas via Threadable" <placeholder@localhost>' }
+
+          before do
+            message.message_record.update_attributes(from: '"Canver, Thomas" <tom@ucsd.example.com>')
+          end
+
+          it 'properly quotes the rewritten name' do
+            validate_mail!
+          end
+        end
       end
 
       context 'with reply-to munging disabled' do
