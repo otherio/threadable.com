@@ -103,7 +103,7 @@ class ConversationMailer < Threadable::Mailer
     else
       name = from_address.name
       name ||= from_address.local
-      from = Mail::Address.new("#{name} via Threadable <placeholder@#{threadable.email_host}>")
+      from = Mail::Address.new("\"#{name} via Threadable\" <placeholder@#{threadable.email_host}>")
     end
 
     email_params = {
