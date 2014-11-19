@@ -17,7 +17,6 @@ describe Threadable::IncomingEmail, :type => :request do
   let :params do
     create_incoming_email_params(
       organization: raceteam,
-      creator: alice,
       subject: 'Where is my hammer?',
       attachments: attachments
     )
@@ -108,6 +107,72 @@ describe Threadable::IncomingEmail, :type => :request do
         expect( attachments[1].filename ).to eq 'some.txt'
         expect( attachments[1].mimetype ).to eq 'text/plain'
       end
+    end
+
+    describe 'spam handling for held messages' do
+      context 'when the sender is not an org member' do
+        let :params do
+          create_incoming_email_params(
+            organization: raceteam,
+            from: 'Spam Emporium <spam@emp.ru>',
+            envelope_from: 'spam@emp.ru',
+            subject: 'ROLEX VIAGRA 4 U!!1!',
+            spam_score: 23.2
+          )
+        end
+
+        it 'drops the spam' do
+          incoming_email.process!
+
+          expect(incoming_email.held?).to be_falsy
+          expect(incoming_email.delivered?).to be_falsy
+          expect(incoming_email.bounced?).to be_falsy
+          expect(incoming_email.dropped?).to be_truthy
+        end
+      end
+
+      context 'when the sender is not an org member, and the message is not spam' do
+        let :params do
+          create_incoming_email_params(
+            organization: raceteam,
+            from: 'Jefferson McKinley <jeff@things.io>',
+            envelope_from: 'jeff@things.io',
+            subject: 'Right-o, let us do this.',
+            spam_score: 1.1
+          )
+        end
+
+        it 'holds the message' do
+          incoming_email.process!
+
+          expect(incoming_email.delivered?).to be_falsy
+          expect(incoming_email.bounced?).to be_falsy
+          expect(incoming_email.dropped?).to be_falsy
+          expect(incoming_email.held?).to be_truthy
+        end
+      end
+
+      context 'when the sender is an org member' do
+        let :params do
+          create_incoming_email_params(
+            organization: raceteam,
+            from: 'Alice Neilson <alice@ucsd.example.com>',
+            envelope_from: 'alice@ucsd.example.com',
+            subject: 'Have you seen these ROLEX VIAGRA 4 U!!1! emails? Crazy!',
+            spam_score: 15.5
+          )
+        end
+
+        it 'delivers the message' do
+          incoming_email.process!
+
+          expect(incoming_email.held?).to be_falsy
+          expect(incoming_email.bounced?).to be_falsy
+          expect(incoming_email.dropped?).to be_falsy
+          expect(incoming_email.delivered?).to be_truthy
+        end
+      end
+
     end
   end
 
