@@ -68,7 +68,6 @@ describe DailyConversationActivityWorker, :type => :request do
           )
 
           perform! last_time, time
-          drain_background_jobs!
         end
       end
     end
@@ -84,10 +83,16 @@ describe DailyConversationActivityWorker, :type => :request do
         expect_any_instance_of(Closeio::Lead).to_not receive(:update)
 
         perform! last_time, time
-        drain_background_jobs!
       end
     end
 
+    context 'first run' do
+      it 'does nothing' do
+        expect_any_instance_of(Threadable::Organization).to_not receive(:find_closeio_lead)
+
+        perform! nil, Time.now.utc
+      end
+    end
   end
 
 end
