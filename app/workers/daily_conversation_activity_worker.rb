@@ -7,6 +7,7 @@ class DailyConversationActivityWorker < Threadable::ScheduledWorker
 
   def perform! last_time, time
     return unless ENV['CLOSEIO_API_KEY'].present?
+    return unless last_time && time
 
     # active since the last run
     threadable.organizations.with_last_message_between(last_time, time).each do |organization|
