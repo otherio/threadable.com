@@ -40,6 +40,11 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Threadable::InMemoryTracker.clear
+
+    if self.respond_to? :visit
+      visit '/assets/application.css'
+      visit '/assets/application.js'
+    end
   end
 
   config.before :suite do
