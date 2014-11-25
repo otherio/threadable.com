@@ -63,4 +63,33 @@ describe Threadable::InMemoryTracker, :type => :model do
     end
   end
 
+  describe '#refresh_user_record' do
+    let(:user) do
+      double(:user,
+        id: 5,
+        name: 'Foo Guy',
+        email_address: 'foo@bar.com',
+        created_at: Time.now,
+        organization_owner: true,
+        munge_reply_to?: false,
+        web_enabled?: true,
+        messages: double(:messages, count: 25)
+      )
+    end
+
+    it 'updates the user record in mixpanel, and also refreshes all counters' do
+      tracker.refresh_user_record user
+      expect(tracker.people[5]).to eq({
+        '$user_id'          => 5,
+        '$name'             => 'Foo Guy',
+        '$email'            => 'foo@bar.com',
+        '$created'          => user.created_at.iso8601,
+        'Owner'             => true,
+        'Web Enabled'       => true,
+        'Munge Reply-to'    => false,
+        'Composed Messages' => 25,
+      })
+    end
+  end
+
 end

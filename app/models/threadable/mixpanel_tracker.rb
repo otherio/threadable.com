@@ -50,6 +50,20 @@ class Threadable::MixpanelTracker < Threadable::Tracker
     )
   end
 
+  def refresh_user_record user
+    raise "user must have a user id to track changes" unless user.id.present?
+    set_properties_for_user(user.id,
+      '$user_id'          => user.id,
+      '$name'             => user.name,
+      '$email'            => user.email_address.to_s,
+      '$created'          => user.created_at.try(:iso8601),
+      'Owner'             => user.organization_owner,
+      'Web Enabled'       => user.web_enabled?,
+      'Munge Reply-to'    => user.munge_reply_to?,
+      'Composed Messages' => user.messages.count,
+    )
+  end
+
   private
 
   def mixpanel

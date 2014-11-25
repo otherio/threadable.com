@@ -99,10 +99,11 @@ describe Threadable::MixpanelTracker, :type => :model do
     )
     end
     let(:people){ double :people }
+
     it 'calls Mixpanel::Tracker#people.set' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
       expect(people).to receive(:set).with(833,
-        '$user_id'       => user.id,
+        '$user_id'       => 833,
         '$name'          => 'steve',
         '$email'         => 'steve@steve.io',
         '$created'       => "2013-12-03T16:24:37-08:00",
@@ -111,6 +112,38 @@ describe Threadable::MixpanelTracker, :type => :model do
         'Munge Reply-to' => false,
       )
       threadable_mixpanel_tracker.track_user_change(user)
+    end
+  end
+
+  describe '#refresh_user_record' do
+    let(:created_at){ double(:created_at, iso8601: "2013-12-03T16:24:37-08:00") }
+    let(:user) do
+      double(:user,
+        id: 833,
+        name: 'steve',
+        email_address: 'steve@steve.io',
+        created_at: created_at,
+        organization_owner: false,
+        munge_reply_to?: false,
+        web_enabled?: true,
+        messages: double(:messages, count: 25)
+    )
+    end
+    let(:people){ double :people }
+
+    it 'calls Mixpanel::Tracker#people.set, and refreshes all counters' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:set).with(833,
+        '$user_id'          => 833,
+        '$name'             => 'steve',
+        '$email'            => 'steve@steve.io',
+        '$created'          => "2013-12-03T16:24:37-08:00",
+        'Owner'             => false,
+        'Web Enabled'       => true,
+        'Munge Reply-to'    => false,
+        'Composed Messages' => 25,
+      )
+      threadable_mixpanel_tracker.refresh_user_record(user)
     end
   end
 
