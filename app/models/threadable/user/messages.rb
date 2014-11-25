@@ -6,4 +6,10 @@ class Threadable::User::Messages < Threadable::Messages
     @user = user
   end
 
+  attr_reader :user
+
+  def scope
+    user.user_record.messages.all
+  end
+
 end
