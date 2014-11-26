@@ -11,7 +11,7 @@ class Threadable::MixpanelTracker < Threadable::Tracker
   end
 
   def set_properties properties
-    forwarded_for = ENV.fetch('HTTP_X_FORWARDED_FOR')
+    forwarded_for = ENV.fetch('HTTP_X_FORWARDED_FOR', nil)
     ip = forwarded_for.split(/,\s*/).last if forwarded_for.present?
     set_properties_for_user tracking_id, properties, ip
   end

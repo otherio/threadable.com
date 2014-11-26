@@ -9,7 +9,7 @@ describe Threadable::MixpanelTracker, :type => :model do
   subject{ threadable_mixpanel_tracker }
 
   before do
-    allow(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR').and_return(nil)
+    allow(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR', nil).and_return(nil)
     expect(ENV).to receive(:fetch).with('MIXPANEL_TOKEN').and_return('FAKE TOKEN')
     expect(Mixpanel::Tracker).to receive(:new).with('FAKE TOKEN').and_return(mixpanel_tracker)
   end
@@ -99,7 +99,7 @@ describe Threadable::MixpanelTracker, :type => :model do
 
     context 'when the user ip address is in the heroku env' do
       before do
-        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR').and_return('8.8.8.8, 2.2.2.2, 1.2.3.4')
+        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR', nil).and_return('8.8.8.8, 2.2.2.2, 1.2.3.4')
       end
 
       it 'sends the ip to mixpanel' do
