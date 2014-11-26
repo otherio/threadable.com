@@ -96,18 +96,6 @@ describe Threadable::MixpanelTracker, :type => :model do
       expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
       threadable_mixpanel_tracker.set_properties('foo' => 'bar')
     end
-
-    context 'when the user ip address is in the heroku env' do
-      before do
-        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR', nil).and_return('8.8.8.8, 2.2.2.2, 1.2.3.4')
-      end
-
-      it 'sends the ip to mixpanel' do
-        expect(mixpanel_tracker).to receive(:people).and_return(people)
-        expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '1.2.3.4', {})
-        threadable_mixpanel_tracker.set_properties('foo' => 'bar')
-      end
-    end
   end
 
   describe '#set_properties_for_user' do
@@ -125,10 +113,46 @@ describe Threadable::MixpanelTracker, :type => :model do
       threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar', '$ignore_time' => true)
     end
 
-    it 'sends the ip address if it is passed in' do
-      expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '1.2.3.4', {})
-      threadable_mixpanel_tracker.set_properties_for_user(user_id, {'foo' => 'bar'}, '1.2.3.4')
+    context 'when the user ip address is in the heroku env' do
+      before do
+        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR', nil).and_return('8.8.8.8, 2.2.2.2, 1.2.3.4')
+      end
+
+      context 'when the current user is the user being tracked' do
+        before do
+          allow(threadable).to receive(:current_user_id).and_return(98)
+        end
+
+        it 'sends the ip to mixpanel' do
+          expect(mixpanel_tracker).to receive(:people).and_return(people)
+          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '1.2.3.4', {})
+          threadable_mixpanel_tracker.set_properties_for_user(98, 'foo' => 'bar')
+        end
+      end
+
+      context 'when there is no current user' do
+        before do
+          allow(threadable).to receive(:current_user_id).and_return(nil)
+        end
+
+        it 'does not send the IP address' do
+          expect(mixpanel_tracker).to receive(:people).and_return(people)
+          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+          threadable_mixpanel_tracker.set_properties_for_user(98, 'foo' => 'bar')
+        end
+      end
+
+      context 'when the current user does not match the user being tracked' do
+        before do
+          allow(threadable).to receive(:current_user_id).and_return(102)
+        end
+
+        it 'does not send the ip address' do
+          expect(mixpanel_tracker).to receive(:people).and_return(people)
+          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+          threadable_mixpanel_tracker.set_properties_for_user(98, 'foo' => 'bar')
+        end
+      end
     end
 
     context 'when mixpanel fails' do

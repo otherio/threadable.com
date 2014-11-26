@@ -11,9 +11,7 @@ class Threadable::MixpanelTracker < Threadable::Tracker
   end
 
   def set_properties properties
-    forwarded_for = ENV.fetch('HTTP_X_FORWARDED_FOR', nil)
-    ip = forwarded_for.split(/,\s*/).last if forwarded_for.present?
-    set_properties_for_user tracking_id, properties, ip
+    set_properties_for_user tracking_id, properties
   end
 
   def increment properties
@@ -27,8 +25,14 @@ class Threadable::MixpanelTracker < Threadable::Tracker
     end
   end
 
-  def set_properties_for_user tracking_id, properties, ip = nil
+  def set_properties_for_user tracking_id, properties
     flags = properties.extract!('$ignore_time')
+
+    forwarded_for = ENV.fetch('HTTP_X_FORWARDED_FOR', nil)
+    if forwarded_for && threadable.current_user_id.present? && threadable.current_user_id == tracking_id
+      ip = forwarded_for.split(/,\s*/).last
+    end
+
     recover_from_expected_errors do
       mixpanel.people.set(tracking_id, properties, ip, flags)
     end
