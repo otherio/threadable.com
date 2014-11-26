@@ -84,6 +84,7 @@ describe Threadable::InMemoryTracker, :type => :model do
         '$name'             => 'Foo Guy',
         '$email'            => 'foo@bar.com',
         '$created'          => user.created_at.iso8601,
+        '$ignore_time'      => true,
         'Owner'             => true,
         'Web Enabled'       => true,
         'Munge Reply-to'    => false,
