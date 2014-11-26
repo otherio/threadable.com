@@ -4,10 +4,12 @@ describe Threadable::MixpanelTracker, :type => :model do
 
   let(:threadable_mixpanel_tracker){ described_class.new(threadable) }
   let(:mixpanel_tracker) { double(:mixpanel_tracker) }
+  let(:people) { double(:people) }
 
   subject{ threadable_mixpanel_tracker }
 
   before do
+    allow(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR').and_return(nil)
     expect(ENV).to receive(:fetch).with('MIXPANEL_TOKEN').and_return('FAKE TOKEN')
     expect(Mixpanel::Tracker).to receive(:new).with('FAKE TOKEN').and_return(mixpanel_tracker)
   end
@@ -84,6 +86,84 @@ describe Threadable::MixpanelTracker, :type => :model do
     end
   end
 
+  describe '#set_properties' do
+    before do
+      expect(threadable).to receive(:current_user_id).and_return(98)
+    end
+
+    it 'calls mixpanel.people.track' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+      threadable_mixpanel_tracker.set_properties('foo' => 'bar')
+    end
+
+    context 'when the user ip address is in the heroku env' do
+      before do
+        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR').and_return('8.8.8.8, 2.2.2.2, 1.2.3.4')
+      end
+
+      it 'sends the ip to mixpanel' do
+        expect(mixpanel_tracker).to receive(:people).and_return(people)
+        expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '1.2.3.4', {})
+        threadable_mixpanel_tracker.set_properties('foo' => 'bar')
+      end
+    end
+  end
+
+  describe '#set_properties_for_user' do
+    let(:user_id) { 98 }
+
+    it 'calls mixpanel.people.track' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+      threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar')
+    end
+
+    it 'puts the ignore_time flag in the flags' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {'$ignore_time' => true})
+      threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar', '$ignore_time' => true)
+    end
+
+    it 'sends the ip address if it is passed in' do
+      expect(mixpanel_tracker).to receive(:people).and_return(people)
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '1.2.3.4', {})
+      threadable_mixpanel_tracker.set_properties_for_user(user_id, {'foo' => 'bar'}, '1.2.3.4')
+    end
+
+    context 'when mixpanel fails' do
+      known_errors = [
+        Errno::ECONNRESET,
+        Mixpanel::ConnectionError,
+        OpenSSL::SSL::SSLError,
+        Net::ReadTimeout,
+      ]
+
+      before do
+        allow(mixpanel_tracker).to receive(:people).and_return(people)
+      end
+
+      known_errors.each do |known_error|
+        it "retries twice for #{known_error.to_s}" do
+          expect(people).to receive(:set).twice.and_raise(known_error)
+          expect(people).to receive(:set).once.and_return(true)
+          threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar')
+        end
+
+        it "continues if #{known_error.to_s} keeps occurring" do
+          expect(people).to receive(:set).exactly(3).times.and_raise(known_error)
+          expect{ threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar') }.to_not raise_error
+        end
+      end
+
+      it 'raises an unknown exception' do
+        expect(people).to receive(:set).and_raise(Exception)
+        expect{ threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar') }.to raise_error Exception
+      end
+
+    end
+  end
+
 
   describe 'track_user_change' do
     let(:created_at){ double(:created_at, iso8601: "2013-12-03T16:24:37-08:00") }
@@ -98,11 +178,10 @@ describe Threadable::MixpanelTracker, :type => :model do
         web_enabled?: true,
     )
     end
-    let(:people){ double :people }
 
     it 'calls Mixpanel::Tracker#people.set' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:set).with(833,
+      expect(people).to receive(:set).with(833, {
         '$user_id'       => 833,
         '$name'          => 'steve',
         '$email'         => 'steve@steve.io',
@@ -110,7 +189,7 @@ describe Threadable::MixpanelTracker, :type => :model do
         'Owner'          => false,
         'Web Enabled'    => true,
         'Munge Reply-to' => false,
-      )
+      }, nil, {})
       threadable_mixpanel_tracker.track_user_change(user)
     end
   end
@@ -129,11 +208,10 @@ describe Threadable::MixpanelTracker, :type => :model do
         messages: double(:messages, count: 25)
     )
     end
-    let(:people){ double :people }
 
     it 'calls Mixpanel::Tracker#people.set, and refreshes all counters' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:set).with(833,
+      expect(people).to receive(:set).with(833, {
         '$user_id'          => 833,
         '$name'             => 'steve',
         '$email'            => 'steve@steve.io',
@@ -142,13 +220,12 @@ describe Threadable::MixpanelTracker, :type => :model do
         'Web Enabled'       => true,
         'Munge Reply-to'    => false,
         'Composed Messages' => 25,
-      )
+      }, nil, {'$ignore_time' => true})
       threadable_mixpanel_tracker.refresh_user_record(user)
     end
   end
 
   describe '#increment_for_user' do
-    let(:people){ double :people }
     it 'calls Mixpanel::Tracker#people.increment' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
       expect(people).to receive(:increment).with(98, 'foo' => 1)
@@ -157,8 +234,6 @@ describe Threadable::MixpanelTracker, :type => :model do
   end
 
   describe '#increment' do
-    let(:people){ double :people }
-
     before do
       expect(threadable).to receive(:current_user_id).and_return(98)
     end

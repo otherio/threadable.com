@@ -85,6 +85,7 @@ class Threadable::InMemoryTracker < Threadable::Tracker
       '$name'             => user.name,
       '$email'            => user.email_address.to_s,
       '$created'          => user.created_at.try(:iso8601),
+      '$ignore_time'      => true,
       'Owner'             => user.organization_owner,
       'Web Enabled'       => user.web_enabled?,
       'Munge Reply-to'    => user.munge_reply_to?,
