@@ -91,9 +91,9 @@ describe Threadable::MixpanelTracker, :type => :model do
       expect(threadable).to receive(:current_user_id).and_return(98)
     end
 
-    it 'calls mixpanel.people.track' do
+    it 'calls mixpanel.people.set' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '0', {})
       threadable_mixpanel_tracker.set_properties('foo' => 'bar')
     end
   end
@@ -101,15 +101,15 @@ describe Threadable::MixpanelTracker, :type => :model do
   describe '#set_properties_for_user' do
     let(:user_id) { 98 }
 
-    it 'calls mixpanel.people.track' do
+    it 'calls mixpanel.people.set' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '0', {})
       threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar')
     end
 
     it 'puts the ignore_time flag in the flags' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {'$ignore_time' => true})
+      expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '0', {'$ignore_time' => true})
       threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar', '$ignore_time' => true)
     end
 
@@ -137,7 +137,7 @@ describe Threadable::MixpanelTracker, :type => :model do
 
         it 'does not send the IP address' do
           expect(mixpanel_tracker).to receive(:people).and_return(people)
-          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '0', {})
           threadable_mixpanel_tracker.set_properties_for_user(98, 'foo' => 'bar')
         end
       end
@@ -149,7 +149,7 @@ describe Threadable::MixpanelTracker, :type => :model do
 
         it 'does not send the ip address' do
           expect(mixpanel_tracker).to receive(:people).and_return(people)
-          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, nil, {})
+          expect(people).to receive(:set).with(98, {'foo' => 'bar'}, '0', {})
           threadable_mixpanel_tracker.set_properties_for_user(98, 'foo' => 'bar')
         end
       end
@@ -213,7 +213,7 @@ describe Threadable::MixpanelTracker, :type => :model do
         'Owner'          => false,
         'Web Enabled'    => true,
         'Munge Reply-to' => false,
-      }, nil, {})
+      }, '0', {})
       threadable_mixpanel_tracker.track_user_change(user)
     end
   end
@@ -244,7 +244,7 @@ describe Threadable::MixpanelTracker, :type => :model do
         'Web Enabled'       => true,
         'Munge Reply-to'    => false,
         'Composed Messages' => 25,
-      }, nil, {'$ignore_time' => true})
+      }, '0', {'$ignore_time' => true})
       threadable_mixpanel_tracker.refresh_user_record(user)
     end
   end
@@ -252,7 +252,7 @@ describe Threadable::MixpanelTracker, :type => :model do
   describe '#increment_for_user' do
     it 'calls Mixpanel::Tracker#people.increment' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:increment).with(98, 'foo' => 1)
+      expect(people).to receive(:increment).with(98, {'foo' => 1}, '0')
       threadable_mixpanel_tracker.increment_for_user(98, 'foo' => 1)
     end
   end
@@ -264,7 +264,7 @@ describe Threadable::MixpanelTracker, :type => :model do
 
     it 'calls Mixpanel::Tracker#people.increment, but looks up the tracking id' do
       expect(mixpanel_tracker).to receive(:people).and_return(people)
-      expect(people).to receive(:increment).with(98, 'foo' => 1)
+      expect(people).to receive(:increment).with(98, {'foo' => 1}, '0')
       threadable_mixpanel_tracker.increment('foo' => 1)
     end
   end
