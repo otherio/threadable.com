@@ -28,7 +28,6 @@ class Threadable::Billforward
         "email"     => threadable.current_user.email_address.address,
         "firstName" => first_name,
         "lastName"  => last_name,
-        "addresses" => [],
       },
       "roles" => [
         {
