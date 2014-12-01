@@ -76,7 +76,7 @@ class Threadable::MixpanelTracker < Threadable::Tracker
   def ip tracking_id = nil
     forwarded_for = ENV.fetch('HTTP_X_FORWARDED_FOR', nil)
     if forwarded_for && threadable.current_user_id.present? && threadable.current_user_id == tracking_id
-      forwarded_for.split(/,\s*/).last
+      forwarded_for.split(/,\s*/).first
     else
       '0'
     end
