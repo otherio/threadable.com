@@ -115,7 +115,7 @@ describe Threadable::MixpanelTracker, :type => :model do
 
     context 'when the user ip address is in the heroku env' do
       before do
-        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR', nil).and_return('8.8.8.8, 2.2.2.2, 1.2.3.4')
+        expect(ENV).to receive(:fetch).with('HTTP_X_FORWARDED_FOR', nil).and_return('1.2.3.4, 8.8.8.8, 2.2.2.2')
       end
 
       context 'when the current user is the user being tracked' do
