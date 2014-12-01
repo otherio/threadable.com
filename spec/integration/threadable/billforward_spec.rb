@@ -48,7 +48,6 @@ describe Threadable::Billforward, :type => :request do
             "email" => "alice@ucsd.example.com",
             "firstName" => "Alice",
             "lastName" => "Neilson",
-            "addresses" => [],
           },
           "roles" => [
             {
