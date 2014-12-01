@@ -40,6 +40,9 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries.clear
     clear_background_jobs!
     Threadable::InMemoryTracker.clear
+
+    # prevent DNS lookups in specs, generally.
+    allow(VerifyDmarc).to receive(:call).and_return(true)
   end
 
   config.before(:type => :feature) do

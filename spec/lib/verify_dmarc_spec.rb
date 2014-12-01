@@ -15,6 +15,7 @@ describe VerifyDmarc, fixtures: false do
   let(:policy) { 'none' }
 
   before do
+    allow(described_class).to receive(:call).and_call_original
     allow(Dnsruby::Resolver).to receive(:new).and_return(resolver)
   end
 
