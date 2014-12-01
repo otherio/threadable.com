@@ -13,6 +13,10 @@ describe SendStarterContentWorker, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
 
   describe 'process!' do
+    before do
+      allow(VerifyDmarc).to receive(:call).and_return(true)
+    end
+
     it 'creates the specified message in the specified organization' do
       perform! :welcome, organization.id
       drain_background_jobs!
