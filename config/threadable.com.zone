@@ -1,0 +1,32 @@
+; Zonefile downloaded from DNSimple
+; Please keep this file up-to-date using their zone file export tool.
+; That way, we have this info if they have an outage.
+; Note that ALIAS records must be manually configured after importing at nsone.
+; (copy this comment to the top of the new zonefile export)
+;
+;
+$ORIGIN threadable.com.
+$TTL 1h
+threadable.com. 3600 IN  SOA ns1.dnsimple.com admin.dnsimple.com 2014012801 86400 10800 604800 300
+threadable.com. 3600 IN  NS ns4.dnsimple.com.
+threadable.com. 3600 IN  NS ns3.dnsimple.com.
+threadable.com. 3600 IN  NS ns2.dnsimple.com.
+threadable.com. 3600 IN  NS ns1.dnsimple.com.
+threadable.com. 3600 IN  TXT google-site-verification=l-ehB4REE-NThN5UZIZJXTqXaAxH2yjPaJI39o9_CfA
+mxb.threadable.com. 3600 IN  CNAME mxb.mailgun.org.
+mxa.threadable.com. 3600 IN  CNAME mxa.mailgun.org.
+*.threadable.com. 3600 IN  MX 10 mxb.mailgun.org.
+*.threadable.com. 3600 IN  MX 10 mxa.mailgun.org.
+*.threadable.com. 3600 IN  TXT ALIAS for toyama-5246.herokussl.com
+; *.threadable.com. 3600 IN  ALIAS toyama-5246.herokussl.com.
+; blog.threadable.com. 3600 IN  ALIAS threadable.posthaven.com.
+blog.threadable.com. 3600 IN  TXT ALIAS for threadable.posthaven.com
+staging.threadable.com. 3600 IN  TXT v=spf1 include:mailgun.org ~all
+pic._domainkey.threadable.com. 3600 IN  TXT k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDc4Ezr1p9YuwJjc079zMsixgUsWYllA9cNsFDN3ZJYdnByIoorxxUoQKmWY5RnprEzpqWDMguVRSzpfWDzgIyOvfUFTV9FDo+rwebreRKZM35+WtVZbT/NZs1mQ5l6U2ifm9oqawJ/BuBOJXqA5evvnIfS9xfUmeDg+ylJcikPWQIDAQAB
+threadable.com. 3600 IN  TXT ALIAS for toyama-5246.herokussl.com
+; threadable.com. 3600 IN  ALIAS toyama-5246.herokussl.com.
+threadable.com. 3600 IN  MX 10 mxb.mailgun.org.
+threadable.com. 3600 IN  MX 10 mxa.mailgun.org.
+email.threadable.com. 3600 IN  CNAME mailgun.org.
+threadable.com. 3600 IN  TXT v=spf1 include:mailgun.org include:smtp1.uservoice.com ~all
+threadable.com. 3600 IN  SPF v=spf1 include:mailgun.org include:smtp1.uservoice.com ~all
