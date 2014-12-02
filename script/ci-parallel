@@ -26,7 +26,7 @@ COMMAND = %(
   --colour
   --backtrace
   --format RspecJunitFormatter
-  --out $CI_REPORTS/rspec/rspec.xml
+  --out $CIRCLE_TEST_REPORTS/rspec/rspec.xml
   --require ./spec/support/documentation_instafail_formatter.rb
   --format DocumentationInstafail
   #{MY_SPECS.map(&:inspect).join(' ')}
