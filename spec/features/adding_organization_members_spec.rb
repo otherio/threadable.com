@@ -61,17 +61,17 @@ feature "Adding organization members" do
     visit email.user_setup_url.to_s
 
     expect(current_path).to start_with setup_users_path(token:1)[0..-2]
-    expect(page).to have_text "You're almost in!"
+    expect(page).to have_text "If you'd like, you can create a password"
 
 
     expect(find_field('Name', :match => :prefer_exact).value).to eq 'Archimedes Vanderhimen'
-    expect(find_field('Password', :match => :prefer_exact).value).to be_blank
-    expect(find_field('Password confirmation', :match => :prefer_exact).value).to be_blank
+    expect(find_field('user[password]', :match => :prefer_exact).value).to be_blank
+    expect(find_field('user[password_confirmation]', :match => :prefer_exact).value).to be_blank
 
     fill_in "Name", with: "Archimedes Van-Dérhimen"
-    fill_in "Password", with: "password", match: :prefer_exact
-    fill_in "Password confirmation", with: "password"
-    click_on "Setup my account"
+    fill_in 'user[password]', with: "password", match: :prefer_exact
+    fill_in 'user[password_confirmation]', with: "password"
+    click_on "Create"
 
     expect(page).to have_text 'carbon'
     expect(current_url).to eq conversations_url('raceteam', 'my')
