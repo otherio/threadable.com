@@ -86,6 +86,7 @@ RSpec.configure do |config|
       end
     end
 
+    WebMock.allow_net_connect!
     ensure_no_open_transactions!
   end
 
