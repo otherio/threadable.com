@@ -13,7 +13,7 @@
               = @organization.name
               has been confirmed. You'll receive messages at the address shown below.
             %p
-              If you want, you can create a password to access the Threadable web features. This isn't required,
+              If you'd like, you can create a password to access the Threadable web features. This isn't required,
               but it sure is useful! Just enter a new password below to get started:
           - else
             %p
@@ -29,15 +29,15 @@
         %section.organization
           .uk-form-row
             %label.uk-form-label Your email address
-            = f.input :email_address, as: :string, disabled: true, placeholder: 'Email Address', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+            = f.input :email_address,         as: :string,   disabled: true, placeholder: 'Email Address', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
           .uk-form-row
             %label.uk-form-label Your name
-            = f.input :name, as: :string, placeholder: 'Name', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+            = f.input :name,                  as: :string,                   placeholder: 'Name',          input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
           .uk-form-row
             %label.uk-form-label Password
-            = f.input :password, required: true, placeholder: '*****', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+            = f.input :password,              as: :password, required: true, placeholder: '*****',         input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
           .uk-form-row
             %label.uk-form-label Password confirmation
-            = f.input :password_confirmation, required: true, placeholder: '*****', input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
+            = f.input :password_confirmation, as: :password, required: true, placeholder: '*****',         input_html: {class: 'uk-width-1-1 uk-form-large'}, label: false
           .uk-form-row
             = f.submit 'Create', class: 'uk-button uk-button-primary uk-button-large sign-in-button'
