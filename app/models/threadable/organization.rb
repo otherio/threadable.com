@@ -155,8 +155,14 @@ class Threadable::Organization < Threadable::Model
     domains = email_domains.all.map(&:domain)
     domains << internal_email_host
 
+    aliased_groups = {}
+    groups.all_with_alias_email_address.each do |group|
+      aliased_groups[Mail::Address.new(group.alias_email_address).address] = group
+    end
+
     tags = email_addresses.map do |email_address|
-      local, host = email_address.strip_non_ascii.downcase.split('@')
+      email_address = email_address.strip_non_ascii.downcase
+      local, host = email_address.split('@')
       local.gsub!(/\./, '-')
       local_components = local.split(/(?:\+|--)/) - SPECIAL_EMAIL_ADDRESS_TAGS
       no_subdomain_addresses = threadable.email_hosts.map{ |host| "#{email_address_username}@#{host}"}
@@ -170,6 +176,8 @@ class Threadable::Organization < Threadable::Model
       elsif domains.include?(host)
         # the whole local part
         local_components[0]
+      elsif aliased_groups.has_key? email_address
+        aliased_groups[email_address].email_address_tag
       end
     end.flatten
 

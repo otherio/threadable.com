@@ -63,6 +63,10 @@ class Threadable::Organization::Groups < Threadable::Groups
     end
   end
 
+  def all_with_alias_email_address
+    groups_for scope.where("alias_email_address IS NOT NULL and alias_email_address != ''")
+  end
+
   def auto_joinable
     groups_for scope.where(auto_join: true)
   end
