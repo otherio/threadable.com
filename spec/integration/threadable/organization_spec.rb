@@ -329,6 +329,12 @@ describe Threadable::Organization, :type => :request do
   end
 
   describe '#email_address_tags' do
+    let(:fundraising) { organization.groups.find_by_slug('fundraising') }
+
+    before do
+      fundraising.group_record.update_attributes(alias_email_address: 'cash@money.com')
+    end
+
     examples = {
       ['foo@raceteam.localhost', 'raceteam+bar@threadable.com'] => ['foo', 'bar'],
       ['foo@raceteam.com', 'raceteam+bar@threadable.com'] => ['foo', 'bar'],
@@ -337,6 +343,9 @@ describe Threadable::Organization, :type => :request do
       ['raceteam+bar+baz@threadable.com'] => ['bar', 'baz'],
       ['raceteam+bar+task@threadable.com'] => ['bar'],
       ['raceteam@localhost'] => ['raceteam'],
+      ['press@ucsd.example.com'] => ['press'],
+      ['cash@money.com'] => ['fundraising'],
+      ['foo@money.com'] => [],
     }
 
     # this checks that the domain belongs to the specified organization,
@@ -351,10 +360,11 @@ describe Threadable::Organization, :type => :request do
 
     context 'when the address has a period in it' do
       before do
-        threadable.organizations.find_by_slug!('raceteam').organization_record.update_attribute(:email_address_username, 'race-team')
+        organization.organization_record.update_attribute(:email_address_username, 'race-team')
       end
 
       it 'properly translates to a dash' do
+        organization.reload
         expect(organization.email_address_tags('race.team@localhost')).to eq ['raceteam']
         expect(organization.email_address_tags('race.team+things@localhost')).to eq ['things']
       end

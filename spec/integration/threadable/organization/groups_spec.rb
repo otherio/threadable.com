@@ -176,4 +176,10 @@ describe Threadable::Organization::Groups, :type => :request do
     end
   end
 
+  describe '#all_with_alias_email_address' do
+    it 'returns the groups that have an alias email address' do
+      expect(groups.all_with_alias_email_address.map(&:slug)).to eq ['press']
+    end
+  end
+
 end
