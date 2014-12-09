@@ -68,7 +68,7 @@ feature "signing up" do
     add_members members
     click_on 'Create'
 
-    expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
+    expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
 
     organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
     expect(organization.members.count).to eq 4
@@ -107,11 +107,7 @@ feature "signing up" do
 
     expect(page).to have_text 'John Hutchison'
     expect(page).to have_text 'john@the-hutchison-effect.org'
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 4
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[Zero point energy machine] Welcome to Threadable!')   ).to be
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[✔︎][Zero point energy machine] Add some more members') ).to be
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('[Zero point energy machine] Threadable Tips')          ).to be
-    expect( sent_emails.sent_to('john@the-hutchison-effect.org').with_subject('Re: [Zero point energy machine] Threadable Tips')      ).to be
+    expect( sent_emails.sent_to('john@the-hutchison-effect.org').length ).to eq 0
     assert_members! members
 
     visit sign_out_url
@@ -150,7 +146,7 @@ feature "signing up" do
     add_members members
     click_on 'Create'
 
-    expect(page).to be_at_url compose_conversation_url('zero-point-energy-machine','my')
+    expect(page).to be_at_url conversations_url('zero-point-energy-machine','my')
 
     bethany = threadable.users.find_by_email_address!('bethany@ucsd.example.com')
     organization = threadable.organizations.find_by_slug!('zero-point-energy-machine')
@@ -177,13 +173,8 @@ feature "signing up" do
 
     expect(page).to have_text 'Bethany Pattern'
     expect(page).to have_text 'bethany@ucsd.example.com'
-    expect( sent_emails.sent_to('bethany@ucsd.example.com').length ).to eq 4
-    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('[Zero point energy machine] Welcome to Threadable!')   ).to be
-    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('[✔︎][Zero point energy machine] Add some more members') ).to be
-    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('[Zero point energy machine] Threadable Tips')          ).to be
-    expect( sent_emails.sent_to('bethany@ucsd.example.com').with_subject('Re: [Zero point energy machine] Threadable Tips')      ).to be
+    expect( sent_emails.sent_to('bethany@ucsd.example.com').length ).to eq 0
     assert_members! members
-
   end
 
   def add_members members

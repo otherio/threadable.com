@@ -31,7 +31,7 @@ describe 'Signing up' do
     fill_in 'new_organization[password_confirmation]', with: user.password
     click_on 'Create'
 
-    expect(page).to be_at_path "/#{expected_organization_slug}/my/conversations/compose"
+    expect(page).to be_at_path "/#{expected_organization_slug}/my/conversations"
     expect(page).to have_text user.name
     expect(page).to have_text user.email_address
     expect(page).to have_text 'Welcome to Threadable!'

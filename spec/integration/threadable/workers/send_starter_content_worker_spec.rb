@@ -13,7 +13,14 @@ describe SendStarterContentWorker, :type => :request do
   let(:organization) { threadable.organizations.find_by_slug('raceteam') }
 
   describe 'process!' do
+    it 'does nothing at the moment' do
+      perform! :welcome, organization.id
+      drain_background_jobs!
+      expect(sent_emails.length).to eq 0
+    end
+
     it 'creates the specified message in the specified organization' do
+      pending 'we are not using the starter emails right now'
       perform! :welcome, organization.id
       drain_background_jobs!
       expect(sent_emails.length).to eq 7
@@ -22,6 +29,7 @@ describe SendStarterContentWorker, :type => :request do
     end
 
     it 'creates a child message when a parent slug is specified' do
+      pending 'we are not using the starter emails right now'
       perform! :tips_buttons, organization.id
       drain_background_jobs!
       sent_emails.clear
