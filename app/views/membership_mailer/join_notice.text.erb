@@ -1,25 +1,30 @@
+I've added you to <%= @organization.name.html_safe %> on Threadable! Welcome!
+
+Using Threadable is easy! Any email you send to:
+
+<%=@organization.email_address.html_safe%>
+
+will be delivered to all of the members of <%= @organization.name.html_safe %>.
+
 <% if @personal_message %>
 <%= @personal_message.html_safe %>
 
 --------
 <% end %>
-I've added you to the <%= @organization.name.html_safe %> organization on Threadable!
+Threadable makes it easy for groups of people to work together.
+Think of it like a forum that lives in your inbox. Or, an old-school mailing list, but better!
 
-Threadable is a communications platform that helps you and your friends get
-more done. It works like any mailing list you've used before, but has nifty
-features for organizing your conversations and making sure you get the
-information you need!
-
-<% if @recipient.web_enabled? %>
-You can view this organization on threadable.com here:
-<%= @organization_url.html_safe %>
-<% else %>
+<% unless @recipient.web_enabled? %>
 Threadable also has a web view, which lets you see the entire message archive, view the
 member roster, and organize conversations! Click here to set up a password for
 Threadable.com:
 <%= @recipient_setup_url.html_safe %>
-<% end %>
 
-If you aren't into this, don't worry! Threadable will stop sending you
-mail the moment you ask. Just click:
+<% end %>
+If you're new to Threadable, you'll get some tips on how to use it over the next few days.
+If you need help, you can reach the Threadable team at support@threadable.com.
+
+If you don't want to receive mail from this organization at all, you can unsubscribe here:
 <%= @organization_unsubscribe_url.html_safe %>
+
+(this message is automatically generated)
