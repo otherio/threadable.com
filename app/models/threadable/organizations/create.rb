@@ -46,6 +46,8 @@ class Threadable::Organizations::Create < MethodObject
       organization.groups.create(group_params)
     end
 
+    return unless starter_data[:conversations]
+
     starter_data[:conversations].keys.each do |email|
       # enqueue worker jobs here. delay them for the amount of time specified.
       params = starter_data[:conversations][email]

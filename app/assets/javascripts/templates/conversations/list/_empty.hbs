@@ -1,0 +1,22 @@
+<li class="empty-list">
+  <div class="empty">
+    {{#if displayingMutedConversations}}
+      <div>
+        You have not muted any conversations in this group.
+      </div>
+    {{/if}}
+
+    {{#if displayingConversations}}
+      <div>
+        You don't have any conversations here yet.
+      </div>
+
+      {{#link-to composeRoute}}
+        <i class="uk-icon-edit"><span class="sr-only">Compose</span></i>
+        <div class="compose-label">
+          Compose new conversation
+        </div>
+      {{/link-to}}
+    {{/if}}
+  </div>
+</li>

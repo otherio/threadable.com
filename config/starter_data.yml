@@ -6,26 +6,26 @@ groups:
     email_address_tag: social
 
 conversations:
-  welcome:
-    subject: 'Welcome to Threadable!'
-    task: false
-    delay_hours: 0
-    from: "Ian at Threadable <ian@threadable.com>"
-  add_members:
-    subject: 'Add some more members'
-    task: true
-    delay_hours: 1
-    from: "Ian at Threadable <ian@threadable.com>"
-  tips_buttons:
-    subject: 'Threadable Tips'
-    task: false
-    delay_hours: 24
-    from: "Ian at Threadable <ian@threadable.com>"
-  tips_groups:
-    subject: 'Threadable Tips'
-    task: false
-    delay_hours: 72
-    from: "Ian at Threadable <ian@threadable.com>"
+  # welcome:
+  #   subject: 'Welcome to Threadable!'
+  #   task: false
+  #   delay_hours: 0
+  #   from: "Ian at Threadable <ian@threadable.com>"
+  # add_members:
+  #   subject: 'Add some more members'
+  #   task: true
+  #   delay_hours: 1
+  #   from: "Ian at Threadable <ian@threadable.com>"
+  # tips_buttons:
+  #   subject: 'Threadable Tips'
+  #   task: false
+  #   delay_hours: 24
+  #   from: "Ian at Threadable <ian@threadable.com>"
+  # tips_groups:
+  #   subject: 'Threadable Tips'
+  #   task: false
+  #   delay_hours: 72
+  #   from: "Ian at Threadable <ian@threadable.com>"
   # tips_commands:
   #   subject: 'Threadable Tips'
   #   task: false
