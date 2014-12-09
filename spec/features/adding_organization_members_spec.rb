@@ -6,7 +6,7 @@ feature "Adding organization members" do
     sign_in_as 'alice@ucsd.example.com'
   end
 
-  scenario %(adding an unregistered user to a organization) do
+  scenario %(adding an unregistered user to an organization) do
     add_member_to_organization 'Frank Zappa', 'frank@zappaworld.net', 'raceteam', 'Frank, we need a theme song!'
     within selector_for('the conversations pane') do
       expect(page).to have_text "Frank Zappa frank@zappaworld.net"
@@ -19,11 +19,12 @@ feature "Adding organization members" do
     email = sent_emails.join_notices("UCSD Electric Racing").sent_to('frank@zappaworld.net').first
     expect(email.user_setup_url).to be_present
     expect(email.content).to include 'Frank, we need a theme song!'
-    expect(email.content).to_not include "You can view this organization on threadable.com here: #{organization_url('raceteam')}"
+    expect(email.content).to include "Any email you send to: raceteam@raceteam.localhost"
+    expect(email.content).to include "I've added you to"
     expect(email.content).to include "Click here to set up a password"
   end
 
-  scenario %(adding an existing user who is not a member to a organization) do
+  scenario %(adding an existing user who is not a member to an organization) do
     add_member_to_organization 'B.J. Hunnicutt',  'bj@sfhealth.example.com', 'raceteam', 'hey, we need some medical support'
     within selector_for('the conversations pane') do
       expect(page).to have_text "B.J. Hunnicutt bj@sfhealth.example.com"
@@ -35,16 +36,16 @@ feature "Adding organization members" do
     email = sent_emails.join_notices("UCSD Electric Racing").sent_to('bj@sfhealth.example.com').first
     expect(email.user_setup_url).to_not be_present
     expect(email.content).to include 'hey, we need some medical support'
-    expect(email.content).to include "You can view this organization on threadable.com here: #{organization_url('raceteam')}"
+    expect(email.content).to include "Any email you send to: raceteam@raceteam.localhost"
     expect(email.content).to_not include "Click here to set up a password"
   end
 
-  scenario %(adding an existing member to a organization) do
+  scenario %(adding an existing member to an organization) do
     add_member_to_organization 'Yan Zhu', 'yan@ucsd.example.com', 'raceteam'
     expect(page).to have_text "user is already a member"
   end
 
-  scenario %(being added to a organization) do
+  scenario %(being added to an organization) do
     add_member_to_organization 'Archimedes Vanderhimen', 'archimedes@ucsd.example.com', 'raceteam', 'We need your sick driving skills!'
 
     within selector_for('the conversations pane') do
