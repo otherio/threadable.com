@@ -1,6 +1,7 @@
 Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.RoutesMixin, {
-  needs: ['organization', 'topbar'],
+  needs: ['organization', 'topbar', 'compose'],
   organization: Ember.computed.alias('controllers.organization').readOnly(),
+  newConversation: Ember.computed.alias('controllers.compose').readOnly(),
   itemController: 'conversations_item',
   showingConversationsListControls: Ember.computed.alias('controllers.topbar.showingConversationsListControls'),
   sortAscending: false,
@@ -40,6 +41,14 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
       return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
     });
   }.property('model.@each.isTrashed', 'model.@each.updatedAt', 'model.@each.lastMessageAt', 'model.@each.trashedAt'),
+
+  displayingConversations: function() {
+    return this.get('conversationsScope') == 'not_muted_conversations';
+  }.property('conversationsScope'),
+
+  displayingMutedConversations: function() {
+    return this.get('conversationsScope') == 'muted_conversations';
+  }.property('conversationsScope'),
 
   loadConversations: function() {
     if (this.get('loading') || this.get('fullyLoaded')) return;

@@ -14,7 +14,7 @@
         {{partial 'conversations/list/member'}}
       {{else}}
         {{#unless loading}}
-          <li class="empty-list"><h4>No Conversations</h4></li>
+          {{partial 'conversations/list/empty'}}
         {{/unless}}
       {{/each}}
     </ol>

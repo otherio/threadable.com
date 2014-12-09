@@ -38,7 +38,7 @@ class OrganizationsController < ApplicationController
         email_address:     @new_organization.your_email_address,
         organization_id:   @new_organization.organization.id,
       )
-      redirect_to compose_conversation_url(@new_organization.organization, 'my')
+      redirect_to conversations_url(@new_organization.organization, 'my')
     else
       render :new
     end
