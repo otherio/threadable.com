@@ -46,6 +46,7 @@ class Threadable::Emails
       conversation_message:       ConversationMailer,
       message_summary:            SummaryMailer,
       join_notice:                MembershipMailer,
+      confirmation_notice:        MembershipMailer,
       self_join_notice:           MembershipMailer,
       self_join_notice_confirm:   MembershipMailer,
       invitation:                 MembershipMailer,

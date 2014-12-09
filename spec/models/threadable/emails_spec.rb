@@ -70,6 +70,13 @@ describe Threadable::Emails, :type => :model do
         expect(subject.generate(:join_notice, 1,2,3)).to eq 'A Mail::Message'
       end
     end
+    context 'when given :confirmation_notice as the type' do
+      it 'calls MembershipMailer#confirmation_notice' do
+        expect(MembershipMailer).to receive(:new).with(threadable).and_return(mailer)
+        expect(mailer).to receive(:generate).with(:confirmation_notice, 1,2,3).and_return('A Mail::Message')
+        expect(subject.generate(:confirmation_notice, 1,2,3)).to eq 'A Mail::Message'
+      end
+    end
     context 'when given :unsubscribe_notice as the type' do
       it 'calls MembershipMailer#unsubscribe_notice' do
         expect(MembershipMailer).to receive(:new).with(threadable).and_return(mailer)
