@@ -1,4 +1,5 @@
 class MembershipMailer < Threadable::Mailer
+  include Roadie::Rails::Automatic
 
   add_template_helper EmailHelper
 
@@ -13,6 +14,24 @@ class MembershipMailer < Threadable::Mailer
       to:      @recipient.formatted_email_address,
       subject: @subject,
     }.merge(dmarc_aware_headers(@adder.formatted_email_address))
+
+    email = mail(mail_params)
+    email.smtp_envelope_from = organization.email_address
+    email
+  end
+
+  def confirmation_notice organization, recipient
+    @adder = threadable.current_user
+    @organization, @recipient = organization, recipient
+
+    @subject                  = "You've been added to #{@organization.name}"
+    setup_join_notice
+
+    mail_params = {
+      from:    "Threadable <#{threadable.support_email_address('confirmation')}>",
+      to:      @recipient.formatted_email_address,
+      subject: @subject,
+    }
 
     email = mail(mail_params)
     email.smtp_envelope_from = organization.email_address
