@@ -9,6 +9,12 @@
     .member-settings
       .setting
         h4.label
+          | Email Address:
+        .control
+          = emailAddress
+
+      .setting
+        h4.label
           | Role:
         .control
           if canEdit
