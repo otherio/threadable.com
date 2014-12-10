@@ -33,37 +33,49 @@
                                 %br
                                   Using Threadable is easy! Any email you send to:
                                   %br
-                                  = @organization.email_address.html_safe
+                                  = mail_to @organization.email_address
                                   %br
                                   will be delivered to all of the members of #{@organization.name.html_safe}.
                                   %br
-                                  Threadable makes it easy for groups of people to work together.
-                                  Think of it like a forum that lives in your inbox. Or, or an old-school mailing list, but better!
                                   %br
-                                  - unless @recipient.web_enabled?
-                                    Threadable also has a web view, which lets you see the entire message archive, view the
-                                    member roster, and organize conversations! Click here to set up a password for
-                                    Threadable.com:
-                                    =@recipient_setup_url.html_safe
-                                    %br
-
-                                  If you're new to Threadable, you'll get some tips on how to use it over the next few days.
-                                  If you need help, you can reach the team at support@threadable.com.
-                                  %br
-                                  If you don't want to receive mail from this organization at all, you can unsubscribe here:
-                                  = @organization_unsubscribe_url.html_safe
+                  %table{:bgcolor => "#ffffff", :cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto;", :width => "100%"}
                     %tr
                       %td
-                        %div
-                          /[if mso]
-                            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="8%" stroke="f" fillcolor="#232527">
-                            <w:anchorlock/>
-                            <center>
-                          %a{:href => @confirm_email_address_url, :style => "background-color:#232527;border-radius:4px;color:#ffffff;display:inline-block;font-family:Dosis,Helvetica, Arial, sans-serif;font-size:14px;font-weight:400;letter-spacing:3px;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;"} CONFIRM ADDRESS
-                          /[if mso]
-                            </center>
-                            </v:roundrect>
                         %br
+
+                        Threadable makes it easy for groups of people to work together.
+                        Think of it like a forum that lives in your inbox. Or, or an old-school mailing list, but better!
+                        %br
+                        %br
+                        - unless @recipient.web_enabled?
+                          Threadable has a web view, which lets you see the entire message archive, view the
+                          member roster, and organize conversations! Click here to set up a password for
+                          Threadable.com:
+                          %br
+                          %br
+                          %table{:bgcolor => "#ffffff", :cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto;", :width => "100%"}
+                            %tr
+                              %td
+                                %div
+                                  /[if mso]
+                                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="8%" stroke="f" fillcolor="#232527">
+                                    <w:anchorlock/>
+                                    <center>
+                                  %a{:href => @recipient_setup_url, :style => "background-color:#232527;border-radius:4px;color:#ffffff;display:inline-block;font-family:Dosis,Helvetica, Arial, sans-serif;font-size:14px;font-weight:400;letter-spacing:3px;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;"} SETUP PASSWORD
+                                  /[if mso]
+                                    </center>
+                                    </v:roundrect>
+                          %br
+
+                        If you need help, you can reach the team at
+                        %a{:href => "mailto:support@threadable.com", :style => "color:#232527"} support@threadable.com
+                        %br
+                        %br
+                        If you don't want to receive mail from this organization at all, you can
+                        %a{:href => @organization_unsubscribe_url, :style => "color:#232527"} unsubscribe.
+                        %br
+                        %br
+
                   %table.force-full-width{:bgcolor => "#414141", :cellpadding => "0", :cellspacing => "0", :style => "margin: 0 auto"}
                     %tr
                       %td{:style => "background-color:#414141;"}
