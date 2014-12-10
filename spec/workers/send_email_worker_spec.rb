@@ -101,6 +101,23 @@ describe SendEmailWorker do
     end
   end
 
+  describe 'confirmation_notice' do
+    let(:arguments){ [:confirmation_notice, organization_id, recipient_id] }
+    it "should find all the records and call threadable.emails.send_email" do
+      expect_any_instance_of(Threadable::Class).to receive(:organizations).and_return(organizations)
+      expect(organizations      ).to receive(:find_by_id!     ).with(organization_id).and_return(organization)
+
+      expect(organization       ).to receive(:members         ).and_return(members)
+      expect(members       ).to receive(:find_by_user_id!).with(recipient_id).and_return(recipient)
+
+      expect(recipient).to receive(:subscribed?).and_return(true)
+
+      expect_any_instance_of(Threadable::Emails).to receive(:send_email).with(:confirmation_notice, organization, recipient)
+
+      perform!
+    end
+  end
+
   describe 'unsubscribe_notice' do
     let(:arguments){ [:unsubscribe_notice, organization_id, recipient_id] }
     it "should find all the records and call threadable.emails.send_email" do

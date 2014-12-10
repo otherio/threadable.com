@@ -64,6 +64,37 @@ describe Threadable::Organization::Member, :type => :request do
 
   end
 
+  describe '#confirm!' do
+    before do
+      member.unconfirm!
+    end
+
+    it 'confirms a member, and sends the confirmation notice' do
+      member.confirm!
+      drain_background_jobs!
+
+      expect(member.confirmed?).to eq true
+      expect(sent_emails.size).to eq 1
+      expect( sent_emails.with_subject("You've been added to UCSD Electric Racing").sent_to(member.email_address) ).to be
+    end
+
+    context 'when a member is already confirmed' do
+      before do
+        member.confirm!
+        drain_background_jobs!
+        sent_emails.clear
+      end
+
+      it 'should not send another email or confirm the member' do
+        member.confirm!
+        drain_background_jobs!
+
+        expect(member.confirmed?).to eq true
+        expect(sent_emails.size).to eq 0
+      end
+    end
+  end
+
   describe '#summarized_conversations' do
     let(:time) { Time.zone.local(2014, 2, 2).utc }
 

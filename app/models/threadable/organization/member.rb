@@ -106,6 +106,8 @@ class Threadable::Organization::Member < Threadable::User
   end
 
   def confirm!
+    return if confirmed?
+    @threadable.emails.send_email_async(:confirmation_notice, @organization.id, id)
     organization_membership_record.update_attribute(:confirmed, true)
   end
 
