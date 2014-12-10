@@ -25,6 +25,11 @@ class MailPreview < MailView
     threadable.emails.generate(:join_notice, organization, recipient, "Yo Dawg!")
   end
 
+  def confirmation_notice
+    organization, recipient = find_organization_and_recipient
+    threadable.emails.generate(:confirmation_notice, organization, recipient)
+  end
+
   def self_join_notice
     organization, recipient = find_organization_and_recipient
     threadable.emails.generate(:self_join_notice, organization, recipient)
