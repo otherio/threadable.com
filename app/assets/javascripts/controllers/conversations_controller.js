@@ -36,11 +36,13 @@ Threadable.ConversationsController = Ember.ArrayController.extend(Threadable.Rou
 
   filteredContent: function() {
     var showTrashed = (this.get('groupSlug') == 'trash');
+    var showMuted   = this.get('displayingMutedConversations');
 
     return this.get('arrangedContent').filter(function(item) {
-      return showTrashed ? item.get('isTrashed') : ! item.get('isTrashed');
+      if(! showTrashed && item.get('isTrashed')) return false;
+      return item.get('muted') ? showMuted : !showMuted;
     });
-  }.property('model.@each.isTrashed', 'model.@each.updatedAt', 'model.@each.lastMessageAt', 'model.@each.trashedAt'),
+  }.property('displayingMutedConversations', 'model.@each.isTrashed', 'model.@each.muted', 'model.@each.updatedAt', 'model.@each.lastMessageAt', 'model.@each.trashedAt'),
 
   displayingConversations: function() {
     return this.get('conversationsScope') == 'not_muted_conversations';
