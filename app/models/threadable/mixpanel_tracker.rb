@@ -21,7 +21,7 @@ class Threadable::MixpanelTracker < Threadable::Tracker
   def track_for_user tracking_id, event_name, event_attributes={}
     recover_from_expected_errors do
       event_attributes.merge! via: threadable.worker ? 'email' : 'web'
-      mixpanel.track(tracking_id, event_name, event_attributes)
+      # mixpanel.track(tracking_id, event_name, event_attributes)
     end
   end
 
