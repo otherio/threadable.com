@@ -41,7 +41,7 @@ describe Threadable::Group, :type => :model do
   it { is_expected.to delegate(:persisted?         ).to(:group_record) }
   it { is_expected.to delegate(:subject_tag        ).to(:group_record) }
   it { is_expected.to delegate(:auto_join?         ).to(:group_record) }
-  it { is_expected.to delegate(:hold_messages?     ).to(:group_record) }
+  it { is_expected.to delegate(:non_member_posting ).to(:group_record) }
   it { is_expected.to delegate(:alias_email_address).to(:group_record) }
   it { is_expected.to delegate(:description        ).to(:group_record) }
   it { is_expected.to delegate(:google_sync?       ).to(:group_record) }

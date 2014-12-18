@@ -123,7 +123,19 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def hold_candidate?
-    groups.all?(&:hold_messages?) && (!reply? && !creator_is_an_organization_member?)
+    non_member_posting_values = groups.map(&:non_member_posting)
+    if non_member_posting_values.include?('allow')
+      return false
+    end
+
+    if non_member_posting_values.include?('allow_replies')
+      return false if reply?
+      return true if !creator_is_an_organization_member?
+    end
+
+    if non_member_posting_values.include?('hold')
+      !creator_is_an_organization_member?
+    end
   end
 
   def reply?

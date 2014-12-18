@@ -24,7 +24,7 @@ class Threadable::Group < Threadable::Model
     new_record?
     persisted?
     auto_join?
-    hold_messages?
+    non_member_posting
     webhook_url
     google_sync?
     primary?
@@ -51,7 +51,6 @@ class Threadable::Group < Threadable::Model
     group_record.tasks.untrashed
   end
   public
-
 
   def organization_record
     group_record.organization
