@@ -49,7 +49,7 @@ gem 'animate-sass'
 gem 'roadie-rails'
 gem 'mixpanel-ruby'
 
-gem 'newrelic_rpm'
+# gem 'newrelic_rpm'
 
 gem 'honeybadger'
 
