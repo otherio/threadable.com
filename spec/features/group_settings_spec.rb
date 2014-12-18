@@ -29,7 +29,7 @@ feature "Group settings" do
     expect(current_url).to eq conversations_url('raceteam', 'fundraising')
 
     fundraising = current_user.organizations.find_by_slug!('raceteam').groups.find_by_slug!('fundraising')
-    expect(fundraising).to be_hold_messages
+    expect(fundraising.non_member_posting).to be_allow
     expect(fundraising).to_not be_auto_join
     expect(fundraising.subject_tag).to eq 'cops'
   end

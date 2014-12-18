@@ -9,6 +9,7 @@ describe GroupsSerializer do
   before{ sign_in_as 'alice@ucsd.example.com' }
 
   context 'when given a single record' do
+
     let(:payload){ electronics }
     let(:expected_key){ :group }
     it do
@@ -22,7 +23,7 @@ describe GroupsSerializer do
         webhook_url:         '',
         color:               "#964bf8",
         auto_join:           false,
-        hold_messages:       true,
+        non_member_posting:  "allow_replies",
         description:         'Soldering and wires and stuff!',
         google_sync:         false,
         primary:             false,
@@ -65,7 +66,7 @@ describe GroupsSerializer do
           webhook_url:         '',
           color:               "#964bf8",
           auto_join:           false,
-          hold_messages:       true,
+          non_member_posting:  "allow_replies",
           description:         'Soldering and wires and stuff!',
           google_sync:         false,
           primary:             false,
@@ -99,7 +100,7 @@ describe GroupsSerializer do
           webhook_url:         '',
           color:               "#5a9de1",
           auto_join:           false,
-          hold_messages:       true,
+          non_member_posting:  "allow_replies",
           description:         'Cache Monet',
           google_sync:         false,
           primary:             false,

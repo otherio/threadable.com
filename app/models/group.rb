@@ -1,6 +1,9 @@
 class Group < ActiveRecord::Base
   belongs_to :organization
 
+  # you can add to the end of this, but do not reorder it.
+  enum non_member_posting: [:allow, :allow_replies, :hold]
+
   validates_presence_of :name
   validates_presence_of :organization_id
   validates_uniqueness_of :name, scope: :organization
