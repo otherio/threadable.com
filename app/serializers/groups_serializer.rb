@@ -12,7 +12,7 @@ class GroupsSerializer < Serializer
       subject_tag:                      group.subject_tag,
       color:                            group.color,
       auto_join:                        group.auto_join?,
-      hold_messages:                    group.hold_messages?,
+      non_member_posting:               group.non_member_posting,
       alias_email_address:              group.alias_email_address,
       webhook_url:                      group.webhook_url,
       google_sync:                      group.google_sync?,

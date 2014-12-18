@@ -120,7 +120,7 @@ describe Api::GroupsController, :type => :controller do
 
       context 'when given a valid group id' do
         it "updates the group and returns the new one" do
-          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', description: 'They are super', subject_tag: "superheroes", auto_join: false, alias_email_address: 'foo@bar.com' }
+          xhr :patch, :update, format: :json, organization_id: raceteam.slug, id: electronics.email_address_tag, group: { color: '#964bf8', description: 'They are super', subject_tag: "superheroes", auto_join: false, alias_email_address: 'foo@bar.com', non_member_posting: 'hold' }
           expect(response).to be_ok
           group = raceteam.groups.find_by_email_address_tag('electronics')
           expect(group.color).to eq '#964bf8'
@@ -128,6 +128,7 @@ describe Api::GroupsController, :type => :controller do
           expect(group.auto_join?).to be_falsey
           expect(group.alias_email_address).to eq 'foo@bar.com'
           expect(group.description).to eq 'They are super'
+          expect(group.non_member_posting).to eq 'hold'
           expect(response.body).to eq serialize(:groups, group).to_json
         end
       end

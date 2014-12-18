@@ -26,6 +26,42 @@ describe Threadable::IncomingEmail, :type => :request do
     CorrectHtml.call(body)
   end
 
+  def expect_delivered!
+    incoming_email.process!
+
+    expect(incoming_email.held?).to be_falsy
+    expect(incoming_email.bounced?).to be_falsy
+    expect(incoming_email.dropped?).to be_falsy
+    expect(incoming_email.delivered?).to be_truthy
+  end
+
+  def expect_dropped!
+    incoming_email.process!
+
+    expect(incoming_email.held?).to be_falsy
+    expect(incoming_email.bounced?).to be_falsy
+    expect(incoming_email.dropped?).to be_truthy
+    expect(incoming_email.delivered?).to be_falsy
+  end
+
+  def expect_bounced!
+    incoming_email.process!
+
+    expect(incoming_email.held?).to be_falsy
+    expect(incoming_email.bounced?).to be_truthy
+    expect(incoming_email.dropped?).to be_falsy
+    expect(incoming_email.delivered?).to be_falsy
+  end
+
+  def expect_held!
+    incoming_email.process!
+
+    expect(incoming_email.held?).to be_truthy
+    expect(incoming_email.bounced?).to be_falsy
+    expect(incoming_email.dropped?).to be_falsy
+    expect(incoming_email.delivered?).to be_falsy
+  end
+
   describe 'process!' do
     it 'finds all associations and sends out the new message' do
       incoming_email.process!
@@ -109,6 +145,204 @@ describe Threadable::IncomingEmail, :type => :request do
       end
     end
 
+    describe 'mail holding' do
+      let (:from) { 'Barth Rowesly <rowesly@gmail.com>' }
+      let (:envelope_from) {'rowesly@gmail.com'}
+
+      let :params do
+        create_incoming_email_params(
+          {
+            organization: raceteam,
+            from: from,
+            envelope_from: envelope_from,
+            subject: 'Re: Cars are real',
+          }.merge(test_params)
+        )
+      end
+
+      context 'when the organization holds all messages' do
+        before do
+          raceteam.organization_record.update_attributes(hold_all_messages: true)
+          raceteam.reload
+        end
+
+        context 'when the sender is not an org member' do
+          context 'when the message is a reply' do
+            let(:parent_message) { raceteam.conversations.last.messages.last }
+            let(:test_params) { {in_reply_to: parent_message.message_id_header} }
+
+            it 'delivers the message' do
+              expect_delivered!
+            end
+
+            context 'when all of the groups hold messages from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :hold)
+              end
+
+              it 'holds the message' do
+                expect_held!
+              end
+            end
+          end
+
+          context 'when the message starts a new conversation' do
+            let(:test_params) { {subject: 'Cars are super real, hyperreal even.'} }
+
+            it 'holds the message' do
+              expect_held!
+            end
+          end
+
+        end
+
+        context 'when the sender is an org member' do
+          let (:from) { 'Nadya Leviticon <nadya@ucsd.example.com>' }
+          let (:envelope_from) {'nadya@ucsd.example.com'}
+
+          context 'when the message is a reply' do
+            let(:parent_message) { raceteam.conversations.last.messages.last }
+            let(:test_params) { {in_reply_to: parent_message.message_id_header} }
+
+            it 'delivers the message' do
+              expect_delivered!
+            end
+
+            context 'when all of the groups hold messages from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :hold)
+              end
+
+              it 'delivers the message' do
+                expect_delivered!
+              end
+            end
+          end
+
+          context 'when the message starts a new conversation' do
+            let(:test_params) { {subject: 'Cars are super real, hyperreal even.'} }
+
+            it 'holds the message' do
+              expect_held!
+            end
+          end
+        end
+
+        context 'when the sender is an owner' do
+          let (:from) { 'Alice Neilson <alice@ucsd.example.com>' }
+          let (:envelope_from) {'alice@ucsd.example.com'}
+
+
+          context 'when the message is a reply' do
+            let(:parent_message) { raceteam.conversations.last.messages.last }
+            let(:test_params) { {in_reply_to: parent_message.message_id_header} }
+
+            it 'delivers the message' do
+              expect_delivered!
+            end
+
+            context 'when all of the groups hold messages from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :hold)
+              end
+
+              it 'delivers the message' do
+                expect_delivered!
+              end
+            end
+          end
+
+          context 'when the message starts a new conversation' do
+            let(:test_params) { {subject: 'Cars are super real, hyperreal even.'} }
+
+            it 'delivers the message' do
+              expect_delivered!
+            end
+          end
+        end
+      end
+
+      context 'when the organization does not hold all messages' do
+        context 'when the sender is not an org member' do
+          context 'when the message is a reply' do
+            let(:parent_message) { raceteam.conversations.last.messages.last }
+            let(:test_params) { {in_reply_to: parent_message.message_id_header} }
+
+            context 'when any of the groups permit non-member replies' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :allow_replies)
+              end
+
+              it 'delivers the message' do
+                expect_delivered!
+              end
+            end
+
+            context 'when any of the groups allow new conversations from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :allow)
+              end
+
+              it 'delivers the message' do
+                expect_delivered!
+              end
+            end
+
+            context 'when all of the groups hold messages from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :hold)
+              end
+
+              it 'holds the message' do
+                expect_held!
+              end
+            end
+          end
+
+          context 'when the message starts a new conversation' do
+            let :params do
+              create_incoming_email_params(
+                organization: raceteam,
+                from: 'Barth Rowesly <rowesly@gmail.com>',
+                envelope_from: 'rowesly@gmail.com',
+                subject: 'I love cars! Can I car your cars with you?'
+              )
+            end
+
+            context 'when all of the groups allow replies but not new conversations' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :allow_replies)
+              end
+
+              it 'delivers the message' do
+                expect_held!
+              end
+            end
+
+            context 'when all of the groups hold messages from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :hold)
+              end
+
+              it 'holds the message' do
+                expect_held!
+              end
+            end
+
+            context 'when any of the groups allow new conversations from non-members' do
+              before do
+                raceteam.groups.primary.group_record.update_attributes(non_member_posting: :allow)
+              end
+
+              it 'delivers the message' do
+                expect_delivered!
+              end
+            end
+          end
+        end
+      end
+    end
+
     describe 'spam handling for held messages' do
       context 'when the sender is not an org member' do
         let :params do
@@ -122,12 +356,7 @@ describe Threadable::IncomingEmail, :type => :request do
         end
 
         it 'drops the spam' do
-          incoming_email.process!
-
-          expect(incoming_email.held?).to be_falsy
-          expect(incoming_email.delivered?).to be_falsy
-          expect(incoming_email.bounced?).to be_falsy
-          expect(incoming_email.dropped?).to be_truthy
+          expect_dropped!
         end
       end
 
@@ -143,12 +372,7 @@ describe Threadable::IncomingEmail, :type => :request do
         end
 
         it 'holds the message' do
-          incoming_email.process!
-
-          expect(incoming_email.delivered?).to be_falsy
-          expect(incoming_email.bounced?).to be_falsy
-          expect(incoming_email.dropped?).to be_falsy
-          expect(incoming_email.held?).to be_truthy
+          expect_held!
         end
       end
 
@@ -164,12 +388,7 @@ describe Threadable::IncomingEmail, :type => :request do
         end
 
         it 'delivers the message' do
-          incoming_email.process!
-
-          expect(incoming_email.held?).to be_falsy
-          expect(incoming_email.bounced?).to be_falsy
-          expect(incoming_email.dropped?).to be_falsy
-          expect(incoming_email.delivered?).to be_truthy
+          expect_delivered!
         end
       end
 

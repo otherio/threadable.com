@@ -38,7 +38,7 @@ class Api::GroupsController < ApiController
       :color,
       :subject_tag,
       :auto_join,
-      :hold_messages,
+      :non_member_posting,
       :alias_email_address,
       :webhook_url,
       :description,
