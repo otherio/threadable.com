@@ -21,7 +21,7 @@ class Threadable::User::Organizations < Threadable::Organizations
   private
 
   def scope
-    user.user_record.organizations
+    user.user_record.organizations.where(organization_memberships: { active: true } )
   end
 
   def organization_for organization_record
