@@ -8,7 +8,7 @@ Threadable.Group = RL.Model.extend({
   subjectTag:                  RL.attr('string'),
   color:                       RL.attr('string'),
   autoJoin:                    RL.attr('boolean'),
-  holdMessages:                RL.attr('boolean'),
+  nonMemberPosting:            RL.attr('string'),
   googleSync:                  RL.attr('boolean'),
   primary:                     RL.attr('boolean'),
   private:                     RL.attr('boolean'),
@@ -71,6 +71,18 @@ Threadable.Group = RL.Model.extend({
       promise.fail(reject);
     });
   },
+
+  allowNonMemberPosting: function() {
+    return this.get('nonMemberPosting') == 'allow';
+  }.property('nonMemberPosting'),
+
+  allowNonMemberReplies: function() {
+    return this.get('nonMemberPosting') == 'allow_replies';
+  }.property('nonMemberPosting'),
+
+  holdNonMemberPosting: function() {
+    return this.get('nonMemberPosting') == 'hold';
+  }.property('nonMemberPosting')
 
 });
 

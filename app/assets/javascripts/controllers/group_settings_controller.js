@@ -8,6 +8,12 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
   currentUser: Ember.computed.alias('controllers.application.currentUser'),
   updateInProgress: false,
 
+  nonMemberPostingTypes: [
+    {prettyName: 'Allow non-members to create new conversations', method: 'allow'},
+    {prettyName: 'Allow replies from non-members',                method: 'allow_replies'},
+    {prettyName: 'Hold every message from non-members',           method: 'hold'}
+  ],
+
   editableGroup: function() { return this.get('model').copy(); }.property('model'),
 
   descriptionLengthRemaining: function() {
@@ -47,6 +53,18 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
     return this.get('aliasPlainAddress').replace(/@/, '-task@');
   }.property('aliasPlainAddress'),
 
+  allowNonMemberPosting: function() {
+    return this.get('nonMemberPosting') == 'allow';
+  }.property('nonMemberPosting'),
+
+  allowNonMemberReplies: function() {
+    return this.get('nonMemberPosting') == 'allow_replies';
+  }.property('nonMemberPosting'),
+
+  holdNonMemberPosting: function() {
+    return this.get('nonMemberPosting') == 'hold';
+  }.property('nonMemberPosting'),
+
   actions: {
     deleteGroup: function() {
       this.confirm({
@@ -73,7 +91,7 @@ Threadable.GroupSettingsController = Ember.ObjectController.extend(
         subjectTag:        this.get('editableGroup.subjectTag'),
         color:             this.get('editableGroup.color'),
         autoJoin:          this.get('editableGroup.autoJoin'),
-        holdMessages:      this.get('editableGroup.holdMessages'),
+        nonMemberPosting:  this.get('editableGroup.nonMemberPosting'),
         aliasEmailAddress: this.get('editableGroup.aliasEmailAddress'),
         webhookUrl:        this.get('editableGroup.webhookUrl'),
         googleSync:        this.get('editableGroup.googleSync'),
