@@ -20,8 +20,9 @@ feature "Group settings" do
     fill_in "subjectTag", with: "cops"
     fill_in "color", with: "#aaa333"
 
+    select "Hold every message from non-members"
     uncheck('Automatically add new organization members to this group')
-    check('Hold messages from senders outside of your organization')
+    # check('Hold messages from senders outside of your organization')
 
     click_on "Update group settings"
 
@@ -29,7 +30,7 @@ feature "Group settings" do
     expect(current_url).to eq conversations_url('raceteam', 'fundraising')
 
     fundraising = current_user.organizations.find_by_slug!('raceteam').groups.find_by_slug!('fundraising')
-    expect(fundraising.non_member_posting).to be_allow
+    expect(fundraising.non_member_posting).to eq 'hold'
     expect(fundraising).to_not be_auto_join
     expect(fundraising.subject_tag).to eq 'cops'
   end

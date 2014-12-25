@@ -607,7 +607,7 @@ describe "processing incoming emails", :type => :request do
           let(:to)        { '"UCSD Electric Racing: Electronics" <raceteam+electronics+fundraising@localhost>' }
 
           before do
-            expected_organization.groups.find_by_slug!('electronics').group_record.update_attribute(:hold_messages, false)
+            expected_organization.groups.find_by_slug!('electronics').group_record.update_attribute(:non_member_posting, 'allow')
           end
 
           let(:expected_sent_email_cc)       { from }
