@@ -1,6 +1,6 @@
 # Threadable
 
-As of December 26, 2014  9:16pm. 185 total
+As of December 26, 2014  9:36pm. 185 total
 
 ## Summary
 * 155 MIT
@@ -1614,7 +1614,7 @@ Forms made easy!
 Sinatra is a DSL for quickly creating web applications in Ruby with minimal effort.
 
 <a name="slop"></a>
-### <a href="http://github.com/leejarvis/slop">slop</a> v3.5.0
+### <a href="http://github.com/leejarvis/slop">slop</a> v3.6.0
 #### Simple Lightweight Option Parsing
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted

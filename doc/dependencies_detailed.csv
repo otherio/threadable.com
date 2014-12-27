@@ -415,7 +415,7 @@ sidetiq,0.4.3,New BSD,Recurring jobs for Sidekiq,Recurring jobs for Sidekiq
 signet,0.4.5,Apache 2.0,Signet is an OAuth 1.0 / OAuth 2.0 implementation.,Signet is an OAuth 1.0 / OAuth 2.0 implementation.
 simple_form,1.4.1,MIT,Forms made easy!,Forms made easy!
 sinatra,1.4.4,MIT,Classy web-development dressed in a DSL,Sinatra is a DSL for quickly creating web applications in Ruby with minimal effort.
-slop,3.5.0,MIT,Simple Lightweight Option Parsing,A simple DSL for gathering options and parsing the command line
+slop,3.6.0,MIT,Simple Lightweight Option Parsing,A simple DSL for gathering options and parsing the command line
 spring,1.1.2,MIT,Rails application preloader,Rails application preloader
 sprockets,2.11.0,MIT,Rack-based asset packaging system,"Sprockets is a Rack-based asset packaging system that concatenates and serves JavaScript, CoffeeScript, CSS, LESS, Sass, and SCSS."
 sprockets-rails,2.2.0,MIT,Sprockets Rails integration,""

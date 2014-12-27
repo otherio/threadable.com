@@ -164,7 +164,7 @@ sidetiq, 0.4.3, New BSD
 signet, 0.4.5, Apache 2.0
 simple_form, 1.4.1, MIT
 sinatra, 1.4.4, MIT
-slop, 3.5.0, MIT
+slop, 3.6.0, MIT
 spring, 1.1.2, MIT
 sprockets, 2.11.0, MIT
 sprockets-rails, 2.2.0, MIT
