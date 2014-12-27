@@ -1,0 +1,22 @@
+---
+whitelist:
+- MIT
+- ISC
+- Apache 2.0
+- Apache
+- ruby
+- Ruby 1.8
+- LGPL
+# BSD licenses that are okay
+- BSD
+- BSD 2-Clause
+- BSD 3-Clause
+- New BSD
+ignore_groups:
+#- test
+#- development
+ignore_dependencies:
+#- bundler
+dependencies_file_dir: './doc/'
+project_name: Threadable
+gradle_command: # only meaningful if used with a Java/gradle project. Defaults to "gradle".

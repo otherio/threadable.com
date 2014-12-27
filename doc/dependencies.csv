@@ -1,0 +1,185 @@
+actionmailer, 4.1.5, MIT
+actionpack, 4.1.5, MIT
+actionview, 4.1.5, MIT
+active_model_serializers, 0.9.0, MIT
+active_record_query_trace, 1.3, MIT
+activemodel, 4.1.5, MIT
+activerecord, 4.1.5, MIT
+activerecord-fixture_builder, 0.0.1, MIT
+activesupport, 4.1.5, MIT
+acts_as_list, 0.2.0, Apache 2.0
+addressable, 2.3.6, Apache 2.0
+algoliasearch, 1.2.13, MIT
+algoliasearch-rails, 1.11.7, MIT
+animate-sass, 0.1.1, MIT
+arel, 5.0.1.20140414130214, MIT
+autoparse, 0.3.3, Apache 2.0
+backports, 3.6.1, MIT
+barber, 0.4.2, MIT
+barber-emblem, 0.1.1, MIT
+bcrypt, 3.1.7, MIT
+binding_of_caller, 0.7.2, MIT
+builder, 3.2.2, MIT
+bundler, 1.7.4, MIT
+byebug, 2.7.0, BSD
+cancan, 1.6.10, MIT
+capybara, 2.4.4, MIT
+celluloid, 0.15.2, MIT
+childprocess, 0.5.5, MIT
+chunky_png, 1.3.0, MIT
+closeio, 0.0.13, MIT
+coderay, 1.1.0, MIT
+columnize, 0.8.9, ruby, GPL2
+compass, 0.12.5, MIT
+compass-flexbox, 1.1.3, MIT
+compass-rails, 1.1.7, MIT
+connection_pool, 2.0.0, MIT
+crack, 0.4.2, MIT
+crass, 0.2.1, MIT
+css_parser, 1.3.5, MIT
+debug_inspector, 0.0.2, MIT
+debugger-linecache, 1.2.0, MIT
+descendants_tracker, 0.0.3, MIT
+did_you_mean, 0.9.2, MIT
+diff-lcs, 1.2.5, MIT, Perl Artistic v2, GNU GPL v2
+dnsruby, 1.54, Apache 2.0
+dotenv, 0.8.0, MIT
+dotenv-rails, 0.8.0, MIT
+ember-data-source, 1.0.0.beta.10, MIT
+ember-rails, 0.15.0, MIT
+ember-source, 1.7.0, MIT
+emblem-rails, 0.2.1, MIT
+emblem-source, 0.3.17, MIT
+encryptor, 1.1.3, MIT
+erubis, 2.7.0, MIT
+excon, 0.31.0, MIT
+execjs, 2.2.1, MIT
+extlib, 0.9.16, MIT
+factory_girl, 4.2.0, MIT
+factory_girl_rails, 4.2.1, MIT
+faraday, 0.8.8, MIT
+ffaker, 1.16.2, MIT
+ffi, 1.9.6, BSD
+filepicker-rails, 0.1, MIT
+fog, 1.19.0, MIT
+formatador, 0.2.4, MIT
+fssm, 0.2.10, MIT
+fuubar, 2.0.0, MIT
+google-api-client, 0.6.4, Apache 2.0
+haml, 4.0.5, MIT
+handlebars-source, 1.3.0, MIT
+hashie, 2.0.5, MIT
+hike, 1.2.3, MIT
+honeybadger, 1.9.5, MIT
+htmlentities, 4.3.1, MIT
+httmultiparty, 0.3.10, MIT
+httparty, 0.11.0, MIT
+httpclient, 2.5.1, ruby
+i18n, 0.6.11, MIT
+ice_cube, 0.11.3, MIT
+incoming, 0.1.6, MIT
+interception, 0.5, MIT
+jasmine, 2.0.0, MIT
+jasmine-core, 2.0.0, MIT
+jquery-rails, 3.1.2, MIT
+js-routes, 0.9.1, MIT
+json, 1.8.1, ruby
+jwt, 0.1.13, MIT
+kgio, 2.8.0, LGPL
+launchy, 2.4.3, ISC
+let, 0.1.3, MIT
+mail, 2.5.4, MIT
+mail_alternatives_with_attachments, 2.0.0, MIT
+mail_view, 2.0.1, MIT
+method_object, 0.1.0, MIT
+method_source, 0.8.2, MIT
+mime-types, 1.25.1, MIT, Artistic 2.0, GPL-2
+mini_portile, 0.6.1, MIT
+minitest, 5.4.3, MIT
+mixpanel-ruby, 1.2.0, Apache 2.0
+mock_redis, 0.13.2, MIT
+multi_json, 1.10.1, MIT
+multi_xml, 0.5.4, MIT
+multipart-post, 1.2.0, MIT
+net-scp, 1.1.2, MIT
+net-ssh, 2.7.0, MIT
+newrelic_rpm, 3.9.2.239, New Relic, MIT, ruby
+nokogiri, 1.6.4.1, MIT
+nokogumbo, 1.1.12, Apache 2.0
+oauth, 0.4.7, MIT
+oauth2, 0.9.3, MIT
+omniauth, 1.2.1, MIT
+omniauth-google-oauth2, 0.2.4, MIT
+omniauth-oauth, 1.0.1, MIT
+omniauth-oauth2, 1.1.2, MIT
+omniauth-trello, 0.0.4, MIT
+options_hash, 0.0.1, MIT
+options_hash-method_object, 0.1.0, MIT
+pg, 0.17.1, BSD, ruby, GPL
+phantomjs, 1.9.2.1, MIT
+polyglot, 0.3.5, MIT
+pry, 0.9.12.6, MIT
+pry-byebug, 1.3.2, MIT
+pry-rails, 0.3.2, MIT
+rack, 1.5.2, MIT
+rack-protection, 1.5.1, MIT
+rack-test, 0.6.2, MIT
+rack-zippy, 1.2.1, MIT
+rails, 4.1.5, MIT
+rails_12factor, 0.0.2, MIT
+rails_serve_static_assets, 0.0.1, New BSD
+rails_stdout_logging, 0.0.1, MIT
+railties, 4.1.5, MIT
+raindrops, 0.11.0, LGPL
+rake, 10.3.2, MIT
+rb-readline, 0.5.1, BSD
+redcarpet, 3.1.2, MIT
+redis, 3.0.7, MIT
+redis-namespace, 1.4.1, MIT
+rest-client, 1.6.7, MIT
+roadie, 3.0.1, MIT
+roadie-rails, 1.0.3, MIT
+rspec, 3.0.0, MIT
+rspec-core, 3.0.4, MIT
+rspec-expectations, 3.0.4, MIT
+rspec-instafail, 0.2.5, MIT
+rspec-legacy_formatters, 1.0.0, MIT
+rspec-mocks, 3.0.4, MIT
+rspec-rails, 3.0.2, MIT
+rspec-support, 3.0.4, MIT
+rspec_junit_formatter, 0.2.0, MIT
+ruby-hmac, 0.4.0, MIT
+ruby-progressbar, 1.5.1, MIT
+rubyzip, 1.1.6, BSD 2-Clause
+safe_yaml, 1.0.4, MIT
+sanitize, 3.0.3, MIT
+sass, 3.2.19, MIT
+sass-rails, 4.0.3, MIT
+selenium-webdriver, 2.44.0, Apache
+shoulda-matchers, 2.7.0, MIT
+sidekiq, 2.15.2, LGPL
+sidekiq-failures, 0.2.2, MIT
+sidekiq-unique-jobs, 3.0.0, LGPL
+sidetiq, 0.4.3, New BSD
+signet, 0.4.5, Apache 2.0
+simple_form, 1.4.1, MIT
+sinatra, 1.4.4, MIT
+slop, 3.5.0, MIT
+spring, 1.1.2, MIT
+sprockets, 2.11.0, MIT
+sprockets-rails, 2.2.0, MIT
+stringex, 2.0.3, MIT
+thor, 0.19.1, MIT
+thread_safe, 0.3.4, Apache 2.0
+tilt, 1.4.1, MIT
+timecop, 0.6.1, MIT
+timers, 1.1.0, MIT
+treetop, 1.4.15, MIT
+tzinfo, 1.2.2, MIT
+uglifier, 2.1.1, MIT
+unicorn, 4.6.3, GPLv2, GPLv3, Ruby 1.8
+uuidtools, 2.1.4, Apache 2.0
+virtus, 0.5.5, MIT
+webmock, 1.20.4, MIT
+websocket, 1.2.1, MIT
+xpath, 2.0.0, MIT
