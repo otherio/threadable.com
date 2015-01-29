@@ -61,4 +61,14 @@ describe Threadable::Messages::Create, :type => :request do
     end
   end
 
+  context 'When mixpanel is broken' do
+    let(:to_header) { 'Foo Bathtub <hot-water@whoo.yeah>' }
+
+    it 'still creates the message' do
+      allow(threadable.tracker).to receive(:fake_track).and_raise(Mixpanel::ConnectionError)
+
+      message = call(conversation.messages, message_options)
+      expect(message.to_header).to eq 'Foo Bathtub <hot-water@whoo.yeah>'
+    end
+  end
 end

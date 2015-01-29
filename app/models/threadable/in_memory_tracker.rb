@@ -43,18 +43,27 @@ class Threadable::InMemoryTracker < Threadable::Tracker
   end
 
   def track_for_user user_id, event_name, event_attributes={}
+    recover_from_expected_errors do
+      fake_track
+    end
     trackings << [user_id, event_name.to_s, event_attributes.stringify_keys]
     Rails.logger.info "TRACKING: #{trackings.last.inspect}"
     nil
   end
 
   def set_properties_for_user tracking_id, properties
+    recover_from_expected_errors do
+      fake_track
+    end
     people[tracking_id] ||= {}
     people[tracking_id].update(properties)
     nil
   end
 
   def increment_for_user tracking_id, properties
+    recover_from_expected_errors do
+      fake_track
+    end
     people[tracking_id] ||= {}
 
     properties.keys.each do |key|
@@ -94,5 +103,23 @@ class Threadable::InMemoryTracker < Threadable::Tracker
     Rails.logger.info "REFRESHING USER RECORD FOR: #{user.inspect}"
     nil
   end
+
+  def fake_track
+    # stub this if you want to raise an exception in your integration test
+  end
+
+  private
+
+  def recover_from_expected_errors
+    retries ||= 0
+    yield
+    return nil
+  rescue Mixpanel::ConnectionError, OpenSSL::SSL::SSLError, Net::ReadTimeout, Errno::ECONNRESET, EOFError => error
+    threadable.report_exception!(error)
+    retries = retries + 1
+    retry if retries <= 2
+    return nil
+  end
+
 
 end
