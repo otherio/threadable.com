@@ -161,6 +161,7 @@ describe Threadable::MixpanelTracker, :type => :model do
         Mixpanel::ConnectionError,
         OpenSSL::SSL::SSLError,
         Net::ReadTimeout,
+        EOFError
       ]
 
       before do
@@ -177,6 +178,14 @@ describe Threadable::MixpanelTracker, :type => :model do
         it "continues if #{known_error.to_s} keeps occurring" do
           expect(people).to receive(:set).exactly(3).times.and_raise(known_error)
           expect{ threadable_mixpanel_tracker.set_properties_for_user(user_id, 'foo' => 'bar') }.to_not raise_error
+        end
+
+        context 'when the error happens during a track' do
+          it "continues if #{known_error.to_s} keeps occurring indefinitely, does not call track through some other path that breaks everything" do
+            allow(mixpanel_tracker).to receive(:track).and_raise(known_error)
+            allow(threadable).to receive(:track).and_raise(Exception) # sort of integration-y, maybe move this to its own test
+            expect{ threadable_mixpanel_tracker.track('An event', {things: 'are good'}) }.to_not raise_error
+          end
         end
       end
 
