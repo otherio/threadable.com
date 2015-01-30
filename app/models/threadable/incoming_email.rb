@@ -251,15 +251,15 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def body_plain
-    params['body-plain']
+    params['body-plain'] || ''
   end
 
   def stripped_html
-    params['stripped-html']
+    params['stripped-html'] || ''
   end
 
   def stripped_plain
-    params['stripped-text']
+    params['stripped-text'] || ''
   end
 
   def thread_topic
