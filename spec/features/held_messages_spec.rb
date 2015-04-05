@@ -38,7 +38,7 @@ feature "Held messages" do
 
     visit conversations_url(organization, 'raceteam')
     expect(page).to have_text "Held Messages"
-    click_on 'held messages'
+    click_on 'Held Messages'
     page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 
     expect(page).to have_text email_subject

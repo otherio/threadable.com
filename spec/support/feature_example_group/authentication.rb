@@ -4,7 +4,7 @@ module RSpec::Support::FeatureExampleGroup
     user.present? or raise ArgumentError, "sign_in! requires a user"
     sign_out!
     visit sign_in_path if current_path != sign_in_path
-    Timeout::timeout(10) do
+    Timeout::timeout(15) do
       within_element 'the sign in form' do
         fill_in 'Email Address', :with => user.email_address.to_s
         fill_in 'Password', :with => 'password'
