@@ -103,7 +103,7 @@ describe "processing incoming emails", :type => :request do
       ["Thread-Index",     thread_index],
       ["Thread-Topic",     thread_topic],
       ["Auto-Submitted",   auto_submitted],
-      ["X-Mailgun-Sscore", 0],
+      ["X-Mailgun-Sscore", 1.1],
     ]
     expect( incoming_email.body_html      ).to eq(body_html)
     expect( incoming_email.body_plain     ).to eq(body_plain)
