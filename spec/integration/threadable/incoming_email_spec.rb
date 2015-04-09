@@ -360,6 +360,31 @@ describe Threadable::IncomingEmail, :type => :request do
         end
       end
 
+      context 'when the sender is not an org member, and the mailgun spam check failed' do
+        let :params do
+          create_incoming_email_params(
+            organization: raceteam,
+            from: 'Spam Emporium <spam@emp.ru>',
+            envelope_from: 'spam@emp.ru',
+            subject: 'ROLEX VIAGRA 4 U!!1!',
+            spam_score: 0.0
+          )
+        end
+
+        before do
+          # testing this all the way through, since it uncovers a very special bug.
+          stub_request(:post, 'http://spamcheck.postmarkapp.com/filter').to_return(
+            body: {success: true, score: 23.2}.to_json,
+            headers: {'Content-type' => 'application/json'},
+            status: 200,
+          )
+        end
+
+        it 'drops the spam' do
+          expect_dropped!
+        end
+      end
+
       context 'when the sender is not an org member, and the message is not spam' do
         let :params do
           create_incoming_email_params(

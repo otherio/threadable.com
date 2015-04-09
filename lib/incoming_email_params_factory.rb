@@ -65,7 +65,7 @@ class IncomingEmailParamsFactory < MethodObject
       ["Thread-Index",     @options[:thread_index]],
       ["Thread-Topic",     @options[:thread_topic]],
       ["Auto-Submitted",   @options[:auto_submitted]],
-      ["X-Mailgun-Sscore", @options[:spam_score] || 0],
+      ["X-Mailgun-Sscore", @options[:spam_score] || 1.1],
     ]
   end
 

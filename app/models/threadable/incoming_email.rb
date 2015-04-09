@@ -271,7 +271,13 @@ class Threadable::IncomingEmail < Threadable::Model
   end
 
   def spam_score
-    message_headers_as_hash['X-Mailgun-Sscore'].to_f || 0
+    return @spam_score if @spam_score
+    @spam_score = message_headers_as_hash['X-Mailgun-Sscore'].to_f || 0
+    if @spam_score == 0
+      spamcheck = PostmarkSpamcheck.new(mail_message.to_s)
+      @spam_score = spamcheck.score
+    end
+    @spam_score
   end
 
   def from_email_addresses
@@ -411,9 +417,6 @@ class Threadable::IncomingEmail < Threadable::Model
     @conversation ||= Threadable::Conversation.new(threadable, incoming_email_record.conversation)
   end
 
-
-
-
   delegate *%w{header multipart?}, to: :mail_message
 
   class MailgunRequestToEmail < ::Incoming::Strategies::Mailgun
@@ -422,9 +425,6 @@ class Threadable::IncomingEmail < Threadable::Model
   def mail_message
     @mail_message ||= MailgunRequestToEmail.new(self).message
   end
-
-
-
 
   def inspect
     details = {
