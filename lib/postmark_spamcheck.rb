@@ -6,7 +6,7 @@ class PostmarkSpamcheck
   format :json
 
   def initialize mail_message
-    @mail_message = mail_message
+    @mail_message = mail_message[0,16384]
   end
 
   attr_reader :mail_message
