@@ -12,7 +12,6 @@ Threadable.SidebarController = Ember.ArrayController.extend(Threadable.CurrentUs
     this.set('organization.focus', 'conversations');
     this.set('settingsVisible', false);
     this.set('organizationVisible', false);
-    if (UserVoice && UserVoice.hide) UserVoice.hide();
   },
 
   otherOrganizations: function(organization) {
