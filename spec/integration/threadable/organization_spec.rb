@@ -393,59 +393,6 @@ describe Threadable::Organization, :type => :request do
     end
   end
 
-  describe '#create_closeio_lead!' do
-    before do
-      ENV['CLOSEIO_API_KEY'] = 'closeio_api_key'
-      ENV['CLOSEIO_LEAD_STATUS_ID'] = 'closeio_lead_status_id'
-    end
-
-    after do
-      ENV.delete('CLOSEIO_API_KEY')
-      ENV.delete('CLOSEIO_LEAD_STATUS_ID')
-    end
-
-    it 'puts a lead in close' do
-      expect(Closeio::Lead).to receive(:create).with({
-        name: 'UCSD Electric Racing',
-        contacts: [
-          {name: 'Alice Neilson', emails: [type: 'other', email: 'alice@ucsd.example.com']}
-        ],
-        custom: {
-          organization_slug: 'raceteam',
-          recent_activity:   'no',
-          last_activity:     '2014-02-02',
-          created_at:        organization.created_at.strftime('%Y-%m-%d'),
-          active_members:    9,
-          conversations:     26,
-        },
-        status_id: 'closeio_lead_status_id',
-      })
-
-      organization.create_closeio_lead!
-    end
-  end
-
-  describe '#update_recent_closeio_activity!' do
-    let(:lead) { double(:lead, id: 'lead_id') }
-
-    before do
-      allow_any_instance_of(Threadable::Organization).to receive(:find_closeio_lead).and_return(lead)
-    end
-
-    it 'sends the updated custom fields to close' do
-      expect(Closeio::Lead).to receive(:update).with(
-        'lead_id',
-        'custom.recent_activity' => 'no',
-        'custom.last_activity' =>   organization.last_message_at.strftime('%Y-%m-%d'),
-        'custom.created_at' =>      organization.created_at.strftime('%Y-%m-%d'),
-        'custom.active_members' =>  organization.members.who_get_email.count,
-        'custom.conversations' =>   organization.conversations.count,
-      )
-
-      organization.update_recent_closeio_activity!
-    end
-  end
-
   it 'has the correct settings with proper defaults' do
     expect(organization.settings.organization_membership_permission).to eq :member
     expect(organization.settings.group_membership_permission).to eq :member
