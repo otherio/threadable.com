@@ -2,74 +2,75 @@ require 'spec_helper'
 
 feature "mixpanel tracking" do
 
-  scenario %(signing up), fixtures: false do
-    organization_name = 'JREF'
-    organization_slug = 'jref'
-    name              = 'James Radi'
-    email_address     = 'james.randi@jref.org'
+  # signups are closed
+  # scenario %(signing up), fixtures: false do
+  #   organization_name = 'JREF'
+  #   organization_slug = 'jref'
+  #   name              = 'James Radi'
+  #   email_address     = 'james.randi@jref.org'
 
-    visit root_url
+  #   visit root_url
 
-    original_mixpanel_distinct_id = mixpanel_distinct_id
+  #   original_mixpanel_distinct_id = mixpanel_distinct_id
 
-    within first('.sign-up-form') do
-      fill_in 'Organization name', with: organization_name
-      fill_in 'Your email address',     with: email_address
-      click_on 'SIGN UP'
-    end
+  #   within first('.sign-up-form') do
+  #     fill_in 'Organization name', with: organization_name
+  #     fill_in 'Your email address',     with: email_address
+  #     click_on 'SIGN UP'
+  #   end
 
-    expect(page).to have_text %(We've sent you a confirmation email.)
-    expect(page).to have_text %(Please click the link in your email to complete your account request.)
+  #   expect(page).to have_text %(We've sent you a confirmation email.)
+  #   expect(page).to have_text %(Please click the link in your email to complete your account request.)
 
-    assert_tracked(mixpanel_distinct_id, 'Homepage sign up',
-      email_address:     email_address,
-      organization_name: organization_name,
-    )
+  #   assert_tracked(mixpanel_distinct_id, 'Homepage sign up',
+  #     email_address:     email_address,
+  #     organization_name: organization_name,
+  #   )
 
-    assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "sign_up_confirmation", organization_name, email_address]
-    drain_background_jobs!
-    email = sent_emails.to(email_address).with_subject("Welcome to Threadable!").last
-    expect(email).to be_present
-    sent_emails.clear
+  #   assert_background_job_enqueued SendEmailWorker, args: [threadable.env, "sign_up_confirmation", organization_name, email_address]
+  #   drain_background_jobs!
+  #   email = sent_emails.to(email_address).with_subject("Welcome to Threadable!").last
+  #   expect(email).to be_present
+  #   sent_emails.clear
 
-    confirmation_url = email.link("CONFIRM ACCOUNT")[:href]
-    token = Rails.application.routes.recognize_path(confirmation_url)[:token]
-    visit confirmation_url
-    expect(page).to be_at_url new_organization_url(token: token)
+  #   confirmation_url = email.link("CONFIRM ACCOUNT")[:href]
+  #   token = Rails.application.routes.recognize_path(confirmation_url)[:token]
+  #   visit confirmation_url
+  #   expect(page).to be_at_url new_organization_url(token: token)
 
-    assert_tracked(mixpanel_distinct_id, 'New Organization Page Visited',
-      sign_up_confirmation_token: true,
-      organization_name:          organization_name,
-      email_address:              email_address,
-    )
+  #   assert_tracked(mixpanel_distinct_id, 'New Organization Page Visited',
+  #     sign_up_confirmation_token: true,
+  #     organization_name:          organization_name,
+  #     email_address:              email_address,
+  #   )
 
-    fill_in 'new_organization[your_name]',             with: name
-    fill_in 'new_organization[password]',              with: 'password',   match: :prefer_exact
-    fill_in 'new_organization[password_confirmation]', with: 'password'
-    click_on 'Create'
+  #   fill_in 'new_organization[your_name]',             with: name
+  #   fill_in 'new_organization[password]',              with: 'password',   match: :prefer_exact
+  #   fill_in 'new_organization[password_confirmation]', with: 'password'
+  #   click_on 'Create'
 
-    expect(page).to have_text %(Compose new conversation)
-    expect(page).to be_at_url conversations_url(organization_slug, 'my')
+  #   expect(page).to have_text %(Compose new conversation)
+  #   expect(page).to be_at_url conversations_url(organization_slug, 'my')
 
-    user         = threadable.users.find_by_email_address!(email_address)
-    organization = threadable.organizations.find_by_slug!(organization_slug)
+  #   user         = threadable.users.find_by_email_address!(email_address)
+  #   organization = threadable.organizations.find_by_slug!(organization_slug)
 
-    expect(mixpanel_distinct_id).to eq user.id.to_s
-    expect(threadable.tracker.aliases[user.id]).to eq original_mixpanel_distinct_id
+  #   expect(mixpanel_distinct_id).to eq user.id.to_s
+  #   expect(threadable.tracker.aliases[user.id]).to eq original_mixpanel_distinct_id
 
-    assert_tracked(user.id, 'Sign up',
-      name:                 name,
-      email_address:        email_address,
-      confirm_email_address: true,
-    )
+  #   assert_tracked(user.id, 'Sign up',
+  #     name:                 name,
+  #     email_address:        email_address,
+  #     confirm_email_address: true,
+  #   )
 
-    assert_tracked(user.user_id, 'Organization Created',
-      sign_up_confirmation_token: true,
-      organization_name:          organization_name,
-      email_address:              email_address,
-      organization_id:            organization.id,
-    )
-  end
+  #   assert_tracked(user.user_id, 'Organization Created',
+  #     sign_up_confirmation_token: true,
+  #     organization_name:          organization_name,
+  #     email_address:              email_address,
+  #     organization_id:            organization.id,
+  #   )
+  # end
 
   scenario %(signing in) do
     visit root_url
