@@ -21,7 +21,7 @@ namespace :db do
   namespace :backup do
     backup = -> environment do
       Bundler.with_clean_env do
-        system("heroku pgbackups:capture --expire --app threadable-#{environment}")
+        system("heroku pg:backups capture --expire --app threadable-#{environment}")
       end
     end
     desc "tells heroku to backup staging database"
@@ -38,7 +38,7 @@ namespace :db do
     download = -> environment do
       Bundler.with_clean_env do
         backup_path = Rails.root.join("tmp/#{environment}.dump")
-        backup_url = `heroku pgbackups:url --app threadable-#{environment}`.chomp
+        backup_url = `heroku pg:backups public-url --app threadable-#{environment}`.chomp
         puts "downloading #{backup_url.inspect}"
         system("curl -o #{backup_path.to_s.inspect} #{backup_url.inspect}")
       end
