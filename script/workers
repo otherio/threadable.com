@@ -8,4 +8,6 @@ end
 
 ENV['DB_POOL'] = ENV['THREADABLE_WORKER_THREAD_COUNT']
 
+#ENV['MALLOC_ARENA_MAX'] = 2 # https://devcenter.heroku.com/articles/tuning-glibc-memory-behavior
+
 exec %( bundle exec sidekiq -c $THREADABLE_WORKER_THREAD_COUNT )
