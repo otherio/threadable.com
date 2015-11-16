@@ -67,7 +67,7 @@ describe LightOrganizationsSerializer do
           subject_tag:       "SFHealth",
           description:       "San Francisco Health Center",
           trusted:           false,
-          plan:              :free,
+          plan:              :paid,
         }
       ]
     end

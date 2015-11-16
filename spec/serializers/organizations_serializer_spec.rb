@@ -123,7 +123,7 @@ describe OrganizationsSerializer do
           description:       "San Francisco Health Center",
           has_held_messages: false,
           trusted:           false,
-          plan:              :free,
+          plan:              :paid,
           public_signup:     false,
           account_type:      :standard_account,
 
@@ -141,7 +141,7 @@ describe OrganizationsSerializer do
           can_be_google_user:           false,
           can_change_settings:          false,
           can_invite_members:           true,
-          can_make_private_groups:      false,
+          can_make_private_groups:      true,
           can_read_private_groups:      false,
 
           organization_membership_permission: :member,
