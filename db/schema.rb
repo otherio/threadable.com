@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216004929) do
+ActiveRecord::Schema.define(version: 20151116224941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 20141216004929) do
     t.boolean  "trusted",                            default: false
     t.boolean  "hold_all_messages",                  default: false, null: false
     t.integer  "google_user_id"
-    t.integer  "plan",                               default: 0,     null: false
+    t.integer  "plan",                               default: 1,     null: false
     t.boolean  "public_signup",                      default: false, null: false
     t.integer  "group_membership_permission",        default: 0,     null: false
     t.integer  "group_settings_permission",          default: 0,     null: false
