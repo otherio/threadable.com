@@ -1,7 +1,7 @@
 class Message < ActiveRecord::Base
 
   include AlgoliaSearch
-  algoliasearch do
+  algoliasearch if: :searchable? do
     attribute(
       :id,
       :organization_id,
@@ -54,6 +54,10 @@ class Message < ActiveRecord::Base
   before_create :touch_conversation_update_at
 
   validates_presence_of :conversation_id, :date_header, :message_id_header
+
+  delegate(*%w{
+    searchable?
+  }, to: :organization)
 
   def creator_id
     self.user_id
