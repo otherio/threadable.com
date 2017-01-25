@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116224941) do
+ActiveRecord::Schema.define(version: 20170125050951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,10 +272,12 @@ ActiveRecord::Schema.define(version: 20151116224941) do
     t.string   "billforward_subscription_id"
     t.integer  "daily_active_users"
     t.integer  "account_type",                       default: 0,     null: false
+    t.boolean  "searchable",                         default: false, null: false
   end
 
   add_index "organizations", ["billforward_subscription_id"], name: "index_organizations_on_billforward_subscription_id", using: :btree
   add_index "organizations", ["email_address_username"], name: "index_organizations_on_email_address_username", unique: true, using: :btree
+  add_index "organizations", ["searchable"], name: "index_organizations_on_searchable", using: :btree
   add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
 
   create_table "sent_emails", force: true do |t|

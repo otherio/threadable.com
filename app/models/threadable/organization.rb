@@ -27,6 +27,7 @@ class Threadable::Organization < Threadable::Model
     trusted?
     plan
     public_signup?
+    searchable?
     billforward_account_id
     billforward_subscription_id
     daily_active_users

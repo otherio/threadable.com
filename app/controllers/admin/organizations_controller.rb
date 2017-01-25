@@ -66,6 +66,7 @@ class Admin::OrganizationsController < ApplicationController
         :plan,
         :description,
         :public_signup,
+        :searchable,
         :billforward_account_id,
         :billforward_subscription_id,
         :account_type,
