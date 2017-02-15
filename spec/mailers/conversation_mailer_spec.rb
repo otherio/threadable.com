@@ -330,19 +330,23 @@ describe ConversationMailer, :type => :mailer do
       end
 
       context 'with an inline image' do
+        let(:attachment_to_inline) { message.attachments.all.first.attachment_record }
+        let(:inline_filename) { attachment_to_inline.filename }
+        let(:inline_content_id) { attachment_to_inline.content_id }
+
         before do
-          message.attachments.all.first.attachment_record.update_attribute(:inline, true)
+          attachment_to_inline.update_attribute(:inline, true)
         end
 
         it 'inlines the image' do
           expect(mail.attachments.length).to eq 3
-          attachment = mail.attachments.find { |attachment| attachment.filename == 'some.gif' }
+          attachment = mail.attachments.find { |attachment| attachment.filename == inline_filename }
 
           expect(attachment.mime_type).to eq 'image/gif'
-          expect(attachment.content_id).to eq '<somegifcontentid>'
-          expect(attachment.header['X-Attachment-Id'].value).to eq 'somegifcontentid'
+          expect(attachment.content_id).to eq inline_content_id
+          expect(attachment.header['X-Attachment-Id'].value).to eq inline_content_id.gsub(/<|>/, '')
           expect(attachment.content_disposition).to include 'inline'
-          expect(attachment.content_disposition).to include 'some.gif'
+          expect(attachment.content_disposition).to include inline_filename
         end
       end
 

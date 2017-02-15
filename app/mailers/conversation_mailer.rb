@@ -145,6 +145,7 @@ class ConversationMailer < Threadable::Mailer
       end
     end
 
+    @_mail_was_called = false  # an unfortunate hack to keep mail_alternatives_with_attachments working with newer actionmailer
     @message.attachments.not_inline.each do |attachment|
       params = attachment_params attachment
       filename = params[:filename]
@@ -156,6 +157,7 @@ class ConversationMailer < Threadable::Mailer
         attachments[filename][:'X-Attachment-Id'] = attachment.content_id.gsub(/[<>]/, '')
       end
     end
+    @_mail_was_called = true
 
     email.smtp_envelope_from = @conversation.internal_email_address
     email.smtp_envelope_to = @recipient.email_address.to_s

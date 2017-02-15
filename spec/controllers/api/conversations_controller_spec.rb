@@ -42,7 +42,6 @@ describe Api::ConversationsController, :type => :controller do
         {
           format: :json,
           organization: organization,
-          group: group,
           scope: scope,
           group: group,
           page:  page,
