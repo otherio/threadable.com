@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby "2.4.0"
 
-gem 'rails', '4.1.5'
+gem 'rails', '4.1.16'
 gem 'jquery-rails'
 gem 'unicorn'
 gem 'sinatra'
