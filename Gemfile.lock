@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/raindrift/mail.git
-  revision: ccea7228c645678682faa0399b21615b436de72e
-  ref: ccea7228c6456
-  specs:
-    mail (2.5.4)
-      mime-types (~> 1.16)
-      treetop (~> 1.4.8)
-
-GIT
   remote: git@github.com:circleci/rspec_junit_formatter.git
   revision: 7b098c8ab2ac5e5f78190b51629ed6d67a9de4d1
   specs:
@@ -15,6 +6,15 @@ GIT
       builder (< 4)
       rspec (>= 2, < 4)
       rspec-core (!= 2.12.0)
+
+GIT
+  remote: https://github.com/raindrift/mail.git
+  revision: ccea7228c645678682faa0399b21615b436de72e
+  ref: ccea7228c6456
+  specs:
+    mail (2.5.4)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
 
 GEM
   remote: https://rubygems.org/
@@ -307,7 +307,7 @@ GEM
       activesupport (= 4.1.5)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    raindrops (0.11.0)
+    raindrops (0.17.0)
     rake (10.3.2)
     rb-readline (0.5.1)
     redis (3.0.7)
