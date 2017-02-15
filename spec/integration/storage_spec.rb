@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe 'storage', :type => :request do
@@ -11,10 +13,13 @@ describe 'storage', :type => :request do
     )
 
     file.reload
-    expect(file.body).to eq gif.read
+    gif_body = gif.read(:encoding => 'ASCII-8BIT')
+
+    expect(file.body.encoding).to eq gif_body.encoding
+    expect(file.body).to eq gif_body
     get file.public_url
     expect(response.headers["Content-Type"]).to eq file.content_type
-    expect(response.body.force_encoding(file.body.encoding)).to eq gif.read
+    expect(response.body.force_encoding(file.body.encoding)).to eq gif_body
   end
 
 end
