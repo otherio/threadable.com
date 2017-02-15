@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.0.0"
+ruby "2.4.0"
 
 gem 'rails', '4.1.5'
 gem 'jquery-rails'
@@ -37,7 +37,6 @@ gem 'httmultiparty'
 gem 'let'
 
 gem 'haml'
-gem 'redcarpet'
 gem 'compass-rails'
 gem 'compass-flexbox'
 gem 'sass-rails'
