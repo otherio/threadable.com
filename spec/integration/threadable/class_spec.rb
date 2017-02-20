@@ -68,5 +68,13 @@ describe Threadable::Class, :type => :request do
     })
   end
 
+  describe '#refresh' do
+    it 'removes the defined instance variables' do
+      threadable.email_addresses
+      threadable.refresh
+      expect(threadable.instance_variable_get(:@email_addresses)).to be_nil
+    end
+  end
+
 
 end

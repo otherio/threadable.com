@@ -18,6 +18,8 @@ class Threadable::Worker
       @threadable.report_exception! exception
       raise
     end
+
+    threadable.refresh
   end
   attr_reader :threadable
   delegate :current_user, to: :threadable

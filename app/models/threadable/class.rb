@@ -64,6 +64,30 @@ class Threadable::Class
   let(:events         ){ Threadable::Events         .new(self) }
   let(:groups         ){ Threadable::Groups         .new(self) }
 
+  def refresh
+    lets = [
+      :emails,
+      :email_addresses,
+      :email_domains,
+      :users,
+      :organizations,
+      :conversations,
+      :tasks,
+      :messages,
+      :attachments,
+      :incoming,
+      :events,
+      :groups,
+    ]
+
+    lets.each do |instance_variable|
+      name = "@#{instance_variable}".to_sym
+      if instance_variable_defined?(name)
+        remove_instance_variable(name)
+      end
+    end
+  end
+
   def sign_up attributes
     Threadable::SignUp.call(self, attributes)
   end
