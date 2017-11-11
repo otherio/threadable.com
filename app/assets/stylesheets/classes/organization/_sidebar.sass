@@ -45,6 +45,7 @@
     li
       background-color: $background-color
       overflow: hidden
+      display: block
       > a
         color: inherit
         display: block
@@ -108,7 +109,7 @@
     +animate-property(height)
     overflow: hidden
     > ul
-      +absolute(null, 0, 0, 0)
+      +absolute(0, 0, 0, 0)
 
   // state changes
   &.user-settings-open
