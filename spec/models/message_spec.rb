@@ -71,6 +71,15 @@ describe Message, :type => :model do
         end
       end
 
+      context 'when the html body is nil' do
+        let(:body_plain) { '' }
+        let(:body_html) { nil }
+
+        it 'returns an empty string' do
+          expect(subject.body_html_for_search).to eq("")
+        end
+      end
+
     end
 
     describe "#body_plain_for_search" do
@@ -80,6 +89,16 @@ describe Message, :type => :model do
       it 'returns the first 9.5k of body_plain' do
         expect(subject.body_plain_for_search.length).to eq(9728)
       end
+
+      context 'when the plain body is nil' do
+        let(:body_plain) { nil }
+        let(:body_html) { '' }
+
+        it 'returns an empty string' do
+          expect(subject.body_plain_for_search).to eq("")
+        end
+      end
+
     end
   end
 end

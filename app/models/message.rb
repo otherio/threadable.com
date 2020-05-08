@@ -108,11 +108,12 @@ class Message < ActiveRecord::Base
   end
 
   def body_html_for_search
-    StripHtml.call(body_html)[0...(9728-body_plain_for_search.length)]
+    html = StripHtml.call(body_html)
+    html.nil? ? '' : html[0...(9728-body_plain_for_search.length)]
   end
 
   def body_plain_for_search
-    @body_plain_for_search ||= body_plain[0...9728]
+    @body_plain_for_search ||= body_plain.nil? ? '' : body_plain[0...9728]
   end
 
   private
